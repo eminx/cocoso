@@ -111,7 +111,7 @@ export function GroupsList({ host, sink }) {
 
 export function Group({ host, sink }) {
   const { groupId } = useParams();
-  const group = Meteor.call('getGroup', groupId);
+  const group = Meteor.call('getGroupWithMeetings', groupId);
   const Host = Meteor.call('getHost', host);
 
   sink.appendToBody(`

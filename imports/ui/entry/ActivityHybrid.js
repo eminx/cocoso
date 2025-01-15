@@ -26,15 +26,6 @@ export default function ActivityHybrid({ activity, Host }) {
       ),
       path: 'info',
     },
-    // {
-    //   title: t('public.labels.dates'),
-    //   content: (
-    //     <div>
-    //       <RsvpHandler activity={activity} />
-    //     </div>
-    //   ),
-    //   path: 'dates',
-    // },
   ];
 
   if (activity?.isPublicActivity) {
@@ -59,26 +50,6 @@ export default function ActivityHybrid({ activity, Host }) {
     });
   }
 
-  // if (canCreateContent) {
-  //   tabs.push({
-  //     title: tc('labels.discussion'),
-  //     content: (
-  //       <>
-  //         <Text mb="2" px="2" textAlign="center">
-  //           {t('public.chat.heading')}
-  //         </Text>
-  //         <Chattery
-  //           isMember
-  //           messages={discussion}
-  //           onNewMessage={this.addNewChatMessage}
-  //           removeNotification={this.removeNotification}
-  //         />
-  //       </>
-  //     ),
-  //     path: 'discussion',
-  //   });
-  // }
-
   const activitiesInMenu = Host.settings?.menu.find((item) => item.name === 'activities');
 
   return (
@@ -97,7 +68,7 @@ export default function ActivityHybrid({ activity, Host }) {
 function ActionDates({ activity }) {
   return (
     <Link to={`/activities/${activity?._id}/dates`}>
-      <Flex justify="center" pt="2" wrap="wrap">
+      <Flex justify="center" wrap="wrap">
         {activity?.datesAndTimes.map(
           (occurence, occurenceIndex) =>
             occurence && (

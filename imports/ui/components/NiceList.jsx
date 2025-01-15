@@ -3,7 +3,7 @@ import { Box, Flex, List, ListItem, Menu, MenuItem, MenuButton, MenuList } from 
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 function NiceList({
-  actionsDisabled,
+  actionsDisabled = true,
   itemBg,
   keySelector = '_id',
   list,

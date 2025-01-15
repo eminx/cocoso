@@ -50,7 +50,7 @@ const generateTheme = (hue) => {
     components: {
       Button: {
         baseStyle: {
-          borderRadius: 0,
+          // borderRadius: 0,
           whiteSpace: 'normal',
         },
         defaultProps: {

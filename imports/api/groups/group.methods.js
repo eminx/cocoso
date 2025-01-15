@@ -31,6 +31,20 @@ Meteor.methods({
     return group;
   },
 
+  async getGroupWithMeetings(groupId) {
+    check(groupId, String);
+
+    const group = await Groups.findOneAsync({
+      _id: groupId,
+    });
+    const groupActivities = await Meteor.callAsync('getGroupMeetings', groupId);
+
+    return {
+      ...group,
+      meetings: groupActivities.map((a) => a.datesAndTimes),
+    };
+  },
+
   async getGroupsWithMeetings(isPortalHost = false, host) {
     if (!host) {
       host = getHost(this);

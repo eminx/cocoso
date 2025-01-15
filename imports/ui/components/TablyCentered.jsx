@@ -74,16 +74,12 @@ function TablyCentered({
             />
 
             {images && (
-              <Center py="2" mb="0">
+              <Center py="2">
                 <NiceSlider alt={title} images={images} />
               </Center>
             )}
 
-            {action && (
-              <Center mb="4" mx="4">
-                {action}
-              </Center>
-            )}
+            {action && <Center>{action}</Center>}
           </Box>
 
           <Center>

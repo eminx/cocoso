@@ -17,7 +17,7 @@ const NewActivityContainer = lazy(() => import('./activities/NewActivityContaine
 
 // Groups
 const Groups = lazy(() => import('./groups/GroupList'));
-const Group = lazy(() => import('./groups/GroupContainer'));
+const Group = lazy(() => import('./groups/Group'));
 const EditGroupContainer = lazy(() => import('./groups/EditGroupContainer'));
 const NewGroupContainer = lazy(() => import('./groups/NewGroupContainer'));
 
