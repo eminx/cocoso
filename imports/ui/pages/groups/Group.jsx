@@ -7,7 +7,7 @@ import { StateContext } from '../../LayoutContainer';
 import TablyCentered from '../../components/TablyCentered';
 import { ContentLoader } from '../../components/SkeletonLoaders';
 import GroupHybrid from '../../entry/GroupHybrid';
-import GroupJoinHandler from './GroupJoinHandler';
+import GroupInteractionHandler from './GroupInteractionHandler';
 
 export default function Group() {
   const initialGroup = window?.__PRELOADED_STATE__?.group || null;
@@ -75,7 +75,7 @@ export default function Group() {
   return (
     <>
       <GroupHybrid group={group} Host={currentHost} />
-      {rendered && <GroupJoinHandler group={group} start={rendered} />}
+      {rendered && <GroupInteractionHandler group={group} start={rendered} />}
     </>
   );
 }
