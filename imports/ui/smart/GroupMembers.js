@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -12,42 +12,16 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { StateContext } from '../LayoutContainer';
 import Modal from '../components/Modal';
 import NiceList from '../components/NiceList';
 
 export default function GroupMembers({ group }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
-  // const { currentUser } = useContext(StateContext);
 
   if (!group) {
     return null;
   }
-
-  // const isMember =
-  //   currentUser && group.members?.some((member) => member.memberId === currentUser._id);
-
-  // const isAdmin =
-  //   currentUser &&
-  //   group.members?.some((member) => member.memberId === currentUser._id && member.isAdmin);
-
-  const membersList =
-    group &&
-    group.members &&
-    group.members.map((member) => ({
-      ...member,
-      actions: [
-        {
-          content: t('meeting.actions.makeAdmin'),
-          handleClick: () =>
-            this.setState({
-              potentialNewAdmin: member.username,
-            }),
-          isDisabled: member.isAdmin,
-        },
-      ],
-    }));
 
   return (
     <Box>
@@ -66,23 +40,13 @@ export default function GroupMembers({ group }) {
       </AvatarGroup>
 
       <Modal
-        // actionButtonLabel={getButtonLabel()}
         isCentered
         isOpen={modalOpen}
         scrollBehavior="inside"
-        // secondaryButtonLabel={copied ? tc('actions.copied') : tc('actions.share')}
-        // size="xl"
-        // onActionButtonClick={() => handleActionButtonClick()}
+        title={t('labels.member')}
         onClose={() => setModalOpen(false)}
-        // onSecondaryButtonClick={handleCopyLink}
       >
-        <NiceList
-          // actionsDisabled={!isAdmin}
-          keySelector="username"
-          list={membersList}
-          py="4"
-          spacing="4"
-        >
+        <NiceList keySelector="username" list={group.members} py="4" spacing="4">
           {(member) => (
             <Link to={`/@${member.username}/bio`}>
               <Flex align="center">

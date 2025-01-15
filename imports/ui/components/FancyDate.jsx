@@ -1,6 +1,6 @@
 import React from 'react';
 import { Flex } from '@chakra-ui/react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const fancyDateStyle = {
   alignItems: 'flex-end',
@@ -16,8 +16,8 @@ const fancyDateStyle = {
 function DateJust({ children, ...otherProps }) {
   return (
     <div {...otherProps}>
-      <div style={{ ...fancyDateStyle, fontSize: 24 }}>{moment(children).format('DD')}</div>
-      <div style={{ ...fancyDateStyle, fontSize: 17 }}>{moment(children).format('MMM')}</div>
+      <div style={{ ...fancyDateStyle, fontSize: 24 }}>{dayjs(children).format('DD')}</div>
+      <div style={{ ...fancyDateStyle, fontSize: 17 }}>{dayjs(children).format('MMM')}</div>
     </div>
   );
 }

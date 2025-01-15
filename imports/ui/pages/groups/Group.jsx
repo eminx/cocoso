@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
@@ -7,12 +7,14 @@ import { StateContext } from '../../LayoutContainer';
 import TablyCentered from '../../components/TablyCentered';
 import { ContentLoader } from '../../components/SkeletonLoaders';
 import GroupHybrid from '../../entry/GroupHybrid';
+import GroupJoinHandler from './GroupJoinHandler';
 
 export default function Group() {
   const initialGroup = window?.__PRELOADED_STATE__?.group || null;
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
   const [group, setGroup] = useState(initialGroup);
+  const [rendered, setRendered] = useState(false);
   const { groupId } = useParams();
   let { currentHost } = useContext(StateContext);
 
@@ -24,14 +26,19 @@ export default function Group() {
     getGroupById();
   }, []);
 
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1500);
+  }, []);
+
   const getGroupById = async () => {
     try {
       const response = await call('getGroupWithMeetings', groupId);
       setGroup(response);
-      const docs = await call('getDocumentsByAttachments', response._id);
-      setDocuments(docs);
     } catch (error) {
-      message.error(error.reason);
+      console.log(error);
+      // message.error(error.reason);
     }
   };
 
@@ -65,5 +72,10 @@ export default function Group() {
     return <ContentLoader />;
   }
 
-  return <GroupHybrid group={group} Host={currentHost} />;
+  return (
+    <>
+      <GroupHybrid group={group} Host={currentHost} />
+      {rendered && <GroupJoinHandler group={group} start={rendered} />}
+    </>
+  );
 }
