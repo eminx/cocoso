@@ -238,7 +238,7 @@ Meteor.methods({
           $set: {
             title: formValues.title,
             longDescription: formValues.description,
-            imageUrl,
+            images: [imageUrl],
           },
         }
       );
