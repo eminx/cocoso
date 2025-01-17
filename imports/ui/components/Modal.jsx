@@ -13,8 +13,8 @@ import {
 function Modal({
   actionButtonLabel,
   actionButtonProps,
-  children,
-  h,
+  h = '80%',
+  isCentered,
   isOpen,
   scrollBehavior = 'inside',
   secondaryButtonLabel,
@@ -22,14 +22,17 @@ function Modal({
   onClose,
   onActionButtonClick,
   onSecondaryButtonClick,
+  children,
   ...otherProps
 }) {
+  const modalProps = { isCentered, isOpen, scrollBehavior, onClose };
+
   return (
-    <CModal isOpen={isOpen} onClose={onClose} {...otherProps}>
+    <CModal {...modalProps} {...otherProps}>
       <ModalOverlay />
       <ModalContent borderRadius="8px" h={h}>
         <ModalHeader>{title}</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton onClick={onClose} />
         <ModalBody>{children}</ModalBody>
 
         <ModalFooter>

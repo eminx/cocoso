@@ -63,9 +63,7 @@ export default function PopupHandler({ item, kind, onClose }) {
     <Modal
       actionButtonLabel={getButtonLabel()}
       bg="gray.100"
-      isCentered
       isOpen={item}
-      scrollBehavior="inside"
       secondaryButtonLabel={copied ? tc('actions.copied') : tc('actions.share')}
       size="xl"
       onActionButtonClick={() => handleActionButtonClick()}
