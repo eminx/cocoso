@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from '../components/TablyCentered';
-import GroupMembers from '../smart/GroupMembers';
-import GroupMeetings from '../smart/GroupMeetings';
+import GroupMembers from '../pages/groups/components/GroupMembers';
+import GroupMeetings from '../pages/groups/components/GroupMeetingsAction';
 import NiceList from '../components/NiceList';
 
 export default function GroupHybrid({ group, Host }) {

@@ -12,8 +12,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import Modal from '../components/Modal';
-import NiceList from '../components/NiceList';
+import Modal from '../../../components/Modal';
+import NiceList from '../../../components/NiceList';
 
 export default function GroupMembers({ group }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,9 +42,9 @@ export default function GroupMembers({ group }) {
       <Modal
         isCentered
         isOpen={modalOpen}
-        scrollBehavior="inside"
         title={t('labels.member')}
         onClose={() => setModalOpen(false)}
+        onCancel={() => setModalOpen(false)}
       >
         <NiceList keySelector="username" list={group.members} py="4" spacing="4">
           {(member) => (

@@ -16,6 +16,7 @@ function Modal({
   children,
   h,
   isOpen,
+  scrollBehavior = 'inside',
   secondaryButtonLabel,
   title,
   onClose,

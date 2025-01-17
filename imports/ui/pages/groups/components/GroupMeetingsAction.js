@@ -24,17 +24,17 @@ import { useForm } from 'react-hook-form';
 import ReactTable from 'react-table';
 import { CSVLink } from 'react-csv';
 
-import { StateContext } from '../LayoutContainer';
-import { call } from '../utils/shared';
-import { message } from '../components/message';
-import ConfirmModal from '../components/ConfirmModal';
-import FancyDate, { DateJust } from '../components/FancyDate';
-import FormField from '../components/FormField';
-import Modal from '../components/Modal';
+import { StateContext } from '../../../LayoutContainer';
+import { call } from '../../../utils/shared';
+import { message } from '../../../components/message';
+import ConfirmModal from '../../../components/ConfirmModal';
+import FancyDate, { DateJust } from '../../../components/FancyDate';
+import FormField from '../../../components/FormField';
+import Modal from '../../../components/Modal';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
-export default function GroupMeetings({ group }) {
+export default function GroupMeetingsAction({ group }) {
   if (!group) {
     return null;
   }

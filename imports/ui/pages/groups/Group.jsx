@@ -16,7 +16,7 @@ export default function Group() {
   const [group, setGroup] = useState(initialGroup);
   const [rendered, setRendered] = useState(false);
   const { groupId } = useParams();
-  let { currentHost } = useContext(StateContext);
+  let { currentHost, currentUser } = useContext(StateContext);
 
   if (!currentHost) {
     currentHost = Host;
@@ -75,7 +75,9 @@ export default function Group() {
   return (
     <>
       <GroupHybrid group={group} Host={currentHost} />
-      {rendered && <GroupInteractionHandler group={group} start={rendered} />}
+      {rendered && (
+        <GroupInteractionHandler currentUser={currentUser} group={group} slideStart={rendered} />
+      )}
     </>
   );
 }
