@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import ConfirmModal from '../../../components/ConfirmModal';
 import { call } from '../../../utils/shared';
+import { GroupContext } from '../Group';
+import { StateContext } from '../../../LayoutContainer';
 
-export default function GroupJoinButton({ currentUser, group }) {
+export default function GroupJoinButton() {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
+  const { group, getGroupById } = useContext(GroupContext);
+  const { currentUser } = useContext(StateContext);
 
   if (!group) {
     return null;
@@ -15,11 +19,13 @@ export default function GroupJoinButton({ currentUser, group }) {
 
   const joinGroup = async () => {
     if (!currentUser) {
-      alert('Login first!');
+      // alert('Login first!');
+      return;
     }
 
     try {
       await call('joinGroup', group._id);
+      getGroupById();
       // message.success(t('message.added'));
     } catch (error) {
       // message.error(error.error || error.reason);

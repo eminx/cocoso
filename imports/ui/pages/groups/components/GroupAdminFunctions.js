@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Button,
   Center,
   IconButton,
   Menu,
@@ -16,11 +15,10 @@ import AddDocument from './admin/AddDocument';
 import AddMeeting from './admin/AddMeeting';
 import ManageMembers from './admin/ManageMembers';
 
-export default function GroupAdminFunctions({ currentUser, group }) {
+export default function GroupAdminFunctions() {
   const [popup, setPopup] = useState('none');
 
   const props = {
-    group,
     onClose: () => setPopup('none'),
   };
 
@@ -53,9 +51,9 @@ export default function GroupAdminFunctions({ currentUser, group }) {
         </Box>
       </Center>
 
-      {popup === 'document' && <AddDocument {...props} isOpen />}
-      {popup === 'meeting' && <AddMeeting {...props} isOpen />}
-      {popup === 'members' && <ManageMembers {...props} isOpen />}
+      {popup === 'document' && <AddDocument {...props} />}
+      {popup === 'meeting' && <AddMeeting {...props} />}
+      {popup === 'members' && <ManageMembers {...props} />}
     </>
   );
 }

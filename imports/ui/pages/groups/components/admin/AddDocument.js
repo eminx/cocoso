@@ -1,17 +1,19 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useCallback, useState } from 'react';
+import { Slingshot } from 'meteor/edgee:slingshot';
+import React, { useContext, useState } from 'react';
 import { Box, Center, Flex, Heading, Spinner, Text } from '@chakra-ui/react';
 import ReactDropzone from 'react-dropzone';
-
-import { call } from '/imports/ui/utils/shared';
-import Modal from '/imports/ui/components/Modal';
 import { useTranslation } from 'react-i18next';
-import { DocumentUploadHelper } from '/imports/ui/components/UploadHelpers';
-import GroupDocuments from '../GroupDocuments';
 
-export default function AddDocument({ group, onClose }) {
+import Modal from '../../../../components/Modal';
+import { DocumentUploadHelper } from '../../../../components/UploadHelpers';
+import GroupDocuments from '../GroupDocuments';
+import { GroupContext } from '../../Group';
+
+export default function AddDocument({ onClose }) {
   const [isUploading, setIsUploading] = useState(false);
   const [tc] = useTranslation('common');
+  const { group, getGroupById } = useContext(GroupContext);
 
   if (!group) {
     return null;
@@ -23,7 +25,10 @@ export default function AddDocument({ group, onClose }) {
       return;
     }
 
-    const closeLoader = () => setIsUploading(false);
+    const closeLoader = () => {
+      getGroupById();
+      setIsUploading(false);
+    };
 
     setIsUploading(true);
     const upload = new Slingshot.Upload('groupDocumentUpload');
@@ -35,8 +40,8 @@ export default function AddDocument({ group, onClose }) {
 
     upload.send(uploadableFile, (error, downloadUrl) => {
       if (error) {
-        console.error('Error uploading:', error);
-        message.error(error.reason);
+        // console.error('Error uploading:', error);
+        // message.error(error.reason);
         closeLoader();
       } else {
         Meteor.call(
@@ -45,18 +50,18 @@ export default function AddDocument({ group, onClose }) {
           downloadUrl,
           'group',
           group._id,
-          (error, respond) => {
-            if (error) {
-              console.log(error);
+          (error1) => {
+            if (error1) {
+              // console.log(error);
               return;
             }
             Meteor.call(
               'addGroupDocument',
               { name: uploadableFile.name, downloadUrl },
               group._id,
-              (error, respond) => {
-                if (error) {
-                  console.log(error);
+              (error2) => {
+                if (error2) {
+                  // console.log(error2);
                   return;
                 }
                 closeLoader();

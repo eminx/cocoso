@@ -23,9 +23,9 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
       <Slide direction="bottom" in={slideStart} unmountOnExit>
         <Flex bg="green.50" justify="space-between" p="2" width="100%">
           {isAdmin && <Box />}
-          {!isMember && <GroupJoinButton {...props} />}
+          {!isMember && <GroupJoinButton />}
           <GroupMeetingDates {...props} />
-          {isAdmin && <GroupAdminFunctions {...props} />}
+          {isAdmin && <GroupAdminFunctions />}
         </Flex>
       </Slide>
     </>

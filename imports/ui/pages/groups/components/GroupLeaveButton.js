@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import ConfirmModal from '/imports/ui/components/ConfirmModal';
-import { call } from '/imports/ui/utils/shared';
+import ConfirmModal from '../../../components/ConfirmModal';
+import { call } from '../../../utils/shared';
+import { GroupContext } from '../Group';
+import { StateContext } from '../../../LayoutContainer';
 
-export default function LeaveButton({ currentUser, group }) {
+export default function LeaveButton() {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
+  const { group, getGroupById } = useContext(GroupContext);
+  const { currentUser } = useContext(StateContext);
 
   if (!group || !currentUser) {
     return null;
@@ -16,6 +20,7 @@ export default function LeaveButton({ currentUser, group }) {
   const leaveGroup = async () => {
     try {
       await call('leaveGroup', group._id);
+      getGroupById();
       // message.success(t('message.removed'));
     } catch (error) {
       // message.error(error.error || error.reason);

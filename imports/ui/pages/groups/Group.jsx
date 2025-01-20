@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
@@ -6,6 +6,8 @@ import { StateContext } from '../../LayoutContainer';
 import { ContentLoader } from '../../components/SkeletonLoaders';
 import GroupHybrid from '../../entry/GroupHybrid';
 import GroupInteractionHandler from './components/GroupInteractionHandler';
+
+export const GroupContext = createContext(null);
 
 export default function Group() {
   const initialGroup = window?.__PRELOADED_STATE__?.group || null;
@@ -48,11 +50,18 @@ export default function Group() {
     return <ContentLoader />;
   }
 
+  const contextValue = {
+    group,
+    getGroupById,
+  };
+
   return (
     <>
       <GroupHybrid currentUser={currentUser} group={group} Host={currentHost} />
       {rendered && (
-        <GroupInteractionHandler currentUser={currentUser} group={group} slideStart={rendered} />
+        <GroupContext value={contextValue}>
+          <GroupInteractionHandler currentUser={currentUser} slideStart={rendered} />
+        </GroupContext>
       )}
     </>
   );

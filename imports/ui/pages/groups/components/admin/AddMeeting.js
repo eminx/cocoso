@@ -7,24 +7,23 @@ import {
   FormLabel,
   Select,
   Switch,
-  Text,
   Textarea,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-import DateTimePicker, { DatePicker } from '/imports/ui/components/DateTimePicker';
-import { ConflictMarker } from '/imports/ui/components/DatesAndTimes';
+import DateTimePicker from '../../../../components/DateTimePicker';
+import { ConflictMarker } from '../../../../components/DatesAndTimes';
 import {
   call,
   checkAndSetBookingsWithConflict,
   getAllBookingsWithSelectedResource,
   parseAllBookingsWithResources,
-} from '/imports/ui/utils/shared';
-import Modal from '/imports/ui/components/Modal';
-import { StateContext } from '/imports/ui/LayoutContainer';
+} from '../../../../utils/shared';
+import Modal from '../../../../components/Modal';
+import { StateContext } from '../../../../LayoutContainer';
+import { GroupContext } from '../../Group';
 
-const yesterday = dayjs().add(-1, 'days');
 const today = dayjs();
 
 const emptyDateAndTime = {
@@ -38,7 +37,7 @@ const emptyDateAndTime = {
   conflict: null,
 };
 
-export default function AddMeeting({ group, isOpen, onClose }) {
+export default function AddMeeting({ onClose }) {
   const [state, setState] = useState({
     activities: [],
     conflictingBooking: null,
@@ -47,6 +46,7 @@ export default function AddMeeting({ group, isOpen, onClose }) {
     newMeeting: emptyDateAndTime,
     resources: [],
   });
+  const { group, getGroupById } = useContext(GroupContext);
   const { currentHost } = useContext(StateContext);
   const [t] = useTranslation('groups');
   const { activities, conflictingBooking, isFormValid, newMeeting, resources } = state;
@@ -69,7 +69,7 @@ export default function AddMeeting({ group, isOpen, onClose }) {
         resources: resourcesReceived,
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -94,7 +94,9 @@ export default function AddMeeting({ group, isOpen, onClose }) {
         isFormValid: false,
       });
       return;
-    } else if (!newMeeting.resourceId) {
+    }
+
+    if (!newMeeting.resourceId) {
       setState({
         ...state,
         conflictingBooking: null,
@@ -162,7 +164,7 @@ export default function AddMeeting({ group, isOpen, onClose }) {
 
     if (!newMeeting.resource || newMeeting.resource.length < 4) {
       // message.error(t('errors.noresource'));
-      console.log('no resource');
+      // console.log('no resource');
       return;
     }
 
@@ -198,6 +200,7 @@ export default function AddMeeting({ group, isOpen, onClose }) {
 
     try {
       await call('createActivity', activityValues);
+      getGroupById();
       setState({
         ...state,
         isSubmitted: false,
@@ -205,13 +208,13 @@ export default function AddMeeting({ group, isOpen, onClose }) {
       onClose();
       // message.success(tc('message.success.create'));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       // message.error(error.reason);
     }
   };
 
   return (
-    <Modal bg="gray.100" isOpen={isOpen} title={t('meeting.form.label')} onClose={onClose}>
+    <Modal bg="gray.100" isOpen title={t('meeting.form.label')} onClose={onClose}>
       <AddMeetingForm
         buttonDisabled={!isFormValid}
         conflictingBooking={conflictingBooking}
@@ -261,7 +264,7 @@ function AddMeetingForm({
             placeholder={t('meeting.form.resource')}
             onChange={({ target: { value } }) => handleResourceChange(value)}
           >
-            {resources.map((r, i) => (
+            {resources.map((r) => (
               <option key={r._id}>{r.label}</option>
             ))}
           </Select>
@@ -280,7 +283,7 @@ function AddMeetingForm({
         </Button>
       </Flex>
 
-      {conflictingBooking && <ConflictMarker recurrence={conflictingBooking} t={ta} />}
+      {conflictingBooking && <ConflictMarker recurrence={conflictingBooking} t={t} />}
     </>
   );
 }

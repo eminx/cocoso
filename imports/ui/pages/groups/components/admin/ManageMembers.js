@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar, Box, Flex, Link as CLink, Text } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { Avatar, Flex, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import GroupMembers from '../GroupMembers';
-import Modal from '/imports/ui/components/Modal';
-import NiceList from '/imports/ui/components/NiceList';
-import { call } from '/imports/ui/utils/shared';
+import Modal from '../../../../components/Modal';
+import NiceList from '../../../../components/NiceList';
+import { call } from '../../../../utils/shared';
+import { GroupContext } from '../../Group';
 
-export default function ManageMembers({ group, isOpen, onClose }) {
+export default function ManageMembers({ onClose }) {
   const [t] = useTranslation('groups');
+  const { group, getGroupById } = useContext(GroupContext);
 
   const setAsAGroupAdmin = async (username) => {
     try {
       await call('setAsAGroupAdmin', group._id, username);
+      getGroupById();
       // message.success(t('meeting.success.admin'));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       // message.error(error.error);
     }
   };
@@ -34,7 +36,7 @@ export default function ManageMembers({ group, isOpen, onClose }) {
   }));
 
   return (
-    <Modal bg="gray.100" isOpen={isOpen} title={t('labels.member')} onClose={onClose}>
+    <Modal bg="gray.100" isOpen title={t('labels.member')} onClose={onClose}>
       <NiceList actionsDisabled={false} keySelector="username" list={members} py="4" spacing="4">
         {(member) => (
           <Flex align="center">
