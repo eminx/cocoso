@@ -11,13 +11,8 @@ export default function BackLink({ backLink }) {
   const link = backLink.value === '/info' ? '/pages' : backLink.value;
 
   return (
-    <Link to={link} data-oid="yy05cpn">
-      <Button
-        as="span"
-        leftIcon={<ChevronLeftIcon size={18} data-oid="l7ef8br" />}
-        variant="link"
-        data-oid="nbm2vtg"
-      >
+    <Link to={link}>
+      <Button as="span" leftIcon={<ChevronLeftIcon size={18} />} variant="link">
         {backLink?.label}
       </Button>
     </Link>

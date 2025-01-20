@@ -25,7 +25,7 @@ function FileDropper({
 
   const [tc] = useTranslation('common');
   return (
-    <Dropzone onDrop={setUploadableImage} data-oid="helsli7">
+    <Dropzone onDrop={setUploadableImage}>
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Flex
           {...getRootProps()}
@@ -42,7 +42,6 @@ function FileDropper({
           w="100%"
           {...containerStyle}
           {...otherProps}
-          data-oid="br1j5ra"
         >
           {uploadableImageLocal || imageUrl ? (
             <Image
@@ -51,18 +50,17 @@ function FileDropper({
               height="100%"
               src={uploadableImageLocal || imageUrl}
               style={{ cursor: 'pointer' }}
-              data-oid="dkakz91"
             />
           ) : (
-            <Center p="8" data-oid=":9jpif5">
-              <Text textAlign="center" fontSize="sm" data-oid=":hga89h">
+            <Center p="8">
+              <Text textAlign="center" fontSize="sm">
                 {isMultiple
                   ? tc('plugins.fileDropper.helperMultiple')
                   : tc('plugins.fileDropper.helper')}
               </Text>
             </Center>
           )}
-          <input {...getInputProps()} data-oid="a55qy99" />
+          <input {...getInputProps()} />
         </Flex>
       )}
     </Dropzone>

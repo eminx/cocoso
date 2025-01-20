@@ -24,43 +24,33 @@ function NotificationsPopup({ notifications }) {
   }
 
   return (
-    <Menu data-oid="i50ghkw">
+    <Menu>
       <MenuButton
         as={IconButton}
         aria-label="Options"
         icon={
           notificationsCounter === 0 ? (
-            <BellIcon data-oid="5xckmvu" />
+            <BellIcon />
           ) : (
-            <BellIcon data-oid="z0touqh">
-              <AvatarBadge
-                borderColor="papayawhip"
-                bg="tomato"
-                boxSize=".25em"
-                data-oid="cln3vf."
-              />
+            <BellIcon>
+              <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".25em" />
             </BellIcon>
           )
         }
-        data-oid="8p0t5tc"
       />
 
       {notifications.length === 0 ? (
-        <Box p="2" data-oid="q.bvig8">
-          <Text fontSize="sm" data-oid="zxw.:zj">
-            {' '}
-            You don't have unread messages
-          </Text>
+        <Box p="2">
+          <Text fontSize="sm"> You don't have unread messages</Text>
         </Box>
       ) : (
-        <MenuList data-oid="_kooxg0">
+        <MenuList>
           {notifications.map((item) => (
             <MenuItem
               key={item.title}
               onClick={() => navigate(`/${item.context}/${item.contextId}`)}
-              data-oid="tgx1h3m"
             >
-              {item.title} <Badge data-oid="f0xh2jl">{item.count}</Badge>
+              {item.title} <Badge>{item.count}</Badge>
             </MenuItem>
           ))}
         </MenuList>
@@ -70,10 +60,8 @@ function NotificationsPopup({ notifications }) {
 }
 
 const Badge = ({ children }) => (
-  <Box bg="tomato" py="2" borderRadius="50%" data-oid="25:tz0q">
-    <Code size="sm" data-oid="lmvgy35">
-      {children}
-    </Code>
+  <Box bg="tomato" py="2" borderRadius="50%">
+    <Code size="sm">{children}</Code>
   </Box>
 );
 

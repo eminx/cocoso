@@ -21,9 +21,9 @@ onPageLoad(async () => {
   if (!platform || !currentHost) {
     const root = createRoot(container);
     root.render(
-      <ChakraProvider data-oid="-e9fugn">
-        <BrowserRouter data-oid="e:i9rx_">
-          <SetupHome data-oid=".64f65-" />
+      <ChakraProvider>
+        <BrowserRouter>
+          <SetupHome />
         </BrowserRouter>
       </ChakraProvider>
     );
@@ -32,8 +32,8 @@ onPageLoad(async () => {
 
   hydrateRoot(
     container,
-    <BrowserRouter data-oid="kl-fbs0">
-      <AppRoutes data-oid="dfn7kfr" />
+    <BrowserRouter>
+      <AppRoutes />
     </BrowserRouter>
   );
 });

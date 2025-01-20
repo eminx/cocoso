@@ -25,61 +25,51 @@ const PageForm = ({
   });
 
   return (
-    <div data-oid="k7563k8">
-      <form onSubmit={handleSubmit((data) => onSubmit(data))} data-oid="-:rbg8r">
-        <VStack spacing="6" data-oid="qj:l992">
+    <div>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <VStack spacing="6">
           <FormField
             helperText={t('pages.form.title.helper')}
             isRequired
             label={t('pages.form.title.label')}
-            data-oid="mlh5w-m"
           >
             <Input
               {...register('title', { required: true })}
               placeholder={t('pages.form.title.holder')}
-              data-oid="ce_3q4c"
             />
           </FormField>
 
           <FormField
             helperText={t('pages.form.images.helper')}
             label={t('pages.form.images.label', { count: images.length })}
-            data-oid="5ydhrsr"
           >
             <ImageUploadUI
               images={images}
               onRemoveImage={onRemoveImage}
               onSelectImages={onSetUploadableImages}
               onSortImages={onSortImages}
-              data-oid="inl.ru-"
             />
 
-            <DocumentUploadHelper isImage data-oid="l1zfl.r" />
+            <DocumentUploadHelper isImage />
           </FormField>
 
           <FormField
             helperText={t('pages.form.description.helper')}
             isRequired
             label={t('pages.form.description.label')}
-            data-oid="t:ggem5"
           >
             <Controller
               control={control}
               name="longDescription"
               rules={{ required: true }}
               render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  placeholder={t('pages.form.description.holder')}
-                  data-oid="y:.la74"
-                />
+                <ReactQuill {...field} placeholder={t('pages.form.description.holder')} />
               )}
-              data-oid="q.gop_w"
             />
           </FormField>
 
-          <Flex justify="flex-end" py="4" w="100%" data-oid="9nqc2zj">
-            <Button isLoading={isButtonLoading} type="submit" data-oid=":5js.tp">
+          <Flex justify="flex-end" py="4" w="100%">
+            <Button isLoading={isButtonLoading} type="submit">
               {tc('actions.submit')}
             </Button>
           </Flex>

@@ -43,8 +43,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   }
 
   return (
-    <Box data-oid="fbd8tmk">
-      <Flex align="center" flexDirection="column" data-oid="44_zesj">
+    <Box>
+      <Flex align="center" flexDirection="column">
         <IconButton
           _hover={{
             bg: 'brand.500',
@@ -52,13 +52,12 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           bg="gray.800"
           borderColor="#fff"
           borderWidth="2px"
-          icon={<HamburgerIcon fontSize="24px" data-oid="ai23j-z" />}
+          icon={<HamburgerIcon fontSize="24px" />}
           size={isDesktop ? 'md' : 'sm'}
           onClick={onToggle}
-          data-oid=":_:ez0a"
         />
 
-        <Text fontSize="12px" textAlign="center" data-oid="nq1tb:y">
+        <Text fontSize="12px" textAlign="center">
           {tc('menu.label')}
         </Text>
       </Flex>
@@ -69,13 +68,12 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
         title={tc('menu.label')}
         titleColor="brand.900"
         onClose={onToggle}
-        data-oid="7cjcqew"
       >
-        <Flex flexDirection="column" h="100%" justify="space-between" data-oid="_m5ogm-">
-          <MenuContent menuItems={menuItems} onToggle={onToggle} data-oid="dl3ap8w" />
+        <Flex flexDirection="column" h="100%" justify="space-between">
+          <MenuContent menuItems={menuItems} onToggle={onToggle} />
 
-          <Box color="brand.600" mt="4" data-oid="snvzfa.">
-            <MenuFooter data-oid="l:0za7a" />
+          <Box color="brand.600" mt="4">
+            <MenuFooter />
           </Box>
         </Flex>
       </Drawer>
@@ -96,23 +94,16 @@ function MenuContent({ menuItems, onToggle }) {
   };
 
   return (
-    <VStack align="flex-start" data-oid="j34t3s-">
+    <VStack align="flex-start">
       {menuItems.map((item) => {
         const isCurrentPageLabel = isCurrentPage(item);
         return (
-          <Link
-            key={item.name}
-            style={{ textShadow: 'none' }}
-            to={item.route}
-            onClick={onToggle}
-            data-oid="agu2p:w"
-          >
-            <Box py="1" data-oid="1-.2j-c">
+          <Link key={item.name} style={{ textShadow: 'none' }} to={item.route} onClick={onToggle}>
+            <Box py="1">
               <Text
                 _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
                 color="brand.600"
                 fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
-                data-oid="uwrky-l"
               >
                 {item.label}
               </Text>
@@ -126,8 +117,8 @@ function MenuContent({ menuItems, onToggle }) {
 
 function MenuFooter() {
   return (
-    <Box pb="4" data-oid="xjq8:u_">
-      <ChangeLanguageMenu data-oid="31dodvu" />
+    <Box pb="4">
+      <ChangeLanguageMenu />
     </Box>
   );
 }

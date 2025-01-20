@@ -41,19 +41,13 @@ function GroupForm({
   };
 
   return (
-    <div data-oid="_i9-kb7">
-      <form onSubmit={handleSubmit((data) => onSubmit(data))} data-oid="5.c_ysx">
-        <VStack spacing="6" data-oid="u7y-5m.">
-          <FormField
-            helperText={t('form.title.helper')}
-            label={t('form.title.label')}
-            isRequired
-            data-oid="41qi2sk"
-          >
+    <div>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <VStack spacing="6">
+          <FormField helperText={t('form.title.helper')} label={t('form.title.label')} isRequired>
             <Input
               {...register('title', { required: true })}
               placeholder={t('form.title.holder')}
-              data-oid="qefn6nv"
             />
           </FormField>
 
@@ -61,12 +55,10 @@ function GroupForm({
             helperText={t('form.subtitle.helper')}
             label={t('form.subtitle.label')}
             isRequired
-            data-oid="pygjz08"
           >
             <Input
               {...register('readingMaterial', { required: true })}
               placeholder={t('form.subtitle.holder')}
-              data-oid="jkupk5c"
             />
           </FormField>
 
@@ -74,14 +66,12 @@ function GroupForm({
             helperText={t('form.description.helper')}
             label={t('form.description.label')}
             isRequired
-            data-oid="dnfpg2q"
           >
             <Controller
               control={control}
               name="description"
               rules={{ required: true }}
-              render={({ field }) => <ReactQuill {...field} data-oid="yy5glka" />}
-              data-oid="36vdj1m"
+              render={({ field }) => <ReactQuill {...field} />}
             />
           </FormField>
 
@@ -89,10 +79,9 @@ function GroupForm({
             helperText={t('form.capacity.helper')}
             label={t('form.capacity.label')}
             isRequired
-            data-oid="7o7fjah"
           >
-            <NumberInput data-oid="c3hu22s">
-              <NumberInputField {...register('capacity', { required: true })} data-oid="_5azq-q" />
+            <NumberInput>
+              <NumberInputField {...register('capacity', { required: true })} />
             </NumberInput>
           </FormField>
 
@@ -104,25 +93,22 @@ function GroupForm({
             }
             isRequired
             label={t('form.image.label')}
-            data-oid="69vu9m3"
           >
-            <Center data-oid="-pt8h:i">
+            <Center>
               <FileDropper
                 imageUrl={imageUrl}
                 setUploadableImage={handleSetUploadableImage}
                 uploadableImageLocal={uploadableImageLocal}
-                data-oid="_q-g5p1"
               />
             </Center>
-            <DocumentUploadHelper isImage data-oid="j6.gafu" />
+            <DocumentUploadHelper isImage />
           </FormField>
 
-          <Flex justify="flex-end" py="4" w="100%" data-oid="brp_0bf">
+          <Flex justify="flex-end" py="4" w="100%">
             <Button
               isDisabled={(!isDirty && !imageChanged) || isSubmitDisabled}
               isLoading={isButtonLoading}
               type="submit"
-              data-oid="k9fdgca"
             >
               {tc('actions.submit')}
             </Button>

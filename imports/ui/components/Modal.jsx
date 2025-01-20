@@ -28,26 +28,21 @@ function Modal({
   const modalProps = { isCentered, isOpen, scrollBehavior, onClose };
 
   return (
-    <CModal {...modalProps} {...otherProps} data-oid="wv39xcg">
-      <ModalOverlay data-oid="rddjb7f" />
-      <ModalContent borderRadius="8px" h={h} data-oid="zlk-s7p">
-        <ModalHeader data-oid="wci3axm">{title}</ModalHeader>
-        <ModalCloseButton onClick={onClose} data-oid="qx4dd05" />
-        <ModalBody data-oid="0t_fpwn">{children}</ModalBody>
+    <CModal {...modalProps} {...otherProps}>
+      <ModalOverlay />
+      <ModalContent borderRadius="8px" h={h}>
+        <ModalHeader>{title}</ModalHeader>
+        <ModalCloseButton onClick={onClose} />
+        <ModalBody>{children}</ModalBody>
 
-        <ModalFooter data-oid="m89c9l0">
+        <ModalFooter>
           {secondaryButtonLabel && (
-            <Button
-              mr={3}
-              variant="ghost"
-              onClick={onSecondaryButtonClick || onClose}
-              data-oid="n-8.tf4"
-            >
+            <Button mr={3} variant="ghost" onClick={onSecondaryButtonClick || onClose}>
               {secondaryButtonLabel}
             </Button>
           )}
           {actionButtonLabel && (
-            <Button onClick={onActionButtonClick} {...actionButtonProps} data-oid=":1acn-i">
+            <Button onClick={onActionButtonClick} {...actionButtonProps}>
               {actionButtonLabel}
             </Button>
           )}

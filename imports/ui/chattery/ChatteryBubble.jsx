@@ -46,24 +46,14 @@ class ChatteryBubble extends React.Component {
     }
 
     return (
-      <div className={bubbleClassContainer} data-oid="tss5jjj">
-        <VisibilitySensor
-          partialVisibility="bottom"
-          onChange={this.removeNotification}
-          data-oid="xfrljq0"
-        >
+      <div className={bubbleClassContainer}>
+        <VisibilitySensor partialVisibility="bottom" onChange={this.removeNotification}>
           {({ isVisible }) => (
-            <div className={bubbleClass} data-oid="h5fjo57">
-              <div className="talktext" data-oid="_9cd_ce">
-                <p className="talktext-senderinfo" data-oid="-khw73n">
-                  {senderUsername}
-                </p>
-                <p className="talktext-content" data-oid=":j3hl6y">
-                  {children}
-                </p>
-                <p className="talktext-dateinfo" data-oid=".pawxog">
-                  {this.parseDate(createdDate)}
-                </p>
+            <div className={bubbleClass}>
+              <div className="talktext">
+                <p className="talktext-senderinfo">{senderUsername}</p>
+                <p className="talktext-content">{children}</p>
+                <p className="talktext-dateinfo">{this.parseDate(createdDate)}</p>
               </div>
             </div>
           )}

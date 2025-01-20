@@ -26,19 +26,15 @@ function Drawer({
   const drawerProps = { isOpen, placement, size, onClose };
 
   return (
-    <CDrawer {...drawerProps} {...otherProps} data-oid="ufhl3o9">
-      {!hideOverlay && <DrawerOverlay data-oid="o4l3yxl" />}
-      <DrawerContent bg={bg} data-oid="q:fakkn">
-        <DrawerCloseButton color={titleColor} data-oid="po-ch5y" />
-        {title && (
-          <DrawerHeader color={titleColor} data-oid="5ayp.1e">
-            {title}
-          </DrawerHeader>
-        )}
+    <CDrawer {...drawerProps} {...otherProps}>
+      {!hideOverlay && <DrawerOverlay />}
+      <DrawerContent bg={bg}>
+        <DrawerCloseButton color={titleColor} />
+        {title && <DrawerHeader color={titleColor}>{title}</DrawerHeader>}
 
-        <DrawerBody data-oid="w405md.">{children}</DrawerBody>
+        <DrawerBody>{children}</DrawerBody>
 
-        {footer && <DrawerFooter data-oid="ss6fpsh">{footer}</DrawerFooter>}
+        {footer && <DrawerFooter>{footer}</DrawerFooter>}
       </DrawerContent>
     </CDrawer>
   );

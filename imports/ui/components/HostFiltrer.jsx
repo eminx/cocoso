@@ -16,7 +16,7 @@ export default function HostFiltrer({ allHosts, hostFilterValue, onHostFilterVal
   };
 
   return (
-    <Box w="xs" pr="12" pt="2" data-oid="xid8nou">
+    <Box w="xs" pr="12" pt="2">
       <AutoCompleteSelect
         components={animatedComponents}
         isClearable
@@ -34,11 +34,10 @@ export default function HostFiltrer({ allHosts, hostFilterValue, onHostFilterVal
         onChange={onSelect}
         getOptionValue={(option) => option.host}
         getOptionLabel={(option) => option.name}
-        data-oid="avfg4l:"
       />
 
-      <Box data-oid="m3wqu7e">
-        <Text fontSize="sm" mt="2" data-oid="6fgqqbc">
+      <Box>
+        <Text fontSize="sm" mt="2">
           {t('portalHost.renderInfo', {
             hostName: selectedHost ? selectedHost.name : t('portalHost.allHosts'),
           })}

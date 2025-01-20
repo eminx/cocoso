@@ -75,47 +75,33 @@ function Header({ isSmallerLogo }) {
   const isFederationLayout = platform && platform.isFederationLayout;
 
   return (
-    <Box px="2" w="100%" mb="4" data-oid="1tnu04m">
-      <Flex w="100%" align="flex-start" justify="space-between" data-oid="14m_r5m">
-        <Box w="120px" data-oid="4y9ui:1">
-          {isFederationLayout && (
-            <TopLeftFederatinLogoMenu currentHost={currentHost} data-oid="dnz4df3" />
-          )}
+    <Box px="2" w="100%" mb="4">
+      <Flex w="100%" align="flex-start" justify="space-between">
+        <Box w="120px">
+          {isFederationLayout && <TopLeftFederatinLogoMenu currentHost={currentHost} />}
         </Box>
 
-        <Box p="2" mt={isDesktop ? '0' : isFederationLayout ? '42px' : '0'} data-oid="jvpi6xc">
-          <Box data-oid="ugh7w43">
+        <Box p="2" mt={isDesktop ? '0' : isFederationLayout ? '42px' : '0'}>
+          <Box>
             {currentHost.logo ? (
-              <Link to="/" data-oid="h_dq37i">
-                <Image
-                  className={logoClass}
-                  fit="contain"
-                  src={currentHost.logo}
-                  data-oid="w4:g3f7"
-                />
+              <Link to="/">
+                <Image className={logoClass} fit="contain" src={currentHost.logo} />
               </Link>
             ) : (
-              <Box data-oid="_e4vo5t">
-                <Link to="/" data-oid="pd4h5h4">
+              <Box>
+                <Link to="/">
                   <CHeading
                     color="brand.800"
                     fontWeight="400"
                     fontFamily="Raleway, Sarabun, sans-serif"
-                    data-oid="hsf1hfc"
                   >
                     {currentHost.settings?.name}
                   </CHeading>
                 </Link>
                 {isAdmin && (
-                  <Center data-oid="ue5b5me">
-                    <Link to="/admin/settings/organization" data-oid="cjwb_5c">
-                      <Button
-                        as="span"
-                        colorScheme="orange"
-                        fontWeight="light"
-                        variant="link"
-                        data-oid="dhzf0.o"
-                      >
+                  <Center>
+                    <Link to="/admin/settings/organization">
+                      <Button as="span" colorScheme="orange" fontWeight="light" variant="link">
                         Add logo
                       </Button>
                     </Link>
@@ -133,22 +119,16 @@ function Header({ isSmallerLogo }) {
           position="relative"
           spacing="2"
           w="120px"
-          data-oid="ip-d.u2"
         >
           {(!isDesktop || !isHeaderMenu) && (
-            <MenuDrawer
-              currentHost={currentHost}
-              isDesktop={isDesktop}
-              platform={platform}
-              data-oid="qppl:g9"
-            />
+            <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />
           )}
-          {currentUser && <UserPopup data-oid=".kdhkhk" />}
-          {!currentUser && <LoginSignupLinks data-oid="n4awnj2" />}
+          {currentUser && <UserPopup />}
+          {!currentUser && <LoginSignupLinks />}
         </HStack>
       </Flex>
 
-      {isDesktop && isHeaderMenu && <WrappedMenu menuItems={menuItems} data-oid="y_y2c1u" />}
+      {isDesktop && isHeaderMenu && <WrappedMenu menuItems={menuItems} />}
     </Box>
   );
 }
@@ -176,16 +156,15 @@ function LoginSignupLinks() {
       top={!isDesktop ? '54px' : isHeaderMenu ? '8px' : '66px'}
       width="320px"
       wrap="wrap"
-      data-oid="ddh1f6c"
     >
-      <Link to="/login" style={{ marginRight: '12px' }} data-oid="ri7y-8h">
-        <Button {...linkButtonProps} size={isDesktop ? 'sm' : 'xs'} data-oid="n.ab8gg">
+      <Link to="/login" style={{ marginRight: '12px' }}>
+        <Button {...linkButtonProps} size={isDesktop ? 'sm' : 'xs'}>
           {tc('menu.guest.login')}
         </Button>
       </Link>
 
-      <Link to="/register" data-oid="d7p0p0e">
-        <Button {...linkButtonProps} size={isDesktop ? 'sm' : 'xs'} data-oid="z:r.web">
+      <Link to="/register">
+        <Button {...linkButtonProps} size={isDesktop ? 'sm' : 'xs'}>
           {tc('menu.guest.register')}
         </Button>
       </Link>
@@ -206,13 +185,13 @@ export function WrappedMenu({ menuItems }) {
   };
 
   return (
-    <Center p="4" data-oid="jtme605">
-      <HStack alignItems="flex-start" mb="2" wrap="wrap" data-oid="90okif_">
+    <Center p="4">
+      <HStack alignItems="flex-start" mb="2" wrap="wrap">
         {menuItems.map((item) => {
           const isCurrentPageLabel = isCurrentPage(item);
           return (
-            <Link key={item.name} to={item.route} data-oid="l4u8tin">
-              <Box px="2" data-oid="l5.yt6i">
+            <Link key={item.name} to={item.route}>
+              <Box px="2">
                 <Text
                   as="span"
                   _hover={!isCurrentPageLabel && { borderBottom: '2px dashed' }}
@@ -220,7 +199,6 @@ export function WrappedMenu({ menuItems }) {
                   color={isCurrentPageLabel ? 'gray.800' : 'brand.500'}
                   fontFamily="Raleway, Sarabun, sans"
                   fontWeight="bold"
-                  data-oid="f.pwr:k"
                 >
                   {item.label}
                 </Text>
@@ -256,50 +234,43 @@ function TopLeftFederatinLogoMenu() {
   const isPortalHost = currentHost?.isPortalHost;
 
   return (
-    <Box position="relative" data-oid="7gfc-01">
-      <Box ml="2" className="federation-logo" position="absolute" data-oid="5ccbih7">
-        <HStack data-oid="co1z16a">
+    <Box position="relative">
+      <Box ml="2" className="federation-logo" position="absolute">
+        <HStack>
           <Image
             fit="contain"
             src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
             w={isDesktop ? '54px' : '42px'}
             h={isDesktop ? '54px' : '42px'}
             onClick={() => handleSetHostInfo()}
-            data-oid="x.cq6gi"
           />
 
           {currentUser && isFederationLayout && (
-            <Box data-oid="0qe:eqq">
+            <Box>
               <Menu
                 isOpen={isMyCommunitiesMenuOpen}
                 onOpen={() => setIsMyCommunitiesMenuOpen(true)}
                 onClose={() => setIsMyCommunitiesMenuOpen(false)}
-                data-oid="d5ja:a8"
               >
                 <MenuButton
                   as={Button}
                   fontSize="14px"
                   lineHeight={1.2}
                   px="2"
-                  rightIcon={<ChevronDownIcon data-oid="5wbeyw3" />}
+                  rightIcon={<ChevronDownIcon />}
                   textAlign="left"
                   variant="link"
-                  data-oid=":e_lctx"
                 >
                   {t('profile.myCommunities')}
                 </MenuButton>
 
-                <MenuList zIndex="1405" data-oid="y.q_nkk">
+                <MenuList zIndex="1405">
                   {currentUser?.memberships?.map((m) => (
-                    <MenuItem
-                      key={m.host}
-                      onClick={() => (location.href = `https://${m.host}`)}
-                      data-oid="szpflus"
-                    >
+                    <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
                       {m.hostname}
                     </MenuItem>
                   ))}
-                  <Divider colorScheme="gray.700" mt="2" data-oid="_e.fy.." />
+                  <Divider colorScheme="gray.700" mt="2" />
                   <MenuItem
                     key="all-communities"
                     onClick={() =>
@@ -307,7 +278,6 @@ function TopLeftFederatinLogoMenu() {
                         ? navigate('/communities')
                         : (location.href = `https://${platform?.portalHost}/communities`)
                     }
-                    data-oid="yv4bfar"
                   >
                     {tc('labels.allCommunities')}
                   </MenuItem>
@@ -317,17 +287,16 @@ function TopLeftFederatinLogoMenu() {
           )}
         </HStack>
 
-        <Modal isOpen={isMyCommunitiesMenuOpen} data-oid="b6a2xyu">
+        <Modal isOpen={isMyCommunitiesMenuOpen}>
           <ModalOverlay
             onClick={() => {
               setIsMyCommunitiesMenuOpen(false);
             }}
-            data-oid="5mox5e5"
           />
         </Modal>
       </Box>
 
-      <Box pl="2" data-oid="qgws1-h">
+      <Box pl="2">
         <ConfirmModal
           confirmText={tc('modals.toPortalApp')}
           hideFooter={isPortalHost && isFederationLayout}
@@ -339,26 +308,22 @@ function TopLeftFederatinLogoMenu() {
           onConfirm={() => (window.location.href = `https://${platform.portalHost}`)}
           onCancel={() => setIsOpen(false)}
           onOverlayClick={() => setIsOpen(false)}
-          data-oid="cd01hd5"
         >
           {hostInfo && (
-            <Box data-oid="bms.9xl">
+            <Box>
               {hostInfo.images && (
-                <Center mb="6" data-oid="sz0.jrb">
+                <Center mb="6">
                   <NiceSlider
                     alt={hostInfo.title}
                     height="auto"
                     images={hostInfo.images}
                     isFade={isDesktop}
-                    data-oid="dnb7yit"
                   />
                 </Center>
               )}
 
               {hostInfo.longDescription && (
-                <Box className="text-content" data-oid="8:hzv0h">
-                  {parseHtml(hostInfo?.longDescription)}
-                </Box>
+                <Box className="text-content">{parseHtml(hostInfo?.longDescription)}</Box>
               )}
             </Box>
           )}

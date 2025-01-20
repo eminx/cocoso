@@ -57,86 +57,63 @@ function DatesAndTimes({
       mb="4"
       p="4"
       position="relative"
-      data-oid="b00omlu"
     >
       {isDeletable && (
         <IconButton
           bg="gray.700"
-          icon={<DeleteIcon data-oid="einc4:2" />}
+          icon={<DeleteIcon />}
           position="absolute"
           right="12px"
           top="12px"
           size="sm"
           zIndex={9}
           onClick={removeOccurrence}
-          data-oid="1vs-4zq"
         />
       )}
 
-      <Box mb="2" data-oid="q_qoibe">
-        <FormControl w="auto" alignItems="center" display="flex" data-oid="0hxmngs">
-          <Switch
-            isChecked={isRange}
-            id={id}
-            onChange={handleRangeSwitch}
-            py="2"
-            data-oid=".tl0enc"
-          />
-          <FormLabel htmlFor={id} mb="1" ml="2" data-oid="iq5lj1n">
+      <Box mb="2">
+        <FormControl w="auto" alignItems="center" display="flex">
+          <Switch isChecked={isRange} id={id} onChange={handleRangeSwitch} py="2" />
+          <FormLabel htmlFor={id} mb="1" ml="2">
             {t('form.days.multiple')}
           </FormLabel>
         </FormControl>
       </Box>
 
-      <Wrap data-oid="1cdwhn0">
-        <Box data-oid="vj0eak-">
-          <DateTimePicker
-            isRange={isRange}
-            value={occurrence}
-            onChange={handleDateTimeChange}
-            data-oid="-tf97bh"
-          />
+      <Wrap>
+        <Box>
+          <DateTimePicker isRange={isRange} value={occurrence} onChange={handleDateTimeChange} />
         </Box>
 
-        <Box
-          flexDirection="column"
-          mb="6"
-          justify="space-around"
-          flexGrow={0}
-          flexBasis="180px"
-          data-oid="a1n_zs-"
-        >
+        <Box flexDirection="column" mb="6" justify="space-around" flexGrow={0} flexBasis="180px">
           {isPublicActivity && (
-            <Box mt="4" data-oid="eer0.re">
-              <Text mb="2" data-oid="_bt_a-3">
-                {t('form.capacity.label')}:
-              </Text>
+            <Box mt="4">
+              <Text mb="2">{t('form.capacity.label')}:</Text>
               <NumberInput
                 min={1}
                 max={maxAttendees}
                 value={occurrence.capacity}
                 variant="filled"
                 onChange={handleCapacityChange}
-                data-oid="9mjnqw1"
               >
-                <NumberInputField placeholder="Capacity" data-oid="agweeee" />
+                <NumberInputField placeholder="Capacity" />
               </NumberInput>
             </Box>
           )}
         </Box>
       </Wrap>
 
-      {occurrence.conflict && <ConflictMarker occurrence={occurrence} t={t} data-oid="j5d6v10" />}
+      {occurrence.conflict && <ConflictMarker occurrence={occurrence} t={t} />}
     </Box>
   );
 }
 
 function ConflictMarker({ occurrence, t }) {
   return (
-    <Box data-oid="0kawd4o">
-      <Text fontSize="sm" textAlign="center" fontWeight="bold" data-oid="lobvuow">
+    <Box>
+      <Text fontSize="sm" textAlign="center" fontWeight="bold">
         {t('form.conflict.alert')}
-        <br data-oid=":0qx4bc" />
+        <br />
       </Text>
       <Code
         colorScheme={occurrence.isConflictOK ? 'orange' : 'red'}
@@ -144,7 +121,6 @@ function ConflictMarker({ occurrence, t }) {
         display="block"
         width="fit-content"
         mt="4"
-        data-oid="y5ah.:a"
       >
         {occurrence.conflict.startDate === occurrence.conflict.endDate
           ? occurrence.conflict.startDate
@@ -153,7 +129,7 @@ function ConflictMarker({ occurrence, t }) {
         {`${occurrence.conflict.startTime} – ${occurrence.conflict.endTime}`}
       </Code>
       {occurrence.isConflictOK && (
-        <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center" data-oid="th3ky0-">
+        <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center">
           {t('form.conflict.notExclusiveInfo')}
         </Text>
       )}

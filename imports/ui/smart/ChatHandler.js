@@ -9,9 +9,8 @@ import { call } from '/imports/ui/utils/shared';
 import Drawer from '../components/Drawer';
 import { Chattery, useChattery } from '../chattery';
 
-export function ChatUI(props) {
+export function ChatUI({ context, currentUser, item, open, setOpen }) {
   const [tc] = useTranslation('common');
-  const { currentUser, item, open, setOpen } = props;
   const { isChatLoading, discussion } = useChattery(item?._id);
 
   if (!item) {
@@ -23,7 +22,7 @@ export function ChatUI(props) {
 
   const addNewChatMessage = async (messageContent) => {
     const values = {
-      context: 'groups',
+      context,
       contextId: item._id,
       message: messageContent,
     };
@@ -48,7 +47,7 @@ export function ChatUI(props) {
     }
 
     try {
-      await call('removeNotification', group._id, messageIndex);
+      await call('removeNotification', item._id, messageIndex);
     } catch (error) {
       console.log('error', error);
     }
@@ -66,11 +65,11 @@ export function ChatUI(props) {
   );
 }
 
-export function ChatButton({ currentUser, item }) {
+export function ChatButton({ context, currentUser, item }) {
   const [open, setOpen] = useState(false);
   const [tc] = useTranslation('common');
 
-  const props = { currentUser, item, open, setOpen };
+  const props = { context, currentUser, item, open, setOpen };
 
   return (
     <Box>

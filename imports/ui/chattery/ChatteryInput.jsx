@@ -28,26 +28,19 @@ class ChatteryInput extends React.Component {
 
   render() {
     return (
-      <div className="chattery-inputform-container" data-oid="5:-ywr8">
-        <form
-          className="chattery-inputform"
-          autoComplete="off"
-          onSubmit={this.onSubmit}
-          data-oid="vre4gxe"
-        >
+      <div className="chattery-inputform-container">
+        <form className="chattery-inputform" autoComplete="off" onSubmit={this.onSubmit}>
           <textarea
             type="text"
             className="chattery-input"
             value={this.state.inputValue}
             onChange={this.onChange}
-            data-oid="hsqhwcs"
           />
 
           <input
             type="submit"
             className="chattery-submitbutton"
             value={i18n.t('common:actions.send')}
-            data-oid="5.5uhbb"
           />
         </form>
       </div>

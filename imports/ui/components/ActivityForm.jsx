@@ -120,13 +120,13 @@ function ActivityForm({
   const resourcesInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'resources');
 
   return (
-    <div data-oid="cv:zczq">
-      <form onSubmit={handleSubmit((data) => onSubmit(data))} data-oid="uqt52x-">
-        <Box mb="8" data-oid="-wms2ty">
+    <div>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <Box mb="8">
           <FormField
             helperText={t('form.resource.helper')}
             label={
-              <b data-oid=":5d._8u">
+              <b>
                 {parseHtml(
                   t('form.resource.label', {
                     resources: resourcesInMenu?.label,
@@ -134,13 +134,11 @@ function ActivityForm({
                 )}
               </b>
             }
-            data-oid="3b8bu9m"
           >
             <Select
               {...register('resourceId')}
               placeholder={t('form.resource.holder')}
               onChange={(e) => setSelectedResource(e.target.value)}
-              data-oid="6dhf3p5"
             >
               {resources
                 .sort(localeSort)
@@ -150,7 +148,6 @@ function ActivityForm({
                     key={option._id}
                     selected={option._id === defaultValues.resourceId}
                     value={option._id}
-                    data-oid="ebvjnt0"
                   >
                     {option.isCombo
                       ? `${option.label}: [${option.resourcesForCombo.map((res, i) => res.label)}]`
@@ -161,15 +158,14 @@ function ActivityForm({
           </FormField>
         </Box>
 
-        <Box mb="8" data-oid="h11ty89">
+        <Box mb="8">
           <FormField
             helperText={t('form.occurrences.helper')}
-            label={<b data-oid="8elyr0n">{t('form.occurrences.label')}</b>}
+            label={<b>{t('form.occurrences.label')}</b>}
             isRequired
-            data-oid="mye0w6t"
           />
 
-          <Box mb="4" mt="2" data-oid="gyl352n">
+          <Box mb="4" mt="2">
             {datesAndTimes.map((occurrence, index) => {
               const id =
                 occurrence.startDate +
@@ -188,38 +184,25 @@ function ActivityForm({
                   handleCapacityChange={(value) => handleCapacityChange(value, index)}
                   handleDateTimeChange={(date) => handleDateTimeChange(date, index)}
                   handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
-                  data-oid="j2_kog5"
                 />
               );
             })}
-            <Center bg="white" p="6" data-oid="c81jfid">
-              <IconButton
-                bg="gray.700"
-                size="lg"
-                onClick={addRecurrence}
-                icon={<AddIcon data-oid="pjz3umc" />}
-                data-oid="7quux.n"
-              />
+            <Center bg="white" p="6">
+              <IconButton bg="gray.700" size="lg" onClick={addRecurrence} icon={<AddIcon />} />
             </Center>
           </Box>
         </Box>
 
-        <Box mb="8" data-oid="--rt5xo">
-          <Heading mb="4" size="md" data-oid="2258m0p">
+        <Box mb="8">
+          <Heading mb="4" size="md">
             {t('form.details.label')}
           </Heading>
 
-          <VStack spacing="6" data-oid="2f_japx">
-            <FormField
-              helperText={t('form.title.helper')}
-              label={t('form.title.label')}
-              isRequired
-              data-oid="vu:ocdv"
-            >
+          <VStack spacing="6">
+            <FormField helperText={t('form.title.helper')} label={t('form.title.label')} isRequired>
               <Input
                 {...register('title', { required: true })}
                 placeholder={t('form.title.holder')}
-                data-oid="b7gxfcd"
               />
             </FormField>
 
@@ -228,12 +211,10 @@ function ActivityForm({
                 helperText={t('form.subtitle.helper')}
                 label={t('form.subtitle.label')}
                 isRequired
-                data-oid="kk9vqy3"
               >
                 <Input
                   {...register('subTitle', { required: true })}
                   placeholder={t('form.subtitle.holder')}
-                  data-oid="r-6zuy3"
                 />
               </FormField>
             )}
@@ -242,41 +223,23 @@ function ActivityForm({
               helperText={t('form.description.helper')}
               label={t('form.description.label')}
               isRequired={isPublicActivity}
-              data-oid="qmkc98t"
             >
               <Controller
                 control={control}
                 name="longDescription"
-                render={({ field }) => <ReactQuill {...field} data-oid="0kcwqo8" />}
-                data-oid="ukmz2lz"
+                render={({ field }) => <ReactQuill {...field} />}
               />
             </FormField>
 
             {isPublicActivity && (
-              <FormField
-                helperText={t('form.place.helper')}
-                label={t('form.place.label')}
-                data-oid="-mtv2-6"
-              >
-                <Input
-                  {...register('place')}
-                  placeholder={t('form.place.holder')}
-                  data-oid="bux8bbh"
-                />
+              <FormField helperText={t('form.place.helper')} label={t('form.place.label')}>
+                <Input {...register('place')} placeholder={t('form.place.holder')} />
               </FormField>
             )}
 
             {isPublicActivity && (
-              <FormField
-                helperText={t('form.address.helper')}
-                label={t('form.address.label')}
-                data-oid="r1n16ls"
-              >
-                <Textarea
-                  {...register('address')}
-                  placeholder={t('form.address.holder')}
-                  data-oid=".78dfwu"
-                />
+              <FormField helperText={t('form.address.helper')} label={t('form.address.label')}>
+                <Textarea {...register('address')} placeholder={t('form.address.holder')} />
               </FormField>
             )}
 
@@ -285,11 +248,10 @@ function ActivityForm({
                 label={t('form.image.label', { count: images?.length || 0 })}
                 helperText={t('form.image.helper')}
                 isRequired
-                data-oid="100prza"
               >
                 {images && (
-                  <Center mb="4" data-oid="lm2-42f">
-                    <NiceSlider width="300px" images={images} data-oid="4:h4fxm" />
+                  <Center mb="4">
+                    <NiceSlider width="300px" images={images} />
                   </Center>
                 )}
                 <ImageUploadUI
@@ -297,22 +259,16 @@ function ActivityForm({
                   onRemoveImage={onRemoveImage}
                   onSelectImages={setUploadableImages}
                   onSortImages={onSortImages}
-                  data-oid="p6wl-ep"
                 />
 
-                <DocumentUploadHelper isImage data-oid="g7gcukx" />
+                <DocumentUploadHelper isImage />
               </FormField>
             )}
           </VStack>
         </Box>
 
-        <Flex justify="flex-end" py="4" w="100%" data-oid="4tiew50">
-          <Button
-            isDisabled={isButtonDisabled}
-            isLoading={isSubmitting}
-            type="submit"
-            data-oid="xmvqidz"
-          >
+        <Flex justify="flex-end" py="4" w="100%">
+          <Button isDisabled={isButtonDisabled} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>

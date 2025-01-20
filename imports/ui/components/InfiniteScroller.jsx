@@ -45,28 +45,21 @@ function InfiniteScroller({
 
   return (
     <>
-      <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore} data-oid="iyn1lv0">
+      <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>
         {isMasonry ? (
           <Masonry
             breakpointCols={breakpointColumnsObj}
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
-            data-oid="92rll0h"
           >
             {currentItems?.map((item) => children(item))}
-            {hasMore && (
-              <Skeleton endColor="gray.300" w="185px" h="185px" m="4" data-oid="sk8idf7" />
-            )}
+            {hasMore && <Skeleton endColor="gray.300" w="185px" h="185px" m="4" />}
             {!hasMore && canCreateContent && (
-              <NewEntryHelper
-                buttonLink={newHelperLink}
-                small={isMasonry || smallThumb}
-                data-oid="5rdgy.2"
-              />
+              <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
             )}
           </Masonry>
         ) : (
-          <Wrap align="center" justify="center" spacing="2" data-oid="rvtg18p">
+          <Wrap align="center" justify="center" spacing="2">
             {currentItems?.map((item) => children(item))}
             {hasMore && (
               <Skeleton
@@ -74,15 +67,10 @@ function InfiniteScroller({
                 endColor="gray.300"
                 h={skeletonHeight}
                 w={skeletonWidth}
-                data-oid="ns80hs6"
               />
             )}
             {!hasMore && canCreateContent && (
-              <NewEntryHelper
-                buttonLink={newHelperLink}
-                small={smallThumb || isMasonry}
-                data-oid="j2s7dc9"
-              />
+              <NewEntryHelper buttonLink={newHelperLink} small={smallThumb || isMasonry} />
             )}
           </Wrap>
         )}

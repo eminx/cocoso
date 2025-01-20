@@ -49,7 +49,6 @@ function CalendarView(props) {
       })}
       onSelectEvent={props.onSelect}
       onSelectSlot={props.onSelectSlot}
-      data-oid="xc.vnvw"
     />
   );
 }

@@ -37,36 +37,23 @@ function ConfirmModal({
       // onClose={onCancel}
       onOverlayClick={onOverlayClick || onCancel}
       {...otherProps}
-      data-oid="5tmqcix"
     >
-      <AlertDialogOverlay zIndex="1404" data-oid="fo6kr-m">
-        <AlertDialogContent data-oid="3q:xf-k">
-          <AlertDialogHeader fontSize="lg" fontWeight="bold" data-oid="4vjurt.">
+      <AlertDialogOverlay zIndex="1404">
+        <AlertDialogContent>
+          <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
           </AlertDialogHeader>
 
-          <AlertDialogCloseButton onClick={onOverlayClick} data-oid="hd8vwhf" />
+          <AlertDialogCloseButton onClick={onOverlayClick} />
 
-          <AlertDialogBody data-oid="c.s5a9-">{children}</AlertDialogBody>
+          <AlertDialogBody>{children}</AlertDialogBody>
 
           {!hideFooter && (
-            <AlertDialogFooter data-oid="v7kams_">
-              <Button
-                ref={cancelRef}
-                size="sm"
-                variant="outline"
-                onClick={onCancel}
-                data-oid="lfhyxt6"
-              >
+            <AlertDialogFooter>
+              <Button ref={cancelRef} size="sm" variant="outline" onClick={onCancel}>
                 {cancelText || tc('actions.cancel')}
               </Button>
-              <Button
-                ml={3}
-                size="sm"
-                onClick={onConfirm}
-                {...confirmButtonProps}
-                data-oid="fcpol1o"
-              >
+              <Button ml={3} size="sm" onClick={onConfirm} {...confirmButtonProps}>
                 {confirmText || tc('actions.submit')}
               </Button>
             </AlertDialogFooter>
