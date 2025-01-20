@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Code, Link as CLink, Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Box, Code, Flex, Link as CLink, Text, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
@@ -7,8 +7,9 @@ import TablyCentered from '../components/TablyCentered';
 import GroupMembers from '../pages/groups/components/GroupMembers';
 import GroupMeetings from '../pages/groups/components/GroupMeetingsAction';
 import NiceList from '../components/NiceList';
+import { ChatButton } from '../smart/ChatHandler';
 
-export default function GroupHybrid({ group, Host }) {
+export default function GroupHybrid({ currentUser, group, Host }) {
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
 
@@ -40,7 +41,20 @@ export default function GroupHybrid({ group, Host }) {
 
   return (
     <TablyCentered
-      action={<GroupMembers group={group} />}
+      action={
+        <Center>
+          <Flex align="center" justify="center" maxW="860px" w="100%">
+            <Box px="12">
+              <GroupMembers group={group} />
+            </Box>
+            {currentUser ? (
+              <Box>
+                <ChatButton currentUser={currentUser} item={group} />
+              </Box>
+            ) : null}
+          </Flex>
+        </Center>
+      }
       adminMenu={null}
       backLink={{ value: '/groups', label: groupsInMenu?.label }}
       images={[group.imageUrl]}

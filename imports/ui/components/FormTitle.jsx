@@ -22,14 +22,15 @@ export default function FormTitle({ context, isCalendar, isNew = false }) {
   });
 
   return (
-    <Box>
-      <Flex px="2" mb="2">
+    <Box data-oid="04tb74g">
+      <Flex px="2" mb="2" data-oid="mh:n500">
         <BackLink
           backLink={{ label: currentContext?.label, value: '/' + currentContext?.name }}
           isSmall={false}
+          data-oid="3os32vd"
         />
       </Flex>
-      <Heading mb="4" size="lg" textAlign="center">
+      <Heading mb="4" size="lg" textAlign="center" data-oid="wm55h68">
         {isNew
           ? parseHtml(tc('labels.newFormEntry', { context: currentContext?.label }))
           : parseHtml(tc('labels.editFormEntry', { context: currentContext?.label }))}

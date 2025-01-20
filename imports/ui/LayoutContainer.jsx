@@ -139,9 +139,9 @@ function LayoutPage({ currentUser, userLoading, children }) {
 
   return (
     <>
-      <HelmetHybrid Host={currentHost} />
-      <ChakraProvider theme={chakraTheme}>
-        <ColorModeProvider>
+      <HelmetHybrid Host={currentHost} data-oid="ypi2aa5" />
+      <ChakraProvider theme={chakraTheme} data-oid=".cm1cym">
+        <ColorModeProvider data-oid="mu--afl">
           <StateContext.Provider
             value={{
               allHosts,
@@ -158,17 +158,18 @@ function LayoutPage({ currentUser, userLoading, children }) {
               setHue,
               setSelectedHue,
             }}
+            data-oid="rvicvau"
           >
-            <Box bg="gray.100" minH="1800px">
-              <Header Host={currentHost} />
+            <Box bg="gray.100" minH="1800px" data-oid="x-_hczh">
+              <Header Host={currentHost} data-oid="h46_y-9" />
               {children}
             </Box>
 
             {/* <Footer
-                    currentHost={currentHost}
-                    isFederationFooter={isFederationFooter}
-                    tc={tc}
-                  /> */}
+                     currentHost={currentHost}
+                     isFederationFooter={isFederationFooter}
+                     tc={tc}
+                   /> */}
 
             {/* {isFederationFooter && <PlatformFooter platform={platform} />} */}
           </StateContext.Provider>
@@ -187,13 +188,19 @@ function Footer({ currentHost, isFederationFooter, tc }) {
   const { settings } = currentHost;
 
   return (
-    <Box bg="brand.50" color="brand.900" w="100%">
-      <Center p="4">
-        <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
+    <Box bg="brand.50" color="brand.900" w="100%" data-oid="uxb893j">
+      <Center p="4" data-oid="36uqnuu">
+        <List
+          direction="row"
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+          data-oid="8dxnmou"
+        >
           {activeMenu.map((item) => (
-            <ListItem key={item.name} px="4" py="2">
-              <Link to={item.name === 'info' ? '/pages/about' : `/${item.name}`}>
-                <CLink as="span" color="brand.500" fontWeight="bold">
+            <ListItem key={item.name} px="4" py="2" data-oid="qq9oq59">
+              <Link to={item.name === 'info' ? '/pages/about' : `/${item.name}`} data-oid=".hjsekl">
+                <CLink as="span" color="brand.500" fontWeight="bold" data-oid="xmzfd7z">
                   {item.label}
                 </CLink>{' '}
               </Link>
@@ -203,10 +210,12 @@ function Footer({ currentHost, isFederationFooter, tc }) {
       </Center>
 
       {!currentHost.isPortalHost && (
-        <Center pt="2">
-          <Flex direction="column" justify="center" textAlign="center">
-            <Heading size="md">{settings.name}</Heading>
-            <Center>
+        <Center pt="2" data-oid="944ufko">
+          <Flex direction="column" justify="center" textAlign="center" data-oid="yrg28-6">
+            <Heading size="md" data-oid="tw-4lde">
+              {settings.name}
+            </Heading>
+            <Center data-oid="541bifw">
               {settings.footer ? (
                 <Box
                   className="text-content"
@@ -215,30 +224,31 @@ function Footer({ currentHost, isFederationFooter, tc }) {
                   mt="4"
                   textAlign="center"
                   w="100%"
+                  data-oid="ungwjob"
                 >
                   {parseHtml(settings?.footer)}
                 </Box>
               ) : (
-                <OldFooter host={currentHost.host} settings={settings} />
+                <OldFooter host={currentHost.host} settings={settings} data-oid="nzhbqys" />
               )}
             </Center>
             {!isFederationFooter && (
               <>
-                <Box>
-                  <Link to="/terms-&-privacy-policy">
-                    <CLink as="span" fontSize="xs">
+                <Box data-oid="o75x9gg">
+                  <Link to="/terms-&-privacy-policy" data-oid="fpj_l8q">
+                    <CLink as="span" fontSize="xs" data-oid="8:2h_qa">
                       {tc('terms.title')}{' '}
                     </CLink>
                   </Link>
                 </Box>
-                <FeedbackForm />
+                <FeedbackForm data-oid="l1bxggq" />
               </>
             )}
           </Flex>
         </Center>
       )}
-      <Center p="4">
-        <ChangeLanguageMenu isCentered />
+      <Center p="4" data-oid="a-60fxb">
+        <ChangeLanguageMenu isCentered data-oid="wb3p:it" />
       </Center>
     </Box>
   );
@@ -250,29 +260,31 @@ function PlatformFooter({ platform, children }) {
     return null;
   }
   return (
-    <Center bg="black" className="platform-footer">
-      <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
-        <Box p="4">
-          <a href={`https://${platform?.portalHost}`}>
-            <Heading color="white" size="md">
+    <Center bg="black" className="platform-footer" data-oid="gkwb5s:">
+      <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center" data-oid="y.lemg5">
+        <Box p="4" data-oid="xm5lh-i">
+          <a href={`https://${platform?.portalHost}`} data-oid="wvrp76g">
+            <Heading color="white" size="md" data-oid=":2mp7hu">
               {platform.name}
             </Heading>
           </a>
         </Box>
 
-        <Box p="2" className="text-content">
+        <Box p="2" className="text-content" data-oid="nf_6bix">
           {parseHtml(platform.footer)}
         </Box>
-        <Box p="2">{children}</Box>
+        <Box p="2" data-oid="x7.:5im">
+          {children}
+        </Box>
 
-        <Box>
-          <Link to="/terms-&-privacy-policy">
-            <CLink as="span" color="brand.50" fontSize="xs">
+        <Box data-oid="lx17svg">
+          <Link to="/terms-&-privacy-policy" data-oid="hvl59el">
+            <CLink as="span" color="brand.50" fontSize="xs" data-oid="sphnhq_">
               {tc('terms.title')}{' '}
             </CLink>
           </Link>
         </Box>
-        <FeedbackForm isDarkText={false} />
+        <FeedbackForm isDarkText={false} data-oid="84s7krl" />
       </Box>
     </Center>
   );
@@ -280,13 +292,15 @@ function PlatformFooter({ platform, children }) {
 
 function OldFooter({ host, settings }) {
   return (
-    <Box textAlign="center" p="4" fontSize="85%">
-      <Text fontSize="sm">
+    <Box textAlign="center" p="4" fontSize="85%" data-oid="a-i8epa">
+      <Text fontSize="sm" data-oid="95mps92">
         {settings?.address}
         {', '} {settings?.city}
       </Text>
-      <Text fontSize="sm">{settings?.email}</Text>
-      <Text fontSize="sm" fontWeight="bold">
+      <Text fontSize="sm" data-oid="g_:dyi0">
+        {settings?.email}
+      </Text>
+      <Text fontSize="sm" fontWeight="bold" data-oid="9jzo7zo">
         {host}
       </Text>
     </Box>

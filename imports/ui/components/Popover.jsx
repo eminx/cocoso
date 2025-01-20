@@ -23,8 +23,8 @@ export default function Popover({
   const borderColor = isDark ? 'gray.50' : 'gray.800';
 
   return (
-    <CPopover trigger="hover" {...otherProps}>
-      <PopoverTrigger>{triggerComponent}</PopoverTrigger>
+    <CPopover trigger="hover" {...otherProps} data-oid="gbj:mf4">
+      <PopoverTrigger data-oid="6b583yy">{triggerComponent}</PopoverTrigger>
       <PopoverContent
         bg={bg}
         borderColor={borderColor}
@@ -32,12 +32,13 @@ export default function Popover({
         maxW="95wv"
         py="4"
         w="auto"
+        data-oid="twj9tbo"
       >
-        <PopoverArrow bg={bg} />
-        <PopoverCloseButton mr="-1" />
-        {title && <PopoverHeader>{title}</PopoverHeader>}
-        <PopoverBody>{children}</PopoverBody>
-        {footer && <PopoverFooter>{footer}</PopoverFooter>}
+        <PopoverArrow bg={bg} data-oid="a_o7ptp" />
+        <PopoverCloseButton mr="-1" data-oid="_w:_wts" />
+        {title && <PopoverHeader data-oid="5chn0va">{title}</PopoverHeader>}
+        <PopoverBody data-oid="0z3e9la">{children}</PopoverBody>
+        {footer && <PopoverFooter data-oid="3u._im_">{footer}</PopoverFooter>}
       </PopoverContent>
     </CPopover>
   );

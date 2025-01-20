@@ -16,19 +16,24 @@ export default ChangeLanguage = ({
 
   if (!select)
     return (
-      <Box textAlign={isCentered ? 'center' : 'initial'}>
-        {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
-        <Menu placement="top">
-          <MenuButton fontWeight="bold" textDecoration="underline">
+      <Box textAlign={isCentered ? 'center' : 'initial'} data-oid="q4h9qkv">
+        {!hideHelper && (
+          <Text fontSize="sm" data-oid="t1l4y2_">
+            {t('common:langs.form.label')}:
+          </Text>
+        )}
+        <Menu placement="top" data-oid="4icavd8">
+          <MenuButton fontWeight="bold" textDecoration="underline" data-oid="71nok54">
             {t(`common:langs.${i18n.language}`)}
           </MenuButton>
-          <MenuList>
+          <MenuList data-oid="7jfksre">
             {allLangs.map((lang) => (
               <MenuItem
                 key={lang.value}
                 color="gray.700"
                 fontWeight={lang.value === currentLang ? 'bold' : 'normal'}
                 onClick={() => i18n.changeLanguage(lang.value)}
+                data-oid="b4hw:fj"
               >
                 {lang.label}
                 {/* {t(`common:langs.${lang}`)} */}
@@ -40,16 +45,26 @@ export default ChangeLanguage = ({
     );
 
   return (
-    <Box>
-      {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
+    <Box data-oid="la.y0qj">
+      {!hideHelper && (
+        <Text fontSize="sm" data-oid="ly2v2ak">
+          {t('common:langs.form.label')}:
+        </Text>
+      )}
       <Select
         name="lang"
         placeholder={t('common:langs.form.holder')}
         onChange={(e) => onChange(e.target.value)}
         {...(register && register('lang'))}
+        data-oid="q2wrncc"
       >
         {allLangs.map((lang) => (
-          <option key={lang.value} selected={lang.value === currentLang} value={lang.value}>
+          <option
+            key={lang.value}
+            selected={lang.value === currentLang}
+            value={lang.value}
+            data-oid="024svjq"
+          >
             {lang.label}
             {/* {t(`common:langs.${lang}`)} */}
           </option>

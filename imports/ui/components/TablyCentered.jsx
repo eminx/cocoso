@@ -79,7 +79,7 @@ function TablyCentered({
               </Center>
             )}
 
-            {action && <Center>{action}</Center>}
+            {action && <Box>{action}</Box>}
           </Box>
 
           <Center>

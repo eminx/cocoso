@@ -37,12 +37,15 @@ function ListMenu({ currentUser, list, onChange, children, ...otherProps }) {
 
   if (isDesktop) {
     return (
-      <List {...otherProps}>
+      <List {...otherProps} data-oid="l3lg0l0">
         {list.map((item) => (
-          <ListItem key={item.value} p="1">
-            <Link to={currentUser ? `/@${currentUser?.username}${item.value}` : item.value}>
-              <CLink as="span">
-                <Text fontWeight={isActiveItem(item) ? 'bold' : 'normal'}>
+          <ListItem key={item.value} p="1" data-oid="vpwi0sl">
+            <Link
+              to={currentUser ? `/@${currentUser?.username}${item.value}` : item.value}
+              data-oid=":4j0ofh"
+            >
+              <CLink as="span" data-oid="79z2grc">
+                <Text fontWeight={isActiveItem(item) ? 'bold' : 'normal'} data-oid="97-yhfx">
                   {item.key == 'publicProfile'
                     ? `@${currentUser?.username}`
                     : tc(`menu.${item.menu}.${item.key}`)}
@@ -56,14 +59,22 @@ function ListMenu({ currentUser, list, onChange, children, ...otherProps }) {
   }
 
   return (
-    <Box my="2">
-      <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+    <Box my="2" data-oid="n65ahev">
+      <Menu data-oid="0pi_34o">
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon data-oid="h1yiy1l" />}
+          data-oid="vgh-:rd"
+        >
           {selectedItem ? tc(`menu.${selectedItem.menu}.${selectedItem.key}`) : tc('labels.select')}
         </MenuButton>
-        <MenuList>
+        <MenuList data-oid="zx5xsjg">
           {list.map((item) => (
-            <MenuItem key={item.key} onClick={() => navigate(`${parseTitle(item.value)}`)}>
+            <MenuItem
+              key={item.key}
+              onClick={() => navigate(`${parseTitle(item.value)}`)}
+              data-oid="e3cbq8o"
+            >
               {item.key == 'publicProfile'
                 ? `@${currentUser?.username}`
                 : tc(`menu.${item.menu}.${item.key}`)}

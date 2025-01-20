@@ -12,7 +12,7 @@ export default function PortalPageEntryRouter({ items, context, routeParam, chil
   };
 
   return (
-    <Routes>
+    <Routes data-oid="pj3632q">
       <Route
         path={`/${context}/:${routeParam}`}
         render={(props) => (
@@ -27,10 +27,12 @@ export default function PortalPageEntryRouter({ items, context, routeParam, chil
             onActionButtonClick={() =>
               (window.location.href = getActivityLink(props.match.params.activityId))
             }
+            data-oid="v_vj5s."
           >
             {children(props)}
           </Modal>
         )}
+        data-oid="-7bnt87"
       />
     </Routes>
   );

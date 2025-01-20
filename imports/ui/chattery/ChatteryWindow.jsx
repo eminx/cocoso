@@ -25,8 +25,8 @@ class ChatteryWindow extends React.Component {
   render() {
     const { removeNotification } = this.props;
     return (
-      <div className="chattery-window-container">
-        <div className="chattery-window" ref={this.chatWindow}>
+      <div className="chattery-window-container" data-oid="ctfx__d">
+        <div className="chattery-window" ref={this.chatWindow} data-oid="ke1ebqd">
           {this.props.messages?.map((message, index) => (
             <ChatteryBubble
               key={message.content.substring(0, 2) + index}
@@ -35,6 +35,7 @@ class ChatteryWindow extends React.Component {
               isSeen={Boolean(message.isSeen)}
               isFromMe={message.isFromMe}
               removeNotification={() => removeNotification(index)}
+              data-oid="im66efb"
             >
               {message.content}
             </ChatteryBubble>

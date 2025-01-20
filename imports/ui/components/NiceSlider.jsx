@@ -24,15 +24,22 @@ function NiceSlider({ alt, images, height = 'auto', width = '100%', isFade = tru
 
   return (
     <>
-      <ImageHandler height={height} images={images} isFade={isFade} width={width}>
+      <ImageHandler
+        height={height}
+        images={images}
+        isFade={isFade}
+        width={width}
+        data-oid="65xqrqo"
+      >
         {(image, index) => (
-          <Center key={image + index}>
-            <Flex flexDirection="column" justify="center">
+          <Center key={image + index} data-oid="-tmy7rx">
+            <Flex flexDirection="column" justify="center" data-oid="ekghzph">
               <LazyLoadImage
                 alt={alt + ' ' + ' ' + image}
                 src={image}
                 style={{ ...imageStyle, height }}
                 onClick={() => setToggler(!toggler)}
+                data-oid="7ar16gl"
               />
             </Flex>
           </Center>
@@ -41,8 +48,9 @@ function NiceSlider({ alt, images, height = 'auto', width = '100%', isFade = tru
       <FsLightbox
         toggler={toggler}
         sources={images.map((img) => (
-          <img src={img} />
+          <img src={img} data-oid="iua5ut9" />
         ))}
+        data-oid="q1tspx0"
       />
     </>
   );
@@ -50,11 +58,15 @@ function NiceSlider({ alt, images, height = 'auto', width = '100%', isFade = tru
 
 function Dots({ images, currentSlideIndex }) {
   return (
-    <Center>
+    <Center data-oid="gksr9jm">
       {images.length > 1 && (
-        <HStack p="2">
+        <HStack p="2" data-oid="cppwcsm">
           {images.map((image, index) =>
-            index === currentSlideIndex ? <FilledCircle key={image} /> : <EmptyCircle key={image} />
+            index === currentSlideIndex ? (
+              <FilledCircle key={image} data-oid="2bfr8ml" />
+            ) : (
+              <EmptyCircle key={image} data-oid="_pfkcgq" />
+            )
           )}
         </HStack>
       )}
@@ -67,36 +79,38 @@ function ImageHandler({ height, width, images, isFade, children }) {
 
   if (images?.length === 1) {
     return (
-      <Flex h={height} justify={isFade ? 'flex-start' : 'center'}>
+      <Flex h={height} justify={isFade ? 'flex-start' : 'center'} data-oid="q-_hk2k">
         {images.map((image, index) => children(image, index))}
       </Flex>
     );
   } else if (isFade) {
     return (
-      <Box className="slide-container" h={height} w={width}>
+      <Box className="slide-container" h={height} w={width} data-oid="kz:194j">
         <Fade
           arrows
           canSwipe
           pauseOnHover={false}
           transitionDuration={400}
           onStartChange={(from, to) => setCurrentSlideIndex(to)}
+          data-oid="kqk6zi1"
         >
           {images.map((image, index) => children(image, index))}
         </Fade>
-        <Dots currentSlideIndex={currentSlideIndex} images={images} />
+        <Dots currentSlideIndex={currentSlideIndex} images={images} data-oid="04jk5fv" />
       </Box>
     );
   } else {
     return (
-      <Box className="slide-container" h={height} w={width}>
+      <Box className="slide-container" h={height} w={width} data-oid="eb7pgaf">
         <Slide
           arrows
           transitionDuration={400}
           onStartChange={(from, to) => setCurrentSlideIndex(to)}
+          data-oid="39t960n"
         >
           {images.map((image, index) => children(image, index))}
         </Slide>
-        <Dots currentSlideIndex={currentSlideIndex} images={images} />
+        <Dots currentSlideIndex={currentSlideIndex} images={images} data-oid="1sx09q." />
       </Box>
     );
   }
@@ -104,7 +118,14 @@ function ImageHandler({ height, width, images, isFade, children }) {
 
 function EmptyCircle() {
   return (
-    <svg width="8" height="8" viewBox="-2 -2 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="8"
+      height="8"
+      viewBox="-2 -2 8 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      data-oid="v:k2wma"
+    >
       <circle
         cx="2"
         cy="2"
@@ -113,6 +134,7 @@ function EmptyCircle() {
         fill="white"
         stroke="black"
         strokeWidth="1"
+        data-oid="d_3t5jh"
       />
     </svg>
   );
@@ -120,7 +142,14 @@ function EmptyCircle() {
 
 function FilledCircle() {
   return (
-    <svg width="8" height="8" viewBox="-2 -2 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="8"
+      height="8"
+      viewBox="-2 -2 8 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      data-oid="tjod5gb"
+    >
       <circle
         cx="2"
         cy="2"
@@ -129,6 +158,7 @@ function FilledCircle() {
         fill="#212121"
         stroke="black"
         strokeWidth="1"
+        data-oid="gocprtf"
       />
     </svg>
   );

@@ -15,9 +15,13 @@ const fancyDateStyle = {
 
 function DateJust({ children, ...otherProps }) {
   return (
-    <div {...otherProps}>
-      <div style={{ ...fancyDateStyle, fontSize: 24 }}>{dayjs(children).format('DD')}</div>
-      <div style={{ ...fancyDateStyle, fontSize: 17 }}>{dayjs(children).format('MMM')}</div>
+    <div {...otherProps} data-oid="zzxnl3f">
+      <div style={{ ...fancyDateStyle, fontSize: 24 }} data-oid="tgbqm15">
+        {dayjs(children).format('DD')}
+      </div>
+      <div style={{ ...fancyDateStyle, fontSize: 17 }} data-oid="5mwclka">
+        {dayjs(children).format('MMM')}
+      </div>
     </div>
   );
 }
@@ -27,20 +31,24 @@ function FancyDate({ occurrence, resources, ...otherProps }) {
     return null;
   }
   return (
-    <Flex justifyContent="space-between" p="1" mb="1" {...otherProps}>
-      <div style={{ flexGrow: 1 }}>
+    <Flex justifyContent="space-between" p="1" mb="1" {...otherProps} data-oid="_joy_ja">
+      <div style={{ flexGrow: 1 }} data-oid="atd96c6">
         {occurrence.startDate === occurrence.endDate ? (
-          <DateJust>{occurrence.startDate}</DateJust>
+          <DateJust data-oid=":4sn6vk">{occurrence.startDate}</DateJust>
         ) : (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <DateJust style={{ paddingRight: 12 }}>{occurrence.startDate}</DateJust>
+          <div style={{ display: 'flex', alignItems: 'center' }} data-oid="spfnukk">
+            <DateJust style={{ paddingRight: 12 }} data-oid="g8p6l9h">
+              {occurrence.startDate}
+            </DateJust>
             {' – '}
-            <DateJust style={{ paddingLeft: 12 }}>{occurrence.endDate}</DateJust>
+            <DateJust style={{ paddingLeft: 12 }} data-oid="e1xp2bh">
+              {occurrence.endDate}
+            </DateJust>
           </div>
         )}
       </div>
-      <div style={fancyDateStyle}>
-        <div>
+      <div style={fancyDateStyle} data-oid="d5cqrn7">
+        <div data-oid="03:3hs.">
           {occurrence.startTime} – {occurrence.endTime}
         </div>
         {resources && (
@@ -51,8 +59,9 @@ function FancyDate({ occurrence, resources, ...otherProps }) {
               marginTop: 12,
               textAlign: 'right',
             }}
+            data-oid="1adh_jn"
           >
-            <em>
+            <em data-oid=":_xgogk">
               {resources.map((place) => place.label).includes(occurrence.resource)
                 ? `${occurrence.resource}`
                 : occurrence.resource}

@@ -36,7 +36,7 @@ export default function GroupJoinButton({ currentUser, group }) {
           height="48px"
           size="lg"
           width="240px"
-          onClick={() => setModalOpen(false)}
+          onClick={() => setModalOpen(true)}
         >
           {t('actions.join')}
         </Button>

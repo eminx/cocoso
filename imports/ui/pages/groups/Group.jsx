@@ -12,6 +12,7 @@ import GroupInteractionHandler from './GroupInteractionHandler';
 export default function Group() {
   const initialGroup = window?.__PRELOADED_STATE__?.group || null;
   const Host = window?.__PRELOADED_STATE__?.Host || null;
+  const user = window?.__PRELOADED_STATE__?.currentUser || null;
 
   const [group, setGroup] = useState(initialGroup);
   const [rendered, setRendered] = useState(false);
@@ -20,6 +21,9 @@ export default function Group() {
 
   if (!currentHost) {
     currentHost = Host;
+  }
+  if (!currentUser) {
+    currentUser = user;
   }
 
   useEffect(() => {
@@ -74,7 +78,7 @@ export default function Group() {
 
   return (
     <>
-      <GroupHybrid group={group} Host={currentHost} />
+      <GroupHybrid currentUser={currentUser} group={group} Host={currentHost} />
       {rendered && (
         <GroupInteractionHandler currentUser={currentUser} group={group} slideStart={rendered} />
       )}

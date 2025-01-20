@@ -61,13 +61,14 @@ export default function DateTimePicker({ isRange, value, onChange }) {
   };
 
   return (
-    <Box w="100%" py="2">
-      <Flex>
-        <Box w="170px" mr="2">
+    <Box w="100%" py="2" data-oid="9::wt69">
+      <Flex data-oid="u70ewdx">
+        <Box w="170px" mr="2" data-oid="qf_4zqo">
           <DatePicker
             label={isRange ? t('form.date.start') : t('form.days.single')}
             value={value.startDate}
             onChange={(date) => handleDateChange(date, 'startDate')}
+            data-oid="v6d82ys"
           />
         </Box>
 
@@ -77,16 +78,18 @@ export default function DateTimePicker({ isRange, value, onChange }) {
             label={t('form.date.finish')}
             value={value.endDate}
             onChange={(date) => handleDateChange(date, 'endDate')}
+            data-oid="4tp-7hn"
           />
         )}
       </Flex>
 
-      <Flex>
-        <Box w="170px">
+      <Flex data-oid="q227_w1">
+        <Box w="170px" data-oid="shypc7d">
           <TimePicker
             label={t('form.time.start')}
             value={value?.startTime || '08:00'}
             onChange={(time) => handleTimeChange(time, 'startTime')}
+            data-oid="ohfm4d-"
           />
         </Box>
 
@@ -94,6 +97,7 @@ export default function DateTimePicker({ isRange, value, onChange }) {
           label={t('form.time.finish')}
           value={value?.endTime || '16:00'}
           onChange={(time) => handleTimeChange(time, 'endTime')}
+          data-oid="jojc2-n"
         />
       </Flex>
     </Box>
@@ -104,14 +108,17 @@ function DatePicker({ disabledDate, label, value, onChange }) {
   const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
 
   return (
-    <Box mb="4">
-      <Text mb="2">{label}</Text>
-      <ConfigProvider locale={locale}>
+    <Box mb="4" data-oid="2om0rd.">
+      <Text mb="2" data-oid="hdolx-h">
+        {label}
+      </Text>
+      <ConfigProvider locale={locale} data-oid=".sw2m7s">
         <AntDatePicker
           disabledDate={disabledDate ? (date) => date && date < dayjs(disabledDate) : null}
           size="large"
           value={dayjs(value, 'YYYY-MM-DD')}
           onChange={onChange}
+          data-oid="hnnxye3"
         />
       </ConfigProvider>
     </Box>
@@ -122,19 +129,20 @@ function TimePicker({ label, value, onChange }) {
   const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
 
   return (
-    <Box>
-      <Text mb="2">
+    <Box data-oid="qy89fko">
+      <Text mb="2" data-oid="5vi624q">
         {label}
         {': '}
       </Text>
 
-      <ConfigProvider locale={locale}>
+      <ConfigProvider locale={locale} data-oid="kirdz.d">
         <AntTimePicker
           format="HH:mm"
           minuteStep={5}
           size="large"
           value={dayjs(value, 'HH:mm')}
           onChange={onChange}
+          data-oid=".6jrwyb"
         />
       </ConfigProvider>
     </Box>

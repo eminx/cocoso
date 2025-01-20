@@ -16,8 +16,8 @@ function MemberAvatarEtc({ isThumb = true, user }) {
   const avatarSrc = avatar?.src || avatar;
 
   return (
-    <Box mb="8">
-      <Center>
+    <Box mb="8" data-oid="nbdv3ud">
+      <Center data-oid="707uj0u">
         <Avatar
           borderRadius="8px"
           maxW={350}
@@ -25,37 +25,41 @@ function MemberAvatarEtc({ isThumb = true, user }) {
           showBorder
           size={!avatarSrc || isThumb ? '2xl' : '4xl'}
           src={avatarSrc}
+          data-oid=".q1nacp"
         />
       </Center>
 
-      <Box>
-        <Center>
-          <Text fontWeight="bold" fontSize="xl">
+      <Box data-oid="s.8sn7-">
+        <Center data-oid="ods:ycf">
+          <Text fontWeight="bold" fontSize="xl" data-oid="qya6_2s">
             {user.username}
           </Text>
         </Center>
-        <Center mb="4">
-          <Text>{getFullName(user)}</Text>
+        <Center mb="4" data-oid="dmjfc.f">
+          <Text data-oid="kayfu.c">{getFullName(user)}</Text>
         </Center>
 
         {!isThumb && user.keywords && (
-          <Wrap justify="center" py="2">
+          <Wrap justify="center" py="2" data-oid="bp_5023">
             {user.keywords?.map((k) => (
-              <WrapItem key={k.keywordId}>
-                <Tag {...tagProps}>{k.keywordLabel}</Tag>
+              <WrapItem key={k.keywordId} data-oid="lnpuomn">
+                <Tag {...tagProps} data-oid="fvnoa78">
+                  {k.keywordLabel}
+                </Tag>
               </WrapItem>
             ))}
           </Wrap>
         )}
 
         {!isThumb && user.bio && (
-          <Center py="4">
+          <Center py="4" data-oid="a9b1pk2">
             <Box
               borderLeft="3px solid"
               borderLeftColor="brand.100"
               className="text-content"
               maxW={300}
               pl="4"
+              data-oid="9mqr_yj"
             >
               {parseHtml(user.bio)}
             </Box>{' '}

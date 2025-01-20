@@ -785,7 +785,7 @@ class Group extends Component {
           messages={messages}
           onNewMessage={this.addNewChatMessage}
           removeNotification={this.removeNotification}
-          isMember={isMember}
+          withInput={isMember}
         />
         {!isMember && (
           <div

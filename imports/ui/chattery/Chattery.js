@@ -11,7 +11,7 @@ import { ChatteryInput } from './ChatteryInput';
 
 const noMemberText = 'If you want to participate to the discussion, please join the group.';
 
-function Chattery({ messages, onNewMessage, removeNotification, isMember, meta }) {
+export function Chattery({ messages, onNewMessage, removeNotification, withInput, meta }) {
   return (
     <div className="chattery-main-container">
       <ChatteryWindow
@@ -19,7 +19,7 @@ function Chattery({ messages, onNewMessage, removeNotification, isMember, meta }
         meta={meta || null}
         removeNotification={removeNotification}
       />
-      {isMember ? (
+      {withInput ? (
         <ChatteryInput onNewMessage={onNewMessage} />
       ) : (
         <p style={{ padding: 24, textAlign: 'center' }}>{noMemberText}</p>
@@ -33,5 +33,3 @@ Chattery.propTypes = {
   onNewMessage: PropTypes.func.isRequired,
   meta: PropTypes.object,
 };
-
-export default Chattery;

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Activity from './Activity';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
-import useChattery from '../../components/chattery/useChattery';
+import { useChattery } from '../../chattery';
 import { StateContext } from '../../LayoutContainer';
 
 export default function () {

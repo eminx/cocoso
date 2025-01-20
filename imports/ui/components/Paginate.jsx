@@ -62,22 +62,23 @@ function PaginatedItems({
           breakpointCols={breakpointColumnsObj}
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
+          data-oid="6lu:o1u"
         >
           {currentItems?.map((item) => children(item))}
           {canCreateContent && currentPage + 1 === pageCount && (
-            <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} />
+            <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} data-oid="lljezum" />
           )}
         </Masonry>
       ) : (
-        <Wrap justify="center" spacing="8" shouldWrapChildren>
+        <Wrap justify="center" spacing="8" shouldWrapChildren data-oid="td5achy">
           {currentItems?.map((item) => children(item))}
           {canCreateContent && currentPage + 1 === pageCount && (
-            <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} />
+            <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} data-oid="-45hd:y" />
           )}
         </Wrap>
       )}
       {items && items.length > itemsPerPage && (
-        <Center>
+        <Center data-oid="0254yow">
           <ReactPaginate
             forcePage={currentPage}
             containerClassName="paginate"
@@ -92,6 +93,7 @@ function PaginatedItems({
             pageRangeDisplayed={5}
             pageCount={pageCount}
             renderOnZeroPageCount={null}
+            data-oid="x72y7-f"
           />
         </Center>
       )}

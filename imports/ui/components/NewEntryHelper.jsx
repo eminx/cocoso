@@ -36,7 +36,7 @@ function NewEntryHelper({
   const h = small ? '240px' : '315px';
 
   return (
-    <Link className="sexy-thumb-container" to={buttonLink}>
+    <Link className="sexy-thumb-container" to={buttonLink} data-oid="bp85tmn">
       <Box
         _hover={{ bg: 'brand.100' }}
         _active={{ bg: 'brand.200' }}
@@ -48,11 +48,20 @@ function NewEntryHelper({
         px="4"
         py="8"
         w={w}
+        data-oid="2qxajy-"
       >
-        <h3 className="thumb-title" style={{ color: 'var(--chakra-colors-brand-500)' }}>
+        <h3
+          className="thumb-title"
+          style={{ color: 'var(--chakra-colors-brand-500)' }}
+          data-oid="t-88cun"
+        >
           {titleGeneric}
         </h3>
-        <h4 className="thumb-subtitle" style={{ color: 'var(--chakra-colors-brand-500)' }}>
+        <h4
+          className="thumb-subtitle"
+          style={{ color: 'var(--chakra-colors-brand-500)' }}
+          data-oid="ucjvxun"
+        >
           {descriptionGeneric}
         </h4>
       </Box>

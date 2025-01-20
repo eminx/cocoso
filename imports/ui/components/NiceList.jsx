@@ -12,14 +12,15 @@ function NiceList({
   ...otherProps
 }) {
   return (
-    <List spacing={spacing} {...otherProps} p="0">
+    <List spacing={spacing} {...otherProps} p="0" data-oid="_5jkdm:">
       {list.map((listItem) => (
-        <ListItem key={listItem[keySelector]} bg={itemBg} mb="2">
+        <ListItem key={listItem[keySelector]} bg={itemBg} mb="2" data-oid="kpm5cou">
           {' '}
           <ListItemWithActions
             listItem={listItem}
             actionsDisabled={actionsDisabled}
             renderChildren={children}
+            data-oid="di_.nzp"
           />
         </ListItem>
       ))}
@@ -29,21 +30,24 @@ function NiceList({
 
 function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
   return (
-    <Flex justify="space-between">
-      <Box w="100%">{renderChildren(listItem)}</Box>
-      <Box>
+    <Flex justify="space-between" data-oid="qy1d_r:">
+      <Box w="100%" data-oid="yyr9jjv">
+        {renderChildren(listItem)}
+      </Box>
+      <Box data-oid="sfprq3:">
         {!actionsDisabled && (
-          <Menu placement="bottom-end">
-            <MenuButton type="button">
-              <ChevronDownIcon boxSize="6" />
+          <Menu placement="bottom-end" data-oid="xwvtwwn">
+            <MenuButton type="button" data-oid="3fy8heh">
+              <ChevronDownIcon boxSize="6" data-oid="xn_a0n8" />
             </MenuButton>
-            <MenuList>
+            <MenuList data-oid=".uyprdu">
               {listItem?.actions &&
                 listItem?.actions.map((action) => (
                   <MenuItem
                     key={action.content}
                     isDisabled={action.isDisabled}
                     onClick={action.isDisabled ? null : action.handleClick}
+                    data-oid="nl1ldjo"
                   >
                     {action.content}
                   </MenuItem>
