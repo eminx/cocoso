@@ -12,10 +12,23 @@ import en from 'antd/locale/en_US';
 import sv from 'antd/locale/sv_SE';
 import tr from 'antd/locale/tr_TR';
 
-import i18n from '../../startup/i18n';
+// import i18n from '../../startup/i18n';
+
+const antTheme = {
+  components: {
+    DatePicker: {
+      zIndexPopup: 1500,
+    },
+    TimePicker: {
+      zIndexPopup: 1500,
+    },
+  },
+};
 
 export default function DateTimePicker({ isRange = false, value, onChange }) {
   const [t] = useTranslation('activities');
+  const { i18n } = useTranslation();
+  const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
 
   const handleDateChange = (date, entity) => {
     if (!date) {
@@ -62,81 +75,73 @@ export default function DateTimePicker({ isRange = false, value, onChange }) {
 
   return (
     <Box w="100%" py="2">
-      <Flex>
-        <Box w="170px" mr="2">
-          <DatePicker
-            label={isRange ? t('form.date.start') : t('form.days.single')}
-            value={value.startDate}
-            onChange={(date) => handleDateChange(date, 'startDate')}
-          />
-        </Box>
+      <ConfigProvider locale={locale} theme={antTheme}>
+        <Flex>
+          <Box w="170px" mr="2">
+            <DatePicker
+              label={isRange ? t('form.date.start') : t('form.days.single')}
+              value={value.startDate}
+              onChange={(date) => handleDateChange(date, 'startDate')}
+            />
+          </Box>
 
-        {isRange && (
-          <DatePicker
-            disabledDate={value.startDate}
-            label={t('form.date.finish')}
-            value={value.endDate}
-            onChange={(date) => handleDateChange(date, 'endDate')}
-          />
-        )}
-      </Flex>
+          {isRange && (
+            <DatePicker
+              disabledDate={value.startDate}
+              label={t('form.date.finish')}
+              value={value.endDate}
+              onChange={(date) => handleDateChange(date, 'endDate')}
+            />
+          )}
+        </Flex>
 
-      <Flex>
-        <Box w="170px">
+        <Flex>
+          <Box w="170px">
+            <TimePicker
+              label={t('form.time.start')}
+              value={value?.startTime || '08:00'}
+              onChange={(time) => handleTimeChange(time, 'startTime')}
+            />
+          </Box>
+
           <TimePicker
-            label={t('form.time.start')}
-            value={value?.startTime || '08:00'}
-            onChange={(time) => handleTimeChange(time, 'startTime')}
+            label={t('form.time.finish')}
+            value={value?.endTime || '16:00'}
+            onChange={(time) => handleTimeChange(time, 'endTime')}
           />
-        </Box>
-
-        <TimePicker
-          label={t('form.time.finish')}
-          value={value?.endTime || '16:00'}
-          onChange={(time) => handleTimeChange(time, 'endTime')}
-        />
-      </Flex>
+        </Flex>
+      </ConfigProvider>
     </Box>
   );
 }
 
-export function DatePicker({ disabledDate, label, value, onChange }) {
-  const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
-
+function DatePicker({ disabledDate, label, value, onChange }) {
   return (
     <Box mb="4">
       <Text mb="2">{label}</Text>
-      <ConfigProvider locale={locale}>
-        <AntDatePicker
-          disabledDate={disabledDate ? (date) => date && date < dayjs(disabledDate) : null}
-          size="large"
-          value={dayjs(value, 'YYYY-MM-DD')}
-          onChange={onChange}
-        />
-      </ConfigProvider>
+      <AntDatePicker
+        disabledDate={disabledDate ? (date) => date && date < dayjs(disabledDate) : null}
+        size="large"
+        value={dayjs(value, 'YYYY-MM-DD')}
+        style={{ zIndex: 1500 }}
+        onChange={onChange}
+      />
     </Box>
   );
 }
 
 function TimePicker({ label, value, onChange }) {
-  const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
-
   return (
     <Box>
-      <Text mb="2">
-        {label}
-        {': '}
-      </Text>
-
-      <ConfigProvider locale={locale}>
-        <AntTimePicker
-          format="HH:mm"
-          minuteStep={5}
-          size="large"
-          value={dayjs(value, 'HH:mm')}
-          onChange={onChange}
-        />
-      </ConfigProvider>
+      <Text mb="2">{label}</Text>
+      <AntTimePicker
+        format="HH:mm"
+        minuteStep={5}
+        size="large"
+        value={dayjs(value, 'HH:mm')}
+        style={{ zIndex: 1500 }}
+        onChange={onChange}
+      />
     </Box>
   );
 }

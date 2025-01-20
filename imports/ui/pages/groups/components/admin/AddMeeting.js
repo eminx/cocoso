@@ -13,7 +13,7 @@ import {
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-import DateTimePicker from '/imports/ui/components/DateTimePicker';
+import DateTimePicker, { DatePicker } from '/imports/ui/components/DateTimePicker';
 import { ConflictMarker } from '/imports/ui/components/DatesAndTimes';
 import {
   call,
@@ -43,45 +43,49 @@ export default function AddMeeting({ group, isOpen, onClose }) {
     activities: [],
     conflictingBooking: null,
     isFormValid: false,
+    isSubmitted: false,
     newMeeting: emptyDateAndTime,
     resources: [],
   });
   const { currentHost } = useContext(StateContext);
+  const [t] = useTranslation('groups');
+  const { activities, conflictingBooking, isFormValid, newMeeting, resources } = state;
 
   useEffect(() => {
     getData();
   }, []);
 
+  useEffect(() => {
+    validateBookings();
+  }, [newMeeting]);
+
   const getData = async () => {
     try {
-      const activities = await call('getAllActivities');
-      const resources = await call('getResources');
+      const activitiesReceived = await call('getAllActivities');
+      const resourcesReceived = await call('getResources');
       setState({
         ...state,
-        activities,
-        resources,
+        activities: activitiesReceived,
+        resources: resourcesReceived,
       });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const { activities, conflictingBooking, isFormValid, newMeeting, resources } = state;
-
   const handleDateAndTimeChange = (date) => {
-    setState(
-      {
-        ...state,
-        newMeeting: date,
-      },
-      () => validateBookings()
-    );
+    setState({
+      ...state,
+      newMeeting: date,
+    });
   };
 
   const validateBookings = () => {
-    if (!activities || !resources || activities.length < 1 || resources.length < 1) {
+    if (!activities || !resources) {
       return null;
     }
+
+    const selectedResource = resources.find((r) => r._id === newMeeting.resourceId);
 
     if (!newMeeting || !newMeeting.startDate || !newMeeting.startTime || !newMeeting.endTime) {
       setState({
@@ -90,9 +94,7 @@ export default function AddMeeting({ group, isOpen, onClose }) {
         isFormValid: false,
       });
       return;
-    }
-
-    if (!newMeeting.resourceId) {
+    } else if (!newMeeting.resourceId) {
       setState({
         ...state,
         conflictingBooking: null,
@@ -100,8 +102,6 @@ export default function AddMeeting({ group, isOpen, onClose }) {
       });
       return;
     }
-
-    const selectedResource = resources.find((r) => r._id === newMeeting.resourceId);
 
     const allBookingsParsed = parseAllBookingsWithResources(activities, resources);
 
@@ -142,24 +142,17 @@ export default function AddMeeting({ group, isOpen, onClose }) {
   };
 
   const handleResourceChange = (resourceLabel) => {
-    const selectedResource = resources?.find((r) => r.label === resourceLabel);
-    setState(
-      {
-        ...state,
-        newMeeting: {
-          ...newMeeting,
-          resource: resourceLabel,
-          resourceId: selectedResource ? selectedResource._id : null,
-          resourceIndex: selectedResource ? selectedResource.resourceIndex : null,
-        },
+    const selectedResource = resources.find((r) => r.label === resourceLabel);
+
+    setState({
+      ...state,
+      newMeeting: {
+        ...newMeeting,
+        resource: resourceLabel,
+        resourceId: selectedResource ? selectedResource._id : null,
+        resourceIndex: selectedResource ? selectedResource.resourceIndex : null,
       },
-      () => {
-        if (!selectedResource) {
-          return;
-        }
-        validateBookings();
-      }
-    );
+    });
   };
 
   const createActivity = async () => {
@@ -172,6 +165,11 @@ export default function AddMeeting({ group, isOpen, onClose }) {
       console.log('no resource');
       return;
     }
+
+    setState({
+      ...state,
+      isSubmitted: true,
+    });
 
     const activityValues = {
       title: group.title,
@@ -200,6 +198,11 @@ export default function AddMeeting({ group, isOpen, onClose }) {
 
     try {
       await call('createActivity', activityValues);
+      setState({
+        ...state,
+        isSubmitted: false,
+      });
+      onClose();
       // message.success(tc('message.success.create'));
     } catch (error) {
       console.log(error);
@@ -209,23 +212,14 @@ export default function AddMeeting({ group, isOpen, onClose }) {
 
   return (
     <Box>
-      <Modal
-        // actionButtonLabel={getButtonLabel()}
-        bg="gray.100"
-        isOpen={isOpen}
-        // secondaryButtonLabel={copied ? tc('actions.copied') : tc('actions.share')}
-        // size="xl"
-        // onActionButtonClick={() => handleActionButtonClick()}
-        onClose={onClose}
-        // onSecondaryButtonClick={handleCopyLink}
-      >
+      <Modal bg="gray.100" isOpen={isOpen} title={t('meeting.form.label')} onClose={onClose}>
         <AddMeetingForm
           buttonDisabled={!isFormValid}
           conflictingBooking={conflictingBooking}
           hostname={currentHost?.settings?.name}
           newMeeting={newMeeting}
           resources={resources?.filter((r) => r.isBookable)}
-          handleDateChange={(date) => handleDateAndTimeChange(date)}
+          handleDateChange={handleDateAndTimeChange}
           handleResourceChange={handleResourceChange}
           handleSubmit={createActivity}
         />
@@ -248,48 +242,47 @@ function AddMeetingForm({
   const [t] = useTranslation('groups');
 
   return (
-    <Box bg="brand.50" border="1px solid" borderColor="brand.500" p="4" my="4">
-      <Text fontWeight="bold">{t('meeting.form.label')}</Text>
-      <Box py="2" mb="8">
+    <>
+      <Box bg="gray.100" borderRadius="8px" p="4">
         <DateTimePicker value={newMeeting} onChange={handleDateChange} />
+
+        <FormControl alignItems="center" display="flex" my="4">
+          <Switch
+            id="is-local-switch"
+            isChecked={isLocal}
+            onChange={({ target: { checked } }) => setIsLocal(checked)}
+          />
+          <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
+            {t('meeting.form.switch', { place: hostname })}
+          </FormLabel>
+        </FormControl>
+
+        {isLocal ? (
+          <Select
+            name="resource"
+            placeholder={t('meeting.form.resource')}
+            onChange={({ target: { value } }) => handleResourceChange(value)}
+          >
+            {resources.map((r, i) => (
+              <option key={r._id}>{r.label}</option>
+            ))}
+          </Select>
+        ) : (
+          <Textarea
+            placeholder={t('meeting.form.location')}
+            size="sm"
+            onChange={(event) => handleResourceChange(event.target.value)}
+          />
+        )}
       </Box>
 
-      <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
-        <Switch
-          id="is-local-switch"
-          isChecked={isLocal}
-          onChange={({ target: { checked } }) => setIsLocal(checked)}
-        />
-        <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
-          {t('meeting.form.switch', { place: hostname })}
-        </FormLabel>
-      </FormControl>
-
-      {isLocal ? (
-        <Select
-          name="resource"
-          placeholder={t('meeting.form.resource')}
-          onChange={({ target: { value } }) => handleResourceChange(value)}
-        >
-          {resources.map((r, i) => (
-            <option key={r._id}>{r.label}</option>
-          ))}
-        </Select>
-      ) : (
-        <Textarea
-          placeholder={t('meeting.form.location')}
-          size="sm"
-          onChange={(event) => handleResourceChange(event.target.value)}
-        />
-      )}
-
-      <Flex justify="flex-end" my="4">
-        <Button isDisabled={buttonDisabled} size="sm" onClick={handleSubmit}>
+      <Flex justify="flex-end" pt="4">
+        <Button isDisabled={buttonDisabled} onClick={handleSubmit}>
           {t('meeting.form.submit')}
         </Button>
       </Flex>
 
       {conflictingBooking && <ConflictMarker recurrence={conflictingBooking} t={ta} />}
-    </Box>
+    </>
   );
 }

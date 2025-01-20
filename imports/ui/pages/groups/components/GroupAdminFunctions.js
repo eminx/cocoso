@@ -28,7 +28,7 @@ export default function GroupAdminFunctions({ currentUser, group }) {
     <>
       <Center position="relative">
         <Box w="100px" position="absolute">
-          <Menu>
+          <Menu closeOnSelect>
             <MenuButton size="sm">
               <Box>
                 <IconButton
@@ -54,7 +54,7 @@ export default function GroupAdminFunctions({ currentUser, group }) {
       </Center>
 
       {/* <AddDocument {...props} isOpen={popup === 'document'} /> */}
-      <AddMeeting {...props} isOpen={popup === 'meeting'} />
+      {popup === 'meeting' && <AddMeeting {...props} isOpen />}
       {/* <ManageMembers {...props} isOpen={popup === 'members'} /> */}
     </>
   );

@@ -49,7 +49,7 @@ export default function GroupHybrid({ currentUser, group, Host }) {
             </Box>
             {currentUser ? (
               <Box>
-                <ChatButton currentUser={currentUser} item={group} />
+                <ChatButton context="groups" currentUser={currentUser} item={group} />
               </Box>
             ) : null}
           </Flex>
