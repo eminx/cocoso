@@ -77,12 +77,15 @@ export function ChatButton({ currentUser, item }) {
       <Center>
         <VStack className="hover-link" spacing="0">
           <IconButton
+            bg="brand.50"
+            border="1px solid #fff"
             fontSize="32px"
             icon={<MessagesSquare />}
             isRound
+            variant="ghost"
             onClick={() => setOpen(true)}
           />
-          <Button size="sm" style={{}} variant="link" onClick={() => setOpen(true)}>
+          <Button fontWeight="normal" size="xs" variant="link" onClick={() => setOpen(true)}>
             {tc('labels.discussion')}
           </Button>
         </VStack>

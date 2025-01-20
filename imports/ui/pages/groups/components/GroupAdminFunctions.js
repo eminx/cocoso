@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
-import { Box, Button, Center, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Text,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import Settings from 'lucide-react/dist/esm/icons/settings';
 
 import Modal from '/imports/ui/components/Modal';
 
@@ -10,20 +21,22 @@ export default function GroupAdminFunctions({ currentUser, group }) {
 
   return (
     <>
-      <Center>
-        <Box w="240px">
-          <Menu matchWidth>
-            <MenuButton
-              as={Button}
-              bg="white"
-              // borderWidth="2px"
-              colorScheme="blue"
-              height="32px"
-              size="md"
-              variant="outline"
-              width="100%"
-            >
-              Admin
+      <Center position="relative">
+        <Box w="100px" position="absolute">
+          <Menu>
+            <MenuButton colorScheme="blue" size="sm">
+              <Box>
+                <IconButton
+                  bg="brand.50"
+                  border="1px solid #fff"
+                  borderRadius="50%"
+                  icon={<Settings />}
+                  variant="ghost"
+                />
+                <Text color="brand.500" fontSize="xs">
+                  Admin
+                </Text>
+              </Box>
             </MenuButton>
             <MenuList size="lg">
               <MenuItem>Add Document</MenuItem>

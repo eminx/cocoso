@@ -23,11 +23,14 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
       {isMember && !isAdmin && <GroupLeaveButton {...props} />}
 
       <Slide direction="bottom" in={slideStart} unmountOnExit>
-        <Box bg="rgba(235, 255, 235, 0.9)" p="2" width="100%">
-          {!isMember && <GroupJoinButton {...props} />}
-          <GroupMeetingDates {...props} />
+        <Flex justify="space-between">
+          {isAdmin && <Box />}
+          <Box bg="rgba(235, 255, 235, 0.9)" p="2" width="100%">
+            {!isMember && <GroupJoinButton {...props} />}
+            <GroupMeetingDates {...props} />
+          </Box>
           {isAdmin && <GroupAdminFunctions {...props} />}
-        </Box>
+        </Flex>
       </Slide>
     </>
   );
