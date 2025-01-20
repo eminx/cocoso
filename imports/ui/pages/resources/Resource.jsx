@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import TablyCentered from '../../components/TablyCentered';
 import { ContentLoader } from '../../components/SkeletonLoaders';
 import ResourceHybrid from '../../entry/ResourceHybrid';
+import ResourceInteractionHandler from './components/ResourceInteractionHandler';
+
+export const ResourceContext = createContext(null);
 
 export default function Resource() {
   const initialResource = window?.__PRELOADED_STATE__?.resource || null;
@@ -15,15 +17,18 @@ export default function Resource() {
 
   const [resource, setResource] = useState(initialResource);
   const [documents, setDocuments] = useState(initialDocuments);
+  const [rendered, setRendered] = useState(false);
   const { resourceId } = useParams();
-  let { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
+  let { currentHost } = useContext(StateContext);
 
   if (!currentHost) {
     currentHost = Host;
   }
 
-  useEffect(() => {
-    getResourceById();
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
   }, []);
 
   const getResourceById = async () => {
@@ -37,35 +42,27 @@ export default function Resource() {
     }
   };
 
-  // const removeNotification = () => {};
-
-  // const parseChatData = () => {
-  //   const messages = chatData?.messages?.map((message) => {
-  //     return {
-  //       ...message,
-  //       isFromMe: message?.senderId === currentUser?._id,
-  //     };
-  //   });
-  //   setDiscussion(messages);
-  // };
-
-  // const addNewChatMessage = async (messageContent) => {
-  //   const values = {
-  //     context: 'resources',
-  //     contextId: resource._id,
-  //     message: messageContent,
-  //   };
-
-  //   try {
-  //     await call('addChatMessage', values);
-  //   } catch (error) {
-  //     console.log('error', error);
-  //   }
-  // };
+  useEffect(() => {
+    getResourceById();
+  }, []);
 
   if (!resource) {
     return <ContentLoader />;
   }
 
-  return <ResourceHybrid documents={documents} resource={resource} Host={currentHost} />;
+  const contextValue = {
+    resource,
+    getResourceById,
+  };
+
+  return (
+    <>
+      <ResourceHybrid documents={documents} resource={resource} Host={currentHost} />
+      {rendered && (
+        <ResourceContext.Provider value={contextValue}>
+          <ResourceInteractionHandler slideStart={rendered} />
+        </ResourceContext.Provider>
+      )}
+    </>
+  );
 }

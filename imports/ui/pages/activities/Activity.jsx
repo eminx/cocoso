@@ -1,9 +1,10 @@
-import React, { createContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
 import ActivityHybrid from '../../entry/ActivityHybrid';
 import ActivityInteractionHandler from './components/ActivityInteractionHandler';
+import { StateContext } from '../../LayoutContainer';
 
 export const ActivityContext = createContext(null);
 
@@ -14,6 +15,11 @@ export default function Activity() {
   const [activity, setActivity] = useState(initialActivity);
   const [rendered, setRendered] = useState(false);
   const { activityId } = useParams();
+  let { currentHost } = useContext(StateContext);
+
+  if (!currentHost) {
+    currentHost = Host;
+  }
 
   useLayoutEffect(() => {
     setTimeout(() => {
@@ -47,7 +53,7 @@ export default function Activity() {
 
   return (
     <>
-      <ActivityHybrid activity={activity} Host={Host} />
+      <ActivityHybrid activity={activity} Host={currentHost} />
 
       {rendered && (
         <ActivityContext.Provider value={contextValue}>

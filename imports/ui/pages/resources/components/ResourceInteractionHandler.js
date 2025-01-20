@@ -2,28 +2,22 @@ import React, { useContext } from 'react';
 import { Box, Flex, Slide } from '@chakra-ui/react';
 
 import { StateContext } from '../../../LayoutContainer';
-import { ActivityContext } from '../Activity';
-import RsvpHandler from './RsvpHandler';
+import { ResourceContext } from '../Resource';
 import { ChatButton } from '../../../chattery/ChatHandler';
 
-export default function ActivityInteractionHandler({ slideStart }) {
+export default function ResourceInteractionHandler({ slideStart }) {
   const { canCreateContent, currentUser } = useContext(StateContext);
-  const { activity } = useContext(ActivityContext);
+  const { resource } = useContext(ResourceContext);
 
   return (
     <>
       <Slide direction="bottom" in={slideStart} unmountOnExit style={{ zIndex: 10 }}>
         <Flex bg="green.50" justify="space-between" p="4" width="100%">
           {currentUser && canCreateContent && <Box w="40px" />}
-          <RsvpHandler activity={activity} />
+          <Box />
           {currentUser && canCreateContent && (
             <Box>
-              <ChatButton
-                context="activities"
-                currentUser={currentUser}
-                item={activity}
-                withInput
-              />
+              <ChatButton context="resources" currentUser={currentUser} item={resource} withInput />
             </Box>
           )}
         </Flex>

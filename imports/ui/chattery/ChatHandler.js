@@ -15,8 +15,6 @@ export function ChatUI({ context, currentUser, item, open, withInput, setOpen })
     return null;
   }
 
-  console.log(discussion);
-
   const addNewChatMessage = async (messageContent) => {
     const values = {
       context,

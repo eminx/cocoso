@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +7,6 @@ import TablyCentered from '../components/TablyCentered';
 import DocumentsField from '../pages/resources/components/DocumentsField';
 
 export default function WorkHybrid({ documents, work, Host }) {
-  const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
 
   if (!work) {
