@@ -7,6 +7,10 @@ import GroupLeaveButton from './GroupLeaveButton';
 import GroupAdminFunctions from './GroupAdminFunctions';
 
 export default function GroupInteractionHandler({ currentUser, group, slideStart }) {
+  if (!group) {
+    return null;
+  }
+
   const isMember =
     currentUser && group.members?.some((member) => member.memberId === currentUser._id);
 

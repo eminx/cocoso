@@ -59,9 +59,9 @@ export default function Group() {
     <>
       <GroupHybrid currentUser={currentUser} group={group} Host={currentHost} />
       {rendered && (
-        <GroupContext value={contextValue}>
-          <GroupInteractionHandler currentUser={currentUser} slideStart={rendered} />
-        </GroupContext>
+        <GroupContext.Provider value={contextValue}>
+          <GroupInteractionHandler currentUser={currentUser} group={group} slideStart={rendered} />
+        </GroupContext.Provider>
       )}
     </>
   );
