@@ -12,9 +12,9 @@ import {
 } from '@chakra-ui/react';
 import Settings from 'lucide-react/dist/esm/icons/settings';
 
-// import AddDocument from './admin/AddDocument';
+import AddDocument from './admin/AddDocument';
 import AddMeeting from './admin/AddMeeting';
-// import ManageMembers from './admin/ManageMembers';
+import ManageMembers from './admin/ManageMembers';
 
 export default function GroupAdminFunctions({ currentUser, group }) {
   const [popup, setPopup] = useState('none');
@@ -53,9 +53,9 @@ export default function GroupAdminFunctions({ currentUser, group }) {
         </Box>
       </Center>
 
-      {/* <AddDocument {...props} isOpen={popup === 'document'} /> */}
+      {popup === 'document' && <AddDocument {...props} isOpen />}
       {popup === 'meeting' && <AddMeeting {...props} isOpen />}
-      {/* <ManageMembers {...props} isOpen={popup === 'members'} /> */}
+      {popup === 'members' && <ManageMembers {...props} isOpen />}
     </>
   );
 }

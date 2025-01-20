@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from '../components/TablyCentered';
+import GroupDocuments from '../pages/groups/components/GroupDocuments';
 import GroupMembers from '../pages/groups/components/GroupMembers';
 import GroupMeetings from '../pages/groups/components/GroupMeetingsAction';
 import NiceList from '../components/NiceList';
@@ -62,27 +63,5 @@ export default function GroupHybrid({ currentUser, group, Host }) {
       tabs={tabs}
       title={group.title}
     />
-  );
-}
-
-function GroupDocuments({ documents }) {
-  if (!documents || documents.length < 1) {
-    return null;
-  }
-
-  return (
-    <Box bg="white" p="4">
-      <NiceList keySelector="downloadUrl" list={documents}>
-        {(document) => (
-          <Box style={{ width: '100%' }}>
-            <Code bg="white" fontWeight="bold">
-              <CLink color="blue.600" href={document.downloadUrl} target="_blank" rel="noreferrer">
-                {document.name}
-              </CLink>
-            </Code>
-          </Box>
-        )}
-      </NiceList>
-    </Box>
   );
 }

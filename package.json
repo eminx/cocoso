@@ -88,7 +88,7 @@
     "react-csv": "^2.2.2",
     "react-day-picker": "^9.0.8",
     "react-dom": "^18.2.0",
-    "react-dropzone": "^9.0.0",
+    "react-dropzone": "^14.3.5",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.22.5",
     "react-hydration-provider": "^2.1.0",

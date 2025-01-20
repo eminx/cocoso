@@ -211,20 +211,18 @@ export default function AddMeeting({ group, isOpen, onClose }) {
   };
 
   return (
-    <Box>
-      <Modal bg="gray.100" isOpen={isOpen} title={t('meeting.form.label')} onClose={onClose}>
-        <AddMeetingForm
-          buttonDisabled={!isFormValid}
-          conflictingBooking={conflictingBooking}
-          hostname={currentHost?.settings?.name}
-          newMeeting={newMeeting}
-          resources={resources?.filter((r) => r.isBookable)}
-          handleDateChange={handleDateAndTimeChange}
-          handleResourceChange={handleResourceChange}
-          handleSubmit={createActivity}
-        />
-      </Modal>
-    </Box>
+    <Modal bg="gray.100" isOpen={isOpen} title={t('meeting.form.label')} onClose={onClose}>
+      <AddMeetingForm
+        buttonDisabled={!isFormValid}
+        conflictingBooking={conflictingBooking}
+        hostname={currentHost?.settings?.name}
+        newMeeting={newMeeting}
+        resources={resources?.filter((r) => r.isBookable)}
+        handleDateChange={handleDateAndTimeChange}
+        handleResourceChange={handleResourceChange}
+        handleSubmit={createActivity}
+      />
+    </Modal>
   );
 }
 

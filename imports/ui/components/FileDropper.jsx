@@ -25,7 +25,7 @@ function FileDropper({
 
   const [tc] = useTranslation('common');
   return (
-    <Dropzone onDrop={setUploadableImage}>
+    <Dropzone onDrop={setUploadableImage} isMultiple={isMultiple}>
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Flex
           {...getRootProps()}

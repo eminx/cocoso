@@ -1,138 +1,106 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Select,
-  Switch,
-  Text,
-  Textarea,
-} from '@chakra-ui/react';
-import dayjs from 'dayjs';
+import React, { useCallback, useState } from 'react';
+import { Box, Heading, Spinner } from '@chakra-ui/react';
+import ReactDropzone from 'react-dropzone';
 
-import DateTimePicker, { ConflictMarker } from '/imports/ui/components/DateTimePicker';
 import { call } from '/imports/ui/utils/shared';
+import Modal from '/imports/ui/components/Modal';
+import { useTranslation } from 'react-i18next';
+import { DocumentUploadHelper } from '/imports/ui/components/UploadHelpers';
+import GroupDocuments from '../GroupDocuments';
 
-const yesterday = dayjs().add(-1, 'days');
-const today = dayjs();
+export default function AddDocument({ group, onClose }) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [tc] = useTranslation('common');
 
-const emptyDateAndTime = {
-  startDate: today,
-  endDate: today,
-  startTime: '00:00',
-  endTime: '23:59',
-  attendees: [],
-  capacity: 40,
-  isRange: false,
-  conflict: null,
-};
+  if (!group) {
+    return null;
+  }
 
-export default function AddMeeting({ group, onClose }) {
-  const [state, setState] = useState({
-    conflictingBooking: null,
-    isFormValid: false,
-    modalOpen: false,
-    newMeeting: emptyDateAndTime,
-    resources: [],
-  });
-
-  useEffect(() => {
-    getResources();
-  }, []);
-
-  const getResources = async () => {
-    try {
-      const resources = await call('getResources');
-      setState({
-        ...state,
-        resources,
-      });
-    } catch (error) {
-      console.log(error);
+  const handleFileDrop = (files) => {
+    if (files.length !== 1) {
+      // message.error(tc('plugins.fileDropper.single'));
+      return;
     }
+
+    const closeLoader = () => setIsUploading(false);
+
+    setIsUploading(true);
+    const upload = new Slingshot.Upload('groupDocumentUpload');
+    const file = files[0];
+    const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
+    const uploadableFile = new File([file], parsedName, {
+      type: file.type,
+    });
+
+    upload.send(uploadableFile, (error, downloadUrl) => {
+      if (error) {
+        console.error('Error uploading:', error);
+        message.error(error.reason);
+        closeLoader();
+      } else {
+        Meteor.call(
+          'createDocument',
+          uploadableFile.name,
+          downloadUrl,
+          'group',
+          group._id,
+          (error, respond) => {
+            if (error) {
+              console.log(error);
+              return;
+            }
+            Meteor.call(
+              'addGroupDocument',
+              { name: uploadableFile.name, downloadUrl },
+              group._id,
+              (error, respond) => {
+                if (error) {
+                  console.log(error);
+                  return;
+                }
+                closeLoader();
+              }
+            );
+          }
+        );
+      }
+    });
   };
 
-  const { conflictingBooking, isFormValid, modalOpen, newMeeting, resources } = state;
-  return null;
-
   return (
-    <AddMeetingForm
-      buttonDisabled={!isFormValid}
-      conflictingBooking={conflictingBooking}
-      hostname={currentHost?.settings?.name}
-      newMeeting={newMeeting}
-      resources={resources.filter((r) => r.isBookable)}
-      handleDateChange={(date) => this.handleDateAndTimeChange(date)}
-      handleResourceChange={this.handleResourceChange}
-      handleSubmit={this.createActivity}
-    />
-  );
-}
-
-function AddMeetingForm({
-  buttonDisabled,
-  conflictingBooking,
-  hostname,
-  newMeeting,
-  resources,
-  handleDateChange,
-  handleResourceChange,
-  handleSubmit,
-}) {
-  const [isLocal, setIsLocal] = useState(true);
-  const [t] = useTranslation('groups');
-  const [ta] = useTranslation('activities');
-
-  return (
-    <Box bg="brand.50" border="1px solid" borderColor="brand.500" p="4" my="4">
-      <Text fontWeight="bold">{t('meeting.form.label')}</Text>
-      <Box py="2" mb="8">
-        <DateTimePicker
-          placeholder={t('meeting.form.time.start')}
-          value={newMeeting}
-          onChange={handleDateChange}
-        />
+    <Modal isOpen size="lg" title={tc('documents.label')} onClose={onClose}>
+      <ReactDropzone onDrop={handleFileDrop} multiple={false}>
+        {({ getRootProps, getInputProps, isDragActive }) => (
+          <Box
+            bg={isDragActive ? 'blue.300' : 'blue.100'}
+            border="2px dashed"
+            borderColor="gray.600"
+            cursor="grab"
+            h="180px"
+            p="4"
+            w="100%"
+            {...getRootProps()}
+          >
+            {isUploading ? (
+              <div style={{ textAlign: 'center' }}>
+                <Spinner />
+                {tc('documents.up')}
+              </div>
+            ) : (
+              <div style={{ textAlign: 'center' }}>
+                <b>{tc('documents.drop')}</b>
+              </div>
+            )}
+            <input {...getInputProps()} />
+          </Box>
+        )}
+      </ReactDropzone>
+      <DocumentUploadHelper />
+      <Box pt="8">
+        <Heading size="sm">{tc('documents.label')}</Heading>
+        <GroupDocuments documents={group.documents} />
       </Box>
-
-      <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
-        <Switch
-          id="is-local-switch"
-          isChecked={isLocal}
-          onChange={({ target: { checked } }) => setIsLocal(checked)}
-        />
-        <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
-          {t('meeting.form.switch', { place: hostname })}
-        </FormLabel>
-      </FormControl>
-
-      {isLocal ? (
-        <Select
-          name="resource"
-          placeholder={t('meeting.form.resource')}
-          onChange={({ target: { value } }) => handleResourceChange(value)}
-        >
-          {resources.map((part, i) => (
-            <option key={part.label}>{part.label}</option>
-          ))}
-        </Select>
-      ) : (
-        <Textarea
-          placeholder={t('meeting.form.location')}
-          size="sm"
-          onChange={(event) => handleResourceChange(event.target.value)}
-        />
-      )}
-
-      <Flex justify="flex-end" my="4">
-        <Button isDisabled={buttonDisabled} size="sm" onClick={handleSubmit}>
-          {t('meeting.form.submit')}
-        </Button>
-      </Flex>
-
-      {conflictingBooking && <ConflictMarker recurrence={conflictingBooking} t={ta} />}
-    </Box>
+    </Modal>
   );
 }
