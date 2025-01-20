@@ -28,21 +28,21 @@ export default function GroupAdminFunctions({ currentUser, group }) {
     <>
       <Center position="relative">
         <Box w="100px" position="absolute">
-          <Menu closeOnSelect>
+          <Menu>
             <MenuButton size="sm">
-              <Box>
-                <IconButton
-                  as="span"
-                  bg="brand.50"
-                  border="1px solid #fff"
-                  borderRadius="50%"
-                  icon={<Settings />}
-                  variant="ghost"
-                />
-                <Text color="brand.500" fontSize="xs">
-                  Admin
-                </Text>
-              </Box>
+              <IconButton
+                _hover={{ bg: 'brand.100' }}
+                _active={{ bg: 'brand.200' }}
+                as="span"
+                bg="brand.50"
+                border="1px solid #fff"
+                borderRadius="50%"
+                icon={<Settings />}
+                variant="ghost"
+              />
+              <Text color="brand.500" fontSize="xs">
+                Admin
+              </Text>
             </MenuButton>
             <MenuList size="lg">
               <MenuItem onClick={() => setPopup('document')}>Add Document</MenuItem>

@@ -74,8 +74,10 @@ export function ChatButton({ context, currentUser, item }) {
   return (
     <Box>
       <Center>
-        <VStack className="hover-link" spacing="0">
+        <VStack spacing="0">
           <IconButton
+            _hover={{ bg: 'brand.100' }}
+            _active={{ bg: 'brand.200' }}
             bg="brand.50"
             border="1px solid #fff"
             fontSize="32px"

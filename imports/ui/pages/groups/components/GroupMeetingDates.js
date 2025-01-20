@@ -41,12 +41,14 @@ export default function GroupMeetingDates(props) {
             <Center>
               {isMember && (
                 <Button
+                  bg="white"
                   borderColor="green.100"
                   borderWidth="2px"
                   colorScheme="green"
                   height="48px"
                   mt="2"
                   size="lg"
+                  variant="outline"
                   width="240px"
                   onClick={() => setModalOpen(true)}
                 >

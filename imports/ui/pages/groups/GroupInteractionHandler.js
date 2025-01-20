@@ -25,7 +25,7 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
       <Slide direction="bottom" in={slideStart} unmountOnExit>
         <Flex justify="space-between">
           {isAdmin && <Box />}
-          <Box bg="rgba(235, 255, 235, 0.9)" p="2" width="100%">
+          <Box bg="rgba(235, 255, 235, 0.95)" p="2" width="100%">
             {!isMember && <GroupJoinButton {...props} />}
             <GroupMeetingDates {...props} />
           </Box>

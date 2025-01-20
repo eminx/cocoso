@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useCallback, useState } from 'react';
-import { Box, Heading, Spinner } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, Spinner, Text } from '@chakra-ui/react';
 import ReactDropzone from 'react-dropzone';
 
 import { call } from '/imports/ui/utils/shared';
@@ -73,7 +73,7 @@ export default function AddDocument({ group, onClose }) {
       <ReactDropzone onDrop={handleFileDrop} multiple={false}>
         {({ getRootProps, getInputProps, isDragActive }) => (
           <Box
-            bg={isDragActive ? 'blue.300' : 'blue.100'}
+            bg={isDragActive ? 'brand.300' : 'brand.50'}
             border="2px dashed"
             borderColor="gray.600"
             cursor="grab"
@@ -83,10 +83,14 @@ export default function AddDocument({ group, onClose }) {
             {...getRootProps()}
           >
             {isUploading ? (
-              <div style={{ textAlign: 'center' }}>
-                <Spinner />
-                {tc('documents.up')}
-              </div>
+              <Center>
+                <Flex align="center" direction="column">
+                  <Spinner />
+                  <Text mt="2" textTransform="capitalize">
+                    {tc('documents.up')}
+                  </Text>
+                </Flex>
+              </Center>
             ) : (
               <div style={{ textAlign: 'center' }}>
                 <b>{tc('documents.drop')}</b>
