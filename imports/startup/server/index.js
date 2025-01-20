@@ -6,12 +6,12 @@ import { Routes, Route } from 'react-router-dom';
 import { StaticRouter } from 'react-router-dom/server';
 import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
-import styled from '@emotion/styled';
 
 import { AppRoutesSSR } from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
-import { background } from '@chakra-ui/react';
+import Activities from '../../api/activities/activity';
+import Chats from '../../api/chats/chat';
 
 const stylee = 'body { background-color: red;}';
 

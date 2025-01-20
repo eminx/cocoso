@@ -1,6 +1,7 @@
 label:
   new: Yeni bir aktivite oluştur
   edit: Aktiviteyi düzenle
+  rsvp: Kaydol
 
 form:
   switch:

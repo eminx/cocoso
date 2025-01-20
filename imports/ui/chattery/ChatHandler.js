@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
-import { Box, Button, Center, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
+import { Button, Center, IconButton, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
-import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 
-import ConfirmModal from '/imports/ui/components/ConfirmModal';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../utils/shared';
 import Drawer from '../components/Drawer';
 import { Chattery, useChattery } from '../chattery';
 
-export function ChatUI({ context, currentUser, item, open, setOpen }) {
+export function ChatUI({ context, currentUser, item, open, withInput, setOpen }) {
   const [tc] = useTranslation('common');
-  const { isChatLoading, discussion } = useChattery(item?._id);
+  const { discussion } = item && useChattery(item._id);
 
   if (!item) {
     return null;
   }
 
-  const isMember =
-    currentUser && item.members.some((member) => member.memberId === currentUser._id);
+  console.log(discussion);
 
   const addNewChatMessage = async (messageContent) => {
     const values = {
@@ -30,7 +27,7 @@ export function ChatUI({ context, currentUser, item, open, setOpen }) {
     try {
       await call('addChatMessage', values);
     } catch (error) {
-      console.log('error', error);
+      // console.log('error', error);
     }
   };
 
@@ -49,7 +46,7 @@ export function ChatUI({ context, currentUser, item, open, setOpen }) {
     try {
       await call('removeNotification', item._id, messageIndex);
     } catch (error) {
-      console.log('error', error);
+      // console.log('error', error);
     }
   };
 
@@ -59,20 +56,20 @@ export function ChatUI({ context, currentUser, item, open, setOpen }) {
         messages={discussion}
         onNewMessage={addNewChatMessage}
         removeNotification={removeNotification}
-        withInput={isMember}
+        withInput={withInput}
       />
     </Drawer>
   );
 }
 
-export function ChatButton({ context, currentUser, item }) {
+export function ChatButton({ context, currentUser, item, withInput }) {
   const [open, setOpen] = useState(false);
   const [tc] = useTranslation('common');
 
-  const props = { context, currentUser, item, open, setOpen };
+  const props = { context, currentUser, item, open, withInput, setOpen };
 
   return (
-    <Box>
+    <>
       <Center>
         <VStack spacing="0">
           <IconButton
@@ -92,6 +89,6 @@ export function ChatButton({ context, currentUser, item }) {
         </VStack>
       </Center>
       {open && <ChatUI {...props} />}
-    </Box>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 label:
   new: Create a New Booking
   edit: Edit Booking
+  rsvp: RSVP
 
 form:
   switch:

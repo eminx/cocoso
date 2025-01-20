@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import Chats from '/imports/api/chats/chat';
+import Chats from '../../api/chats/chat';
 
-export const useChattery = (contextId) =>
+const useChattery = (contextId) =>
   useTracker(() => {
     if (!contextId) {
       return null;
@@ -15,8 +15,11 @@ export const useChattery = (contextId) =>
       ...message,
       isFromMe: currentUser && message && message.senderId === currentUser._id,
     }));
+
     return {
       discussion,
       isChatLoading: !subscription.ready(),
     };
   }, [contextId]);
+
+export default useChattery;

@@ -1,30 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import VisibilitySensor from 'react-visibility-sensor';
+
+const parseDate = (theDate) => {
+  const isToday = dayjs(theDate).isSame(dayjs(), 'd');
+  const isYesterday = dayjs(theDate).isSame(dayjs().add(-1, 'days'), 'd');
+  const isThisYear = dayjs(theDate).isSame(dayjs(), 'y');
+
+  if (isToday) {
+    return dayjs(theDate).format('[Today,] HH:mm');
+  } else if (isYesterday) {
+    return dayjs(theDate).format('[Yesterday,] HH:mm');
+  } else if (isThisYear) {
+    return dayjs(theDate).format('ddd, D MMM, [at] HH:mm');
+  }
+  return dayjs(theDate).format("D MMM [']YY, [at] HH:mm");
+};
 
 class ChatteryBubble extends React.Component {
   componentDidMount() {
-    const { isFromMe, children } = this.props;
+    const { isFromMe } = this.props;
     if (!isFromMe) {
-      this.removeNotification;
+      this.removeNotification();
     }
   }
-
-  parseDate = (theDate) => {
-    const isToday = moment(theDate).isSame(moment(), 'd');
-    const isYesterday = moment(theDate).isSame(moment().add(-1, 'days'), 'd');
-    const isThisYear = moment(theDate).isSame(moment(), 'y');
-
-    if (isToday) {
-      return moment(theDate).format('[Today,] HH:mm');
-    } else if (isYesterday) {
-      return moment(theDate).format('[Yesterday,] HH:mm');
-    } else if (isThisYear) {
-      return moment(theDate).format('ddd, D MMM, [at] HH:mm');
-    }
-    return moment(theDate).format("D MMM [']YY, [at] HH:mm");
-  };
 
   removeNotification = (isVisible) => {
     const { isFromMe, removeNotification } = this.props;
@@ -34,7 +33,7 @@ class ChatteryBubble extends React.Component {
   };
 
   render() {
-    const { senderUsername, createdDate, isFromMe, isSeen, children } = this.props;
+    const { senderUsername, createdDate, isFromMe, children } = this.props;
     let bubbleClass = 'talk-bubble tri-right round ';
     let bubbleClassContainer = 'talk-bubble-container ';
     if (isFromMe) {
@@ -48,12 +47,12 @@ class ChatteryBubble extends React.Component {
     return (
       <div className={bubbleClassContainer}>
         <VisibilitySensor partialVisibility="bottom" onChange={this.removeNotification}>
-          {({ isVisible }) => (
+          {() => (
             <div className={bubbleClass}>
               <div className="talktext">
                 <p className="talktext-senderinfo">{senderUsername}</p>
                 <p className="talktext-content">{children}</p>
-                <p className="talktext-dateinfo">{this.parseDate(createdDate)}</p>
+                <p className="talktext-dateinfo">{parseDate(createdDate)}</p>
               </div>
             </div>
           )}
@@ -63,11 +62,11 @@ class ChatteryBubble extends React.Component {
   }
 }
 
-ChatteryBubble.propTypes = {
-  children: PropTypes.string.isRequired,
-  createdDate: PropTypes.instanceOf(Date),
-  sender: PropTypes.string,
-  isSeen: PropTypes.bool,
-};
+// ChatteryBubble.propTypes = {
+//   children: PropTypes.string.isRequired,
+//   createdDate: PropTypes.instanceOf(Date),
+//   sender: PropTypes.string,
+//   isSeen: PropTypes.bool,
+// };
 
-export { ChatteryBubble };
+export default ChatteryBubble;

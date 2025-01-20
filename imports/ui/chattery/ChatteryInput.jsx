@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import i18n from 'i18next';
 
 class ChatteryInput extends React.Component {
@@ -48,8 +48,8 @@ class ChatteryInput extends React.Component {
   }
 }
 
-ChatteryInput.propTypes = {
-  onNewMessage: PropTypes.func.isRequired,
-};
+// ChatteryInput.propTypes = {
+//   onNewMessage: PropTypes.func.isRequired,
+// };
 
-export { ChatteryInput };
+export default ChatteryInput;

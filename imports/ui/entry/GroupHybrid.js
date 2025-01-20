@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
-import { Box, Code, Flex, Link as CLink, Text, Center } from '@chakra-ui/react';
+import React from 'react';
+import { Box, Flex, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from '../components/TablyCentered';
 import GroupDocuments from '../pages/groups/components/GroupDocuments';
 import GroupMembers from '../pages/groups/components/GroupMembers';
-import GroupMeetings from '../pages/groups/components/GroupMeetingsAction';
-import NiceList from '../components/NiceList';
-import { ChatButton } from '../smart/ChatHandler';
+import { ChatButton } from '../chattery/ChatHandler';
 
 export default function GroupHybrid({ currentUser, group, Host }) {
-  const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
 
   if (!group) {
@@ -40,6 +37,9 @@ export default function GroupHybrid({ currentUser, group, Host }) {
 
   const groupsInMenu = Host.settings?.menu.find((item) => item.name === 'groups');
 
+  const isMember =
+    currentUser && group.members?.some((member) => member.memberId === currentUser._id);
+
   return (
     <TablyCentered
       action={
@@ -50,7 +50,12 @@ export default function GroupHybrid({ currentUser, group, Host }) {
             </Box>
             {currentUser ? (
               <Box>
-                <ChatButton context="groups" currentUser={currentUser} item={group} />
+                <ChatButton
+                  context="groups"
+                  currentUser={currentUser}
+                  item={group}
+                  withInput={isMember}
+                />
               </Box>
             ) : null}
           </Flex>

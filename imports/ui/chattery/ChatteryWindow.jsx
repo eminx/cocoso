@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { ChatteryBubble } from './ChatteryBubble';
+import ChatteryBubble from './ChatteryBubble';
 
 class ChatteryWindow extends React.Component {
   constructor(props) {
@@ -13,7 +12,7 @@ class ChatteryWindow extends React.Component {
     this.scrollBottom();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate() {
     this.scrollBottom();
   }
 
@@ -45,9 +44,9 @@ class ChatteryWindow extends React.Component {
   }
 }
 
-ChatteryWindow.propTypes = {
-  messages: PropTypes.array.isRequired,
-  meta: PropTypes.object,
-};
+// ChatteryWindow.propTypes = {
+//   messages: PropTypes.array.isRequired,
+//   meta: PropTypes.object,
+// };
 
-export { ChatteryWindow };
+export default ChatteryWindow;

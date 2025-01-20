@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Button, Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import ConfirmModal from '/imports/ui/components/ConfirmModal';
-import { call } from '/imports/ui/utils/shared';
+import ConfirmModal from '../../../components/ConfirmModal';
+import { call } from '../../../utils/shared';
 
 export default function GroupJoinButton({ currentUser, group }) {
   const [modalOpen, setModalOpen] = useState(false);
