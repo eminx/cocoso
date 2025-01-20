@@ -1,139 +1,57 @@
-import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Select,
-  Switch,
-  Text,
-  Textarea,
-} from '@chakra-ui/react';
-import dayjs from 'dayjs';
+import { Avatar, Box, Flex, Link as CLink, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
-import DateTimePicker, { ConflictMarker } from '/imports/ui/components/DateTimePicker';
+import GroupMembers from '../GroupMembers';
+import Modal from '/imports/ui/components/Modal';
+import NiceList from '/imports/ui/components/NiceList';
 import { call } from '/imports/ui/utils/shared';
 
-const yesterday = dayjs().add(-1, 'days');
-const today = dayjs();
+export default function ManageMembers({ group, isOpen, onClose }) {
+  const [t] = useTranslation('groups');
 
-const emptyDateAndTime = {
-  startDate: today,
-  endDate: today,
-  startTime: '00:00',
-  endTime: '23:59',
-  attendees: [],
-  capacity: 40,
-  isRange: false,
-  conflict: null,
-};
-
-export default function AddMeeting({ group, onClose }) {
-  const [state, setState] = useState({
-    conflictingBooking: null,
-    isFormValid: false,
-    modalOpen: false,
-    newMeeting: emptyDateAndTime,
-    resources: [],
-  });
-
-  useEffect(() => {
-    getResources();
-  }, []);
-
-  const getResources = async () => {
+  const setAsAGroupAdmin = async (username) => {
     try {
-      const resources = await call('getResources');
-      setState({
-        ...state,
-        resources,
-      });
+      await call('setAsAGroupAdmin', group._id, username);
+      // message.success(t('meeting.success.admin'));
     } catch (error) {
       console.log(error);
+      // message.error(error.error);
     }
   };
 
-  const { conflictingBooking, isFormValid, modalOpen, newMeeting, resources } = state;
-
-  return null;
-
-  return (
-    <AddMeetingForm
-      buttonDisabled={!isFormValid}
-      conflictingBooking={conflictingBooking}
-      hostname={currentHost?.settings?.name}
-      newMeeting={newMeeting}
-      resources={resources.filter((r) => r.isBookable)}
-      handleDateChange={(date) => this.handleDateAndTimeChange(date)}
-      handleResourceChange={this.handleResourceChange}
-      handleSubmit={this.createActivity}
-    />
-  );
-}
-
-function AddMeetingForm({
-  buttonDisabled,
-  conflictingBooking,
-  hostname,
-  newMeeting,
-  resources,
-  handleDateChange,
-  handleResourceChange,
-  handleSubmit,
-}) {
-  const [isLocal, setIsLocal] = useState(true);
-  const [t] = useTranslation('groups');
-  const [ta] = useTranslation('activities');
+  const members = group.members?.map((member) => ({
+    ...member,
+    actions: [
+      {
+        content: t('meeting.actions.makeAdmin'),
+        handleClick: () => {
+          setAsAGroupAdmin(member.username);
+        },
+        isDisabled: member.isAdmin,
+      },
+    ],
+  }));
 
   return (
-    <Box bg="brand.50" border="1px solid" borderColor="brand.500" p="4" my="4">
-      <Text fontWeight="bold">{t('meeting.form.label')}</Text>
-      <Box py="2" mb="8">
-        <DateTimePicker
-          placeholder={t('meeting.form.time.start')}
-          value={newMeeting}
-          onChange={handleDateChange}
-        />
-      </Box>
-
-      <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
-        <Switch
-          id="is-local-switch"
-          isChecked={isLocal}
-          onChange={({ target: { checked } }) => setIsLocal(checked)}
-        />
-        <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
-          {t('meeting.form.switch', { place: hostname })}
-        </FormLabel>
-      </FormControl>
-
-      {isLocal ? (
-        <Select
-          name="resource"
-          placeholder={t('meeting.form.resource')}
-          onChange={({ target: { value } }) => handleResourceChange(value)}
-        >
-          {resources.map((part, i) => (
-            <option key={part.label}>{part.label}</option>
-          ))}
-        </Select>
-      ) : (
-        <Textarea
-          placeholder={t('meeting.form.location')}
-          size="sm"
-          onChange={(event) => handleResourceChange(event.target.value)}
-        />
-      )}
-
-      <Flex justify="flex-end" my="4">
-        <Button isDisabled={buttonDisabled} size="sm" onClick={handleSubmit}>
-          {t('meeting.form.submit')}
-        </Button>
-      </Flex>
-
-      {conflictingBooking && <ConflictMarker recurrence={conflictingBooking} t={ta} />}
-    </Box>
+    <Modal bg="gray.100" isOpen={isOpen} title={t('labels.member')} onClose={onClose}>
+      <NiceList actionsDisabled={false} keySelector="username" list={members} py="4" spacing="4">
+        {(member) => (
+          <Flex align="center">
+            <Avatar
+              borderRadius="8px"
+              mr="2"
+              name={member.username}
+              size="md"
+              src={member.avatar}
+            />
+            <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
+              {member.username}
+            </CLink>
+            <Text ml="1">{member.isAdmin && '(admin)'}</Text>
+          </Flex>
+        )}
+      </NiceList>
+    </Modal>
   );
 }

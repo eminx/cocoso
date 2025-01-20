@@ -15,7 +15,7 @@ import {
 import Modal from '../../../components/Modal';
 import NiceList from '../../../components/NiceList';
 
-export default function GroupMembers({ group }) {
+export default function GroupMembers({ group, forAdmin = false }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
 
