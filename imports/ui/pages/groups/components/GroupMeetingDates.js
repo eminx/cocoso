@@ -18,6 +18,9 @@ import { useTranslation } from 'react-i18next';
 
 import FancyDate from '../../../components/FancyDate';
 import Modal from '../../../components/Modal';
+import { accordionProps } from '../../../utils/constants/general';
+
+const { buttonProps, itemProps, panelProps } = accordionProps;
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 const isFutureMeeting = (meeting) => dayjs(meeting.endDate).isAfter(yesterday);
@@ -61,26 +64,18 @@ function MeetingDatesContent({ group, isAdmin }) {
         {group.meetings?.map((meeting) => (
           <AccordionItem
             key={meeting._id}
-            mb="4"
-            borderTopWidth="0"
+            {...itemProps}
             style={{
               display: isFutureMeeting(meeting) ? 'block' : 'none',
             }}
           >
-            <AccordionButton
-              _hover={{ bg: 'brand.50' }}
-              _expanded={{ bg: 'brand.500', color: 'white' }}
-              bg="gray.100"
-              borderWidth="0"
-              borderRadius="8px"
-              color="brand.800"
-            >
+            <AccordionButton {...buttonProps}>
               <Box flex="1" textAlign="left">
                 <FancyDate occurrence={meeting} />
               </Box>
               <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel bg="brand.50" borderRadius="8px" mt="2">
+            <AccordionPanel {...panelProps}>
               <Text fontWeight="bold">{t('labels.attendees')}</Text>
               <List>
                 {meeting?.attendees?.map(

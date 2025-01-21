@@ -5,7 +5,8 @@ export default function DummyWrapper({ children }) {
   return (
     <Box
       minH="1800px"
-      bg="linear-gradient(0deg, var(--chakra-colors-brand-50) 0%, rgba(255, 255, 255, 1) 100%);"
+      // bg="linear-gradient(0deg, var(--chakra-colors-brand-50) 0%, rgba(255, 255, 255, 1) 100%);"
+      bg="gray.100"
     >
       {children}
     </Box>

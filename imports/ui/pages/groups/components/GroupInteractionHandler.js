@@ -20,18 +20,38 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
 
   const props = { currentUser, group, isAdmin, isMember };
 
-  return (
-    <>
-      {isMember && !isAdmin && <GroupLeaveButton {...props} />}
-
+  if (isAdmin) {
+    return (
       <Slide direction="bottom" in={slideStart} unmountOnExit>
-        <Flex bg="green.50" justify="space-between" p="2" width="100%">
-          {isAdmin && <Box />}
-          {!isMember && <GroupJoinButton />}
+        <Flex bg="gray.200" justify="space-between" p="2" width="100%">
+          <Box />
           <GroupMeetingDates {...props} />
-          {isAdmin && <GroupAdminFunctions />}
+          <GroupAdminFunctions />
         </Flex>
       </Slide>
-    </>
+    );
+  }
+
+  if (isMember) {
+    <>
+      <GroupLeaveButton {...props} />
+
+      <Slide direction="bottom" in={slideStart} unmountOnExit>
+        <Flex bg="gray.200" justify="center" p="2" width="100%">
+          <GroupMeetingDates {...props} />
+        </Flex>
+      </Slide>
+    </>;
+  }
+
+  return (
+    <Slide direction="bottom" in={slideStart} unmountOnExit>
+      <Flex bg="green.50" justify="center" p="2" width="100%">
+        <Box>
+          <GroupJoinButton />
+          <GroupMeetingDates {...props} />
+        </Box>
+      </Flex>
+    </Slide>
   );
 }

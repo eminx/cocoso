@@ -16,17 +16,13 @@ import { useTranslation } from 'react-i18next';
 import FancyDate from '../../../components/FancyDate';
 import Modal from '../../../components/Modal';
 import RsvpContent from './RsvpContent';
+import { accordionProps } from '../../../utils/constants/general';
 
 if (Meteor.isClient) {
   import 'react-table/react-table.css';
 }
 
-const sexyBorder = {
-  bg: 'white',
-  border: '1px solid',
-  borderColor: 'brand.500',
-  color: 'brand.800',
-};
+const { buttonProps, itemProps, panelProps } = accordionProps;
 
 function AccordionDates({ activity, onCloseModal }) {
   const [t] = useTranslation('activities');
@@ -44,18 +40,14 @@ function AccordionDates({ activity, onCloseModal }) {
         {activity?.datesAndTimes?.map(
           (occurrence, occurrenceIndex) =>
             occurrence && (
-              <AccordionItem key={occurrence.startDate + occurrence.startTime} mb="4">
-                <AccordionButton
-                  _hover={{ bg: 'brand.50' }}
-                  _expanded={{ bg: 'brand.500', color: 'white' }}
-                  {...sexyBorder}
-                >
+              <AccordionItem key={occurrence.startDate + occurrence.startTime} {...itemProps}>
+                <AccordionButton {...buttonProps}>
                   <Box flex="1" textAlign="left">
                     <FancyDate occurrence={occurrence} />
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel {...sexyBorder} bg="brand.50">
+                <AccordionPanel {...panelProps}>
                   <Text m="2" fontWeight="bold">
                     {t('public.register.label')}
                   </Text>
@@ -95,7 +87,7 @@ export default function RsvpHandler({ activity }) {
         {activity?.datesAndTimes.map((occurrence) => (
           <Box
             key={occurrence.startDate + occurrence.startTime}
-            {...sexyBorder}
+            {...itemProps}
             color="brand.800"
             p="2"
             mb="4"
