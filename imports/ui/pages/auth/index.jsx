@@ -2,7 +2,18 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Checkbox, Flex, Input, Link, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Checkbox,
+  Flex,
+  Heading,
+  Input,
+  Link,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { z } from 'zod';
 
 import FormField from '../../components/FormField';
@@ -31,6 +42,8 @@ const Login = ({ isSubmitted, onSubmit }) => {
     defaultValues: loginModel,
     resolver: zodResolver(schema),
   });
+
+  // const { errors, isDirty, isSubmitting } = formState;
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -238,6 +251,7 @@ const ResetPassword = ({ onResetPassword }) => {
 
 const AuthContainer = () => {
   const [mode, setMode] = useState('signup');
+  const [t] = useTranslation('accounts');
 
   if (mode === 'signup') {
     return (

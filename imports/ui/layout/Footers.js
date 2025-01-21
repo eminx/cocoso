@@ -31,7 +31,7 @@ export function Footer({ currentHost, isFederationFooter, tc }) {
   const { settings } = currentHost;
 
   return (
-    <Box bg="brand.50" color="brand.900" w="100%">
+    <Box bg="gray.200" color="brand.900" w="100%">
       <Center p="4">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (

@@ -6,8 +6,8 @@ const usernameErrorMessage =
   'Username must be composed of lowercase letters, numbers of a combination of both';
 
 // REGEX
-const regexPassword = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
-const regexUsername = '/^[a-z0-9]+$/i';
+const regexUsername = new RegExp(/^[a-z0-9]+$/i);
+const regexPassword = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/);
 
 // DEFAULT VALUES
 const loginModel = {
@@ -31,9 +31,9 @@ const resetPasswordModel = {
 
 // SCHEMAS
 
-const alphaNumericSchema = z.custom((val) => {
-  return typeof val === 'string' ? /^[a-z0-9]+$/i.test(val) : false;
-});
+// const alphaNumericSchema = z.custom((val) => {
+//   return typeof val === 'string' ? /^[a-z0-9]+$/i.test(val) : false;
+// });
 
 const usernameSchema = {
   username: z
@@ -41,7 +41,8 @@ const usernameSchema = {
       required_error: usernameErrorMessage,
       invalid_type_error: usernameErrorMessage,
     })
-    .regex(new RegExp(regexUsername)),
+    .regex(regexUsername),
+  // .refine((value) => regexUsername.test(value)),
 };
 
 const emailSchema = {
@@ -49,7 +50,7 @@ const emailSchema = {
 };
 
 const usernameOrEmailSchema = {
-  username: z.union([usernameSchema, emailSchema]),
+  username: z.union([usernameSchema.username, emailSchema.email]),
 };
 
 const passwordSchema = {
@@ -58,7 +59,8 @@ const passwordSchema = {
       required_error: passwordErrorMessage,
       invalid_type_error: passwordErrorMessage,
     })
-    .regex(new RegExp(regexPassword)),
+    .regex(regexPassword),
+  // .refine((value) => regexPassword.test(value)),
 };
 
 export {

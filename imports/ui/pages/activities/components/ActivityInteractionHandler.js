@@ -10,24 +10,27 @@ export default function ActivityInteractionHandler({ slideStart }) {
   const { canCreateContent, currentUser } = useContext(StateContext);
   const { activity } = useContext(ActivityContext);
 
-  return (
-    <>
+  const isVerifiedUser = currentUser && canCreateContent;
+
+  if (isVerifiedUser) {
+    return (
       <Slide direction="bottom" in={slideStart} unmountOnExit style={{ zIndex: 10 }}>
         <Flex bg="green.50" justify="space-between" p="4" width="100%">
-          {currentUser && canCreateContent && <Box w="40px" />}
+          <Box w="40px" />
           <RsvpHandler activity={activity} />
-          {currentUser && canCreateContent && (
-            <Box>
-              <ChatButton
-                context="activities"
-                currentUser={currentUser}
-                item={activity}
-                withInput
-              />
-            </Box>
-          )}
+          <Box>
+            <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
+          </Box>
         </Flex>
       </Slide>
-    </>
+    );
+  }
+
+  return (
+    <Slide direction="bottom" in={slideStart} unmountOnExit style={{ zIndex: 10 }}>
+      <Flex bg="green.50" justify="center" p="4" width="100%">
+        <RsvpHandler activity={activity} />
+      </Flex>
+    </Slide>
   );
 }

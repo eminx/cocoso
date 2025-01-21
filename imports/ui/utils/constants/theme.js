@@ -4,11 +4,13 @@ const brand = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 
 const luxxStyle = {
   field: {
-    borderColor: 'brand.500',
-    borderWidth: '1px',
-    borderRadius: '0px',
+    borderColor: 'gray.300',
+    borderWidth: '2px',
+    _hover: {
+      borderColor: 'gray.500',
+    },
     _focus: {
-      borderWidth: '2px',
+      borderColor: 'gray.600',
     },
   },
 };
@@ -69,9 +71,9 @@ const generateTheme = (hue) => {
           focusBorderColor: color,
           variant: 'luxx',
         },
-        // variants: {
-        //   luxx: luxxStyle,
-        // },
+        variants: {
+          luxx: luxxStyle,
+        },
       },
       Menu: {
         baseStyle: {
@@ -95,9 +97,9 @@ const generateTheme = (hue) => {
           focusBorderColor: color,
           variant: 'luxx',
         },
-        // variants: {
-        //   luxx: luxxStyle,
-        // },
+        variants: {
+          luxx: luxxStyle,
+        },
       },
       Select: {
         defaultProps: {
@@ -105,9 +107,9 @@ const generateTheme = (hue) => {
           focusBorderColor: color,
           variant: 'luxx',
         },
-        // variants: {
-        //   luxx: luxxStyle,
-        // },
+        variants: {
+          luxx: luxxStyle,
+        },
       },
       Switch: {
         defaultProps: {
@@ -128,7 +130,7 @@ const generateTheme = (hue) => {
         defaultProps: {
           borderRadius: '0',
           border: '1px solid',
-          borderColor: 'brand.500',
+          borderColor: 'gray.500',
         },
       },
       Textarea: {
@@ -136,9 +138,9 @@ const generateTheme = (hue) => {
           focusBorderColor: color,
           variant: 'luxx',
         },
-        // variants: {
-        //   luxx: luxxStyle.field,
-        // },
+        variants: {
+          luxx: luxxStyle,
+        },
       },
     },
     styles: {
