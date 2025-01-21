@@ -6,7 +6,7 @@ import FederationIconMenu from './FederationIconMenu';
 import { StateContext } from '../LayoutContainer';
 
 export default function TopBarHandler({ slideStart }) {
-  const { isDesktop } = useContext(StateContext);
+  const { isDesktop, platform } = useContext(StateContext);
   const [scrollTop, setScrollTop] = useState(0);
 
   useEffect(() => {
@@ -20,6 +20,8 @@ export default function TopBarHandler({ slideStart }) {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const isFederationLayout = platform?.isFederationLayout;
 
   return (
     <>
@@ -38,7 +40,7 @@ export default function TopBarHandler({ slideStart }) {
           </Flex>
         </Fade>
       </Slide>
-      {!isDesktop && <Box h="48px" w="100%" />}
+      {!isDesktop && isFederationLayout && <Box h="48px" w="100%" />}
     </>
   );
 }
