@@ -8,7 +8,7 @@ import Groups from './group';
 import Activities from '../activities/activity';
 import Platform from '../platform/platform';
 import { getGroupRegistrationEmailBody, getInviteToPrivateGroupEmailBody } from './group.mails';
-import { parseGroupsWithMeetings } from '/imports/ui/utils/shared';
+import { parseGroupsWithMeetings } from '../../ui/utils/shared';
 
 const publicSettings = Meteor.settings.public;
 

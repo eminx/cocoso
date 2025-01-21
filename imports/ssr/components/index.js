@@ -1,27 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { Box, Center, Heading, Img, Text, VStack, Wrap } from '@chakra-ui/react';
-import { Helmet } from 'react-helmet';
-import parseHtml from 'html-react-parser';
 import { parse } from 'query-string';
 
 import WrapperSSR from '../../ui/layout/WrapperSSR';
-import EntrySSR from '../../ui/entry/EntrySSR';
-import Gridder from '../../ui/layout/Gridder';
-import { getCategoriesAssignedToWorks } from '../../ui/utils/shared';
-import TablyCentered from '/imports/ui/components/TablyCentered';
-
-import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
-import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
-import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
-import GroupHybrid from '/imports/ui/entry/GroupHybrid';
-import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
-import ResourceHybrid from '/imports/ui/entry/ResourceHybrid';
-import WorksHybrid from '/imports/ui/listing/WorksHybrid';
-import WorkHybrid from '/imports/ui/entry/WorkHybrid';
-import UsersHybrid from '/imports/ui/listing/UsersHybrid';
-import PageHybrid from '/imports/ui/entry/PageHybrid';
+import ActivityHybrid from '../../ui/entry/ActivityHybrid';
+import GroupsHybrid from '../../ui/listing/GroupsHybrid';
+import GroupHybrid from '../../ui/entry/GroupHybrid';
+import ResourcesHybrid from '../../ui/listing/ResourcesHybrid';
+import ResourceHybrid from '../../ui/entry/ResourceHybrid';
+import WorksHybrid from '../../ui/listing/WorksHybrid';
+import WorkHybrid from '../../ui/entry/WorkHybrid';
+import UsersHybrid from '../../ui/listing/UsersHybrid';
+import PageHybrid from '../../ui/entry/PageHybrid';
+import ActivitiesHybrid from '../../ui/listing/ActivitiesHybrid';
 
 export function Home({ host }) {
   const Host = Meteor.call('getHost', host);
@@ -97,10 +89,6 @@ export function GroupsList({ host, sink }) {
       window.__PRELOADED_STATE__ = ${JSON.stringify({ groups, Host }).replace(/</g, '\\u003c')}
     </script>
   `);
-
-  const pageHeading = Host?.settings?.menu.find((item) => item.name === 'groups')?.label;
-  const pageDescription = Host?.settings?.menu.find((item) => item.name === 'groups')?.description;
-  const metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
 
   return (
     <WrapperSSR Host={Host}>
@@ -197,7 +185,7 @@ export function WorksList({ host, sink }) {
 
 export function Work({ host, sink }) {
   const { workId, usernameSlug } = useParams();
-  const [empty, username] = usernameSlug.split('@');
+  const [, username] = usernameSlug.split('@');
   const work = Meteor.call('getWork', workId, username);
   const documents = Meteor.call('getDocumentsByAttachments', workId);
   const Host = Meteor.call('getHost', host);
@@ -267,7 +255,7 @@ export function User({ host, sink }) {
   if (usernameSlug[0] !== '@') {
     return null;
   }
-  const [empty, username] = usernameSlug.split('@');
+  const [, username] = usernameSlug.split('@');
   const user = Meteor.call('getUserInfo', username, host);
 
   sink.appendToBody(`
@@ -295,7 +283,7 @@ export function Communities({ host, sink }) {
 
   return (
     <WrapperSSR Host={Host}>
-      <CommunitiesHybrid Host={Host} allHosts={allHosts} />
+      {/* <CommunitiesHybrid Host={Host} allHosts={allHosts} /> */}
     </WrapperSSR>
   );
 }

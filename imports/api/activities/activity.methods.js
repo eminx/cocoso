@@ -12,7 +12,8 @@ import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity
 import {
   compareDatesForSortActivities,
   compareDatesForSortActivitiesReverse,
-} from '/imports/ui/utils/shared';
+  parseGroupActivities,
+} from '../../ui/utils/shared';
 
 const filterPrivateGroups = (activities, user) => {
   return activities.filter((act) => {
@@ -43,28 +44,19 @@ Meteor.methods({
           $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
           'datesAndTimes.startDate': { $lte: dateNow },
         }).fetch();
-        const pastActsSorted = pastActs.sort(compareDatesForSortActivitiesReverse);
-        return filterPrivateGroups(pastActs, user);
-      } else {
-        const futureActs = Activities.find({
-          $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-          'datesAndTimes.startDate': { $gte: dateNow },
-        }).fetch();
-        const futureActsSorted = futureActs.sort(compareDatesForSortActivities);
-        return filterPrivateGroups(futureActs, user);
+        const pastActsSorted = parseGroupActivities(pastActs)?.sort(
+          compareDatesForSortActivitiesReverse
+        );
+        return filterPrivateGroups(pastActsSorted, user);
       }
+      const futureActs = Activities.find({
+        $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
+        'datesAndTimes.startDate': { $gte: dateNow },
+      }).fetch();
+      const futureActsSorted = parseGroupActivities(futureActs).sort(compareDatesForSortActivities);
+      return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
       console.log(error);
-      throw new Meteor.Error(error, "Couldn't fetch data");
-    }
-  },
-
-  getAllActivitiesFromAllHosts() {
-    const user = Meteor.user();
-    try {
-      const allActs = Activities.find().fetch();
-      return filterPrivateGroups(allActs, user);
-    } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
@@ -83,19 +75,33 @@ Meteor.methods({
           $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
           'datesAndTimes.startDate': { $lte: dateNow },
         }).fetch();
-        const pastActsSorted = pastActs.sort(compareDatesForSortActivitiesReverse);
-        return filterPrivateGroups(pastActs, user);
-      } else {
-        const futureActs = Activities.find({
-          host,
-          $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-          'datesAndTimes.startDate': { $gte: dateNow },
-        }).fetch();
-        const futureActsSorted = futureActs.sort(compareDatesForSortActivities);
-        return filterPrivateGroups(futureActs, user);
+        const pastActsSorted = parseGroupActivities(pastActs)?.sort(
+          compareDatesForSortActivitiesReverse
+        );
+        return filterPrivateGroups(pastActsSorted, user);
       }
+      const futureActs = Activities.find({
+        host,
+        $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
+        'datesAndTimes.startDate': { $gte: dateNow },
+      }).fetch();
+      const futureActsSorted = parseGroupActivities(futureActs)?.sort(
+        compareDatesForSortActivities
+      );
+      return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
       console.log(error);
+      throw new Meteor.Error(error, "Couldn't fetch data");
+    }
+  },
+
+  getAllActivitiesFromAllHosts() {
+    const user = Meteor.user();
+    try {
+      const allActs = Activities.find().fetch();
+      const allActsParsed = parseGroupActivities(allActs);
+      return filterPrivateGroups(allActsParsed, user);
+    } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
@@ -109,7 +115,8 @@ Meteor.methods({
       const allActs = Activities.find({
         host,
       }).fetch();
-      return filterPrivateGroups(allActs, user);
+      const allActsParsed = parseGroupActivities(allActs);
+      return filterPrivateGroups(allActsParsed, user);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
