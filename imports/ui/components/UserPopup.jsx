@@ -46,7 +46,7 @@ function UserPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-  const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const navigate = useNavigate();
 
   if (!currentUser) {
@@ -107,7 +107,7 @@ function UserPopup() {
             bg="brand.600"
             borderRadius="8px"
             showBorder
-            size="md"
+            size={isDesktop ? 'md' : 'sm'}
             src={currentUser.avatar && currentUser.avatar.src}
             zIndex={isOpen ? '1403' : '10'}
           >

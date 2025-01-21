@@ -26,12 +26,10 @@ import NiceSlider from '../components/NiceSlider';
 
 const publicSettings = Meteor?.settings?.public;
 
-const dimension = 60;
-
 export default function FederationIconMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMyCommunitiesMenuOpen, setIsMyCommunitiesMenuOpen] = useState(false);
-  const { currentHost, currentUser, platform } = useContext(StateContext);
+  const { currentHost, currentUser, isDesktop, platform } = useContext(StateContext);
   const [hostInfo, setHostInfo] = useState(null);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
@@ -55,14 +53,14 @@ export default function FederationIconMenu() {
   const isPortalHost = currentHost?.isPortalHost;
 
   return (
-    <Box zIndex={9}>
+    <Box zIndex={0}>
       <Box ml="2" className="federation-logo">
         <HStack>
           <Image
             fit="contain"
             src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
-            w={`${dimension}px`}
-            h={`${dimension}px`}
+            w={isDesktop ? '54px' : '40px'}
+            h={isDesktop ? '54px' : '40px'}
             zIndex={3}
             onClick={() => handleSetHostInfo()}
           />
@@ -76,20 +74,21 @@ export default function FederationIconMenu() {
               >
                 <MenuButton
                   as={Button}
+                  bg="white"
                   color="brand.700"
                   fontFamily="'Sarabun', sans-serif"
                   fontSize="15px"
                   fontWeight="normal"
                   lineHeight={1.2}
-                  px="2"
-                  rightIcon={<ChevronDownIcon />}
+                  p="2"
+                  rightIcon={<ChevronDownIcon size="18px" />}
                   textAlign="left"
                   variant="link"
                 >
                   {t('profile.myCommunities')}
                 </MenuButton>
 
-                <MenuList zIndex="1405">
+                <MenuList zIndex="1400">
                   {currentUser?.memberships?.map((m) => (
                     <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
                       {m.hostname}

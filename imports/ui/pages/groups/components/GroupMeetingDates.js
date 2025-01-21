@@ -62,6 +62,7 @@ function MeetingDatesContent({ group, isAdmin }) {
           <AccordionItem
             key={meeting._id}
             mb="4"
+            borderTopWidth="0"
             style={{
               display: isFutureMeeting(meeting) ? 'block' : 'none',
             }}
@@ -69,9 +70,9 @@ function MeetingDatesContent({ group, isAdmin }) {
             <AccordionButton
               _hover={{ bg: 'brand.50' }}
               _expanded={{ bg: 'brand.500', color: 'white' }}
-              bg="white"
-              border="1px solid"
-              borderColor="brand.500"
+              bg="gray.100"
+              borderWidth="0"
+              borderRadius="8px"
               color="brand.800"
             >
               <Box flex="1" textAlign="left">
@@ -79,7 +80,7 @@ function MeetingDatesContent({ group, isAdmin }) {
               </Box>
               <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel bg="brand.50" border="1px solid" borderColor="brand.500">
+            <AccordionPanel bg="brand.50" borderRadius="8px" mt="2">
               <Text fontWeight="bold">{t('labels.attendees')}</Text>
               <List>
                 {meeting?.attendees?.map(

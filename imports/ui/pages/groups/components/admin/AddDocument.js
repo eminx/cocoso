@@ -79,8 +79,9 @@ export default function AddDocument({ onClose }) {
         {({ getRootProps, getInputProps, isDragActive }) => (
           <Box
             bg={isDragActive ? 'brand.300' : 'brand.50'}
-            border="2px dashed"
-            borderColor="gray.600"
+            border="1x dashed"
+            borderColor="brand.300"
+            borderRadius="8px"
             cursor="grab"
             h="180px"
             p="4"
@@ -97,9 +98,7 @@ export default function AddDocument({ onClose }) {
                 </Flex>
               </Center>
             ) : (
-              <div style={{ textAlign: 'center' }}>
-                <b>{tc('documents.drop')}</b>
-              </div>
+              <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
             )}
             <input {...getInputProps()} />
           </Box>

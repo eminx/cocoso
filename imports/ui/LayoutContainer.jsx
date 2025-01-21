@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, ChakraProvider, ColorModeProvider, useMediaQuery } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeProvider, useMediaQuery } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import 'moment/locale/en-gb';
@@ -17,6 +17,7 @@ import Header from './layout/Header';
 import HelmetHybrid from './layout/HelmetHybrid';
 import { Footer, PlatformFooter } from './layout/Footers';
 import TopBarHandler from './layout/TopBarHandler';
+import DummyWrapper from './layout/DummyWrapper';
 
 export const StateContext = React.createContext(null);
 
@@ -150,11 +151,11 @@ function LayoutPage({ currentUser, userLoading, children }) {
               setSelectedHue,
             }}
           >
-            <Box bg="gray.100" minH="1800px">
-              <Header Host={currentHost} />
+            <DummyWrapper>
               {rendered && <TopBarHandler currentUser={currentUser} slideStart={rendered} />}
+              <Header Host={currentHost} />
               {children}
-            </Box>
+            </DummyWrapper>
 
             <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} tc={tc} />
             {isFederationFooter && <PlatformFooter platform={platform} />}
