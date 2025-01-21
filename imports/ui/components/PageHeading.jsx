@@ -1,12 +1,8 @@
-import React, { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 import { Box, Center, Heading, Divider } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 export default function PageHeading({ description, heading, children }) {
-  const location = useLocation();
-  const pathname = location.pathname;
-
   return (
     <>
       <Helmet>
@@ -19,7 +15,7 @@ export default function PageHeading({ description, heading, children }) {
         <meta property="og:type" content="article" />
       </Helmet>
       <Center mb="4">
-        <Box>
+        <Box px="2">
           <Center wrap="wrap">
             <Heading as="h1" size="lg" textAlign="center">
               {heading}
