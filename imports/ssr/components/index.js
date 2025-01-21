@@ -38,8 +38,10 @@ export function ActivitiesList({ host, sink }) {
   const { search } = location;
   const { showPast } = parse(search, { parseBooleans: true });
 
-  const activities = Meteor.call('getAllPublicActivities', Boolean(showPast), host);
   const Host = Meteor.call('getHost', host);
+  const activities = Host.isPortalHost
+    ? Meteor.call('getAllPublicActivitiesFromAllHosts', Boolean(showPast))
+    : Meteor.call('getAllPublicActivities', Boolean(showPast), host);
 
   sink.appendToBody(`
     <script>
@@ -82,7 +84,7 @@ export function Activity({ host, sink }) {
 
 export function GroupsList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
-  const groups = Meteor.call('getGroupsWithMeetings', Host.isPortalHost, host);
+  const groups = Meteor.call('getGroupsWithMeetings', Host?.isPortalHost, host);
 
   sink.appendToBody(`
     <script>
@@ -125,7 +127,9 @@ export function Group({ host, sink }) {
 
 export function ResourcesList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
-  const resources = Meteor.call('getResources', host);
+  const resources = Host.isPortalHost
+    ? Meteor.call('getResourcesFromAllHosts')
+    : Meteor.call('getResources', host);
 
   sink.appendToBody(`
     <script>
@@ -168,7 +172,9 @@ export function Resource({ host, sink }) {
 
 export function WorksList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
-  const works = Meteor.call('getAllWorks', host);
+  const works = Host.isPortalHost
+    ? Meteor.call('getAllWorksFromAllHosts')
+    : Meteor.call('getAllWorks', host);
 
   sink.appendToBody(`
     <script>
@@ -230,7 +236,10 @@ export function Page({ host, sink }) {
 
 export function UsersList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
-  const users = Meteor.call('getHostMembers', host);
+  const users = Host.isPortalHost
+    ? Meteor.call('getAllMembersFromAllHosts')
+    : Meteor.call('getHostMembers', host);
+
   const keywords = Meteor.call('getKeywords');
 
   sink.appendToBody(`

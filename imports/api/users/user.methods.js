@@ -8,7 +8,7 @@ import Works from '../works/work';
 import Groups from '../groups/group';
 
 Meteor.methods({
-  getCurrentUser(username) {
+  getCurrentUser() {
     return Meteor.user();
   },
 

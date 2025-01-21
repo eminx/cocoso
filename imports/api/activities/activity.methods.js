@@ -53,7 +53,9 @@ Meteor.methods({
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
         'datesAndTimes.startDate': { $gte: dateNow },
       }).fetch();
-      const futureActsSorted = parseGroupActivities(futureActs).sort(compareDatesForSortActivities);
+      const futureActsSorted = parseGroupActivities(futureActs)?.sort(
+        compareDatesForSortActivities
+      );
       return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
       console.log(error);

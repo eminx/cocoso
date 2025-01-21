@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
 
 import { StateContext } from '../../LayoutContainer';
@@ -13,7 +13,6 @@ function Activities() {
   const [activities, setActivities] = useState(initialActivities);
   const [loading, setLoading] = useState(false);
   let { currentHost } = useContext(StateContext);
-  const navigate = useNavigate();
   const location = useLocation();
   const { search } = location;
   const { showPast } = parse(search, { parseBooleans: true });
@@ -21,10 +20,6 @@ function Activities() {
   if (!currentHost) {
     currentHost = Host;
   }
-
-  useEffect(() => {
-    getActivities();
-  }, [showPast]);
 
   const isPortalHost = Boolean(currentHost?.isPortalHost);
 
@@ -39,11 +34,15 @@ function Activities() {
       }
     } catch (error) {
       console.log(error);
-      message.error(error.reason);
+      // message.error(error.reason);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getActivities();
+  }, [showPast]);
 
   if (loading) {
     return <ContentLoader />;

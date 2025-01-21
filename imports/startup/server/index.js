@@ -10,8 +10,6 @@ import { Helmet } from 'react-helmet';
 import { AppRoutesSSR } from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
-import Activities from '../../api/activities/activity';
-import Chats from '../../api/chats/chat';
 
 const stylee = 'body { background-color: red;}';
 
