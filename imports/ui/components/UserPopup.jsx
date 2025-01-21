@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -23,28 +23,50 @@ import {
 
 import { StateContext } from '../LayoutContainer';
 
+function NotificationLinkItem({ host, item, children }) {
+  if (item.host && host === item.host) {
+    return <Link to={`/${item.context}/${item.contextId}`}>{children}</Link>;
+  }
+
+  return (
+    <CLink href={`https://${item.host || host}/${item.context}/${item.contextId}`}>
+      {children}
+    </CLink>
+  );
+}
+
+const linkButtonProps = {
+  as: 'span',
+  color: 'brand.500',
+  fontWeight: 'normal',
+  variant: 'link',
+};
+
 function UserPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsOpen(true);
-    setTimeout(() => {
-      setIsOpen(false);
-    }, 1);
-  }, []);
+  if (!currentUser) {
+    return (
+      <Link to="/login" style={{ marginRight: '12px' }}>
+        <Button {...linkButtonProps} size="sm">
+          {tc('menu.guest.login')}
+        </Button>
+      </Link>
+    );
+  }
+
+  const closeBothMenus = () => {
+    setIsOpen(false);
+  };
 
   const handleLogout = () => {
     closeBothMenus();
     Meteor.logout();
     navigate('/');
-  };
-
-  const closeBothMenus = () => {
-    setIsOpen(false);
   };
 
   const handleClickAdmin = () => {
@@ -69,14 +91,23 @@ function UserPopup() {
 
   return (
     <Box>
+      <Box position="relative" zIndex={4}>
+        <Modal isOpen={isOpen}>
+          <ModalOverlay
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          />
+        </Modal>
+      </Box>
       <Menu isOpen={isOpen} placement="bottom-end" onOpen={() => setIsOpen(true)}>
-        <MenuButton>
+        <MenuButton onClick={() => setIsOpen(!isOpen)}>
           <Avatar
             _hover={{ bg: 'brand.500' }}
             bg="brand.600"
-            borderRadius="0"
+            borderRadius="8px"
             showBorder
-            size={isDesktop ? 'md' : 'sm'}
+            size="md"
             src={currentUser.avatar && currentUser.avatar.src}
             zIndex={isOpen ? '1403' : '10'}
           >
@@ -157,26 +188,7 @@ function UserPopup() {
           </MenuGroup>
         </MenuList>
       </Menu>
-      <Modal isOpen={isOpen}>
-        <ModalOverlay
-          onClick={() => {
-            setIsOpen(false);
-          }}
-        />
-      </Modal>
     </Box>
-  );
-}
-
-function NotificationLinkItem({ host, item, children }) {
-  if (item.host && host === item.host) {
-    return <Link to={`/${item.context}/${item.contextId}`}>{children}</Link>;
-  }
-
-  return (
-    <CLink href={`https://${item.host || host}/${item.context}/${item.contextId}`}>
-      {children}
-    </CLink>
   );
 }
 

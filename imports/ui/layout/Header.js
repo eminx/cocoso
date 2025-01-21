@@ -11,12 +11,12 @@ export default function Header({ Host, isLogoSmall = false }) {
   }
 
   const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
-  const currentMenuItem = menuItems.find((item) => '/' + item.name === location.pathname);
+  const currentMenuItem = menuItems.find((item) => `/${item.name}` === location.pathname);
 
   return (
     <Box w="100%">
       <Center mb="3">
-        <Link to="/">
+        <Link to="/" style={{ zIndex: 1405 }}>
           {currentHost.logo ? (
             <Box maxHeight={isLogoSmall ? '48px' : '76px'} p="2">
               <Img
@@ -45,11 +45,11 @@ export default function Header({ Host, isLogoSmall = false }) {
                   _hover={{ borderBottom: '1px solid' }}
                   as="span"
                   borderBottom={item?.name === currentMenuItem?.name ? '2px solid' : null}
-                  color="gray.700"
-                  fontFamily="Sarabun, sans-serif"
-                  fontSize={18}
+                  color="brand.700"
+                  fontFamily="Raleway, Sarabun, sans-serif"
+                  fontSize={16}
                   textShadow="1px 1px 1px #fff"
-                  fontWeight="400"
+                  fontWeight="500"
                 >
                   {item.label}
                 </Text>

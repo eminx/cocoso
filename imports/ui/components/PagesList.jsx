@@ -19,12 +19,12 @@ function PagesList({ currentPage, pages }) {
   }
 
   return (
-    <Center zIndex="1400">
+    <Center zIndex="1400" my="6">
       <Menu placement="bottom">
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          size="lg"
+          fontSize="1.8rem"
           variant="ghost"
           whiteSpace="normal"
         >

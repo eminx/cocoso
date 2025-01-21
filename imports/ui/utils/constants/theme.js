@@ -36,6 +36,7 @@ const generateTheme = (hue) => {
         900: brand(hue, '8'),
       },
       gray: {
+        50: 'rgb(250, 250, 250)',
         100: 'rgb(245, 245, 245)',
         200: 'rgb(235, 235, 235)',
         300: 'rgb(225, 225, 225)',
@@ -68,15 +69,15 @@ const generateTheme = (hue) => {
           focusBorderColor: color,
           variant: 'luxx',
         },
-        variants: {
-          luxx: luxxStyle,
-        },
+        // variants: {
+        //   luxx: luxxStyle,
+        // },
       },
       Menu: {
         baseStyle: {
           list: {
-            borderColor: 'brand.500',
-            borderRadius: 0,
+            // borderColor: 'brand.500',
+            // borderRadius: 0,
           },
         },
       },
@@ -84,7 +85,7 @@ const generateTheme = (hue) => {
         baseStyle: {
           dialog: {
             backgroundColor: '#fff',
-            borderRadius: 0,
+            // borderRadius: 0,
           },
         },
       },
@@ -94,9 +95,9 @@ const generateTheme = (hue) => {
           focusBorderColor: color,
           variant: 'luxx',
         },
-        variants: {
-          luxx: luxxStyle,
-        },
+        // variants: {
+        //   luxx: luxxStyle,
+        // },
       },
       Select: {
         defaultProps: {
@@ -104,9 +105,9 @@ const generateTheme = (hue) => {
           focusBorderColor: color,
           variant: 'luxx',
         },
-        variants: {
-          luxx: luxxStyle,
-        },
+        // variants: {
+        //   luxx: luxxStyle,
+        // },
       },
       Switch: {
         defaultProps: {
@@ -135,13 +136,13 @@ const generateTheme = (hue) => {
           focusBorderColor: color,
           variant: 'luxx',
         },
-        variants: {
-          luxx: luxxStyle.field,
-        },
+        // variants: {
+        //   luxx: luxxStyle.field,
+        // },
       },
     },
     styles: {
-      global: (props) => ({
+      global: () => ({
         body: {
           // color: mode('gray.800', 'whiteAlpha.900')(props),
           // bg: mode('gray.100', '#141214')(props),

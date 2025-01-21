@@ -1,44 +1,12 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Center, Heading } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 import NiceSlider from '../components/NiceSlider';
 
-import TablyCentered from '../components/TablyCentered';
 import { parseTitle } from '../utils/shared';
 import PagesList from '../components/PagesList';
-
-export default function PageHybrid({ pages, Host }) {
-  const { pageTitle } = useParams();
-  const currentPage = pages.find((page) => parseTitle(page.title) === pageTitle);
-  const navigate = useNavigate();
-
-  if (!pages || pages.length === 0) {
-    return null;
-  }
-
-  if (!currentPage) {
-    navigate(`/pages/${parseTitle(pages[0].title)}`);
-  }
-
-  if (!currentPage) {
-    return null;
-  }
-
-  const pagesInMenu = Host?.settings?.menu.find((item) => item.name === 'info');
-
-  return (
-    <>
-      <PagesList currentPage={currentPage} pages={pages} />
-      <SimplePage
-        description={currentPage.longDescription}
-        images={currentPage.images}
-        title={currentPage.title}
-      />
-    </>
-  );
-}
 
 function SimplePage({ description, images, title }) {
   return (
@@ -54,7 +22,7 @@ function SimplePage({ description, images, title }) {
         <meta property="og:type" content="article" />
       </Helmet>
 
-      <Center>
+      {/* <Center>
         <Heading
           as="h1"
           lineHeight={1}
@@ -65,7 +33,7 @@ function SimplePage({ description, images, title }) {
         >
           {title}
         </Heading>
-      </Center>
+      </Center> */}
 
       {images && (
         <Center py="2" mb="0">
@@ -80,6 +48,32 @@ function SimplePage({ description, images, title }) {
           </Box>
         </Center>
       )}
+    </>
+  );
+}
+
+export default function PageHybrid({ pages }) {
+  const { pageTitle } = useParams();
+  const currentPage = pages.find((page) => parseTitle(page.title) === pageTitle);
+  const navigate = useNavigate();
+
+  if (!pages || pages.length === 0) {
+    return null;
+  }
+
+  if (!currentPage) {
+    navigate(`/pages/${parseTitle(pages[0].title)}`);
+    return null;
+  }
+
+  return (
+    <>
+      <PagesList currentPage={currentPage} pages={pages} />
+      <SimplePage
+        description={currentPage.longDescription}
+        images={currentPage.images}
+        title={currentPage.title}
+      />
     </>
   );
 }

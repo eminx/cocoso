@@ -12,9 +12,8 @@ export default function Gridder({ items }) {
     items.find((item) => {
       if (item.images) {
         return item.images[0];
-      } else {
-        return null;
       }
+      return null;
     })?.images[0] ||
     null;
 

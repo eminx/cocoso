@@ -1,14 +1,13 @@
 import React from 'react';
 import { Box, ChakraProvider, ColorModeProvider } from '@chakra-ui/react';
-import { Helmet } from 'react-helmet';
-import { I18nextProvider, useSSR } from 'react-i18next';
+import { I18nextProvider } from 'react-i18next';
 
-import { generateTheme } from '/imports/ui/utils/constants/theme';
-import i18n from '/imports/startup/i18n';
+import { generateTheme } from '../utils/constants/theme';
+import i18n from '../../startup/i18n';
 import Header from './Header';
 import HelmetHybrid from './HelmetHybrid';
 
-export default function WrapperSSR({ Host, isEntryPage = false, children }) {
+export default function WrapperSSR({ Host, children }) {
   if (!Host) {
     return null;
   }

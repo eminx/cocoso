@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, ChakraProvider, ColorModeProvider, useMediaQuery } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ import { generateTheme } from './utils/constants/theme';
 import Header from './layout/Header';
 import HelmetHybrid from './layout/HelmetHybrid';
 import { Footer, PlatformFooter } from './layout/Footers';
+import TopBarHandler from './layout/TopBarHandler';
 
 export const StateContext = React.createContext(null);
 
@@ -27,10 +28,17 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [currentHost, setCurrentHost] = useState(initialCurrentHost);
   const [allHosts, setAllHosts] = useState(null);
   const [hue, setHue] = useState('233');
+  const [rendered, setRendered] = useState(false);
   const [tc, i18n] = useTranslation();
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const location = useLocation();
   const { pathname } = location;
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
+  }, []);
 
   useEffect(() => {
     moment.locale(i18n?.language || 'en-gb', {
@@ -144,11 +152,11 @@ function LayoutPage({ currentUser, userLoading, children }) {
           >
             <Box bg="gray.100" minH="1800px">
               <Header Host={currentHost} />
+              {rendered && <TopBarHandler currentUser={currentUser} slideStart={rendered} />}
               {children}
             </Box>
 
             <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} tc={tc} />
-
             {isFederationFooter && <PlatformFooter platform={platform} />}
           </StateContext.Provider>
         </ColorModeProvider>
