@@ -109,6 +109,7 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
       await call('deleteActivity', activityId);
       message.success(t('meeting.success.remove'));
       getGroupById();
+      setDelButtonDisabled(false);
     } catch (error) {
       console.log(error);
       message.error(error.error);
