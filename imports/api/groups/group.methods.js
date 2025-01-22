@@ -37,7 +37,7 @@ Meteor.methods({
     const group = await Groups.findOneAsync({
       _id: groupId,
     });
-    const groupActivities = await Meteor.callAsync('getGroupMeetings', groupId);
+    const groupActivities = await Meteor.callAsync('getGroupMeetingsFuture', groupId);
 
     return {
       ...group,
@@ -56,7 +56,11 @@ Meteor.methods({
     }
     try {
       const retrievedGroups = await Meteor.callAsync('getGroups', isPortalHost, host);
-      const allGroupActivities = await Meteor.callAsync('getAllGroupMeetings', isPortalHost, host);
+      const allGroupActivities = await Meteor.callAsync(
+        'getAllGroupMeetingsFuture',
+        isPortalHost,
+        host
+      );
       const parsedGroups = parseGroupsWithMeetings(retrievedGroups, allGroupActivities);
       return parsedGroups;
     } catch (error) {
@@ -105,11 +109,37 @@ Meteor.methods({
     }));
   },
 
-  getGroupMeetings(groupId) {
+  getAllGroupMeetingsFuture(isPortalHost = false, host) {
+    if (!host) {
+      host = getHost(this);
+    }
+
+    const dateNow = new Date().toISOString();
+
+    try {
+      if (isPortalHost) {
+        return Activities.find({
+          isGroupMeeting: true,
+          'datesAndTimes.startDate': { $gte: dateNow },
+        }).fetch();
+      }
+      return Activities.find({
+        host,
+        isGroupMeeting: true,
+      }).fetch();
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch data");
+    }
+  },
+
+  getGroupMeetingsFuture(groupId) {
     check(groupId, String);
+
+    const dateNow = new Date().toISOString();
     return Activities.find({
-      isGroupMeeting: true,
       groupId,
+      isGroupMeeting: true,
+      'datesAndTimes.startDate': { $gte: dateNow },
       datesAndTimes: { $exists: true, $ne: [] },
     }).fetch();
   },
@@ -238,7 +268,7 @@ Meteor.methods({
 
       Activities.update(
         {
-          groupId: groupId,
+          groupId,
         },
         {
           $set: {

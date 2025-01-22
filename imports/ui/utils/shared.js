@@ -182,15 +182,16 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
     return;
   }
   const { startDate, startTime, endDate, endTime, isMultipleDay } = recurrence;
+
   return {
     activityId: activity._id,
     title: activity.title,
     start: dayjs(startDate + startTime, 'YYYY-MM-DD HH:mm').toDate(),
     end: dayjs(endDate + endTime, 'YYYY-MM-DD HH:mm').toDate(),
-    startDate: startDate,
-    startTime: startTime,
-    endDate: endDate,
-    endTime: endTime,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
     authorName: activity.authorName,
     longDescription: activity.longDescription,
     isMultipleDay: isMultipleDay || startDate !== endDate,
@@ -388,7 +389,6 @@ function parseGroupsWithMeetings(groups, meetings) {
     const allGroupActivities = meetings.filter((meeting) => meeting.groupId === groupId);
     const groupActivitiesFuture = allGroupActivities
       .map((a) => a.datesAndTimes[0])
-      .filter((date) => dayjs(date.startDate)?.isAfter(yesterday))
       .sort(compareMeetingDatesForSort);
     return {
       ...group,
@@ -400,11 +400,7 @@ function parseGroupsWithMeetings(groups, meetings) {
   const groupsWithoutFutureMeetings = [];
   allGroups.forEach((group) => {
     const groupMeetings = group.datesAndTimes;
-    if (
-      groupMeetings &&
-      groupMeetings.length > 0 &&
-      dayjs(groupMeetings[groupMeetings.length - 1].startDate)?.isAfter(yesterday)
-    ) {
+    if (groupMeetings && groupMeetings.length > 0) {
       groupsWithFutureMeetings.push(group);
     } else {
       groupsWithoutFutureMeetings.push(group);
@@ -417,8 +413,8 @@ function parseGroupsWithMeetings(groups, meetings) {
 }
 
 const compareForSortFutureMeeting = (a, b) => {
-  const firstOccurenceA = a.meetings && a.meetings[0];
-  const firstOccurenceB = b.meetings && b.meetings[0];
+  const firstOccurenceA = a.datesAndTimes && a.datesAndTimes[0];
+  const firstOccurenceB = b.datesAndTimes && b.datesAndTimes[0];
   if (!firstOccurenceA || !firstOccurenceB) {
     return -1;
   }

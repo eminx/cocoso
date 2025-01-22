@@ -23,7 +23,7 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
   if (isAdmin) {
     return (
       <Slide direction="bottom" in={slideStart} unmountOnExit>
-        <Flex bg="gray.800" justify="space-between" p="2" width="100%">
+        <Flex bg="gray.800" justify="space-between" p="4" width="100%">
           <Box />
           <GroupMeetingDates {...props} />
           <GroupAdminFunctions />
@@ -38,7 +38,7 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
         <GroupLeaveButton {...props} />
 
         <Slide direction="bottom" in={slideStart} unmountOnExit>
-          <Flex bg="gray.800" justify="center" p="2" width="100%">
+          <Flex bg="gray.800" justify="center" p="4" width="100%">
             <GroupMeetingDates {...props} />
           </Flex>
         </Slide>
