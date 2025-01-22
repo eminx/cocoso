@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -14,12 +15,12 @@ import dayjs from 'dayjs';
 
 import { StateContext } from '../../../LayoutContainer';
 import { ActivityContext } from '../Activity';
-import ConfirmModal from '../../../components/ConfirmModal';
 import Modal from '../../../components/Modal';
 import FancyDate from '../../../components/FancyDate';
 import RsvpForm from './RsvpForm';
-import RsvpList from './RsvpList';
+import RsvpList from './CsvList';
 import { call } from '../../../utils/shared';
+import { message } from '../../../components/message';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
@@ -89,7 +90,7 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
       }
     });
     if (isAlreadyRegistered) {
-      // message.error(t('public.register.alreadyRegistered'));
+      message.error(t('public.register.alreadyRegistered'));
       return;
     }
 
@@ -101,8 +102,8 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
     const numberOfPeople = Number(values.numberOfPeople);
 
     if (occurrence.capacity < registeredNumberOfAttendees + numberOfPeople) {
-      // const capacityLeft = occurrence.capacity - registeredNumberOfAttendees;
-      // message.error(t('public.register.notEnoughSeats', { capacityLeft }));
+      const capacityLeft = occurrence.capacity - registeredNumberOfAttendees;
+      message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
     }
 
@@ -117,10 +118,10 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
       await call('registerAttendance', activity?._id, parsedValues, occurrenceIndex);
       await getActivityById();
       resetRsvpModal();
-      // message.success(t('public.attendance.create'));
+      message.success(t('public.attendance.create'));
     } catch (error) {
-      // console.log(error);
-      // message.error(error.reason);
+      console.log(error);
+      message.error(error.reason);
     }
   };
 
@@ -139,8 +140,8 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
     const numberOfPeople = Number(values.numberOfPeople);
 
     if (occurrence.capacity < registeredNumberOfAttendees + numberOfPeople) {
-      // const capacityLeft = occurrence.capacity - registeredNumberOfAttendees;
-      // message.error(t('public.register.notEnoughSeats', { capacityLeft }));
+      const capacityLeft = occurrence.capacity - registeredNumberOfAttendees;
+      message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
     }
 
@@ -161,10 +162,10 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
       );
       await getActivityById();
       resetRsvpModal();
-      // message.success(t('public.attendance.update'));
+      message.success(t('public.attendance.update'));
     } catch (error) {
-      // console.log(error);
-      // message.error(error.reason);
+      console.log(error);
+      message.error(error.reason);
     }
   };
 
@@ -184,7 +185,7 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
     );
 
     if (!theNonAttendee) {
-      // message.error(t('public.register.notFound'));
+      message.error(t('public.register.notFound'));
       return;
     }
 
@@ -192,15 +193,15 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
       await call('removeAttendance', activity?._id, occurrenceIndex, email, lastName);
       await getActivityById();
       resetRsvpModal();
-      // message.success(t('public.attendance.remove'));
+      message.success(t('public.attendance.remove'));
       setState({
         ...state,
         rsvpCancelModalInfo: null,
         isRsvpCancelModalOn: false,
       });
     } catch (error) {
-      // console.log(error);
-      // message.error(error.reason);
+      console.log(error);
+      message.error(error.reason);
     }
   };
 
@@ -208,14 +209,16 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
     const theOccurrence = activity?.datesAndTimes[rsvpCancelModalInfo.occurrenceIndex];
 
     const attendeeFinder = (attendee) =>
-      attendee.lastName === rsvpCancelModalInfo.lastName &&
-      attendee.email === rsvpCancelModalInfo.email;
+      attendee.lastName.trim().toLowerCase() ===
+        rsvpCancelModalInfo.lastName.trim().toLowerCase() &&
+      attendee.email.trim().toLowerCase() === rsvpCancelModalInfo.email.trim().toLowerCase();
 
     const foundAttendee = theOccurrence.attendees.find(attendeeFinder);
     const foundAttendeeIndex = theOccurrence.attendees.findIndex(attendeeFinder);
 
     if (!foundAttendee) {
-      // message.error(t('public.register.notFound'));
+      message.error(t('public.register.notFound'));
+      alert('Attendee not found');
       return;
     }
 
@@ -273,17 +276,15 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
         </Center>
       )}
 
-      <ConfirmModal
-        hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
+      <Modal
+        isOpen={isRsvpCancelModalOn}
+        size="lg"
         title={
           rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
             ? t('public.cancel.found')
             : t('public.cancel.notFound')
         }
-        visible={isRsvpCancelModalOn}
-        onCancel={() => setState({ ...state, isRsvpCancelModalOn: false })}
-        onClickOutside={() => setState({ ...state, isRsvpCancelModalOn: false })}
-        onConfirm={findRsvpInfo}
+        onClose={() => setState({ ...state, isRsvpCancelModalOn: false })}
       >
         {rsvpCancelModalInfo?.isInfoFound ? (
           <RsvpForm
@@ -325,16 +326,16 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
                 }
               />
             </FormControl>
+
+            <Flex justify="flex-end" pt="6">
+              <Button onClick={findRsvpInfo}>Confirm</Button>
+            </Flex>
           </Box>
         )}
-      </ConfirmModal>
+      </Modal>
 
       <Modal
-        h="90%"
-        isCentered
         isOpen={Boolean(selectedOccurrence)}
-        scrollBehavior="inside"
-        size="3xl"
         title={
           <Box mr="8">
             <FancyDate occurrence={selectedOccurrence} />
@@ -346,14 +347,6 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
           <Heading as="h3" mb="2" size="md">
             {t('public.attendance.label')}
           </Heading>
-          {/* <span>{t('public.acceess.deny')}</span> */}
-          {/* <Flex justify="flex-end" py="2">
-              <ReactToPrint
-                trigger={() => <Button size="sm">{tc('actions.print')}</Button>}
-                content={() => this.printableElement}
-                pageStyle={{ margin: 144 }}
-              />
-            </Flex> */}
           <RsvpList occurrence={selectedOccurrence} title={activity?.title} />
         </Box>
       </Modal>

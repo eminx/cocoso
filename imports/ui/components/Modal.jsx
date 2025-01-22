@@ -14,7 +14,7 @@ function Modal({
   actionButtonLabel,
   actionButtonProps,
   h = '80%',
-  isCentered,
+  isCentered = true,
   isOpen,
   scrollBehavior = 'inside',
   secondaryButtonLabel,

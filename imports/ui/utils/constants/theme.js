@@ -5,6 +5,7 @@ const brand = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 const luxxStyle = {
   field: {
     borderColor: 'gray.300',
+    borderRadius: '6px',
     borderWidth: '2px',
     _hover: {
       borderColor: 'gray.500',
@@ -157,4 +158,4 @@ const generateTheme = (hue) => {
   return theme;
 };
 
-export { generateTheme };
+export default generateTheme;

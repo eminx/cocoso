@@ -7,7 +7,7 @@ import { StaticRouter } from 'react-router-dom/server';
 import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
 
-import { AppRoutesSSR } from '../../ssr/AppRoutes';
+import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
 

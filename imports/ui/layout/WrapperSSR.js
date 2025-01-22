@@ -2,7 +2,7 @@ import React from 'react';
 import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react';
 import { I18nextProvider } from 'react-i18next';
 
-import { generateTheme } from '../utils/constants/theme';
+import generateTheme from '../utils/constants/theme';
 import i18n from '../../startup/i18n';
 import Header from './Header';
 import HelmetHybrid from './HelmetHybrid';

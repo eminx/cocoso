@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
 import { call } from './utils/shared';
-import { generateTheme } from './utils/constants/theme';
+import generateTheme from './utils/constants/theme';
 import Header from './layout/Header';
 import HelmetHybrid from './layout/HelmetHybrid';
 import { Footer, PlatformFooter } from './layout/Footers';

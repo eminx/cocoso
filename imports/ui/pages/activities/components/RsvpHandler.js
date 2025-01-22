@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 
 import FancyDate from '../../../components/FancyDate';
 import Modal from '../../../components/Modal';
-import RsvpContent from './RsvpContent';
+import OccurrenceRsvpContent from './OccurrenceRsvpContent';
 import { accordionProps } from '../../../utils/constants/general';
 
 if (Meteor.isClient) {
@@ -79,7 +79,7 @@ function AccordionDates({ activity, onCloseModal }) {
                 {t('public.register.label')}
               </Text>
               <Box px="2">
-                <RsvpContent
+                <OccurrenceRsvpContent
                   activity={activity}
                   occurrence={occurrence}
                   occurrenceIndex={occurrenceIndex}

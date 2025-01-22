@@ -1,19 +1,12 @@
-import React from 'react';
-import {
-  Box,
-  Button,
-  // FormField,
-  Input,
-  NumberInput,
-  NumberInputField,
-  Stack,
-} from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Box, Button, Input, NumberInput, NumberInputField, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import FormField from '../../../components/FormField';
 
 export default function RsvpForm({ isUpdateMode = false, defaultValues, onSubmit, onDelete }) {
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const { handleSubmit, register, formState } = useForm({
     defaultValues,
   });
@@ -69,7 +62,16 @@ export default function RsvpForm({ isUpdateMode = false, defaultValues, onSubmit
             </Button>
           </Box>
           {isUpdateMode && (
-            <Button colorScheme="red" size="sm" variant="ghost" onClick={onDelete}>
+            <Button
+              colorScheme="red"
+              isLoading={deleteLoading}
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                setDeleteLoading(true);
+                onDelete();
+              }}
+            >
               {t('public.register.form.actions.remove')}
             </Button>
           )}
