@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -21,20 +21,22 @@ import Modal from '../../../components/Modal';
 import { accordionProps } from '../../../utils/constants/general';
 import { message } from '../../../components/message';
 import { call } from '../../../utils/shared';
+import { GroupContext } from '../Group';
 
 const { buttonProps, itemProps, panelProps } = accordionProps;
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 const isFutureMeeting = (meeting) => dayjs(meeting.endDate).isAfter(yesterday);
 
-function MeetingDatesContent({ currentUser, group, isAdmin, isMember }) {
+function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose }) {
+  const [regButtonDisabled, setRegButtonDisabled] = useState(false);
+  const [delButtonDisabled, setDelButtonDisabled] = useState(false);
+  const { getGroupById } = useContext(GroupContext);
   const [t] = useTranslation('groups');
 
   if (!group) {
     return null;
   }
-
-  console.log(group.meetings);
 
   const toggleAttendance = async (activityId, meetingIndex) => {
     if (!currentUser) {
@@ -49,6 +51,8 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember }) {
     if (!group.meetings || group.meetings.length < 1) {
       return;
     }
+
+    setRegButtonDisabled(true);
 
     const isAttending = group.meetings[meetingIndex].attendees
       ?.map((attendee) => attendee.username)
@@ -71,7 +75,10 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember }) {
           meetingAttendee.email,
           meetingAttendee.lastName
         );
+        await getGroupById();
+        setRegButtonDisabled(false);
         message.success(t('meeting.attends.remove'));
+        onClose();
       } catch (error) {
         console.log('error', error);
         message.error(error.error);
@@ -79,11 +86,32 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember }) {
     } else {
       try {
         await call('registerAttendance', activityId, meetingAttendee);
+        await getGroupById();
+        setRegButtonDisabled(false);
         message.success(t('meeting.attends.register'));
+        onClose();
       } catch (error) {
         console.log('error', error);
         message.error(error.error);
       }
+    }
+  };
+
+  const deleteActivity = async (activityId) => {
+    if (!isAdmin) {
+      message.error(t('meeting.access.remove'));
+      return;
+    }
+
+    setDelButtonDisabled(true);
+
+    try {
+      await call('deleteActivity', activityId);
+      message.success(t('meeting.success.remove'));
+      getGroupById();
+    } catch (error) {
+      console.log(error);
+      message.error(error.error);
     }
   };
 
@@ -112,19 +140,19 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember }) {
             <AccordionPanel {...panelProps}>
               {isAdmin ? (
                 <Box>
-                  <Text fontWeight="bold">{t('labels.attendees')}</Text>
+                  <Text fontWeight="bold" mt="1">
+                    {t('labels.attendees')}
+                  </Text>
                   <List>
                     {meeting?.attendees?.map(
                       (attendee) =>
                         attendee && (
-                          <ListItem key={attendee.username}>
+                          <ListItem key={attendee.username} mt="2">
                             <Text as="span" fontWeight="bold">
                               {attendee.username}
                             </Text>
                             {(attendee.firstName || attendee.lastName) && (
-                              <Text as="span">
-                                `${attendee.firstName} ${attendee.lastName}`
-                              </Text>
+                              <Text as="span">{` (${attendee.firstName} ${attendee.lastName})`}</Text>
                             )}
                           </ListItem>
                         )
@@ -133,9 +161,11 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember }) {
 
                   <Center py="2" mt="2">
                     <Button
-                      size="xs"
                       colorScheme="red"
-                      onClick={() => console.log('deleteActivity(meeting._id')}
+                      isLoading={delButtonDisabled}
+                      size="xs"
+                      variant="link"
+                      onClick={() => deleteActivity(meeting.meetingId)}
                     >
                       {t('meeting.actions.remove')}
                     </Button>
@@ -145,8 +175,9 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember }) {
                 <Center p="2">
                   <Button
                     size="sm"
-                    colorScheme={isAttending ? 'green' : 'brand'}
-                    onClick={() => toggleAttendance(meeting._id, meetingIndex)}
+                    colorScheme={isAttending ? 'red' : 'green'}
+                    isLoading={regButtonDisabled}
+                    onClick={() => toggleAttendance(meeting.meetingId, meetingIndex)}
                   >
                     {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}
                   </Button>
@@ -177,7 +208,7 @@ export default function GroupMeetingDates(props) {
 
   if (!isFutureMeetings) {
     return (
-      <Text color="gray.100" my="4" textAlign="center">
+      <Text color="gray.100" my="2" textAlign="center">
         {t('meeting.info.empty')}
       </Text>
     );
@@ -185,7 +216,7 @@ export default function GroupMeetingDates(props) {
 
   return (
     <>
-      <Center color="gray.100" p="1">
+      <Center color="gray.100">
         <Box>
           <Center>
             {isMember && (
@@ -206,12 +237,12 @@ export default function GroupMeetingDates(props) {
             )}
           </Center>
           <Center>
-            <Flex>
-              <Text fontSize="sm" mr="2">
+            <Flex m="2">
+              <Text mr="2" mt="-1px">
                 Next meeting:{' '}
               </Text>
 
-              <Text fontSize="sm" fontWeight="bold">
+              <Text fontWeight="bold">
                 {dayjs(group.meetings[0]?.startDate).format('DD')}{' '}
                 {dayjs(group.meetings[0]?.startDate).format('MMM')}
               </Text>
@@ -245,7 +276,7 @@ export default function GroupMeetingDates(props) {
             {t('meeting.info.member')}
           </Text>
         )}
-        <MeetingDatesContent {...props} />
+        <MeetingDatesContent {...props} onClose={() => setModalOpen(false)} />
       </Modal>
     </>
   );

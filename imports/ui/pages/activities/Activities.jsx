@@ -3,15 +3,15 @@ import { useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
 
 import { StateContext } from '../../LayoutContainer';
-import { ContentLoader } from '../../components/SkeletonLoaders';
 import { call } from '../../utils/shared';
+import { message } from '../../components/message';
 import ActivitiesHybrid from '../../listing/ActivitiesHybrid';
 
 function Activities() {
   const initialActivities = window?.__PRELOADED_STATE__?.activities || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
+
   const [activities, setActivities] = useState(initialActivities);
-  const [loading, setLoading] = useState(false);
   let { currentHost } = useContext(StateContext);
   const location = useLocation();
   const { search } = location;
@@ -34,9 +34,7 @@ function Activities() {
       }
     } catch (error) {
       console.log(error);
-      // message.error(error.reason);
-    } finally {
-      setLoading(false);
+      message.error(error.reason);
     }
   };
 
@@ -44,8 +42,8 @@ function Activities() {
     getActivities();
   }, [showPast]);
 
-  if (loading) {
-    return <ContentLoader />;
+  if (!activities) {
+    return null;
   }
 
   return <ActivitiesHybrid activities={activities} Host={currentHost} showPast={showPast} />;

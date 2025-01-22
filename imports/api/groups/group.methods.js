@@ -41,7 +41,12 @@ Meteor.methods({
 
     return {
       ...group,
-      meetings: groupActivities.map((a) => a.datesAndTimes),
+      meetings: groupActivities.map((a) => {
+        return {
+          ...a.datesAndTimes[0],
+          meetingId: a._id,
+        };
+      }),
     };
   },
 
@@ -51,8 +56,8 @@ Meteor.methods({
     }
     try {
       const retrievedGroups = await Meteor.callAsync('getGroups', isPortalHost, host);
-      const meetings = await Meteor.callAsync('getAllGroupMeetings', isPortalHost, host);
-      const parsedGroups = parseGroupsWithMeetings(retrievedGroups, meetings);
+      const allGroupActivities = await Meteor.callAsync('getAllGroupMeetings', isPortalHost, host);
+      const parsedGroups = parseGroupsWithMeetings(retrievedGroups, allGroupActivities);
       return parsedGroups;
     } catch (error) {
       console.log(error);
@@ -105,6 +110,7 @@ Meteor.methods({
     return Activities.find({
       isGroupMeeting: true,
       groupId,
+      datesAndTimes: { $exists: true, $ne: [] },
     }).fetch();
   },
 

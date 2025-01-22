@@ -384,10 +384,10 @@ function parseGroupActivities(activities) {
 
 function parseGroupsWithMeetings(groups, meetings) {
   const allGroups = groups.map((group) => {
-    const pId = group._id;
-    const allGroupActivities = meetings.filter((meeting) => meeting.groupId === pId);
+    const groupId = group._id;
+    const allGroupActivities = meetings.filter((meeting) => meeting.groupId === groupId);
     const groupActivitiesFuture = allGroupActivities
-      .map((pA) => pA.datesAndTimes[0])
+      .map((a) => a.datesAndTimes[0])
       .filter((date) => dayjs(date.startDate)?.isAfter(yesterday))
       .sort(compareMeetingDatesForSort);
     return {
@@ -396,8 +396,8 @@ function parseGroupsWithMeetings(groups, meetings) {
     };
   });
 
-  const groupsWithoutFutureMeetings = [];
   const groupsWithFutureMeetings = [];
+  const groupsWithoutFutureMeetings = [];
   allGroups.forEach((group) => {
     const groupMeetings = group.datesAndTimes;
     if (
@@ -417,8 +417,11 @@ function parseGroupsWithMeetings(groups, meetings) {
 }
 
 const compareForSortFutureMeeting = (a, b) => {
-  const firstOccurenceA = a.meetings[0];
-  const firstOccurenceB = b.meetings[0];
+  const firstOccurenceA = a.meetings && a.meetings[0];
+  const firstOccurenceB = b.meetings && b.meetings[0];
+  if (!firstOccurenceA || !firstOccurenceB) {
+    return -1;
+  }
   const dateA = new Date(
     firstOccurenceA && firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
   );

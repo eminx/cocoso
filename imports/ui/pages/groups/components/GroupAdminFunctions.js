@@ -38,7 +38,7 @@ export default function GroupAdminFunctions() {
                 icon={<Settings />}
                 variant="ghost"
               />
-              <Text color="brand.500" fontSize="xs">
+              <Text color="brand.400" fontSize="xs">
                 Admin
               </Text>
             </MenuButton>

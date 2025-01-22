@@ -14,8 +14,6 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
   const isMember =
     currentUser && group.members?.some((member) => member.memberId === currentUser._id);
 
-  console.log('interaction handler:', group, isMember);
-
   const isAdmin =
     isMember &&
     group.members?.some((member) => member.memberId === currentUser._id && member.isAdmin);
@@ -50,7 +48,7 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
 
   return (
     <Slide direction="bottom" in={slideStart} unmountOnExit>
-      <Flex bg="green.800" justify="center" p="2" width="100%">
+      <Flex bg="gray.800" justify="center" p="4" width="100%">
         <Box>
           <GroupJoinButton />
           <GroupMeetingDates {...props} />
