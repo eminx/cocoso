@@ -18,7 +18,7 @@ const slideProps = (slideStart) => ({
 
 export default function SlideWidget({ slideStart, children, ...otherProps }) {
   return (
-    <Slide {...slideProps(slideStart)}>
+    <Slide {...slideProps(slideStart)} style={{ zIndex: 10 }}>
       <Flex {...flexProps} {...otherProps}>
         {children}
       </Flex>

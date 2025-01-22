@@ -9,9 +9,11 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Text,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
 
 import FancyDate from '../../../components/FancyDate';
 import Modal from '../../../components/Modal';
@@ -31,40 +33,86 @@ function AccordionDates({ activity, onCloseModal }) {
     return null;
   }
 
+  const noReg = activity.isRegistrationDisabled || !activity.isPublicActivity;
+
+  if (!activity.datesAndTimes || activity.datesAndTimes.length < 1) {
+    return null;
+  }
+
+  if (noReg) {
+    return (
+      <Box>
+        {activity.isRegistrationDisabled ? (
+          <Text mb="2" mt="4" size="sm" textAlign="center">
+            {t('public.register.disabled.true')}
+          </Text>
+        ) : null}
+
+        <Box>
+          {activity?.datesAndTimes?.map((occurrence) => (
+            <Box {...buttonProps} p="2">
+              <FancyDate occurrence={occurrence} />
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <Text mb="2" mt="4" size="sm" textAlign="center">
         {t('public.register.disabled.false')}
       </Text>
       <Accordion allowToggle>
-        {activity?.datesAndTimes?.map(
-          (occurrence, occurrenceIndex) =>
-            occurrence && (
-              <AccordionItem key={occurrence.startDate + occurrence.startTime} {...itemProps}>
-                <AccordionButton {...buttonProps}>
-                  <Box flex="1" textAlign="left">
-                    <FancyDate occurrence={occurrence} />
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel {...panelProps}>
-                  <Text m="2" fontWeight="bold">
-                    {t('public.register.label')}
-                  </Text>
-                  <Box px="2">
-                    <RsvpContent
-                      activity={activity}
-                      occurrence={occurrence}
-                      occurrenceIndex={occurrenceIndex}
-                      onCloseModal={onCloseModal}
-                    />
-                  </Box>
-                </AccordionPanel>
-              </AccordionItem>
-            )
-        )}
+        {activity?.datesAndTimes?.map((occurrence, occurrenceIndex) => (
+          <AccordionItem key={occurrence.startDate + occurrence.startTime} {...itemProps}>
+            <AccordionButton {...buttonProps}>
+              <Box flex="1" textAlign="left">
+                <FancyDate occurrence={occurrence} />
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+
+            <AccordionPanel {...panelProps}>
+              <Text m="2" fontWeight="bold">
+                {t('public.register.label')}
+              </Text>
+              <Box px="2">
+                <RsvpContent
+                  activity={activity}
+                  occurrence={occurrence}
+                  occurrenceIndex={occurrenceIndex}
+                  onCloseModal={onCloseModal}
+                />
+              </Box>
+            </AccordionPanel>
+          </AccordionItem>
+        ))}
       </Accordion>
     </Box>
+  );
+}
+
+function SubInfo({ occurrence }) {
+  const [t] = useTranslation('activities');
+
+  if (!occurrence) {
+    return null;
+  }
+
+  return (
+    <Center>
+      <Flex color="gray.100" mt="2">
+        <Text fontSize="sm" mr="2" mt="-1px">
+          {t('label.next')}:
+        </Text>
+
+        <Text fontSize="sm" fontWeight="bold">
+          {dayjs(occurrence?.startDate).format('DD')} {dayjs(occurrence?.startDate).format('MMM')}
+        </Text>
+      </Flex>
+    </Center>
   );
 }
 
@@ -76,49 +124,32 @@ export default function RsvpHandler({ activity }) {
     return null;
   }
 
-  if ((activity && activity.isRegistrationDisabled) || !activity.isPublicActivity) {
-    return (
-      <div>
-        {activity?.isRegistrationDisabled && (
-          <Text mb="2" size="sm" textAlign="center">
-            {t('public.register.disabled.true')}
-          </Text>
-        )}
-        {activity?.datesAndTimes.map((occurrence) => (
-          <Box
-            key={occurrence.startDate + occurrence.startTime}
-            {...itemProps}
-            color="brand.800"
-            p="2"
-            mb="4"
-          >
-            <FancyDate occurrence={occurrence} />
-          </Box>
-        ))}
-      </div>
-    );
-  }
+  const noReg = activity.isRegistrationDisabled || !activity.isPublicActivity;
 
   return (
     <>
-      <Center>
-        <Button
-          borderColor="green.200"
-          borderWidth="2px"
-          colorScheme="green"
-          height="48px"
-          size="lg"
-          width="240px"
-          onClick={() => setModalOpen(true)}
-        >
-          {t('label.rsvp')}
-        </Button>
-      </Center>
+      <Box>
+        <Center>
+          <Button
+            borderColor="green.200"
+            borderWidth="2px"
+            colorScheme="green"
+            height="48px"
+            size="lg"
+            width="240px"
+            onClick={() => setModalOpen(true)}
+          >
+            {noReg ? t('public.labels.dates') : t('public.labels.datesAndRegistration')}
+          </Button>
+        </Center>
+
+        <SubInfo occurrence={activity.datesAndTimes[0]} />
+      </Box>
 
       <Modal
         isOpen={modalOpen}
         size="lg"
-        title={t('public.register.label')}
+        title={noReg ? t('public.labels.dates') : t('public.labels.datesAndRegistration')}
         onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >
