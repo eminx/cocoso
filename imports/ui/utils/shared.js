@@ -399,11 +399,11 @@ function parseGroupsWithMeetings(groups, meetings) {
   const groupsWithoutFutureMeetings = [];
   const groupsWithFutureMeetings = [];
   allGroups.forEach((group) => {
-    const meetings = group.datesAndTimes;
+    const groupMeetings = group.datesAndTimes;
     if (
-      meetings &&
-      meetings.length > 0 &&
-      dayjs(meetings[meetings.length - 1].startDate)?.isAfter(yesterday)
+      groupMeetings &&
+      groupMeetings.length > 0 &&
+      dayjs(groupMeetings[groupMeetings.length - 1].startDate)?.isAfter(yesterday)
     ) {
       groupsWithFutureMeetings.push(group);
     } else {

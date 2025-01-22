@@ -14,6 +14,8 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
   const isMember =
     currentUser && group.members?.some((member) => member.memberId === currentUser._id);
 
+  console.log('interaction handler:', group, isMember);
+
   const isAdmin =
     isMember &&
     group.members?.some((member) => member.memberId === currentUser._id && member.isAdmin);
@@ -23,7 +25,7 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
   if (isAdmin) {
     return (
       <Slide direction="bottom" in={slideStart} unmountOnExit>
-        <Flex bg="gray.200" justify="space-between" p="2" width="100%">
+        <Flex bg="gray.800" justify="space-between" p="2" width="100%">
           <Box />
           <GroupMeetingDates {...props} />
           <GroupAdminFunctions />
@@ -33,20 +35,22 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
   }
 
   if (isMember) {
-    <>
-      <GroupLeaveButton {...props} />
+    return (
+      <>
+        <GroupLeaveButton {...props} />
 
-      <Slide direction="bottom" in={slideStart} unmountOnExit>
-        <Flex bg="gray.200" justify="center" p="2" width="100%">
-          <GroupMeetingDates {...props} />
-        </Flex>
-      </Slide>
-    </>;
+        <Slide direction="bottom" in={slideStart} unmountOnExit>
+          <Flex bg="gray.800" justify="center" p="2" width="100%">
+            <GroupMeetingDates {...props} />
+          </Flex>
+        </Slide>
+      </>
+    );
   }
 
   return (
     <Slide direction="bottom" in={slideStart} unmountOnExit>
-      <Flex bg="green.50" justify="center" p="2" width="100%">
+      <Flex bg="green.800" justify="center" p="2" width="100%">
         <Box>
           <GroupJoinButton />
           <GroupMeetingDates {...props} />

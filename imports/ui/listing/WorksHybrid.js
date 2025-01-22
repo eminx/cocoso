@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import Tabs from '../components/Tabs';
 import PageHeading from '../components/PageHeading';
 import PopupHandler from './PopupHandler';
 import InfiniteScroller from '../components/InfiniteScroller';
@@ -13,9 +12,8 @@ import { getCategoriesAssignedToWorks } from '../utils/shared';
 
 export default function WorksHybrid({ works, Host }) {
   const [modalItem, setModalItem] = useState(null);
-  const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category');
 
   const setCategoryFilter = (categoryFilter) => {
@@ -28,20 +26,15 @@ export default function WorksHybrid({ works, Host }) {
   const getFilteredWorks = () => {
     if (!category || category === 'all') {
       return works;
-    } else {
-      return works.filter((work) => {
-        return work.category && work.category.label === category.toLowerCase();
-      });
     }
+    return works.filter((work) => work.category && work.category.label === category.toLowerCase());
   };
 
   const categories = getCategoriesAssignedToWorks(works);
 
-  const worksWithCategoryColors = getFilteredWorks().map((work, index) => {
-    const category = categories.find((category) => {
-      return category.label && category.label === work?.category?.label;
-    });
-    const categoryColor = category?.color;
+  const worksWithCategoryColors = getFilteredWorks().map((work) => {
+    const currentCategory = categories.find((cat) => cat?.label === work?.category?.label);
+    const categoryColor = currentCategory?.color;
     return {
       ...work,
       categoryColor,

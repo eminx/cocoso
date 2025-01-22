@@ -7,6 +7,7 @@ import {
   FormLabel,
   Select,
   Switch,
+  Text,
   Textarea,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
@@ -245,6 +246,7 @@ function AddMeetingForm({
   return (
     <>
       <Box bg="gray.100" borderRadius="8px" p="4">
+        <Text textAlign="center">{t('meeting.info.admin')}</Text>
         <DateTimePicker value={newMeeting} onChange={handleDateChange} />
 
         <FormControl alignItems="center" display="flex" my="4">

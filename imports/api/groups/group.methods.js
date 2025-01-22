@@ -301,6 +301,7 @@ Meteor.methods({
           },
         },
       });
+
       Meteor.users.update(user._id, {
         $addToSet: {
           groups: {
@@ -310,6 +311,9 @@ Meteor.methods({
           },
         },
       });
+
+      console.log(theGroup);
+
       Meteor.call('sendEmail', user._id, `"${theGroup.title}", ${currentHostName}`, emailBody);
     } catch (error) {
       console.log(error);

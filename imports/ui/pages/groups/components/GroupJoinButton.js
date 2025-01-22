@@ -25,7 +25,8 @@ export default function GroupJoinButton() {
 
     try {
       await call('joinGroup', group._id);
-      getGroupById();
+      await getGroupById();
+      setModalOpen(false);
       // message.success(t('message.added'));
     } catch (error) {
       // message.error(error.error || error.reason);
