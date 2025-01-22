@@ -74,7 +74,8 @@ export function ChatButton({ context, currentUser, item, withInput }) {
             _hover={{ bg: 'brand.100' }}
             _active={{ bg: 'brand.200' }}
             bg="brand.50"
-            border="1px solid #fff"
+            border="1px solid"
+            borderColor="brand.300"
             fontSize="32px"
             icon={<MessagesSquare />}
             isRound

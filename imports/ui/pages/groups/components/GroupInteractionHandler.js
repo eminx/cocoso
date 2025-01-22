@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Flex, Slide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import GroupMeetingDates from './GroupMeetingDates';
 import GroupJoinButton from './GroupJoinButton';
 import GroupLeaveButton from './GroupLeaveButton';
 import GroupAdminFunctions from './GroupAdminFunctions';
+import SlideWidget from '../../../entry/SlideWidget';
 
 export default function GroupInteractionHandler({ currentUser, group, slideStart }) {
   if (!group) {
@@ -22,13 +23,11 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
 
   if (isAdmin) {
     return (
-      <Slide direction="bottom" in={slideStart} unmountOnExit>
-        <Flex bg="gray.800" justify="space-between" p="4" width="100%">
-          <Box />
-          <GroupMeetingDates {...props} />
-          <GroupAdminFunctions />
-        </Flex>
-      </Slide>
+      <SlideWidget justify="space-between" slideStart={slideStart}>
+        <Box />
+        <GroupMeetingDates {...props} />
+        <GroupAdminFunctions />
+      </SlideWidget>
     );
   }
 
@@ -37,23 +36,19 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
       <>
         <GroupLeaveButton {...props} />
 
-        <Slide direction="bottom" in={slideStart} unmountOnExit>
-          <Flex bg="gray.800" justify="center" p="4" width="100%">
-            <GroupMeetingDates {...props} />
-          </Flex>
-        </Slide>
+        <SlideWidget slideStart={slideStart}>
+          <GroupMeetingDates {...props} />
+        </SlideWidget>
       </>
     );
   }
 
   return (
-    <Slide direction="bottom" in={slideStart} unmountOnExit>
-      <Flex bg="gray.800" justify="center" p="4" width="100%">
-        <Box>
-          <GroupJoinButton />
-          <GroupMeetingDates {...props} />
-        </Box>
-      </Flex>
-    </Slide>
+    <SlideWidget slideStart={slideStart}>
+      <Box>
+        <GroupJoinButton />
+        <GroupMeetingDates {...props} />
+      </Box>
+    </SlideWidget>
   );
 }

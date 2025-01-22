@@ -10,6 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Settings from 'lucide-react/dist/esm/icons/settings';
+import { useTranslation } from 'react-i18next';
 
 import AddDocument from './admin/AddDocument';
 import AddMeeting from './admin/AddMeeting';
@@ -17,6 +18,7 @@ import ManageMembers from './admin/ManageMembers';
 
 export default function GroupAdminFunctions() {
   const [popup, setPopup] = useState('none');
+  const [t] = useTranslation('groups');
 
   const props = {
     onClose: () => setPopup('none'),
@@ -25,7 +27,7 @@ export default function GroupAdminFunctions() {
   return (
     <>
       <Center position="relative">
-        <Box w="100px" position="absolute">
+        <Box pt="2" position="absolute" top="0" w="100px">
           <Menu>
             <MenuButton size="sm">
               <IconButton
@@ -39,13 +41,13 @@ export default function GroupAdminFunctions() {
                 variant="ghost"
               />
               <Text color="brand.400" fontSize="xs">
-                Admin
+                {t('admin.admin')}
               </Text>
             </MenuButton>
             <MenuList size="lg">
-              <MenuItem onClick={() => setPopup('document')}>Add Document</MenuItem>
-              <MenuItem onClick={() => setPopup('meeting')}>Add Meeting</MenuItem>
-              <MenuItem onClick={() => setPopup('members')}>Manage Members</MenuItem>
+              <MenuItem onClick={() => setPopup('document')}>{t('admin.add_document')}</MenuItem>
+              <MenuItem onClick={() => setPopup('meeting')}>{t('admin.add_meeting')}</MenuItem>
+              <MenuItem onClick={() => setPopup('members')}>{t('admin.manage_members')}</MenuItem>
             </MenuList>
           </Menu>
         </Box>

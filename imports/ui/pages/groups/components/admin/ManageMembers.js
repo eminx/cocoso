@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../../../../components/Modal';
 import NiceList from '../../../../components/NiceList';
 import { call } from '../../../../utils/shared';
+import { message } from '../../../../components/message';
 import { GroupContext } from '../../Group';
 
 export default function ManageMembers({ onClose }) {
@@ -15,10 +16,10 @@ export default function ManageMembers({ onClose }) {
     try {
       await call('setAsAGroupAdmin', group._id, username);
       getGroupById();
-      // message.success(t('meeting.success.admin'));
+      message.success(t('meeting.success.admin'));
     } catch (error) {
-      // console.log(error);
-      // message.error(error.error);
+      console.log(error);
+      message.error(error.error);
     }
   };
 

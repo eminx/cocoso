@@ -238,12 +238,12 @@ export default function GroupMeetingDates(props) {
             )}
           </Center>
           <Center>
-            <Flex m="2">
-              <Text mr="2" mt="-1px">
-                Next meeting:{' '}
+            <Flex mt="2">
+              <Text fontSize="sm" mr="2" mt="-1px">
+                {t('labels.next_meeting')}
               </Text>
 
-              <Text fontWeight="bold">
+              <Text fontSize="sm" fontWeight="bold">
                 {dayjs(group.meetings[0]?.startDate).format('DD')}{' '}
                 {dayjs(group.meetings[0]?.startDate).format('MMM')}
               </Text>
@@ -252,12 +252,12 @@ export default function GroupMeetingDates(props) {
           <Center>
             {!isMember && (
               <Button
-                colorScheme="blue"
+                color="green.200"
                 fontSize="sm"
                 variant="link"
                 onClick={() => setModalOpen(true)}
               >
-                See all meetings
+                {t('labels.meeting_dates')}
               </Button>
             )}
           </Center>
