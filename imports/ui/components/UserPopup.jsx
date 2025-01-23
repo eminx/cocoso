@@ -91,15 +91,6 @@ function UserPopup() {
 
   return (
     <Box>
-      <Box position="relative" zIndex={4}>
-        <Modal isOpen={isOpen}>
-          <ModalOverlay
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          />
-        </Modal>
-      </Box>
       <Menu isOpen={isOpen} placement="bottom-end" onOpen={() => setIsOpen(true)}>
         <MenuButton onClick={() => setIsOpen(!isOpen)}>
           <Avatar

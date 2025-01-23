@@ -35,7 +35,7 @@ export default function AdminFunctions({ menuItems }) {
   return (
     <>
       <Center position="relative">
-        <Box pt="2" position="absolute" top="0" w="100px">
+        <Box pt="2" position="absolute" top="-8px" w="100px">
           <Menu closeOnSelect closeOnBlur isOpen={isOpen} onClose={() => setIsOpen(false)}>
             <MenuButton size="sm" onClick={() => setIsOpen(!isOpen)}>
               <IconButton
@@ -48,7 +48,7 @@ export default function AdminFunctions({ menuItems }) {
                 icon={<Settings />}
                 variant="ghost"
               />
-              <Text color="brand.300" fontSize="xs">
+              <Text color="brand.200" fontSize="xs">
                 {/* {t('admin.admin')} */}
                 Admin
               </Text>
