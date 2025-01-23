@@ -91,7 +91,21 @@ function UserPopup() {
 
   return (
     <Box>
-      <Menu isOpen={isOpen} placement="bottom-end" onOpen={() => setIsOpen(true)}>
+      {/* <Box position="relative" zIndex={2}>
+        <Modal isOpen={isOpen} zIndex={1400}>
+          <ModalOverlay
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          />
+        </Modal>
+      </Box> */}
+      <Menu
+        isOpen={isOpen}
+        placement="bottom-end"
+        onOpen={() => setIsOpen(true)}
+        onClose={() => setIsOpen(false)}
+      >
         <MenuButton onClick={() => setIsOpen(!isOpen)}>
           <Avatar
             _hover={{ bg: 'brand.500' }}

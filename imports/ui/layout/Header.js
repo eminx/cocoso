@@ -27,7 +27,7 @@ export default function Header({ Host, isLogoSmall = false }) {
   return (
     <Box w="100%">
       <Center mb="2">
-        <Link to="/" style={{ zIndex: 1400 }}>
+        <Link to="/" style={{ zIndex: 1405 }}>
           {currentHost.logo ? (
             <Box maxHeight={isLogoSmall ? '48px' : '76px'} p="2">
               <Img
@@ -48,7 +48,7 @@ export default function Header({ Host, isLogoSmall = false }) {
       </Center>
 
       <Center p="4">
-        <HStack alignItems="center" justify="center" mb="2" wrap="wrap" style={{ zIndex: 1400 }}>
+        <HStack alignItems="center" justify="center" mb="2" wrap="wrap" style={{ zIndex: 1405 }}>
           {menuItems?.map((item) => (
             <Link key={item.name} to={`/${item.name}`}>
               <Box as="span" px="2">

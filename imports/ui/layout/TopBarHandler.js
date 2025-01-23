@@ -23,7 +23,7 @@ export default function TopBarHandler({ slideStart }) {
 
   return (
     <>
-      <Slide direction="top" in={slideStart} unmountOnExit>
+      <Slide direction="top" in={slideStart} unmountOnExit style={{ zIndex: 1405 }}>
         {/* <Box position="relative">
         <Box bg="brand.50" position="absolute" top="0" w="100%" h="48px" zIndex={0} />
       </Box> */}
