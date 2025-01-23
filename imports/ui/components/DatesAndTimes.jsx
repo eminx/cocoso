@@ -1,9 +1,7 @@
 import React from 'react';
 import {
   Box,
-  Center,
   Code,
-  Flex,
   FormControl,
   FormLabel,
   IconButton,
@@ -16,10 +14,38 @@ import {
 import DeleteIcon from 'lucide-react/dist/esm/icons/x';
 import { useTranslation } from 'react-i18next';
 
-// import DatePicker from './DatePicker';
 import DateTimePicker from './DateTimePicker';
 
 const maxAttendees = 1000;
+
+function ConflictMarker({ occurrence, t }) {
+  return (
+    <Box>
+      <Text fontSize="sm" textAlign="center" fontWeight="bold">
+        {t('form.conflict.alert')}
+        <br />
+      </Text>
+      <Code
+        colorScheme={occurrence.isConflictOK ? 'orange' : 'red'}
+        mx="auto"
+        display="block"
+        width="fit-content"
+        mt="4"
+      >
+        {occurrence.conflict.startDate === occurrence.conflict.endDate
+          ? occurrence.conflict.startDate
+          : `${occurrence.conflict.startDate}-${occurrence.conflict.endDate}`}
+        {', '}
+        {`${occurrence.conflict.startTime} – ${occurrence.conflict.endTime}`}
+      </Code>
+      {occurrence.isConflictOK && (
+        <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center">
+          {t('form.conflict.notExclusiveInfo')}
+        </Text>
+      )}
+    </Box>
+  );
+}
 
 function DatesAndTimes({
   occurrence,
@@ -41,19 +67,19 @@ function DatesAndTimes({
 
   const getBorderColor = () => {
     if (!occurrence.conflict) {
-      return 'green.300';
+      return 'gray.400';
     } else if (occurrence.isConflictOK) {
       return 'orange';
-    } else {
-      return 'red';
     }
+    return 'red';
   };
 
   return (
     <Box
       bg="white"
-      borderWidth="1px"
       borderColor={getBorderColor()}
+      borderRadius="8px"
+      borderWidth="1px"
       mb="4"
       p="4"
       position="relative"
@@ -104,35 +130,6 @@ function DatesAndTimes({
       </Wrap>
 
       {occurrence.conflict && <ConflictMarker occurrence={occurrence} t={t} />}
-    </Box>
-  );
-}
-
-function ConflictMarker({ occurrence, t }) {
-  return (
-    <Box>
-      <Text fontSize="sm" textAlign="center" fontWeight="bold">
-        {t('form.conflict.alert')}
-        <br />
-      </Text>
-      <Code
-        colorScheme={occurrence.isConflictOK ? 'orange' : 'red'}
-        mx="auto"
-        display="block"
-        width="fit-content"
-        mt="4"
-      >
-        {occurrence.conflict.startDate === occurrence.conflict.endDate
-          ? occurrence.conflict.startDate
-          : `${occurrence.conflict.startDate}-${occurrence.conflict.endDate}`}
-        {', '}
-        {`${occurrence.conflict.startTime} – ${occurrence.conflict.endTime}`}
-      </Code>
-      {occurrence.isConflictOK && (
-        <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center">
-          {t('form.conflict.notExclusiveInfo')}
-        </Text>
-      )}
     </Box>
   );
 }

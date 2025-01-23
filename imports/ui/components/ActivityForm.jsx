@@ -41,7 +41,6 @@ function ActivityForm({
   datesAndTimes,
   defaultValues,
   images,
-  isNew,
   isButtonDisabled,
   isPublicActivity,
   isSubmitting,
@@ -54,13 +53,13 @@ function ActivityForm({
   setSelectedResource,
 }) {
   const { currentHost } = useContext(StateContext);
+  const { control, handleSubmit, getValues, register } = useForm({
+    defaultValues,
+  });
+
   useEffect(() => {
     setSelectedResource(getValues('resourceId'));
   }, [defaultValues]);
-
-  const { control, formState, handleSubmit, getValues, register } = useForm({
-    defaultValues,
-  });
 
   const [tc] = useTranslation('common');
   const [t] = useTranslation('activities');
@@ -72,9 +71,7 @@ function ActivityForm({
   };
 
   const removeOccurrence = (index) => {
-    const newDatesAndTimes = datesAndTimes.filter((item, i) => {
-      return i !== index;
-    });
+    const newDatesAndTimes = datesAndTimes.filter((item, i) => i !== index);
 
     setDatesAndTimes(newDatesAndTimes);
   };
@@ -83,9 +80,8 @@ function ActivityForm({
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (index === occurrenceIndex) {
         return date;
-      } else {
-        return item;
       }
+      return item;
     });
 
     setDatesAndTimes(newDatesAndTimes);
@@ -94,7 +90,10 @@ function ActivityForm({
   const handleCapacityChange = (value, occurrenceIndex) => {
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (occurrenceIndex === index) {
-        item.capacity = Number(value);
+        return {
+          ...item,
+          capacity: Number(value),
+        };
       }
       return item;
     });
@@ -105,11 +104,11 @@ function ActivityForm({
   const handleRangeSwitch = (event, occurrenceIndex) => {
     const value = event.target.checked;
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
-      if (occurrenceIndex === index) {
-        item.isRange = value;
-        if (!value) {
-          item.endDate = item.startDate;
-        }
+      if (occurrenceIndex === index && !value) {
+        return {
+          ...item,
+          endDate: item.startDate,
+        };
       }
       return item;
     });
@@ -143,14 +142,14 @@ function ActivityForm({
               {resources
                 .sort(localeSort)
                 .filter((r) => r.isBookable)
-                .map((option, index) => (
+                .map((option) => (
                   <option
                     key={option._id}
                     selected={option._id === defaultValues.resourceId}
                     value={option._id}
                   >
                     {option.isCombo
-                      ? `${option.label}: [${option.resourcesForCombo.map((res, i) => res.label)}]`
+                      ? `${option.label}: [${option.resourcesForCombo.map((res) => res.label)}]`
                       : option.label}
                   </option>
                 ))}
@@ -187,7 +186,7 @@ function ActivityForm({
                 />
               );
             })}
-            <Center bg="white" p="6">
+            <Center bg="white" borderRadius="8px" p="6">
               <IconButton bg="gray.700" size="lg" onClick={addRecurrence} icon={<AddIcon />} />
             </Center>
           </Box>

@@ -4,8 +4,8 @@ import { Box } from '@chakra-ui/react';
 import { StateContext } from '../../../LayoutContainer';
 import { ActivityContext } from '../Activity';
 import RsvpHandler from './RsvpHandler';
-import { ChatButton } from '../../../chattery/ChatHandler';
 import SlideWidget from '../../../entry/SlideWidget';
+import ActivityAdminFunctions from './ActivityAdminFunctions';
 
 export default function ActivityInteractionHandler({ slideStart }) {
   const { canCreateContent, currentUser } = useContext(StateContext);
@@ -19,7 +19,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
         <Box w="40px" />
         <RsvpHandler activity={activity} />
         <Box>
-          <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
+          <ActivityAdminFunctions />
         </Box>
       </SlideWidget>
     );
