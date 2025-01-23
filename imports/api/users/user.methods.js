@@ -8,10 +8,6 @@ import Works from '../works/work';
 import Groups from '../groups/group';
 
 Meteor.methods({
-  getCurrentUser() {
-    return Meteor.user();
-  },
-
   getUserInfo(username, host) {
     check(username, String);
     if (!host) {

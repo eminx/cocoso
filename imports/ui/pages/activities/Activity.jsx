@@ -5,6 +5,7 @@ import { call } from '../../utils/shared';
 import ActivityHybrid from '../../entry/ActivityHybrid';
 import ActivityInteractionHandler from './components/ActivityInteractionHandler';
 import { StateContext } from '../../LayoutContainer';
+import { ContentLoader } from '../../components/SkeletonLoaders';
 
 export const ActivityContext = createContext(null);
 
@@ -15,11 +16,7 @@ export default function Activity() {
   const [activity, setActivity] = useState(initialActivity);
   const [rendered, setRendered] = useState(false);
   const { activityId } = useParams();
-  let { currentHost } = useContext(StateContext);
-
-  if (!currentHost) {
-    currentHost = Host;
-  }
+  const { currentHost, currentUser } = useContext(StateContext);
 
   useLayoutEffect(() => {
     setTimeout(() => {
@@ -31,7 +28,7 @@ export default function Activity() {
     try {
       setActivity(await call('getActivityById', activityId));
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       // message.error(error.reason);
     }
   };
@@ -40,10 +37,14 @@ export default function Activity() {
     getActivityById();
   }, []);
 
-  const isGroupMeeting = activity?.isGroupMeeting;
+  if (!activity) {
+    return <ContentLoader />;
+  }
+
+  const isGroupMeeting = activity.isGroupMeeting;
 
   if (isGroupMeeting) {
-    return <Navigate to={`/groups/${activity?.groupId}/info`} />;
+    return <Navigate to={`/groups/${activity.groupId}/info`} />;
   }
 
   const contextValue = {
@@ -53,7 +54,11 @@ export default function Activity() {
 
   return (
     <>
-      <ActivityHybrid activity={activity} Host={currentHost} />
+      <ActivityHybrid
+        activity={activity}
+        currentUser={rendered ? currentUser : null}
+        Host={currentHost || Host}
+      />
 
       {rendered && (
         <ActivityContext.Provider value={contextValue}>

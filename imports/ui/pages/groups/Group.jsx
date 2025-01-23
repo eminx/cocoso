@@ -12,26 +12,18 @@ export const GroupContext = createContext(null);
 export default function Group() {
   const initialGroup = window?.__PRELOADED_STATE__?.group || null;
   const Host = window?.__PRELOADED_STATE__?.Host || null;
-  const user = window?.__PRELOADED_STATE__?.currentUser || null;
 
   const [group, setGroup] = useState(initialGroup);
   const [rendered, setRendered] = useState(false);
   const { groupId } = useParams();
-  let { currentHost, currentUser } = useContext(StateContext);
-
-  if (!currentHost) {
-    currentHost = Host;
-  }
-  if (!currentUser) {
-    currentUser = user;
-  }
+  const { currentHost, currentUser } = useContext(StateContext);
 
   const getGroupById = async () => {
     try {
       const response = await call('getGroupWithMeetings', groupId);
       setGroup(response);
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       // message.error(error.reason);
     }
   };
@@ -57,7 +49,11 @@ export default function Group() {
 
   return (
     <>
-      <GroupHybrid currentUser={currentUser} group={group} Host={currentHost} />
+      <GroupHybrid
+        currentUser={rendered ? currentUser : null}
+        group={group}
+        Host={currentHost || Host}
+      />
       {rendered && (
         <GroupContext.Provider value={contextValue}>
           <GroupInteractionHandler currentUser={currentUser} group={group} slideStart={rendered} />

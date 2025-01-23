@@ -103,14 +103,10 @@ export function Group({ host, sink }) {
   const { groupId } = useParams();
   const group = Meteor.call('getGroupWithMeetings', groupId);
   const Host = Meteor.call('getHost', host);
-  const currentUser = Meteor.call('getCurrentUser');
 
   sink.appendToBody(`
     <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ currentUser, group, Host }).replace(
-        /</g,
-        '\\u003c'
-      )}
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ group, Host }).replace(/</g, '\\u003c')}
     </script>
   `);
 
@@ -120,7 +116,7 @@ export function Group({ host, sink }) {
 
   return (
     <WrapperSSR isEntryPage Host={Host}>
-      <GroupHybrid currentUser={currentUser} group={group} Host={Host} />
+      <GroupHybrid group={group} Host={Host} />
     </WrapperSSR>
   );
 }
