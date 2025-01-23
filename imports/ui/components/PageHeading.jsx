@@ -14,7 +14,7 @@ export default function PageHeading({ description, heading, children }) {
         <meta property="og:description" content={description} />
         <meta property="og:type" content="article" />
       </Helmet>
-      <Center mb="4">
+      <Center>
         <Box px="2">
           <Center wrap="wrap">
             <Heading as="h1" size="lg" textAlign="center">

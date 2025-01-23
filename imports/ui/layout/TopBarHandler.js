@@ -6,7 +6,7 @@ import FederationIconMenu from './FederationIconMenu';
 import { StateContext } from '../LayoutContainer';
 
 export default function TopBarHandler({ slideStart }) {
-  const { isDesktop } = useContext(StateContext);
+  const { isMobile } = useContext(StateContext);
   const [scrollTop, setScrollTop] = useState(0);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function TopBarHandler({ slideStart }) {
 
   return (
     <>
-      <Slide direction="top" in={slideStart} unmountOnExit style={{ zIndex: 1403 }}>
+      <Slide direction="top" in={slideStart} unmountOnExit>
         {/* <Box position="relative">
         <Box bg="brand.50" position="absolute" top="0" w="100%" h="48px" zIndex={0} />
       </Box> */}
@@ -38,7 +38,8 @@ export default function TopBarHandler({ slideStart }) {
           </Flex>
         </Fade>
       </Slide>
-      {!isDesktop && <Box h="48px" w="100%" />}
+
+      {isMobile && <Box h="42px" w="100%" />}
     </>
   );
 }

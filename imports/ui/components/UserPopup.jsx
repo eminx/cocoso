@@ -37,9 +37,11 @@ function NotificationLinkItem({ host, item, children }) {
 
 const linkButtonProps = {
   as: 'span',
+  bg: 'brand.50',
   color: 'brand.500',
   fontWeight: 'normal',
-  variant: 'link',
+  variant: 'ghost',
+  size: 'sm',
 };
 
 function UserPopup() {
@@ -52,9 +54,7 @@ function UserPopup() {
   if (!currentUser) {
     return (
       <Link to="/login" style={{ marginRight: '12px' }}>
-        <Button {...linkButtonProps} size="sm">
-          {tc('menu.guest.login')}
-        </Button>
+        <Button {...linkButtonProps}>{tc('menu.guest.login')}</Button>
       </Link>
     );
   }

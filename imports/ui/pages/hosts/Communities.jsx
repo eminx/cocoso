@@ -38,10 +38,6 @@ function Communities() {
     return <Loader />;
   }
 
-  if (!allHosts) {
-    return <Loader />;
-  }
-
   const getHostsFiltered = () => {
     const lowerCaseFilterWord = filterWord?.toLowerCase();
     if (!allHosts || allHosts.length === 0) {

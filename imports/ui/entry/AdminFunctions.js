@@ -48,7 +48,7 @@ export default function AdminFunctions({ menuItems }) {
                 icon={<Settings />}
                 variant="ghost"
               />
-              <Text color="brand.400" fontSize="xs">
+              <Text color="brand.300" fontSize="xs">
                 {/* {t('admin.admin')} */}
                 Admin
               </Text>

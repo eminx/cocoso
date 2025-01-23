@@ -2,6 +2,16 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Box, Center, Heading, HStack, Img, Text } from '@chakra-ui/react';
 
+const textProps = {
+  _hover: { borderBottom: '1px solid' },
+  as: 'span',
+  color: 'brand.700',
+  fontFamily: 'Raleway, Sarabun, sans-serif',
+  fontSize: 16,
+  textShadow: '1px 1px 1px #fff',
+  fontWeight: '500',
+};
+
 export default function Header({ Host, isLogoSmall = false }) {
   const currentHost = Host;
   const location = useLocation();
@@ -10,12 +20,13 @@ export default function Header({ Host, isLogoSmall = false }) {
     return null;
   }
 
+  const { pathname } = location;
   const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
-  const currentMenuItem = menuItems.find((item) => `/${item.name}` === location.pathname);
+  const currentMenuItem = menuItems.find((item) => `/${item.name}` === pathname);
 
   return (
     <Box w="100%">
-      <Center mb="3">
+      <Center mb="2">
         <Link to="/" style={{ zIndex: 1400 }}>
           {currentHost.logo ? (
             <Box maxHeight={isLogoSmall ? '48px' : '76px'} p="2">
@@ -36,20 +47,14 @@ export default function Header({ Host, isLogoSmall = false }) {
         </Link>
       </Center>
 
-      <Center p="4" mb="4">
+      <Center p="4">
         <HStack alignItems="center" justify="center" mb="2" wrap="wrap">
           {menuItems?.map((item) => (
             <Link key={item.name} to={`/${item.name}`}>
-              <Box px="2">
+              <Box as="span" px="2">
                 <Text
-                  _hover={{ borderBottom: '1px solid' }}
-                  as="span"
+                  {...textProps}
                   borderBottom={item?.name === currentMenuItem?.name ? '2px solid' : null}
-                  color="brand.700"
-                  fontFamily="Raleway, Sarabun, sans-serif"
-                  fontSize={16}
-                  textShadow="1px 1px 1px #fff"
-                  fontWeight="500"
                 >
                   {item.label}
                 </Text>
@@ -57,16 +62,16 @@ export default function Header({ Host, isLogoSmall = false }) {
             </Link>
           ))}
           {Host.isPortalHost && (
-            <Box px="2">
-              <Text
-                as="span"
-                color="brand.500"
-                fontFamily="Raleway, Sarabun, sans-serif"
-                fontWeight="bold"
-              >
-                Communities
-              </Text>
-            </Box>
+            <Link to="/communities">
+              <Box as="span" px="2">
+                <Text
+                  {...textProps}
+                  borderBottom={pathname === '/communities' ? '2px solid' : null}
+                >
+                  Communities
+                </Text>
+              </Box>
+            </Link>
           )}
         </HStack>
       </Center>

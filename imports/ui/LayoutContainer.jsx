@@ -31,7 +31,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [hue, setHue] = useState('233');
   const [rendered, setRendered] = useState(false);
   const [tc, i18n] = useTranslation();
-  const [isDesktop] = useMediaQuery('(min-width: 960px)');
+  const [isDesktop, isMobile] = useMediaQuery(['(min-width: 960px)', '(max-width: 480px)']);
   const location = useLocation();
   const { pathname } = location;
 
@@ -115,19 +115,8 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const role = hostWithinUser && hostWithinUser.role;
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
-  // const menu = currentHost?.settings?.menu;
-  // const pagesWithHeaderAndFooter = menu && [
-  //   ...menu?.map((item) => '/' + item?.name),
-  //   '/forgot-password',
-  //   '/reset-password',
-  //   '/terms-&-privacy-policy',
-  //   '/communities',
-  // ];
-
-  // const isLargerLogo =
-  //   pagesWithHeaderAndFooter?.includes(pathname) || pathname.substring(0, 6) === '/pages';
-
   const isFederationFooter = platform?.isFederationLayout && platform.footer;
+  const isEntryPage = pathnameSplitted[1] !== 'pages' && Boolean(pathnameSplitted[2]);
 
   return (
     <>
@@ -142,6 +131,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               currentHost,
               hue,
               isDesktop,
+              isMobile,
               platform,
               role,
               userLoading,
@@ -153,7 +143,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
           >
             <DummyWrapper>
               {rendered && <TopBarHandler currentUser={currentUser} slideStart={rendered} />}
-              <Header Host={currentHost} />
+              <Header Host={currentHost} isLogoSmall={isEntryPage} />
               {children}
             </DummyWrapper>
 

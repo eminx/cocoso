@@ -8,7 +8,7 @@ import Header from './Header';
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
 
-export default function WrapperSSR({ Host, children }) {
+export default function WrapperSSR({ Host, isEntryPage = false, children }) {
   if (!Host) {
     return null;
   }
@@ -24,7 +24,7 @@ export default function WrapperSSR({ Host, children }) {
         <ChakraProvider theme={chakraTheme}>
           <ColorModeProvider>
             <DummyWrapper>
-              <Header Host={Host} />
+              <Header Host={Host} isLogoSmall={isEntryPage} />
               {children}
             </DummyWrapper>
           </ColorModeProvider>
