@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { StateContext } from '../../LayoutContainer';
-import { ContentLoader } from '../../components/SkeletonLoaders';
+import Loader from '../../components/Loader';
 import { call } from '../../utils/shared';
 import WorkHybrid from '../../entry/WorkHybrid';
 
@@ -38,7 +38,7 @@ export default function Work() {
   }, []);
 
   if (!work) {
-    return <ContentLoader />;
+    return <Loader />;
   }
 
   return <WorkHybrid documents={documents} work={work} Host={currentHost} />;

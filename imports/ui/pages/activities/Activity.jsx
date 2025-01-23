@@ -5,7 +5,7 @@ import { call } from '../../utils/shared';
 import ActivityHybrid from '../../entry/ActivityHybrid';
 import ActivityInteractionHandler from './components/ActivityInteractionHandler';
 import { StateContext } from '../../LayoutContainer';
-import { ContentLoader } from '../../components/SkeletonLoaders';
+import Loader from '../../components/Loader';
 
 export const ActivityContext = createContext(null);
 
@@ -38,7 +38,7 @@ export default function Activity() {
   }, []);
 
   if (!activity) {
-    return <ContentLoader />;
+    return <Loader />;
   }
 
   const isGroupMeeting = activity.isGroupMeeting;

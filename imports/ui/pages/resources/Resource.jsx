@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import { ContentLoader } from '../../components/SkeletonLoaders';
+import Loader from '../../components/Loader';
 import ResourceHybrid from '../../entry/ResourceHybrid';
 import ResourceInteractionHandler from './components/ResourceInteractionHandler';
 
@@ -47,7 +47,7 @@ export default function Resource() {
   }, []);
 
   if (!resource) {
-    return <ContentLoader />;
+    return <Loader />;
   }
 
   const contextValue = {

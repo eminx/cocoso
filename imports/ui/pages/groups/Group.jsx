@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
-import { ContentLoader } from '../../components/SkeletonLoaders';
+import Loader from '../../components/Loader';
 import GroupHybrid from '../../entry/GroupHybrid';
 import GroupInteractionHandler from './components/GroupInteractionHandler';
 
@@ -39,7 +39,7 @@ export default function Group() {
   }, []);
 
   if (!group) {
-    return <ContentLoader />;
+    return <Loader />;
   }
 
   const contextValue = {
