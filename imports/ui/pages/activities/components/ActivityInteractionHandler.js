@@ -16,7 +16,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
   if (isVerifiedUser) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
-        <Box w="40px" />
+        <Box />
         <RsvpHandler activity={activity} />
         <Box>
           <ActivityAdminFunctions />
