@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Box, Center, Flex } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import { message } from '../../components/message';

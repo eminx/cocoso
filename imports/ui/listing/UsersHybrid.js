@@ -161,7 +161,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
           <InfiniteScroller isMasonry items={users}>
             {(user) => (
               <Box key={user.username} cursor="pointer" onClick={() => setModalItem(user)}>
-                <MemberAvatarEtc isThumb user={user} />
+                <MemberAvatarEtc user={user} />
               </Box>
             )}
           </InfiniteScroller>

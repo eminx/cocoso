@@ -16,7 +16,7 @@ function MemberAvatarEtc({ isThumb = true, user }) {
   const avatarSrc = avatar?.src || avatar;
 
   return (
-    <Box mb="8">
+    <Box mb="6">
       <Center>
         <Avatar
           borderRadius="8px"
@@ -46,20 +46,6 @@ function MemberAvatarEtc({ isThumb = true, user }) {
               </WrapItem>
             ))}
           </Wrap>
-        )}
-
-        {!isThumb && user.bio && (
-          <Center py="4">
-            <Box
-              borderLeft="3px solid"
-              borderLeftColor="brand.100"
-              className="text-content"
-              maxW={300}
-              pl="4"
-            >
-              {parseHtml(user.bio)}
-            </Box>{' '}
-          </Center>
         )}
       </Box>
     </Box>
