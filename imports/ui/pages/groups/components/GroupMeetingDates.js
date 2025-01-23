@@ -227,7 +227,6 @@ export default function GroupMeetingDates(props) {
                 borderWidth="2px"
                 colorScheme="green"
                 height="48px"
-                mt="2"
                 size="lg"
                 variant="outline"
                 width="240px"

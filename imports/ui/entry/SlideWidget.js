@@ -6,7 +6,7 @@ const flexProps = {
   bg: 'rgba(50, 50, 50, .9)',
   justify: 'center',
   minH: '86px',
-  py: '4',
+  pb: '4',
   px: '2',
   width: '100%',
 };
