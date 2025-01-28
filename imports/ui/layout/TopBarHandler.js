@@ -8,6 +8,7 @@ import { StateContext } from '../LayoutContainer';
 export default function TopBarHandler({ slideStart }) {
   const { isMobile } = useContext(StateContext);
   const [scrollTop, setScrollTop] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +24,12 @@ export default function TopBarHandler({ slideStart }) {
 
   return (
     <>
-      <Slide direction="top" in={slideStart} unmountOnExit style={{ zIndex: 1405 }}>
+      <Slide
+        direction="top"
+        in={slideStart}
+        unmountOnExit
+        style={{ zIndex: isOpen ? 2 : 1, pointerEvents: 'none' }}
+      >
         {/* <Box position="relative">
         <Box bg="brand.50" position="absolute" top="0" w="100%" h="48px" zIndex={0} />
       </Box> */}
@@ -32,8 +38,8 @@ export default function TopBarHandler({ slideStart }) {
             <Box>
               <FederationIconMenu />
             </Box>
-            <Box p="2">
-              <UserPopup />
+            <Box p="2" pointerEvents="all">
+              <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
             </Box>
           </Flex>
         </Fade>

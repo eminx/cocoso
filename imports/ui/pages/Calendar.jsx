@@ -305,7 +305,7 @@ function Calendar({ tc }) {
                 {tc('labels.all')}
               </Button>
 
-              <Box w="100%" zIndex={5}>
+              <Box w="100%">
                 <AutoCompleteSelect
                   isClearable
                   onChange={(value) => setCalendarFilter(value)}

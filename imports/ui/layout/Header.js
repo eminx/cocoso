@@ -5,7 +5,7 @@ import { Box, Center, Heading, HStack, Img, Text } from '@chakra-ui/react';
 const textProps = {
   _hover: { borderBottom: '1px solid' },
   as: 'span',
-  color: 'brand.600',
+  color: 'gray.700',
   fontFamily: 'Raleway, Sarabun, sans-serif',
   fontSize: 16,
   textShadow: '1px 1px 1px #fff',

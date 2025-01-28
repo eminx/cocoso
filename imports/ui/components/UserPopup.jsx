@@ -16,6 +16,8 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
+  Modal,
+  ModalOverlay,
   Text,
 } from '@chakra-ui/react';
 
@@ -42,8 +44,7 @@ const linkButtonProps = {
   size: 'sm',
 };
 
-function UserPopup() {
-  const [isOpen, setIsOpen] = useState(false);
+function UserPopup({ isOpen, setIsOpen }) {
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
@@ -89,18 +90,19 @@ function UserPopup() {
 
   return (
     <Box>
-      {/* <Box position="relative" zIndex={2}>
-        <Modal isOpen={isOpen} zIndex={1400}>
-          <ModalOverlay
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          />
-        </Modal>
-      </Box> */}
+      <Modal isOpen={isOpen}>
+        <ModalOverlay
+          zIndex={1}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        />
+      </Modal>
+
       <Menu
         isOpen={isOpen}
         placement="bottom-end"
+        zIndex={isOpen ? 1410 : 10}
         onOpen={() => setIsOpen(true)}
         onClose={() => setIsOpen(false)}
       >
@@ -112,13 +114,13 @@ function UserPopup() {
             showBorder
             size={isDesktop ? 'md' : 'sm'}
             src={currentUser.avatar && currentUser.avatar.src}
-            zIndex={isOpen ? '1403' : '10'}
+            zIndex={isOpen ? '1410' : '10'}
           >
             {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
           </Avatar>
         </MenuButton>
 
-        <MenuList zIndex={isOpen ? '1403' : '10'}>
+        <MenuList zIndex={isOpen ? '1410' : '10'}>
           <MenuGroup>
             <Box px="4" py="1">
               <Text fontWeight="bold" fontSize="xl">
