@@ -1,9 +1,7 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Progress } from '@chakra-ui/react';
 
-import Home from '../Home';
-import LayoutContainer from '../LayoutContainer';
+import LayoutContainer, { StateContext } from '../LayoutContainer';
 
 import Terms from '../components/Terms';
 
@@ -74,13 +72,47 @@ const NewHost = lazy(() => import('./hosts/NewHost'));
 const NotFoundPage = lazy(() => import('./NotFoundPage'));
 const MyActivities = lazy(() => import('./activities/MyActivities'));
 
-export default function () {
+function getComponentBasedOnFirstRoute(menuItems) {
+  const visibleMenu = menuItems.filter((item) => item.isVisible);
+  const firstRoute = visibleMenu && visibleMenu[0].name;
+
+  switch (firstRoute) {
+    case 'activities':
+      return <Activities />;
+    case 'groups':
+      return <Groups />;
+    case 'works':
+      return <Works />;
+    case 'resources':
+      return <Resources />;
+    case 'calendar':
+      return <CalendarContainer />;
+    case 'info':
+      return <Page />;
+    default:
+      return <Users />;
+  }
+}
+
+function HomePage() {
+  const { currentHost } = useContext(StateContext);
+  const menu = currentHost && currentHost.settings && currentHost.settings.menu;
+  if (!menu || !menu[0]) {
+    return null;
+  }
+
+  const Component = getComponentBasedOnFirstRoute(menu);
+
+  return Component;
+}
+
+export default function AppRoutes() {
   return (
     <LayoutContainer>
       {/* <Suspense fallback={<Progress size="sm" colorScheme="brand.500" />}> */}
       <Suspense>
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<HomePage />} />
 
           {/* Members list public */}
           <Route path="/people" element={<Users />} />

@@ -15,24 +15,6 @@ import UsersHybrid from '../../ui/listing/UsersHybrid';
 import PageHybrid from '../../ui/entry/PageHybrid';
 import ActivitiesHybrid from '../../ui/listing/ActivitiesHybrid';
 
-export function Home({ host }) {
-  const Host = Meteor.call('getHost', host);
-  const pageHeading = Host?.settings?.name;
-
-  if (!Host) {
-    return null;
-  }
-
-  return (
-    <WrapperSSR
-      Host={Host}
-      imageUrl={Host.logo}
-      subTitle={Host.settings?.address}
-      title={pageHeading}
-    />
-  );
-}
-
 export function ActivitiesList({ host, sink }) {
   const location = useLocation();
   const { search } = location;
@@ -291,4 +273,38 @@ export function Communities({ host, sink }) {
       {/* <CommunitiesHybrid Host={Host} allHosts={allHosts} /> */}
     </WrapperSSR>
   );
+}
+
+export function Home(props) {
+  const host = props?.host;
+  const Host = Meteor.call('getHost', host);
+
+  if (!Host) {
+    return null;
+  }
+
+  const getComponentBasedOnFirstRoute = () => {
+    const menuItems = Host.settings?.menu;
+    const visibleMenu = menuItems.filter((item) => item.isVisible);
+    const firstRoute = visibleMenu && visibleMenu[0].name;
+
+    switch (firstRoute) {
+      case 'activities':
+        return <ActivitiesList {...props} />;
+      case 'groups':
+        return <GroupsList {...props} />;
+      case 'works':
+        return <WorksList {...props} />;
+      case 'resources':
+        return <ResourcesList {...props} />;
+      case 'info':
+        return <Page {...props} />;
+      default:
+        return <UsersList {...props} />;
+    }
+  };
+
+  const Component = getComponentBasedOnFirstRoute();
+
+  return Component;
 }
