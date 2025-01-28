@@ -24,10 +24,19 @@ export default function Header({ Host, isLogoSmall = false }) {
   const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
   const currentMenuItem = menuItems.find((item) => `/${item.name}` === pathname);
 
+  const isCurrentPage = (item, index) => {
+    if (item.name === currentMenuItem?.name) {
+      return true;
+    } else if (pathname === '/' && index === 0) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <Box w="100%">
       <Center mb="2">
-        <Link to="/" style={{ zIndex: 1405 }}>
+        <Link to="/">
           {currentHost.logo ? (
             <Box maxHeight={isLogoSmall ? '48px' : '76px'} p="2">
               <Img
@@ -48,14 +57,11 @@ export default function Header({ Host, isLogoSmall = false }) {
       </Center>
 
       <Center p="4">
-        <HStack alignItems="center" justify="center" mb="2" wrap="wrap" style={{ zIndex: 1405 }}>
-          {menuItems?.map((item) => (
+        <HStack alignItems="center" justify="center" mb="2" wrap="wrap">
+          {menuItems?.map((item, index) => (
             <Link key={item.name} to={`/${item.name}`}>
               <Box as="span" px="2">
-                <Text
-                  {...textProps}
-                  borderBottom={item?.name === currentMenuItem?.name ? '2px solid' : null}
-                >
+                <Text {...textProps} borderBottom={isCurrentPage(item, index) ? '2px solid' : null}>
                   {item.label}
                 </Text>
               </Box>

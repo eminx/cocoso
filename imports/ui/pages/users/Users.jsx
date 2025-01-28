@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { StateContext } from '../../LayoutContainer';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
-import { ContentLoader } from '../../components/SkeletonLoaders';
 import UsersHybrid from '../../listing/UsersHybrid';
 
 export default function Users() {
@@ -13,40 +13,40 @@ export default function Users() {
 
   const [users, setUsers] = useState(initialUsers);
   const [keywords, setKeywords] = useState(initialKeywords);
-  const [loading, setLoading] = useState(false);
   let { currentHost } = useContext(StateContext);
+  const [searchParams] = useSearchParams();
+  const showKeywordSearch = Boolean(searchParams.get('showKeywordSearch'));
 
   if (!currentHost) {
     currentHost = Host;
   }
 
-  useEffect(() => {
-    getAllUsers();
-    getKeywords();
-  }, [currentHost?.isPortalHost]);
-
   const isPortalHost = Boolean(currentHost?.isPortalHost);
 
   const getAllUsers = async () => {
     try {
+      let usersFetched = [];
       if (isPortalHost) {
-        setUsers(await call('getAllMembersFromAllHosts'));
+        usersFetched = await call('getAllMembersFromAllHosts');
       } else {
-        setUsers(await call('getHostMembers'));
+        usersFetched = await call('getHostMembers');
       }
+      const usersRandomized = usersFetched.sort(() => 0.5 - Math.random());
+      setUsers(usersRandomized);
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
-    } finally {
-      setLoading(false);
     }
   };
 
   const getKeywords = async () => {
     try {
       const respond = await call('getKeywords');
+      console.log(respond);
       const selectedKeywords = respond.filter((k) =>
         users.some((m) => m?.keywords?.map((kw) => kw.keywordId).includes(k._id))
       );
+      console.log(selectedKeywords);
       setKeywords(selectedKeywords.sort((a, b) => a.label.localeCompare(b.label)));
     } catch (error) {
       console.log(error);
@@ -54,8 +54,21 @@ export default function Users() {
     }
   };
 
-  if (loading || !users) {
-    return <ContentLoader items={4} />;
+  const getData = async () => {
+    await getAllUsers();
+    await getKeywords();
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    getKeywords();
+  }, [showKeywordSearch]);
+
+  if (!users || !keywords) {
+    return null;
   }
 
   return <UsersHybrid Host={Host} keywords={keywords} users={users} />;

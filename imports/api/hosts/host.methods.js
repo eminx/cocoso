@@ -8,6 +8,19 @@ import Newsletters from '../newsletters/newsletter';
 import { defaultMenu, defaultEmails } from '../../startup/constants';
 import { isAdmin } from '../users/user.roles';
 
+function getUsersRandomlyWithAvatarsFirst(users) {
+  if (!users || !users.length === 0) {
+    return null;
+  }
+  const usersWithImage = users.filter((u) => u.avatar?.src);
+  const usersWithoutImage = users.filter((u) => !u.avatar || !u.avatar.src);
+
+  return [
+    ...usersWithImage.sort(() => Math.random() - 1),
+    ...usersWithoutImage.sort(() => Math.random() - 1),
+  ];
+}
+
 Meteor.methods({
   createNewHost(values) {
     const currentUser = Meteor.user();
@@ -123,7 +136,7 @@ Meteor.methods({
       return (
         hosts
           // .filter((h) => !h.isPortalHost)
-          .map((host, index) => ({
+          .map((host) => ({
             name: host.settings.name,
             logo: host.logo,
             host: host.host,
@@ -174,17 +187,11 @@ Meteor.methods({
       )
       .fetch();
 
-    const usersWithImage = users.filter((u) => u.avatar?.src);
-    const usersWithoutImage = users.filter((u) => !u.avatar);
-
-    return [
-      ...usersWithImage.sort((a, b) => Math.random() - 1),
-      ...usersWithoutImage.sort((a, b) => Math.random() - 1),
-    ];
+    return getUsersRandomlyWithAvatarsFirst(users);
   },
 
   getAllMembersFromAllHosts() {
-    return Meteor.users
+    const users = Meteor.users
       .find(
         {},
         {
@@ -203,8 +210,9 @@ Meteor.methods({
           },
         }
       )
-      .fetch()
-      .reverse();
+      .fetch();
+
+    return getUsersRandomlyWithAvatarsFirst(users);
   },
 
   getHostInfoPage(host) {
@@ -226,9 +234,10 @@ Meteor.methods({
   getPortalHostInfoPage() {
     const portalHost = Hosts.findOne({ isPortalHost: true });
     if (!portalHost) {
-      return;
+      throw new Meteor.Error('not portalhost');
     }
-    const infoPage = Pages.findOne(
+
+    return Pages.findOne(
       {
         host: portalHost.host,
       },
@@ -236,8 +245,6 @@ Meteor.methods({
         longDescription: 1,
       }
     );
-
-    return infoPage;
   },
 
   setHostHue(hue) {
@@ -300,17 +307,11 @@ Meteor.methods({
 
         const emailAddress = isPortalHost ? member.emails[0].address : member.email;
 
-        Meteor.call(
-          'sendEmail',
-          emailAddress,
-          email.subject,
-          emailHtmlWithUsername,
-          (error, respond) => {
-            if (error) {
-              console.log(error);
-            }
+        Meteor.call('sendEmail', emailAddress, email.subject, emailHtmlWithUsername, (error) => {
+          if (error) {
+            console.log(error);
           }
-        );
+        });
       });
     } catch (error) {
       throw new Meteor.Error(error);
