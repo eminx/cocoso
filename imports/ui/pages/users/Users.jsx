@@ -42,11 +42,9 @@ export default function Users() {
   const getKeywords = async () => {
     try {
       const respond = await call('getKeywords');
-      console.log(respond);
       const selectedKeywords = respond.filter((k) =>
         users.some((m) => m?.keywords?.map((kw) => kw.keywordId).includes(k._id))
       );
-      console.log(selectedKeywords);
       setKeywords(selectedKeywords.sort((a, b) => a.label.localeCompare(b.label)));
     } catch (error) {
       console.log(error);
