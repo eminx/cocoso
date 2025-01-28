@@ -21,6 +21,19 @@ function getUsersRandomlyWithAvatarsFirst(users) {
   ];
 }
 
+const publicUserFields = {
+  _id: 1,
+  avatar: 1,
+  bio: 1,
+  contactInfo: 1,
+  firstName: 1,
+  isPublic: 1,
+  keywords: 1,
+  lastName: 1,
+  memberships: 1,
+  username: 1,
+};
+
 Meteor.methods({
   createNewHost(values) {
     const currentUser = Meteor.user();
@@ -172,17 +185,7 @@ Meteor.methods({
       .find(
         { 'memberships.host': host },
         {
-          fields: {
-            avatar: 1,
-            bio: 1,
-            firstName: 1,
-            id: 1,
-            isPublic: true,
-            keywords: 1,
-            lastName: 1,
-            memberships: 1,
-            username: 1,
-          },
+          fields: publicUserFields,
         }
       )
       .fetch();
@@ -195,19 +198,7 @@ Meteor.methods({
       .find(
         {},
         {
-          fields: {
-            avatar: 1,
-            bio: 1,
-            contactInfo: 1,
-            date: 1,
-            firstName: 1,
-            id: 1,
-            isPublic: 1,
-            keywords: 1,
-            lastName: 1,
-            memberships: 1,
-            username: 1,
-          },
+          fields: publicUserFields,
         }
       )
       .fetch();

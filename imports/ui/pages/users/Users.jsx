@@ -31,8 +31,7 @@ export default function Users() {
       } else {
         usersFetched = await call('getHostMembers');
       }
-      const usersRandomized = usersFetched.sort(() => 0.5 - Math.random());
-      setUsers(usersRandomized);
+      setUsers(usersFetched);
     } catch (error) {
       console.log(error);
       message.error(error.reason);
