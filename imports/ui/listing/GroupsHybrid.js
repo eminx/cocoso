@@ -6,7 +6,7 @@ import PopupHandler from './PopupHandler';
 import InfiniteScroller from '../components/InfiniteScroller';
 import SexyThumb from '../components/SexyThumb';
 
-export default function GroupsHybrid({ groups, Host, showPast }) {
+export default function GroupsHybrid({ groups, Host }) {
   const [modalItem, setModalItem] = useState(null);
 
   const groupsInMenu = Host?.settings?.menu?.find((item) => item.name === 'groups');
@@ -21,7 +21,7 @@ export default function GroupsHybrid({ groups, Host, showPast }) {
         <InfiniteScroller items={groups}>
           {(item) => (
             <Box key={item._id} className="sexy-thumb-container" onClick={() => setModalItem(item)}>
-              <SexyThumb activity={item} showPast={showPast} />
+              <SexyThumb activity={item} host={Host?.isPortalHost ? item.host : null} />
             </Box>
           )}
         </InfiniteScroller>

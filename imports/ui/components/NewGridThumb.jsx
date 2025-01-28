@@ -1,20 +1,21 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
-import { Avatar, Box, Center, Flex, Heading, Text } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { Avatar, Box, Center, Flex, Heading, Tag as CTag, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-if (Meteor.isClient) {
+import { StateContext } from '../LayoutContainer';
+import Tag from './Tag';
+
+const isClient = Meteor.isClient;
+
+if (isClient) {
   import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 }
-
-import { DateJust } from './FancyDate';
-import Tag from './Tag';
 
 export default function NewGridThumb({
   avatar,
   color,
   coverText,
-  dates,
   fixedImageHeight = false,
   footer = null,
   host,
@@ -26,11 +27,13 @@ export default function NewGridThumb({
   if (!title && !imageUrl) {
     return null;
   }
+  const { allHosts } = isClient && useContext(StateContext);
 
-  const remaining = dates?.length - 1;
+  const hostValue =
+    host && allHosts && isClient ? allHosts?.find((h) => h.host === host)?.name : host;
 
   return (
-    <Box _hover={{ bg: 'brand.50' }} borderRadius="8px" cursor="pointer" borderRadius="8px">
+    <Box _hover={{ bg: 'brand.50' }} borderRadius="8px" cursor="pointer">
       <Box borderRadius="8px" className="text-link-container" position="relative">
         <Center
           bg={imageUrl ? 'white' : 'brand.100'}
@@ -58,9 +61,12 @@ export default function NewGridThumb({
             )
           )}
         </Center>
+
         {host && (
-          <Box position="absolute" top="0" right="0" pl="1" pb="1" bg="rgba(255, 255, 255, 0.4)">
-            <Tag border="none" label={host} />
+          <Box p="1" position="absolute" right="0" top="0">
+            <CTag bg="rgba(0, 0, 0, 0.6)" color="white" size="sm">
+              {hostValue}
+            </CTag>
           </Box>
         )}
 
@@ -75,12 +81,13 @@ export default function NewGridThumb({
           py="2"
           px="4"
         >
-          <Box pb="2" pr="3">
+          <Box pb="2" pr="3" isTruncated>
             <Heading
               className="text-link"
               fontFamily="'Raleway', sans-serif"
               fontSize="1.2rem"
               fontWeight="bold"
+              isTruncated
               mb="1"
               mt="2"
               overflowWrap="anywhere"
@@ -105,23 +112,6 @@ export default function NewGridThumb({
             <Box pt="2">
               <Avatar borderRadius="8px" name={avatar.name} src={avatar.url} />
             </Box>
-          )}
-
-          {dates && (
-            <Flex flexShrink="0">
-              {dates.slice(0, 1).map((date) => (
-                <Flex key={date?.startDate + date?.startTime}>
-                  <DateJust>{date?.startDate}</DateJust>
-                  {date?.startDate !== date?.endDate && '-'}
-                  {date?.startDate !== date?.endDate && <DateJust>{date?.endDate}</DateJust>}
-                </Flex>
-              ))}
-              {remaining > 0 && (
-                <Text fontSize="xl" ml="2" wordBreak="keep-all">
-                  + {remaining}
-                </Text>
-              )}
-            </Flex>
           )}
         </Flex>
         {footer}

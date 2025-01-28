@@ -16,8 +16,6 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
-  Modal,
-  ModalOverlay,
   Text,
 } from '@chakra-ui/react';
 
@@ -79,7 +77,7 @@ function UserPopup() {
   let notificationsCounter = 0;
   if (notifications && notifications.length > 0) {
     notifications.forEach((notification) => {
-      notificationsCounter += notification.count;
+      notificationsCounter = notification.count + notificationsCounter;
     });
   }
 

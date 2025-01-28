@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import { Box, Center, Flex, HStack } from '@chakra-ui/react';
 import FsLightbox from 'fslightbox-react';
@@ -14,93 +15,6 @@ const imageStyle = {
   objectFit: 'contain',
   position: 'relative',
 };
-
-function NiceSlider({ alt, images, height = 'auto', width = '100%', isFade = true }) {
-  const [toggler, setToggler] = useState(false);
-
-  if (!images || images.length === 0) {
-    return null;
-  }
-
-  return (
-    <>
-      <ImageHandler height={height} images={images} isFade={isFade} width={width}>
-        {(image, index) => (
-          <Center key={image + index}>
-            <Flex flexDirection="column" justify="center">
-              <LazyLoadImage
-                alt={alt + ' ' + ' ' + image}
-                src={image}
-                style={{ ...imageStyle, height }}
-                onClick={() => setToggler(!toggler)}
-              />
-            </Flex>
-          </Center>
-        )}
-      </ImageHandler>
-      <FsLightbox
-        toggler={toggler}
-        sources={images.map((img) => (
-          <img src={img} />
-        ))}
-      />
-    </>
-  );
-}
-
-function Dots({ images, currentSlideIndex }) {
-  return (
-    <Center>
-      {images.length > 1 && (
-        <HStack p="2">
-          {images.map((image, index) =>
-            index === currentSlideIndex ? <FilledCircle key={image} /> : <EmptyCircle key={image} />
-          )}
-        </HStack>
-      )}
-    </Center>
-  );
-}
-
-function ImageHandler({ height, width, images, isFade, children }) {
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-
-  if (images?.length === 1) {
-    return (
-      <Flex h={height} justify={isFade ? 'flex-start' : 'center'}>
-        {images.map((image, index) => children(image, index))}
-      </Flex>
-    );
-  } else if (isFade) {
-    return (
-      <Box className="slide-container" h={height} w={width}>
-        <Fade
-          arrows
-          canSwipe
-          pauseOnHover={false}
-          transitionDuration={400}
-          onStartChange={(from, to) => setCurrentSlideIndex(to)}
-        >
-          {images.map((image, index) => children(image, index))}
-        </Fade>
-        <Dots currentSlideIndex={currentSlideIndex} images={images} />
-      </Box>
-    );
-  } else {
-    return (
-      <Box className="slide-container" h={height} w={width}>
-        <Slide
-          arrows
-          transitionDuration={400}
-          onStartChange={(from, to) => setCurrentSlideIndex(to)}
-        >
-          {images.map((image, index) => children(image, index))}
-        </Slide>
-        <Dots currentSlideIndex={currentSlideIndex} images={images} />
-      </Box>
-    );
-  }
-}
 
 function EmptyCircle() {
   return (
@@ -134,4 +48,91 @@ function FilledCircle() {
   );
 }
 
-export default NiceSlider;
+function Dots({ images, currentSlideIndex }) {
+  return (
+    <Center>
+      {images.length > 1 && (
+        <HStack p="2">
+          {images.map((image, index) =>
+            index === currentSlideIndex ? <FilledCircle key={image} /> : <EmptyCircle key={image} />
+          )}
+        </HStack>
+      )}
+    </Center>
+  );
+}
+
+function ImageHandler({ height, width, images, isFade, children }) {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  if (images?.length === 1) {
+    return (
+      <Flex h={height} justify={isFade ? 'flex-start' : 'center'}>
+        {images.map((image, index) => children(image, index))}
+      </Flex>
+    );
+  }
+  if (isFade) {
+    return (
+      <Box className="slide-container" h={height} w={width}>
+        <Fade
+          arrows
+          canSwipe
+          pauseOnHover={false}
+          transitionDuration={400}
+          onStartChange={(from, to) => setCurrentSlideIndex(to)}
+        >
+          {images.map((image, index) => children(image, index))}
+        </Fade>
+        <Dots currentSlideIndex={currentSlideIndex} images={images} />
+      </Box>
+    );
+  }
+  return (
+    <Box className="slide-container" h={height} w={width}>
+      <Slide arrows transitionDuration={400} onStartChange={(from, to) => setCurrentSlideIndex(to)}>
+        {images.map((image, index) => children(image, index))}
+      </Slide>
+      <Dots currentSlideIndex={currentSlideIndex} images={images} />
+    </Box>
+  );
+}
+
+export default function NiceSlider({
+  alt,
+  images,
+  height = 'auto',
+  width = '100%',
+  isFade = true,
+}) {
+  const [toggler, setToggler] = useState(false);
+
+  if (!images || images.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      <ImageHandler height={height} images={images} isFade={isFade} width={width}>
+        {(image, index) => (
+          <Center key={image + index}>
+            <Flex flexDirection="column" justify="center">
+              <LazyLoadImage
+                alt={`${alt} ${image}`}
+                src={image}
+                style={{ ...imageStyle, height }}
+                onClick={() => setToggler(!toggler)}
+              />
+            </Flex>
+          </Center>
+        )}
+      </ImageHandler>
+      <FsLightbox
+        toggler={toggler}
+        sources={images.map((img) => (
+          <img alt={img} src={img} />
+        ))}
+      />
+    </>
+  );
+}

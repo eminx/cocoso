@@ -91,7 +91,7 @@ export default function WorksHybrid({ works, Host }) {
                   }
                 }
                 color={categories.find((cat) => cat?.label === work.category?.label)?.color}
-                // host={isPortalHost && allHosts?.find((h) => h.host === work.host)?.name}
+                host={Host?.isPortalHost ? work.host : null}
                 imageUrl={work?.images && work.images[0]}
                 tag={work.category?.label}
                 title={work.title}

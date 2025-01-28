@@ -1,17 +1,20 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
-import moment from 'moment';
-import { Box, Flex, HStack } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import dayjs from 'dayjs';
+import { Box, Flex, HStack, Tag as CTag } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-if (Meteor.isClient) {
+import { DateJust } from './FancyDate';
+import { StateContext } from '../LayoutContainer';
+
+const isClient = Meteor?.isClient;
+
+if (isClient) {
   import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 }
 
-import { DateJust } from './FancyDate';
-
-const yesterday = moment(new Date()).add(-1, 'days');
-const today = moment(new Date());
+const yesterday = dayjs(new Date()).add(-1, 'days');
+const today = dayjs(new Date());
 
 const dateStyle = {
   fontWeight: 700,
@@ -31,7 +34,7 @@ function ThumbDate({ date }) {
     return null;
   }
 
-  const isPast = moment(date.endDate)?.isBefore(yesterday);
+  const isPast = dayjs(date.endDate)?.isBefore(yesterday);
 
   return (
     <Flex
@@ -46,12 +49,14 @@ function ThumbDate({ date }) {
   );
 }
 
-function SexyThumb({ activity, showPast = false }) {
+export default function SexyThumb({ activity, host, showPast = false }) {
+  const { allHosts } = isClient && useContext(StateContext);
+
   if (!activity) {
     return null;
   }
 
-  const { avatar, datesAndTimes, hostName, subTitle, tag, title } = activity;
+  const { datesAndTimes, hostName, subTitle, tag, title } = activity;
   const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
 
   const dates = datesAndTimes;
@@ -59,14 +64,17 @@ function SexyThumb({ activity, showPast = false }) {
   const futureDates =
     dates &&
     dates
-      .filter((date) => moment(date?.endDate)?.isAfter(yesterday))
-      .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
+      .filter((date) => dayjs(date?.endDate)?.isAfter(yesterday))
+      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
   const remaining = futureDates && futureDates.length - 3;
   const pastDates =
     dates &&
     dates
-      .filter((date) => moment(date?.startDate)?.isBefore(today))
-      .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
+      .filter((date) => dayjs(date?.startDate)?.isBefore(today))
+      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
+
+  const hostValue =
+    host && allHosts && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
 
   return (
     <Box
@@ -81,6 +89,14 @@ function SexyThumb({ activity, showPast = false }) {
       <div className="thumb-cover">
         <LazyLoadImage alt={title} effect="black-and-white" src={imageUrl} style={imageStyle} />
       </div>
+
+      {host && (
+        <Box p="1" position="absolute" right="0" top="0">
+          <CTag bg="rgba(0, 0, 0, 0.5)" color="white" size="sm">
+            {hostValue}
+          </CTag>
+        </Box>
+      )}
 
       <div className="thumb-text-container">
         <Flex direction="column" h="100%" justify="space-between">
@@ -143,5 +159,3 @@ function SexyThumb({ activity, showPast = false }) {
     </Box>
   );
 }
-
-export default SexyThumb;

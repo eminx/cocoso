@@ -181,7 +181,7 @@ export default function PopupHandler({ item, kind, onClose }) {
             }
             images={item.images || [item.imageUrl]}
             subTitle={item.subTitle || item.readingMaterial || item.shortDescription || null}
-            tags={isPortalHost && [allHosts?.find((h) => h.host === item.host)?.name]}
+            tags={isPortalHost ? [allHosts?.find((h) => h.host === item.host)?.name] : null}
             title={item.title || item.label}
           />
         )}

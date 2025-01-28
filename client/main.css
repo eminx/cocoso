@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap');
+/* @import 'react-slideshow-image/dist/styles.css';
+@import 'react-lazy-load-image-component/src/effects/black-and-white.css'; */
 
 body {
   min-height: 101vh;

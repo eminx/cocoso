@@ -29,7 +29,7 @@ export default function ResourcesHybrid({ resources, Host }) {
             >
               <NewGridThumb
                 fixedImageHeight
-                // host={isPortalHost ? allHosts.find((h) => h.host === resource.host)?.name : null}
+                host={Host?.isPortalHost ? resource.host : null}
                 imageUrl={resource.images?.[0]}
                 title={resource.label}
               />

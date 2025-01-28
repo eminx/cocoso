@@ -38,16 +38,15 @@ function Tag({
     >
       <Box
         bg={checkable && checked ? 'none' : 'white'}
-        border={!checkable ? 'none' : checked ? 'none' : 'white'}
+        border={checkable && !checked ? 'white' : 'none'}
         cursor="pointer"
-        py="0"
         px="2"
         onClick={onClick}
       >
         <Text
           as="span"
           color={checked ? 'white' : filterColor}
-          fontSize={otherProps.size || '14px'}
+          fontSize="xs"
           fontWeight={checkable ? 'normal' : 'bold'}
         >
           {label}

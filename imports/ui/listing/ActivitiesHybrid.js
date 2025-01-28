@@ -38,7 +38,11 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
         <InfiniteScroller items={activities}>
           {(item) => (
             <Box key={item._id} className="sexy-thumb-container" onClick={() => setModalItem(item)}>
-              <SexyThumb activity={item} showPast={showPast} />
+              <SexyThumb
+                activity={item}
+                host={Host?.isPortalHost ? item.host : null}
+                showPast={showPast}
+              />
             </Box>
           )}
         </InfiniteScroller>
