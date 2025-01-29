@@ -7,11 +7,10 @@ const containerStyle = {
   borderRadius: 8,
 };
 
-function FileDropper({
+export default function FileDropper({
   height = '280px',
   imageFit = 'contain',
   imageUrl,
-  label,
   round = false,
   uploadableImageLocal,
   setUploadableImage,
@@ -65,5 +64,3 @@ function FileDropper({
     </Dropzone>
   );
 }
-
-export default FileDropper;
