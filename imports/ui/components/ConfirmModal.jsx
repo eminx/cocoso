@@ -34,7 +34,7 @@ function ConfirmModal({
       isOpen={visible}
       leastDestructiveRef={cancelRef}
       scrollBehavior="inside"
-      // onClose={onCancel}
+      onClose={onCancel}
       onOverlayClick={onOverlayClick || onCancel}
       {...otherProps}
     >

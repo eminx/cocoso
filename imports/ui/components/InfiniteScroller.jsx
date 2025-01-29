@@ -97,7 +97,7 @@ export default function InfiniteScroller({
     }, 300);
   };
 
-  const hasMore = items.length > currentItems.length;
+  const hasMore = items.length > currentItems.length && currentItems.length >= itemsPerPage;
 
   const skeletonWidth = smallThumb || isMasonry ? '2xs' : 'auto';
   const skeletonHeight = smallThumb || isMasonry ? '180px' : '315px';

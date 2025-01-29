@@ -24,18 +24,20 @@ export default function PageHeading({ description, heading, children }) {
           <Box py="2">
             <Divider borderColor="brand.500" minW="280px" />
             <Center>{children}</Center>
-            <Heading
-              as="h2"
-              fontFamily="'Sarabun', sans-serif"
-              fontSize="1.17em"
-              fontWeight="300"
-              lineHeight="1.3"
-              maxW="520px"
-              my="2"
-              textAlign="center"
-            >
-              {description}
-            </Heading>
+            {description && (
+              <Heading
+                as="h2"
+                fontFamily="'Sarabun', sans-serif"
+                fontSize="1.17em"
+                fontWeight="300"
+                lineHeight="1.3"
+                maxW="520px"
+                my="2"
+                textAlign="center"
+              >
+                {description}
+              </Heading>
+            )}
           </Box>
         </Box>
       </Center>

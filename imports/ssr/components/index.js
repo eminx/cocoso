@@ -14,6 +14,7 @@ import WorkHybrid from '../../ui/entry/WorkHybrid';
 import UsersHybrid from '../../ui/listing/UsersHybrid';
 import PageHybrid from '../../ui/entry/PageHybrid';
 import ActivitiesHybrid from '../../ui/listing/ActivitiesHybrid';
+import CommunitiesHybrid from '../../ui/pages/hosts/CommunitiesHybrid';
 
 export function ActivitiesList({ host, sink }) {
   const location = useLocation();
@@ -259,18 +260,18 @@ export function User({ host, sink }) {
 }
 
 export function Communities({ host, sink }) {
-  const allHosts = Meteor.call('getAllHosts');
   const Host = Meteor.call('getHost', host);
+  const hosts = Meteor.call('getAllHosts');
 
   sink.appendToBody(`
     <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ allHosts, Host }).replace(/</g, '\\u003c')}
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ hosts, Host }).replace(/</g, '\\u003c')}
     </script>
   `);
 
   return (
     <WrapperSSR Host={Host}>
-      {/* <CommunitiesHybrid Host={Host} allHosts={allHosts} /> */}
+      <CommunitiesHybrid Host={Host} hosts={hosts} />
     </WrapperSSR>
   );
 }
