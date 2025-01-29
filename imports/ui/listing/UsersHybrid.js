@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, Center, Divider, Flex, Text } from '@chakra-ui/react';
+import { Avatar, Box, Button, Center, Divider, Flex, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 import Cascader from 'antd/lib/cascader';
@@ -14,15 +14,15 @@ import Tabs from '../components/Tabs';
 
 export default function UsersHybrid({ users, keywords, Host }) {
   const [modalItem, setModalItem] = useState(null);
-  const [filterKeyword, setFilterKeyword] = useState(null);
-  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [, setFilterKeyword] = useState(null);
+  const [selectedProfile] = useState(null);
   const [tm] = useTranslation('members');
   const location = useLocation();
   const { search } = location;
   const { showKeywordSearch } = parse(search, { parseBooleans: true });
 
-  const cascaderOptions = useMemo(() => {
-    return [
+  const cascaderOptions = useMemo(
+    () => [
       ...keywords.map((kw) => ({
         label: kw.label,
         value: kw._id,
@@ -41,8 +41,9 @@ export default function UsersHybrid({ users, keywords, Host }) {
           value: m.username,
         })),
       },
-    ];
-  }, [users?.length, keywords?.length]);
+    ],
+    [users?.length, keywords?.length]
+  );
 
   const usersInMenu = Host?.settings?.menu?.find((item) => item.name === 'people');
   const description = usersInMenu?.description;
@@ -59,67 +60,64 @@ export default function UsersHybrid({ users, keywords, Host }) {
     },
   ];
 
-  const cascaderRender = (menus) => {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          position: 'relative',
-        }}
-      >
-        <div>{menus}</div>
-        <Divider orientation="vertical" />
-        {selectedProfile && (
-          <Box
-            _hover={{ bg: 'brand.50' }}
-            border="1px solid"
-            borderColor="brand.500"
-            cursor="pointer"
-            maxH="480px"
-            mx="2"
-            p="2"
-            w="310px"
-            onClick={() => setModalUser(selectedProfile)}
-          >
-            <Center>
-              <Box>
-                <Center>
-                  <Avatar
-                    borderRadius="0"
-                    name={selectedProfile.username}
-                    size="2xl"
-                    src={selectedProfile.avatar?.src}
-                  />
-                </Center>
-                <Center pt="2">
-                  <Button variant="link">
-                    <Text textAlign="center" fontSize="xl">
-                      {selectedProfile.username}
-                    </Text>
-                  </Button>
-                </Center>
+  const cascaderRender = (menus) => (
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        position: 'relative',
+      }}
+    >
+      <div>{menus}</div>
+      <Divider orientation="vertical" />
+      {selectedProfile && (
+        <Box
+          _hover={{ bg: 'brand.50' }}
+          border="1px solid"
+          borderColor="brand.500"
+          cursor="pointer"
+          maxH="480px"
+          mx="2"
+          p="2"
+          w="310px"
+          onClick={() => setModalItem(selectedProfile)}
+        >
+          <Center>
+            <Box>
+              <Center>
+                <Avatar
+                  borderRadius="0"
+                  name={selectedProfile.username}
+                  size="2xl"
+                  src={selectedProfile.avatar?.src}
+                />
+              </Center>
+              <Center pt="2">
+                <Button variant="link">
+                  <Text textAlign="center" fontSize="xl">
+                    {selectedProfile.username}
+                  </Text>
+                </Button>
+              </Center>
 
-                <Divider my="2" />
+              <Divider my="2" />
 
-                {selectedProfile.bio && (
-                  <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
-                    {parseHtml(selectedProfile.bio)}
-                  </Box>
-                )}
-              </Box>
-            </Center>
-          </Box>
-        )}
-      </div>
-    );
-  };
+              {selectedProfile.bio && (
+                <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
+                  {parseHtml(selectedProfile.bio)}
+                </Box>
+              )}
+            </Box>
+          </Center>
+        </Box>
+      )}
+    </div>
+  );
 
-  const filterCascaderOptions = (inputValue, path) => {
-    return path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-  };
+  const filterCascaderOptions = (inputValue, path) =>
+    path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
 
-  const handleCascaderSelect = (value, selectedOptions) => {
+  const handleCascaderSelect = (value) => {
     const username = value[1];
     const selectedItem = users.find((u) => u.username === username);
     if (selectedItem) {
@@ -140,7 +138,6 @@ export default function UsersHybrid({ users, keywords, Host }) {
           <Cascader
             changeOnSelect
             dropdownRender={cascaderRender}
-            // placement="bottom-left"
             open
             options={cascaderOptions}
             popupClassName="cascader-container cascader-container--open"
@@ -153,12 +150,11 @@ export default function UsersHybrid({ users, keywords, Host }) {
         </Flex>
       ) : (
         <Box>
-          {/* {sorterValue === 'random' && ( */}
           <Center mb="4">
             <Text fontSize="sm">{tm('message.sortedRandomly')}</Text>
           </Center>
-          {/* )} */}
-          <InfiniteScroller isMasonry items={users}>
+
+          <InfiniteScroller hideFiltrerSorter isMasonry items={users}>
             {(user) => (
               <Box key={user.username} cursor="pointer" onClick={() => setModalItem(user)}>
                 <MemberAvatarEtc user={user} />

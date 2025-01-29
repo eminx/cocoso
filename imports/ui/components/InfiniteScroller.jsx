@@ -28,11 +28,11 @@ const filterHelper = (item, lowerCaseFilterValue) => {
   };
 
   const itemFiltered =
-    checker(title) ||
+    checker(label) ||
+    checker(readingMaterial) ||
     checker(subTitle) ||
     checker(shortDescription) ||
-    checker(label) ||
-    checker(readingMaterial);
+    checker(title);
 
   return itemFiltered;
 };
@@ -60,7 +60,7 @@ const sortItems = (items, sortValue) => {
 
   return items.sort((a, b) => {
     if (sortValue === 'name') {
-      return a.label ? a.label.localeCompare(b.label) : a.title.localeCompare(b.title);
+      return a.label ? a.label?.localeCompare(b.label) : a.title?.localeCompare(b.title);
     }
     return new Date(b.createdAt || b.creationDate) - new Date(a.createdAt || a.creationDate);
   });
@@ -74,6 +74,7 @@ const filterSortItems = (items, filterValue, sortValue, currentPage, itemsPerPag
 
 export default function InfiniteScroller({
   canCreateContent = false,
+  hideFiltrerSorter = false,
   isMasonry = false,
   items,
   itemsPerPage = defaultItemsPerPage,
@@ -83,7 +84,7 @@ export default function InfiniteScroller({
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterValue, setFilterValue] = useState('');
-  const [sortValue, setSortValue] = useState('date');
+  const [sortValue, setSortValue] = useState('');
 
   const currentItems = useMemo(
     () => filterSortItems(items, filterValue, sortValue, currentPage, itemsPerPage),
@@ -110,9 +111,11 @@ export default function InfiniteScroller({
 
   return (
     <>
-      <Center>
-        <FiltrerSorter {...filtrerProps} />
-      </Center>
+      {!hideFiltrerSorter && (
+        <Center>
+          <FiltrerSorter {...filtrerProps} />
+        </Center>
+      )}
 
       <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>
         {isMasonry ? (

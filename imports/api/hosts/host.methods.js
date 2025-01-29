@@ -12,12 +12,12 @@ function getUsersRandomlyWithAvatarsFirst(users) {
   if (!users || !users.length === 0) {
     return null;
   }
-  const usersWithImage = users.filter((u) => u.avatar?.src);
+  const usersWithImage = users.filter((u) => u.avatar && u.avatar.src);
   const usersWithoutImage = users.filter((u) => !u.avatar || !u.avatar.src);
 
   return [
-    ...usersWithImage.sort(() => Math.random() - 1),
-    ...usersWithoutImage.sort(() => Math.random() - 1),
+    ...usersWithImage.sort(() => Math.random() - 0.5),
+    ...usersWithoutImage.sort(() => Math.random() - 0.5),
   ];
 }
 

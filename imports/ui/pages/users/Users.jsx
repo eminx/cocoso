@@ -25,6 +25,9 @@ export default function Users() {
 
   const getAllUsers = async () => {
     try {
+      if (users.length > 0) {
+        return;
+      }
       let usersFetched = [];
       if (isPortalHost) {
         usersFetched = await call('getAllMembersFromAllHosts');

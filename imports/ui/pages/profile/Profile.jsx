@@ -91,7 +91,7 @@ function ContactInfo({ isDesktop, isSelfAccount, tc, user }) {
   );
 }
 
-function Profile() {
+export default function Profile() {
   const [user, setUser] = useState(null);
   const [tc] = useTranslation('common');
   const location = useLocation();
@@ -264,5 +264,3 @@ function Profile() {
     </>
   );
 }
-
-export default Profile;
