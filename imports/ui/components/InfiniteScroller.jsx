@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { Skeleton, Wrap } from '@chakra-ui/react';
+import { Center, Skeleton, Wrap } from '@chakra-ui/react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
 
 import NewEntryHelper from './NewEntryHelper';
+import FiltrerSorter from './FiltrerSorter';
 
 const breakpointColumnsObj = {
   default: 4,
@@ -16,7 +17,62 @@ const breakpointColumnsObj = {
 
 const defaultItemsPerPage = 12;
 
-function InfiniteScroller({
+const filterHelper = (item, lowerCaseFilterValue) => {
+  const { title, subTitle, shortDescription, label, readingMaterial } = item;
+
+  const checker = (field) => {
+    if (!field) {
+      return false;
+    }
+    return field.toLowerCase().indexOf(lowerCaseFilterValue) !== -1;
+  };
+
+  const itemFiltered =
+    checker(title) ||
+    checker(subTitle) ||
+    checker(shortDescription) ||
+    checker(label) ||
+    checker(readingMaterial);
+
+  return itemFiltered;
+};
+
+const filterItems = (items, filterValue) => {
+  if (!filterValue || filterValue === '') {
+    return items;
+  }
+
+  return items.filter((item) => {
+    if (!item || typeof item !== 'object') {
+      return false;
+    }
+
+    const lowerCaseFilterValue = filterValue.toLowerCase();
+
+    return filterHelper(item, lowerCaseFilterValue);
+  });
+};
+
+const sortItems = (items, sortValue) => {
+  if (!sortValue || sortValue === '') {
+    return items;
+  }
+
+  return items.sort((a, b) => {
+    if (sortValue === 'name') {
+      return a.label ? a.label.localeCompare(b.label) : a.title.localeCompare(b.title);
+    }
+    return new Date(b.createdAt || b.creationDate) - new Date(a.createdAt || a.creationDate);
+  });
+};
+
+const filterSortItems = (items, filterValue, sortValue, currentPage, itemsPerPage) => {
+  const filteredItems = filterItems(items, filterValue);
+  const filteredSortedItems = sortItems(filteredItems, sortValue);
+  return filteredSortedItems.slice(0, itemsPerPage * currentPage);
+};
+
+export default function InfiniteScroller({
   canCreateContent = false,
   isMasonry = false,
   items,
@@ -26,10 +82,12 @@ function InfiniteScroller({
   children,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [filterValue, setFilterValue] = useState('');
+  const [sortValue, setSortValue] = useState('date');
 
   const currentItems = useMemo(
-    () => items.slice(0, itemsPerPage * currentPage),
-    [items, currentPage]
+    () => filterSortItems(items, filterValue, sortValue, currentPage, itemsPerPage),
+    [items, filterValue, sortValue, currentPage]
   );
 
   const handleLoad = () => {
@@ -43,8 +101,19 @@ function InfiniteScroller({
   const skeletonWidth = smallThumb || isMasonry ? '2xs' : 'auto';
   const skeletonHeight = smallThumb || isMasonry ? '180px' : '315px';
 
+  const filtrerProps = {
+    filterValue,
+    setFilterValue: (v) => setFilterValue(v),
+    sortValue,
+    setSortValue: (v) => setSortValue(v),
+  };
+
   return (
     <>
+      <Center>
+        <FiltrerSorter {...filtrerProps} />
+      </Center>
+
       <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>
         {isMasonry ? (
           <Masonry
@@ -78,5 +147,3 @@ function InfiniteScroller({
     </>
   );
 }
-
-export default InfiniteScroller;

@@ -57,7 +57,15 @@ export default function Header({ Host, isLogoSmall = false }) {
       </Center>
 
       <Center p="4">
-        <HStack alignItems="center" justify="center" mb="2" wrap="wrap">
+        <HStack
+          alignItems="center"
+          bg="gray.50"
+          borderRadius={6}
+          justify="center"
+          mb="2"
+          p="2"
+          wrap="wrap"
+        >
           {menuItems?.map((item, index) => (
             <Link key={item.name} to={`/${item.name}`}>
               <Box as="span" px="2">

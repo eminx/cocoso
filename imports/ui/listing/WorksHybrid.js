@@ -48,7 +48,8 @@ export default function WorksHybrid({ works, Host }) {
   return (
     <>
       <PageHeading description={description} heading={heading} />
-      <Center pb="4" px="4">
+
+      <Center px="4">
         <Flex justify="center" wrap="wrap">
           <Tag
             label={t('all')}

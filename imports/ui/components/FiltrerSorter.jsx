@@ -1,89 +1,93 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
   Center,
-  Divider,
-  Flex,
+  Collapse,
   Heading,
   Input,
-  Menu,
-  MenuButton,
-  MenuList,
   Select,
-  Text,
+  Wrap,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import ListFilter from 'lucide-react/dist/esm/icons/list-filter';
+import ChevronDown from 'lucide-react/dist/esm/icons/chevron-down';
+import ChevronUp from 'lucide-react/dist/esm/icons/chevron-up';
 
-import { StateContext } from '../LayoutContainer';
-
-function FiltrerSorter(props) {
-  const { isDesktop } = useContext(StateContext);
-  const [tc] = useTranslation('common');
-
+function Inputs({ filterValue, setFilterValue, sortValue, setSortValue, tc }) {
   return (
-    <Center position="relative" mt="4" w="100px" zIndex="2">
-      <Menu placement="bottom">
-        <MenuButton
-          as={Button}
-          bg="#fff"
-          size="xs"
-          style={{ position: 'absolute', bottom: '8px' }}
-          variant="link"
-          w="120px"
+    <Wrap justify="space-around">
+      <Box w="2xs" px="4">
+        <Heading fontSize="sm">{tc('labels.filter')}:</Heading>
+        <Input
+          my="2"
+          placeholder={`${tc('domains.props.title')} ...`}
+          size="sm"
+          value={filterValue}
+          onChange={(event) => setFilterValue(event.target.value)}
+        />
+      </Box>
+
+      <Box w="2xs" px="4">
+        <Heading fontSize="sm">{tc('labels.sort')}:</Heading>
+        <Select
+          my="2"
+          name="sorter"
+          size="sm"
+          value={sortValue}
+          onChange={(e) => setSortValue(e.target.value)}
         >
-          {/* <Flex bg="white" justify="center">
-             <ArrowUpNarrowWide size="20px" />
-             <Search size="20px" />
-            </Flex> */}
-          <Text>{tc('labels.filterAndSort')}</Text>
-        </MenuButton>
-        <MenuList bg="brand.50" p="4" border="1px solid #aaa">
-          <Inputs {...props} isDesktop={isDesktop} tc={tc} />
-        </MenuList>
-      </Menu>
-    </Center>
+          <option value="date">{tc('labels.sortBy.date')}</option>
+          <option value="name">{tc('labels.sortBy.name')}</option>
+          {/* <option value="random">{tc('labels.sortBy.random')}</option> */}
+        </Select>
+      </Box>
+    </Wrap>
   );
 }
 
-function Inputs({
-  filterWord,
-  isDesktop,
-  setFilterWord,
-  sorterValue,
-  setSorterValue,
-  tc,
-  children,
-}) {
+export default function FiltrerSorter(props) {
+  const [tc] = useTranslation('common');
+  const { isOpen, onToggle } = useDisclosure();
+
+  const handleToggle = () => {
+    if (isOpen) {
+      props.setFilterValue('');
+    }
+    onToggle();
+  };
+
   return (
-    <Flex align="flex-start" direction="column" justify="flex-start">
-      <Heading fontSize="sm">{tc('labels.filter')}:</Heading>
-      <Input
-        my="2"
-        placeholder={tc('domains.props.title') + '...'}
-        size="sm"
-        value={filterWord}
-        onChange={(event) => setFilterWord(event.target.value)}
-      />
+    <Box>
+      <Center>
+        <Button
+          leftIcon={<ListFilter />}
+          rightIcon={isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+          size="sm"
+          mb="2"
+          variant="ghost"
+          onClick={() => handleToggle()}
+        >
+          {tc('labels.filterAndSort')}
+        </Button>
+      </Center>
 
-      <Box>{children}</Box>
-      <Divider />
-      <Heading fontSize="sm" mt="4">
-        {tc('labels.sort')}:
-      </Heading>
-      <Select
-        my="2"
-        name="sorter"
-        size="sm"
-        value={sorterValue}
-        onChange={(e) => setSorterValue(e.target.value)}
-      >
-        <option value="date">{tc('labels.sortBy.date')}</option>
-        <option value="name">{tc('labels.sortBy.name')}</option>
-        {/* <option value="random">{tc('labels.sortBy.random')}</option> */}
-      </Select>
-    </Flex>
+      <Box>
+        <Collapse in={isOpen} animateOpacity>
+          <Box
+            bg="gray.50"
+            borderColor="brand.200"
+            borderWidth={1}
+            borderRadius={8}
+            mb="4"
+            mx="2"
+            p="4"
+          >
+            <Inputs {...props} tc={tc} />
+          </Box>
+        </Collapse>
+      </Box>
+    </Box>
   );
 }
-
-export default FiltrerSorter;

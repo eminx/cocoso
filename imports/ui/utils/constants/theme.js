@@ -27,8 +27,8 @@ const generateTheme = (hue) => {
     initialColorMode: 'dark',
     colors: {
       brand: {
-        50: brand(hue, '95'),
-        100: brand(hue, '90'),
+        50: brand(hue, '97'),
+        100: brand(hue, '92'),
         200: brand(hue, '85'),
         300: brand(hue, '75'),
         400: brand(hue, '65'),
