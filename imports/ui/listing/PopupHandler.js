@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../components/Modal';
 import { StateContext } from '../LayoutContainer';
 import { DateJust } from '../components/FancyDate';
-import MemberAvatarEtc from '../components/MemberAvatarEtc';
 import NiceSlider from '../components/NiceSlider';
 
 const yesterday = dayjs().add(-1, 'days');
@@ -118,8 +117,6 @@ export default function PopupHandler({ item, kind, onClose }) {
 
   const isPortalHost = currentHost?.isPortalHost;
 
-  console.log(item);
-
   const getButtonLabel = () => {
     if (!isPortalHost || item?.host === currentHost?.host) {
       return tc('actions.entryPage');
@@ -140,11 +137,6 @@ export default function PopupHandler({ item, kind, onClose }) {
   };
 
   const handleActionButtonClick = () => {
-    if (kind === 'users') {
-      navigate(`/@${item.username}`);
-      return;
-    }
-
     if (item.host === currentHost.host) {
       if (kind === 'works') {
         navigate(`/@${item.authorUsername}/${kind}/${item._id}/info`);
@@ -172,21 +164,17 @@ export default function PopupHandler({ item, kind, onClose }) {
       onSecondaryButtonClick={handleCopyLink}
     >
       <ModalBody p="0">
-        {kind === 'users' ? (
-          <MemberAvatarEtc isThumb={false} user={item} />
-        ) : (
-          <PopupContent
-            action={getDatesForAction(item)}
-            content={
-              (item.longDescription && parseHtml(item.longDescription)) ||
-              (item.description && parseHtml(item.description))
-            }
-            images={item.images || [item.imageUrl]}
-            subTitle={item.subTitle || item.readingMaterial || item.shortDescription || null}
-            tags={isPortalHost ? [allHosts?.find((h) => h.host === item.host)?.name] : null}
-            title={item.title || item.label}
-          />
-        )}
+        <PopupContent
+          action={getDatesForAction(item)}
+          content={
+            (item.longDescription && parseHtml(item.longDescription)) ||
+            (item.description && parseHtml(item.description))
+          }
+          images={item.images || [item.imageUrl]}
+          subTitle={item.subTitle || item.readingMaterial || item.shortDescription || null}
+          tags={isPortalHost ? [allHosts?.find((h) => h.host === item.host)?.name] : null}
+          title={item.title || item.label}
+        />
       </ModalBody>
     </Modal>
   );

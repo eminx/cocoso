@@ -1,16 +1,13 @@
-import React, { useContext, useEffect } from 'react';
-import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect } from 'react';
+import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import HTMLReactParser from 'html-react-parser';
 
-import { StateContext } from '../LayoutContainer';
 import MemberAvatarEtc from '../components/MemberAvatarEtc';
 import MemberWorks from '../pages/works/MemberWorks';
 import MemberActivities from '../pages/activities/MemberActivities';
 import MemberGroups from '../pages/groups/MemberGroups';
 import Tabs from '../components/Tabs';
-import SexyThumb from '../components/SexyThumb';
 import BackLink from '../components/BackLink';
 
 function stripHtml(html) {
@@ -19,25 +16,12 @@ function stripHtml(html) {
   return tmp.textContent || tmp.innerText || '';
 }
 
-function Bio({ isSelfAccount, tc, user }) {
+function Bio({ user }) {
   if (!user || !user.bio) {
     return null;
   }
 
   const bareBio = stripHtml(user.bio);
-
-  if (isSelfAccount && (!bareBio || bareBio.length < 2)) {
-    return (
-      <Center p="4" mb="4" w="100%">
-        <Link to={`/@${user?.username}/edit`} style={{ width: '100%' }}>
-          <SexyThumb
-            subTitle={tc('menu.member.settings')}
-            title={tc('message.newentryhelper.bio.title')}
-          />
-        </Link>
-      </Center>
-    );
-  }
 
   if (!bareBio || bareBio.length < 2) {
     return null;
@@ -47,11 +31,11 @@ function Bio({ isSelfAccount, tc, user }) {
     <Flex justifyContent="center" mb="4">
       <Box
         bg="white"
+        borderLeft="4px solid"
+        borderColor="brand.500"
         className="text-content"
         maxW="480px"
         p="4"
-        borderLeft="4px solid"
-        borderColor="brand.500"
         w="100%"
       >
         {HTMLReactParser(user.bio)}
@@ -75,12 +59,9 @@ function Bio({ isSelfAccount, tc, user }) {
 // }
 
 export default function UserHybrid({ user, Host }) {
-  const [tc] = useTranslation('common');
   const location = useLocation();
   const { usernameSlug } = useParams();
   const [, username] = usernameSlug.split('@');
-
-  const { currentUser } = useContext(StateContext);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -129,7 +110,6 @@ export default function UserHybrid({ user, Host }) {
 
   const pathnameLastPart = location.pathname.split('/').pop();
   const tabIndex = tabs.findIndex((tab) => tab.path === pathnameLastPart);
-  const isSelfAccount = currentUser && currentUser.username === username;
   const isPortalHost = Host?.isPortalHost;
   const members = menu?.find((item) => item.name === 'people');
 
@@ -145,7 +125,7 @@ export default function UserHybrid({ user, Host }) {
             <MemberAvatarEtc isThumb={false} user={user} />
           </Center>
           <Center>
-            <Bio isSelfAccount={isSelfAccount} tc={tc} user={user} />
+            <Bio user={user} />
           </Center>
         </Box>
       </Center>

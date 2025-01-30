@@ -5,7 +5,7 @@ import { Box, Center, Heading, HStack, Img, Text } from '@chakra-ui/react';
 const textProps = {
   _hover: { borderBottom: '1px solid' },
   as: 'span',
-  color: 'brand.600',
+  color: 'gray.600',
   fontFamily: 'Raleway, Sarabun, sans-serif',
   fontSize: 16,
   textShadow: '1px 1px 1px #fff',
@@ -56,7 +56,7 @@ export default function Header({ Host, isLogoSmall = false }) {
         </Link>
       </Center>
 
-      <Center p="4">
+      <Center p="4" my="4">
         <HStack
           alignItems="center"
           bg="gray.50"
