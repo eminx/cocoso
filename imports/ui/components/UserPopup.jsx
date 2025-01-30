@@ -58,18 +58,12 @@ function UserPopup({ isOpen, setIsOpen }) {
     );
   }
 
-  const closeBothMenus = () => {
-    setIsOpen(false);
-  };
-
   const handleLogout = () => {
-    closeBothMenus();
     Meteor.logout();
     navigate('/');
   };
 
   const handleClickAdmin = () => {
-    closeBothMenus();
     navigate('/admin/settings');
   };
 
@@ -146,7 +140,7 @@ function UserPopup({ isOpen, setIsOpen }) {
               <Box px="1">
                 {notifications.map((item) => (
                   <NotificationLinkItem key={item.contextId + item.count} host={host} item={item}>
-                    <MenuItem onClick={() => closeBothMenus()}>
+                    <MenuItem>
                       <Text color="brand.700">{item.title} </Text>
                       <Badge colorScheme="red" size="xs">
                         {' '}
@@ -163,18 +157,18 @@ function UserPopup({ isOpen, setIsOpen }) {
           <MenuGroup>
             <Box px="1">
               <Link to={currentUser && `/@${currentUser?.username}`}>
-                <MenuItem as="span" color="brand.700" onClick={() => closeBothMenus()}>
+                <MenuItem as="span" color="brand.700">
                   {tc('menu.member.profile')}
                 </MenuItem>
               </Link>
               <Link to={'/edit'}>
-                <MenuItem as="span" color="brand.700" onClick={() => closeBothMenus()}>
+                <MenuItem as="span" color="brand.700">
                   {tc('menu.member.settings')}
                 </MenuItem>
               </Link>
               {canCreateContent && (
                 <Link to="/my-activities">
-                  <MenuItem as="span" color="brand.700" onClick={() => closeBothMenus()}>
+                  <MenuItem as="span" color="brand.700">
                     {tc('menu.member.activities')}
                   </MenuItem>
                 </Link>

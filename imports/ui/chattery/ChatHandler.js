@@ -25,7 +25,7 @@ export function ChatUI({ context, currentUser, item, open, withInput, setOpen })
     try {
       await call('addChatMessage', values);
     } catch (error) {
-      // console.log('error', error);
+      console.log('error', error);
     }
   };
 
