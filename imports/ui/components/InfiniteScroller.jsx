@@ -135,7 +135,7 @@ export default function InfiniteScroller({
             {currentItems?.map((item) => children(item))}
             {hasMore && (
               <Skeleton
-                className="sexy-thumb-container"
+                // className="sexy-thumb-container"
                 endColor="gray.300"
                 h={skeletonHeight}
                 w={skeletonWidth}

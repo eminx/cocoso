@@ -22,8 +22,8 @@ const dateStyle = {
 };
 
 const imageStyle = {
-  height: '315px',
-  maxWidth: '550px',
+  height: '325px',
+  maxWidth: '780px',
   objectFit: 'cover',
   width: '100%',
   borderRadius: '8px',
@@ -78,13 +78,14 @@ export default function SexyThumb({ activity, host, showPast = false }) {
 
   return (
     <Box
-      _hover={{ bg: 'brand.400' }}
       bg="brand.500"
       border="1px solid"
       borderColor="white"
       borderRadius={8}
+      h={imageStyle.height}
       className="thumb-cover-container"
       fontWeight="bold"
+      maxW={imageStyle.maxWidth}
     >
       <div className="thumb-cover">
         <LazyLoadImage alt={title} effect="black-and-white" src={imageUrl} style={imageStyle} />

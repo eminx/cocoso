@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 
 import PageHeading from '../components/PageHeading';
 import PopupHandler from './PopupHandler';
@@ -17,12 +17,12 @@ export default function GroupsHybrid({ groups, Host }) {
     <>
       <PageHeading description={description} heading={heading} />
 
-      <Box px="2">
+      <Box px="2" pb="8">
         <InfiniteScroller items={groups}>
           {(item) => (
-            <Box key={item._id} className="sexy-thumb-container" onClick={() => setModalItem(item)}>
+            <Center key={item._id} flex="1 1 355px" onClick={() => setModalItem(item)}>
               <SexyThumb activity={item} host={Host?.isPortalHost ? item.host : null} />
-            </Box>
+            </Center>
           )}
         </InfiniteScroller>
 

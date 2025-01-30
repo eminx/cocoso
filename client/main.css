@@ -154,9 +154,9 @@ input::placeholder {
 /* Sexy Thumb */
 
 .thumb-cover-container {
-  height: 315px;
   position: relative;
   width: 100%;
+  cursor: pointer;
 }
 
 .thumb-cover-container:hover .thumb-cover {
@@ -185,12 +185,6 @@ input::placeholder {
 
 .lazy-load-image-background {
   width: 100%;
-}
-
-.sexy-thumb-container {
-  cursor: pointer;
-  flex: 1 1 355px;
-  max-width: 550px;
 }
 
 .cover-highlight-title {
@@ -234,6 +228,7 @@ input::placeholder {
   display: -ms-flexbox; /* Not needed if autoprefixing */
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: auto;
 }
 .my-masonry-grid_column {
