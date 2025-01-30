@@ -16,7 +16,7 @@ export default function PageHeading({ description, heading, children }) {
       </Helmet>
       <Center>
         <Box px="2">
-          <Center wrap="wrap">
+          <Center position="relative">
             <Heading as="h1" size="lg" textAlign="center">
               {heading}
             </Heading>

@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { act, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, Center } from '@chakra-ui/react';
 
@@ -104,7 +104,7 @@ export default function SetupHome({ children }) {
     };
 
     return (
-      <Box bg="gray.100" minH="100vh" pb="4">
+      <Box bg="gray.100" pb="4">
         <Center p="4">
           <Box>
             <Alert type="success">You have successfully finished the installation</Alert>
@@ -118,7 +118,7 @@ export default function SetupHome({ children }) {
   }
 
   return (
-    <Box bg="gray.100" minH="100vh" pb="4">
+    <Box bg="gray.100" pb="4">
       <Center>
         <Box w="xl">
           <Box p="4" mb="8">

@@ -74,7 +74,7 @@ export default function WorksHybrid({ works, Host }) {
         </Flex>
       </Center>
 
-      <Box px="2">
+      <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={worksWithCategoryColors}>
           {(work) => (
             <Box

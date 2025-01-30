@@ -17,7 +17,7 @@ export default function ResourcesHybrid({ resources, Host }) {
     <>
       <PageHeading description={description} heading={heading} />
 
-      <Box px="2">
+      <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={resources}>
           {(resource) => (
             <Box

@@ -213,7 +213,7 @@ function TablyCentered({
 
           <Center>
             <Box maxW="540px" w="100%">
-              <Box minH="100vh" w="100%">
+              <Box w="100%">
                 {tabs && (
                   <Tabs
                     align="center"

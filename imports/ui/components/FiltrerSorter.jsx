@@ -65,8 +65,8 @@ export default function FiltrerSorter(props) {
           fontWeight="normal"
           leftIcon={<ListFilter />}
           mb="2"
-          rightIcon={isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-          size="sm"
+          rightIcon={isOpen ? <ChevronUp size={18} /> : <ChevronDown size={15} />}
+          size="xs"
           variant="ghost"
           onClick={() => handleToggle()}
         >

@@ -1,32 +1,18 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  Box,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalOverlay,
-  Text,
-} from '@chakra-ui/react';
+import { IconButton } from '@chakra-ui/react';
 import AddIcon from 'lucide-react/dist/esm/icons/plus-square';
-import { useTranslation } from 'react-i18next';
 import { StateContext } from '../LayoutContainer';
 
-const getRoute = (item, index) => {
+const getRoute = (item) => {
   if (item.name === 'info') {
     return '/pages/new';
   }
   return `/${item.name}/new`;
 };
 
-function NewButton() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
-  const [tc] = useTranslation('common');
+export default function NewButton() {
+  const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -42,9 +28,8 @@ function NewButton() {
     .filter((item) => {
       if (isAdmin) {
         return item.isVisible;
-      } else {
-        return item.isVisible && !['info', 'resources'].includes(item.name);
       }
+      return item.isVisible && !['info', 'resources'].includes(item.name);
     })
     .map((item, index) => ({
       ...item,
@@ -67,13 +52,14 @@ function NewButton() {
   const getPathname = (item) => {
     if (item.name === 'calendar') {
       return '/activities/new';
-    } else if (item.name === 'info') {
-      return '/pages/new';
-    } else if (item.name === 'communities' && currentUser?.isSuperAdmin) {
-      return '/new-host';
-    } else {
-      return `/${item.name}/new`;
     }
+    if (item.name === 'info') {
+      return '/pages/new';
+    }
+    if (item.name === 'communities' && currentUser?.isSuperAdmin) {
+      return '/new-host';
+    }
+    return `/${item.name}/new`;
   };
 
   if (!canCreateContent) {
@@ -91,80 +77,13 @@ function NewButton() {
       bg="brand.100"
       borderColor="#fff"
       borderWidth="2px"
+      borderRadius="8px"
       color="gray.800"
       cursor="pointer"
-      // borderRadius="50%"
       icon={<AddIcon />}
       mx="2"
-      size={isDesktop ? 'md' : 'sm'}
+      size="sm"
       onClick={() => navigate(getPathname(activeMenuItem))}
     />
   );
-
-  return (
-    <Box zIndex={isOpen ? '1403' : '10'} ml="2">
-      <Menu
-        isOpen={isOpen}
-        placement="bottom-end"
-        onOpen={() => setIsOpen(true)}
-        onClose={() => setIsOpen(false)}
-      >
-        <MenuButton>
-          <IconButton
-            _hover={{ bg: 'brand.200' }}
-            as="span"
-            bg="brand.100"
-            borderColor="#fff"
-            borderWidth="2px"
-            color="gray.800"
-            // borderRadius="50%"
-            icon={<AddIcon />}
-            size={isDesktop ? 'md' : 'sm'}
-          />
-        </MenuButton>
-        <MenuList zIndex={isOpen ? '1403' : '10'}>
-          <Text mx="4" mt="1">
-            {tc('labels.newPopupLabel')}:
-          </Text>
-          {activeMenuItem && <MenuDivider />}
-          {activeMenuItem && (
-            <MenuItem
-              key={activeMenuItem.name}
-              color="brand.600"
-              pl="5"
-              onClick={() => navigate(getPathname(activeMenuItem))}
-            >
-              <Text fontWeight="bold">{activeMenuItem.label}</Text>{' '}
-              <Text pl="1">({tc('labels.thislisting')})</Text>
-            </MenuItem>
-          )}
-          <MenuDivider />
-          <Box pl="2">
-            {menuItems
-              .filter((itemm) => itemm.name !== 'people' && itemm.name !== activeMenuItem?.name)
-              .map((item) => (
-                <MenuItem
-                  key={item.name}
-                  color="brand.600"
-                  fontWeight="bold"
-                  onClick={() => navigate(getPathname(item))}
-                >
-                  {item.label}
-                </MenuItem>
-              ))}
-          </Box>
-        </MenuList>
-      </Menu>
-      {/* <Center position="relative">
-         <Text fontSize="12px" lineHeight="1" position="absolute" top="3px" textAlign="center">
-           {tc('actions.create')}
-         </Text>
-        </Center> */}
-      <Modal isOpen={isOpen}>
-        <ModalOverlay />
-      </Modal>
-    </Box>
-  );
 }
-
-export default NewButton;

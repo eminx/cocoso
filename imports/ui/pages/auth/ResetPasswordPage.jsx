@@ -29,7 +29,7 @@ function ResetPasswordPage() {
   }
 
   return (
-    <Box pb="8" minHeight="100vh">
+    <Box pb="8">
       <Center p="4">
         <Box w="xs">
           <Heading size="md" textAlign="center" mb="4">

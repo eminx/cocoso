@@ -19,7 +19,7 @@ function SignupPage() {
   }
 
   return (
-    <Box pb="8" minHeight="100vh">
+    <Box pb="8">
       <Center>
         <Box w="sm">
           {platform && (
