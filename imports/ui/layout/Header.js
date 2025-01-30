@@ -118,7 +118,12 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
         >
           {menuItems?.map((item, index) =>
             item.name === 'info' ? (
-              <InfoPagesMenu label={item.label} pageTitles={pageTitles} pathname={pathname} />
+              <InfoPagesMenu
+                key="info"
+                label={item.label}
+                pageTitles={pageTitles}
+                pathname={pathname}
+              />
             ) : (
               <Link key={item.name} to={`/${item.name}`}>
                 <Box as="span" px="2">
