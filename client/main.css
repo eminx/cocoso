@@ -3,6 +3,11 @@
 /* @import 'react-slideshow-image/dist/styles.css';
 @import 'react-lazy-load-image-component/src/effects/black-and-white.css'; */
 
+*,
+*:hover {
+  box-sizing: border-box;
+}
+
 body {
   min-height: 101vh;
   margin: 0;

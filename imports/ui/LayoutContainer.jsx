@@ -28,6 +28,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [platform, setPlatform] = useState(null);
   const [currentHost, setCurrentHost] = useState(initialCurrentHost);
   const [allHosts, setAllHosts] = useState(null);
+  const [pageTitles, setPageTitles] = useState([]);
   const [hue, setHue] = useState('233');
   const [rendered, setRendered] = useState(false);
   const [tc, i18n] = useTranslation();
@@ -85,7 +86,16 @@ function LayoutPage({ currentUser, userLoading, children }) {
       const respond = await call('getAllHosts');
       setAllHosts(respond.sort((a, b) => a.name.localeCompare(b.name)));
     } catch (error) {
-      // console.log(error);
+      console.log(error);
+    }
+  };
+
+  const getPageTitles = async () => {
+    try {
+      const respond = await call('getPageTitles');
+      setPageTitles(respond);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -93,6 +103,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
     getCurrentHost();
     getPlatform();
     getAllHosts();
+    getPageTitles();
   }, []);
 
   const setSelectedHue = async () => {
@@ -143,7 +154,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
           >
             <DummyWrapper>
               {rendered && <TopBarHandler currentUser={currentUser} slideStart={rendered} />}
-              <Header Host={currentHost} isLogoSmall={isEntryPage} />
+              <Header Host={currentHost} isLogoSmall={isEntryPage} pageTitles={pageTitles} />
               {children}
             </DummyWrapper>
 

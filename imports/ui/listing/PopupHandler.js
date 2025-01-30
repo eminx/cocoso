@@ -54,7 +54,7 @@ function getDatesForAction(activity, showPast = false) {
   );
 }
 
-function Header({ subTitle, tags, title }) {
+function PopupHeader({ subTitle, tags, title }) {
   const fontFamily = "'Raleway', sans-serif";
 
   return (
@@ -94,7 +94,7 @@ function Header({ subTitle, tags, title }) {
 function PopupContent({ action = null, content, images, subTitle, title, tags = null }) {
   return (
     <>
-      <Header subTitle={subTitle} tags={tags} title={title} />
+      <PopupHeader subTitle={subTitle} tags={tags} title={title} />
       <Center>
         <NiceSlider alt={title} images={images} isFade={false} />
       </Center>

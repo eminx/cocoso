@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react';
 import { I18nextProvider } from 'react-i18next';
@@ -13,6 +14,8 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
     return null;
   }
 
+  const pageTitles = Meteor.call('getPageTitles');
+
   const hue = Host?.settings?.hue;
   const chakraTheme = generateTheme(hue || '233');
 
@@ -24,7 +27,7 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
         <ChakraProvider theme={chakraTheme}>
           <ColorModeProvider>
             <DummyWrapper>
-              <Header Host={Host} isLogoSmall={isEntryPage} />
+              <Header Host={Host} isLogoSmall={isEntryPage} pageTitles={pageTitles} />
               {children}
             </DummyWrapper>
           </ColorModeProvider>

@@ -20,7 +20,31 @@ Meteor.methods({
         { sort: { creationDate: -1 } }
       ).fetch();
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't add to Collection");
+      throw new Meteor.Error(error, "Couldn't get pages");
+    }
+  },
+
+  getPageTitles(host) {
+    if (!host) {
+      host = getHost(this);
+    }
+
+    try {
+      const pages = Pages.find(
+        {
+          host,
+        },
+        {
+          sort: { creationDate: -1 },
+          fields: {
+            title: 1,
+          },
+        }
+      ).fetch();
+
+      return pages.map((p) => p.title);
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't get pages");
     }
   },
 
