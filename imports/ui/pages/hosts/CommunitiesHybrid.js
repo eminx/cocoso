@@ -95,7 +95,7 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
     <>
       <PageHeading heading={tc('platform.communities')} />
 
-      <Box px="2">
+      <Box px="2" mt="4">
         <InfiniteScroller hideFiltrerSorter items={hostsRendered}>
           {(host) => (
             <Box key={host.host} alignSelf="center" m="2" width={300}>

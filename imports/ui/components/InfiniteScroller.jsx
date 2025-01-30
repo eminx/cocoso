@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Center, Skeleton, Wrap } from '@chakra-ui/react';
+import { Flex, Skeleton, Wrap } from '@chakra-ui/react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
 
@@ -112,9 +112,9 @@ export default function InfiniteScroller({
   return (
     <>
       {!hideFiltrerSorter && (
-        <Center>
+        <Flex justify="flex-end">
           <FiltrerSorter {...filtrerProps} />
-        </Center>
+        </Flex>
       )}
 
       <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>

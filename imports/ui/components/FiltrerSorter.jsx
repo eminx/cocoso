@@ -2,8 +2,8 @@ import React from 'react';
 import {
   Box,
   Button,
-  Center,
   Collapse,
+  Flex,
   Heading,
   Input,
   Select,
@@ -60,18 +60,19 @@ export default function FiltrerSorter(props) {
 
   return (
     <Box>
-      <Center>
+      <Flex justify="flex-end">
         <Button
+          fontWeight="normal"
           leftIcon={<ListFilter />}
+          mb="2"
           rightIcon={isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           size="sm"
-          mb="2"
           variant="ghost"
           onClick={() => handleToggle()}
         >
           {tc('labels.filterAndSort')}
         </Button>
-      </Center>
+      </Flex>
 
       <Box>
         <Collapse in={isOpen} animateOpacity>
