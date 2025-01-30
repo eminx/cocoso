@@ -136,8 +136,10 @@ const generateTheme = (hue) => {
       },
       Textarea: {
         defaultProps: {
+          colorScheme: 'brand',
           focusBorderColor: color,
           variant: 'luxx',
+          borderWidth: '2px',
         },
         variants: {
           luxx: luxxStyle,

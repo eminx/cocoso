@@ -1,6 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Center, Flex, Tag, Text, Wrap, WrapItem } from '@chakra-ui/react';
-import parseHtml from 'html-react-parser';
+import { Avatar, Box, Center, Tag, Text, Wrap, WrapItem } from '@chakra-ui/react';
 
 import { getFullName } from '../utils/shared';
 
@@ -12,7 +11,7 @@ const tagProps = {
 };
 
 function MemberAvatarEtc({ isThumb = true, user }) {
-  const { avatar, memberships } = user;
+  const { avatar } = user;
   const avatarSrc = avatar?.src || avatar;
 
   return (

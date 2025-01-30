@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Center, Divider, Flex, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
@@ -7,10 +7,10 @@ import Cascader from 'antd/lib/cascader';
 import { parse } from 'query-string';
 
 import PageHeading from '../components/PageHeading';
-import PopupHandler from './PopupHandler';
 import InfiniteScroller from '../components/InfiniteScroller';
 import MemberAvatarEtc from '../components/MemberAvatarEtc';
 import Tabs from '../components/Tabs';
+import Modal from '../components/Modal';
 
 export default function UsersHybrid({ users, keywords, Host }) {
   const [modalItem, setModalItem] = useState(null);
@@ -18,6 +18,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
   const [selectedProfile] = useState(null);
   const [tm] = useTranslation('members');
   const location = useLocation();
+  const navigate = useNavigate();
   const { search } = location;
   const { showKeywordSearch } = parse(search, { parseBooleans: true });
 
@@ -164,9 +165,16 @@ export default function UsersHybrid({ users, keywords, Host }) {
         </Box>
       )}
 
-      {modalItem && (
-        <PopupHandler item={modalItem} kind="users" onClose={() => setModalItem(null)} />
-      )}
+      <Modal
+        actionButtonLabel={'Visit Profile'}
+        bg="gray.100"
+        isOpen={Boolean(modalItem)}
+        size="xl"
+        onActionButtonClick={() => navigate(`/@${modalItem.username}`)}
+        onClose={() => setModalItem(null)}
+      >
+        <MemberAvatarEtc isThumb={false} user={modalItem} />
+      </Modal>
     </>
   );
 }

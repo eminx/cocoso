@@ -118,6 +118,8 @@ export default function PopupHandler({ item, kind, onClose }) {
 
   const isPortalHost = currentHost?.isPortalHost;
 
+  console.log(item);
+
   const getButtonLabel = () => {
     if (!isPortalHost || item?.host === currentHost?.host) {
       return tc('actions.entryPage');

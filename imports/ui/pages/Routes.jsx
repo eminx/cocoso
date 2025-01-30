@@ -2,7 +2,6 @@ import React, { lazy, Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import LayoutContainer, { StateContext } from '../LayoutContainer';
-
 import Terms from '../components/Terms';
 
 const Communities = lazy(() => import('../pages/hosts/Communities'));
@@ -33,7 +32,7 @@ const Works = lazy(() => import('./works/Works'));
 const NewWork = lazy(() => import('./works/NewWork'));
 
 // Profile
-const Profile = lazy(() => import('./profile/Profile'));
+const UserProfile = lazy(() => import('./profile/UserProfile'));
 const EditProfile = lazy(() => import('./profile/EditProfile'));
 const Work = lazy(() => import('./works/Work'));
 const EditWork = lazy(() => import('./works/EditWork'));
@@ -44,7 +43,7 @@ const Page = lazy(() => import('./pages/Page'));
 const NewPage = lazy(() => import('./pages/NewPage'));
 
 // Users
-const Users = lazy(() => import('./users/Users'));
+const Users = lazy(() => import('./profile/Users'));
 
 // Admin
 const Settings = lazy(() => import('./admin/Settings'));
@@ -172,7 +171,7 @@ export default function AppRoutes() {
 
           {/* Profile & Profile Related Pages */}
           <Route path="/edit/*" element={<EditProfile />} />
-          <Route path="/:usernameSlug/*" element={<Profile />} />
+          <Route path="/:usernameSlug/*" element={<UserProfile />} />
           <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
           <Route path="/:usernameSlug/works/:workId/edit" element={<EditWork />} />
 
