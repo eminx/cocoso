@@ -6,14 +6,14 @@ import Masonry from 'react-masonry-css';
 import NewEntryHelper from './NewEntryHelper';
 import FiltrerSorter from './FiltrerSorter';
 
-const breakpointColumnsObj = {
+const breakpointColumnsObj = (isLarger) => ({
   default: 4,
-  1900: 5,
-  1500: 4,
-  1100: 3,
-  700: 2,
+  1900: isLarger ? 4 : 2,
+  1500: isLarger ? 4 : 2,
+  1100: isLarger ? 2 : 1,
+  700: isLarger ? 2 : 1,
   480: 1,
-};
+});
 
 const defaultItemsPerPage = 12;
 
@@ -97,7 +97,8 @@ export default function InfiniteScroller({
     }, 300);
   };
 
-  const hasMore = items.length > currentItems.length && currentItems.length >= itemsPerPage;
+  // const hasMore = items.length > currentItems.length && currentItems.length >= itemsPerPage;
+  const hasMore = false;
 
   const skeletonWidth = smallThumb || isMasonry ? '2xs' : 'auto';
   const skeletonHeight = smallThumb || isMasonry ? '180px' : '315px';
@@ -120,7 +121,7 @@ export default function InfiniteScroller({
       <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>
         {isMasonry ? (
           <Masonry
-            breakpointCols={breakpointColumnsObj}
+            breakpointCols={breakpointColumnsObj(currentItems?.length > 3)}
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
           >

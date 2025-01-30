@@ -39,7 +39,7 @@ export default function NewGridThumb({
           bg={imageUrl ? 'white' : 'brand.100'}
           borderTopLeftRadius="8px"
           borderTopRightRadius="8px"
-          h={fixedImageHeight ? '180px' : 'auto'}
+          h={fixedImageHeight ? '220px' : 'auto'}
           overflow="hidden"
         >
           {imageUrl ? (
