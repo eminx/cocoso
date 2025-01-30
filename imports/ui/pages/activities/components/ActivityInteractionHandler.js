@@ -6,21 +6,32 @@ import { ActivityContext } from '../Activity';
 import RsvpHandler from './RsvpHandler';
 import SlideWidget from '../../../entry/SlideWidget';
 import ActivityAdminFunctions from './ActivityAdminFunctions';
+import { ChatButton } from '../../../chattery/ChatHandler';
 
 export default function ActivityInteractionHandler({ slideStart }) {
-  const { canCreateContent, currentUser } = useContext(StateContext);
+  const { canCreateContent, currentUser, role } = useContext(StateContext);
   const { activity } = useContext(ActivityContext);
 
-  const isVerifiedUser = currentUser && canCreateContent;
+  if (!activity) {
+    return null;
+  }
 
-  if (isVerifiedUser) {
+  if (role === 'admin' || activity.authorId === currentUser._id) {
+    return (
+      <SlideWidget justify="space-between" slideStart={slideStart}>
+        <ActivityAdminFunctions />
+        <RsvpHandler activity={activity} />
+        <ChatButton context="activities" currentUser={currentUser} item={activity} withInputs />
+      </SlideWidget>
+    );
+  }
+
+  if (canCreateContent) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <Box />
         <RsvpHandler activity={activity} />
-        <Box>
-          <ActivityAdminFunctions />
-        </Box>
+        <ChatButton context="activities" currentUser={currentUser} item={activity} withInputs />
       </SlideWidget>
     );
   }

@@ -1,6 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-import React, { useContext } from 'react';
-import { Badge, Box, Text, Wrap } from '@chakra-ui/react';
+import React from 'react';
+import { Badge, Box, Wrap } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
@@ -32,7 +31,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
       title: tc('labels.combo'),
       content: (
         <Wrap>
-          {resource.resourcesForCombo.map((res, i) => (
+          {resource.resourcesForCombo.map((res) => (
             <Badge key={res._id} fontSize="16px">
               {res.label}
             </Badge>
@@ -48,7 +47,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
       title: tc('documents.label'),
       content: (
         <Box p="4">
-          <DocumentsField contextType="works" contextId={work?._id} />
+          <DocumentsField contextType="works" contextId={resource?._id} />
         </Box>
       ),
       path: 'documents',

@@ -6,6 +6,7 @@ import GroupJoinButton from './GroupJoinButton';
 import GroupLeaveButton from './GroupLeaveButton';
 import GroupAdminFunctions from './GroupAdminFunctions';
 import SlideWidget from '../../../entry/SlideWidget';
+import { ChatButton } from '../../../chattery/ChatHandler';
 
 export default function GroupInteractionHandler({ currentUser, group, slideStart }) {
   if (!group) {
@@ -24,9 +25,11 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
   if (isAdmin) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
-        <Box />
+        <Box w="40px">
+          <GroupAdminFunctions />
+        </Box>
         <GroupMeetingDates {...props} />
-        <GroupAdminFunctions />
+        <ChatButton context="groups" currentUser={currentUser} item={group} withInputs />
       </SlideWidget>
     );
   }
@@ -36,8 +39,10 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
       <>
         <GroupLeaveButton {...props} />
 
-        <SlideWidget slideStart={slideStart}>
+        <SlideWidget justify="space-between" slideStart={slideStart}>
+          <Box w="40px" />
           <GroupMeetingDates {...props} />
+          <ChatButton context="groups" currentUser={currentUser} item={group} withInputs />
         </SlideWidget>
       </>
     );

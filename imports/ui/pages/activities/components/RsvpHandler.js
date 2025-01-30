@@ -39,6 +39,8 @@ function AccordionDates({ activity, onCloseModal }) {
     return null;
   }
 
+  const items = activity.datesAndTimes;
+
   if (noReg) {
     return (
       <Box>
@@ -49,7 +51,7 @@ function AccordionDates({ activity, onCloseModal }) {
         ) : null}
 
         <Box>
-          {activity?.datesAndTimes?.map((occurrence) => (
+          {items.map((occurrence) => (
             <Box {...buttonProps} p="2">
               <FancyDate occurrence={occurrence} />
             </Box>
@@ -61,11 +63,13 @@ function AccordionDates({ activity, onCloseModal }) {
 
   return (
     <Box>
-      <Text mb="2" mt="4" size="sm" textAlign="center">
-        {t('public.register.disabled.false')}
-      </Text>
-      <Accordion allowToggle>
-        {activity?.datesAndTimes?.map((occurrence, occurrenceIndex) => (
+      {items.length > 1 && (
+        <Text mb="2" mt="4" size="sm" textAlign="center">
+          {t('public.register.disabled.false')}
+        </Text>
+      )}
+      <Accordion allowToggle index={items.length === 1 ? 0 : null}>
+        {items.map((occurrence, occurrenceIndex) => (
           <AccordionItem key={occurrence.startDate + occurrence.startTime} {...itemProps}>
             <AccordionButton {...buttonProps}>
               <Box flex="1" textAlign="left">

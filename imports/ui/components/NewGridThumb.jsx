@@ -33,7 +33,7 @@ export default function NewGridThumb({
     host && allHosts && isClient ? allHosts?.find((h) => h.host === host)?.name : host;
 
   return (
-    <Box _hover={{ bg: 'brand.50' }} borderRadius="8px" cursor="pointer">
+    <Box _hover={{ bg: 'brand.50' }} border="1px solid white" borderRadius="8px" cursor="pointer">
       <Box borderRadius="8px" className="text-link-container" position="relative">
         <Center
           bg={imageUrl ? 'white' : 'brand.100'}

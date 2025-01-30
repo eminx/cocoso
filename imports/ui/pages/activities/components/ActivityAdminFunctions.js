@@ -12,7 +12,7 @@ export default function ActivityAdminFunctions() {
 
   const menuItems = () => [
     {
-      kind: 'document',
+      kind: 'edit',
       label: tc('actions.update'),
       component: null,
       onClick: () => navigate(`/activities/${activity?._id}/edit`),

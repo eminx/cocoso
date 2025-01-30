@@ -1,14 +1,13 @@
 import React from 'react';
-import { Box, Flex, Center } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from '../components/TablyCentered';
 import GroupDocuments from '../pages/groups/components/GroupDocuments';
 import GroupMembers from '../pages/groups/components/GroupMembers';
-import { ChatButton } from '../chattery/ChatHandler';
 
-export default function GroupHybrid({ currentUser, group, Host }) {
+export default function GroupHybrid({ group, Host }) {
   const [tc] = useTranslation('common');
 
   if (!group) {
@@ -37,28 +36,11 @@ export default function GroupHybrid({ currentUser, group, Host }) {
 
   const groupsInMenu = Host.settings?.menu.find((item) => item.name === 'groups');
 
-  const isMember =
-    currentUser && group.members?.some((member) => member.memberId === currentUser._id);
-
   return (
     <TablyCentered
       action={
         <Center>
-          <Flex align="center" justify="center" maxW="860px" w="100%">
-            <Box px="12">
-              <GroupMembers group={group} />
-            </Box>
-            {currentUser ? (
-              <Box>
-                <ChatButton
-                  context="groups"
-                  currentUser={currentUser}
-                  item={group}
-                  withInput={isMember}
-                />
-              </Box>
-            ) : null}
-          </Flex>
+          <GroupMembers group={group} />
         </Center>
       }
       adminMenu={null}

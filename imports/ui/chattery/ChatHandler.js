@@ -71,9 +71,9 @@ export function ChatButton({ context, currentUser, item, withInput }) {
       <Center>
         <VStack spacing="0">
           <IconButton
-            _hover={{ bg: 'brand.100' }}
+            _hover={{ bg: 'brand.200' }}
             _active={{ bg: 'brand.200' }}
-            bg="brand.50"
+            bg="brand.100"
             border="1px solid"
             borderColor="brand.300"
             fontSize="32px"
@@ -82,7 +82,13 @@ export function ChatButton({ context, currentUser, item, withInput }) {
             variant="ghost"
             onClick={() => setOpen(true)}
           />
-          <Button fontWeight="normal" size="xs" variant="link" onClick={() => setOpen(true)}>
+          <Button
+            color="brand.50"
+            fontWeight="normal"
+            size="xs"
+            variant="link"
+            onClick={() => setOpen(true)}
+          >
             {tc('labels.discussion')}
           </Button>
         </VStack>

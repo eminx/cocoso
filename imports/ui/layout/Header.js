@@ -20,6 +20,7 @@ import { parseTitle } from '../utils/shared';
 const textProps = {
   _hover: { borderBottom: '1px solid' },
   as: 'span',
+  borderColor: 'gray.600',
   color: 'gray.600',
   fontFamily: 'Raleway, Sarabun, sans-serif',
   fontSize: 16,

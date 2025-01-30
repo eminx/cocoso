@@ -10,10 +10,12 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Settings from 'lucide-react/dist/esm/icons/settings';
+import { useTranslation } from 'react-i18next';
 
 export default function AdminFunctions({ menuItems }) {
   const [popup, setPopup] = useState('none');
   const [isOpen, setIsOpen] = useState(false);
+  const [t] = useTranslation('admin');
 
   const handleClickItem = (item) => {
     if (!item) {
@@ -35,22 +37,21 @@ export default function AdminFunctions({ menuItems }) {
   return (
     <>
       <Center position="relative">
-        <Box pt="2" position="absolute" top="-8px" w="100px">
+        <Box>
           <Menu closeOnSelect closeOnBlur isOpen={isOpen} onClose={() => setIsOpen(false)}>
             <MenuButton size="sm" onClick={() => setIsOpen(!isOpen)}>
               <IconButton
-                _hover={{ bg: 'brand.100' }}
+                _hover={{ bg: 'brand.200' }}
                 _active={{ bg: 'brand.200' }}
                 as="span"
-                bg="brand.50"
+                bg="brand.100"
                 border="1px solid #fff"
                 borderRadius="50%"
                 icon={<Settings />}
                 variant="ghost"
               />
-              <Text color="brand.200" fontSize="xs">
-                {/* {t('admin.admin')} */}
-                Admin
+              <Text color="brand.50" fontSize="xs">
+                {t('label')}
               </Text>
             </MenuButton>
             <MenuList size="lg">
