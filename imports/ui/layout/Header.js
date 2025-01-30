@@ -22,12 +22,16 @@ export default function Header({ Host, isLogoSmall = false }) {
 
   const { pathname } = location;
   const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
-  const currentMenuItem = menuItems.find((item) => `/${item.name}` === pathname);
 
-  const isCurrentPage = (item, index) => {
-    if (item.name === currentMenuItem?.name) {
+  const isCurrentContext = (item, index) => {
+    const context = pathname.split('/')[1];
+    if (item.name === context) {
       return true;
-    } else if (pathname === '/' && index === 0) {
+    }
+    if (item.name === 'info' && context === 'pages') {
+      return true;
+    }
+    if (pathname === '/' && index === 0) {
       return true;
     }
     return false;
@@ -69,7 +73,10 @@ export default function Header({ Host, isLogoSmall = false }) {
           {menuItems?.map((item, index) => (
             <Link key={item.name} to={`/${item.name}`}>
               <Box as="span" px="2">
-                <Text {...textProps} borderBottom={isCurrentPage(item, index) ? '2px solid' : null}>
+                <Text
+                  {...textProps}
+                  borderBottom={isCurrentContext(item, index) ? '2px solid' : null}
+                >
                   {item.label}
                 </Text>
               </Box>
