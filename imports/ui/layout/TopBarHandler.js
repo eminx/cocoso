@@ -30,12 +30,9 @@ export default function TopBarHandler({ slideStart }) {
         unmountOnExit
         style={{ zIndex: isOpen ? 2 : 1, pointerEvents: 'none' }}
       >
-        {/* <Box position="relative">
-        <Box bg="brand.50" position="absolute" top="0" w="100%" h="48px" zIndex={0} />
-      </Box> */}
         <Fade in={scrollTop < 120}>
           <Flex justify="space-between" w="100%">
-            <Box>
+            <Box pointerEvents="all">
               <FederationIconMenu />
             </Box>
             <Box p="2" pointerEvents="all">

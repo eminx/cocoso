@@ -96,7 +96,6 @@ function UserPopup({ isOpen, setIsOpen }) {
       <Menu
         isOpen={isOpen}
         placement="bottom-end"
-        zIndex={isOpen ? 1410 : 10}
         onOpen={() => setIsOpen(true)}
         onClose={() => setIsOpen(false)}
       >
@@ -108,13 +107,12 @@ function UserPopup({ isOpen, setIsOpen }) {
             showBorder
             size={isDesktop ? 'md' : 'sm'}
             src={currentUser.avatar && currentUser.avatar.src}
-            zIndex={isOpen ? '1410' : '10'}
           >
             {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
           </Avatar>
         </MenuButton>
 
-        <MenuList zIndex={isOpen ? '1410' : '10'}>
+        <MenuList>
           <MenuGroup>
             <Box px="4" py="1">
               <Text fontWeight="bold" fontSize="xl">

@@ -33,9 +33,7 @@ function Communities() {
   }, []);
 
   useLayoutEffect(() => {
-    setTimeout(() => {
-      setRendered(true);
-    }, 1000);
+    setRendered(true);
   }, []);
 
   if (!hosts) {
