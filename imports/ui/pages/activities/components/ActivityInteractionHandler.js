@@ -16,7 +16,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
     return null;
   }
 
-  if (role === 'admin' || activity.authorId === currentUser._id) {
+  if (currentUser && (role === 'admin' || activity.authorId === currentUser._id)) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <ActivityAdminFunctions />
@@ -26,7 +26,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
     );
   }
 
-  if (canCreateContent) {
+  if (currentUser && canCreateContent) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <Box />
