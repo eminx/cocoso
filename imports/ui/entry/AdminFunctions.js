@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Center,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Text,
-} from '@chakra-ui/react';
+import { Center, IconButton, Menu, MenuButton, MenuList, MenuItem, Text } from '@chakra-ui/react';
 import Settings from 'lucide-react/dist/esm/icons/settings';
 import { useTranslation } from 'react-i18next';
 

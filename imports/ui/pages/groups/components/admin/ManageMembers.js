@@ -18,7 +18,6 @@ export default function ManageMembers({ onClose }) {
       getGroupById();
       message.success(t('meeting.success.admin'));
     } catch (error) {
-      console.log(error);
       message.error(error.error);
     }
   };

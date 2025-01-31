@@ -34,7 +34,7 @@ const filterPrivateGroups = (activities, user) => {
 Meteor.methods({
   getAllPublicActivitiesFromAllHosts(showPast = false) {
     const user = Meteor.user();
-    const dateNow = new Date().toISOString();
+    const dateNow = new Date().toISOString().substring(0, 10);
 
     try {
       if (showPast) {
@@ -66,7 +66,7 @@ Meteor.methods({
       host = getHost(this);
     }
     const user = Meteor.user();
-    const dateNow = new Date().toISOString();
+    const dateNow = new Date().toISOString().substring(0, 10);
 
     try {
       if (showPast) {

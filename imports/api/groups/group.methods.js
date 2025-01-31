@@ -41,12 +41,10 @@ Meteor.methods({
 
     return {
       ...group,
-      meetings: groupActivities.map((a) => {
-        return {
-          ...a.datesAndTimes[0],
-          meetingId: a._id,
-        };
-      }),
+      meetings: groupActivities.map((a) => ({
+        ...a.datesAndTimes[0],
+        meetingId: a._id,
+      })),
     };
   },
 
@@ -135,7 +133,7 @@ Meteor.methods({
   getGroupMeetingsFuture(groupId) {
     check(groupId, String);
 
-    const dateNow = new Date().toISOString();
+    const dateNow = new Date().toISOString().substring(0, 10);
     return Activities.find({
       groupId,
       isGroupMeeting: true,
