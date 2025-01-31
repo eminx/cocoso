@@ -6,13 +6,11 @@ import ConfigProvider from 'antd/lib/config-provider';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-dayjs.extend(customParseFormat);
-
 import en from 'antd/locale/en_US';
 import sv from 'antd/locale/sv_SE';
 import tr from 'antd/locale/tr_TR';
 
-// import i18n from '../../startup/i18n';
+dayjs.extend(customParseFormat);
 
 const antTheme = {
   components: {
@@ -25,10 +23,46 @@ const antTheme = {
   },
 };
 
+function DatePicker({ disabledDate, label, value, onChange }) {
+  return (
+    <Box mb="4">
+      <Text mb="2">{label}</Text>
+      <AntDatePicker
+        disabledDate={disabledDate ? (date) => date && date < dayjs(disabledDate) : null}
+        size="large"
+        value={dayjs(value, 'YYYY-MM-DD')}
+        style={{ zIndex: 1500 }}
+        onChange={onChange}
+      />
+    </Box>
+  );
+}
+
+function TimePicker({ label, value, onChange }) {
+  return (
+    <Box>
+      <Text mb="2">{label}</Text>
+      <AntTimePicker
+        format="HH:mm"
+        minuteStep={5}
+        size="large"
+        value={dayjs(value, 'HH:mm')}
+        style={{ zIndex: 1500 }}
+        onChange={onChange}
+      />
+    </Box>
+  );
+}
+
 export default function DateTimePicker({ isRange = false, value, onChange }) {
   const [t] = useTranslation('activities');
   const { i18n } = useTranslation();
-  const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
+  let locale = en;
+  if (i18n.language === 'sv') {
+    locale = sv;
+  } else if (i18n.language === 'sv') {
+    locale = tr;
+  }
 
   const handleDateChange = (date, entity) => {
     if (!date) {
@@ -114,71 +148,3 @@ export default function DateTimePicker({ isRange = false, value, onChange }) {
     </Box>
   );
 }
-
-function DatePicker({ disabledDate, label, value, onChange }) {
-  return (
-    <Box mb="4">
-      <Text mb="2">{label}</Text>
-      <AntDatePicker
-        disabledDate={disabledDate ? (date) => date && date < dayjs(disabledDate) : null}
-        size="large"
-        value={dayjs(value, 'YYYY-MM-DD')}
-        style={{ zIndex: 1500 }}
-        onChange={onChange}
-      />
-    </Box>
-  );
-}
-
-function TimePicker({ label, value, onChange }) {
-  return (
-    <Box>
-      <Text mb="2">{label}</Text>
-      <AntTimePicker
-        format="HH:mm"
-        minuteStep={5}
-        size="large"
-        value={dayjs(value, 'HH:mm')}
-        style={{ zIndex: 1500 }}
-        onChange={onChange}
-      />
-    </Box>
-  );
-}
-
-// function DatePicker({ placeholder, value, onChange }) {
-//   const [month, setMonth] = useState(new Date());
-
-//   const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
-//   const monthShown = value?.date || month;
-
-//   return (
-//     <Box>
-//       <Text>{placeholder}:</Text>
-//       <Popover
-//         closeOnBlur={false}
-//         isDark={false}
-//         trigger="click"
-//         triggerComponent={
-//           <Box py="2" mb="2">
-//             <Button bg="white" color="$gray.800" fontWeight="normal" size="lg" variant="outline">
-//               {value}
-//             </Button>
-//           </Box>
-//         }
-//       >
-//         <DayPicker
-//           locale={locale}
-//           mode="single"
-//           month={monthShown}
-//           selected={value}
-//           showOutsideDays
-//           // showWeekNumber
-//           weekStartsOn={1}
-//           onMonthChange={setMonth}
-//           onSelect={onChange}
-//         />
-//       </Popover>
-//     </Box>
-//   );
-// }

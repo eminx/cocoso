@@ -10,14 +10,18 @@ export default function ActivityAdminFunctions() {
   const navigate = useNavigate();
   const { activity } = useContext(ActivityContext);
 
-  const menuItems = () => [
+  const handleSelect = (item) => {
+    if (item.kind === 'edit') {
+      navigate(`/activities/${activity?._id}/edit`);
+    }
+  };
+
+  const menuItems = [
     {
       kind: 'edit',
       label: tc('actions.update'),
-      component: null,
-      onClick: () => navigate(`/activities/${activity?._id}/edit`),
     },
   ];
 
-  return <AdminFunctions menuItems={menuItems} />;
+  return <AdminFunctions menuItems={menuItems} onSelect={handleSelect} />;
 }

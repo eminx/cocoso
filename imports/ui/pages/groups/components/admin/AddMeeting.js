@@ -52,14 +52,6 @@ export default function AddMeeting({ onClose }) {
   const [t] = useTranslation('groups');
   const { activities, conflictingBooking, isFormValid, newMeeting, resources } = state;
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    validateBookings();
-  }, [newMeeting]);
-
   const getData = async () => {
     try {
       const activitiesReceived = await call('getAllActivities');
@@ -73,6 +65,14 @@ export default function AddMeeting({ onClose }) {
       // console.log(error);
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    validateBookings();
+  }, [newMeeting]);
 
   const handleDateAndTimeChange = (date) => {
     setState({
