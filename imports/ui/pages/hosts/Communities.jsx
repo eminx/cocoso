@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
-import { message } from '../../components/message';
+import { message } from '../../generic/message';
 import CommunitiesHybrid from './CommunitiesHybrid';
 
 function Communities() {

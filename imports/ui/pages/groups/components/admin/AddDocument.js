@@ -5,8 +5,8 @@ import { Box, Center, Flex, Heading, Spinner, Text } from '@chakra-ui/react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '../../../../components/Modal';
-import { DocumentUploadHelper } from '../../../../components/UploadHelpers';
+import Modal from '../../../../generic/Modal';
+import { DocumentUploadHelper } from '../../../../forms/UploadHelpers';
 import GroupDocuments from '../GroupDocuments';
 import { GroupContext } from '../../Group';
 

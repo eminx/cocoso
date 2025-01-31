@@ -3,8 +3,8 @@ import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
-import TablyCentered from '../components/TablyCentered';
-import { DateJust } from '../components/FancyDate';
+import TablyCentered from './TablyCentered';
+import { DateJust } from './FancyDate';
 
 function ActionDates({ activity }) {
   return (

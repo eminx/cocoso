@@ -3,7 +3,7 @@ import { Box, Flex, Heading } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
-import BackLink from './BackLink';
+import BackLink from '../entry/BackLink';
 import parseHtml from 'html-react-parser';
 
 export default function FormTitle({ context, isCalendar, isNew = false }) {

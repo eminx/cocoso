@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box } from '@chakra-ui/react';
 
-import PageHeading from '../components/PageHeading';
+import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
-import InfiniteScroller from '../components/InfiniteScroller';
-import NewGridThumb from '../components/NewGridThumb';
+import InfiniteScroller from './InfiniteScroller';
+import NewGridThumb from './NewGridThumb';
 
 export default function ResourcesHybrid({ resources, Host }) {
   const [modalItem, setModalItem] = useState(null);

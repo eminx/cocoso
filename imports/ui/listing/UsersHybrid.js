@@ -6,11 +6,11 @@ import parseHtml from 'html-react-parser';
 import Cascader from 'antd/lib/cascader';
 import { parse } from 'query-string';
 
-import PageHeading from '../components/PageHeading';
-import InfiniteScroller from '../components/InfiniteScroller';
-import MemberAvatarEtc from '../components/MemberAvatarEtc';
-import Tabs from '../components/Tabs';
-import Modal from '../components/Modal';
+import PageHeading from './PageHeading';
+import InfiniteScroller from './InfiniteScroller';
+import MemberAvatarEtc from '../generic/MemberAvatarEtc';
+import Tabs from '../entry/Tabs';
+import Modal from '../generic/Modal';
 
 export default function UsersHybrid({ users, keywords, Host }) {
   const [modalItem, setModalItem] = useState(null);

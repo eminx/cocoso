@@ -5,9 +5,9 @@ import { Box, Code, Flex, Link as CLink, Text, Skeleton } from '@chakra-ui/react
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 
 import { call } from '../../../utils/shared';
-import { message } from '../../../components/message';
-import NiceList from '../../../components/NiceList';
-import { DocumentUploadHelper } from '../../../components/UploadHelpers';
+import { message } from '../../../generic/message';
+import NiceList from '../../../generic/NiceList';
+import { DocumentUploadHelper } from '../../../forms/UploadHelpers';
 import { StateContext } from '../../../LayoutContainer';
 
 export default function DocumentsField({ contextType, contextId, isAllowed = false }) {

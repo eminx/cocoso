@@ -20,18 +20,18 @@ import { stringify } from 'query-string';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
-import CalendarView from '../components/CalendarView';
-import ConfirmModal from '../components/ConfirmModal';
-import Tag from '../components/Tag';
+import CalendarView from './CalendarView';
+import ConfirmModal from '../../generic/ConfirmModal';
+import Tag from '../../generic/Tag';
 import {
   call,
   getNonComboResourcesWithColor,
   getComboResourcesWithColor,
   parseAllBookingsWithResources,
-} from '../utils/shared';
-import { StateContext } from '../LayoutContainer';
-import PageHeading from '../components/PageHeading';
-import Loader from '../components/Loader';
+} from '../../utils/shared';
+import { StateContext } from '../../LayoutContainer';
+import PageHeading from '../../listing/PageHeading';
+import Loader from '../../generic/Loader';
 
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;

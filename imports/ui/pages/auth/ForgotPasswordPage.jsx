@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { StateContext } from '../../LayoutContainer';
 import { ForgotPassword } from './index';
 import { call } from '../../utils/shared';
-import { message } from '../../components/message';
+import { message } from '../../generic/message';
 
 function ForgotPasswordPage() {
   const [t] = useTranslation('accounts');

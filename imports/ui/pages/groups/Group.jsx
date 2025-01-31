@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../components/Loader';
+import Loader from '../../generic/Loader';
 import GroupHybrid from '../../entry/GroupHybrid';
 import GroupInteractionHandler from './components/GroupInteractionHandler';
 

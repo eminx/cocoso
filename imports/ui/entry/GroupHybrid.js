@@ -3,7 +3,7 @@ import { Box, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
-import TablyCentered from '../components/TablyCentered';
+import TablyCentered from './TablyCentered';
 import GroupDocuments from '../pages/groups/components/GroupDocuments';
 import GroupMembers from '../pages/groups/components/GroupMembers';
 

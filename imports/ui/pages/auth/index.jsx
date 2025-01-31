@@ -16,9 +16,9 @@ import {
 } from '@chakra-ui/react';
 import { z } from 'zod';
 
-import FormField from '../../components/FormField';
-import ConfirmModal from '../../components/ConfirmModal';
-import Terms from '../../components/Terms';
+import FormField from '../../forms/FormField';
+import ConfirmModal from '../../generic/ConfirmModal';
+import Terms from '../../entry/Terms';
 
 import {
   loginModel,

@@ -5,9 +5,9 @@ import { Box, Button, Center } from '@chakra-ui/react';
 
 import { Signup } from '../auth';
 import NewPlatform from './NewPlatform';
-import Stepper from '../../components/Stepper';
+import Stepper from '../../generic/Stepper';
 import { call } from '../../utils/shared';
-import { Alert, message } from '../../components/message';
+import { Alert, message } from '../../generic/message';
 import NewHost from './NewHost';
 
 const defaultSteps = [

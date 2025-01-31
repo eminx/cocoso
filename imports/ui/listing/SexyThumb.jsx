@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { Box, Flex, HStack, Tag as CTag } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import { DateJust } from './FancyDate';
+import { DateJust } from '../entry/FancyDate';
 import { StateContext } from '../LayoutContainer';
 
 const isClient = Meteor?.isClient;

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Center } from '@chakra-ui/react';
 
-import PageHeading from '../components/PageHeading';
+import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
-import InfiniteScroller from '../components/InfiniteScroller';
-import SexyThumb from '../components/SexyThumb';
+import InfiniteScroller from './InfiniteScroller';
+import SexyThumb from './SexyThumb';
 
 export default function GroupsHybrid({ groups, Host }) {
   const [modalItem, setModalItem] = useState(null);

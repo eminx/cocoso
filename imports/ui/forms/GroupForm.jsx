@@ -10,11 +10,12 @@ import {
 } from '@chakra-ui/react';
 
 import { Controller, useForm } from 'react-hook-form';
-import { useSSR, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import FileDropper from './FileDropper';
 import FormField from './FormField';
-import ReactQuill from './Quill';
+import ReactQuill from '../forms/Quill';
+import { DocumentUploadHelper } from './UploadHelpers';
 
 function GroupForm({
   uploadableImageLocal,
@@ -100,6 +101,7 @@ function GroupForm({
                 uploadableImageLocal={uploadableImageLocal}
               />
             </Center>
+            <DocumentUploadHelper isImage />
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">

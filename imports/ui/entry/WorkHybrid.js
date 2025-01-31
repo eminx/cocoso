@@ -3,7 +3,7 @@ import { Box, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
-import TablyCentered from '../components/TablyCentered';
+import TablyCentered from './TablyCentered';
 import DocumentsField from '../pages/resources/components/DocumentsField';
 
 export default function WorkHybrid({ documents, work, Host }) {

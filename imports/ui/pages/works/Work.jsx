@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../components/Loader';
+import Loader from '../../generic/Loader';
 import { call } from '../../utils/shared';
 import WorkHybrid from '../../entry/WorkHybrid';
 

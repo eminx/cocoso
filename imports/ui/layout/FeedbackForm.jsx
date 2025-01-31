@@ -18,7 +18,7 @@ import {
 
 import { useTranslation } from 'react-i18next';
 
-import FormField from './FormField';
+import FormField from '../forms/FormField';
 
 function FeedbackForm({ isDarkText = true }) {
   const [tc] = useTranslation('common');

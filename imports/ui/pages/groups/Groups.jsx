@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
-import { message } from '../../components/message';
+import { message } from '../../generic/message';
 import GroupsHybrid from '../../listing/GroupsHybrid';
 
 export default function Groups() {

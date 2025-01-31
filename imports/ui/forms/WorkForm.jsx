@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 
 import FormField from './FormField';
-import NiceSlider from './NiceSlider';
+import NiceSlider from '../generic/NiceSlider';
 import ReactQuill from './Quill';
 import ImageUploadUI from './ImageUploadUI';
 import DocumentsField from '../pages/resources/components/DocumentsField';

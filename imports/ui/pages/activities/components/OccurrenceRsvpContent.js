@@ -15,12 +15,12 @@ import dayjs from 'dayjs';
 
 import { StateContext } from '../../../LayoutContainer';
 import { ActivityContext } from '../Activity';
-import Modal from '../../../components/Modal';
-import FancyDate from '../../../components/FancyDate';
+import Modal from '../../../generic/Modal';
+import FancyDate from '../../../entry/FancyDate';
 import RsvpForm from './RsvpForm';
 import RsvpList from './CsvList';
 import { call } from '../../../utils/shared';
-import { message } from '../../../components/message';
+import { message } from '../../../generic/message';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 

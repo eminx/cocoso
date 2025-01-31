@@ -4,7 +4,7 @@ import { Box, Divider, Heading } from '@chakra-ui/react';
 const publicSettings = Meteor.settings.public;
 
 import { StateContext } from '../LayoutContainer';
-import Template from './Template';
+import Template from '../layout/Template';
 
 function Terms() {
   const { currentHost } = useContext(StateContext);

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Fade, Flex, Slide } from '@chakra-ui/react';
 
-import UserPopup from '../components/UserPopup';
+import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
 import { StateContext } from '../LayoutContainer';
 

@@ -5,11 +5,11 @@ import HTMLReactParser from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
 
-import PageHeading from '../../components/PageHeading';
-import InfiniteScroller from '../../components/InfiniteScroller';
-import NewGridThumb from '../../components/NewGridThumb';
-import ConfirmModal from '../../components/ConfirmModal';
-import { message } from '../../components/message';
+import PageHeading from '../../listing/PageHeading';
+import InfiniteScroller from '../../listing/InfiniteScroller';
+import NewGridThumb from '../../listing/NewGridThumb';
+import ConfirmModal from '../../generic/ConfirmModal';
+import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 
 export default function CommunitiesHybrid({ currentUser, hosts, Host }) {

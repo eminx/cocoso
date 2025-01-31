@@ -13,15 +13,15 @@ import {
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-import DateTimePicker from '../../../../components/DateTimePicker';
-import { ConflictMarker } from '../../../../components/DatesAndTimes';
+import DateTimePicker from '../../../../generic/DateTimePicker';
+import { ConflictMarker } from '../../../../generic/DatesAndTimes';
 import {
   call,
   checkAndSetBookingsWithConflict,
   getAllBookingsWithSelectedResource,
   parseAllBookingsWithResources,
 } from '../../../../utils/shared';
-import Modal from '../../../../components/Modal';
+import Modal from '../../../../generic/Modal';
 import { StateContext } from '../../../../LayoutContainer';
 import { GroupContext } from '../../Group';
 

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
 import { call } from '../utils/shared';
-import Drawer from '../components/Drawer';
+import Drawer from '../generic/Drawer';
 import { Chattery, useChattery } from '../chattery';
 
 export function ChatUI({ context, currentUser, item, open, withInput, setOpen }) {

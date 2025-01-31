@@ -15,8 +15,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
-import FancyDate from '../../../components/FancyDate';
-import Modal from '../../../components/Modal';
+import FancyDate from '../../../entry/FancyDate';
+import Modal from '../../../generic/Modal';
 import OccurrenceRsvpContent from './OccurrenceRsvpContent';
 import { accordionProps } from '../../../utils/constants/general';
 

@@ -3,7 +3,7 @@ import { Box, Button, Input, NumberInput, NumberInputField, Stack } from '@chakr
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import FormField from '../../../components/FormField';
+import FormField from '../../../forms/FormField';
 
 export default function RsvpForm({ isUpdateMode = false, defaultValues, onSubmit, onDelete }) {
   const [deleteLoading, setDeleteLoading] = useState(false);

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { StateContext } from '../../LayoutContainer';
-import { message } from '../../components/message';
+import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import UsersHybrid from '../../listing/UsersHybrid';
 

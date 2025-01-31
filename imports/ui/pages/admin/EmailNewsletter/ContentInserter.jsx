@@ -21,10 +21,10 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
 import { call, compareDatesForSortActivities, parseGroupActivities } from '../../../utils/shared';
-import Loader from '../../../components/Loader';
-import { message } from '../../../components/message';
+import Loader from '../../../generic/Loader';
+import { message } from '../../../generic/message';
 import { ActivityDates } from './EmailPreview';
-import FormField from '../../../components/FormField';
+import FormField from '../../../forms/FormField';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 

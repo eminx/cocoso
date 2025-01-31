@@ -2,9 +2,9 @@ import React, { createContext, useContext, useEffect, useLayoutEffect, useState 
 import { useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
-import { message } from '../../components/message';
+import { message } from '../../generic/message';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../components/Loader';
+import Loader from '../../generic/Loader';
 import ResourceHybrid from '../../entry/ResourceHybrid';
 import ResourceInteractionHandler from './components/ResourceInteractionHandler';
 

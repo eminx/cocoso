@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 
-import { message } from '../../components/message';
-import Paginate from '../../components/Paginate';
-import NewGridThumb from '../../components/NewGridThumb';
+import { message } from '../../generic/message';
+import Paginate from '../../listing/Paginate';
+import NewGridThumb from '../../listing/NewGridThumb';
 
 function MemberActivities({ currentHost, user }) {
   const [activities, setActivities] = useState([]);

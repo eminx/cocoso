@@ -1,11 +1,9 @@
-import React, { useContext } from 'react';
-import i18n from 'i18next';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Calendar from './Calendar';
-import { StateContext } from '../LayoutContainer';
 
-export default function (props) {
+export default function CalendarContainer(props) {
   const [tc] = useTranslation('common');
 
   const allProps = {

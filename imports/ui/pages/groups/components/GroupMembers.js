@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarGroup, Box, Flex, Link as CLink, Text } from '@chakra-ui/react';
 
-import Modal from '../../../components/Modal';
-import NiceList from '../../../components/NiceList';
+import Modal from '../../../generic/Modal';
+import NiceList from '../../../generic/NiceList';
 
 export default function GroupMembers({ group }) {
   const [modalOpen, setModalOpen] = useState(false);

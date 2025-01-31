@@ -1,5 +1,5 @@
 import React from 'react';
-import { TablyLoader } from './SkeletonLoaders';
+import { TablyLoader } from '../listing/SkeletonLoaders';
 
 const Loader = () => <TablyLoader />;
 

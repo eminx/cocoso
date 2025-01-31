@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Button, Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import ConfirmModal from '../../../components/ConfirmModal';
+import ConfirmModal from '../../../generic/ConfirmModal';
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
 import { StateContext } from '../../../LayoutContainer';

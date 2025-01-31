@@ -4,7 +4,7 @@ import { Avatar, Box, Center, Flex, Heading, Tag as CTag, Text } from '@chakra-u
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { StateContext } from '../LayoutContainer';
-import Tag from './Tag';
+import Tag from '../generic/Tag';
 
 const isClient = Meteor.isClient;
 

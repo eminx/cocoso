@@ -5,8 +5,8 @@ import { Center } from '@chakra-ui/react';
 
 import { call } from '../../utils/shared';
 import UserHybrid from '../../entry/UserHybrid';
-import Loader from '../../components/Loader';
-import { Alert } from '../../components/message';
+import Loader from '../../generic/Loader';
+import { Alert } from '../../generic/message';
 import { StateContext } from '../../LayoutContainer';
 
 export default function UserProfile() {

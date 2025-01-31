@@ -3,12 +3,12 @@ import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import HTMLReactParser from 'html-react-parser';
 
-import MemberAvatarEtc from '../components/MemberAvatarEtc';
+import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 import MemberWorks from '../pages/works/MemberWorks';
 import MemberActivities from '../pages/activities/MemberActivities';
 import MemberGroups from '../pages/groups/MemberGroups';
-import Tabs from '../components/Tabs';
-import BackLink from '../components/BackLink';
+import Tabs from './Tabs';
+import BackLink from './BackLink';
 
 function stripHtml(html) {
   const tmp = document.createElement('DIV');

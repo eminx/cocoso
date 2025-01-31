@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Code, Flex, Link as CLink } from '@chakra-ui/react';
 import ExternalLink from 'lucide-react/dist/esm/icons/external-link';
 
-import NiceList from '../../../components/NiceList';
+import NiceList from '../../../generic/NiceList';
 
 export default function GroupDocuments({ documents }) {
   if (!documents || documents.length < 1) {

@@ -5,9 +5,9 @@ import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/rea
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
-import ConfirmModal from '../../components/ConfirmModal';
+import ConfirmModal from '../../generic/ConfirmModal';
 import { Login } from './index';
-import { message } from '../../components/message';
+import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 
 function LoginPage() {

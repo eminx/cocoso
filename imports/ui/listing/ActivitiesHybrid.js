@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Box, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import Tabs from '../components/Tabs';
-import PageHeading from '../components/PageHeading';
+import Tabs from '../entry/Tabs';
+import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
-import InfiniteScroller from '../components/InfiniteScroller';
-import SexyThumb from '../components/SexyThumb';
+import InfiniteScroller from './InfiniteScroller';
+import SexyThumb from './SexyThumb';
 
 export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const [modalItem, setModalItem] = useState(null);

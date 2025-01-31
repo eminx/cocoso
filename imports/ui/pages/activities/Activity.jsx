@@ -5,7 +5,7 @@ import { call } from '../../utils/shared';
 import ActivityHybrid from '../../entry/ActivityHybrid';
 import ActivityInteractionHandler from './components/ActivityInteractionHandler';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../components/Loader';
+import Loader from '../../generic/Loader';
 
 export const ActivityContext = createContext(null);
 

@@ -26,11 +26,11 @@ import { CSVLink } from 'react-csv';
 
 import { StateContext } from '../../../LayoutContainer';
 import { call } from '../../../utils/shared';
-import { message } from '../../../components/message';
-import ConfirmModal from '../../../components/ConfirmModal';
-import FancyDate, { DateJust } from '../../../components/FancyDate';
-import FormField from '../../../components/FormField';
-import Modal from '../../../components/Modal';
+import { message } from '../../../generic/message';
+import ConfirmModal from '../../../generic/ConfirmModal';
+import FancyDate, { DateJust } from '../../../entry/FancyDate';
+import FormField from '../../../forms/FormField';
+import Modal from '../../../generic/Modal';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 

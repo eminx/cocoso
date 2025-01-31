@@ -18,8 +18,8 @@ import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 import { StateContext } from '../LayoutContainer';
 import { call } from '../utils/shared';
-import ConfirmModal from '../components/ConfirmModal';
-import NiceSlider from '../components/NiceSlider';
+import ConfirmModal from '../generic/ConfirmModal';
+import NiceSlider from '../generic/NiceSlider';
 
 const buttonProps = {
   color: 'brand.700',

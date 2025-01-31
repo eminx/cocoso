@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import '../utils/styles/bigcalendar-custom.css';
+import '../../utils/styles/bigcalendar-custom.css';
 
 function CalendarView(props) {
   const { activities } = props;

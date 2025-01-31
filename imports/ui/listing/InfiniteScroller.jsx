@@ -3,7 +3,7 @@ import { Flex, Skeleton, Wrap } from '@chakra-ui/react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
 
-import NewEntryHelper from './NewEntryHelper';
+import NewEntryHelper from '../generic/NewEntryHelper';
 import FiltrerSorter from './FiltrerSorter';
 
 const breakpointColumnsObj = (isLarger) => ({
@@ -97,8 +97,7 @@ export default function InfiniteScroller({
     }, 300);
   };
 
-  // const hasMore = items.length > currentItems.length && currentItems.length >= itemsPerPage;
-  const hasMore = false;
+  const hasMore = items.length > currentItems.length && currentItems.length >= itemsPerPage;
 
   const skeletonWidth = smallThumb || isMasonry ? '2xs' : 'auto';
   const skeletonHeight = smallThumb || isMasonry ? '180px' : '315px';

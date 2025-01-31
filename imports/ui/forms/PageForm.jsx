@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import FormField from './FormField';
-import ReactQuill from './Quill';
+import ReactQuill from '../forms/Quill';
 import ImageUploadUI from './ImageUploadUI';
 import { DocumentUploadHelper } from './UploadHelpers';
 

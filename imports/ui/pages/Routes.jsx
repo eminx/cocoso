@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import LayoutContainer, { StateContext } from '../LayoutContainer';
-import Terms from '../components/Terms';
+import Terms from '../entry/Terms';
 
 const Communities = lazy(() => import('../pages/hosts/Communities'));
 
@@ -25,7 +25,7 @@ const EditResource = lazy(() => import('./resources/EditResource'));
 const NewResource = lazy(() => import('./resources/NewResource'));
 
 // Calendar
-const CalendarContainer = lazy(() => import('./CalendarContainer'));
+const CalendarContainer = lazy(() => import('./calendar/CalendarContainer'));
 
 // Works
 const Works = lazy(() => import('./works/Works'));

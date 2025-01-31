@@ -5,10 +5,10 @@ import dayjs from 'dayjs';
 import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '../components/Modal';
+import Modal from '../generic/Modal';
 import { StateContext } from '../LayoutContainer';
-import { DateJust } from '../components/FancyDate';
-import NiceSlider from '../components/NiceSlider';
+import { DateJust } from '../entry/FancyDate';
+import NiceSlider from '../generic/NiceSlider';
 
 const yesterday = dayjs().add(-1, 'days');
 const today = dayjs();

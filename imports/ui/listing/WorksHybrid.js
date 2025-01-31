@@ -3,11 +3,11 @@ import { useSearchParams } from 'react-router-dom';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import PageHeading from '../components/PageHeading';
+import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
-import InfiniteScroller from '../components/InfiniteScroller';
-import NewGridThumb from '../components/NewGridThumb';
-import Tag from '../components/Tag';
+import InfiniteScroller from './InfiniteScroller';
+import NewGridThumb from './NewGridThumb';
+import Tag from '../generic/Tag';
 import { getCategoriesAssignedToWorks } from '../utils/shared';
 
 export default function WorksHybrid({ works, Host }) {

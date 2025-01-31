@@ -3,10 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Center } from '@chakra-ui/react';
 import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
-import NiceSlider from '../components/NiceSlider';
+import NiceSlider from '../generic/NiceSlider';
 
 import { parseTitle } from '../utils/shared';
-import PagesList from '../components/PagesList';
+import PagesList from './PagesList';
 
 function SimplePage({ description, images, title }) {
   return (

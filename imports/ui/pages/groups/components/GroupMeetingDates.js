@@ -16,10 +16,10 @@ import {
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-import FancyDate from '../../../components/FancyDate';
-import Modal from '../../../components/Modal';
+import FancyDate from '../../../entry/FancyDate';
+import Modal from '../../../generic/Modal';
 import { accordionProps } from '../../../utils/constants/general';
-import { message } from '../../../components/message';
+import { message } from '../../../generic/message';
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
 

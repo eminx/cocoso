@@ -4,8 +4,8 @@ import { Box, Center, Flex, Heading, Link as CLink, List, ListItem, Text } from 
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
-import FeedbackForm from '../components/FeedbackForm';
-import ChangeLanguageMenu from '../components/ChangeLanguageMenu';
+import FeedbackForm from './FeedbackForm';
+import ChangeLanguageMenu from './ChangeLanguageMenu';
 
 export function OldFooter({ host, settings }) {
   return (

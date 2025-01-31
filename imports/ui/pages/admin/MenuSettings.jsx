@@ -26,10 +26,10 @@ import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 
 import { call } from '../../utils/shared';
-import Loader from '../../components/Loader';
-import { message, Alert } from '../../components/message';
+import Loader from '../../generic/Loader';
+import { message, Alert } from '../../generic/message';
 import { StateContext } from '../../LayoutContainer';
-import FormField from '../../components/FormField';
+import FormField from '../../forms/FormField';
 
 export default function MenuSettings() {
   const [loading, setLoading] = useState(true);

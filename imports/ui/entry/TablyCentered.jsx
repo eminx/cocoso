@@ -21,7 +21,7 @@ import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 
-import NiceSlider from './NiceSlider';
+import NiceSlider from '../generic/NiceSlider';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
 

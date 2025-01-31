@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { Avatar, Flex, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '../../../../components/Modal';
-import NiceList from '../../../../components/NiceList';
+import Modal from '../../../../generic/Modal';
+import NiceList from '../../../../generic/NiceList';
 import { call } from '../../../../utils/shared';
-import { message } from '../../../../components/message';
+import { message } from '../../../../generic/message';
 import { GroupContext } from '../../Group';
 
 export default function ManageMembers({ onClose }) {
