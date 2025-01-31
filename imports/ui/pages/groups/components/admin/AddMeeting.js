@@ -13,8 +13,8 @@ import {
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-import DateTimePicker from '../../../../generic/DateTimePicker';
-import { ConflictMarker } from '../../../../generic/DatesAndTimes';
+import DateTimePicker from '../../../../forms/DateTimePicker';
+import { ConflictMarker } from '../../../../forms/DatesAndTimes';
 import {
   call,
   checkAndSetBookingsWithConflict,

@@ -5,7 +5,7 @@ import Masonry from 'react-masonry-css';
 
 import '../utils/styles/paginate.css';
 
-import NewEntryHelper from './NewEntryHelper';
+import NewEntryHelper from '../generic/NewEntryHelper';
 
 const defaultItemsPerPage = 12;
 
@@ -21,10 +21,6 @@ function PaginatedItems({
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-
-  useEffect(() => {
-    handlePageChange(0);
-  }, [items?.length]);
 
   useEffect(() => {
     if (!items) {
@@ -45,6 +41,10 @@ function PaginatedItems({
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
+
+  useEffect(() => {
+    handlePageChange(0);
+  }, [items?.length]);
 
   const breakpointColumnsObj = {
     default: 4,

@@ -10,7 +10,7 @@ import Template from '../../layout/Template';
 import { message, Alert } from '../../generic/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
-import UsageReport from '../../generic/UsageReport';
+import UsageReport from '../../admin/UsageReport';
 import Tabs from '../../entry/Tabs';
 import { AdminMenu } from './Settings';
 

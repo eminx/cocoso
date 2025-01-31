@@ -22,7 +22,7 @@ import ReactQuill from './Quill';
 import { localeSort } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
 import NiceSlider from '../generic/NiceSlider';
-import ImageUploadUI from '../generic/ImageUploadUI';
+import ImageUploadUI from './ImageUploadUI';
 import { DocumentUploadHelper } from './UploadHelpers';
 
 const defaultCapacity = 40;
