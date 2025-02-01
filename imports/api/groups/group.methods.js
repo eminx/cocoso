@@ -8,7 +8,7 @@ import Groups from './group';
 import Activities from '../activities/activity';
 import Platform from '../platform/platform';
 import { getGroupRegistrationEmailBody, getInviteToPrivateGroupEmailBody } from './group.mails';
-import { parseGroupsWithMeetings } from '../../ui/utils/shared';
+import { compareDatesWithStartDateForSort, parseGroupsWithMeetings } from '../../ui/utils/shared';
 
 const publicSettings = Meteor.settings.public;
 
@@ -41,10 +41,12 @@ Meteor.methods({
 
     return {
       ...group,
-      meetings: groupActivities.map((a) => ({
-        ...a.datesAndTimes[0],
-        meetingId: a._id,
-      })),
+      meetings: groupActivities
+        .map((a) => ({
+          ...a.datesAndTimes[0],
+          meetingId: a._id,
+        }))
+        .sort(compareDatesWithStartDateForSort),
     };
   },
 

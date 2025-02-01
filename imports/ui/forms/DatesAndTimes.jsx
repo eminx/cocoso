@@ -19,6 +19,9 @@ import DateTimePicker from './DateTimePicker';
 const maxAttendees = 1000;
 
 function ConflictMarker({ occurrence, t }) {
+  if (!occurrence) {
+    return null;
+  }
   return (
     <Box>
       <Text fontSize="sm" textAlign="center" fontWeight="bold">

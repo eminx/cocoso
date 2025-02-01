@@ -85,7 +85,7 @@
     "react-i18next": "^12.2.0",
     "react-image-file-resizer": "^0.2.3",
     "react-infinite-scroller": "^1.2.6",
-    "react-lazy-load-image-component": "^1.6.0",
+    "react-lazy-load-image-component": "^1.6.3",
     "react-masonry-css": "^1.0.16",
     "react-meteor-data": "^0.2.11",
     "react-paginate": "^8.1.3",

@@ -38,6 +38,66 @@ const emptyDateAndTime = {
   conflict: null,
 };
 
+function AddMeetingForm({
+  buttonDisabled,
+  conflictingBooking,
+  hostname,
+  newMeeting,
+  resources,
+  handleDateChange,
+  handleResourceChange,
+  handleSubmit,
+}) {
+  const [isLocal, setIsLocal] = useState(true);
+  const [t] = useTranslation('groups');
+
+  return (
+    <>
+      <Box bg="gray.100" borderRadius="8px" p="4">
+        <Text textAlign="center">{t('meeting.info.admin')}</Text>
+        <DateTimePicker value={newMeeting} onChange={handleDateChange} />
+
+        <FormControl alignItems="center" display="flex" my="4">
+          <Switch
+            id="is-local-switch"
+            isChecked={isLocal}
+            onChange={({ target: { checked } }) => setIsLocal(checked)}
+          />
+          <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
+            {t('meeting.form.switch', { place: hostname })}
+          </FormLabel>
+        </FormControl>
+
+        {isLocal ? (
+          <Select
+            name="resource"
+            placeholder={t('meeting.form.resource')}
+            onChange={({ target: { value } }) => handleResourceChange(value)}
+          >
+            {resources.map((r) => (
+              <option key={r._id}>{r.label}</option>
+            ))}
+          </Select>
+        ) : (
+          <Textarea
+            placeholder={t('meeting.form.location')}
+            size="sm"
+            onChange={(event) => handleResourceChange(event.target.value)}
+          />
+        )}
+      </Box>
+
+      <Flex justify="flex-end" pt="4">
+        <Button isDisabled={buttonDisabled} onClick={handleSubmit}>
+          {t('meeting.form.submit')}
+        </Button>
+      </Flex>
+
+      {conflictingBooking && <ConflictMarker recurrence={conflictingBooking} t={t} />}
+    </>
+  );
+}
+
 export default function AddMeeting({ onClose }) {
   const [state, setState] = useState({
     activities: [],
@@ -209,7 +269,7 @@ export default function AddMeeting({ onClose }) {
       onClose();
       // message.success(tc('message.success.create'));
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       // message.error(error.reason);
     }
   };
@@ -227,65 +287,5 @@ export default function AddMeeting({ onClose }) {
         handleSubmit={createActivity}
       />
     </Modal>
-  );
-}
-
-function AddMeetingForm({
-  buttonDisabled,
-  conflictingBooking,
-  hostname,
-  newMeeting,
-  resources,
-  handleDateChange,
-  handleResourceChange,
-  handleSubmit,
-}) {
-  const [isLocal, setIsLocal] = useState(true);
-  const [t] = useTranslation('groups');
-
-  return (
-    <>
-      <Box bg="gray.100" borderRadius="8px" p="4">
-        <Text textAlign="center">{t('meeting.info.admin')}</Text>
-        <DateTimePicker value={newMeeting} onChange={handleDateChange} />
-
-        <FormControl alignItems="center" display="flex" my="4">
-          <Switch
-            id="is-local-switch"
-            isChecked={isLocal}
-            onChange={({ target: { checked } }) => setIsLocal(checked)}
-          />
-          <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
-            {t('meeting.form.switch', { place: hostname })}
-          </FormLabel>
-        </FormControl>
-
-        {isLocal ? (
-          <Select
-            name="resource"
-            placeholder={t('meeting.form.resource')}
-            onChange={({ target: { value } }) => handleResourceChange(value)}
-          >
-            {resources.map((r) => (
-              <option key={r._id}>{r.label}</option>
-            ))}
-          </Select>
-        ) : (
-          <Textarea
-            placeholder={t('meeting.form.location')}
-            size="sm"
-            onChange={(event) => handleResourceChange(event.target.value)}
-          />
-        )}
-      </Box>
-
-      <Flex justify="flex-end" pt="4">
-        <Button isDisabled={buttonDisabled} onClick={handleSubmit}>
-          {t('meeting.form.submit')}
-        </Button>
-      </Flex>
-
-      {conflictingBooking && <ConflictMarker recurrence={conflictingBooking} t={t} />}
-    </>
   );
 }

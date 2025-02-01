@@ -1,24 +1,6 @@
 import React from 'react';
 import { Badge, Box, Center, Flex, Heading, Img } from '@chakra-ui/react';
-import parseHtml from 'html-react-parser';
-
-export default function EntrySSR({ title, subTitle, description, imageUrl }) {
-  return (
-    <>
-      <Headings title={title} subTitle={subTitle} />
-
-      <Center>{imageUrl && <Img src={imageUrl} h={400} />}</Center>
-
-      <Center p={12}>
-        {description && (
-          <Box fontFamily="'Helvetica', sans-serif" fontWeight={400} lineHeight={1.4} w={400}>
-            {parseHtml(description)}
-          </Box>
-        )}
-      </Center>
-    </>
-  );
-}
+import HTMLReactParser from 'html-react-parser';
 
 function Headings({ title, subTitle, tags }) {
   return (
@@ -53,5 +35,23 @@ function Headings({ title, subTitle, tags }) {
         )}
       </Box>
     </Center>
+  );
+}
+
+export default function EntrySSR({ title, subTitle, description, imageUrl }) {
+  return (
+    <>
+      <Headings title={title} subTitle={subTitle} />
+
+      <Center>{imageUrl && <Img src={imageUrl} h={400} />}</Center>
+
+      <Center p={12}>
+        {description && (
+          <Box fontFamily="'Helvetica', sans-serif" fontWeight={400} lineHeight={1.4} w={400}>
+            {HTMLReactParser(description)}
+          </Box>
+        )}
+      </Center>
+    </>
   );
 }
