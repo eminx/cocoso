@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { Box, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
 
@@ -20,7 +20,35 @@ const compareUsersByDate = (a, b) => {
   return dateA - dateB;
 };
 
-function Members() {
+function MemberItem({ member, t }) {
+  return (
+    <Box border="1px solid" borderColor="brand.500" p="4">
+      <Heading size="md" fontWeight="bold">
+        {member.username}
+      </Heading>
+      <Text>{member && member.email}</Text>
+      <Text fontSize="sm" fontStyle="italic">
+        {t(`roles.${member.role}`).toLowerCase()}
+      </Text>
+      <Text fontSize="xs" color="gray.500">
+        {t('joinedAt', {
+          date: dayjs(member.date).format('D MMM YYYY'),
+        })}
+        <br />
+      </Text>
+    </Box>
+  );
+}
+
+function MemberList({ members, t }) {
+  return (
+    <NiceList itemBg="white" keySelector="email" list={members}>
+      {(member) => <MemberItem key={member.username} t={t} member={member} />}
+    </NiceList>
+  );
+}
+
+export default function Members() {
   const [members, setMembers] = useState(null);
   const [sortBy, setSortBy] = useState('join-date');
   const [filterWord, setFilterWord] = useState('');
@@ -30,10 +58,6 @@ function Members() {
   const { currentUser, isDesktop, role } = useContext(StateContext);
   const location = useLocation();
 
-  useEffect(() => {
-    getMembers();
-  }, []);
-
   const getMembers = async () => {
     try {
       const respond = await call('getHostMembersForAdmin');
@@ -42,6 +66,9 @@ function Members() {
       console.log(error);
     }
   };
+  useEffect(() => {
+    getMembers();
+  }, []);
 
   if (!members) {
     return <Loader />;
@@ -185,13 +212,11 @@ function Members() {
     (m) => filterInPath === 'all' || filterInPath === m.role
   );
 
-  const tabs = filterOptions.map((item) => {
-    return {
-      title: item.label,
-      path: item.value,
-      content: <MemberList members={membersRendered} t={t} />,
-    };
-  });
+  const tabs = filterOptions.map((item) => ({
+    title: item.label,
+    path: item.value,
+    content: <MemberList members={membersRendered} t={t} />,
+  }));
 
   const pathnameLastPart = pathname.split('/').pop();
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
@@ -246,33 +271,3 @@ function Members() {
     </>
   );
 }
-
-function MemberList({ members, t }) {
-  return (
-    <NiceList itemBg="white" keySelector="email" list={members}>
-      {(member) => <MemberItem key={member.username} t={t} member={member} />}
-    </NiceList>
-  );
-}
-
-function MemberItem({ member, t }) {
-  return (
-    <Box border="1px solid" borderColor="brand.500" p="4">
-      <Heading size="md" fontWeight="bold">
-        {member.username}
-      </Heading>
-      <Text>{member && member.email}</Text>
-      <Text fontSize="sm" fontStyle="italic">
-        {t('roles.' + member.role).toLowerCase()}
-      </Text>
-      <Text fontSize="xs" color="gray.500">
-        {t('joinedAt', {
-          date: moment(member.date).format('D MMM YYYY'),
-        })}
-        <br />
-      </Text>
-    </Box>
-  );
-}
-
-export default Members;

@@ -1,25 +1,53 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Divider, Heading, Link as CLink, Text } from '@chakra-ui/react';
-import ReactQuill from '../../forms/Quill';
+import { Box, Button, Center, Heading, Text, useColorMode } from '@chakra-ui/react';
 
+import ReactQuill from '../../forms/Quill';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
 import Template from '../../layout/Template';
 import ListMenu from '../../generic/ListMenu';
 import { message, Alert } from '../../generic/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
-import { adminMenu } from '../../utils/constants/general';
+import { adminMenu, superadminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../forms/FileDropper';
 import Menu from './MenuSettings';
 import Tabs from '../../entry/Tabs';
 import Categories from './Categories';
 import ColorPicker from './ColorPicker';
-import { superadminMenu } from '../../utils/constants/general';
+
+export function AdminMenu() {
+  const { currentHost, currentUser, platform } = useContext(StateContext);
+  const location = useLocation();
+  const [tc] = useTranslation('common');
+
+  const pathname = location?.pathname;
+  const isSuperAdmin = currentUser?.isSuperAdmin;
+  const isPortalHost = currentHost?.isPortalHost;
+
+  return (
+    <Box>
+      <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="4" size="sm">
+        {currentHost?.settings?.name}
+      </Heading>
+      <ListMenu pathname={pathname} list={adminMenu} />
+
+      {isSuperAdmin && isPortalHost && platform && (
+        <>
+          <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="6" size="sm">
+            {`${platform.name} ${tc('domains.platfrm')}`}
+          </Heading>
+          <ListMenu pathname={pathname} list={superadminMenu} />
+        </>
+      )}
+    </Box>
+  );
+}
 
 export default function Settings() {
+  const { colorMode, toggleColorMode } = useColorMode();
   const [localSettings, setLocalSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -30,7 +58,9 @@ export default function Settings() {
   const [tc] = useTranslation('common');
 
   useEffect(() => {
-    currentHost && setLocalSettings(currentHost.settings);
+    if (currentHost) {
+      setLocalSettings(currentHost.settings);
+    }
     setLoading(false);
   }, []);
 
@@ -110,7 +140,7 @@ export default function Settings() {
       title: t('settings.tabs.general'),
       path: 'organization',
       content: (
-        <AlphaContainer>
+        <>
           <Box mb="8">
             <Text mb="3" fontWeight="bold">
               {t('logo.info')}
@@ -137,41 +167,29 @@ export default function Settings() {
             {t('info.info')}
           </Text>
           <SettingsForm initialValues={localSettings} onSubmit={updateHostSettings} />
-        </AlphaContainer>
+        </>
       ),
     },
     {
       title: t('settings.tabs.menu'),
       path: 'menu',
-      content: (
-        <AlphaContainer>
-          <Menu />
-        </AlphaContainer>
-      ),
+      content: <Menu />,
     },
     {
       title: t('settings.tabs.categories'),
       path: 'categories',
-      content: (
-        <AlphaContainer>
-          <Categories />
-        </AlphaContainer>
-      ),
+      content: <Categories />,
     },
     {
       title: t('settings.tabs.color'),
       path: 'color',
-      content: (
-        <AlphaContainer>
-          <ColorPicker />
-        </AlphaContainer>
-      ),
+      content: <ColorPicker />,
     },
     {
       title: t('settings.tabs.footer'),
       path: 'footer',
       content: (
-        <AlphaContainer>
+        <>
           <Text mb="4">{t('info.platform.footer.description')}</Text>
           <ReactQuill
             className="ql-editor-text-align-center"
@@ -185,7 +203,7 @@ export default function Settings() {
               {tc('actions.submit')}
             </Button>
           </Center>
-        </AlphaContainer>
+        </>
       ),
     },
   ];
@@ -198,7 +216,7 @@ export default function Settings() {
   }
 
   return (
-    <>
+    <Box bg="blue.50">
       <Template heading={t('settings.label')} leftContent={<AdminMenu />}>
         <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
@@ -210,36 +228,6 @@ export default function Settings() {
           </Routes>
         </Box>
       </Template>
-    </>
-  );
-}
-
-export function AdminMenu({}) {
-  const { currentHost, currentUser, platform } = useContext(StateContext);
-  const location = useLocation();
-  const [tc] = useTranslation('common');
-
-  const pathname = location?.pathname;
-  const isSuperAdmin = currentUser?.isSuperAdmin;
-  const isPortalHost = currentHost?.isPortalHost;
-
-  return (
-    <Box>
-      <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="4" size="sm">
-        {currentHost?.settings?.name}
-      </Heading>
-      <ListMenu pathname={pathname} list={adminMenu} />
-
-      {isSuperAdmin && isPortalHost && (
-        <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="6" size="sm">
-          {platform?.name + ' ' + tc('domains.platform')}
-        </Heading>
-      )}
-      {isSuperAdmin && isPortalHost && <ListMenu pathname={pathname} list={superadminMenu} />}
     </Box>
   );
-}
-
-function AlphaContainer({ title, children }) {
-  return <Box>{children}</Box>;
 }

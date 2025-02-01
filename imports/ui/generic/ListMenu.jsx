@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { StateContext } from '../LayoutContainer';
 import { parseTitle } from '../utils/shared';
 
-function ListMenu({ currentUser, list, onChange, children, ...otherProps }) {
+function ListMenu({ list }) {
   const { isDesktop } = useContext(StateContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,24 +28,19 @@ function ListMenu({ currentUser, list, onChange, children, ...otherProps }) {
     return null;
   }
 
-  const isActiveItem = (item) => {
-    return pathname.includes(item.value);
-  };
-  const selectedItem = list.find((item) => {
-    return pathname.includes(item.value);
-  });
+  const isActiveItem = (item) => pathname.includes(item.value);
+
+  const selectedItem = list.find((item) => pathname.includes(item.value));
 
   if (isDesktop) {
     return (
-      <List {...otherProps}>
+      <List>
         {list.map((item) => (
           <ListItem key={item.value} p="1">
-            <Link to={currentUser ? `/@${currentUser?.username}${item.value}` : item.value}>
+            <Link to={item.value}>
               <CLink as="span">
                 <Text fontWeight={isActiveItem(item) ? 'bold' : 'normal'}>
-                  {item.key == 'publicProfile'
-                    ? `@${currentUser?.username}`
-                    : tc(`menu.${item.menu}.${item.key}`)}
+                  {tc(`menu.${item.menu}.${item.key}`)}
                 </Text>
               </CLink>
             </Link>
@@ -64,9 +59,7 @@ function ListMenu({ currentUser, list, onChange, children, ...otherProps }) {
         <MenuList>
           {list.map((item) => (
             <MenuItem key={item.key} onClick={() => navigate(`${parseTitle(item.value)}`)}>
-              {item.key == 'publicProfile'
-                ? `@${currentUser?.username}`
-                : tc(`menu.${item.menu}.${item.key}`)}
+              {tc(`menu.${item.menu}.${item.key}`)}
             </MenuItem>
           ))}
         </MenuList>
