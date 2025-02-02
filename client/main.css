@@ -178,7 +178,6 @@ input::placeholder {
   height: 100%;
   padding: 24px;
   position: absolute;
-  z-index: 1;
   top: 0;
   width: 100%;
 }

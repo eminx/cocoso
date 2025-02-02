@@ -33,31 +33,29 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
   const isCurrentContext = context === 'pages';
 
   return (
-    <>
-      <Menu placement="bottom-end">
-        <MenuButton _hover={{ borderBottom: '1px solid' }} id="info-pages-menu" mx="2">
-          <Flex
-            borderBottom={isCurrentContext ? '2px solid' : null}
-            align="center"
-            pointerEvents="none"
-          >
-            <Text {...textProps} mr="1">
-              {label}
-            </Text>
-            <ChevronDownIcon size="16px" />
-          </Flex>
-        </MenuButton>
-        <MenuList maxHeight="480px" overflowY="scroll">
-          {pageTitles.map((item) => (
-            <Link key={item} to={`/pages/${parseTitle(item)}`}>
-              <MenuItem as="span" id={item}>
-                {item}
-              </MenuItem>
-            </Link>
-          ))}
-        </MenuList>
-      </Menu>
-    </>
+    <Menu placement="bottom-end">
+      <MenuButton _hover={{ borderBottom: '1px solid' }} id="info-pages-menu" mx="2">
+        <Flex
+          borderBottom={isCurrentContext ? '2px solid' : null}
+          align="center"
+          pointerEvents="none"
+        >
+          <Text {...textProps} mr="1">
+            {label}
+          </Text>
+          <ChevronDownIcon size="16px" />
+        </Flex>
+      </MenuButton>
+      <MenuList maxHeight="480px" overflowY="scroll" style={{ zIndex: 2 }}>
+        {pageTitles.map((item) => (
+          <Link key={item} to={`/pages/${parseTitle(item)}`}>
+            <MenuItem as="span" id={item}>
+              {item}
+            </MenuItem>
+          </Link>
+        ))}
+      </MenuList>
+    </Menu>
   );
 }
 
