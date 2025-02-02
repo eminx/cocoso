@@ -129,6 +129,8 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const isFederationFooter = platform?.isFederationLayout && platform.footer;
   const isEntryPage = pathnameSplitted[1] !== 'pages' && Boolean(pathnameSplitted[2]);
 
+  const adminPage = pathnameSplitted[1] === 'admin';
+
   return (
     <>
       <HelmetHybrid Host={currentHost} />
@@ -153,8 +155,12 @@ function LayoutPage({ currentUser, userLoading, children }) {
             }}
           >
             <DummyWrapper>
-              {rendered && <TopBarHandler currentUser={currentUser} slideStart={rendered} />}
-              <Header Host={currentHost} isLogoSmall={isEntryPage} pageTitles={pageTitles} />
+              {rendered && !adminPage && (
+                <TopBarHandler currentUser={currentUser} slideStart={rendered} />
+              )}
+              {!adminPage && (
+                <Header Host={currentHost} isLogoSmall={isEntryPage} pageTitles={pageTitles} />
+              )}
               {children}
             </DummyWrapper>
 

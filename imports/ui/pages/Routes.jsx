@@ -108,8 +108,7 @@ function HomePage() {
 export default function AppRoutes() {
   return (
     <LayoutContainer>
-      {/* <Suspense fallback={<Progress size="sm" colorScheme="brand.500" />}> */}
-      <Suspense>
+      <Suspense fallback={<span>loading...</span>}>
         <Routes>
           <Route exact path="/" element={<HomePage />} />
 

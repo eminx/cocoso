@@ -73,8 +73,7 @@ export default function SexyThumb({ activity, host, showPast = false }) {
       .filter((date) => dayjs(date?.startDate)?.isBefore(today))
       .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
 
-  const hostValue =
-    host && allHosts && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
+  const hostValue = host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
 
   return (
     <Box

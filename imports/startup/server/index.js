@@ -11,8 +11,6 @@ import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
 
-const stylee = 'body { background-color: red;}';
-
 const { cdn_server } = Meteor.settings;
 
 Meteor.startup(() => {
@@ -36,26 +34,19 @@ Meteor.startup(() => {
     const host = sink.request.headers['host'];
 
     const App = (props) => (
-      <>
-        <Helmet>
-          <style type="text/css">{stylee}</style>
-        </Helmet>
-        <StaticRouter location={sink.request.url}>
-          <Suspense>
-            <Routes>
-              {AppRoutesSSR(host, sink).map((route) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={route.element}
-                  url={sink.request.url}
-                  sink={sink}
-                />
-              ))}
-            </Routes>
-          </Suspense>
-        </StaticRouter>
-      </>
+      <StaticRouter location={sink.request.url}>
+        <Routes>
+          {AppRoutesSSR(host, sink).map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.element}
+              url={sink.request.url}
+              sink={sink}
+            />
+          ))}
+        </Routes>
+      </StaticRouter>
     );
 
     const helmet = Helmet.renderStatic();

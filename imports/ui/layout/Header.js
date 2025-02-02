@@ -35,7 +35,7 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
   return (
     <>
       <Menu placement="bottom-end">
-        <MenuButton _hover={{ borderBottom: '1px solid' }} mx="2">
+        <MenuButton _hover={{ borderBottom: '1px solid' }} id="info-pages-menu" mx="2">
           <Flex
             borderBottom={isCurrentContext ? '2px solid' : null}
             align="center"
@@ -50,7 +50,9 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
         <MenuList maxHeight="480px" overflowY="scroll">
           {pageTitles.map((item) => (
             <Link key={item} to={`/pages/${parseTitle(item)}`}>
-              <MenuItem>{item}</MenuItem>
+              <MenuItem as="span" id={item}>
+                {item}
+              </MenuItem>
             </Link>
           ))}
         </MenuList>
