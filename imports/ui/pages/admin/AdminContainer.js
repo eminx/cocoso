@@ -1,7 +1,7 @@
 import React, { lazy, useContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Heading, SimpleGrid, useColorMode } from '@chakra-ui/react';
+import { Box, Center, Heading, SimpleGrid } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import ListMenu from '../../generic/ListMenu';
@@ -43,9 +43,7 @@ function AdminMenu() {
 }
 
 export default function AdminContainer() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const location = useLocation();
-  const { currentUser, currentHost, role, getCurrentHost } = useContext(StateContext);
+  const { currentUser, currentHost, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 

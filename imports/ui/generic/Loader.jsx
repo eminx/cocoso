@@ -1,6 +1,10 @@
 import React from 'react';
-import { TablyLoader } from '../listing/SkeletonLoaders';
+import { Box, Progress } from '@chakra-ui/react';
 
-const Loader = () => <TablyLoader />;
-
-export default Loader;
+export default function Loader({ ...props }) {
+  return (
+    <Box position="absolute" top="0" left="0" right="0">
+      <Progress colorScheme="gray" hasStripe isIndeterminate size="xs" {...props} />
+    </Box>
+  );
+}

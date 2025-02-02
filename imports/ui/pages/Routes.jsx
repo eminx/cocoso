@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import LayoutContainer, { StateContext } from '../LayoutContainer';
 import Terms from '../entry/Terms';
+import Loader from '../generic/Loader';
 
 const Communities = lazy(() => import('../pages/hosts/Communities'));
 
@@ -103,87 +104,89 @@ function HomePage() {
 
 export default function AppRoutes() {
   return (
-    <LayoutContainer>
-      <Suspense fallback={<span>loading...</span>}>
-        <Routes>
-          <Route exact path="/" element={<HomePage />} />
+    <>
+      <LayoutContainer>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route exact path="/" element={<HomePage />} />
 
-          {/* Members list public */}
-          <Route path="/people" element={<Users />} />
+            {/* Members list public */}
+            <Route path="/people" element={<Users />} />
 
-          {/* Calendar */}
-          <Route exact path="/calendar" element={<CalendarContainer />} />
+            {/* Calendar */}
+            <Route exact path="/calendar" element={<CalendarContainer />} />
 
-          {/* Activities */}
-          <Route exact path="/activities" element={<Activities />} />
-          <Route exact path="/activities/new" element={<NewActivityContainer />} />
-          <Route path="/activities/:activityId/*" element={<Activity />} />
-          <Route exact path="/activities/:activityId/edit" element={<EditActivityContainer />} />
-          <Route exact path="/my-activities" element={<MyActivities />} />
+            {/* Activities */}
+            <Route exact path="/activities" element={<Activities />} />
+            <Route exact path="/activities/new" element={<NewActivityContainer />} />
+            <Route path="/activities/:activityId/*" element={<Activity />} />
+            <Route exact path="/activities/:activityId/edit" element={<EditActivityContainer />} />
+            <Route exact path="/my-activities" element={<MyActivities />} />
 
-          {/* Groups */}
-          <Route exact path="/groups" element={<Groups />} />
-          <Route exact path="/groups/new" element={<NewGroupContainer />} />
-          <Route path="/groups/:groupId/*" element={<Group />} />
-          <Route path="/groups/:groupId/edit" element={<EditGroupContainer />} />
+            {/* Groups */}
+            <Route exact path="/groups" element={<Groups />} />
+            <Route exact path="/groups/new" element={<NewGroupContainer />} />
+            <Route path="/groups/:groupId/*" element={<Group />} />
+            <Route path="/groups/:groupId/edit" element={<EditGroupContainer />} />
 
-          {/* Resources */}
-          <Route exact path="/resources" element={<Resources />} />
-          <Route exact path="/resources/new" element={<NewResource />} />
-          <Route path="/resources/:resourceId/*" element={<Resource />} />
-          <Route path="/resources/:resourceId/edit" element={<EditResource />} />
+            {/* Resources */}
+            <Route exact path="/resources" element={<Resources />} />
+            <Route exact path="/resources/new" element={<NewResource />} />
+            <Route path="/resources/:resourceId/*" element={<Resource />} />
+            <Route path="/resources/:resourceId/edit" element={<EditResource />} />
 
-          {/* Pages */}
-          <Route exact path="/info" element={<Page />} />
-          <Route exact path="/info/new" element={<NewPage />} />
-          <Route path="/info/:pageTitle/*" element={<Page />} />
-          <Route path="/pages/:pageTitle/*" element={<Page />} />
-          <Route path="/info/:pageTitle/edit" element={<EditPage />} />
+            {/* Pages */}
+            <Route exact path="/info" element={<Page />} />
+            <Route exact path="/info/new" element={<NewPage />} />
+            <Route path="/info/:pageTitle/*" element={<Page />} />
+            <Route path="/pages/:pageTitle/*" element={<Page />} />
+            <Route path="/info/:pageTitle/edit" element={<EditPage />} />
 
-          {/* Works */}
-          <Route exact path="/works" element={<Works />} />
-          <Route exact path="/works/new" element={<NewWork />} />
+            {/* Works */}
+            <Route exact path="/works" element={<Works />} />
+            <Route exact path="/works/new" element={<NewWork />} />
 
-          {/* Communities: Only on Portal App */}
-          <Route exact path="/communities" element={<Communities />} />
+            {/* Communities: Only on Portal App */}
+            <Route exact path="/communities" element={<Communities />} />
 
-          {/* Newsletter Emails */}
-          <Route path="/newsletters/*" element={<PreviousNewsletters />} />
+            {/* Newsletter Emails */}
+            <Route path="/newsletters/*" element={<PreviousNewsletters />} />
 
-          {/* Admin */}
-          <Route path="/admin/*" element={<AdminContainer />} />
+            {/* Admin */}
+            <Route path="/admin/*" element={<AdminContainer />} />
 
-          {/* Super Admin */}
-          <Route path="/superadmin/platform/settings/*" element={<PlatformSettings />} />
-          <Route
-            path="/superadmin/platform/registration-intro"
-            element={<PlatformRegistrationIntro />}
-          />
+            {/* Super Admin */}
+            <Route path="/superadmin/platform/settings/*" element={<PlatformSettings />} />
+            <Route
+              path="/superadmin/platform/registration-intro"
+              element={<PlatformRegistrationIntro />}
+            />
 
-          {/* Profile & Profile Related Pages */}
-          <Route path="/edit/*" element={<EditProfile />} />
-          <Route path="/:usernameSlug/*" element={<UserProfile />} />
-          <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
-          <Route path="/:usernameSlug/works/:workId/edit" element={<EditWork />} />
+            {/* Profile & Profile Related Pages */}
+            <Route path="/edit/*" element={<EditProfile />} />
+            <Route path="/:usernameSlug/*" element={<UserProfile />} />
+            <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
+            <Route path="/:usernameSlug/works/:workId/edit" element={<EditWork />} />
 
-          {/* Auth */}
-          <Route exact path="/register" element={<SignupPage />} />
-          <Route exact path="/login" element={<LoginPage />} />
-          <Route exact path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+            {/* Auth */}
+            <Route exact path="/register" element={<SignupPage />} />
+            <Route exact path="/login" element={<LoginPage />} />
+            <Route exact path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
-          <Route path="/intro" element={<RegistrationIntro />} />
+            <Route path="/intro" element={<RegistrationIntro />} />
 
-          {/* SuperAdmin */}
-          <Route exact path="/new-host" element={<NewHost />} />
-          <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
+            {/* SuperAdmin */}
+            <Route exact path="/new-host" element={<NewHost />} />
+            <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
 
-          {/* NotFoundPage */}
-          <Route exact path="/not-found" element={<NotFoundPage />} />
-          <Route exact path="/404" element={<NotFoundPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
-    </LayoutContainer>
+            {/* NotFoundPage */}
+            <Route exact path="/not-found" element={<NotFoundPage />} />
+            <Route exact path="/404" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
+      </LayoutContainer>
+    </>
   );
 }
