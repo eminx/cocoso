@@ -46,11 +46,7 @@ const NewPage = lazy(() => import('./pages/NewPage'));
 const Users = lazy(() => import('./profile/Users'));
 
 // Admin
-const Settings = lazy(() => import('./admin/Settings'));
-const Members = lazy(() => import('./admin/Members'));
-const Emails = lazy(() => import('./admin/Emails'));
-const EmailNewsletter = lazy(() => import('./admin/EmailNewsletter'));
-const Categories = lazy(() => import('./admin/Categories'));
+const AdminContainer = lazy(() => import('./admin/AdminContainer'));
 const PreviousNewsletters = lazy(() => import('./admin/EmailNewsletter/PreviousNewsletters'));
 
 // Super admin
@@ -155,11 +151,7 @@ export default function AppRoutes() {
           <Route path="/newsletters/*" element={<PreviousNewsletters />} />
 
           {/* Admin */}
-          <Route path="/admin/settings/*" element={<Settings />} />
-          <Route path="/admin/users/*" element={<Members />} />
-          <Route path="/admin/emails/*" element={<Emails />} />
-          <Route exact path="/admin/email-newsletter" element={<EmailNewsletter />} />
-          <Route exact path="/admin/categories" element={<Categories />} />
+          <Route path="/admin/*" element={<AdminContainer />} />
 
           {/* Super Admin */}
           <Route path="/superadmin/platform/settings/*" element={<PlatformSettings />} />

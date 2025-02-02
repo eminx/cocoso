@@ -28,12 +28,12 @@ const adminMenu = [
   {
     menu: 'admin',
     key: 'settings',
-    value: '/admin/settings',
+    value: '/admin/settings/organization',
   },
   {
     menu: 'admin',
     key: 'users',
-    value: '/admin/users',
+    value: '/admin/users/all',
   },
   {
     menu: 'admin',

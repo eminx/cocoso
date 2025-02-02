@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Heading, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Button, Center, Text } from '@chakra-ui/react';
 
 import ReactQuill from '../../forms/Quill';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
-import Template from '../../layout/Template';
-import ListMenu from '../../generic/ListMenu';
 import { message, Alert } from '../../generic/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
-import { adminMenu, superadminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../forms/FileDropper';
 import Menu from './MenuSettings';
@@ -18,36 +15,7 @@ import Tabs from '../../entry/Tabs';
 import Categories from './Categories';
 import ColorPicker from './ColorPicker';
 
-export function AdminMenu() {
-  const { currentHost, currentUser, platform } = useContext(StateContext);
-  const location = useLocation();
-  const [tc] = useTranslation('common');
-
-  const pathname = location?.pathname;
-  const isSuperAdmin = currentUser?.isSuperAdmin;
-  const isPortalHost = currentHost?.isPortalHost;
-
-  return (
-    <Box>
-      <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="4" size="sm">
-        {currentHost?.settings?.name}
-      </Heading>
-      <ListMenu pathname={pathname} list={adminMenu} />
-
-      {isSuperAdmin && isPortalHost && platform && (
-        <>
-          <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="6" size="sm">
-            {`${platform.name} ${tc('domains.platfrm')}`}
-          </Heading>
-          <ListMenu pathname={pathname} list={superadminMenu} />
-        </>
-      )}
-    </Box>
-  );
-}
-
 export default function Settings() {
-  const { colorMode, toggleColorMode } = useColorMode();
   const [localSettings, setLocalSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -211,23 +179,23 @@ export default function Settings() {
   const pathnameLastPart = pathname.split('/').pop();
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
-    return <Navigate to={tabs[0].path} />;
-  }
+  // if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
+  //   return <Navigate to={tabs[0].path} />;
+  // }
+
+  console.log(pathname);
 
   return (
-    <Box bg="blue.50">
-      <Template heading={t('settings.label')} leftContent={<AdminMenu />}>
-        <Tabs index={tabIndex} mb="4" tabs={tabs} />
+    <Box>
+      <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
-        <Box mb="24">
-          <Routes>
-            {tabs.map((tab) => (
-              <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
-            ))}
-          </Routes>
-        </Box>
-      </Template>
+      <Box mb="24">
+        <Routes>
+          {tabs.map((tab) => (
+            <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+          ))}
+        </Routes>
+      </Box>
     </Box>
   );
 }

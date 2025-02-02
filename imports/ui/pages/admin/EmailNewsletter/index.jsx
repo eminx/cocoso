@@ -5,7 +5,6 @@ import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
 
-import Template from '../../../layout/Template';
 import { call, resizeImage, uploadImage } from '../../../utils/shared';
 import Loader from '../../../generic/Loader';
 import { message, Alert } from '../../../generic/message';
@@ -14,7 +13,6 @@ import Modal from '../../../generic/Modal';
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';
 import ConfirmModal from '../../../generic/ConfirmModal';
-import { AdminMenu } from '../Settings';
 
 const emailModel = {
   appeal: '',
@@ -32,7 +30,7 @@ const emailModel = {
   },
 };
 
-function EmailNewsletter({ history }) {
+function EmailNewsletter() {
   const [isSending, setIsSending] = useState(false);
   const [email, setEmail] = useState(emailModel);
   const [isPreview, setIsPreview] = useState(false);
@@ -85,54 +83,11 @@ function EmailNewsletter({ history }) {
     );
   };
 
-  const uploadLocalImage = async () => {
-    setIsSending(true);
-    setIsPreview(false);
-
-    const { image } = email;
-    const { uploadableImage } = image;
-
-    try {
-      const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
-      sendEmail(uploadedImage);
-    } catch (error) {
-      console.error('Error uploading:', error);
-      message.error(error.reason);
-    }
-  };
-
   const handleSelectItems = (items) => {
     setEmail({
       ...email,
       items,
     });
-  };
-
-  const handleConfirmSendingEmail = () => {
-    const { appeal, body, image, items, subject } = email;
-    if (!appeal || !subject) {
-      message.error(t('newsletter.error.required'));
-      return;
-    }
-
-    if (
-      (!body || body.length < 3) &&
-      !image &&
-      !image?.uploadableImageLocal &&
-      items.length === 0
-    ) {
-      message.error(t('newsletter.error.required'));
-      return;
-    }
-
-    setIsSending(true);
-
-    if (email?.image?.uploadableImage) {
-      uploadLocalImage();
-    } else {
-      sendEmail();
-    }
   };
 
   const sendEmail = async (imageUrl) => {
@@ -161,9 +116,52 @@ function EmailNewsletter({ history }) {
     }
   };
 
+  const uploadLocalImage = async () => {
+    setIsSending(true);
+    setIsPreview(false);
+
+    const { image } = email;
+    const { uploadableImage } = image;
+
+    try {
+      const resizedImage = await resizeImage(uploadableImage, 1200);
+      const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
+      sendEmail(uploadedImage);
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+    }
+  };
+
+  const handleConfirmSendingEmail = () => {
+    const { appeal, body, image, items, subject } = email;
+    if (!appeal || !subject) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    if (
+      (!body || body.length < 3) &&
+      !image &&
+      !image?.uploadableImageLocal &&
+      items.length === 0
+    ) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    setIsSending(true);
+
+    if (email?.image?.uploadableImage) {
+      uploadLocalImage();
+    } else {
+      sendEmail();
+    }
+  };
+
   return (
     <>
-      <Template heading={t('newsletter.title')} leftContent={<AdminMenu />}>
+      <Box>
         {currentHost?.isPortalHost && (
           <Box mb="4">
             <Alert
@@ -191,7 +189,7 @@ function EmailNewsletter({ history }) {
             setUploadableImage={setUploadableImage}
           />
         </Box>
-      </Template>
+      </Box>
 
       <Modal
         actionButtonLabel="Send email"

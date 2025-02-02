@@ -6,13 +6,11 @@ import { Box, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
 
 import Loader from '../../generic/Loader';
 import NiceList from '../../generic/NiceList';
-import Template from '../../layout/Template';
 import { message, Alert } from '../../generic/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import UsageReport from '../../admin/UsageReport';
 import Tabs from '../../entry/Tabs';
-import { AdminMenu } from './Settings';
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -22,7 +20,7 @@ const compareUsersByDate = (a, b) => {
 
 function MemberItem({ member, t }) {
   return (
-    <Box border="1px solid" borderColor="brand.500" p="4">
+    <Box p="4">
       <Heading size="md" fontWeight="bold">
         {member.username}
       </Heading>
@@ -227,10 +225,10 @@ export default function Members() {
 
   return (
     <>
-      <Template heading={`${t('label')} (${membersRendered.length})`} leftContent={<AdminMenu />}>
-        <Box>
-          <Tabs index={tabIndex} mb="8" tabs={tabs} />
+      <Box>
+        <Tabs index={tabIndex} mb="8" tabs={tabs} />
 
+        <Box px="2">
           <Box>
             <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
           </Box>
@@ -252,22 +250,22 @@ export default function Members() {
               </Select>
             </Box>
           </Flex>
-
-          <Box mb="24">
-            <Routes>
-              {tabs.map((tab) => (
-                <Route key={tab.title} path={tab.path} element={<Box p="2">{tab.content}</Box>} />
-              ))}
-            </Routes>
-          </Box>
         </Box>
 
-        <UsageReport
-          isOpen={Boolean(userForUsageReport)}
-          user={userForUsageReport}
-          onClose={() => setUserForUsageReport(null)}
-        />
-      </Template>
+        <Box mb="24">
+          <Routes>
+            {tabs.map((tab) => (
+              <Route key={tab.title} path={tab.path} element={<Box p="2">{tab.content}</Box>} />
+            ))}
+          </Routes>
+        </Box>
+      </Box>
+
+      <UsageReport
+        isOpen={Boolean(userForUsageReport)}
+        user={userForUsageReport}
+        onClose={() => setUserForUsageReport(null)}
+      />
     </>
   );
 }

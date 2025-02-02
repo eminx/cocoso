@@ -34,7 +34,7 @@ function ListMenu({ list }) {
 
   if (isDesktop) {
     return (
-      <List>
+      <List color="gray.50">
         {list.map((item) => (
           <ListItem key={item.value} p="1">
             <Link to={item.value}>
@@ -51,7 +51,7 @@ function ListMenu({ list }) {
   }
 
   return (
-    <Box my="2">
+    <Box color="gray.50" my="2">
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
           {selectedItem ? tc(`menu.${selectedItem.menu}.${selectedItem.key}`) : tc('labels.select')}
