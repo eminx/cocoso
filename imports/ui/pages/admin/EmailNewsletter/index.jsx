@@ -173,8 +173,9 @@ function EmailNewsletter() {
 
         <Box mb="4">
           <Link target="_blank" to="/newsletters">
-            <CLink as="span">
-              {t('newsletter.labels.previouslink')} <ExternalLinkIcon mt="-1" />
+            <CLink as="span" color="blue.500" display="flex">
+              {t('newsletter.labels.previouslink')}{' '}
+              <ExternalLinkIcon size="16px" style={{ marginLeft: '4px', marginTop: '4px' }} />
             </CLink>
           </Link>
         </Box>
