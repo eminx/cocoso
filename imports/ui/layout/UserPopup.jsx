@@ -64,7 +64,7 @@ function UserPopup({ isOpen, setIsOpen }) {
   };
 
   const handleClickAdmin = () => {
-    navigate('/admin/settings');
+    navigate('/admin/settings/organization');
   };
 
   const notifications = currentUser?.notifications;

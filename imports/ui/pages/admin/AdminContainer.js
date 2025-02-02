@@ -24,7 +24,7 @@ function AdminMenu() {
   const isPortalHost = currentHost?.isPortalHost;
 
   return (
-    <Box bg="gray.700" p="4" minH="100vh">
+    <Box bg="brand.800" minH="100vh" minW="280px" p="4" position="fixed">
       <Heading color="gray.50" fontStyle="italic" fontWeight="normal" mb="2" mt="4" size="sm">
         {currentHost?.settings?.name}
       </Heading>
@@ -88,9 +88,11 @@ export default function AdminContainer() {
   ];
 
   return (
-    <Box bg="gray.200" minH="100vh">
+    <Box minH="100vh">
       <SimpleGrid columns={2} templateColumns="20% 40%">
-        <AdminMenu />
+        <Box>
+          <AdminMenu />
+        </Box>
         <Box px="8" py="4">
           <Routes>
             {routes.map((route) => (
