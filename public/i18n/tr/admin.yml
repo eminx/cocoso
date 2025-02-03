@@ -7,7 +7,7 @@ settings:
   tabs:
     general: Genel
     logo: Logo
-    info: Info
+    info: Bilgi
     categories: Kategoriler
     menu: Menü
     cats: Kategoriler
@@ -44,6 +44,9 @@ info:
       description: Burada bir altbilgi oluşturabilirsin. Örneğin iletişim bilgilerini, adresi, bağlantıları girebilir veya topluluğunuzu tanımlayan kısa bir metin girebilirsin. Altbilgi tüm sayfaların alt kısmına döner.
     federationLabel: Federasyon şablonunu kullan (tepe sekmesi ve altbilgi ile)
     federationText: Tepe sekmesi ve alt bilgiyi görüntüleyerek topluluklar arasında gidip gelmeyi ve federasyon hakkında bilgi edinebilmeyi sağlar
+
+organization:
+  title: Organizasyon
 
 users:
   title: Kullanıcılar
@@ -139,6 +142,9 @@ newsletter:
       emailsent: Eposta başarıyla tüm üyelere gönderildi.
   portalHost:
     info: Bu federasyonun portal uygulaması olduğu için, e-posta tüm {{ platform }} platformu üyelerine gönderilecektir
+
+features:
+  title: Ana Özellikler
 
 # ADMIN STATIC PAGES
 pages:

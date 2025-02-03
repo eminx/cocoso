@@ -19,6 +19,7 @@ import { StateContext } from '../../LayoutContainer';
 import FormField from '../../forms/FormField';
 import { defaultEmails } from '../../../startup/constants';
 import ReactQuill from '../../forms/Quill';
+import Boxling from './Boxling';
 
 function EmailForm({ defaultValues, onSubmit }) {
   const { control, handleSubmit, register, formState } = useForm({
@@ -30,7 +31,7 @@ function EmailForm({ defaultValues, onSubmit }) {
   const { isDirty, isSubmitting } = formState;
 
   return (
-    <Box>
+    <Boxling>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="4">
           <FormField label={t('emails.form.subject.label')}>
@@ -59,7 +60,7 @@ function EmailForm({ defaultValues, onSubmit }) {
           </Flex>
         </VStack>
       </form>
-    </Box>
+    </Boxling>
   );
 }
 

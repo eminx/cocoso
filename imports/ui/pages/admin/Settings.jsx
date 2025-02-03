@@ -10,10 +10,8 @@ import { message, Alert } from '../../generic/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../forms/FileDropper';
-import Menu from './MenuSettings';
 import Tabs from '../../entry/Tabs';
-import Categories from './Categories';
-import ColorPicker from './ColorPicker';
+import Boxling from './Boxling';
 
 export default function Settings() {
   const [localSettings, setLocalSettings] = useState(null);
@@ -105,15 +103,18 @@ export default function Settings() {
 
   const tabs = [
     {
-      title: t('settings.tabs.general'),
-      path: 'organization',
+      title: t('settings.tabs.logo'),
+      path: 'logo',
       content: (
         <>
-          <Box mb="8">
-            <Text mb="3" fontWeight="bold">
+          <Center>
+            <Text fontWeight="bold" mb="3" textAlign="center">
               {t('logo.info')}
             </Text>
-            <Box>
+          </Center>
+
+          <Boxling>
+            <Center>
               <FileDropper
                 imageUrl={currentHost && currentHost.logo}
                 height={isImage && '120px'}
@@ -122,42 +123,40 @@ export default function Settings() {
                 setUploadableImage={setUploadableImage}
                 uploadableImageLocal={localImage && localImage.uploadableImageLocal}
               />
-            </Box>
+            </Center>
             {localImage && localImage.uploadableImageLocal && (
-              <Center p="2">
+              <Center p="4">
                 <Button isLoading={uploading} onClick={() => uploadLogo()}>
                   {tc('actions.submit')}
                 </Button>
               </Center>
             )}
-          </Box>
-          <Text mb="3" fontWeight="bold">
-            {t('info.info')}
-          </Text>
-          <SettingsForm initialValues={localSettings} onSubmit={updateHostSettings} />
+          </Boxling>
         </>
       ),
     },
     {
-      title: t('settings.tabs.menu'),
-      path: 'menu',
-      content: <Menu />,
-    },
-    {
-      title: t('settings.tabs.categories'),
-      path: 'categories',
-      content: <Categories />,
-    },
-    {
-      title: t('settings.tabs.color'),
-      path: 'color',
-      content: <ColorPicker />,
+      title: t('settings.tabs.info'),
+      path: 'info',
+      content: (
+        <>
+          <Center>
+            <Text mb="3" fontWeight="bold">
+              {t('info.info')}
+            </Text>
+          </Center>
+
+          <Boxling>
+            <SettingsForm initialValues={localSettings} onSubmit={updateHostSettings} />
+          </Boxling>
+        </>
+      ),
     },
     {
       title: t('settings.tabs.footer'),
       path: 'footer',
       content: (
-        <>
+        <Boxling>
           <Text mb="4">{t('info.platform.footer.description')}</Text>
           <ReactQuill
             className="ql-editor-text-align-center"
@@ -171,7 +170,7 @@ export default function Settings() {
               {tc('actions.submit')}
             </Button>
           </Center>
-        </>
+        </Boxling>
       ),
     },
   ];

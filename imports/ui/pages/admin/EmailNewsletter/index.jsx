@@ -13,6 +13,7 @@ import Modal from '../../../generic/Modal';
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';
 import ConfirmModal from '../../../generic/ConfirmModal';
+import Boxling from '../Boxling';
 
 const emailModel = {
   appeal: '',
@@ -30,7 +31,7 @@ const emailModel = {
   },
 };
 
-function EmailNewsletter() {
+export default function EmailNewsletter() {
   const [isSending, setIsSending] = useState(false);
   const [email, setEmail] = useState(emailModel);
   const [isPreview, setIsPreview] = useState(false);
@@ -45,6 +46,10 @@ function EmailNewsletter() {
 
   if (!currentUser || role !== 'admin') {
     return <Alert>{tc('message.access.deny')}</Alert>;
+  }
+
+  if (!currentHost || !platform) {
+    return null;
   }
 
   const handleFormChange = (field, value) => {
@@ -180,7 +185,8 @@ function EmailNewsletter() {
           </Link>
         </Box>
         <Text mb="4">{t('newsletter.subtitle')}</Text>
-        <Box pb="4" mb="4">
+
+        <Boxling>
           <EmailForm
             currentHost={currentHost}
             email={email}
@@ -189,7 +195,7 @@ function EmailNewsletter() {
             onSubmit={handleFormConfirm}
             setUploadableImage={setUploadableImage}
           />
-        </Box>
+        </Boxling>
       </Box>
 
       <Modal
@@ -226,5 +232,3 @@ function EmailNewsletter() {
     </>
   );
 }
-
-export default EmailNewsletter;

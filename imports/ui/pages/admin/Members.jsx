@@ -11,6 +11,7 @@ import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import UsageReport from '../../admin/UsageReport';
 import Tabs from '../../entry/Tabs';
+import Boxling from './Boxling';
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -228,11 +229,12 @@ export default function Members() {
       <Box>
         <Tabs index={tabIndex} mb="8" tabs={tabs} />
 
-        <Box px="2">
+        <Boxling>
           <Box>
             <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
           </Box>
-          <Flex flexDirection={isDesktop ? 'row' : 'column'} py="2" w="100%">
+
+          <Flex flexDirection={isDesktop ? 'row' : 'column'} mb="4" py="2" w="100%">
             <Box pr={isDesktop ? '4' : '0'} pb={isDesktop ? '0' : '2'} flexBasis="60%">
               <Input
                 placeholder={t('form.holder')}
@@ -250,15 +252,15 @@ export default function Members() {
               </Select>
             </Box>
           </Flex>
-        </Box>
 
-        <Box mb="24">
-          <Routes>
-            {tabs.map((tab) => (
-              <Route key={tab.title} path={tab.path} element={<Box p="2">{tab.content}</Box>} />
-            ))}
-          </Routes>
-        </Box>
+          <Box>
+            <Routes>
+              {tabs.map((tab) => (
+                <Route key={tab.title} path={tab.path} element={<Box>{tab.content}</Box>} />
+              ))}
+            </Routes>
+          </Box>
+        </Boxling>
       </Box>
 
       <UsageReport

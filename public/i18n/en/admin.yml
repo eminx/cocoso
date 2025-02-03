@@ -26,8 +26,8 @@ logo:
     fileDropper: Please drop only one file at a time
 
 info:
-  label: Organisation
-  info: Enter Information About your Organisation
+  label: Organization
+  info: Enter Information About your Organization
   platform:
     info: Enter Information About the Global Platform
     name: Name
@@ -44,6 +44,9 @@ info:
       description: Here you can compose a footer. For example, you can enter contact details, address, links or enter a short text that describes your community. The footer is located at the bottom of all pages.
     federationLabel: Use Federation Layout (with topbar and footer)
     federationText: Renders federation layout by showing a dedicated topbar and footer to navigate in between different member communities and get informed about the federation
+
+organization:
+  title: Organization
 
 users:
   title: Users
@@ -139,6 +142,9 @@ newsletter:
       emailsent: Your email is successfully sent to all members
   portalHost:
     info: Since this is the portal app of the federation, your email will be sent to all {{ platform }} platform members
+
+features:
+  title: Main Features
 
 # ADMIN STATIC PAGES
 pages:

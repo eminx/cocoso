@@ -1,94 +1,19 @@
 import React, { lazy, useContext } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Code,
-  Heading,
-  List,
-  ListItem,
-  Link as CLink,
-  SimpleGrid,
-  Text,
-} from '@chakra-ui/react';
-import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
+import { Box, Center, Heading, SimpleGrid } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
-import ListMenu from '../../generic/ListMenu';
 import { Alert } from '../../generic/message';
-import { superadminMenu } from '../../utils/constants/general';
 import Settings from './Settings';
+import AdminSideBar from './AdminSideBar';
 
+const MenuSettings = lazy(() => import('./MenuSettings'));
+const ColorPicker = lazy(() => import('./ColorPicker'));
 const Members = lazy(() => import('./Members'));
 const Emails = lazy(() => import('./Emails'));
 const EmailNewsletter = lazy(() => import('./EmailNewsletter'));
 const Categories = lazy(() => import('./Categories'));
-
-function AdminMenu({ currentRoute, routes }) {
-  const { currentHost, currentUser, role, platform } = useContext(StateContext);
-  const [t] = useTranslation('admin');
-  const [tc] = useTranslation('common');
-
-  if (!currentHost || !currentUser || role !== 'admin') {
-    return null;
-  }
-
-  const { isPortalHost } = currentHost;
-  const { isSuperAdmin } = currentUser;
-
-  return (
-    <Box bg="gray.800" color="gray.50" minH="100vh" minW="280px" position="fixed">
-      <Box bg="gray.700" p="4">
-        <Link to="/">
-          <Button
-            as="span"
-            color="brand.100"
-            leftIcon={<ArrowLeft size="18px" />}
-            size="lg"
-            variant="link"
-          >
-            {currentHost.settings?.name}
-          </Button>
-          <br />
-          <Code bg="gray.900" color="gray.100" size="sm">
-            {currentHost.host}
-          </Code>
-        </Link>
-      </Box>
-
-      <Box p="4">
-        <Heading size="md" mb="4">
-          {t('panel')}
-        </Heading>
-
-        <List color="gray.50">
-          {routes.map((item) => (
-            <ListItem key={item.value} p="1">
-              <Link to={item.value}>
-                <CLink as="span">
-                  <Text fontWeight={currentRoute.value === item.value ? 'bold' : 'normal'}>
-                    {item.label}
-                  </Text>
-                </CLink>
-              </Link>
-            </ListItem>
-          ))}
-        </List>
-
-        {isSuperAdmin && isPortalHost && platform && (
-          <Box mb="2" mt="6">
-            <Heading color="gray.50" size="sm">
-              {`${platform.name} ${tc('domains.platform')}`}
-            </Heading>
-            <ListMenu list={superadminMenu} />
-          </Box>
-        )}
-      </Box>
-    </Box>
-  );
-}
 
 export default function AdminContainer() {
   const { currentUser, currentHost, role } = useContext(StateContext);
@@ -111,8 +36,30 @@ export default function AdminContainer() {
   const routes = [
     {
       label: t('settings.title'),
-      value: 'settings/*',
-      content: <Settings />,
+      value: 'settings',
+      isMulti: true,
+      content: [
+        {
+          label: t('organization.title'),
+          value: 'settings/organization/*',
+          content: <Settings />,
+        },
+        {
+          label: t('menu.title'),
+          value: 'settings/menu',
+          content: <MenuSettings />,
+        },
+        {
+          label: t('settings.tabs.color'),
+          value: 'settings/color',
+          content: <ColorPicker />,
+        },
+      ],
+    },
+    {
+      label: t('features.title'),
+      value: 'features/*',
+      content: <Box />,
     },
     {
       label: t('users.title'),
@@ -137,20 +84,33 @@ export default function AdminContainer() {
   ];
 
   const pathname = location?.pathname;
-  const currentRoute = routes.find((r) => pathname.includes(r?.value?.split('/')[0]));
+  let currentRoute;
+  routes.forEach((r) => {
+    if (r.isMulti) {
+      currentRoute = r.content.find((rs) => pathname.includes(rs?.value?.split('/')[1]));
+    } else if (pathname.includes(r?.value?.split('/')[0])) {
+      currentRoute = r;
+    }
+  });
 
   return (
-    <Box minH="100vh">
-      <SimpleGrid columns={2} templateColumns="20% 40%">
-        <Box>
-          <AdminMenu routes={routes} currentRoute={currentRoute} />
+    <Box bg="blueGray.100" minH="100vh">
+      <SimpleGrid columns={2} templateColumns="320px 40%">
+        <Box bg="white">
+          <AdminSideBar routes={routes} />
         </Box>
         <Box p="8">
           <Heading mb="8">{currentRoute?.label}</Heading>
           <Routes>
-            {routes.map((route) => (
-              <Route key={route.value} path={route.value} element={route.content} />
-            ))}
+            {routes.map((route) =>
+              route.isMulti ? (
+                route.content.map((routeSub) => (
+                  <Route key={routeSub.value} path={routeSub.value} element={routeSub.content} />
+                ))
+              ) : (
+                <Route key={route.value} path={route.value} element={route.content} />
+              )
+            )}
           </Routes>
         </Box>
       </SimpleGrid>

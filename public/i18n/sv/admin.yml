@@ -45,6 +45,9 @@ info:
     federationLabel: Use Federation Layout (with topbar and footer)
     federationText: Fosters federation layout by showing a dedicated topbar and footer to navigate in between different member communities and get informed about the federation
 
+organization:
+  title: Organization
+
 users:
   title: Användare
 
@@ -139,6 +142,9 @@ newsletter:
       emailsent: Ditt e-postmeddelande har skickats till alla medlemmar
   portalHost:
     info: Eftersom detta är federationens portalapp kommer din e-post att skickas till alla {{ platform }} plattformsmedlemmar
+
+features:
+  title: Huvudfunktioner
 
 # ADMIN STATIC PAGES
 pages:

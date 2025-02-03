@@ -4,11 +4,11 @@ const brand = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 
 const luxxStyle = {
   field: {
-    borderColor: 'gray.500',
+    borderColor: 'blueGray.700',
     borderRadius: '6px',
     borderWidth: '2px',
     _hover: {
-      borderColor: 'gray.600',
+      borderColor: 'blueGray.800',
     },
     _focus: {
       borderColor: 'brand.500',
@@ -41,14 +41,26 @@ const generateTheme = (hue) => {
       gray: {
         50: 'rgb(250, 248, 245)',
         100: 'rgb(245, 243, 240)',
-        200: 'rgb(235, 233, 230)',
-        300: 'rgb(225, 222, 220)',
-        400: 'rgb(215, 212, 210)',
-        500: 'rgb(155, 152, 150)',
-        600: 'rgb(85, 82, 80)',
-        700: 'rgb(65, 62, 60)',
-        800: 'rgb(45, 42, 40)',
-        900: 'rgb(25, 22, 20)',
+        200: 'rgb(235, 230, 226)',
+        300: 'rgb(225, 220, 215)',
+        400: 'rgb(215, 210, 205)',
+        500: 'rgb(155, 148, 140)',
+        600: 'rgb(85, 80, 75)',
+        700: 'rgb(65, 60, 52)',
+        800: 'rgb(45, 40, 32)',
+        900: 'rgb(25, 20, 15)',
+      },
+      blueGray: {
+        50: '#f4f7ff',
+        100: '#E0E5F2',
+        200: '#E1E9F8',
+        300: '#F4F7FE',
+        400: '#E9EDF7',
+        500: '#8F9BBA',
+        600: '#A3AED0',
+        700: '#707EAE',
+        800: '#505b81',
+        900: '#1B2559',
       },
     },
     components: {
