@@ -45,6 +45,11 @@ const adminMenu = [
     key: 'email-newsletter',
     value: '/admin/email-newsletter',
   },
+  {
+    menu: 'admin',
+    key: 'categories',
+    value: '/admin/categories',
+  },
 ];
 
 const superadminMenu = [

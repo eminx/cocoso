@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Text } from '@chakra-ui/react';
 
@@ -179,11 +179,9 @@ export default function Settings() {
   const pathnameLastPart = pathname.split('/').pop();
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  // if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
-  //   return <Navigate to={tabs[0].path} />;
-  // }
-
-  console.log(pathname);
+  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
+    return <Navigate to={tabs[0].path} />;
+  }
 
   return (
     <Box>

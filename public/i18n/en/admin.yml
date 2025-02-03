@@ -1,8 +1,9 @@
 # ADMIN SETTINGS PAGE
 label: Admin
+panel: Admin Panel
 
 settings:
-  label: Settings
+  title: Settings
   tabs:
     general: General
     logo: Logo
@@ -44,8 +45,11 @@ info:
     federationLabel: Use Federation Layout (with topbar and footer)
     federationText: Renders federation layout by showing a dedicated topbar and footer to navigate in between different member communities and get informed about the federation
 
+users:
+  title: Users
+
 menu:
-  label: Menu
+  title: Menu
   tabs:
     menuitems:
       label: Visibility & Labels
@@ -69,7 +73,7 @@ menu:
     text: Activates the menu to show up on the top of the page on desktop, rather than the drawer showing by clicking menu icon
 
 categories:
-  label: Work Categories
+  title: Work Categories
   info: You can set categories for work entries here
   message:
     denySpecialChars: Special characters, except dash (-), are not allowed
@@ -82,7 +86,7 @@ color:
 
 # ADMIN EMAILS PAGE
 emails:
-  label: Emails
+  title: Automated Emails
   form:
     subject:
       label: Subject

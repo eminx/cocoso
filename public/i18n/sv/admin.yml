@@ -1,8 +1,9 @@
 # ADMIN SETTINGS PAGE
 label: Admin
+panel: Adminpanel
 
 settings:
-  label: Inställningar
+  title: Inställningar
   tabs:
     general: Allmänt
     logo: Logotyp
@@ -44,8 +45,11 @@ info:
     federationLabel: Use Federation Layout (with topbar and footer)
     federationText: Fosters federation layout by showing a dedicated topbar and footer to navigate in between different member communities and get informed about the federation
 
+users:
+  title: Användare
+
 menu:
-  label: Meny
+  title: Meny
   tabs:
     menuitems:
       label: Synlighet & benämning
@@ -69,7 +73,7 @@ menu:
     text: Aktivera att menyn visas överst på sidan i desktop format, istället för att menyn öppnas genom att klicka på meny-ikonen i vänstermarginalen. I mobilformat visas menyn alltid via menyknappen längst upp till höger.
 
 categories:
-  label: Arbetskategorier
+  title: Arbetskategorier
   info: Du kan ställa in kategorier för arbetsinlägg här
   message:
     denySpecialChars: Specialtecken, förutom bindestreck (-), är inte tillåtna
@@ -82,7 +86,7 @@ color:
 
 # ADMIN EMAILS PAGE
 emails:
-  label: E-postmeddelanden
+  title: Automatiserade e-postmeddelanden
   form:
     subject:
       label: Ämne

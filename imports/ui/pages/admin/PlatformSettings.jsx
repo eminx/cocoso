@@ -12,8 +12,65 @@ import FormField from '../../forms/FormField';
 import FileDropper from '../../forms/FileDropper';
 import Tabs from '../../entry/Tabs';
 import ReactQuill from '../../forms/Quill';
-import Template from '../../layout/Template';
-import { AdminMenu } from './Settings';
+
+function PlatformSettingsForm({ initialValues, onSubmit }) {
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues: initialValues,
+  });
+
+  const { isDirty, isSubmitting } = formState;
+
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
+
+  return (
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <Stack spacing="4">
+        <FormField label={t('info.platform.name')}>
+          <Input {...register('name')} />
+        </FormField>
+        <FormField label={t('info.platform.email')}>
+          <Input type="email" {...register('email')} />
+        </FormField>
+        <Flex justify="flex-end" py="4">
+          <Button isDisabled={!isDirty || isSubmitting} type="submit">
+            {tc('actions.submit')}
+          </Button>
+        </Flex>
+      </Stack>
+    </form>
+  );
+}
+
+function PlatformOptions({ initialValues, onSubmit }) {
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues: initialValues,
+  });
+
+  const { isDirty, isSubmitting } = formState;
+
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
+
+  return (
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <Stack spacing="4">
+        <Flex>
+          <CSwitch mr="2" mt="2" {...register('isFederationLayout')} />
+          <Box>
+            <Text fontSize="lg">{t('info.platform.federationLabel')}</Text>
+            <Text fontSize="sm">{t('info.platform.federationText')}</Text>
+          </Box>
+        </Flex>
+        <Flex justify="flex-end" py="4">
+          <Button isDisabled={!isDirty || isSubmitting} type="submit">
+            {tc('actions.submit')}
+          </Button>
+        </Flex>
+      </Stack>
+    </form>
+  );
+}
 
 export default function PlatformSettings() {
   const [loading, setLoading] = useState(true);
@@ -25,10 +82,6 @@ export default function PlatformSettings() {
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  useEffect(() => {
-    getPlatformNow();
-  }, []);
-
   const getPlatformNow = async () => {
     try {
       const respond = await call('getPlatform');
@@ -39,6 +92,10 @@ export default function PlatformSettings() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getPlatformNow();
+  }, []);
 
   if (!currentUser || !currentUser.isSuperAdmin) {
     return <Alert>{tc('message.access.deny')}</Alert>;
@@ -144,19 +201,19 @@ export default function PlatformSettings() {
       title: t('settings.tabs.info'),
       path: 'info',
       content: (
-        <AlphaContainer>
+        <Box>
           <Text mb="3" fontWeight="bold">
             {t('info.platform.info')}
           </Text>
           <PlatformSettingsForm initialValues={platform} onSubmit={handleFormSubmit} />
-        </AlphaContainer>
+        </Box>
       ),
     },
     {
       title: t('settings.tabs.logo'),
       path: 'logo',
       content: (
-        <AlphaContainer>
+        <Box>
           <Text mb="3" fontWeight="bold">
             {t('logo.info')}
           </Text>
@@ -176,26 +233,26 @@ export default function PlatformSettings() {
               </Button>
             </Center>
           )}
-        </AlphaContainer>
+        </Box>
       ),
     },
     {
       title: t('settings.tabs.options'),
       path: 'options',
       content: (
-        <AlphaContainer>
+        <Box>
           <Text mb="3" fontWeight="bold">
             {t('info.platform.options')}
           </Text>
           <PlatformOptions initialValues={platform} onSubmit={handleOptionsSubmit} />
-        </AlphaContainer>
+        </Box>
       ),
     },
     {
       title: t('settings.tabs.footer'),
       path: 'footer',
       content: (
-        <AlphaContainer>
+        <Box>
           <Text mb="3" fontWeight="bold">
             {t('info.platform.footer.label')}
           </Text>
@@ -210,7 +267,7 @@ export default function PlatformSettings() {
               </Button>
             </Flex>
           </Box>
-        </AlphaContainer>
+        </Box>
       ),
     },
   ];
@@ -225,80 +282,15 @@ export default function PlatformSettings() {
 
   return (
     <Box>
-      <Template heading={tc('menu.superadmin.settings')} leftContent={<AdminMenu />}>
-        <Tabs index={tabIndex} tabs={tabs} />
+      <Tabs index={tabIndex} tabs={tabs} />
 
-        <Box pt="4">
-          <Routes>
-            {tabs.map((tab) => (
-              <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
-            ))}
-          </Routes>
-        </Box>
-      </Template>
+      <Box pt="4">
+        <Routes>
+          {tabs.map((tab) => (
+            <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+          ))}
+        </Routes>
+      </Box>
     </Box>
-  );
-}
-
-function AlphaContainer({ title, children }) {
-  return <Box maxWidth={400}>{children}</Box>;
-}
-
-function PlatformSettingsForm({ initialValues, onSubmit }) {
-  const { handleSubmit, register, formState } = useForm({
-    defaultValues: initialValues,
-  });
-
-  const { isDirty, isSubmitting } = formState;
-
-  const [t] = useTranslation('admin');
-  const [tc] = useTranslation('common');
-
-  return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Stack spacing="4">
-        <FormField label={t('info.platform.name')}>
-          <Input {...register('name')} />
-        </FormField>
-        <FormField label={t('info.platform.email')}>
-          <Input type="email" {...register('email')} />
-        </FormField>
-        <Flex justify="flex-end" py="4">
-          <Button isDisabled={!isDirty || isSubmitting} type="submit">
-            {tc('actions.submit')}
-          </Button>
-        </Flex>
-      </Stack>
-    </form>
-  );
-}
-
-function PlatformOptions({ initialValues, onSubmit }) {
-  const { handleSubmit, register, formState } = useForm({
-    defaultValues: initialValues,
-  });
-
-  const { isDirty, isSubmitting } = formState;
-
-  const [t] = useTranslation('admin');
-  const [tc] = useTranslation('common');
-
-  return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Stack spacing="4">
-        <Flex>
-          <CSwitch mr="2" mt="2" {...register('isFederationLayout')} />
-          <Box>
-            <Text fontSize="lg">{t('info.platform.federationLabel')}</Text>
-            <Text fontSize="sm">{t('info.platform.federationText')}</Text>
-          </Box>
-        </Flex>
-        <Flex justify="flex-end" py="4">
-          <Button isDisabled={!isDirty || isSubmitting} type="submit">
-            {tc('actions.submit')}
-          </Button>
-        </Flex>
-      </Stack>
-    </form>
   );
 }

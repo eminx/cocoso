@@ -1,8 +1,9 @@
 # ADMIN SETTINGS PAGE
 label: Admin
+panel: Admin Paneli
 
 settings:
-  label: Ayarlar
+  title: Ayarlar
   tabs:
     general: Genel
     logo: Logo
@@ -44,8 +45,11 @@ info:
     federationLabel: Federasyon şablonunu kullan (tepe sekmesi ve altbilgi ile)
     federationText: Tepe sekmesi ve alt bilgiyi görüntüleyerek topluluklar arasında gidip gelmeyi ve federasyon hakkında bilgi edinebilmeyi sağlar
 
+users:
+  title: Kullanıcılar
+
 menu:
-  label: Menü
+  title: Menü
   tabs:
     menuitems:
       label: Görünürlük ve İsimlendirme
@@ -69,7 +73,7 @@ menu:
     text: Menü simgesine tıklandığında çekmecenin gösterilmesi yerine, menünün masaüstünde sayfanın üst kısmında görünmesini sağlar
 
 categories:
-  label: İş kategorileri
+  title: İş kategorileri
   info: İşler için kategorileri burdan girebilirsin
   message:
     denySpecialChars: Kısa çizgi (-) dışındaki özel karakterlere izin verilmez
@@ -82,7 +86,7 @@ color:
 
 # ADMIN EMAILS PAGE
 emails:
-  label: Otomatik Epostalar
+  title: Otomatik Epostalar
   form:
     subject:
       label: Konu
