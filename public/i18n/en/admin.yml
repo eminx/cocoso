@@ -74,6 +74,8 @@ menu:
     title: Header Menu
     label: Header Menu active on desktop
     text: Activates the menu to show up on the top of the page on desktop, rather than the drawer showing by clicking menu icon
+  options:
+    label: Options
 
 categories:
   title: Work Categories
@@ -105,9 +107,9 @@ emails:
       helper: Select an image to appear at the top of the email
     footer:
       label: Footer
-  participant:
+  new:
     title: New User
-  cocreator:
+  verified:
     title: User Verified
   admin:
     title: New Admin

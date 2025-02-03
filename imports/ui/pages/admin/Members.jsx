@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { Box, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
@@ -10,8 +10,8 @@ import { message, Alert } from '../../generic/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import UsageReport from '../../admin/UsageReport';
-import Tabs from '../../entry/Tabs';
 import Boxling from './Boxling';
+import TablyRouter from '../../generic/TablyRouter';
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -217,24 +217,15 @@ export default function Members() {
     content: <MemberList members={membersRendered} t={t} />,
   }));
 
-  const pathnameLastPart = pathname.split('/').pop();
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
-
-  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
-    return <Navigate to={tabs[0].path} />;
-  }
-
   return (
     <>
-      <Box>
-        <Tabs index={tabIndex} mb="8" tabs={tabs} />
-
-        <Boxling>
-          <Box>
+      <TablyRouter tabs={tabs}>
+        <Boxling mb="4" mt="8">
+          <Box mb="2">
             <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
           </Box>
 
-          <Flex flexDirection={isDesktop ? 'row' : 'column'} mb="4" py="2" w="100%">
+          <Flex flexDirection={isDesktop ? 'row' : 'column'} w="100%">
             <Box pr={isDesktop ? '4' : '0'} pb={isDesktop ? '0' : '2'} flexBasis="60%">
               <Input
                 placeholder={t('form.holder')}
@@ -252,16 +243,8 @@ export default function Members() {
               </Select>
             </Box>
           </Flex>
-
-          <Box>
-            <Routes>
-              {tabs.map((tab) => (
-                <Route key={tab.title} path={tab.path} element={<Box>{tab.content}</Box>} />
-              ))}
-            </Routes>
-          </Box>
         </Boxling>
-      </Box>
+      </TablyRouter>
 
       <UsageReport
         isOpen={Boolean(userForUsageReport)}

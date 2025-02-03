@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Text } from '@chakra-ui/react';
 
 import ReactQuill from '../../forms/Quill';
 import { StateContext } from '../../LayoutContainer';
@@ -156,21 +156,23 @@ export default function Settings() {
       title: t('settings.tabs.footer'),
       path: 'footer',
       content: (
-        <Boxling>
+        <>
           <Text mb="4">{t('info.platform.footer.description')}</Text>
-          <ReactQuill
-            className="ql-editor-text-align-center"
-            placeholder={t('pages.form.description.holder')}
-            value={localSettings?.footer}
-            onChange={(value) => setLocalSettings({ ...localSettings, footer: value })}
-          />
+          <Boxling>
+            <ReactQuill
+              className="ql-editor-text-align-center"
+              placeholder={t('pages.form.description.holder')}
+              value={localSettings?.footer}
+              onChange={(value) => setLocalSettings({ ...localSettings, footer: value })}
+            />
 
-          <Center p="4">
-            <Button onClick={() => updateHostSettings(localSettings)}>
-              {tc('actions.submit')}
-            </Button>
-          </Center>
-        </Boxling>
+            <Flex justify="flex-end" pt="4">
+              <Button onClick={() => updateHostSettings(localSettings)}>
+                {tc('actions.submit')}
+              </Button>
+            </Flex>
+          </Boxling>
+        </>
       ),
     },
   ];

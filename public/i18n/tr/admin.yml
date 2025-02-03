@@ -74,6 +74,8 @@ menu:
     title: Başlık Menüsü
     label: Başlık Menüsü masaüstü görünümde etkin
     text: Menü simgesine tıklandığında çekmecenin gösterilmesi yerine, menünün masaüstünde sayfanın üst kısmında görünmesini sağlar
+  options:
+    label: Seçenekler
 
 categories:
   title: İş kategorileri
@@ -105,9 +107,9 @@ emails:
       helper: E-postanın üst kısmında görünecek bir imaj seç
     footer:
       label: Altbilgi
-  participant:
+  new:
     title: Yeni kullanıcı
-  cocreator:
+  verified:
     title: Onaylanmış kullanıcı
   admin:
     title: Yeni admin

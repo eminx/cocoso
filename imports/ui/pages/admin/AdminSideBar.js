@@ -23,15 +23,17 @@ function AdminMenuItem({ item, isSub, parentValue }) {
   return (
     <Link to={item.isMulti ? item.content[0].value : item.value}>
       <Box
-        _hover={{ bg: 'brand.50' }}
+        _hover={{ bg: 'brand.100' }}
+        bg={isCurrentRoute && !item.isMulti ? 'brand.50' : 'inherit'}
         borderRightWidth={isCurrentRoute && !item.isMulti ? '3px' : '0'}
         borderRightColor="brand.500"
         p="3"
-        py={isSub ? '2' : '3'}
+        py={isSub || (item.isMulti && isCurrentRoute) ? '2' : '3'}
         ml={isSub ? '4' : '0'}
       >
         <Text
           color={isCurrentRoute ? 'brand.800' : 'inherit'}
+          fontSize={isSub ? 'sm' : 'md'}
           fontWeight={isCurrentRoute ? 'bold' : 'normal'}
         >
           {item.label}
@@ -41,7 +43,7 @@ function AdminMenuItem({ item, isSub, parentValue }) {
   );
 }
 
-export default function AdminSideBar({ routes }) {
+export default function AdminSidebar({ routes }) {
   const { currentHost, currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
 
@@ -49,8 +51,8 @@ export default function AdminSideBar({ routes }) {
     return null;
   }
 
-  const { isPortalHost } = currentHost;
-  const { isSuperAdmin } = currentUser;
+  // const { isPortalHost } = currentHost;
+  // const { isSuperAdmin } = currentUser;
 
   return (
     <Box bg="white" color="blueGray.800" minH="100vh" minW="320px" position="fixed">
@@ -71,17 +73,24 @@ export default function AdminSideBar({ routes }) {
           {t('panel')}
         </Heading>
 
-        <List>
-          {routes.map((item) => (
-            <ListItem key={item.value} p="0">
-              <AdminMenuItem item={item} />
-              {item.isMulti &&
-                item.content.map((itemSub) => (
-                  <AdminMenuItem item={itemSub} isSub parentValue={item.value} />
-                ))}
-            </ListItem>
-          ))}
-        </List>
+        <Box h="70vh" overflowY="scroll">
+          <List>
+            {routes.map((item) => (
+              <ListItem key={item.value} p="0">
+                <AdminMenuItem item={item} />
+                {item.isMulti &&
+                  item.content.map((itemSub) => (
+                    <AdminMenuItem
+                      key={itemSub.value}
+                      item={itemSub}
+                      isSub
+                      parentValue={item.value}
+                    />
+                  ))}
+              </ListItem>
+            ))}
+          </List>
+        </Box>
 
         {/* {isSuperAdmin && isPortalHost && platform && (
           <Box mb="2" mt="6">

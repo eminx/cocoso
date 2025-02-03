@@ -1,19 +1,28 @@
-import React, { lazy, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Center, Code, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import { Alert } from '../../generic/message';
 import Settings from './Settings';
-import AdminSideBar from './AdminSideBar';
-
-const MenuSettings = lazy(() => import('./MenuSettings'));
-const ColorPicker = lazy(() => import('./ColorPicker'));
-const Members = lazy(() => import('./Members'));
-const Emails = lazy(() => import('./Emails'));
-const EmailNewsletter = lazy(() => import('./EmailNewsletter'));
-const Categories = lazy(() => import('./Categories'));
+import AdminSidebar from './AdminSidebar';
+import MenuSettings from './MenuSettings';
+import ColorPicker from './ColorPicker';
+import Members from './Members';
+import Emails from './Emails';
+import EmailNewsletter from './EmailNewsletter';
+import Categories from './Categories';
+import {
+  ActivitiesAdmin,
+  CalendarAdmin,
+  CommunitiesAdmin,
+  GroupsAdmin,
+  PagesAdmin,
+  PeopleAdmin,
+  ResourcesAdmin,
+  WorksAdmin,
+} from './features';
 
 export default function AdminContainer() {
   const { currentUser, currentHost, role } = useContext(StateContext);
@@ -33,6 +42,16 @@ export default function AdminContainer() {
     );
   }
 
+  const menuItems = currentHost.settings?.menu;
+  const getMenuLabel = (key) => (
+    <Text as="span">
+      {menuItems?.find((item) => item.name === key)?.label}
+      <Code fontSize="xs" ml="2">
+        /{key}
+      </Code>
+    </Text>
+  );
+
   const routes = [
     {
       label: t('settings.title'),
@@ -40,13 +59,13 @@ export default function AdminContainer() {
       isMulti: true,
       content: [
         {
-          label: t('organization.title'),
+          label: t('info.label'),
           value: 'settings/organization/*',
           content: <Settings />,
         },
         {
           label: t('menu.title'),
-          value: 'settings/menu',
+          value: 'settings/menu/*',
           content: <MenuSettings />,
         },
         {
@@ -58,8 +77,57 @@ export default function AdminContainer() {
     },
     {
       label: t('features.title'),
-      value: 'features/*',
-      content: <Box />,
+      value: 'features',
+      isMulti: true,
+      content: [
+        {
+          label: getMenuLabel('activities'),
+          value: 'features/activities',
+          content: <ActivitiesAdmin />,
+        },
+        {
+          label: getMenuLabel('calendar'),
+          value: 'features/calendar',
+          content: <CalendarAdmin />,
+        },
+        {
+          label: (
+            <Text as="span">
+              {tc('platform.communities')}{' '}
+              <Code fontSize="xs" ml="2">
+                /communities
+              </Code>
+            </Text>
+          ),
+          value: 'features/communities',
+          content: <CommunitiesAdmin />,
+        },
+        {
+          label: getMenuLabel('groups'),
+          value: 'features/groups',
+          content: <GroupsAdmin />,
+        },
+        {
+          label: getMenuLabel('info'),
+          value: 'features/pages',
+          content: <PagesAdmin />,
+        },
+        {
+          label: getMenuLabel('people'),
+          value: 'features/people',
+          content: <PeopleAdmin />,
+        },
+        {
+          label: getMenuLabel('resources'),
+          value: 'features/resources',
+          content: <ResourcesAdmin />,
+        },
+        {
+          label: getMenuLabel('works'),
+          value: 'features/works/*',
+          content: <WorksAdmin />,
+        },
+      ],
     },
     {
       label: t('users.title'),
@@ -68,7 +136,7 @@ export default function AdminContainer() {
     },
     {
       label: t('emails.title'),
-      value: 'emails',
+      value: 'emails/*',
       content: <Emails />,
     },
     {
@@ -84,20 +152,34 @@ export default function AdminContainer() {
   ];
 
   const pathname = location?.pathname;
-  let currentRoute;
-  routes.forEach((r) => {
-    if (r.isMulti) {
-      currentRoute = r.content.find((rs) => pathname.includes(rs?.value?.split('/')[1]));
-    } else if (pathname.includes(r?.value?.split('/')[0])) {
-      currentRoute = r;
-    }
-  });
+  const getCurrentRoute = () => {
+    const allRoutes = [];
+    routes.forEach((item) => {
+      if (item.isMulti) {
+        item.content.forEach((itemSub) => {
+          allRoutes.push({
+            ...itemSub,
+            value: itemSub.value.replace('*', ''),
+          });
+        });
+        return;
+      }
+      allRoutes.push({
+        ...item,
+        value: item.value.replace('*', ''),
+      });
+    });
+
+    return allRoutes.find((r) => pathname.includes(r.value));
+  };
+
+  const currentRoute = getCurrentRoute();
 
   return (
     <Box bg="blueGray.100" minH="100vh">
       <SimpleGrid columns={2} templateColumns="320px 40%">
         <Box bg="white">
-          <AdminSideBar routes={routes} />
+          <AdminSidebar routes={routes} />
         </Box>
         <Box p="8">
           <Heading mb="8">{currentRoute?.label}</Heading>

@@ -106,7 +106,7 @@ export default function AppRoutes() {
   return (
     <>
       <LayoutContainer>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader relative={false} />}>
           <Routes>
             <Route exact path="/" element={<HomePage />} />
 

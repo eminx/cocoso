@@ -74,6 +74,8 @@ menu:
     title: Huvudmeny
     label: Huvudmeny aktiv på skrivbordet
     text: Aktivera att menyn visas överst på sidan i desktop format, istället för att menyn öppnas genom att klicka på meny-ikonen i vänstermarginalen. I mobilformat visas menyn alltid via menyknappen längst upp till höger.
+  options:
+    label: Alternativ
 
 categories:
   title: Arbetskategorier
@@ -105,9 +107,9 @@ emails:
       helper: Välj en bild som ska visas överst i e-postmeddelandet
     footer:
       label: E-postsidfot
-  participant:
+  new:
     title: Ny användare
-  cocreator:
+  verified:
     title: Användaren verifierad
   admin:
     title: Ny admin
