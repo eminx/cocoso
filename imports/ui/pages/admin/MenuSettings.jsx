@@ -43,21 +43,35 @@ function MenuTable({
   return (
     <Accordion allowToggle>
       {menu.map((item, index) => (
-        <AccordionItem key={item.name}>
-          <AccordionButton _expanded={{ bg: 'brand.600', color: '#fff' }} bg="white">
-            <Box as="span" flex="1" textAlign="left" textTransform="capitalize">
-              {item.label}
-            </Box>
-            <AccordionIcon />
+        <AccordionItem key={item.name} borderRadius={8} mb="4">
+          <AccordionButton
+            _expanded={{ bg: 'brand.50' }}
+            _hover={{ bg: 'white' }}
+            bg="blueGray.50"
+            borderRadius={8}
+          >
+            <Flex justify="space-between" w="100%">
+              <Flex direction="column">
+                <Box as="span" flex="1" textAlign="left" textTransform="capitalize">
+                  <Text as="span" fontWeight="bold">
+                    {item.label}{' '}
+                  </Text>
+                  <Code as="span" bg="white" fontSize="xs" m="2">
+                    /{item.name}
+                  </Code>
+                </Box>
+                <Box>
+                  <Text fontWeight="light" mb="2" mt="1" textTransform="none">
+                    {t(`menu.info.${item.name}`)}
+                  </Text>
+                </Box>
+              </Flex>
+
+              <AccordionIcon />
+            </Flex>
           </AccordionButton>
           <AccordionPanel bg="brand.50" pb={4}>
             <Box pb="2" pt="1">
-              <Code fontSize="md" fontWeight="bold">
-                /{item.name}
-              </Code>
-              <Text fontWeight="light" mb="2" mt="1" textTransform="none">
-                {t(`menu.info.${item.name}`)}
-              </Text>
               <Table size="sm" variant="simple" w="100%">
                 <Tbody>
                   <Tr key={item.name}>
