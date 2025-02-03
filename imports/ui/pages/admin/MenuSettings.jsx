@@ -8,22 +8,22 @@ import {
   AccordionIcon,
   Box,
   Button,
+  Code,
   Flex,
   Heading,
   Input,
   Switch,
-  Text,
   Table,
   Tbody,
   Textarea,
   Tr,
   Td,
-  Code,
+  Text,
 } from '@chakra-ui/react';
 
 import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
-import { sortableContainer, sortableElement } from 'react-sortable-hoc';
-import arrayMove from 'array-move';
+import SortableList, { SortableItem } from 'react-easy-sort';
+import { arrayMoveImmutable } from 'array-move';
 
 import { call } from '../../utils/shared';
 import Loader from '../../generic/Loader';
@@ -111,22 +111,6 @@ function MenuTable({
   );
 }
 
-const SortableItem = sortableElement(({ value }) => (
-  <Flex
-    align="center"
-    bg="blueGray.50"
-    borderRadius={8}
-    cursor="move"
-    mb="4"
-    p="2"
-    style={{ fontFamily: 'Sarabun, sans-serif' }}
-  >
-    <DragHandleIcon /> <Box pl="2">{value}</Box>
-  </Flex>
-));
-
-const SortableContainer = sortableContainer(({ children }) => <Box>{children}</Box>);
-
 export default function MenuSettings() {
   const [loading, setLoading] = useState(true);
   const [localSettings, setLocalSettings] = useState(null);
@@ -201,13 +185,14 @@ export default function MenuSettings() {
     setLocalSettings({ ...localSettings, menu: newMenu });
   };
 
-  const onSortMenuEnd = ({ oldIndex, newIndex }) => {
+  const onSortMenuEnd = (oldIndex, newIndex) => {
+    console.log(oldIndex, newIndex);
     const { menu } = localSettings;
     const visibleItems = menu.filter((item) => item.isVisible);
     const invisibleItems = menu.filter((item) => !item.isVisible);
     const newSettings = {
       ...localSettings,
-      menu: [...arrayMove(visibleItems, oldIndex, newIndex), ...invisibleItems],
+      menu: [...arrayMoveImmutable(visibleItems, oldIndex, newIndex), ...invisibleItems],
     };
     setLocalSettings(newSettings);
   };
@@ -264,13 +249,25 @@ export default function MenuSettings() {
 
           <Box>
             {localSettings && localSettings.menu && (
-              <SortableContainer onSortEnd={onSortMenuEnd} helperClass="sortableHelper">
+              <SortableList onSortEnd={onSortMenuEnd}>
                 {localSettings.menu
                   .filter((item) => item.isVisible)
-                  .map((value, index) => (
-                    <SortableItem key={`item-${value.name}`} index={index} value={value.label} />
+                  .map((value) => (
+                    <SortableItem key={value.name}>
+                      <Flex
+                        align="center"
+                        bg="blueGray.50"
+                        borderRadius={8}
+                        cursor="move"
+                        mb="4"
+                        p="2"
+                        style={{ fontFamily: 'Sarabun, sans-serif' }}
+                      >
+                        <DragHandleIcon /> <Text ml="2">{value.label}</Text>
+                      </Flex>
+                    </SortableItem>
                   ))}
-              </SortableContainer>
+              </SortableList>
             )}
           </Box>
 

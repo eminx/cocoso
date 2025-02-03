@@ -30,7 +30,7 @@ const textProps = {
 
 function InfoPagesMenu({ label, pageTitles, pathname }) {
   const context = pathname.split('/')[1];
-  const isCurrentContext = context === 'pages';
+  const isCurrentContext = context === 'info';
 
   return (
     <Menu placement="bottom-end">
@@ -48,7 +48,7 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
       </MenuButton>
       <MenuList maxHeight="480px" overflowY="scroll" style={{ zIndex: 2 }}>
         {pageTitles.map((item) => (
-          <Link key={item} to={`/pages/${parseTitle(item)}`}>
+          <Link key={item} to={`/info/${parseTitle(item)}`}>
             <MenuItem as="span" id={item}>
               {item}
             </MenuItem>

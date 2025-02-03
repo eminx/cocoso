@@ -62,7 +62,7 @@ export default function PageHybrid({ pages }) {
   }
 
   if (!currentPage) {
-    navigate(`/pages/${parseTitle(pages[0].title)}`);
+    navigate(`/info/${parseTitle(pages[0].title)}`);
     return null;
   }
 

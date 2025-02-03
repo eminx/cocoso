@@ -55,12 +55,7 @@ export default function FederationIconMenu() {
     }
   };
 
-  const isFederationLayout = platform && platform.isFederationLayout;
   const isPortalHost = currentHost?.isPortalHost;
-
-  if (!isFederationLayout) {
-    return null;
-  }
 
   return (
     <>
@@ -121,7 +116,7 @@ export default function FederationIconMenu() {
 
       <ConfirmModal
         confirmText={tc('modals.toPortalApp')}
-        hideFooter={isPortalHost && isFederationLayout}
+        hideFooter={isPortalHost}
         isCentered
         scrollBehavior="inside"
         size="2xl"

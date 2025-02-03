@@ -50,6 +50,10 @@ function UserPopup({ isOpen, setIsOpen }) {
   const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const navigate = useNavigate();
 
+  if (!currentHost) {
+    return null;
+  }
+
   if (!currentUser) {
     return (
       <Link to="/login" style={{ marginRight: '12px' }}>

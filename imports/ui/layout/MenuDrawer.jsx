@@ -4,82 +4,8 @@ import { Box, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
 import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
 import { useTranslation } from 'react-i18next';
 
-import Drawer from './Drawer';
+import Drawer from '../generic/Drawer';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
-
-const getRoute = (item, index) => {
-  if (item.name === 'info') {
-    return '/pages/about';
-  }
-  return `/${item.name}`;
-};
-
-export default function MenuDrawer({ currentHost, isDesktop, platform }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [tc] = useTranslation('common');
-
-  const { menu } = currentHost?.settings;
-
-  const menuItems = menu
-    .filter((item) => item.isVisible)
-    .map((item, index) => ({
-      ...item,
-      route: getRoute(item, index),
-    }));
-
-  if (platform?.isFederationLayout && currentHost?.isPortalHost) {
-    menuItems.push({
-      name: 'communities',
-      label: tc('platform.communities'),
-      route: '/communities',
-    });
-  }
-
-  const onToggle = () => setIsOpen(!isOpen);
-
-  let menuClassName = 'menu-drawer';
-  if (isOpen) {
-    menuClassName += ' menu-drawer--open';
-  }
-
-  return (
-    <Box>
-      <Flex align="center" flexDirection="column">
-        <IconButton
-          _hover={{
-            bg: 'brand.500',
-          }}
-          bg="gray.800"
-          borderColor="#fff"
-          borderWidth="2px"
-          icon={<HamburgerIcon fontSize="24px" />}
-          size={isDesktop ? 'md' : 'sm'}
-          onClick={onToggle}
-        />
-
-        <Text fontSize="12px" textAlign="center">
-          {tc('menu.label')}
-        </Text>
-      </Flex>
-
-      <Drawer
-        bg="white"
-        isOpen={isOpen}
-        title={tc('menu.label')}
-        titleColor="brand.900"
-        onClose={onToggle}
-      >
-        <Flex flexDirection="column" h="100%" justify="space-between">
-          <MenuContent menuItems={menuItems} onToggle={onToggle} />
-
-          <Box color="brand.600" mt="4">
-            <MenuFooter />
-          </Box>
-        </Flex>
-      </Drawer>
-    </Box>
-  );
-}
 
 function MenuContent({ menuItems, onToggle }) {
   const location = useLocation();
@@ -119,6 +45,75 @@ function MenuFooter() {
   return (
     <Box pb="4">
       <ChangeLanguageMenu />
+    </Box>
+  );
+}
+
+const getRoute = (item) => {
+  if (item.name === 'info') {
+    return '/info/about';
+  }
+  return `/${item.name}`;
+};
+
+export default function MenuDrawer({ currentHost, isDesktop, platform }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [tc] = useTranslation('common');
+
+  const { menu } = currentHost?.settings;
+
+  const menuItems = menu
+    .filter((item) => item.isVisible)
+    .map((item, index) => ({
+      ...item,
+      route: getRoute(item, index),
+    }));
+
+  if (platform?.isFederationLayout && currentHost?.isPortalHost) {
+    menuItems.push({
+      name: 'communities',
+      label: tc('platform.communities'),
+      route: '/communities',
+    });
+  }
+
+  const onToggle = () => setIsOpen(!isOpen);
+
+  return (
+    <Box>
+      <Flex align="center" flexDirection="column">
+        <IconButton
+          _hover={{
+            bg: 'brand.500',
+          }}
+          bg="gray.800"
+          borderColor="#fff"
+          borderWidth="2px"
+          icon={<HamburgerIcon fontSize="24px" />}
+          size={isDesktop ? 'md' : 'sm'}
+          onClick={onToggle}
+        />
+
+        <Text fontSize="12px" textAlign="center">
+          {tc('menu.label')}
+        </Text>
+      </Flex>
+
+      <Drawer
+        bg="white"
+        isOpen={isOpen}
+        title={tc('menu.label')}
+        titleColor="brand.900"
+        onClose={onToggle}
+      >
+        <Flex flexDirection="column" h="100%" justify="space-between">
+          <MenuContent menuItems={menuItems} onToggle={onToggle} />
+
+          <Box color="brand.600" mt="4">
+            <MenuFooter />
+          </Box>
+        </Flex>
+      </Drawer>
     </Box>
   );
 }

@@ -6,7 +6,7 @@ import { StateContext } from '../LayoutContainer';
 
 const getRoute = (item) => {
   if (item.name === 'info') {
-    return '/pages/new';
+    return '/info/new';
   }
   return `/${item.name}/new`;
 };

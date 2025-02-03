@@ -36,7 +36,7 @@ export function Footer({ currentHost, isFederationFooter, tc }) {
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
             <ListItem key={item.name} px="4" py="2">
-              <Link to={item.name === 'info' ? '/pages/about' : `/${item.name}`}>
+              <Link to={item.name === 'info' ? '/info/about' : `/${item.name}`}>
                 <CLink as="span" color="brand.500" fontWeight="bold">
                   {item.label}
                 </CLink>{' '}

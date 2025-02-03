@@ -81,6 +81,10 @@ const AppRoutesSSR = (host, sink) => {
       element: <Page {...props} />,
     },
     {
+      path: '/info/:pageTitle',
+      element: <Page {...props} />,
+    },
+    {
       path: '/resources/:resourceId/*',
       element: <Resource {...props} />,
     },
