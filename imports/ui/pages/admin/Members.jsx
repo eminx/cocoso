@@ -41,7 +41,7 @@ function MemberItem({ member, t }) {
 
 function MemberList({ members, t }) {
   return (
-    <NiceList itemBg="white" keySelector="email" list={members}>
+    <NiceList actionsDisabled={false} itemBg="white" keySelector="email" list={members}>
       {(member) => <MemberItem key={member.username} t={t} member={member} />}
     </NiceList>
   );

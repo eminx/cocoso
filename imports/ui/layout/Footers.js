@@ -32,7 +32,7 @@ export function Footer({ currentHost, isFederationFooter, tc }) {
 
   return (
     <Box
-      bg="linear-gradient(0deg, var(--chakra-colors-purple-100) 0%, var(--chakra-colors-brand-100) 100%);"
+      bg="linear-gradient(0deg, var(--chakra-colors-purple-50) 0%, var(--chakra-colors-blueGray-100) 100%);"
       color="blueGray.900"
       position="fixed"
       bottom={0}

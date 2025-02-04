@@ -58,11 +58,17 @@ export default function AdminSidebar({ routes }) {
     <Box bg="white" color="blueGray.800" minH="100vh" minW="320px" position="fixed">
       <Box p="4">
         <Link to="/">
-          <Button as="span" leftIcon={<ArrowLeft size="18px" />} size="lg" variant="link">
+          <Button
+            as="span"
+            color="blueGray.900"
+            leftIcon={<ArrowLeft size="18px" />}
+            size="lg"
+            variant="link"
+          >
             {currentHost.settings?.name}
           </Button>
           <br />
-          <Code bg="brand.100" fontSize="xs">
+          <Code bg="blueGray.50" fontSize="xs">
             {currentHost.host}
           </Code>
         </Link>
