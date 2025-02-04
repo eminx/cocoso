@@ -3,7 +3,9 @@ import { Flex, Slide } from '@chakra-ui/react';
 
 const flexProps = {
   align: 'flex-start',
-  bg: 'rgba(50, 50, 50, .9)',
+  bg: 'rgba(50, 48, 45, .95)',
+  borderTop: '1px solid',
+  borderTopColor: 'gray.400',
   justify: 'center',
   minH: '86px',
   pt: '4',

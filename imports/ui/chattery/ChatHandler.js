@@ -71,11 +71,11 @@ export function ChatButton({ context, currentUser, item, withInput }) {
       <Center>
         <VStack spacing="0">
           <IconButton
-            _hover={{ bg: 'brand.200' }}
-            _active={{ bg: 'brand.200' }}
-            bg="brand.100"
+            _hover={{ bg: 'gray.100' }}
+            _active={{ bg: 'gray.200' }}
+            bg="gray.50"
             border="1px solid"
-            borderColor="brand.300"
+            borderColor="brand.400"
             fontSize="32px"
             icon={<MessagesSquare />}
             isRound

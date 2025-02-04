@@ -223,9 +223,9 @@ export default function GroupMeetingDates(props) {
             {isMember && (
               <Button
                 bg="white"
-                borderColor="green.100"
+                borderColor="brand.100"
                 borderWidth="2px"
-                colorScheme="green"
+                colorScheme="brand"
                 height="48px"
                 size="lg"
                 variant="outline"

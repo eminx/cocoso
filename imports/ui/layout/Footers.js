@@ -31,13 +31,20 @@ export function Footer({ currentHost, isFederationFooter, tc }) {
   const { settings } = currentHost;
 
   return (
-    <Box bg="gray.200" color="brand.900" w="100%">
+    <Box
+      bg="linear-gradient(0deg, var(--chakra-colors-purple-100) 0%, var(--chakra-colors-brand-100) 100%);"
+      color="blueGray.900"
+      position="fixed"
+      bottom={0}
+      zIndex={-1}
+      w="100%"
+    >
       <Center p="4">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
             <ListItem key={item.name} px="4" py="2">
               <Link to={item.name === 'info' ? '/info/about' : `/${item.name}`}>
-                <CLink as="span" color="brand.500" fontWeight="bold">
+                <CLink as="span" color="gray.700">
                   {item.label}
                 </CLink>{' '}
               </Link>

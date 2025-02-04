@@ -65,9 +65,9 @@ function Header({ author, backLink, subTitle, tags, tc, title }) {
 
   const renderTitles = () => (
     <Center>
-      <Flex p="4" justify={author ? 'space-between' : 'center'} w="100%">
+      <Flex p="4" justify="center" w="100%">
         {author && <Box w="48px" />}
-        <Box>
+        <Box px="2">
           <Heading
             as="h1"
             lineHeight={1}

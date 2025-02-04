@@ -21,7 +21,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <ActivityAdminFunctions />
         <RsvpHandler activity={activity} />
-        <ChatButton context="activities" currentUser={currentUser} item={activity} withInputs />
+        <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
       </SlideWidget>
     );
   }
@@ -31,7 +31,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <Box />
         <RsvpHandler activity={activity} />
-        <ChatButton context="activities" currentUser={currentUser} item={activity} withInputs />
+        <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
       </SlideWidget>
     );
   }

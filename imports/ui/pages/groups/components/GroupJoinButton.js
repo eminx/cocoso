@@ -37,9 +37,9 @@ export default function GroupJoinButton() {
     <>
       <Center>
         <Button
-          borderColor="green.200"
+          borderColor="brand.200"
           borderWidth="2px"
-          colorScheme="green"
+          colorScheme="brand"
           height="48px"
           size="lg"
           width="240px"

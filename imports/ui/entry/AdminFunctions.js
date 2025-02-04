@@ -12,11 +12,12 @@ export default function AdminFunctions({ menuItems, onSelect }) {
         <Menu closeOnSelect>
           <MenuButton size="sm">
             <IconButton
-              _hover={{ bg: 'brand.200' }}
-              _active={{ bg: 'brand.200' }}
+              _hover={{ bg: 'gray.100' }}
+              _active={{ bg: 'gray.200' }}
               as="span"
-              bg="brand.100"
-              border="1px solid #fff"
+              bg="gray.50"
+              border="1px solid"
+              borderColor="brand.400"
               borderRadius="50%"
               icon={<Settings />}
               variant="ghost"

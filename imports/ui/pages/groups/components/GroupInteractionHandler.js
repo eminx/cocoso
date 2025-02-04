@@ -29,7 +29,7 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
           <GroupAdminFunctions />
         </Box>
         <GroupMeetingDates {...props} />
-        <ChatButton context="groups" currentUser={currentUser} item={group} withInputs />
+        <ChatButton context="groups" currentUser={currentUser} item={group} withInput />
       </SlideWidget>
     );
   }
@@ -42,7 +42,7 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
         <SlideWidget justify="space-between" slideStart={slideStart}>
           <Box w="40px" />
           <GroupMeetingDates {...props} />
-          <ChatButton context="groups" currentUser={currentUser} item={group} withInputs />
+          <ChatButton context="groups" currentUser={currentUser} item={group} withInput />
         </SlideWidget>
       </>
     );

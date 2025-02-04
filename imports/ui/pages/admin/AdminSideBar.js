@@ -73,7 +73,7 @@ export default function AdminSidebar({ routes }) {
           {t('panel')}
         </Heading>
 
-        <Box h="70vh" overflowY="scroll">
+        <Box h="70vh" overflowY="auto">
           <List>
             {routes.map((item) => (
               <ListItem key={item.value} p="0">

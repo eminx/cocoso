@@ -4,9 +4,11 @@ import { Box } from '@chakra-ui/react';
 export default function DummyWrapper({ children }) {
   return (
     <Box
+      bg="linear-gradient(0deg, var(--chakra-colors-purple-100) 0%, var(--chakra-colors-brand-100) 100%);"
+      // bg="gray.100"
+      boxShadow="sm"
       minH="110vh"
-      // bg="linear-gradient(0deg, var(--chakra-colors-gray-100) 0%, var(--chakra-colors-brand-50) 100%);"
-      bg="gray.100"
+      mb="148px"
     >
       {children}
     </Box>
