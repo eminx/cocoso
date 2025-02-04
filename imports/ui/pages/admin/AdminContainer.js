@@ -12,7 +12,6 @@ import ColorPicker from './ColorPicker';
 import Members from './Members';
 import Emails from './Emails';
 import EmailNewsletter from './EmailNewsletter';
-import Categories from './Categories';
 import {
   ActivitiesAdmin,
   CalendarAdmin,
@@ -143,11 +142,6 @@ export default function AdminContainer() {
       label: t('newsletter.title'),
       value: 'email-newsletter',
       content: <EmailNewsletter />,
-    },
-    {
-      label: t('categories.title'),
-      value: 'categories',
-      content: <Categories />,
     },
   ];
 
