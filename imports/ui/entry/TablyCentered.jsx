@@ -49,7 +49,7 @@ function AvatarHolder({ author }) {
   );
 }
 
-function Header({ author, backLink, subTitle, tags, tc, title }) {
+function Header({ author, backLink, subTitle, tags, title }) {
   const [copied, setCopied] = useState(false);
   const location = useLocation();
 
@@ -176,7 +176,6 @@ function TablyCentered({
   tags = null,
 }) {
   const location = useLocation();
-  // const [tc] = useTranslation('common');
 
   const pathnameLastPart = location.pathname.split('/').pop();
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
@@ -205,7 +204,6 @@ function TablyCentered({
               backLink={backLink}
               subTitle={subTitle}
               tags={tags}
-              tc={tc}
               title={title}
             />
 

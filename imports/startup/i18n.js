@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import Backend from 'i18next-http-backend';
+import I18NextHttpBackend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
@@ -25,40 +25,45 @@ const allLangs = [
 
 const defaultLang = 'en';
 
-const namespaces = [
-  'common',
-  'accounts',
-  'members',
-  'hosts',
-  'admin',
-  'activities',
-  'groups',
-  'calendar',
-  'resources',
-];
+// const namespaces = [
+//   'common',
+//   'accounts',
+//   'members',
+//   'hosts',
+//   'admin',
+//   'activities',
+//   'groups',
+//   'calendar',
+//   'resources',
+// ];
 
 const path = '/i18n/{{lng}}/{{ns}}.yml';
 const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
 
+// const Backend = Meteor.isClient ? I18NextHttpBackend : I18NexFsBackend;
+const Backend = I18NextHttpBackend;
+
 const options = {
-  allowMultiLoading: false,
+  allowMultiLoading: true,
   backend: {
     loadPath,
-    parse: function (data) {
-      return yaml.load(data);
-    },
+    parse: (data) => yaml.load(data),
   },
-  debug: false,
+  debug: true,
   defaultNS: 'common',
   fallbackLng: 'en',
   lng: defaultLang,
   load: 'languageOnly',
   ns: 'common',
   only: '*',
-  // preload: allLangs,
+  preload: ['en'],
+  react: {
+    useSuspense: false,
+  },
   saveMissing: true,
   supportedLngs: allLangs.map((l) => l.value),
-  useSuspense: process && !process.release,
+  // useSuspense: process && !process.release,
+  useSuspense: false,
 };
 
 // for browser use http backend to load translations and browser lng detector
