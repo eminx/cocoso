@@ -32,9 +32,10 @@ Meteor.startup(() => {
 
   onPageLoad((sink) => {
     const host = sink.request.headers['host'];
+    const context = {};
 
     const App = (props) => (
-      <StaticRouter location={sink.request.url}>
+      <StaticRouter location={sink.request.url} context={context}>
         <Routes>
           {AppRoutesSSR(host, sink).map((route) => (
             <Route
@@ -49,8 +50,9 @@ Meteor.startup(() => {
       </StaticRouter>
     );
 
+    sink.renderIntoElementById('root', renderToString(<App location={sink.request.url} />));
     const helmet = Helmet.renderStatic();
     sink.appendToHead(helmet.meta.toString());
-    sink.renderIntoElementById('root', renderToString(<App />));
+    sink.appendToHead(helmet.title.toString());
   });
 });

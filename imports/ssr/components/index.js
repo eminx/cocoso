@@ -37,7 +37,7 @@ export function ActivitiesList({ host, sink }) {
   }
 
   return (
-    <WrapperSSR Host={Host}>
+    <WrapperSSR Host={Host} sink={sink}>
       <ActivitiesHybrid activities={activities} Host={Host} showPast={Boolean(showPast)} />
     </WrapperSSR>
   );

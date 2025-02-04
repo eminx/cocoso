@@ -31,7 +31,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [pageTitles, setPageTitles] = useState([]);
   const [hue, setHue] = useState('233');
   const [rendered, setRendered] = useState(false);
-  const [tc, i18n] = useTranslation();
+  const [, i18n] = useTranslation();
   const [isDesktop, isMobile] = useMediaQuery(['(min-width: 960px)', '(max-width: 480px)']);
   const location = useLocation();
   const { pathname } = location;

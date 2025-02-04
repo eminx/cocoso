@@ -12,6 +12,7 @@ export default function HelmetHybrid({ Host }) {
 
   return (
     <Helmet htmlAttributes={{ lang }}>
+      <title>{Host.settings?.name}</title>
       <link rel="canonical" href={Host.host} />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
