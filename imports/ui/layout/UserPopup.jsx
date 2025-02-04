@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Link as CLink,
   Menu,
   MenuButton,
@@ -22,6 +23,7 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
+import { getFullName } from '../utils/shared';
 
 function NotificationLinkItem({ host, item, children }) {
   if (item.host && host === item.host) {
@@ -104,16 +106,25 @@ function UserPopup({ isOpen, setIsOpen }) {
         onClose={() => setIsOpen(false)}
       >
         <MenuButton onClick={() => setIsOpen(!isOpen)}>
-          <Avatar
-            _hover={{ bg: 'brand.500' }}
-            bg="brand.600"
-            borderRadius="8px"
-            showBorder
-            size={isDesktop ? 'md' : 'sm'}
-            src={currentUser.avatar && currentUser.avatar.src}
-          >
-            {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
-          </Avatar>
+          <Flex>
+            <Avatar
+              _hover={{ bg: 'brand.500' }}
+              bg="brand.600"
+              borderRadius="8px"
+              showBorder
+              size={isDesktop ? 'md' : 'sm'}
+              src={currentUser.avatar && currentUser.avatar.src}
+            >
+              {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
+            </Avatar>
+
+            <Box>
+              <Text>{currentUser.username}</Text>
+              <Text fontSize="sm" fontW="light">
+                {getFullName(currentUser)}
+              </Text>
+            </Box>
+          </Flex>
         </MenuButton>
 
         <MenuList>
