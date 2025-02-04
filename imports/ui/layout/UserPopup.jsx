@@ -22,6 +22,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
+import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
 
 import { StateContext } from '../LayoutContainer';
 import { getFullName } from '../utils/shared';
@@ -64,12 +65,21 @@ export function UserThumb({ isNotification = false }) {
         size={isDesktop ? 'md' : 'sm'}
         src={currentUser.avatar && currentUser.avatar.src}
       >
-        {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
-        {}
+        {role === 'admin' && (
+          <AvatarBadge bg="brand.50" borderWidth="2px">
+            <Bolt color="#010101" size="16" />
+          </AvatarBadge>
+        )}
+        {role === 'contributor' && (
+          <AvatarBadge bg="brand.50" borderWidth="2px">
+            <CheckCircle color="#010101" size="16" />
+          </AvatarBadge>
+        )}
+        {isNotification && <AvatarBadge bg="tomato" borderColor="white" boxSize="1em" />}
       </Avatar>
 
       {isDesktop && (
-        <Box align="flex-start" color="white" textAlign="left" px="2">
+        <Box align="flex-start" textAlign="left" px="2">
           <Text>{currentUser.username}</Text>
           <Text fontSize="sm" fontWeight="light">
             {getFullName(currentUser)}
@@ -140,8 +150,8 @@ export default function UserPopup({ isOpen, setIsOpen }) {
         onClose={() => setIsOpen(false)}
       >
         <MenuButton
-          _hover={{ bg: 'gray.800' }}
-          bg="gray.700"
+          _hover={{ bg: 'blueGray.50' }}
+          bg="brand.50"
           borderRadius={8}
           mr="1"
           p="1"
