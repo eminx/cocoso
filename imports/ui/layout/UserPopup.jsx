@@ -21,6 +21,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import Bolt from 'lucide-react/dist/esm/icons/bolt';
 
 import { StateContext } from '../LayoutContainer';
 import { getFullName } from '../utils/shared';
@@ -46,7 +47,33 @@ const linkButtonProps = {
   size: 'sm',
 };
 
-function UserPopup({ isOpen, setIsOpen }) {
+export function UserThumb({ currentUser, isDesktop = true, isNotification = false }) {
+  return (
+    <Flex>
+      <Avatar
+        _hover={{ bg: 'brand.500' }}
+        bg="brand.600"
+        borderRadius="8px"
+        showBorder
+        size={isDesktop ? 'md' : 'sm'}
+        src={currentUser.avatar && currentUser.avatar.src}
+      >
+        {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
+      </Avatar>
+
+      {isDesktop && (
+        <Box align="flex-start" color="gray.600" textAlign="left" px="1">
+          <Text fontWeight="bold">{currentUser.username}</Text>
+          <Text fontSize="sm" fontWeight="light">
+            {getFullName(currentUser)}
+          </Text>
+        </Box>
+      )}
+    </Flex>
+  );
+}
+
+export default function UserPopup({ isOpen, setIsOpen }) {
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
@@ -105,26 +132,18 @@ function UserPopup({ isOpen, setIsOpen }) {
         onOpen={() => setIsOpen(true)}
         onClose={() => setIsOpen(false)}
       >
-        <MenuButton onClick={() => setIsOpen(!isOpen)}>
-          <Flex>
-            <Avatar
-              _hover={{ bg: 'brand.500' }}
-              bg="brand.600"
-              borderRadius="8px"
-              showBorder
-              size={isDesktop ? 'md' : 'sm'}
-              src={currentUser.avatar && currentUser.avatar.src}
-            >
-              {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
-            </Avatar>
-
-            <Box>
-              <Text>{currentUser.username}</Text>
-              <Text fontSize="sm" fontW="light">
-                {getFullName(currentUser)}
-              </Text>
-            </Box>
-          </Flex>
+        <MenuButton
+          bg="rgba(255, 255, 255, 0.9)"
+          borderRadius={8}
+          mr="1"
+          p="1"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <UserThumb
+            currentUser={currentUser}
+            isDesktop={isDesktop}
+            isNotification={isNotification}
+          />
         </MenuButton>
 
         <MenuList>
@@ -142,7 +161,7 @@ function UserPopup({ isOpen, setIsOpen }) {
           {isAdmin && <MenuDivider />}
           {isAdmin && (
             <MenuItem color="brand.700" px="4" onClick={() => handleClickAdmin()}>
-              {/* <Bolt size="20" style={{ marginRight: '6px' }} /> */}
+              <Bolt size="20" style={{ marginRight: '6px' }} />
               {t('dashboard')}
             </MenuItem>
           )}
@@ -203,5 +222,3 @@ function UserPopup({ isOpen, setIsOpen }) {
     </Box>
   );
 }
-
-export default UserPopup;

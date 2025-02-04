@@ -116,8 +116,10 @@ function Header({ author, backLink, subTitle, tags, tc, title }) {
         </Box>
 
         <Button
+          color="blue.700"
+          fontWeight="normal"
           leftIcon={<LinkIcon size={18} />}
-          mr="2"
+          mr="4"
           variant="link"
           onClick={() => handleCopyLink()}
         >

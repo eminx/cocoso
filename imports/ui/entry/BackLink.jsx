@@ -12,7 +12,13 @@ export default function BackLink({ backLink }) {
 
   return (
     <Link to={link}>
-      <Button as="span" leftIcon={<ChevronLeftIcon size={18} />} variant="link">
+      <Button
+        as="span"
+        color="blue.700"
+        fontWeight="normal"
+        leftIcon={<ChevronLeftIcon size={18} />}
+        variant="link"
+      >
         {backLink?.label}
       </Button>
     </Link>
