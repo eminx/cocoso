@@ -1,21 +1,19 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from './TablyCentered';
 import DocumentsField from '../pages/resources/components/DocumentsField';
 
 export default function WorkHybrid({ documents, work, Host }) {
-  const [tc] = useTranslation('common');
-
   if (!work) {
     return null;
   }
 
   const tabs = [
     {
-      title: tc('labels.info'),
+      title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
           {work?.longDescription && parseHtml(work?.longDescription)}
@@ -27,7 +25,7 @@ export default function WorkHybrid({ documents, work, Host }) {
 
   if (work.additionalInfo?.length > 2) {
     tabs.push({
-      title: tc('labels.extra'),
+      title: <Trans i18nKey="common:labels.extra">Extra</Trans>,
       content: (
         <Box bg="white" p="4">
           <Text textAlign="center">{work?.additionalInfo}</Text>
@@ -39,7 +37,7 @@ export default function WorkHybrid({ documents, work, Host }) {
 
   if (documents && documents[0]) {
     tabs.push({
-      title: tc('documents.label'),
+      title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: (
         <Box p="4">
           <DocumentsField contextType="works" contextId={work?._id} />
@@ -51,7 +49,7 @@ export default function WorkHybrid({ documents, work, Host }) {
 
   if (work.contactInfo) {
     tabs.push({
-      title: tc('labels.contact'),
+      title: <Trans i18nKey="common:labels.contact">Contact</Trans>,
       content: (
         <Box bg="white" className="text-content" p="4" textAlign="center">
           {work?.contactInfo && parseHtml(work.contactInfo)}

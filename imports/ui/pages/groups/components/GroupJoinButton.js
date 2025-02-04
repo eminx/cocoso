@@ -11,7 +11,7 @@ export default function GroupJoinButton() {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
   const { group, getGroupById } = useContext(GroupContext);
-  const { currentUser } = useContext(StateContext);
+  const { currentUser, isDesktop } = useContext(StateContext);
 
   if (!group) {
     return null;
@@ -41,8 +41,7 @@ export default function GroupJoinButton() {
           borderWidth="2px"
           colorScheme="brand"
           height="48px"
-          size="lg"
-          width="240px"
+          width={isDesktop ? '240px' : '180px'}
           onClick={() => setModalOpen(true)}
         >
           {t('actions.join')}

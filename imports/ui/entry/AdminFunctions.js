@@ -17,12 +17,13 @@ export default function AdminFunctions({ menuItems, onSelect }) {
               as="span"
               bg="gray.50"
               border="1px solid"
-              borderColor="brand.400"
+              color="gray.600"
+              // borderColor="brand.400"
               borderRadius="50%"
               icon={<Settings />}
               variant="ghost"
             />
-            <Text color="brand.50" fontSize="xs">
+            <Text color="gray.50" fontSize="xs">
               {t('label')}
             </Text>
           </MenuButton>

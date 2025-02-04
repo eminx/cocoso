@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -19,6 +19,7 @@ import FancyDate from '../../../entry/FancyDate';
 import Modal from '../../../generic/Modal';
 import OccurrenceRsvpContent from './OccurrenceRsvpContent';
 import { accordionProps } from '../../../utils/constants/general';
+import { StateContext } from '../../../LayoutContainer';
 
 if (Meteor.isClient) {
   import 'react-table/react-table.css';
@@ -123,6 +124,7 @@ function SubInfo({ occurrence }) {
 export default function RsvpHandler({ activity }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('activities');
+  const { isDesktop } = useContext(StateContext);
 
   if (!activity) {
     return null;
@@ -140,7 +142,7 @@ export default function RsvpHandler({ activity }) {
             colorScheme="green"
             height="48px"
             size="lg"
-            width="240px"
+            width={isDesktop ? '240px' : '180px'}
             onClick={() => setModalOpen(true)}
           >
             {noReg ? t('public.labels.dates') : t('public.labels.datesAndRegistration')}

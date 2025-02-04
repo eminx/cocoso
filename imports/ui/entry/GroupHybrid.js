@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Center } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from './TablyCentered';
@@ -8,15 +8,13 @@ import GroupDocuments from '../pages/groups/components/GroupDocuments';
 import GroupMembers from '../pages/groups/components/GroupMembers';
 
 export default function GroupHybrid({ group, Host }) {
-  const [tc] = useTranslation('common');
-
   if (!group) {
     return null;
   }
 
   const tabs = [
     {
-      title: tc('labels.info'),
+      title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
           {group?.description && parseHtml(group?.description)}
@@ -28,7 +26,7 @@ export default function GroupHybrid({ group, Host }) {
 
   if (group.documents && group.documents.length > 0) {
     tabs.push({
-      title: tc('documents.label'),
+      title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: <GroupDocuments documents={group.documents} />,
       path: 'documents',
     });

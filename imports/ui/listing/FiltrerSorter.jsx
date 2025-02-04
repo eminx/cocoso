@@ -10,19 +10,27 @@ import {
   Wrap,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import ListFilter from 'lucide-react/dist/esm/icons/list-filter';
 import ChevronDown from 'lucide-react/dist/esm/icons/chevron-down';
 import ChevronUp from 'lucide-react/dist/esm/icons/chevron-up';
 
-function Inputs({ filterValue, setFilterValue, sortValue, setSortValue, tc }) {
+function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
   return (
     <Wrap justify="space-around">
       <Box w="2xs" px="4">
-        <Heading fontSize="sm">{tc('labels.filter')}:</Heading>
+        <Heading fontSize="sm">
+          <Trans i18nKey="labels.filter" ns="common">
+            Filter
+          </Trans>
+        </Heading>
         <Input
           my="2"
-          placeholder={`${tc('domains.props.title')} ...`}
+          placeholder={
+            <Trans i18nKey="domains.props.title" ns="common">
+              title...
+            </Trans>
+          }
           size="sm"
           value={filterValue}
           onChange={(event) => setFilterValue(event.target.value)}
@@ -30,7 +38,11 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue, tc }) {
       </Box>
 
       <Box w="2xs" px="4">
-        <Heading fontSize="sm">{tc('labels.sort')}:</Heading>
+        <Heading fontSize="sm">
+          <Trans i18nKey="labels.sort" ns="common">
+            Sort:
+          </Trans>
+        </Heading>
         <Select
           my="2"
           name="sorter"
@@ -38,8 +50,16 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue, tc }) {
           value={sortValue}
           onChange={(e) => setSortValue(e.target.value)}
         >
-          <option value="date">{tc('labels.sortBy.date')}</option>
-          <option value="name">{tc('labels.sortBy.name')}</option>
+          <option value="date">
+            <Trans i18nKey="labels.sortBy.date" ns="common">
+              Date
+            </Trans>
+          </option>
+          <option value="name">
+            <Trans i18nKey="labels.sortBy.name" ns="common">
+              Name
+            </Trans>
+          </option>
           {/* <option value="random">{tc('labels.sortBy.random')}</option> */}
         </Select>
       </Box>
@@ -48,7 +68,6 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue, tc }) {
 }
 
 export default function FiltrerSorter(props) {
-  const [tc] = useTranslation('common');
   const { isOpen, onToggle } = useDisclosure();
 
   const handleToggle = () => {
@@ -70,7 +89,7 @@ export default function FiltrerSorter(props) {
           variant="ghost"
           onClick={() => handleToggle()}
         >
-          {tc('labels.filterAndSort')}
+          <Trans i18nKey="common:labels.filterAndSort">Filter & Sort</Trans>
         </Button>
       </Flex>
 
@@ -85,7 +104,7 @@ export default function FiltrerSorter(props) {
             mx="2"
             p="4"
           >
-            <Inputs {...props} tc={tc} />
+            <Inputs {...props} />
           </Box>
         </Collapse>
       </Box>

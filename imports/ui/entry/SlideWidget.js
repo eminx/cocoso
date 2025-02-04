@@ -8,9 +8,8 @@ const flexProps = {
   borderTopColor: 'gray.400',
   justify: 'center',
   minH: '86px',
-  pt: '4',
+  p: '4',
   pb: '2',
-  px: '2',
   width: '100%',
 };
 

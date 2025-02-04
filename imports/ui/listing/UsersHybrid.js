@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Center, Divider, Flex, Text } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 import Cascader from 'antd/lib/cascader';
 import { parse } from 'query-string';
@@ -16,7 +16,6 @@ export default function UsersHybrid({ users, keywords, Host }) {
   const [modalItem, setModalItem] = useState(null);
   const [, setFilterKeyword] = useState(null);
   const [selectedProfile] = useState(null);
-  const [tm] = useTranslation('members');
   const location = useLocation();
   const navigate = useNavigate();
   const { search } = location;
@@ -35,7 +34,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
           })),
       })),
       {
-        label: tm('all'),
+        label: <Trans i18nKey="members:all">All</Trans>,
         value: 'allMembers',
         children: users.map((m) => ({
           label: m.username,
@@ -53,11 +52,11 @@ export default function UsersHybrid({ users, keywords, Host }) {
   const tabs = [
     {
       path: '/people',
-      title: tm('labels.list'),
+      title: <Trans i18nKey="members:labels.list">List</Trans>,
     },
     {
       path: '/people?showKeywordSearch=true',
-      title: tm('labels.search'),
+      title: <Trans i18nKey="members:labels.search">Search</Trans>,
     },
   ];
 
@@ -153,7 +152,9 @@ export default function UsersHybrid({ users, keywords, Host }) {
       ) : (
         <Box>
           <Center mb="4">
-            <Text fontSize="sm">{tm('message.sortedRandomly')}</Text>
+            <Text fontSize="sm">
+              <Trans i18nKey="members:message.sortedRandomly">Sorted randomly</Trans>
+            </Text>
           </Center>
 
           <InfiniteScroller hideFiltrerSorter isMasonry items={users}>

@@ -125,9 +125,13 @@ function Header({ author, backLink, subTitle, tags, title }) {
         >
           {/* {copied ? tc('actions.copied') : tc('actions.share')} */}
           {copied ? (
-            <Trans i18nKey="actions.copied" ns="common" />
+            <Trans i18nKey="actions.copied" ns="common">
+              Link copied!
+            </Trans>
           ) : (
-            <Trans i18nKey="actions.share" ns="common" />
+            <Trans i18nKey="actions.share" ns="common">
+              Share
+            </Trans>
           )}
         </Button>
       </Flex>

@@ -75,7 +75,8 @@ export function ChatButton({ context, currentUser, item, withInput }) {
             _active={{ bg: 'gray.200' }}
             bg="gray.50"
             border="1px solid"
-            borderColor="brand.400"
+            // borderColor="brand.400"
+            color="gray.600"
             fontSize="32px"
             icon={<MessagesSquare />}
             isRound
@@ -83,7 +84,7 @@ export function ChatButton({ context, currentUser, item, withInput }) {
             onClick={() => setOpen(true)}
           />
           <Button
-            color="brand.50"
+            color="gray.50"
             fontWeight="normal"
             size="xs"
             variant="link"

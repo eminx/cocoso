@@ -1,22 +1,19 @@
 import React from 'react';
 import { Badge, Box, Wrap } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from './TablyCentered';
 import DocumentsField from '../pages/resources/components/DocumentsField';
 
 export default function ResourceHybrid({ documents, resource, Host }) {
-  const [t] = useTranslation('resources');
-  const [tc] = useTranslation('common');
-
   if (!resource) {
     return null;
   }
 
   const tabs = [
     {
-      title: tc('labels.info'),
+      title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
           {resource?.description && parseHtml(resource?.description)}
@@ -28,7 +25,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
 
   if (resource.isCombo) {
     tabs.push({
-      title: tc('labels.combo'),
+      title: <Trans i18nKey="resources:labels.combo">Combo</Trans>,
       content: (
         <Wrap>
           {resource.resourcesForCombo.map((res) => (
@@ -44,7 +41,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
 
   if (documents && documents[0]) {
     tabs.push({
-      title: tc('documents.label'),
+      title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: (
         <Box p="4">
           <DocumentsField contextType="works" contextId={resource?._id} />
@@ -62,23 +59,13 @@ export default function ResourceHybrid({ documents, resource, Host }) {
   //   });
   // }
 
-  // const adminMenu = {
-  //   label: 'Admin',
-  //   items: [
-  //     {
-  //       label: tc('actions.update'),
-  //       link: 'edit',
-  //     },
-  //   ],
-  // };
-
   const tags = [];
   if (resource.isCombo) {
-    tags.push(t('cards.isCombo'));
+    tags.push(<Trans i18nKey="resources:cards.isCombo">Combo</Trans>);
   }
 
   if (resource.isBookable) {
-    tags.push(t('cards.isBookable'));
+    tags.push(<Trans i18nKey="resources:cards.isBookable">Bookable</Trans>);
   }
 
   const resourcesInMenu = Host?.settings?.menu?.find((item) => item.name === 'resources');

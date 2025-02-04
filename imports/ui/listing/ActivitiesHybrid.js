@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Center } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 
 import Tabs from '../entry/Tabs';
 import PageHeading from './PageHeading';
@@ -10,7 +10,6 @@ import SexyThumb from './SexyThumb';
 
 export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const [modalItem, setModalItem] = useState(null);
-  const [tc] = useTranslation('common');
 
   const activitiesInMenu = Host?.settings?.menu?.find((item) => item.name === 'activities');
   const description = activitiesInMenu?.description;
@@ -19,11 +18,19 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const tabs = [
     {
       path: '/activities?showPast=true',
-      title: tc('labels.past'),
+      title: (
+        <Trans i18nKey="labels.past" ns="common">
+          Past
+        </Trans>
+      ),
     },
     {
       path: '/activities',
-      title: tc('labels.upcoming'),
+      title: (
+        <Trans i18nKey="labels.upcoming" ns="common">
+          Upcoming
+        </Trans>
+      ),
     },
   ];
 

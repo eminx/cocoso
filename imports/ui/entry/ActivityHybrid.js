@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Center, Flex, Text } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from './TablyCentered';
@@ -36,16 +36,13 @@ function ActionDates({ activity }) {
 }
 
 export default function ActivityHybrid({ activity, Host }) {
-  const [t] = useTranslation('activities');
-  const [tc] = useTranslation('common');
-
   if (!activity) {
     return null;
   }
 
   const tabs = [
     {
-      title: tc('labels.info'),
+      title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
           {activity?.longDescription && parseHtml(activity?.longDescription)}
@@ -57,7 +54,7 @@ export default function ActivityHybrid({ activity, Host }) {
 
   if (activity?.isPublicActivity) {
     tabs.push({
-      title: t('public.labels.location'),
+      title: <Trans i18nKey="activities:public.labels.location">Location</Trans>,
       content: (
         <Box bg="white" p="4">
           {activity?.place && (
@@ -67,7 +64,9 @@ export default function ActivityHybrid({ activity, Host }) {
           )}
           {activity?.address && (
             <Text fontSize="lg">
-              <b>{t('public.labels.address')}: </b>
+              <b>
+                <Trans i18nKey="activities:public.labels.address">Address</Trans>:{' '}
+              </b>
               {activity.address}
             </Text>
           )}

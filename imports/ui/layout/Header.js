@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Box,
@@ -35,7 +35,13 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
 
   return (
     <Menu placement="bottom-end">
-      <MenuButton _hover={{ borderBottom: '1px solid' }} id="info-pages-menu" mx="2">
+      <MenuButton
+        _hover={{ borderBottom: '1px solid' }}
+        id="info-pages-menu"
+        mx="2"
+        // instanceId={useId()}
+        suppressHydrationWarning
+      >
         <Flex
           borderBottom={isCurrentContext ? '2px solid' : null}
           align="center"
@@ -49,7 +55,7 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
       </MenuButton>
       <MenuList maxHeight="480px" overflowY="scroll" rootProps={{ zIndex: 1051 }}>
         {pageTitles.map((item) => (
-          <Link key={item} to={`/info/${parseTitle(item)}`}>
+          <Link key={item} to={`/info/${parseTitle(item)}`} suppressHydrationWarning>
             <MenuItem as="span" id={item}>
               {item}
             </MenuItem>
