@@ -13,6 +13,7 @@ import {
   MenuList,
   Text,
 } from '@chakra-ui/react';
+import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 import { parseTitle } from '../utils/shared';
@@ -46,7 +47,7 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
           <ChevronDownIcon size="16px" />
         </Flex>
       </MenuButton>
-      <MenuList maxHeight="480px" overflowY="scroll" style={{ zIndex: 2 }}>
+      <MenuList maxHeight="480px" overflowY="scroll" rootProps={{ zIndex: 1051 }}>
         {pageTitles.map((item) => (
           <Link key={item} to={`/info/${parseTitle(item)}`}>
             <MenuItem as="span" id={item}>
@@ -145,7 +146,9 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
                   {...textProps}
                   borderBottom={pathname === '/communities' ? '2px solid' : null}
                 >
-                  Communities
+                  <Trans i18nKey="platform.communities" ns="common">
+                    Communities
+                  </Trans>
                 </Text>
               </Box>
             </Link>

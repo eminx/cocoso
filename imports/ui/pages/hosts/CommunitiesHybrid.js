@@ -110,7 +110,7 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
 
               <Box p="2">
                 {host.isMember ? (
-                  <Text color="white" textAlign="center" my="1">
+                  <Text textAlign="center" my="1">
                     {tc('communities.member')} <CheckIcon color="green.100" fontSize="md" mt="-1" />
                   </Text>
                 ) : (

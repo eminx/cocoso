@@ -81,6 +81,7 @@ export default function SexyThumb({ activity, host, showPast = false }) {
       border="1px solid"
       borderColor="white"
       borderRadius={8}
+      boxShadow="xl"
       h={imageStyle.height}
       className="thumb-cover-container"
       fontWeight="bold"

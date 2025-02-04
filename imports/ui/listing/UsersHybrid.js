@@ -74,8 +74,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
       {selectedProfile && (
         <Box
           _hover={{ bg: 'brand.50' }}
-          border="1px solid"
-          borderColor="brand.500"
+          borderRadius="8px"
           cursor="pointer"
           maxH="480px"
           mx="2"
@@ -87,7 +86,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
             <Box>
               <Center>
                 <Avatar
-                  borderRadius="0"
+                  borderRadius="8px"
                   name={selectedProfile.username}
                   size="2xl"
                   src={selectedProfile.avatar?.src}
@@ -136,18 +135,20 @@ export default function UsersHybrid({ users, keywords, Host }) {
 
       {showKeywordSearch ? (
         <Flex justify="center">
-          <Cascader
-            changeOnSelect
-            dropdownRender={cascaderRender}
-            open
-            options={cascaderOptions}
-            popupClassName="cascader-container cascader-container--open"
-            showSearch={{ filterCascaderOptions }}
-            size="large"
-            style={{ borderRadius: 0, width: 240 }}
-            onRemove={() => setFilterKeyword('')}
-            onChange={handleCascaderSelect}
-          />
+          <Box boxShadow="md">
+            <Cascader
+              changeOnSelect
+              dropdownRender={cascaderRender}
+              open
+              options={cascaderOptions}
+              popupClassName="cascader-container cascader-container--open"
+              showSearch={{ filterCascaderOptions }}
+              size="large"
+              style={{ borderRadius: '8px', width: 240 }}
+              onRemove={() => setFilterKeyword('')}
+              onChange={handleCascaderSelect}
+            />
+          </Box>
         </Flex>
       ) : (
         <Box>
