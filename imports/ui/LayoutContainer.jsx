@@ -164,7 +164,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               {children}
             </DummyWrapper>
 
-            <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} tc={tc} />
+            <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} />
             {isFederationFooter && <PlatformFooter platform={platform} />}
           </StateContext.Provider>
         </ColorModeProvider>

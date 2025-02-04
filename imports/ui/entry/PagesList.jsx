@@ -8,15 +8,15 @@ import { parseTitle } from '../utils/shared';
 function PagesList({ currentPage, pages }) {
   const navigate = useNavigate();
 
-  if (pages?.length === 1) {
-    return (
-      <Center zIndex="1400">
-        <Heading color="gray.800" size="md">
-          {currentPage?.title}
-        </Heading>
-      </Center>
-    );
-  }
+  // if (pages?.length === 1) {
+  return (
+    <Center>
+      <Heading color="gray.800" mb="6" mt="4" size="lg">
+        {currentPage?.title}
+      </Heading>
+    </Center>
+  );
+  // }
 
   return (
     <Center zIndex="1400" my="6">

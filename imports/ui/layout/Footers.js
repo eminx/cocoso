@@ -22,7 +22,8 @@ export function OldFooter({ host, settings }) {
   );
 }
 
-export function Footer({ currentHost, isFederationFooter, tc }) {
+export function Footer({ currentHost, isFederationFooter }) {
+  const [tc] = useTranslation('common');
   if (!currentHost || !currentHost.settings) {
     return null;
   }

@@ -8,6 +8,7 @@ import i18n from '../../startup/i18n';
 import Header from './Header';
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
+import { Footer } from './Footers';
 
 export default function WrapperSSR({ Host, isEntryPage = false, children }) {
   if (!Host) {
@@ -30,6 +31,7 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
               <Header Host={Host} isLogoSmall={isEntryPage} pageTitles={pageTitles} />
               {children}
             </DummyWrapper>
+            <Footer currentHost={Host} isFederationFooter />
           </ColorModeProvider>
         </ChakraProvider>
       </I18nextProvider>

@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Box,
@@ -53,7 +53,12 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
           <ChevronDownIcon size="16px" />
         </Flex>
       </MenuButton>
-      <MenuList maxHeight="480px" overflowY="scroll" rootProps={{ zIndex: 1051 }}>
+      <MenuList
+        maxHeight="480px"
+        overflowY="scroll"
+        rootProps={{ zIndex: 1051 }}
+        suppressHydrationWarning
+      >
         {pageTitles.map((item) => (
           <Link key={item} to={`/info/${parseTitle(item)}`} suppressHydrationWarning>
             <MenuItem as="span" id={item}>
