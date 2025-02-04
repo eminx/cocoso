@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import LinkIcon from 'lucide-react/dist/esm/icons/link';
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 
 import NiceSlider from '../generic/NiceSlider';
@@ -123,7 +123,12 @@ function Header({ author, backLink, subTitle, tags, tc, title }) {
           variant="link"
           onClick={() => handleCopyLink()}
         >
-          {copied ? tc('actions.copied') : tc('actions.share')}
+          {/* {copied ? tc('actions.copied') : tc('actions.share')} */}
+          {copied ? (
+            <Trans i18nKey="actions.copied" ns="common" />
+          ) : (
+            <Trans i18nKey="actions.share" ns="common" />
+          )}
         </Button>
       </Flex>
       {renderTitles()}
@@ -171,7 +176,7 @@ function TablyCentered({
   tags = null,
 }) {
   const location = useLocation();
-  const [tc] = useTranslation('common');
+  // const [tc] = useTranslation('common');
 
   const pathnameLastPart = location.pathname.split('/').pop();
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
