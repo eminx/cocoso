@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "esNext",
+    "lib": ["esnext", "dom"],
+    "allowJs": true,
+    "checkJs": false,
+    "jsx": "preserve",
+    "incremental": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "/*": ["./*"]
+    }
+  },
+  "exclude": [".meteor", "node_modules"]
+}
