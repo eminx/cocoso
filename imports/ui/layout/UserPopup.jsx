@@ -47,7 +47,13 @@ const linkButtonProps = {
   size: 'sm',
 };
 
-export function UserThumb({ currentUser, isDesktop = true, isNotification = false }) {
+export function UserThumb({ isNotification = false }) {
+  const { currentUser, isDesktop, role } = useContext(StateContext);
+
+  if (!currentUser) {
+    return null;
+  }
+
   return (
     <Flex>
       <Avatar
@@ -59,11 +65,12 @@ export function UserThumb({ currentUser, isDesktop = true, isNotification = fals
         src={currentUser.avatar && currentUser.avatar.src}
       >
         {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
+        {}
       </Avatar>
 
       {isDesktop && (
-        <Box align="flex-start" color="gray.600" textAlign="left" px="1">
-          <Text fontWeight="bold">{currentUser.username}</Text>
+        <Box align="flex-start" color="white" textAlign="left" px="2">
+          <Text>{currentUser.username}</Text>
           <Text fontSize="sm" fontWeight="light">
             {getFullName(currentUser)}
           </Text>
@@ -133,7 +140,8 @@ export default function UserPopup({ isOpen, setIsOpen }) {
         onClose={() => setIsOpen(false)}
       >
         <MenuButton
-          bg="rgba(255, 255, 255, 0.9)"
+          _hover={{ bg: 'gray.800' }}
+          bg="gray.700"
           borderRadius={8}
           mr="1"
           p="1"

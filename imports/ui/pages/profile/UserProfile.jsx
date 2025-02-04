@@ -56,5 +56,8 @@ export default function UserProfile() {
     );
   }
 
-  return <UserHybrid user={user} Host={currentHost} />;
+  const role = currentHost.members?.find((m) => m.username === username)?.role;
+  console.log(role);
+
+  return <UserHybrid role={role} user={user} Host={currentHost} />;
 }

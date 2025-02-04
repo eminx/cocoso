@@ -1,6 +1,10 @@
 import React from 'react';
-import { Avatar, Box, Center, Tag, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import { Avatar, Box, Center, HStack, Tag, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import CircleCheck from 'lucide-react/dist/esm/icons/circle-check';
+import Bolt from 'lucide-react/dist/esm/icons/bolt';
 
+import Popover from './Popover';
 import { getFullName } from '../utils/shared';
 
 const tagProps = {
@@ -10,9 +14,10 @@ const tagProps = {
   borderColor: 'brand.500',
 };
 
-function MemberAvatarEtc({ isThumb = true, user }) {
+function MemberAvatarEtc({ isThumb = true, user, role }) {
   const { avatar } = user;
   const avatarSrc = avatar?.src || avatar;
+  const [t] = useTranslation('members');
 
   return (
     <Box mb="6">
@@ -29,9 +34,28 @@ function MemberAvatarEtc({ isThumb = true, user }) {
 
       <Box>
         <Center>
-          <Text fontWeight="bold" fontSize="xl">
-            {user.username}
-          </Text>
+          <HStack spacing="0.5">
+            <Text fontWeight="bold" fontSize="xl">
+              {user.username}
+            </Text>
+            {['contributor', 'admin'].includes(role) && (
+              <Box ml="1">
+                <Popover
+                  triggerComponent={
+                    role === 'contributor' ? (
+                      <CircleCheck color="#010101" size="20" />
+                    ) : (
+                      <Bolt color="#010101" size="20" />
+                    )
+                  }
+                >
+                  <Text fontWeight="bold">
+                    {role === 'contributor' ? t('roles.verified') : t('roles.admin')}
+                  </Text>
+                </Popover>
+              </Box>
+            )}
+          </HStack>
         </Center>
         <Center mb="4">
           <Text>{getFullName(user)}</Text>
