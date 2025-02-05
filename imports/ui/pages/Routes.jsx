@@ -11,7 +11,7 @@ const Communities = lazy(() => import('../pages/hosts/Communities'));
 const Activities = lazy(() => import('./activities/Activities'));
 const Activity = lazy(() => import('./activities/Activity'));
 const EditActivityContainer = lazy(() => import('./activities/EditActivityContainer'));
-const NewActivityContainer = lazy(() => import('./activities/NewActivityContainer'));
+const NewActivityContainer = lazy(() => import('./activities/NewActivityPublic'));
 
 // Groups
 const Groups = lazy(() => import('./groups/Groups'));
@@ -27,6 +27,7 @@ const NewResource = lazy(() => import('./resources/NewResource'));
 
 // Calendar
 const CalendarContainer = lazy(() => import('./calendar/CalendarContainer'));
+const NewActivityPrivate = lazy(() => import('./activities/NewActivityPrivate'));
 
 // Works
 const Works = lazy(() => import('./works/Works'));
@@ -113,7 +114,8 @@ export default function AppRoutes() {
           <Route path="/people" element={<Users />} />
 
           {/* Calendar */}
-          <Route exact path="/calendar" element={<CalendarContainer />} />
+          <Route path="/calendar" element={<CalendarContainer />} />
+          <Route exact path="/calendar/new" element={<NewActivityPrivate />} />
 
           {/* Activities */}
           <Route exact path="/activities" element={<Activities />} />

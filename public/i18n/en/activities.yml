@@ -29,7 +29,7 @@ form:
   capacity:
     label: Capacity
   details:
-    label: Details
+    label: Enter Details
   title:
     label: Title
     holder: Give it a title

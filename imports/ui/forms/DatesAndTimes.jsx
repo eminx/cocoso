@@ -110,9 +110,7 @@ function DatesAndTimes({
       </Box>
 
       <Wrap>
-        <Box>
-          <DateTimePicker isRange={isRange} value={occurrence} onChange={handleDateTimeChange} />
-        </Box>
+        <DateTimePicker isRange={isRange} value={occurrence} onChange={handleDateTimeChange} />
 
         <Box flexDirection="column" mb="6" justify="space-around" flexGrow={0} flexBasis="180px">
           {isPublicActivity && (

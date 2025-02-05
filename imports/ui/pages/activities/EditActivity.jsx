@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { Box, Button, Center, VStack } from '@chakra-ui/react';
 import arrayMove from 'array-move';
 
-import ActivityForm from '../../forms/ActivityForm';
+import ActivityForm from '../../forms/ActivityFormPublic';
 import Template from '../../layout/Template';
 import ConfirmModal from '../../generic/ConfirmModal';
 import FormSwitch from '../../forms/FormSwitch';

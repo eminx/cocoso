@@ -29,7 +29,7 @@ form:
   capacity:
     label: Kapasite
   details:
-    label: Detaylar
+    label: Detaylari gir
   title:
     label: Başlık
     holder: Bir başlık ver

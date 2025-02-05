@@ -47,12 +47,17 @@ function Tabs({ tabs, children, ...otherProps }) {
         <TabList flexWrap="wrap" borderBottom="none">
           {tabs?.map((tab, index) =>
             tab.path ? (
-              <Link key={tab.title} to={tab.path} style={linkStyle} onClick={tab.onClick}>
+              <Link
+                key={tab.path || tab.title}
+                to={tab.path}
+                style={linkStyle}
+                onClick={tab.onClick}
+              >
                 <CoTab index={index} tab={tab} />
               </Link>
             ) : (
               <CLink
-                key={tab.title}
+                key={tab.path || tab.title}
                 _hover={{ textDecoration: 'none' }}
                 style={linkStyle}
                 onClick={tab.onClick}

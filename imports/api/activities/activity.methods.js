@@ -179,7 +179,7 @@ Meteor.methods({
     }
   },
 
-  createActivity(values) {
+  async createActivity(values) {
     if (!values) {
       return;
     }
@@ -199,27 +199,19 @@ Meteor.methods({
     }
 
     try {
-      const activityId = Activities.insert(
-        {
-          ...values,
-          host,
-          authorId: user._id,
-          authorName: user.username,
-          isSentForReview: false,
-          isPublished: true,
-          creationDate: new Date(),
-        },
-        () => {
-          if (!values.isPublicActivity) {
-            return;
-          }
-          Meteor.call('createChat', values.title, activityId, 'activities', (error, result) => {
-            if (error) {
-              throw new Meteor.Error('Chat is not created');
-            }
-          });
-        }
-      );
+      const activityId = await Activities.insertAsync({
+        ...values,
+        host,
+        authorId: user._id,
+        authorName: user.username,
+        isSentForReview: false,
+        isPublished: true,
+        creationDate: new Date(),
+      });
+      if (!values.isPublicActivity) {
+        return;
+      }
+      await Meteor.callAsync('createChat', values.title, activityId, 'activities');
       return activityId;
     } catch (error) {
       console.log(error);

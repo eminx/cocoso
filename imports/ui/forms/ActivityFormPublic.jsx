@@ -37,12 +37,11 @@ const emptyDateAndTime = {
   capacity: defaultCapacity,
 };
 
-function ActivityForm({
+export default function ActivityFormPublic({
   datesAndTimes,
   defaultValues,
   images,
   isButtonDisabled,
-  isPublicActivity,
   isSubmitting,
   resources,
   onRemoveImage,
@@ -120,8 +119,97 @@ function ActivityForm({
 
   return (
     <div>
+      <Heading mb="4" size="md">
+        {t('form.details.label')}
+      </Heading>
+
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <Box mb="8">
+        <VStack spacing="6">
+          <FormField
+            label={t('form.image.label', { count: images?.length || 0 })}
+            helperText={t('form.image.helper')}
+            isRequired
+          >
+            {images && (
+              <Center mb="4">
+                <NiceSlider width="300px" images={images} />
+              </Center>
+            )}
+            <ImageUploadUI
+              images={images}
+              onRemoveImage={onRemoveImage}
+              onSelectImages={setUploadableImages}
+              onSortImages={onSortImages}
+            />
+
+            <DocumentUploadHelper isImage />
+          </FormField>
+
+          <FormField helperText={t('form.title.helper')} label={t('form.title.label')} isRequired>
+            <Input
+              {...register('title', { required: true })}
+              placeholder={t('form.title.holder')}
+            />
+          </FormField>
+
+          <FormField
+            helperText={t('form.subtitle.helper')}
+            label={t('form.subtitle.label')}
+            isRequired
+          >
+            <Input
+              {...register('subTitle', { required: true })}
+              placeholder={t('form.subtitle.holder')}
+            />
+          </FormField>
+
+          <FormField
+            helperText={t('form.description.helper')}
+            label={t('form.description.label')}
+            isRequired
+          >
+            <Controller
+              control={control}
+              name="longDescription"
+              render={({ field }) => <ReactQuill {...field} />}
+            />
+          </FormField>
+
+          <Box>
+            <FormField
+              helperText={t('form.occurrences.helper')}
+              label={<b>{t('form.occurrences.label')}</b>}
+              isRequired
+            />
+
+            <Box mb="4" mt="2">
+              {datesAndTimes.map((occurrence, index) => {
+                const id =
+                  occurrence.startDate +
+                  occurrence.endDate +
+                  occurrence.startTime +
+                  occurrence.endTime +
+                  index;
+                return (
+                  <DatesAndTimes
+                    key={id}
+                    id={id}
+                    isPublicActivity
+                    occurrence={occurrence}
+                    removeOccurrence={() => removeOccurrence(index)}
+                    isDeletable={datesAndTimes.length > 1}
+                    handleCapacityChange={(value) => handleCapacityChange(value, index)}
+                    handleDateTimeChange={(date) => handleDateTimeChange(date, index)}
+                    handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
+                  />
+                );
+              })}
+              <Center bg="white" borderRadius="8px" p="6">
+                <IconButton bg="gray.700" size="lg" onClick={addRecurrence} icon={<AddIcon />} />
+              </Center>
+            </Box>
+          </Box>
+
           <FormField
             helperText={t('form.resource.helper')}
             label={
@@ -155,118 +243,17 @@ function ActivityForm({
                 ))}
             </Select>
           </FormField>
-        </Box>
 
-        <Box mb="8">
-          <FormField
-            helperText={t('form.occurrences.helper')}
-            label={<b>{t('form.occurrences.label')}</b>}
-            isRequired
-          />
+          <FormField helperText={t('form.place.helper')} label={t('form.place.label')}>
+            <Input {...register('place')} placeholder={t('form.place.holder')} />
+          </FormField>
 
-          <Box mb="4" mt="2">
-            {datesAndTimes.map((occurrence, index) => {
-              const id =
-                occurrence.startDate +
-                occurrence.endDate +
-                occurrence.startTime +
-                occurrence.endTime +
-                index;
-              return (
-                <DatesAndTimes
-                  key={id}
-                  id={id}
-                  isPublicActivity={isPublicActivity}
-                  occurrence={occurrence}
-                  removeOccurrence={() => removeOccurrence(index)}
-                  isDeletable={datesAndTimes.length > 1}
-                  handleCapacityChange={(value) => handleCapacityChange(value, index)}
-                  handleDateTimeChange={(date) => handleDateTimeChange(date, index)}
-                  handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
-                />
-              );
-            })}
-            <Center bg="white" borderRadius="8px" p="6">
-              <IconButton bg="gray.700" size="lg" onClick={addRecurrence} icon={<AddIcon />} />
-            </Center>
-          </Box>
-        </Box>
+          <FormField helperText={t('form.address.helper')} label={t('form.address.label')}>
+            <Textarea {...register('address')} placeholder={t('form.address.holder')} />
+          </FormField>
+        </VStack>
 
-        <Box mb="8">
-          <Heading mb="4" size="md">
-            {t('form.details.label')}
-          </Heading>
-
-          <VStack spacing="6">
-            <FormField helperText={t('form.title.helper')} label={t('form.title.label')} isRequired>
-              <Input
-                {...register('title', { required: true })}
-                placeholder={t('form.title.holder')}
-              />
-            </FormField>
-
-            {isPublicActivity && (
-              <FormField
-                helperText={t('form.subtitle.helper')}
-                label={t('form.subtitle.label')}
-                isRequired
-              >
-                <Input
-                  {...register('subTitle', { required: true })}
-                  placeholder={t('form.subtitle.holder')}
-                />
-              </FormField>
-            )}
-
-            <FormField
-              helperText={t('form.description.helper')}
-              label={t('form.description.label')}
-              isRequired={isPublicActivity}
-            >
-              <Controller
-                control={control}
-                name="longDescription"
-                render={({ field }) => <ReactQuill {...field} />}
-              />
-            </FormField>
-
-            {isPublicActivity && (
-              <FormField helperText={t('form.place.helper')} label={t('form.place.label')}>
-                <Input {...register('place')} placeholder={t('form.place.holder')} />
-              </FormField>
-            )}
-
-            {isPublicActivity && (
-              <FormField helperText={t('form.address.helper')} label={t('form.address.label')}>
-                <Textarea {...register('address')} placeholder={t('form.address.holder')} />
-              </FormField>
-            )}
-
-            {isPublicActivity && (
-              <FormField
-                label={t('form.image.label', { count: images?.length || 0 })}
-                helperText={t('form.image.helper')}
-                isRequired
-              >
-                {images && (
-                  <Center mb="4">
-                    <NiceSlider width="300px" images={images} />
-                  </Center>
-                )}
-                <ImageUploadUI
-                  images={images}
-                  onRemoveImage={onRemoveImage}
-                  onSelectImages={setUploadableImages}
-                  onSortImages={onSortImages}
-                />
-
-                <DocumentUploadHelper isImage />
-              </FormField>
-            )}
-          </VStack>
-        </Box>
-
-        <Flex justify="flex-end" py="4" w="100%">
+        <Flex justify="flex-end" py="8" w="100%">
           <Button isDisabled={isButtonDisabled} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
@@ -275,5 +262,3 @@ function ActivityForm({
     </div>
   );
 }
-
-export default ActivityForm;

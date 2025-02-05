@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
 import moment from 'moment';
-
 import { useForm } from 'react-hook-form';
 import { useCounter } from 'rooks';
 import {
@@ -27,7 +25,7 @@ import MinusIcon from 'lucide-react/dist/esm/icons/minus-square';
 import { call } from '../../../utils/shared';
 import NiceList from '../../../generic/NiceList';
 import { message } from '../../../generic/message';
-import DateTimePicker from '../../../generic/DateTimePicker';
+import DateTimePicker from '../../../forms/DateTimePicker';
 import { StateContext } from '../../../LayoutContainer';
 import useCollisionPrevention from '../../../../api/_utils/useCollisionPrevention';
 
@@ -58,7 +56,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
   const { isDirty, isSubmitting } = formState;
 
   const selectedBookings = [newBooking];
-  const { selectedBookingsWithConflict, isCollisionPreventionLoading } = useCollisionPrevention(
+  const { selectedBookingsWithConflict } = useCollisionPrevention(
     selectedResource,
     selectedBookings,
     counterValue

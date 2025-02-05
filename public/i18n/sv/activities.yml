@@ -29,7 +29,7 @@ form:
   capacity:
     label: Kapacitet
   details:
-    label: Detaljer
+    label: Ange detaljer
   title:
     label: Titel
     holder: Ange en titel
