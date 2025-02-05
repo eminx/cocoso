@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import {
   Avatar,
   AvatarBadge,
@@ -91,8 +91,6 @@ export function UserThumb({ isNotification = false }) {
 }
 
 export default function UserPopup({ isOpen, setIsOpen }) {
-  const [tc] = useTranslation('common');
-  const [t] = useTranslation('members');
   const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const navigate = useNavigate();
 
@@ -103,7 +101,9 @@ export default function UserPopup({ isOpen, setIsOpen }) {
   if (!currentUser) {
     return (
       <Link to="/login" style={{ marginRight: '12px' }}>
-        <Button {...linkButtonProps}>{tc('menu.guest.login')}</Button>
+        <Button {...linkButtonProps}>
+          <Trans i18nKey="common:menu.guest.login">Login</Trans>
+        </Button>
       </Link>
     );
   }
@@ -111,10 +111,6 @@ export default function UserPopup({ isOpen, setIsOpen }) {
   const handleLogout = () => {
     Meteor.logout();
     navigate('/');
-  };
-
-  const handleClickAdmin = () => {
-    navigate('/admin/settings/organization');
   };
 
   const notifications = currentUser?.notifications;
@@ -128,7 +124,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
   const isNotification = notifications && notifications.length > 0;
   const host = currentHost?.host;
-  const roleTranslated = t(`roles.${role}`);
+  const roleTranslated = <Trans i18nKey={`roles.${role}`} ns="members" />;
 
   const isAdmin = role === 'admin';
 
@@ -178,15 +174,19 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
           {isAdmin && <MenuDivider />}
           {isAdmin && (
-            <MenuItem color="brand.700" px="4" onClick={() => handleClickAdmin()}>
-              <Bolt size="20" style={{ marginRight: '6px' }} />
-              {t('dashboard')}
+            <MenuItem color="brand.700" px="4">
+              <Link to="/admin">
+                <Flex align="center" as="span">
+                  <Bolt size="20" style={{ marginRight: '6px' }} />
+                  <Trans i18nKey="members:dashboard">Admin Dashboard</Trans>
+                </Flex>
+              </Link>
             </MenuItem>
           )}
           {isAdmin && <MenuDivider />}
 
           {isNotification && (
-            <MenuGroup title={tc('menu.notifications.label')}>
+            <MenuGroup title={<Trans i18nKey="common:menu.notifications.label">Login</Trans>}>
               <Box px="1">
                 {notifications.map((item) => (
                   <NotificationLinkItem key={item.contextId + item.count} host={host} item={item}>
@@ -208,18 +208,18 @@ export default function UserPopup({ isOpen, setIsOpen }) {
             <Box px="1">
               <Link to={currentUser && `/@${currentUser?.username}`}>
                 <MenuItem as="span" color="brand.700">
-                  {tc('menu.member.profile')}
+                  <Trans i18nKey="common:menu.member.profile">My Profile</Trans>
                 </MenuItem>
               </Link>
               <Link to={'/edit'}>
                 <MenuItem as="span" color="brand.700">
-                  {tc('menu.member.settings')}
+                  <Trans i18nKey="common:menu.member.settings">Profile Settings</Trans>
                 </MenuItem>
               </Link>
               {canCreateContent && (
                 <Link to="/my-activities">
                   <MenuItem as="span" color="brand.700">
-                    {tc('menu.member.activities')}
+                    <Trans i18nKey="common:menu.member.activities">My Activities</Trans>
                   </MenuItem>
                 </Link>
               )}
@@ -231,7 +231,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
           <MenuGroup>
             <Center py="2">
               <Button variant="outline" onClick={() => handleLogout()}>
-                {tc('actions.logout')}
+                <Trans i18nKey="common:actions.logout">Logout</Trans>
               </Button>
             </Center>
           </MenuGroup>
