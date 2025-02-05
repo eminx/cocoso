@@ -119,7 +119,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
         </Link>
       </Center>
 
-      <Center p="4" my="4">
+      <Center p="4" mt="4">
         <HStack
           alignItems="center"
           bg="gray.50"

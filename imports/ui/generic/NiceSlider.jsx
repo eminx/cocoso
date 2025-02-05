@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
-import { Box, Center, Flex, HStack } from '@chakra-ui/react';
+import { Box, Center, Flex, HStack, Img } from '@chakra-ui/react';
 import FsLightbox from 'fslightbox-react';
 import { Fade, Slide } from 'react-slideshow-image';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useHydrated } from 'react-hydration-provider';
 
 if (Meteor.isClient) {
   import 'react-slideshow-image/dist/styles.css';
@@ -62,17 +63,25 @@ function Dots({ images, currentSlideIndex }) {
   );
 }
 
-function ImageHandler({ height, width, images, isFade, children }) {
+function ImageHandler({ height, width, images, children }) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const hydrated = useHydrated();
+  const isMobile = hydrated && window.innerWidth < 768;
 
-  if (images?.length === 1) {
+  if (!images?.length) {
+    return null;
+  }
+
+  if (!hydrated || images?.length === 1) {
     return (
-      <Flex h={height} justify={isFade ? 'flex-start' : 'center'}>
-        {images.map((image, index) => children(image, index))}
+      <Flex h={height} justify={isMobile ? 'flex-start' : 'center'}>
+        <Center>
+          <Img src={images[0]} style={imageStyle} />
+        </Center>
       </Flex>
     );
   }
-  if (isFade) {
+  if (!isMobile) {
     return (
       <Box className="slide-container" h={height} w={width}>
         <Fade
@@ -98,13 +107,7 @@ function ImageHandler({ height, width, images, isFade, children }) {
   );
 }
 
-export default function NiceSlider({
-  alt,
-  images,
-  height = 'auto',
-  width = '100%',
-  isFade = true,
-}) {
+export default function NiceSlider({ alt, images, height = 'auto', width = '100%' }) {
   const [toggler, setToggler] = useState(false);
 
   if (!images || images.length === 0) {
@@ -113,7 +116,7 @@ export default function NiceSlider({
 
   return (
     <>
-      <ImageHandler height={height} images={images} isFade={isFade} width={width}>
+      <ImageHandler height={height} images={images} width={width}>
         {(image, index) => (
           <Center key={image + index}>
             <Flex flexDirection="column" justify="center">
