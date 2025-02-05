@@ -30,7 +30,7 @@ function AvatarHolder({ author }) {
     return null;
   }
   return (
-    <Box>
+    <Box mt="2">
       <Link to={`/@${author.username}/`}>
         <VStack _hover={{ textDecoration: 'underline' }} justify="center" spacing="0">
           <Avatar
@@ -65,8 +65,8 @@ function Header({ author, backLink, subTitle, tags, title }) {
 
   const renderTitles = () => (
     <Center>
-      <Flex p="4" justify="center" w="100%">
-        {author && <Box w="48px" />}
+      <Flex p="4" justify={author ? 'space-between' : 'center'} w="100%" maxW="720px">
+        {/* {author && <Box w="48px" />} */}
         <Box px="2">
           <Heading
             as="h1"
@@ -91,7 +91,7 @@ function Header({ author, backLink, subTitle, tags, title }) {
             </Heading>
           )}
           {tags && tags.length > 0 && (
-            <Wrap flexGrow="0" justify="center" mt="4">
+            <Wrap flexGrow="0" justify={author ? 'flex-start' : 'center'} mt="4">
               {tags.map(
                 (tag) =>
                   tag && (
