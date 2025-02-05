@@ -58,14 +58,14 @@ export default function AdminSidebar({ routes }) {
   return (
     <Box bg="gray.50" color="blueGray.800" minH="100vh" minW="320px" position="fixed">
       <Flex direction="column" justify="space-between">
-        <Box p="4">
-          <Link to="/">
+        <Link to="/">
+          <Box bg="gray.100" _hover={{ bg: 'gray.200' }} _focus={{ bg: 'gray.400' }} p="4">
             <Button
               as="span"
               color="blueGray.900"
               leftIcon={<ArrowLeft size="18px" />}
               size="lg"
-              variant="link"
+              variant="unstyled"
             >
               {currentHost.settings?.name}
             </Button>
@@ -73,8 +73,8 @@ export default function AdminSidebar({ routes }) {
             <Code bg="blueGray.50" fontSize="xs">
               {currentHost.host}
             </Code>
-          </Link>
-        </Box>
+          </Box>
+        </Link>
 
         <Box p="4">
           <Heading color="blueGray.900" mb="4" size="md" textAlign="center">

@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import InfoIcon from 'lucide-react/dist/esm/icons/info';
 
-import GroupForm from '../../generic/GroupForm';
+import GroupForm from '../../forms/GroupForm';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import Loader from '../../generic/Loader';
 import Template from '../../layout/Template';

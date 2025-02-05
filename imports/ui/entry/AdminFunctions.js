@@ -18,7 +18,6 @@ export default function AdminFunctions({ menuItems, onSelect }) {
               bg="gray.50"
               border="1px solid"
               color="gray.600"
-              // borderColor="brand.400"
               borderRadius="50%"
               icon={<Settings />}
               variant="ghost"

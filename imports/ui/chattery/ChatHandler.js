@@ -75,7 +75,6 @@ export function ChatButton({ context, currentUser, item, withInput }) {
             _active={{ bg: 'gray.200' }}
             bg="gray.50"
             border="1px solid"
-            // borderColor="brand.400"
             color="gray.600"
             fontSize="32px"
             icon={<MessagesSquare />}

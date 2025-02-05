@@ -79,12 +79,13 @@ export default function FiltrerSorter(props) {
     <Box>
       <Flex justify="flex-end">
         <Button
+          color="gray.600"
           fontWeight="normal"
           leftIcon={<ListFilter />}
           mb="2"
           rightIcon={isOpen ? <ChevronUp size={18} /> : <ChevronDown size={15} />}
           size="xs"
-          variant="ghost"
+          variant="link"
           onClick={() => handleToggle()}
         >
           <Trans i18nKey="common:labels.filterAndSort">Filter & Sort</Trans>

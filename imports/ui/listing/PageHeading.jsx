@@ -1,6 +1,9 @@
 import React from 'react';
 import { Box, Center, Heading, Divider } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
+import { Client } from 'react-hydration-provider';
+
+import NewButton from './NewButton';
 
 export default function PageHeading({ description, heading, children }) {
   return (
@@ -20,6 +23,9 @@ export default function PageHeading({ description, heading, children }) {
             <Heading as="h1" size="lg" textAlign="center">
               {heading}
             </Heading>
+            <Client>
+              <NewButton />
+            </Client>
           </Center>
           <Box py="2">
             <Divider borderColor="brand.500" minW="280px" />
