@@ -78,14 +78,12 @@ export function UserThumb({ isNotification = false }) {
         {isNotification && <AvatarBadge bg="tomato" borderColor="white" boxSize="1em" />}
       </Avatar>
 
-      {isDesktop && (
-        <Box align="flex-start" textAlign="left" px="2">
-          <Text>{currentUser.username}</Text>
-          <Text fontSize="sm" fontWeight="light">
-            {getFullName(currentUser)}
-          </Text>
-        </Box>
-      )}
+      <Box align="flex-start" lineHeight={isDesktop ? '1.5' : '1.2'} px="2" textAlign="left">
+        <Text fontSize={isDesktop ? 'md' : 'sm'}>{currentUser.username}</Text>
+        <Text fontSize={isDesktop ? 'sm' : 'xs'} fontWeight="light">
+          {getFullName(currentUser)}
+        </Text>
+      </Box>
     </Flex>
   );
 }
@@ -146,8 +144,8 @@ export default function UserPopup({ isOpen, setIsOpen }) {
         onClose={() => setIsOpen(false)}
       >
         <MenuButton
-          _hover={{ bg: 'blueGray.50' }}
-          bg="brand.50"
+          _hover={{ bg: 'white' }}
+          bg="rgba(255, 252, 250, 0.9)"
           borderRadius={8}
           mr="1"
           p="1"

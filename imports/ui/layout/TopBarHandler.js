@@ -6,7 +6,7 @@ import FederationIconMenu from './FederationIconMenu';
 import { StateContext } from '../LayoutContainer';
 
 export default function TopBarHandler({ slideStart }) {
-  const { isMobile } = useContext(StateContext);
+  const { isDesktop } = useContext(StateContext);
   const [scrollTop, setScrollTop] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,7 +42,7 @@ export default function TopBarHandler({ slideStart }) {
         </Fade>
       </Slide>
 
-      {isMobile && <Box h="42px" w="100%" />}
+      {!isDesktop && <Box h="42px" w="100%" />}
     </>
   );
 }
