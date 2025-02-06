@@ -157,9 +157,15 @@ export default function UsersHybrid({ users, keywords, Host }) {
             </Text>
           </Center>
 
-          <InfiniteScroller hideFiltrerSorter isMasonry items={users}>
+          <InfiniteScroller hideFiltrerSorter items={users}>
             {(user) => (
-              <Box key={user.username} cursor="pointer" onClick={() => setModalItem(user)}>
+              <Box
+                key={user.username}
+                cursor="pointer"
+                flexBasis="240px"
+                m="4"
+                onClick={() => setModalItem(user)}
+              >
                 <MemberAvatarEtc user={user} />
               </Box>
             )}
