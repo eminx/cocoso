@@ -1,6 +1,7 @@
 # ADMIN SETTINGS PAGE
 label: Admin
 panel: Admin Panel
+menulabel: Admin Menu
 
 settings:
   title: Settings

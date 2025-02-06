@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Code, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Center, Code, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import Bolt from 'lucide-react/dist/esm/icons/bolt';
 
 import { StateContext } from '../../LayoutContainer';
 import { Alert } from '../../generic/message';
 import Settings from './Settings';
-import AdminSidebar from './AdminSidebar';
+import AdminSidebar from './AdminMenu';
 import MenuSettings from './MenuSettings';
 import ColorPicker from './ColorPicker';
 import Members from './Members';
 import Emails from './Emails';
 import EmailNewsletter from './EmailNewsletter';
+import Drawer from '../../generic/Drawer';
 import {
   ActivitiesAdmin,
   CalendarAdmin,
@@ -24,10 +26,15 @@ import {
 } from './features';
 
 export default function AdminContainer() {
-  const { currentUser, currentHost, role } = useContext(StateContext);
+  const { currentUser, currentHost, isDesktop, role } = useContext(StateContext);
+  const [drawerMenuOpen, setDrawerMenuOpen] = useState(false);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
   const location = useLocation();
+
+  useEffect(() => {
+    setDrawerMenuOpen(false);
+  }, [location?.pathname]);
 
   if (!currentHost) {
     return null;
@@ -169,12 +176,68 @@ export default function AdminContainer() {
 
   const currentRoute = getCurrentRoute();
 
+  if (!isDesktop) {
+    return (
+      <Box bg="gray.100" minH="100vh">
+        <Drawer
+          bg="white"
+          isOpen={drawerMenuOpen}
+          bodyProps={{ p: '0' }}
+          placement="left"
+          size="xs"
+          title={t('menulabel')}
+          titleColor="brand.900"
+          onClose={() => setDrawerMenuOpen(false)}
+        >
+          <AdminSidebar routes={routes} />
+        </Drawer>
+        <Box>
+          <Box bg="gray.50" position="relative" p="4">
+            <Flex
+              align="center"
+              direction="column"
+              color="gray.800"
+              cursor="pointer"
+              left="0"
+              p="3"
+              position="absolute"
+              top="0"
+              onClick={() => setDrawerMenuOpen(true)}
+            >
+              <Bolt />
+              <Text fontSize="xs">{t('menu.title')}</Text>
+            </Flex>
+            <Heading flexGrow="0" color="gray.900" size="md" textAlign="center">
+              {t('panel')}
+            </Heading>
+          </Box>
+          <Box p="6">
+            <Heading mb="8">{currentRoute?.label}</Heading>
+            <button onClick={() => setDrawerMenuOpen(true)}>Menu</button>
+            <Routes>
+              {routes.map((route) =>
+                route.isMulti ? (
+                  route.content.map((routeSub) => (
+                    <Route key={routeSub.value} path={routeSub.value} element={routeSub.content} />
+                  ))
+                ) : (
+                  <Route key={route.value} path={route.value} element={route.content} />
+                )
+              )}
+            </Routes>
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
-    <Box bg="blueGray.100" minH="100vh">
-      <SimpleGrid columns={2} h="100%" templateColumns="320px 40%">
-        <Box bg="white">
+    <Box bg="gray.100" minH="100vh">
+      <SimpleGrid columns={2} h="100%" templateColumns="320px 50%">
+        <Box>
           <AdminSidebar routes={routes} />
         </Box>
+
         <Box p="8">
           <Heading mb="8">{currentRoute?.label}</Heading>
           <Routes>

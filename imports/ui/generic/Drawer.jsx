@@ -12,6 +12,7 @@ import {
 
 function Drawer({
   bg = 'gray.100',
+  bodyProps,
   children,
   footer,
   hideOverlay = false,
@@ -32,7 +33,7 @@ function Drawer({
         <DrawerCloseButton color={titleColor} />
         {title && <DrawerHeader color={titleColor}>{title}</DrawerHeader>}
 
-        <DrawerBody>{children}</DrawerBody>
+        <DrawerBody {...bodyProps}>{children}</DrawerBody>
 
         {footer && <DrawerFooter>{footer}</DrawerFooter>}
       </DrawerContent>
