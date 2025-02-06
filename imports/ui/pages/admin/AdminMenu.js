@@ -57,7 +57,7 @@ export function AdminUserThumb({ currentUser }) {
   );
 }
 
-function AdminMenuItem({ item, isSub, parentValue }) {
+function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
   if (!item) {
     return null;
   }
@@ -72,29 +72,27 @@ function AdminMenuItem({ item, isSub, parentValue }) {
   }
 
   return (
-    <Link to={item.isMulti ? item.content[0].value : item.value}>
-      <Box
-        _hover={{ bg: 'gray.100' }}
-        bg={isCurrentRoute && !item.isMulti ? 'gray.50' : 'inherit'}
-        borderRightWidth={isCurrentRoute && !item.isMulti ? '3px' : '0'}
-        borderRightColor="gray.500"
-        p="3"
-        py={isSub || (item.isMulti && isCurrentRoute) ? '2' : '3'}
-        ml={isSub ? '4' : '0'}
+    <Box
+      _hover={{ bg: 'gray.100' }}
+      bg={isCurrentRoute && !item.isMulti ? 'gray.50' : 'inherit'}
+      borderRightWidth={isCurrentRoute && !item.isMulti ? '3px' : '0'}
+      borderRightColor="gray.500"
+      cursor="pointer"
+      p="2.5"
+      ml={isSub ? '4' : '0'}
+      onClick={() => onItemClick(item)}
+    >
+      <Text
+        color={isCurrentRoute ? 'gray.800' : 'inherit'}
+        fontWeight={isCurrentRoute ? 'bold' : 'normal'}
       >
-        <Text
-          color={isCurrentRoute ? 'gray.800' : 'inherit'}
-          fontSize={isSub ? 'sm' : 'md'}
-          fontWeight={isCurrentRoute ? 'bold' : 'normal'}
-        >
-          {item.label}
-        </Text>
-      </Box>
-    </Link>
+        {item.label}
+      </Text>
+    </Box>
   );
 }
 
-export default function AdminMenu({ routes }) {
+export default function AdminMenu({ routes, onItemClick }) {
   const { currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
 
@@ -127,7 +125,7 @@ export default function AdminMenu({ routes }) {
           <List>
             {routes.map((item) => (
               <ListItem key={item.value} p="0">
-                <AdminMenuItem item={item} />
+                <AdminMenuItem item={item} onItemClick={onItemClick} />
                 {item.isMulti &&
                   item.content.map((itemSub) => (
                     <AdminMenuItem
@@ -135,6 +133,7 @@ export default function AdminMenu({ routes }) {
                       item={itemSub}
                       isSub
                       parentValue={item.value}
+                      onItemClick={onItemClick}
                     />
                   ))}
               </ListItem>

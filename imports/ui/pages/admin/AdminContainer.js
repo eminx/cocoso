@@ -1,29 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Code, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
 
 import { StateContext } from '../../LayoutContainer';
 import { Alert } from '../../generic/message';
-import Settings from './Settings';
 import AdminSidebar from './AdminMenu';
-import MenuSettings from './MenuSettings';
-import ColorPicker from './ColorPicker';
-import Members from './Members';
-import Emails from './Emails';
-import EmailNewsletter from './EmailNewsletter';
 import Drawer from '../../generic/Drawer';
-import {
-  ActivitiesAdmin,
-  CalendarAdmin,
-  CommunitiesAdmin,
-  GroupsAdmin,
-  PagesAdmin,
-  PeopleAdmin,
-  ResourcesAdmin,
-  WorksAdmin,
-} from './features';
+import getAdminRoutes from './getAdminRoutes';
 
 export default function AdminContainer() {
   const { currentUser, currentHost, isDesktop, role } = useContext(StateContext);
@@ -31,10 +16,7 @@ export default function AdminContainer() {
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
   const location = useLocation();
-
-  useEffect(() => {
-    setDrawerMenuOpen(false);
-  }, [location?.pathname]);
+  const navigate = useNavigate();
 
   if (!currentHost) {
     return null;
@@ -49,110 +31,10 @@ export default function AdminContainer() {
   }
 
   const menuItems = currentHost.settings?.menu;
-  const getMenuLabel = (key) => (
-    <Text as="span">
-      {menuItems?.find((item) => item.name === key)?.label}
-      <Code fontSize="xs" ml="2">
-        /{key}
-      </Code>
-    </Text>
-  );
-
-  const routes = [
-    {
-      label: t('settings.title'),
-      value: 'settings',
-      isMulti: true,
-      content: [
-        {
-          label: t('info.label'),
-          value: 'settings/organization/*',
-          content: <Settings />,
-        },
-        {
-          label: t('menu.title'),
-          value: 'settings/menu/*',
-          content: <MenuSettings />,
-        },
-        {
-          label: t('settings.tabs.color'),
-          value: 'settings/color',
-          content: <ColorPicker />,
-        },
-      ],
-    },
-    {
-      label: t('features.title'),
-      value: 'features',
-      isMulti: true,
-      content: [
-        {
-          label: getMenuLabel('activities'),
-          value: 'features/activities',
-          content: <ActivitiesAdmin />,
-        },
-        {
-          label: getMenuLabel('calendar'),
-          value: 'features/calendar',
-          content: <CalendarAdmin />,
-        },
-        {
-          label: (
-            <Text as="span">
-              {tc('platform.communities')}{' '}
-              <Code fontSize="xs" ml="2">
-                /communities
-              </Code>
-            </Text>
-          ),
-          value: 'features/communities',
-          content: <CommunitiesAdmin />,
-        },
-        {
-          label: getMenuLabel('groups'),
-          value: 'features/groups',
-          content: <GroupsAdmin />,
-        },
-        {
-          label: getMenuLabel('info'),
-          value: 'features/pages',
-          content: <PagesAdmin />,
-        },
-        {
-          label: getMenuLabel('people'),
-          value: 'features/people',
-          content: <PeopleAdmin />,
-        },
-        {
-          label: getMenuLabel('resources'),
-          value: 'features/resources',
-          content: <ResourcesAdmin />,
-        },
-        {
-          label: getMenuLabel('works'),
-          value: 'features/works/*',
-          content: <WorksAdmin />,
-        },
-      ],
-    },
-    {
-      label: t('users.title'),
-      value: 'users/*',
-      content: <Members />,
-    },
-    {
-      label: t('emails.title'),
-      value: 'emails/*',
-      content: <Emails />,
-    },
-    {
-      label: t('newsletter.title'),
-      value: 'email-newsletter',
-      content: <EmailNewsletter />,
-    },
-  ];
+  const routes = getAdminRoutes(menuItems);
 
   const pathname = location?.pathname;
+
   const getCurrentRoute = () => {
     const allRoutes = [];
     routes.forEach((item) => {
@@ -176,6 +58,23 @@ export default function AdminContainer() {
 
   const currentRoute = getCurrentRoute();
 
+  const handleItemClick = (item) => {
+    if (!currentRoute || !item) {
+      return;
+    }
+    if (item.isMulti) {
+      navigate(item.content[0]?.value);
+      if (!isDesktop && currentRoute.value.split('/')[0] === item.value.split('/')[0]) {
+        setDrawerMenuOpen(false);
+      }
+      return;
+    }
+    navigate(item.value);
+    if (!isDesktop) {
+      setDrawerMenuOpen(false);
+    }
+  };
+
   if (!isDesktop) {
     return (
       <Box bg="gray.100" minH="100vh">
@@ -189,7 +88,7 @@ export default function AdminContainer() {
           titleColor="brand.900"
           onClose={() => setDrawerMenuOpen(false)}
         >
-          <AdminSidebar routes={routes} />
+          <AdminSidebar routes={routes} onItemClick={handleItemClick} />
         </Drawer>
         <Box>
           <Box bg="gray.50" position="relative" p="4">
@@ -235,7 +134,7 @@ export default function AdminContainer() {
     <Box bg="gray.100" minH="100vh">
       <SimpleGrid columns={2} h="100%" templateColumns="320px 50%">
         <Box>
-          <AdminSidebar routes={routes} />
+          <AdminSidebar routes={routes} onItemClick={handleItemClick} />
         </Box>
 
         <Box p="8">
