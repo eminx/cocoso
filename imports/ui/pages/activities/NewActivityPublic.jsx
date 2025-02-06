@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { Box, VStack } from '@chakra-ui/react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Box, Heading, VStack } from '@chakra-ui/react';
 import { parse } from 'query-string';
-import arrayMove from 'array-move';
+import { arrayMoveImmutable } from 'array-move';
 import { useTranslation } from 'react-i18next';
 
 import ActivityFormPublic from '../../forms/ActivityFormPublic';
-import Template from '../../layout/Template';
 import { Alert, message } from '../../generic/message';
 import FormSwitch from '../../forms/FormSwitch';
 import {
@@ -19,10 +18,11 @@ import {
   uploadImage,
 } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
-import FormTitle from '../../forms/FormTitle';
 
 const defaultCapacity = 40;
+
 const today = new Date().toISOString().substring(0, 10);
+
 const emptyDateAndTime = {
   startDate: today,
   endDate: today,
@@ -40,18 +40,16 @@ export default function NewActivityPublic() {
     formValues: null,
     datesAndTimes: null,
     isCreating: false,
-    isLoading: false,
-    isSuccess: false,
     isError: false,
-    newActivityId: null,
     resources: [],
     uploadableImages: [],
     uploadableImagesLocal: [],
     isExclusiveActivity: true,
-    isRegistrationDisabled: false,
+    isRegistrationEnabled: false,
     isReady: false,
   });
 
+  const navigate = useNavigate();
   const [t] = useTranslation('activities');
   const [tc] = useTranslation('common');
   const location = useLocation();
@@ -71,7 +69,7 @@ export default function NewActivityPublic() {
     );
   }
 
-  const { datesAndTimes, isExclusiveActivity, isRegistrationDisabled, selectedResource } = state;
+  const { isExclusiveActivity, selectedResource } = state;
 
   const getData = async () => {
     try {
@@ -129,9 +127,10 @@ export default function NewActivityPublic() {
 
   useEffect(() => {
     setInitialValuesWithQueryParams();
-  }, [allBookings, resources, search]);
+  }, [allBookings.length, resources.length, search]);
 
   const validateBookings = () => {
+    const { datesAndTimes } = state;
     if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
       return;
     }
@@ -162,14 +161,10 @@ export default function NewActivityPublic() {
 
   useEffect(() => {
     validateBookings();
-  }, [selectedResource, datesAndTimes, isExclusiveActivity]);
-
-  // const successCreation = () => {
-  //   message.success(tc('message.success.create'));
-  // };
+  }, [selectedResource?.resourceId, state.datesAndTimes, isExclusiveActivity]);
 
   const createActivity = async (imagesReadyToSave, newFormValues) => {
-    const datesAndTimesNoConflict = datesAndTimes.map((item) => ({
+    const datesAndTimesNoConflict = state.datesAndTimes.map((item) => ({
       startDate: item.startDate,
       endDate: item.endDate,
       startTime: item.startTime,
@@ -186,9 +181,9 @@ export default function NewActivityPublic() {
     const values = {
       ...newFormValues,
       datesAndTimes: datesAndTimesNoConflictSorted,
-      isExclusiveActivity,
+      isExclusiveActivity: state.isExclusiveActivity,
       isPublicActivity: true,
-      isRegistrationDisabled,
+      isRegistrationEnabled: state.isRegistrationEnabled,
       images: imagesReadyToSave,
     };
 
@@ -197,12 +192,11 @@ export default function NewActivityPublic() {
       setState((prevState) => ({
         ...prevState,
         isCreating: false,
-        newActivityId,
-        isSuccess: true,
       }));
-      // successCreation();
+      message.success(tc('message.success.create'));
+      navigate(`/activities/${newActivityId}`);
     } catch (error) {
-      // message.error(error.error || error.reason);
+      message.error(error.error || error.reason);
       console.log(error);
       setState((prevState) => ({
         ...prevState,
@@ -273,7 +267,7 @@ export default function NewActivityPublic() {
     const value = event.target.checked;
     setState((prevState) => ({
       ...prevState,
-      isRegistrationDisabled: value,
+      isRegistrationEnabled: value,
     }));
   };
 
@@ -293,6 +287,7 @@ export default function NewActivityPublic() {
   };
 
   const isFormValid = () => {
+    const { datesAndTimes } = state;
     const isConflictHard = datesAndTimes.some(
       (occurence) => Boolean(occurence.conflict) && !occurence.isConflictOK
     );
@@ -312,11 +307,11 @@ export default function NewActivityPublic() {
       reader.addEventListener(
         'load',
         () => {
-          setState({
-            ...state,
-            uploadableImages: [...state.uploadableImages, uploadableImage],
-            uploadableImagesLocal: [...state.uploadableImagesLocal, reader.result],
-          });
+          setState((prevState) => ({
+            ...prevState,
+            uploadableImages: [...prevState.uploadableImages, uploadableImage],
+            uploadableImagesLocal: [...prevState.uploadableImagesLocal, reader.result],
+          }));
         },
         false
       );
@@ -324,32 +319,32 @@ export default function NewActivityPublic() {
   };
 
   const handleRemoveImage = (imageIndex) => {
-    setState({
-      ...state,
-      uploadableImages: state.uploadableImages.filter((image, index) => imageIndex !== index),
-      uploadableImagesLocal: state.uploadableImagesLocal.filter(
+    setState((prevState) => ({
+      ...prevState,
+      uploadableImages: prevState.uploadableImages.filter((image, index) => imageIndex !== index),
+      uploadableImagesLocal: prevState.uploadableImagesLocal.filter(
         (image, index) => imageIndex !== index
       ),
-    });
+    }));
   };
 
-  const handleSortImages = ({ oldIndex, newIndex }) => {
+  const handleSortImages = (oldIndex, newIndex) => {
     if (oldIndex === newIndex) {
       return;
     }
 
     setState((prevState) => ({
       ...prevState,
-      uploadableImages: arrayMove(state.uploadableImages, oldIndex, newIndex),
-      uploadableImagesLocal: arrayMove(state.uploadableImagesLocal, oldIndex, newIndex),
+      uploadableImages: arrayMoveImmutable(prevState.uploadableImages, oldIndex, newIndex),
+      uploadableImagesLocal: arrayMoveImmutable(
+        prevState.uploadableImagesLocal,
+        oldIndex,
+        newIndex
+      ),
     }));
   };
 
-  const { isSuccess, isCreating, isReady, newActivityId } = state;
-
-  if (isSuccess) {
-    return <Navigate to={`/activities/${newActivityId}`} />;
-  }
+  const { isCreating, isReady } = state;
 
   if (!isReady) {
     return null;
@@ -359,41 +354,40 @@ export default function NewActivityPublic() {
 
   return (
     <Box>
-      <FormTitle context="activities">Create a Public Event</FormTitle>
-      <Template>
-        <Box>
-          <Box mb="8">
-            <VStack spacing="2">
-              <FormSwitch
-                isChecked={isExclusiveActivity}
-                label={t('form.switch.exclusive')}
-                onChange={handleExclusiveSwitch}
-              />
+      <Heading mb="4" size="md">
+        {t('form.details.label')}
+      </Heading>
 
-              <FormSwitch
-                isChecked={!isRegistrationDisabled}
-                label={t('form.switch.rsvp')}
-                onChange={handleRegistrationSwitch}
-              />
-            </VStack>
-          </Box>
-
-          <ActivityFormPublic
-            datesAndTimes={state.datesAndTimes}
-            defaultValues={state.formValues}
-            images={state.uploadableImagesLocal}
-            isButtonDisabled={!formValid || isCreating}
-            isSubmitting={isCreating}
-            resources={resources}
-            onRemoveImage={handleRemoveImage}
-            onSortImages={handleSortImages}
-            onSubmit={handleSubmit}
-            setDatesAndTimes={setDatesAndTimes}
-            setUploadableImages={setUploadableImages}
-            setSelectedResource={handleSelectedResource}
+      <Box mb="8">
+        <VStack spacing="2">
+          <FormSwitch
+            isChecked={state.isExclusiveActivity}
+            label={t('form.switch.exclusive')}
+            onChange={handleExclusiveSwitch}
           />
-        </Box>
-      </Template>
+
+          <FormSwitch
+            isChecked={state.isRegistrationEnabled}
+            label={t('form.switch.rsvp')}
+            onChange={handleRegistrationSwitch}
+          />
+        </VStack>
+      </Box>
+
+      <ActivityFormPublic
+        datesAndTimes={state.datesAndTimes}
+        defaultValues={state.formValues}
+        images={state.uploadableImagesLocal}
+        isButtonDisabled={!formValid || isCreating}
+        isSubmitting={isCreating}
+        resources={resources}
+        onRemoveImage={handleRemoveImage}
+        onSortImages={handleSortImages}
+        onSubmit={handleSubmit}
+        setDatesAndTimes={setDatesAndTimes}
+        setUploadableImages={setUploadableImages}
+        setSelectedResource={handleSelectedResource}
+      />
     </Box>
   );
 }

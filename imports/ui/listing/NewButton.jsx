@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { IconButton } from '@chakra-ui/react';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import { StateContext } from '../LayoutContainer';
@@ -14,6 +14,7 @@ const getRoute = (item) => {
 export default function NewButton() {
   const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
   const location = useLocation();
+  const [, setSearchParams] = useSearchParams();
 
   const menu = currentHost?.settings?.menu;
 
@@ -41,36 +42,25 @@ export default function NewButton() {
     (item) => pathname.includes(item.name) && item.name !== 'people'
   );
 
-  const getPathname = (item) => {
-    if (item.name === 'calendar') {
-      return '/activities/new';
-    }
-    if (item.name === 'communities' && currentUser?.isSuperAdmin) {
-      return '/new-host';
-    }
-    return `/${item.name}/new`;
-  };
-
   if (!activeMenuItem || ['members', 'people'].includes(activeMenuItem.name)) {
     return null;
   }
 
   return (
-    <Link to={getPathname(activeMenuItem)}>
-      <IconButton
-        _hover={{ bg: 'gray.100' }}
-        _focus={{ bg: 'gray.50' }}
-        as="span"
-        bg="gray.200"
-        borderColor="gray.200"
-        borderWidth="2px"
-        borderRadius="8px"
-        color="gray.600"
-        cursor="pointer"
-        icon={<AddIcon />}
-        mx="2"
-        size="sm"
-      />
-    </Link>
+    <IconButton
+      _hover={{ bg: 'gray.100' }}
+      _focus={{ bg: 'gray.50' }}
+      as="span"
+      bg="gray.200"
+      borderColor="gray.200"
+      borderWidth="2px"
+      borderRadius="8px"
+      color="gray.600"
+      cursor="pointer"
+      icon={<AddIcon />}
+      mx="2"
+      size="sm"
+      onClick={() => setSearchParams({ new: 'true' })}
+    />
   );
 }

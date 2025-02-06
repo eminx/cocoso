@@ -30,8 +30,8 @@ function Modal({
   return (
     <CModal {...modalProps} {...otherProps}>
       <ModalOverlay />
-      <ModalContent borderRadius="8px" h={h}>
-        <ModalHeader>{title}</ModalHeader>
+      <ModalContent bg="gray.100" borderRadius="8px" h={h}>
+        <ModalHeader fontSize="2xl">{title}</ModalHeader>
         <ModalCloseButton onClick={onClose} />
         <ModalBody>{children}</ModalBody>
 

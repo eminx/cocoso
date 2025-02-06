@@ -1,21 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { parse } from 'query-string';
+import { useSearchParams } from 'react-router-dom';
 
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
 import ActivitiesHybrid from '../../listing/ActivitiesHybrid';
+import NewActivityPublic from './NewActivityPublic';
+import NewEntryHandler from '../../listing/NewEntryHandler';
 
-function Activities() {
+export default function Activities() {
   const initialActivities = window?.__PRELOADED_STATE__?.activities || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
   const [activities, setActivities] = useState(initialActivities);
   let { currentHost } = useContext(StateContext);
-  const location = useLocation();
-  const { search } = location;
-  const { showPast } = parse(search, { parseBooleans: true });
+  const [searchParams] = useSearchParams();
+
+  const showPast = searchParams.get('showPast') === 'true';
 
   if (!currentHost) {
     currentHost = Host;
@@ -46,7 +47,13 @@ function Activities() {
     return null;
   }
 
-  return <ActivitiesHybrid activities={activities} Host={currentHost} showPast={showPast} />;
-}
+  return (
+    <>
+      <ActivitiesHybrid activities={activities} Host={currentHost} showPast={showPast} />
 
-export default Activities;
+      <NewEntryHandler isOpen={false} title="Create a Public Event" onClose={() => {}}>
+        <NewActivityPublic />
+      </NewEntryHandler>
+    </>
+  );
+}

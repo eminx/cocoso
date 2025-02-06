@@ -4,7 +4,6 @@ import {
   Button,
   Center,
   Flex,
-  Heading,
   IconButton,
   Input,
   Select,
@@ -119,10 +118,6 @@ export default function ActivityFormPublic({
 
   return (
     <div>
-      <Heading mb="4" size="md">
-        {t('form.details.label')}
-      </Heading>
-
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           <FormField

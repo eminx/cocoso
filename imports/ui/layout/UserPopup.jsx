@@ -173,7 +173,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
           {isAdmin && <MenuDivider />}
           {isAdmin && (
             <Link to="/admin">
-              <MenuItem color="brand.700" px="4">
+              <MenuItem px="4">
                 <Bolt size="20" style={{ marginRight: '6px' }} />
                 <Trans i18nKey="members:dashboard">Admin Dashboard</Trans>
               </MenuItem>
@@ -187,7 +187,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
                 {notifications.map((item) => (
                   <NotificationLinkItem key={item.contextId + item.count} host={host} item={item}>
                     <MenuItem>
-                      <Text color="brand.700">{item.title} </Text>
+                      <Text>{item.title} </Text>
                       <Badge colorScheme="red" size="xs">
                         {' '}
                         {item.count}
@@ -203,18 +203,18 @@ export default function UserPopup({ isOpen, setIsOpen }) {
           <MenuGroup>
             <Box px="1">
               <Link to={currentUser && `/@${currentUser?.username}`}>
-                <MenuItem as="span" color="brand.700">
+                <MenuItem as="span">
                   <Trans i18nKey="common:menu.member.profile">My Profile</Trans>
                 </MenuItem>
               </Link>
               <Link to={'/edit'}>
-                <MenuItem as="span" color="brand.700">
+                <MenuItem as="span">
                   <Trans i18nKey="common:menu.member.settings">Profile Settings</Trans>
                 </MenuItem>
               </Link>
               {canCreateContent && (
                 <Link to="/my-activities">
-                  <MenuItem as="span" color="brand.700">
+                  <MenuItem as="span">
                     <Trans i18nKey="common:menu.member.activities">My Activities</Trans>
                   </MenuItem>
                 </Link>

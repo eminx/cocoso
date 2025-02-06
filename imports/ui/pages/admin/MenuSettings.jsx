@@ -200,7 +200,6 @@ export default function MenuSettings() {
   };
 
   const onSortMenuEnd = (oldIndex, newIndex) => {
-    console.log(oldIndex, newIndex);
     const { menu } = localSettings;
     const visibleItems = menu.filter((item) => item.isVisible);
     const invisibleItems = menu.filter((item) => !item.isVisible);
