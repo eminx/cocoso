@@ -59,12 +59,12 @@ export default function AdminContainer() {
   const currentRoute = getCurrentRoute();
 
   const handleItemClick = (item) => {
-    if (!currentRoute || !item) {
+    if (!item) {
       return;
     }
     if (item.isMulti) {
       navigate(item.content[0]?.value);
-      if (!isDesktop && currentRoute.value.split('/')[0] === item.value.split('/')[0]) {
+      if (!isDesktop && currentRoute?.value?.split('/')[0] === item?.value?.split('/')[0]) {
         setDrawerMenuOpen(false);
       }
       return;
