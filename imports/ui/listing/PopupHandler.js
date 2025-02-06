@@ -23,8 +23,8 @@ const getPastOccurrences = (dates) =>
     .filter((date) => dayjs(date.startDate)?.isBefore(today))
     .sort((a, b) => dayjs(b.startDate) - dayjs(a.startDate));
 
-function getDatesForAction(activity, showPast = false) {
-  if (!activity.datesAndTimes) {
+function DatesForAction({ activity, showPast = false }) {
+  if (!activity || !activity.datesAndTimes || !activity.datesAndTimes.length) {
     return null;
   }
 
@@ -102,7 +102,7 @@ function PopupContent({ action = null, content, images, subTitle, title, tags = 
         {action}
       </Center>
 
-      <Box bg="white" className="text-content" py="4">
+      <Box bg="white" className="text-content" p="4">
         {content}
       </Box>
     </>
@@ -165,7 +165,7 @@ export default function PopupHandler({ item, kind, onClose }) {
     >
       <ModalBody p="0">
         <PopupContent
-          action={getDatesForAction(item)}
+          action={<DatesForAction item={item} />}
           content={
             (item.longDescription && parseHtml(item.longDescription)) ||
             (item.description && parseHtml(item.description))

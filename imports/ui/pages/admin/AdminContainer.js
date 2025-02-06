@@ -199,7 +199,8 @@ export default function AdminContainer() {
               color="gray.800"
               cursor="pointer"
               left="0"
-              p="3"
+              px="4"
+              py="3"
               position="absolute"
               top="0"
               onClick={() => setDrawerMenuOpen(true)}
@@ -213,7 +214,6 @@ export default function AdminContainer() {
           </Box>
           <Box p="6">
             <Heading mb="8">{currentRoute?.label}</Heading>
-            <button onClick={() => setDrawerMenuOpen(true)}>Menu</button>
             <Routes>
               {routes.map((route) =>
                 route.isMulti ? (

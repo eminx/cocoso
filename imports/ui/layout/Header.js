@@ -82,9 +82,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
   const { pathname } = location;
   const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
 
-  const isCurrentContext = (item) => {
-    return pathname.includes(item?.name);
-  };
+  const isCurrentContext = (item) => pathname.includes(item?.name);
 
   return (
     <Box w="100%">
@@ -119,7 +117,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
           p="2"
           wrap="wrap"
         >
-          {menuItems?.map((item, index) =>
+          {menuItems?.map((item) =>
             item.name === 'info' ? (
               <InfoPagesMenu
                 key="info"
@@ -130,10 +128,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
             ) : (
               <Link key={item.name} to={`/${item.name}`}>
                 <Box as="span" px="2">
-                  <Text
-                    {...textProps}
-                    borderBottom={isCurrentContext(item, index) ? '2px solid' : null}
-                  >
+                  <Text {...textProps} borderBottom={isCurrentContext(item) ? '2px solid' : null}>
                     {item.label}
                   </Text>
                 </Box>
