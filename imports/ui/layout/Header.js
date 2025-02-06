@@ -82,18 +82,8 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
   const { pathname } = location;
   const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
 
-  const isCurrentContext = (item, index) => {
-    const context = pathname.split('/')[1];
-    if (item.name === context) {
-      return true;
-    }
-    if (item.name === 'info' && context === 'pages') {
-      return true;
-    }
-    if (pathname === '/' && index === 0) {
-      return true;
-    }
-    return false;
+  const isCurrentContext = (item) => {
+    return pathname.includes(item?.name);
   };
 
   return (

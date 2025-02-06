@@ -48,8 +48,8 @@ export default function NewButton() {
 
   return (
     <IconButton
-      _hover={{ bg: 'gray.100' }}
-      _focus={{ bg: 'gray.50' }}
+      _hover={{ bg: 'gray.300' }}
+      _focus={{ bg: 'gray.400' }}
       as="span"
       bg="gray.200"
       borderColor="gray.200"

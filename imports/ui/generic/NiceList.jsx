@@ -14,7 +14,7 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
       <Box w="100%">{renderChildren(listItem)}</Box>
       {actions && (
         <Menu placement="bottom-end">
-          <MenuButton bg="blueGray.50" borderRadius="50%" m="2" p="2" size="xs" type="button">
+          <MenuButton bg="gray.50" borderRadius="50%" m="2" p="2" size="xs" type="button">
             <EllipsisVertical />
           </MenuButton>
           <MenuList>
