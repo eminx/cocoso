@@ -171,7 +171,7 @@ export default function AdminContainer() {
 
   return (
     <Box bg="blueGray.100" minH="100vh">
-      <SimpleGrid columns={2} templateColumns="320px 40%">
+      <SimpleGrid columns={2} h="100%" templateColumns="320px 40%">
         <Box bg="white">
           <AdminSidebar routes={routes} />
         </Box>

@@ -9,7 +9,7 @@ export default function DummyWrapper({ children }) {
         // bg="linear-gradient(0deg, var(--chakra-colors-purple-100) 0%, var(--chakra-colors-brand-100) 100%);"
         bg="gray.100"
         boxShadow="md"
-        minH="110vh"
+        minH="100vh"
         mb="148px"
       >
         {children}

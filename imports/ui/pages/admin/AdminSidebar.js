@@ -56,51 +56,58 @@ export default function AdminSidebar({ routes }) {
   // const { isSuperAdmin } = currentUser;
 
   return (
-    <Box bg="gray.50" color="blueGray.800" minH="100vh" minW="320px" position="fixed">
-      <Flex direction="column" justify="space-between">
-        <Link to="/">
-          <Box bg="gray.100" _hover={{ bg: 'gray.200' }} _focus={{ bg: 'gray.400' }} p="4">
-            <Button
-              as="span"
-              color="blueGray.900"
-              leftIcon={<ArrowLeft size="18px" />}
-              size="lg"
-              variant="unstyled"
-            >
-              {currentHost.settings?.name}
-            </Button>
-            <br />
-            <Code bg="blueGray.50" fontSize="xs">
-              {currentHost.host}
-            </Code>
-          </Box>
-        </Link>
+    <Flex
+      bg="gray.50"
+      color="blueGray.800"
+      direction="column"
+      justify="space-between"
+      h="100vh"
+      minW="320px"
+      position="fixed"
+    >
+      <Link to="/">
+        <Box bg="gray.100" _hover={{ bg: 'gray.200' }} _focus={{ bg: 'gray.400' }} p="4">
+          <Button
+            as="span"
+            color="blueGray.900"
+            leftIcon={<ArrowLeft size="18px" />}
+            size="lg"
+            variant="unstyled"
+          >
+            {currentHost.settings?.name}
+          </Button>
+          <br />
+          <Code bg="blueGray.50" fontSize="xs">
+            {currentHost.host}
+          </Code>
+        </Box>
+      </Link>
 
-        <Box p="4">
-          <Heading color="blueGray.900" mb="4" size="md" textAlign="center">
-            {t('panel')}
-          </Heading>
+      <Box p="4">
+        <Heading color="blueGray.900" mb="4" size="md" textAlign="center">
+          {t('panel')}
+        </Heading>
 
-          <Box h="69vh" overflowY="auto">
-            <List>
-              {routes.map((item) => (
-                <ListItem key={item.value} p="0">
-                  <AdminMenuItem item={item} />
-                  {item.isMulti &&
-                    item.content.map((itemSub) => (
-                      <AdminMenuItem
-                        key={itemSub.value}
-                        item={itemSub}
-                        isSub
-                        parentValue={item.value}
-                      />
-                    ))}
-                </ListItem>
-              ))}
-            </List>
-          </Box>
+        <Box h="69vh" overflowY="auto">
+          <List>
+            {routes.map((item) => (
+              <ListItem key={item.value} p="0">
+                <AdminMenuItem item={item} />
+                {item.isMulti &&
+                  item.content.map((itemSub) => (
+                    <AdminMenuItem
+                      key={itemSub.value}
+                      item={itemSub}
+                      isSub
+                      parentValue={item.value}
+                    />
+                  ))}
+              </ListItem>
+            ))}
+          </List>
+        </Box>
 
-          {/* {isSuperAdmin && isPortalHost && platform && (
+        {/* {isSuperAdmin && isPortalHost && platform && (
           <Box mb="2" mt="6">
             <Heading color="gray.50" size="sm">
               {`${platform.name} ${tc('domains.platform')}`}
@@ -108,28 +115,27 @@ export default function AdminSidebar({ routes }) {
             <ListMenu list={superadminMenu} />
           </Box>
         )} */}
-        </Box>
+      </Box>
 
-        <Box bg="blueGray.800" p="4">
-          <Flex>
-            <Avatar
-              _hover={{ bg: 'brand.500' }}
-              bg="brand.600"
-              borderRadius="8px"
-              showBorder
-              size="lg"
-              src={currentUser.avatar && currentUser.avatar.src}
-            />
+      <Box bg="blueGray.800" p="4">
+        <Flex>
+          <Avatar
+            _hover={{ bg: 'brand.500' }}
+            bg="brand.600"
+            borderRadius="8px"
+            showBorder
+            size="lg"
+            src={currentUser.avatar && currentUser.avatar.src}
+          />
 
-            <Box align="flex-start" color="gray.50" textAlign="left" px="3">
-              <Text fontSize="lg" fontWeight="bold">
-                {currentUser.username}
-              </Text>
-              <Text fontWeight="light">{getFullName(currentUser)}</Text>
-            </Box>
-          </Flex>
-        </Box>
-      </Flex>
-    </Box>
+          <Box align="flex-start" color="gray.50" textAlign="left" px="3">
+            <Text fontSize="lg" fontWeight="bold">
+              {currentUser.username}
+            </Text>
+            <Text fontWeight="light">{getFullName(currentUser)}</Text>
+          </Box>
+        </Flex>
+      </Box>
+    </Flex>
   );
 }

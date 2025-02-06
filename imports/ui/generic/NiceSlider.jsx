@@ -4,7 +4,7 @@ import { Box, Center, Flex, HStack, Img } from '@chakra-ui/react';
 import FsLightbox from 'fslightbox-react';
 import { Fade, Slide } from 'react-slideshow-image';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { useHydrated } from 'react-hydration-provider';
+import { Client, useHydrated } from 'react-hydration-provider';
 
 if (Meteor.isClient) {
   import 'react-slideshow-image/dist/styles.css';
@@ -68,19 +68,10 @@ function ImageHandler({ height, width, images, children }) {
   const hydrated = useHydrated();
   const isMobile = hydrated && window.innerWidth < 768;
 
-  if (!images?.length) {
+  if (!images || images.length < 2) {
     return null;
   }
 
-  if (!hydrated || images?.length === 1) {
-    return (
-      <Flex h={height} justify={isMobile ? 'flex-start' : 'center'}>
-        <Center>
-          <Img src={images[0]} style={imageStyle} />
-        </Center>
-      </Flex>
-    );
-  }
   if (!isMobile) {
     return (
       <Box className="slide-container" h={height} w={width}>
@@ -114,6 +105,27 @@ export default function NiceSlider({ alt, images, height = 'auto', width = '100%
     return null;
   }
 
+  if (images.length === 1) {
+    return (
+      <>
+        <Flex h={height} justify="center">
+          <Center>
+            <Img src={images[0]} style={imageStyle} onClick={() => setToggler(!toggler)} />
+          </Center>
+        </Flex>
+
+        <Client>
+          <FsLightbox
+            toggler={toggler}
+            sources={images.map((img) => (
+              <img alt={img} src={img} />
+            ))}
+          />
+        </Client>
+      </>
+    );
+  }
+
   return (
     <>
       <ImageHandler height={height} images={images} width={width}>
@@ -130,12 +142,14 @@ export default function NiceSlider({ alt, images, height = 'auto', width = '100%
           </Center>
         )}
       </ImageHandler>
-      <FsLightbox
-        toggler={toggler}
-        sources={images.map((img) => (
-          <img alt={img} src={img} />
-        ))}
-      />
+      <Client>
+        <FsLightbox
+          toggler={toggler}
+          sources={images.map((img) => (
+            <img alt={img} src={img} />
+          ))}
+        />
+      </Client>
     </>
   );
 }

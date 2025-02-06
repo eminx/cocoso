@@ -62,7 +62,7 @@ export default function ActivityFormPublic({
   const [tc] = useTranslation('common');
   const [t] = useTranslation('activities');
 
-  const addRecurrence = () => {
+  const addOccurrence = () => {
     const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
 
     setDatesAndTimes(newDatesAndTimes);
@@ -120,6 +120,24 @@ export default function ActivityFormPublic({
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
+          <FormField helperText={t('form.title.helper')} label={t('form.title.label')} isRequired>
+            <Input
+              {...register('title', { required: true })}
+              placeholder={t('form.title.holder')}
+            />
+          </FormField>
+
+          <FormField
+            helperText={t('form.subtitle.helper')}
+            label={t('form.subtitle.label')}
+            isRequired
+          >
+            <Input
+              {...register('subTitle', { required: true })}
+              placeholder={t('form.subtitle.holder')}
+            />
+          </FormField>
+
           <FormField
             label={t('form.image.label', { count: images?.length || 0 })}
             helperText={t('form.image.helper')}
@@ -138,24 +156,6 @@ export default function ActivityFormPublic({
             />
 
             <DocumentUploadHelper isImage />
-          </FormField>
-
-          <FormField helperText={t('form.title.helper')} label={t('form.title.label')} isRequired>
-            <Input
-              {...register('title', { required: true })}
-              placeholder={t('form.title.holder')}
-            />
-          </FormField>
-
-          <FormField
-            helperText={t('form.subtitle.helper')}
-            label={t('form.subtitle.label')}
-            isRequired
-          >
-            <Input
-              {...register('subTitle', { required: true })}
-              placeholder={t('form.subtitle.holder')}
-            />
           </FormField>
 
           <FormField
@@ -200,7 +200,7 @@ export default function ActivityFormPublic({
                 );
               })}
               <Center bg="white" borderRadius="8px" p="6">
-                <IconButton bg="gray.700" size="lg" onClick={addRecurrence} icon={<AddIcon />} />
+                <IconButton bg="gray.700" size="lg" onClick={addOccurrence} icon={<AddIcon />} />
               </Center>
             </Box>
           </Box>
