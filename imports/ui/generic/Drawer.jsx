@@ -15,6 +15,7 @@ function Drawer({
   bodyProps,
   children,
   footer,
+  headerProps,
   hideOverlay = false,
   placement = 'right',
   size = 'md',
@@ -31,7 +32,11 @@ function Drawer({
       {!hideOverlay && <DrawerOverlay />}
       <DrawerContent bg={bg}>
         <DrawerCloseButton color={titleColor} />
-        {title && <DrawerHeader color={titleColor}>{title}</DrawerHeader>}
+        {title && (
+          <DrawerHeader {...headerProps} color={titleColor}>
+            {title}
+          </DrawerHeader>
+        )}
 
         <DrawerBody {...bodyProps}>{children}</DrawerBody>
 

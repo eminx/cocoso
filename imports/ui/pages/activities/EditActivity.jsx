@@ -163,7 +163,7 @@ class EditActivity extends PureComponent {
             return uploadableImage.src;
           }
           const resizedImage = await resizeImage(uploadableImage.resizableData, 800);
-          const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
+          const uploadedImage = await uploadImage(resizedImage, 'genericEntryImageUpload');
           return uploadedImage;
         })
       );

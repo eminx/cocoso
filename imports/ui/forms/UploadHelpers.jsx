@@ -8,7 +8,7 @@ import {
   maximumDocumentSizeForUploads,
 } from '../utils/constants/general';
 
-function DocumentUploadHelper({ isImage = false }) {
+export default function DocumentUploadHelper({ isImage = true }) {
   const [tc] = useTranslation('common');
 
   const uploadables = isImage ? acceptedImageFormatsForUploads : acceptedDocumentFormatsForUploads;
@@ -35,5 +35,3 @@ function DocumentUploadHelper({ isImage = false }) {
     </Box>
   );
 }
-
-export { DocumentUploadHelper };

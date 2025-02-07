@@ -130,7 +130,7 @@ export default function EmailNewsletter() {
 
     try {
       const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
+      const uploadedImage = await uploadImage(resizedImage, 'genericEntryImageUpload');
       sendEmail(uploadedImage);
     } catch (error) {
       console.error('Error uploading:', error);

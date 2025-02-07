@@ -6,7 +6,7 @@ import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 
 import Modal from '../../../../generic/Modal';
-import { DocumentUploadHelper } from '../../../../forms/UploadHelpers';
+import DocumentUploadHelper from '../../../../forms/UploadHelpers';
 import GroupDocuments from '../GroupDocuments';
 import { GroupContext } from '../../Group';
 
@@ -104,7 +104,9 @@ export default function AddDocument({ onClose }) {
           </Box>
         )}
       </ReactDropzone>
-      <DocumentUploadHelper />
+
+      <DocumentUploadHelper isImage={false} />
+
       <Box pt="8">
         <Heading size="sm">{tc('documents.label')}</Heading>
         <GroupDocuments documents={group.documents} />

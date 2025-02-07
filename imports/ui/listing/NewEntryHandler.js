@@ -15,7 +15,9 @@ export default function NewEntryHandler({ title, children }) {
   return (
     <Modal isOpen={isOpen} motionPreset="slideInBottom" size="full" title={title} onClose={onClose}>
       <Center>
-        <Box maxW="480px">{children}</Box>
+        <Box maxW="480px" w="100%">
+          {children}
+        </Box>
       </Center>
     </Modal>
   );

@@ -3,11 +3,12 @@ import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { Box, Code, Flex, Link as CLink, Text, Skeleton } from '@chakra-ui/react';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
+import { Slingshot } from 'meteor/edgee:slingshot';
 
 import { call } from '../../../utils/shared';
 import { message } from '../../../generic/message';
 import NiceList from '../../../generic/NiceList';
-import { DocumentUploadHelper } from '../../../forms/UploadHelpers';
+import DocumentUploadHelper from '../../../forms/UploadHelpers';
 import { StateContext } from '../../../LayoutContainer';
 
 export default function DocumentsField({ contextType, contextId, isAllowed = false }) {
@@ -15,11 +16,6 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { isDesktop } = useContext(StateContext);
-
-  useEffect(() => {
-    getDocuments();
-  }, [documents.length]);
-
   const [tc] = useTranslation('common');
 
   const getDocuments = async () => {
@@ -35,6 +31,10 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    getDocuments();
+  }, [documents.length]);
 
   const createDocument = async (uploadableFile, downloadUrl) => {
     try {
@@ -163,7 +163,8 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
               )}
             </ReactDropzone>
           </Box>
-          <DocumentUploadHelper />
+
+          <DocumentUploadHelper isImage={false} />
         </Box>
       )}
     </Box>

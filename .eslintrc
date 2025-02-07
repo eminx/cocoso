@@ -16,7 +16,7 @@
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error"],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "react/jsx-one-expression-per-line": [0],
     "react/prop-types": [0],
     "import/extensions": [
@@ -29,7 +29,7 @@
         "tsx": "never"
       }
     ],
-    "no-underscore-dangle": "off",
+    "no-underscore-dangle": "on",
     "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }]
   },
   "settings": {

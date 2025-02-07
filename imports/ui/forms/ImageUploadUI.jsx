@@ -1,21 +1,58 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Center, IconButton } from '@chakra-ui/react';
 import SmallCloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
 
 import FileDropper from './FileDropper';
+import { resizeImage, uploadImage } from '../utils/shared';
+import DocumentUploadHelper from './UploadHelpers';
 
 const thumbStyle = (backgroundImage) => ({
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
 });
 
-export default function ImageUploader({ images = [] }) {
+export default function ImageUploader({
+  images = [],
+  startUpload = false,
+  uploadParam = 'genericEntryImageUpload',
+  returnUploadedImages,
+}) {
   const [state, setState] = useState({
     preExistingImages: images,
     uploadableImages: [],
     uploadableImagesLocal: [],
   });
+
+  const uploadImages = async () => {
+    const { uploadableImages } = state;
+
+    try {
+      const imagesReadyToSave = await Promise.all(
+        uploadableImages.map(async (uploadableImage) => {
+          const resizedImage = await resizeImage(uploadableImage, 1200);
+          const uploadedImage = await uploadImage(resizedImage, uploadParam);
+          return uploadedImage;
+        })
+      );
+      returnUploadedImages(imagesReadyToSave);
+      // createActivity(imagesReadyToSave, newFormValues);
+    } catch (error) {
+      console.log('Error uploading:', error);
+      // message.error(error.reason);
+      // setState((prevState) => ({
+      //   ...prevState,
+      //   isCreating: false,
+      //   isError: true,
+      // }));
+    }
+  };
+
+  useEffect(() => {
+    if (startUpload) {
+      uploadImages();
+    }
+  }, [startUpload]);
 
   const setUploadableImages = (files) => {
     files.forEach((uploadableImage) => {
@@ -65,40 +102,46 @@ export default function ImageUploader({ images = [] }) {
 
   if (!allImagesRendered || allImagesRendered.length === 0) {
     return (
-      <Center>
-        <FileDropper setUploadableImage={setUploadableImages} isMultiple />
-      </Center>
+      <>
+        <Center>
+          <FileDropper setUploadableImage={setUploadableImages} isMultiple />
+        </Center>
+        <DocumentUploadHelper />
+      </>
     );
   }
 
   return (
     <>
       <Center>
-        <SortableList
-          draggedItemClassName="sortable-thumb--dragged"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '120px 120px 120px',
-            gridTemplateRows: '90px 90px 90px',
-            gridGap: '8px',
-          }}
-          onSortEnd={handleSortImages}
-        >
-          {allImagesRendered.map((image, index) => (
-            <SortableItem key={image}>
-              <Box className="sortable-thumb" style={thumbStyle(image)}>
-                <IconButton
-                  className="sortable-thumb-icon"
-                  colorScheme="gray.900"
-                  icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
-                  size="xs"
-                  style={{ position: 'absolute', top: 4, right: 4, zIndex: 1501 }}
-                  onClick={() => handleRemoveImage(index)}
-                />
-              </Box>
-            </SortableItem>
-          ))}
-        </SortableList>
+        <Box w="100%">
+          <SortableList
+            draggedItemClassName="sortable-thumb--dragged"
+            style={{
+              display: 'flex',
+              flexBasis: '130px',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+            onSortEnd={handleSortImages}
+          >
+            {allImagesRendered.map((image, index) => (
+              <SortableItem key={image}>
+                <Box className="sortable-thumb" style={thumbStyle(image)}>
+                  <IconButton
+                    className="sortable-thumb-icon"
+                    colorScheme="gray.900"
+                    icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
+                    size="xs"
+                    style={{ position: 'absolute', top: 4, right: 4, zIndex: 1501 }}
+                    onClick={() => handleRemoveImage(index)}
+                  />
+                </Box>
+              </SortableItem>
+            ))}
+          </SortableList>
+        </Box>
       </Center>
       <FileDropper setUploadableImage={setUploadableImages} isMultiple />
     </>

@@ -33,3 +33,4 @@ percolate:migrations
 webapp
 ostrio:spiderable-middleware
 server-render
+typescript
