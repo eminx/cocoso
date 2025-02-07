@@ -118,7 +118,7 @@ emails:
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
-  title: Nyhetsbrev
+  title: Skicka ett nyhetsbrev
   subtitle: Här kan du skapa ett nyhetsbrev som går ut till alla medlemmar i er community. Du kan enkelt komponera brevet med egen text och bifoga material som är publicerade på er sida.
   subtitle2: 'För att skriva e-postmeddelandet nedan måste du ange minst en av: brödtext, en bild och/eller valda innehållsobjekt som listas i community-appen.'
   contenthelper: Du kan infoga befintligt innehåll från din sida genom att välja poster i listan här nedanför. Text och bild samt länk till posterna läggs automatiskt in i nyhetsbrevet.

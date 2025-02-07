@@ -118,7 +118,7 @@ emails:
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
-  title: Email Newsletter
+  title: Send a Newsletter
   subtitle: Here you can compose an email and easily attach published content from the website, and then send out to all members of your community.
   subtitle2: 'To compose the email below, you have to enter at least one of: body text, an image and/or selected content items listed in the community app.'
   contenthelper: You may insert existing content from the listing pages by selecting the entries you want to attach within the email below.
