@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
+import Eye from 'lucide-react/dist/esm/icons/eye';
 
 import { StateContext } from '../../LayoutContainer';
 import { Alert } from '../../generic/message';
@@ -75,6 +76,14 @@ export default function AdminContainer() {
     }
   };
 
+  const iconContainerProps = {
+    align: 'center',
+    direction: 'column',
+    color: 'gray.800',
+    cursor: 'pointer',
+    p: '2',
+  };
+
   if (!isDesktop) {
     return (
       <Box bg="gray.100" minH="100vh">
@@ -91,26 +100,21 @@ export default function AdminContainer() {
           <AdminSidebar routes={routes} onItemClick={handleItemClick} />
         </Drawer>
         <Box>
-          <Box bg="gray.50" position="relative" p="4">
-            <Flex
-              align="center"
-              direction="column"
-              color="gray.800"
-              cursor="pointer"
-              left="0"
-              px="4"
-              py="3"
-              position="absolute"
-              top="0"
-              onClick={() => setDrawerMenuOpen(true)}
-            >
+          <Flex align="center" bg="gray.50" w="100%">
+            <Flex {...iconContainerProps} onClick={() => setDrawerMenuOpen(true)}>
               <Bolt />
               <Text fontSize="xs">{t('menu.title')}</Text>
             </Flex>
-            <Heading flexGrow="0" color="gray.900" size="md" textAlign="center">
+            <Heading flexGrow="1" color="gray.900" size="md" textAlign="center">
               {t('panel')}
             </Heading>
-          </Box>
+            <Link to="/">
+              <Flex {...iconContainerProps}>
+                <Eye />
+                <Text fontSize="xs">{t('admin:site')}</Text>
+              </Flex>
+            </Link>
+          </Flex>
           <Box p="6">
             <Heading mb="8">{currentRoute?.label}</Heading>
             <Routes>

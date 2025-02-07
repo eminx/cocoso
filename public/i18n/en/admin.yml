@@ -2,6 +2,7 @@
 label: Admin
 panel: Admin Panel
 menulabel: Admin Menu
+site: Site
 
 settings:
   title: Settings

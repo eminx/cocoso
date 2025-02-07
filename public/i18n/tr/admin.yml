@@ -2,6 +2,7 @@
 label: Admin
 panel: Admin Paneli
 menulabel: Admin Menü
+site: Site
 
 settings:
   title: Ayarlar

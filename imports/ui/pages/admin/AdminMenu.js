@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Button, Code, Flex, Heading, List, ListItem, Text } from '@chakra-ui/react';
-import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
+import Eye from 'lucide-react/dist/esm/icons/eye';
 
 import { StateContext } from '../../LayoutContainer';
 import { getFullName } from '../../utils/shared';
@@ -10,17 +10,13 @@ import { getFullName } from '../../utils/shared';
 export function AdminMenuHeader({ currentHost }) {
   return (
     <Link to="/">
-      <Box bg="gray.50" _hover={{ bg: 'gray.200' }} _focus={{ bg: 'gray.400' }} px="4" py="2">
-        <Button
-          as="span"
-          color="gray.900"
-          leftIcon={<ArrowLeft size="18px" />}
-          size="lg"
-          variant="unstyled"
-        >
-          {currentHost.settings?.name}
-        </Button>
-        <br />
+      <Box bg="gray.200" _hover={{ bg: 'gray.300' }} _focus={{ bg: 'gray.400' }} px="4" py="2">
+        <Flex align="center">
+          <Eye />
+          <Text fontWeight="bold" fontSize="lg" ml="2" mt="-0.5">
+            {currentHost.settings?.name}
+          </Text>
+        </Flex>
         <Code bg="gray.50" fontSize="xs">
           {currentHost.host}
         </Code>

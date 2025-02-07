@@ -2,6 +2,7 @@
 label: Admin
 panel: Adminpanel
 menulabel: Adminmenu
+site: Sidan
 
 settings:
   title: Inställningar
