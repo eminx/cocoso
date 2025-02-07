@@ -2,13 +2,13 @@ import { defineStyle, extendTheme } from '@chakra-ui/react';
 
 const brand = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 
-const luxxStyle = {
+export const luxxStyle = {
   field: {
-    borderColor: 'gray.300',
-    borderRadius: '6px',
+    borderColor: 'gray.400',
+    borderRadius: '8px',
     borderWidth: '2px',
     _hover: {
-      borderColor: 'gray.400',
+      borderColor: 'gray.500',
     },
     _focus: {
       borderColor: 'gray.600',
@@ -71,6 +71,14 @@ const generateTheme = (hue) => {
         },
         defaultProps: {
           colorScheme: 'brand',
+        },
+      },
+      Checkbox: {
+        defaultProps: {
+          colorScheme: 'brand',
+        },
+        variants: {
+          luxx: luxxStyle,
         },
       },
       Heading: defineStyle({
@@ -148,10 +156,11 @@ const generateTheme = (hue) => {
       },
       Textarea: {
         defaultProps: {
+          borderWidth: '2px',
+          borderColor: 'gray.300',
           colorScheme: 'brand',
           focusBorderColor: color,
           variant: 'luxx',
-          borderWidth: '2px',
         },
         variants: {
           luxx: luxxStyle,
