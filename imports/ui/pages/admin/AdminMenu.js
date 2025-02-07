@@ -10,14 +10,21 @@ import { getFullName } from '../../utils/shared';
 export function AdminMenuHeader({ currentHost }) {
   return (
     <Link to="/">
-      <Box bg="gray.200" _hover={{ bg: 'gray.300' }} _focus={{ bg: 'gray.400' }} px="4" py="2">
+      <Box
+        _hover={{ bg: 'gray.800' }}
+        _focus={{ bg: 'gray.700' }}
+        bg="gray.700"
+        color="gray.100"
+        px="4"
+        py="2"
+      >
         <Flex align="center">
           <Eye />
           <Text fontWeight="bold" fontSize="lg" ml="2" mt="-0.5">
             {currentHost.settings?.name}
           </Text>
         </Flex>
-        <Code bg="gray.50" fontSize="xs">
+        <Code bg="gray.700" color="inherit" fontSize="xs">
           {currentHost.host}
         </Code>
       </Box>
@@ -69,8 +76,8 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
 
   return (
     <Box
-      _hover={{ bg: 'gray.100' }}
-      bg={isCurrentRoute && !item.isMulti ? 'gray.50' : 'inherit'}
+      _hover={{ bg: 'gray.700' }}
+      bg={isCurrentRoute && !item.isMulti ? 'gray.700' : 'inherit'}
       borderRightWidth={isCurrentRoute && !item.isMulti ? '3px' : '0'}
       borderRightColor="gray.500"
       cursor="pointer"
@@ -79,7 +86,7 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
       onClick={() => onItemClick(item)}
     >
       <Text
-        color={isCurrentRoute ? 'gray.800' : 'inherit'}
+        color={isCurrentRoute ? 'gray.50' : 'inherit'}
         fontWeight={isCurrentRoute ? 'bold' : 'normal'}
       >
         {item.label}
@@ -101,8 +108,8 @@ export default function AdminMenu({ routes, onItemClick }) {
 
   return (
     <Flex
-      bg="gray.50"
-      color="gray.800"
+      bg="gray.600"
+      color="gray.200"
       direction="column"
       justify="space-between"
       h={isDesktop ? '100%' : 'calc(100% - 60px)'}
@@ -112,7 +119,7 @@ export default function AdminMenu({ routes, onItemClick }) {
       {isDesktop && <AdminMenuHeader currentHost={currentHost} />}
       <Flex direction="column" h="100%" overflowY="auto">
         {isDesktop && (
-          <Heading flexGrow="0" color="gray.900" p="4" pb="0" size="md" textAlign="center">
+          <Heading flexGrow="0" color="gray.100" p="4" pb="0" size="md" textAlign="center">
             {t('panel')}
           </Heading>
         )}

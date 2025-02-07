@@ -91,10 +91,11 @@ export default function AdminContainer() {
           bg="white"
           isOpen={drawerMenuOpen}
           bodyProps={{ p: '0' }}
+          headerProps={{ bg: 'gray.700' }}
           placement="left"
           size="xs"
           title={t('menulabel')}
-          titleColor="brand.900"
+          titleColor="brand.50"
           onClose={() => setDrawerMenuOpen(false)}
         >
           <AdminSidebar routes={routes} onItemClick={handleItemClick} />
