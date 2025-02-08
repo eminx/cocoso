@@ -1,6 +1,16 @@
 import React from 'react';
-import { Button, Checkbox, Flex, Input, Select, Textarea, VStack } from '@chakra-ui/react';
+import {
+  Button,
+  Checkbox,
+  Flex,
+  FormLabel,
+  Input,
+  Select,
+  Textarea,
+  VStack,
+} from '@chakra-ui/react';
 import { Controller, useForm, Control, UseFormRegister } from 'react-hook-form';
+
 import Quill from './Quill';
 import FormField from './FormField';
 import { luxxStyle } from '../utils/constants/theme';
@@ -14,7 +24,7 @@ interface FormFieldItem {
   type: 'input' | 'textarea' | 'checkbox' | 'select' | 'quill';
   value: string;
   itemProps?: Record<string, any>;
-  placeholder?: string;
+  placeholder?: string | undefined;
   options?: Option[];
   helper?: string;
   label?: string;
@@ -53,7 +63,15 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
         />
       );
     case 'checkbox':
-      return <Checkbox size="lg" {...props} />;
+      return (
+        <Flex align="center" display="inline-flex" bg="white" borderRadius="md" p="1" pl="2">
+          <Checkbox size="lg" {...props}>
+            <FormLabel style={{ cursor: 'pointer', fontWeight: 'bold' }} mb="0">
+              {item.placeholder}
+            </FormLabel>
+          </Checkbox>
+        </Flex>
+      );
     case 'select':
       return (
         <Select {...props}>
@@ -87,6 +105,8 @@ export default function GenericEntryForm({
   const { control, handleSubmit, register } = useForm({
     defaultValues: defaultValues || undefined,
   });
+
+  console.log(defaultValues);
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>

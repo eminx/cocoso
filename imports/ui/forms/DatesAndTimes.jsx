@@ -28,7 +28,6 @@ export const emptyDateAndTime = {
   startTime: '08:00',
   endTime: '10:00',
   attendees: [],
-  capacity: defaultCapacity,
   isRange: false,
   conflict: null,
 };
@@ -65,26 +64,19 @@ function ConflictMarker({ occurrence, t }) {
   );
 }
 
-export default function DatesAndTimes({ ping = false, returnDatesAndTimes }) {
-  const [datesAndTimes, setDatesAndTimes] = useState([{ ...emptyDateAndTime }]);
+export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) {
   const [t] = useTranslation('activities');
-
-  useEffect(() => {
-    if (ping) {
-      returnDatesAndTimes(datesAndTimes);
-    }
-  }, [ping]);
 
   const addOccurrence = () => {
     const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
 
-    setDatesAndTimes(newDatesAndTimes);
+    onDatesAndTimesChange(newDatesAndTimes);
   };
 
   const removeOccurrence = (index) => {
     const newDatesAndTimes = datesAndTimes.filter((item, i) => i !== index);
 
-    setDatesAndTimes(newDatesAndTimes);
+    onDatesAndTimesChange(newDatesAndTimes);
   };
 
   const handleDateTimeChange = (date, occurrenceIndex) => {
@@ -95,7 +87,7 @@ export default function DatesAndTimes({ ping = false, returnDatesAndTimes }) {
       return item;
     });
 
-    setDatesAndTimes(newDatesAndTimes);
+    onDatesAndTimesChange(newDatesAndTimes);
   };
 
   const handleRangeSwitch = (event, occurrenceIndex) => {
@@ -111,7 +103,7 @@ export default function DatesAndTimes({ ping = false, returnDatesAndTimes }) {
       return item;
     });
 
-    setDatesAndTimes(newDatesAndTimes);
+    onDatesAndTimesChange(newDatesAndTimes);
   };
 
   const getBorderColor = (occurrence) => {

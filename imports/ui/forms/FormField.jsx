@@ -1,7 +1,8 @@
 import React from 'react';
 import { FormControl, FormLabel, FormErrorMessage, FormHelperText } from '@chakra-ui/react';
 
-function FormField({ children, errorMessage = null, helperText, label, ...otherProps }) {
+function FormField(props) {
+  const { children, errorMessage = null, helperText, label, ...otherProps } = props;
   return (
     <FormControl my="4" {...otherProps}>
       <FormLabel color="gray.800" fontWeight="bold" mb="0" requiredIndicator={'*'}>

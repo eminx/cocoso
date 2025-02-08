@@ -22,18 +22,36 @@ function validateLabel(label, host, resourceId) {
 // RESOURCE METHODS
 Meteor.methods({
   getResourcesFromAllHosts() {
+    const fields = Resources.publicFields;
     const sort = { createdAt: -1 };
-    return Resources.find({}, { sort }).fetch();
+    return Resources.find({}, { fields, sort }).fetch();
   },
 
-  getResources(host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getResources(hostPredefined) {
+    const host = hostPredefined || getHost(this);
 
+    const fields = Resources.publicFields;
     return Resources.find(
       { host },
       {
+        fields,
+        sort: { createdAt: -1 },
+      }
+    ).fetch();
+  },
+
+  getResourcesForBooking(hostPredefined) {
+    const host = hostPredefined || getHost(this);
+
+    return Resources.find(
+      { host, isBookable: true },
+      {
+        fields: {
+          _id: 1,
+          label: 1,
+          isCombo: 1,
+          resourcesForCombo: 1,
+        },
         sort: { createdAt: -1 },
       }
     ).fetch();

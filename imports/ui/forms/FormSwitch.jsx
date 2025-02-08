@@ -1,7 +1,8 @@
 import React from 'react';
 import { FormControl, FormLabel, Switch } from '@chakra-ui/react';
 
-function FormSwitch({ label, ...otherProps }) {
+function FormSwitch(props) {
+  const { label, ...otherProps } = props;
   return (
     <FormControl display="flex" alignItems="center">
       <Switch id={label} {...otherProps} />

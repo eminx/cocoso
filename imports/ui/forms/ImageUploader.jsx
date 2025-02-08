@@ -16,7 +16,7 @@ export default function ImageUploader({
   images = [],
   ping = false,
   uploadParam = 'genericEntryImageUpload',
-  returnUploadedImages,
+  onUploadedImages,
 }) {
   const [state, setState] = useState({
     preExistingImages: images,
@@ -35,7 +35,7 @@ export default function ImageUploader({
           return uploadedImage;
         })
       );
-      returnUploadedImages(imagesReadyToSave);
+      onUploadedImages(imagesReadyToSave);
     } catch (error) {
       console.log('Error uploading:', error);
       // message.error(error.reason);

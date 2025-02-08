@@ -36,7 +36,7 @@ message:
     empty: Nothing published just yet
     info: '{{ username }} have not been very active so far'
   access:
-    contributor: You have to become a cocreator to {{ action }}
+    contributor: You have to be verified to {{ action }}
   guest: You have to create an account to launch your market
   usage:
     noUsage: No usage is recorded for this user

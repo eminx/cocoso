@@ -62,6 +62,7 @@ Activities.schema = new SimpleSchema({
   isSentForReview: { type: Boolean },
   isPublicActivity: { type: Boolean, optional: true },
   isRegistrationDisabled: { type: Boolean, optional: true },
+  isRegistrationEnabled: { type: Boolean, optional: true, defaultValue: true },
   isPublished: { type: Boolean },
 
   groupId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },

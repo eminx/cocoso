@@ -5,14 +5,24 @@ label:
   next: Nästa aktivitet
 
 form:
-  switch:
-    public: Offentligt evenemang
-    exclusive: Exklusiv aktivitet (Andra kan inte boka samma tid)
-    rsvp: Bokning aktiverad (Människor kan boka sig/OSA för att delta i händelsen/händelserna)
+  title:
+    label: Titel
+    helper: Ange ett namn på din aktivitet eller bokning
+    holder: Ange en titel
+  subtitle:
+    label: Undertitel
+    helper: Exempelvis artistnamn, eller en undertitel…
+    holder: Ange en undertitel
+  description:
+    label: Beskrivning
+    helper: Lägg till en beskrivning av din aktivitet eller bokning
+  image:
+    label: Bilder
+    helper: Välj en eller flera bilder som du vill ska representera ditt evenemang
   resource:
-    label: '{{ resources }}'
-    holder: Välj
+    label: Resurs
     helper: Välj den resurs du vill boka
+    holder: Välj
   occurrences:
     label: Tid och datum
     helper: Lägg in start och sluttid för din bokning eller ditt publika evenemang. Vill du skapa flera identiska bokningar eller evenemang som sker vid upprepade tillfällen klickar du på + tecknet.
@@ -30,28 +40,22 @@ form:
     label: Kapacitet
   details:
     label: Ange detaljer
-  title:
-    label: Titel
-    holder: Ange en titel
-    helper: Ange ett namn på din aktivitet eller bokning
-  subtitle:
-    label: Undertitel
-    holder: Ange en undertitel
-    helper: Exempelvis artistnamn, eller en undertitel…
-  description:
-    label: Beskrivning
-    helper: Lägg till en beskrivning av din aktivitet eller bokning
   place:
     label: Plats
-    holder: Artistosphere
     helper: Ange namnet platsen där ditt evenemang kommer äga rum (ej obligatoriskt)
+    holder: Artistosphere
   address:
     label: Adress
-    holder: 17th Street, Berlin...
     helper: Ange adressen till den plats där ditt evenemang kommer äga rum (ej obligatoriskt)
-  image:
-    label: Bilder ({{ count }})
-    helper: Välj en eller flera bilder som du vill ska representera ditt evenemang
+    holder: 17th Street, Berlin...
+  rsvp:
+    label: Registration (RSVP) Enabled
+    helper: Om det väljs kan personer registrera sig/RSVP för att delta i händelsen/händelserna
+    holder: Välj
+  exclusive:
+    label: Exklusiv aktivitet (för att undvika konflikter)
+    helper: Om det väljs kan andra verifierade användare inte boka samma resurs inom samma datum och tid
+    holder: Välj
   submit: Bekräfta och Skapa
   waiting: Skapar din aktivitet...
   conflict:

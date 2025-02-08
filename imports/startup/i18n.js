@@ -49,7 +49,7 @@ const options = {
     loadPath,
     parse: (data) => yaml.load(data),
   },
-  debug: true,
+  debug: false,
   defaultNS: 'common',
   fallbackLng: 'en',
   lng: defaultLang,

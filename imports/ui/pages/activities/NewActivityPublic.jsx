@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Heading } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import { useTranslation } from 'react-i18next';
+import AutoCompleteSelect from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 import { Alert, message } from '../../generic/message';
 import { call } from '../../utils/shared';
@@ -14,39 +16,26 @@ import DatesAndTimes from '../../forms/DatesAndTimes';
 import publicActivityFormFields from './publicActivityFormFields';
 import { emptyDateAndTime } from '../../forms/DatesAndTimes';
 
+const animatedComponents = makeAnimated();
 const defaultCapacity = 40;
+const maxAttendees = 1000;
 
-const resourceOptions = [
-  {
-    label: 'Studio',
-    value: '621063945278965636723456',
-  },
-  {
-    label: 'Office',
-    value: '621063923132132131223456',
-  },
-];
-
-const emptyFormValues = {
+export const emptyFormValues = {
   title: '',
   subTitle: '',
   longDescription: '',
-  resources: [],
   place: '',
   address: '',
-  capacity: defaultCapacity,
-  isPublicActivity: true,
-  isRegistrationDisabled: false,
+  // capacity: defaultCapacity,
+  isRegistrationEnabled: true,
 };
 
 export default function NewActivityPublic() {
   const [state, setState] = useState({
-    datesAndTimes: [],
+    datesAndTimes: [emptyDateAndTime],
     formValues: emptyFormValues,
+    selectedResource: null,
     isCreating: false,
-    isError: true,
-    isReady: false,
-    isCheckingForm: false,
     isSendingForm: false,
     isSuccess: false,
     isUploadingImages: false,
@@ -56,24 +45,10 @@ export default function NewActivityPublic() {
   const navigate = useNavigate();
   const [t] = useTranslation('activities');
   const [tc] = useTranslation('common');
-  const { canCreateContent, currentUser } = useContext(StateContext);
-
-  if (!currentUser || !canCreateContent) {
-    return (
-      <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        <Alert
-          message={tc('message.access.contributor', {
-            domain: 'an activity',
-          })}
-          type="error"
-        />
-      </div>
-    );
-  }
 
   const getData = async () => {
     try {
-      const resources = await call('getResources');
+      const resources = await call('getResourcesForBooking');
       setState((prevState) => ({
         ...prevState,
         resources,
@@ -102,20 +77,27 @@ export default function NewActivityPublic() {
   };
 
   useEffect(() => {
-    if (state.isCheckingForm) {
-      if (!isFormValid()) {
-        message.error(t('form.error'));
-        return;
-      }
-      setState((prevState) => ({
-        ...prevState,
-        isCheckingForm: false,
-        isUploadingImages: true,
-      }));
+    if (!state.isCreating) {
+      return;
     }
-  }, [state.isCheckingForm]);
+    console.log('iscreating', state.isCreating);
+    // if (!isFormValid()) {
+    //   message.error(t('form.error'));
+    //   setState((prevState) => ({
+    //     ...prevState,
+    //     isCreating: false,
+    //   }));
+    //   return;
+    // }
+    setState((prevState) => ({
+      ...prevState,
+      isUploadingImages: true,
+    }));
+  }, [state.isCreating]);
 
   const handleSubmit = (formValues) => {
+    console.log('formValues', formValues);
+    return;
     if (!isFormValid()) {
       // message.error(t('form.error'));
       return;
@@ -124,31 +106,33 @@ export default function NewActivityPublic() {
       ...prevState,
       formValues,
       isCreating: true,
-      isCheckingForm: true,
     }));
   };
 
-  const returnDatesAndTimes = (datesAndTimes) => {
-    console.log('datesAndTimes', datesAndTimes);
+  const handleDatesAndTimesChange = (datesAndTimes) => {
     setState((prevState) => ({
       ...prevState,
       datesAndTimes,
     }));
   };
 
-  const createActivity = async (images) => {
-    const { datesAndTimes } = state;
-    if (!datesAndTimes || !datesAndTimes.length) {
-      return;
-    }
+  const handleSelectResource = (selectedResource) => {
+    console.log('selectedResource', selectedResource);
+    setState((prevState) => ({
+      ...prevState,
+      selectedResource,
+    }));
+  };
 
+  const createActivity = async (images) => {
     console.log('creating');
 
     try {
       const newEntryId = await call('createActivity', {
         ...state.formValues,
-        datesAndTimes,
+        datesAndTimes: state.datesAndTimes,
         images,
+        isPublicActivity: true,
       });
       console.log('created', newEntryId);
       // message.success(t('form.success'));
@@ -158,7 +142,7 @@ export default function NewActivityPublic() {
     }
   };
 
-  const returnUploadedImages = (images) => {
+  const handleUploadedImages = (images) => {
     setState((prevState) => ({
       ...prevState,
       isUploadingImages: false,
@@ -182,13 +166,31 @@ export default function NewActivityPublic() {
 
       <GenericEntryForm
         childrenIndex={2}
-        formFields={publicActivityFormFields(resourceOptions, t)}
+        defaultValues={emptyFormValues}
+        formFields={publicActivityFormFields(t)}
         onSubmit={handleSubmit}
       >
-        <FormField helperText="Select the images for this entry" label="Images">
-          <ImageUploader
-            ping={state.isUploadingImages}
-            returnUploadedImages={returnUploadedImages}
+        <FormField helperText={t('form.image.helper')} label={t('form.image.label')}>
+          <ImageUploader ping={state.isUploadingImages} onUploadedImages={handleUploadedImages} />
+        </FormField>
+
+        <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')}>
+          <AutoCompleteSelect
+            isClearable
+            onChange={handleSelectResource}
+            components={animatedComponents}
+            options={state.resources}
+            placeholder={t('form.resource.holder')}
+            style={{ width: '100%', marginTop: '1rem' }}
+            styles={{
+              option: (styles, { data }) => ({
+                ...styles,
+                fontWeight: data.isCombo ? 'bold' : 'normal',
+                'content:after': data.isCombo ? ' (combo)' : '',
+              }),
+            }}
+            value={state.selectedResource}
+            getOptionValue={(option) => option._id}
           />
         </FormField>
 
@@ -196,7 +198,10 @@ export default function NewActivityPublic() {
           helperText="Select the dates and time. Click + for more occurrences"
           label="Date and Time"
         >
-          <DatesAndTimes ping={state.isCreating} returnDatesAndTimes={returnDatesAndTimes} />
+          <DatesAndTimes
+            datesAndTimes={state.datesAndTimes}
+            onDatesAndTimesChange={handleDatesAndTimesChange}
+          />
         </FormField>
       </GenericEntryForm>
     </>

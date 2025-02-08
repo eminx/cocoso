@@ -5,12 +5,22 @@ label:
   next: Next Activity
 
 form:
-  switch:
-    public: Public Event
-    exclusive: Exclusive Activity (Others cannot book within the same date & time)
-    rsvp: Registration enabled (People can register/RSVP to attend the occurrence(s) of the event)
+  title:
+    label: Title
+    holder: Give it a title
+    helper: This is typically the title of your booking to appear publicly
+  subtitle:
+    label: Subtitle
+    holder: Give it a subtitle (artist name etc.)
+    helper: i.e. artist, or some subtitle...
+  description:
+    label: Description
+    helper: Please provide a detailed description that will be helpful for others to know
+  image:
+    label: Images
+    helper: To represent the event, please choose an image or a set of images from the gallery in your device or a photo you will take now. At least one is required.
   resource:
-    label: '{{ resources }}'
+    label: Resource
     holder: Select
     helper: Select an item that you want to book, to appear in the calendar
   occurrences:
@@ -30,17 +40,6 @@ form:
     label: Capacity
   details:
     label: Enter Details
-  title:
-    label: Title
-    holder: Give it a title
-    helper: This is typically the title of your booking to appear publicly
-  subtitle:
-    label: Subtitle
-    holder: Give it a subtitle (artist name etc.)
-    helper: i.e. artist, or some subtitle...
-  description:
-    label: Description
-    helper: Please provide a detailed description that will be helpful for others to know
   place:
     label: Place
     holder: Artistosphere
@@ -49,9 +48,14 @@ form:
     label: Address
     holder: 17th Street, Berlin...
     helper: Optionally, enter the detailed address of the place where the event will take place
-  image:
-    label: Images ({{ count }})
-    helper: To represent the event, please choose an image or a set of images from the gallery in your device or a photo you will take now. At least one is required.
+  rsvp:
+    label: Registration (RSVP) Enabled
+    helper: If selected, people can register/RSVP to attend the occurrence(s) of the event
+    holder: Select
+  exclusive:
+    label: Exclusive Activity (to prevent conflicts)
+    helper: If selected, other verified users cannot book the same resource within the same date & time
+    holder: Select
   submit: 'Confirm and Create'
   waiting: 'Creating your booking...'
   conflict:

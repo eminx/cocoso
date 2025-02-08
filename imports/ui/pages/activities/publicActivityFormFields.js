@@ -1,10 +1,9 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 
-const publicActivityFormFields = (resourceOptions, t) => [
+const publicActivityFormFields = (t) => [
   {
-    helper: <Trans i18nKey="activities:form.title.helper" />,
-    label: <Trans i18nKey="activities:form.title.label" />,
+    helper: t('form.title.helper'),
+    label: t('form.title.label'),
     placeholder: t('form.title.holder'),
     type: 'input',
     value: 'title',
@@ -13,50 +12,48 @@ const publicActivityFormFields = (resourceOptions, t) => [
     },
   },
   {
-    helper: <Trans i18nKey="activities:form.subtitle.helper" />,
-    label: <Trans i18nKey="activities:form.subtitle.label" />,
+    helper: t('form.subtitle.helper'),
+    label: t('form.subtitle.label'),
     placeholder: t('form.subtitle.holder'),
     type: 'input',
     value: 'subTitle',
   },
   {
-    helper: <Trans i18nKey="activities:form.resource.helper" />,
-    label: <Trans i18nKey="activities:form.resource.label" />,
-    placeholder: t('form.resource.holder'),
-    type: 'select',
-    value: 'resourceId',
-    options: resourceOptions,
-  },
-  {
-    helper: <Trans i18nKey="activities:form.description.helper" />,
-    label: <Trans i18nKey="activities:form.description.label" />,
+    helper: t('form.description.helper'),
+    label: t('form.description.label'),
     type: 'quill',
     value: 'longDescription',
     placeholder: t('form.description.holder'),
   },
   {
-    helper: <Trans i18nKey="activities:form.place.helper" />,
-    label: <Trans i18nKey="activities:form.place.label" />,
+    helper: t('form.place.helper'),
+    label: t('form.place.label'),
     type: 'input',
-    value: 'isRegistrationDisabled',
+    value: 'place',
     placeholder: t('form.place.holder'),
   },
 
   {
-    helper: <Trans i18nKey="activities:form.address.helper" />,
-    label: <Trans i18nKey="activities:form.address.label" />,
+    helper: t('form.address.helper'),
+    label: t('form.address.label'),
     type: 'textarea',
     value: 'address',
     placeholder: t('form.address.holder'),
   },
+  {
+    helper: t('form.rsvp.helper'),
+    label: t('form.rsvp.label'),
+    type: 'checkbox',
+    placeholder: t('form.rsvp.holder'),
+    value: 'isRegistrationEnabled',
+  },
+  {
+    helper: t('form.exclusive.helper'),
+    label: t('form.exclusive.label'),
+    type: 'checkbox',
+    placeholder: t('form.exclusive.holder'),
+    value: 'isExclusiveActivity',
+  },
 ];
-
-// {
-//   helper: <Trans i18nKey="activities:form.place.helper" />,
-//   label: <Trans i18nKey="activities:form.place.label" />,
-//   type: 'checkbox',
-//   value: 'isRegistrationDisabled',
-//   placeholder: t('form.place.holder'),
-// },
 
 export default publicActivityFormFields;

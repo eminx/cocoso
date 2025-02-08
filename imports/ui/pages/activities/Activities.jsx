@@ -13,7 +13,7 @@ export default function Activities() {
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
   const [activities, setActivities] = useState(initialActivities);
-  let { currentHost } = useContext(StateContext);
+  let { currentHost, canCreateContent } = useContext(StateContext);
   const [searchParams] = useSearchParams();
 
   const showPast = searchParams.get('showPast') === 'true';
@@ -51,7 +51,7 @@ export default function Activities() {
     <>
       <ActivitiesHybrid activities={activities} Host={currentHost} showPast={showPast} />
 
-      <NewEntryHandler isOpen={false} title="Create a Public Event" onClose={() => {}}>
+      <NewEntryHandler title="Create a Public Event" onClose={() => {}}>
         <NewActivityPublic />
       </NewEntryHandler>
     </>

@@ -31,7 +31,7 @@ function DatePicker({ disabledDate, label, value, onChange }) {
         disabledDate={disabledDate ? (date) => date && date < dayjs(disabledDate) : null}
         size="large"
         value={dayjs(value, 'YYYY-MM-DD')}
-        style={{ zIndex: 1500 }}
+        // style={{ zIndex: 1500 }}
         onChange={onChange}
       />
     </Box>
@@ -47,7 +47,7 @@ function TimePicker({ label, value, onChange }) {
         minuteStep={5}
         size="large"
         value={dayjs(value, 'HH:mm')}
-        style={{ zIndex: 1500 }}
+        // style={{ zIndex: 1500 }}
         onChange={onChange}
       />
     </Box>
@@ -111,7 +111,7 @@ export default function DateTimePicker({ value, onChange }) {
 
   return (
     <Box w="100%" py="2">
-      <ConfigProvider locale={locale} theme={antTheme}>
+      <ConfigProvider locale={locale}>
         <Flex>
           <Box w="170px" mr="2">
             <DatePicker
