@@ -20,10 +20,8 @@ tabs:
 form:
   private:
     label: Privat (endast för inbjudningar)
-    tooltip:
-      title: Privata objekt
-      P1: Privata grouper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
-      P2: Du kommer hantera inbjudningarna efter att du har skapat objektet.
+    helper: Privata grouper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den. Du kommer hantera inbjudningarna efter att du har skapat objektet.
+    holder: Välj
   title:
     label: Titel
     holder: Att förstå Benjamin

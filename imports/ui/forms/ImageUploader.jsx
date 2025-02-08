@@ -14,6 +14,7 @@ const thumbStyle = (backgroundImage) => ({
 
 export default function ImageUploader({
   images = [],
+  isMultiple = true,
   ping = false,
   uploadParam = 'genericEntryImageUpload',
   onUploadedImages,
@@ -137,7 +138,7 @@ export default function ImageUploader({
           </SortableList>
         </Box>
       </Center>
-      <FileDropper setUploadableImage={setUploadableImages} isMultiple />
+      <FileDropper setUploadableImage={setUploadableImages} isMultiple={isMultiple} />
     </>
   );
 }

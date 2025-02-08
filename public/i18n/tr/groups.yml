@@ -20,10 +20,8 @@ tabs:
 form:
   private:
     label: Gizli (sadece davet ile)
-    tooltip:
-      title: Gizli Süreçler
-      P1: Gizli süreçleri sadece üyeleri görebilir ve katılım sadece süreç adminlerinin daveti ile mümkündür. Oluşturduktan sonra onu herkese açık olarak değiştiremezsin.
-      P2: Süreci oluşturduktan sonra davetleri yönetebileceksin.
+    helper: Gizli süreçleri sadece üyeleri görebilir ve katılım sadece süreç adminlerinin daveti ile mümkündür. Oluşturduktan sonra onu herkese açık olarak değiştiremezsin. Süreci oluşturduktan sonra davetleri yönetebileceksin.
+    holder: Seç
   title:
     label: Başlık
     holder: Benjamin'i Anlamak...

@@ -20,10 +20,8 @@ tabs:
 form:
   private:
     label: Private (invite-only)
-    tooltip:
-      title: Private Groups
-      P1: Private groups are only visible by their members, and participation is possible only via invites by their admins. You can not change it to public after you've created it.
-      P2: You will be able to manage the invites after you create the group.
+    helper: Private groups are only visible by their members, and participation is possible only via invites by their admins. You can not change it to public after you've created it. You will be able to manage the invites after you create the group.
+    holder: Select
   title:
     label: Title
     holder: Understanding Benjamin

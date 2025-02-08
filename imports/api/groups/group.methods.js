@@ -170,7 +170,7 @@ Meteor.methods({
     }
   },
 
-  createGroup(formValues, imageUrl, isPrivate = false) {
+  createGroup(formValues) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -183,15 +183,13 @@ Meteor.methods({
 
     try {
       const newGroupId = Groups.insert({
+        ...formValues,
         host,
         authorId: user._id,
         authorUsername: user.username,
         authorAvatar: userAvatar,
-        title: formValues.title,
-        description: formValues.description,
-        readingMaterial: formValues.readingMaterial,
-        imageUrl,
-        capacity: formValues.capacity,
+        documents: [],
+        isPublished: true,
         members: [
           {
             avatar: userAvatar,
@@ -201,8 +199,6 @@ Meteor.methods({
             username: user.username,
           },
         ],
-        isPublished: true,
-        isPrivate,
         creationDate: new Date(),
       });
 

@@ -81,15 +81,6 @@ export default function NewActivityPublic() {
     if (!state.isCreating) {
       return;
     }
-    console.log('iscreating', state.isCreating);
-    // if (!isFormValid()) {
-    //   message.error(t('form.error'));
-    //   setState((prevState) => ({
-    //     ...prevState,
-    //     isCreating: false,
-    //   }));
-    //   return;
-    // }
     setState((prevState) => ({
       ...prevState,
       isUploadingImages: true,
@@ -97,8 +88,6 @@ export default function NewActivityPublic() {
   }, [state.isCreating]);
 
   const handleSubmit = (formValues) => {
-    console.log('formValues', formValues);
-    return;
     if (!isFormValid()) {
       // message.error(t('form.error'));
       return;
@@ -111,7 +100,6 @@ export default function NewActivityPublic() {
   };
 
   const handleDatesAndTimesChange = (datesAndTimes) => {
-    console.log(datesAndTimes);
     setState((prevState) => ({
       ...prevState,
       datesAndTimes,
@@ -119,7 +107,6 @@ export default function NewActivityPublic() {
   };
 
   const handleSelectResource = (selectedResource) => {
-    console.log('selectedResource', selectedResource);
     setState((prevState) => ({
       ...prevState,
       selectedResource,
@@ -127,8 +114,6 @@ export default function NewActivityPublic() {
   };
 
   const createActivity = async (images) => {
-    console.log('creating');
-
     try {
       const newEntryId = await call('createActivity', {
         ...state.formValues,
@@ -136,7 +121,6 @@ export default function NewActivityPublic() {
         images,
         isPublicActivity: true,
       });
-      console.log('created', newEntryId);
       // message.success(t('form.success'));
       navigate(`/activities/${newEntryId}`);
     } catch (error) {
@@ -151,14 +135,8 @@ export default function NewActivityPublic() {
       isSendingForm: true,
     }));
 
-    console.log('images', images);
-
     createActivity(images);
   };
-
-  // if (!resources || !resources.length) {
-  //   return null;
-  // }
 
   return (
     <>

@@ -4,6 +4,8 @@ import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
 import GroupsHybrid from '../../listing/GroupsHybrid';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import NewGroup from './NewGroup';
 
 export default function Groups() {
   const initialGroups = window?.__PRELOADED_STATE__?.groups || [];
@@ -36,5 +38,12 @@ export default function Groups() {
     return null;
   }
 
-  return <GroupsHybrid groups={groups} Host={currentHost} />;
+  return (
+    <>
+      <GroupsHybrid groups={groups} Host={currentHost} />
+      <NewEntryHandler title="Create a Group">
+        <NewGroup />
+      </NewEntryHandler>
+    </>
+  );
 }

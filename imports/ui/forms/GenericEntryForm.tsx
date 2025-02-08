@@ -1,10 +1,13 @@
 import React from 'react';
 import {
+  Box,
   Button,
   Checkbox,
   Flex,
   FormLabel,
   Input,
+  NumberInput,
+  NumberInputField,
   Select,
   Textarea,
   VStack,
@@ -21,7 +24,7 @@ interface Option {
 }
 
 interface FormFieldItem {
-  type: 'input' | 'textarea' | 'checkbox' | 'select' | 'quill';
+  type: 'input' | 'textarea' | 'checkbox' | 'select' | 'quill' | 'number';
   value: string;
   itemProps?: Record<string, any>;
   placeholder?: string | undefined;
@@ -82,6 +85,12 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
           ))}
         </Select>
       );
+    case 'number':
+      return (
+        <NumberInput>
+          <NumberInputField {...props} />
+        </NumberInput>
+      );
     case 'quill':
       return (
         <Controller
@@ -106,18 +115,16 @@ export default function GenericEntryForm({
     defaultValues: defaultValues || undefined,
   });
 
-  console.log(defaultValues);
-
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <VStack>
         {formFields.map((item, index) => (
-          <>
+          <Box key={item.value} w="100%">
             {index === childrenIndex && children}
-            <FormField key={item.value} helperText={item.helper} label={item.label}>
+            <FormField helperText={item.helper} label={item.label}>
               <FieldItemHandler control={control} item={item} register={register} />
             </FormField>
-          </>
+          </Box>
         ))}
       </VStack>
 
