@@ -40,15 +40,16 @@ Meteor.methods({
     ).fetch();
   },
 
-  getResourcesForBooking(hostPredefined) {
+  getResourcesDry(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     return Resources.find(
-      { host, isBookable: true },
+      { host },
       {
         fields: {
           _id: 1,
           label: 1,
+          isBookable: 1,
           isCombo: 1,
           resourcesForCombo: 1,
         },
@@ -103,7 +104,6 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
-    const resourceIndex = Resources.find({ host }).count();
     if (!isAdmin(user, currentHost) || !validateLabel(values.label, host)) {
       return 'Not valid user or label!';
     }
@@ -113,7 +113,6 @@ Meteor.methods({
           ...values,
           host,
           userId: user._id,
-          resourceIndex,
           createdBy: user.username,
           createdAt: new Date(),
         },

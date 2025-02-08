@@ -92,14 +92,11 @@ function Header({ author, backLink, subTitle, tags, title }) {
           )}
           {tags && tags.length > 0 && (
             <Wrap flexGrow="0" justify={author ? 'flex-start' : 'center'} mt="4">
-              {tags.map(
-                (tag) =>
-                  tag && (
-                    <Badge key={tag} bg="gray.50" color="gray.800" fontSize="14px">
-                      {tag}
-                    </Badge>
-                  )
-              )}
+              {tags.map((tag) => (
+                <Badge key={tag} bg="gray.50" color="gray.800" fontSize="14px">
+                  {tag}
+                </Badge>
+              ))}
             </Wrap>
           )}
         </Box>

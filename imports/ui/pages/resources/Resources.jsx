@@ -4,6 +4,8 @@ import { StateContext } from '../../LayoutContainer';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import ResourcesHybrid from '../../listing/ResourcesHybrid';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import NewResource from './NewResource';
 
 export default function Resources() {
   const initialResources = window?.__PRELOADED_STATE__?.resources || [];
@@ -38,5 +40,12 @@ export default function Resources() {
     return null;
   }
 
-  return <ResourcesHybrid Host={currentHost} resources={resources} />;
+  return (
+    <>
+      <ResourcesHybrid Host={currentHost} resources={resources} />
+      <NewEntryHandler title="Create a Resources">
+        <NewResource />
+      </NewEntryHandler>
+    </>
+  );
 }

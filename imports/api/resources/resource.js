@@ -23,9 +23,8 @@ Resources.schema = new SimpleSchema({
   images: { type: Array, optional: true },
   'images.$': { type: String },
 
-  isCombo: { type: Boolean, optional: true },
-  isBookable: { type: Boolean, optional: true },
-  resourceIndex: { type: SimpleSchema.Integer },
+  isCombo: { type: Boolean, defaultValue: false },
+  isBookable: { type: Boolean, defaultValue: true },
 
   resourcesForCombo: { type: Array, defaultValue: [] },
   'resourcesForCombo.$': {
@@ -33,7 +32,6 @@ Resources.schema = new SimpleSchema({
       _id: { type: String },
       label: { type: String },
       description: { type: String, optional: true },
-      resourceIndex: { type: SimpleSchema.Integer },
     }),
     optional: true,
   },
@@ -54,7 +52,6 @@ Resources.publicFields = {
   isBookable: 1,
   isCombo: 1,
   resourcesForCombo: 1,
-  resourceIndex: 1,
   createdAt: 1,
   userId: 1,
 };

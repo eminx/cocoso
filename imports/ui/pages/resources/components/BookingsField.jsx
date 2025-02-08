@@ -121,7 +121,6 @@ export default function BookingsField({ currentUser, selectedResource }) {
       longDescription: values.description,
       resource: selectedResource.label,
       resourceId: selectedResource._id,
-      resourceIndex: selectedResource.resourceIndex,
       datesAndTimes: [
         {
           startDate: values.startDate,

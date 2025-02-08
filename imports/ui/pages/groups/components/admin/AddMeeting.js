@@ -213,7 +213,6 @@ export default function AddMeeting({ onClose }) {
         ...newMeeting,
         resource: resourceLabel,
         resourceId: selectedResource ? selectedResource._id : null,
-        resourceIndex: selectedResource ? selectedResource.resourceIndex : null,
       },
     });
   };
@@ -241,7 +240,6 @@ export default function AddMeeting({ onClose }) {
       images: [group.imageUrl],
       resource: newMeeting.resource,
       resourceId: newMeeting.resourceId,
-      resourceIndex: newMeeting.resourceIndex,
       datesAndTimes: [
         {
           startDate: newMeeting.startDate,

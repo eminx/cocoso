@@ -20,9 +20,8 @@ Activities.schema = new SimpleSchema({
   imageUrl: { type: String, optional: true },
   images: { type: Array, optional: true },
   'images.$': { type: String },
-  resourceId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
   resource: { type: String, optional: true },
-  resourceIndex: { type: SimpleSchema.Integer, optional: true },
+  resourceId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
 
   address: { type: String, optional: true },
   capacity: { type: SimpleSchema.Integer, defaultValue: 20 },
@@ -39,7 +38,7 @@ Activities.schema = new SimpleSchema({
     conflict: { type: String, optional: true },
 
     resource: { type: String, optional: true },
-    resourceIndex: { type: SimpleSchema.Integer, optional: true },
+    resourceId: { type: String, optional: true },
 
     attendees: { type: Array, optional: true },
     'attendees.$': {

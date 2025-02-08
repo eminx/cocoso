@@ -202,7 +202,7 @@ export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) 
           </Box>
         );
       })}
-      <Center bg="white" p="6">
+      <Center bg="white" borderRadius="lg" p="6">
         <IconButton bg="gray.700" size="lg" onClick={addOccurrence} icon={<AddIcon />} />
       </Center>
     </Box>

@@ -47,12 +47,12 @@ export default function NewActivityPublic() {
   const [t] = useTranslation('activities');
   const [tc] = useTranslation('common');
 
-  const getData = async () => {
+  const getResouces = async () => {
     try {
-      const resources = await call('getResourcesForBooking');
+      const resources = await call('getResourcesDry');
       setState((prevState) => ({
         ...prevState,
-        resources,
+        resources: resources.filter((r) => r.isBookable),
       }));
     } catch (error) {
       console.log(error);
@@ -60,7 +60,7 @@ export default function NewActivityPublic() {
   };
 
   useEffect(() => {
-    getData();
+    getResouces();
   }, []);
 
   const isFormValid = () => {

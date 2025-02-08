@@ -10,9 +10,8 @@ messages:
 form:
   holder: skriv
   bookable:
-    switch:
-      label: Bokningsbart
-      helper: Aktivera detta om du vill att objektet ska kunna bokas i kalendern
+    label: Bokningsbart
+    helper: Aktivera detta om du vill att objektet ska kunna bokas i kalendern
   combo:
     switch:
       label: Combo
@@ -28,9 +27,8 @@ form:
     label: Beskrivning
     holder: Att använda studion kräver omsorg ...
     helper: Ange en beskrivning av den post du skapar. Detta kan till exempel inkludera villkoren för användningen av en resurs, detaljer om hur den fungerar och hur den ska hanteras och överlämnas… (ej obligatoriskt)
-
-  images:
-    label: Bilder ({{ count }})
+  image:
+    label: Bilder
     helper: Välj en eller fler bilder
 
 tabs:

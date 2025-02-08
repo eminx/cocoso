@@ -164,7 +164,6 @@ function ResourceForm({ defaultValues, isEditMode }) {
       _id: r._id,
       label: r.label,
       description: r.description,
-      resourceIndex: r.resourceIndex,
     }));
 
   return (

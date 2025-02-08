@@ -154,7 +154,6 @@ function parseAllBookingsWithResources(activities, resources) {
             isWithComboResource: true,
             resource: resourceForCombo.label,
             resourceId: resourceForCombo._id,
-            resourceIndex: resourceForCombo.resourceIndex,
             comboResource: activity.resource,
             comboResourceId: resourceSelected._id,
           });
@@ -168,7 +167,6 @@ function parseAllBookingsWithResources(activities, resources) {
           isWithComboResource: false,
           resource: resourceSelected.label,
           resourceId: resourceSelected._id,
-          resourceIndex: resourceSelected.resourceIndex,
         });
       }
     });
