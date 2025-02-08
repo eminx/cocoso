@@ -14,7 +14,7 @@ const thumbStyle = (backgroundImage) => ({
 
 export default function ImageUploader({
   images = [],
-  startUpload = false,
+  ping = false,
   uploadParam = 'genericEntryImageUpload',
   returnUploadedImages,
 }) {
@@ -36,23 +36,17 @@ export default function ImageUploader({
         })
       );
       returnUploadedImages(imagesReadyToSave);
-      // createActivity(imagesReadyToSave, newFormValues);
     } catch (error) {
       console.log('Error uploading:', error);
       // message.error(error.reason);
-      // setState((prevState) => ({
-      //   ...prevState,
-      //   isCreating: false,
-      //   isError: true,
-      // }));
     }
   };
 
   useEffect(() => {
-    if (startUpload) {
+    if (ping) {
       uploadImages();
     }
-  }, [startUpload]);
+  }, [ping]);
 
   const setUploadableImages = (files) => {
     files.forEach((uploadableImage) => {

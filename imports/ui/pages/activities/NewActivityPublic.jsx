@@ -1,112 +1,61 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Heading } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import { useTranslation } from 'react-i18next';
 
 import { Alert, message } from '../../generic/message';
-import {
-  call,
-  compareDatesWithStartDateForSort,
-  parseAllBookingsWithResources,
-} from '../../utils/shared';
+import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import GenericEntryForm from '../../forms/GenericEntryForm';
-import ImageUploader from '../../forms/ImageUploadUI';
+import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
+import DatesAndTimes from '../../forms/DatesAndTimes';
+import publicActivityFormFields from './publicActivityFormFields';
+import { emptyDateAndTime } from '../../forms/DatesAndTimes';
 
 const defaultCapacity = 40;
 
-const today = new Date().toISOString().substring(0, 10);
-
-const emptyDateAndTime = {
-  startDate: today,
-  endDate: today,
-  startTime: '08:00',
-  endTime: '10:00',
-  attendees: [],
-  capacity: defaultCapacity,
-  isRange: false,
-  conflict: null,
-};
-
-const publicActivityFormFields = [
+const resourceOptions = [
   {
-    label: 'Title',
-    type: 'input',
-    helper: 'enter title',
-    value: 'title',
-    placeholder: 'title...',
+    label: 'Studio',
+    value: '621063945278965636723456',
   },
   {
-    label: 'Subtitle',
-    type: 'input',
-    helper: 'enter title',
-    value: 'subTitle',
-    placeholder: 'sub title...',
-  },
-  'pass',
-  {
-    label: 'Resource',
-    type: 'select',
-    helper: 'select a resource',
-    value: 'resourceId',
-    placeholder: 'resource...',
-    options: [
-      {
-        label: 'Studio',
-        value: '621063945278965636723456',
-      },
-      {
-        label: 'Office',
-        value: '621063923132132131223456',
-      },
-    ],
-  },
-  {
-    label: 'Description',
-    type: 'quill',
-    helper: 'Enter description',
-    value: 'longDescription',
-    placeholder: 'long long text',
-  },
-  {
-    label: 'People can rsvp',
-    type: 'checkbox',
-    helper: 'Check if people can register to event',
-    value: 'isRegistrationDisabled',
-  },
-  {
-    label: 'Location',
-    type: 'textarea',
-    helper: 'Enter location',
-    value: 'location',
-    placeholder: 'location...',
-  },
-  {
-    label: 'Address',
-    type: 'textarea',
-    helper: 'Enter address',
-    value: 'address',
-    placeholder: 'address...',
+    label: 'Office',
+    value: '621063923132132131223456',
   },
 ];
 
+const emptyFormValues = {
+  title: '',
+  subTitle: '',
+  longDescription: '',
+  resources: [],
+  place: '',
+  address: '',
+  capacity: defaultCapacity,
+  isPublicActivity: true,
+  isRegistrationDisabled: false,
+};
+
 export default function NewActivityPublic() {
   const [state, setState] = useState({
-    allBookings: [],
-    uploadingImages: false,
-    selectedResource: null,
-    isError: false,
-    resources: [],
+    datesAndTimes: [],
+    formValues: emptyFormValues,
+    isCreating: false,
+    isError: true,
     isReady: false,
+    isCheckingForm: false,
+    isSendingForm: false,
+    isSuccess: false,
+    isUploadingImages: false,
+    resources: [],
   });
 
   const navigate = useNavigate();
   const [t] = useTranslation('activities');
   const [tc] = useTranslation('common');
-  const location = useLocation();
-  const { search } = location;
   const { canCreateContent, currentUser } = useContext(StateContext);
 
   if (!currentUser || !canCreateContent) {
@@ -122,16 +71,11 @@ export default function NewActivityPublic() {
     );
   }
 
-  const { selectedResource } = state;
-
   const getData = async () => {
     try {
       const resources = await call('getResources');
-      const allActivities = await call('getAllActivities');
-      const allBookings = parseAllBookingsWithResources(allActivities, resources);
       setState((prevState) => ({
         ...prevState,
-        allBookings,
         resources,
       }));
     } catch (error) {
@@ -142,96 +86,6 @@ export default function NewActivityPublic() {
   useEffect(() => {
     getData();
   }, []);
-
-  const { allBookings, resources } = state;
-
-  const setInitialValuesWithQueryParams = () => {
-    const params = parse(search);
-
-    if (!params) {
-      setState((prevState) => ({
-        ...prevState,
-        isReady: true,
-      }));
-      return;
-    }
-
-    const defaultBooking = {
-      ...emptyDateAndTime,
-      ...params,
-      isRange: params?.startDate && params?.endDate && params.startDate !== params.endDate,
-    };
-
-    const initialValues = {
-      ...state.formValues,
-      resourceId: params.resource,
-    };
-
-    const newSelectedResource = resources?.find((r) => r._id === params.resource);
-
-    setState((prevState) => ({
-      ...prevState,
-      formValues: initialValues,
-      datesAndTimes: [defaultBooking],
-      selectedResource: newSelectedResource,
-      isReady: true,
-    }));
-  };
-
-  useEffect(() => {
-    setInitialValuesWithQueryParams();
-  }, [allBookings.length, resources.length, search]);
-
-  const createActivity = async (imagesReadyToSave, newFormValues) => {
-    const datesAndTimesNoConflict = state.datesAndTimes.map((item) => ({
-      startDate: item.startDate,
-      endDate: item.endDate,
-      startTime: item.startTime,
-      endTime: item.endTime,
-      isRange: item.isRange,
-      capacity: item.capacity,
-      attendees: [],
-    }));
-
-    const datesAndTimesNoConflictSorted = datesAndTimesNoConflict.sort(
-      compareDatesWithStartDateForSort
-    );
-
-    const values = {
-      ...newFormValues,
-      datesAndTimes: datesAndTimesNoConflictSorted,
-      isExclusiveActivity: state.isExclusiveActivity,
-      isPublicActivity: true,
-      isRegistrationEnabled: state.isRegistrationEnabled,
-      images: imagesReadyToSave,
-    };
-
-    try {
-      const newActivityId = await call('createActivity', values);
-      setState((prevState) => ({
-        ...prevState,
-        isCreating: false,
-      }));
-      message.success(tc('message.success.create'));
-      navigate(`/activities/${newActivityId}`);
-    } catch (error) {
-      message.error(error.error || error.reason);
-      console.log(error);
-      setState((prevState) => ({
-        ...prevState,
-        isCreating: false,
-        isError: true,
-      }));
-    }
-  };
-
-  const handleSubmit = (values) => {
-    console.log('values', values);
-    setState((prevState) => ({
-      ...prevState,
-      uploadingImages: true,
-    }));
-  };
 
   const isFormValid = () => {
     const { datesAndTimes } = state;
@@ -247,13 +101,78 @@ export default function NewActivityPublic() {
     return !isTimesInValid && !isConflictHard;
   };
 
-  const { isCreating, isReady } = state;
+  useEffect(() => {
+    if (state.isCheckingForm) {
+      if (!isFormValid()) {
+        message.error(t('form.error'));
+        return;
+      }
+      setState((prevState) => ({
+        ...prevState,
+        isCheckingForm: false,
+        isUploadingImages: true,
+      }));
+    }
+  }, [state.isCheckingForm]);
 
-  if (!isReady) {
-    return null;
-  }
+  const handleSubmit = (formValues) => {
+    if (!isFormValid()) {
+      // message.error(t('form.error'));
+      return;
+    }
+    setState((prevState) => ({
+      ...prevState,
+      formValues,
+      isCreating: true,
+      isCheckingForm: true,
+    }));
+  };
 
-  const formValid = isFormValid();
+  const returnDatesAndTimes = (datesAndTimes) => {
+    console.log('datesAndTimes', datesAndTimes);
+    setState((prevState) => ({
+      ...prevState,
+      datesAndTimes,
+    }));
+  };
+
+  const createActivity = async (images) => {
+    const { datesAndTimes } = state;
+    if (!datesAndTimes || !datesAndTimes.length) {
+      return;
+    }
+
+    console.log('creating');
+
+    try {
+      const newEntryId = await call('createActivity', {
+        ...state.formValues,
+        datesAndTimes,
+        images,
+      });
+      console.log('created', newEntryId);
+      // message.success(t('form.success'));
+      navigate(`/activities/${newEntryId}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const returnUploadedImages = (images) => {
+    setState((prevState) => ({
+      ...prevState,
+      isUploadingImages: false,
+      isSendingForm: true,
+    }));
+
+    console.log('images', images);
+
+    createActivity(images);
+  };
+
+  // if (!resources || !resources.length) {
+  //   return null;
+  // }
 
   return (
     <>
@@ -263,14 +182,21 @@ export default function NewActivityPublic() {
 
       <GenericEntryForm
         childrenIndex={2}
-        formFields={publicActivityFormFields}
+        formFields={publicActivityFormFields(resourceOptions, t)}
         onSubmit={handleSubmit}
       >
         <FormField helperText="Select the images for this entry" label="Images">
           <ImageUploader
-            startUpload={state.uploadingImages}
-            returnUploadedImages={(images) => console.log(images)}
+            ping={state.isUploadingImages}
+            returnUploadedImages={returnUploadedImages}
           />
+        </FormField>
+
+        <FormField
+          helperText="Select the dates and time. Click + for more occurrences"
+          label="Date and Time"
+        >
+          <DatesAndTimes ping={state.isCreating} returnDatesAndTimes={returnDatesAndTimes} />
         </FormField>
       </GenericEntryForm>
     </>

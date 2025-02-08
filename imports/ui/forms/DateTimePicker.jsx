@@ -54,9 +54,11 @@ function TimePicker({ label, value, onChange }) {
   );
 }
 
-export default function DateTimePicker({ isRange = false, value, onChange }) {
+export default function DateTimePicker({ value, onChange }) {
   const [t] = useTranslation('activities');
   const { i18n } = useTranslation();
+
+  const isRange = value?.isRange;
   let locale = en;
   if (i18n.language === 'sv') {
     locale = sv;

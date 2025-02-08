@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import FormField from './FormField';
 import ReactQuill from '../forms/Quill';
-import ImageUploadUI from './ImageUploadUI';
+import ImageUploadUI from './ImageUploader';
 import { DocumentUploadHelper } from './UploadHelpers';
 
 const PageForm = ({

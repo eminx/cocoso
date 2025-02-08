@@ -91,15 +91,14 @@ export default function GenericEntryForm({
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <VStack>
-        {formFields.map((item, index) =>
-          index === childrenIndex ? (
-            children
-          ) : (
+        {formFields.map((item, index) => (
+          <>
+            {index === childrenIndex && children}
             <FormField key={item.value} helperText={item.helper} label={item.label}>
               <FieldItemHandler control={control} item={item} register={register} />
             </FormField>
-          )
-        )}
+          </>
+        ))}
       </VStack>
 
       <Flex justify="flex-end" my="4">

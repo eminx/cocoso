@@ -16,7 +16,7 @@ import {
 import FormField from './FormField';
 import NiceSlider from '../generic/NiceSlider';
 import ReactQuill from './Quill';
-import ImageUploadUI from './ImageUploadUI';
+import ImageUploadUI from './ImageUploader';
 import DocumentsField from '../pages/resources/components/DocumentsField';
 import { DocumentUploadHelper } from './UploadHelpers';
 
