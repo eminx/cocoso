@@ -1,258 +1,100 @@
-import React, { PureComponent } from 'react';
-import { Navigate } from 'react-router-dom';
-import {
-  Box,
-  Flex,
-  FormControl,
-  FormLabel,
-  Popover,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-  Switch,
-  Text,
-} from '@chakra-ui/react';
-import InfoIcon from 'lucide-react/dist/esm/icons/info';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Heading } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
-import GroupForm from '../../forms/GroupForm';
-import { call, resizeImage, uploadImage } from '../../utils/shared';
-import Loader from '../../generic/Loader';
-import Template from '../../layout/Template';
-import { message, Alert } from '../../generic/message';
-import { StateContext } from '../../LayoutContainer';
-import FormTitle from '../../forms/FormTitle';
+import { call } from '../../utils/shared';
+import GenericEntryForm from '../../forms/GenericEntryForm';
+import ImageUploader from '../../forms/ImageUploader';
+import FormField from '../../forms/FormField';
+import groupFormFields from './groupFormFields';
 
-class NewGroup extends PureComponent {
-  state = {
-    formValues: {
-      title: '',
-      readingMaterial: '',
-      description: '',
-      capacity: 12,
-    },
-    isLoading: false,
+export const emptyFormValues = {
+  isPrivate: false,
+  title: '',
+  readingMaterial: '',
+  description: '',
+  capacity: 40,
+};
+
+export default function NewGroup() {
+  const [state, setState] = useState({
+    formValues: emptyFormValues,
     isCreating: false,
+    isSendingForm: false,
     isSuccess: false,
-    isError: false,
-    isPrivate: false,
-    newGroupId: null,
-    uploadedImage: null,
-    uploadableImage: null,
-    uploadableImageLocal: null,
-    isCreating: false,
-  };
+    isUploadingImages: false,
+  });
 
-  successCreation = () => {
-    message.success('Your group is successfully created');
-  };
+  const navigate = useNavigate();
+  const [t] = useTranslation('groups');
+  const [tc] = useTranslation('common');
 
-  handleFormChange = (value) => {
-    const { formValues } = this.state;
-    let capacity = parseInt(value.capacity) || 2;
-    if (capacity > 30) {
-      capacity = 30;
+  useEffect(() => {
+    if (!state.isCreating) {
+      return;
     }
+    setState((prevState) => ({
+      ...prevState,
+      isUploadingImages: true,
+    }));
+  }, [state.isCreating]);
 
-    const newFormValues = {
-      ...value,
-      capacity,
-      description: formValues.description,
-    };
-
-    this.setState({
-      formValues: newFormValues,
-    });
-  };
-
-  handleQuillChange = (description) => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...formValues,
-      description,
-    };
-
-    this.setState({
-      formValues: newFormValues,
-    });
-  };
-
-  handleSubmit = (values) => {
-    this.setState({
+  const handleSubmit = (formValues) => {
+    setState((prevState) => ({
+      ...prevState,
+      formValues: {
+        ...formValues,
+        capacity: Number(formValues.capacity),
+      },
       isCreating: true,
-    });
-    const { tc } = this.props;
-    const { uploadableImage } = this.state;
-    if (!uploadableImage) {
-      message.error(tc('message.error.imageRequired'));
-      return;
-    }
-    const parsedValues = {
-      ...values,
-      capacity: Number(values.capacity),
-    };
-    this.setState(
-      {
-        formValues: parsedValues,
-      },
-      this.uploadImage
-    );
+    }));
   };
 
-  setUploadableImage = (files) => {
-    if (files.length > 1) {
-      message.error('Please drop only one file at a time.');
-      return;
-    }
-    const uploadableImage = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadableImage);
-    reader.addEventListener(
-      'load',
-      () => {
-        this.setState({
-          uploadableImage,
-          uploadableImageLocal: reader.result,
-        });
-      },
-      false
-    );
-  };
-
-  uploadImage = async () => {
-    const { uploadableImage } = this.state;
+  const createGroup = async (images) => {
     try {
-      const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(resizedImage, 'groupImageUpload');
-      this.setState(
-        {
-          uploadedImage,
-        },
-        () => this.createGroup()
-      );
-    } catch (error) {
-      console.error('Error uploading:', error);
-      message.error(error.reason);
-      this.setState({
-        isCreating: false,
+      const newEntryId = await call('createGroup', {
+        ...state.formValues,
+        imageUrl: images && images[0],
       });
+      // message.success(t('form.success'));
+      navigate(`/groups/${newEntryId}`);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  createGroup = async () => {
-    const { formValues, uploadedImage, isPrivate } = this.state;
+  const handleUploadedImages = (images) => {
+    setState((prevState) => ({
+      ...prevState,
+      isUploadingImages: false,
+      isSendingForm: true,
+    }));
 
-    try {
-      const response = await call('createGroup', formValues, uploadedImage, isPrivate);
-      this.setState({
-        newGroupId: response,
-        isSuccess: true,
-      });
-    } catch (error) {
-      message.error(error.error);
-      this.setState({
-        isCreating: false,
-        isError: true,
-      });
-    }
+    createGroup(images);
   };
 
-  handlePrivateGroupSwitch = () => {
-    const { isPrivate } = this.state;
-    this.setState({
-      isPrivate: !isPrivate,
-    });
-  };
+  return (
+    <>
+      <Heading mb="4" size="md">
+        {/* {t('form.details.label')} */}
+        Enter the details
+      </Heading>
 
-  render() {
-    const { currentUser, t, tc } = this.props;
-    const { canCreateContent } = this.context;
-
-    if (!currentUser || !canCreateContent) {
-      return (
-        <div style={{ maxWidth: 600, margin: '24px auto' }}>
-          <Alert
-            message={tc('message.access.contributor', {
-              domain: `${tc('domains.a')} ${tc('domains.group').toLowerCase()}`,
-            })}
-            type="error"
+      <GenericEntryForm
+        childrenIndex={3}
+        defaultValues={emptyFormValues}
+        formFields={groupFormFields(t)}
+        onSubmit={handleSubmit}
+      >
+        <FormField helperText={t('form.image.helper')} label={t('form.image.label')}>
+          <ImageUploader
+            isMultiple={false}
+            ping={state.isUploadingImages}
+            onUploadedImages={handleUploadedImages}
           />
-        </div>
-      );
-    }
-
-    const {
-      formValues,
-      isLoading,
-      isSuccess,
-      newGroupId,
-      uploadableImageLocal,
-      isPrivate,
-      isCreating,
-    } = this.state;
-
-    if (isLoading) {
-      return <Loader />;
-    }
-
-    if (isSuccess) {
-      this.successCreation();
-      return <Navigate to={`/groups/${newGroupId}`} />;
-    }
-
-    const { title, description } = formValues;
-    const isFormValid =
-      formValues && title.length > 3 && description.length > 10 && uploadableImageLocal;
-
-    return (
-      <Box>
-        <FormTitle context="groups" isNew />
-        <Template>
-          <Box mb="8">
-            <Popover trigger="hover">
-              <PopoverTrigger>
-                <FormControl alignItems="center" display="flex" w="auto" mb="4">
-                  <Switch
-                    isChecked={isPrivate}
-                    size="lg"
-                    onChange={this.handlePrivateGroupSwitch}
-                  />
-                  <FormLabel htmlFor="email-alerts" ml="2" mb="0">
-                    <Flex align="center">
-                      <Text fontWeight="bold">{t('form.private.label')}</Text>
-                      <InfoIcon ml="2" />
-                    </Flex>
-                  </FormLabel>
-                </FormControl>
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverCloseButton />
-                <PopoverHeader fontWeight="bold">{t('form.private.tooltip.title')}</PopoverHeader>
-                <PopoverBody>
-                  <Text fontSize="md" mb="2">
-                    {t('form.private.tooltip.P1')}
-                  </Text>
-                  <Text fontSize="md">{t('form.private.tooltip.P2')}</Text>
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
-
-            <GroupForm
-              defaultValues={formValues}
-              isSubmitDisabled={isFormValid}
-              isButtonLoading={isCreating}
-              onSubmit={this.handleSubmit}
-              setUploadableImage={this.setUploadableImage}
-              uploadableImageLocal={uploadableImageLocal}
-            />
-          </Box>
-        </Template>
-      </Box>
-    );
-  }
+        </FormField>
+      </GenericEntryForm>
+    </>
+  );
 }
-
-NewGroup.contextType = StateContext;
-
-export default NewGroup;
