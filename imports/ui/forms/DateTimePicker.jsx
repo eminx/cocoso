@@ -111,7 +111,7 @@ export default function DateTimePicker({ value, onChange }) {
 
   return (
     <Box w="100%" py="2">
-      <ConfigProvider locale={locale}>
+      <ConfigProvider locale={locale} theme={antTheme}>
         <Flex>
           <Box w="170px" mr="2">
             <DatePicker

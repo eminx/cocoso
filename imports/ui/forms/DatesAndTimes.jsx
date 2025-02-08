@@ -80,6 +80,8 @@ export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) 
   };
 
   const handleDateTimeChange = (date, occurrenceIndex) => {
+    console.log('date', date);
+    console.log('occurrenceIndex', occurrenceIndex);
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (index === occurrenceIndex) {
         return date;
@@ -157,7 +159,7 @@ export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) 
                 <Switch
                   isChecked={occurrence.isRange}
                   id={id}
-                  onChange={handleRangeSwitch}
+                  onChange={(event) => handleRangeSwitch(event, index)}
                   py="2"
                 />
                 <FormLabel htmlFor={id} mb="1" ml="2">
@@ -167,7 +169,10 @@ export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) 
             </Box>
 
             <Wrap>
-              <DateTimePicker value={occurrence} onChange={handleDateTimeChange} />
+              <DateTimePicker
+                value={occurrence}
+                onChange={(value) => handleDateTimeChange(value, index)}
+              />
               {/* 
               <Box
                 flexDirection="column"

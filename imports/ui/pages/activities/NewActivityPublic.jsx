@@ -28,6 +28,7 @@ export const emptyFormValues = {
   address: '',
   // capacity: defaultCapacity,
   isRegistrationEnabled: true,
+  isExclusiveActivity: false,
 };
 
 export default function NewActivityPublic() {
@@ -110,6 +111,7 @@ export default function NewActivityPublic() {
   };
 
   const handleDatesAndTimesChange = (datesAndTimes) => {
+    console.log(datesAndTimes);
     setState((prevState) => ({
       ...prevState,
       datesAndTimes,
