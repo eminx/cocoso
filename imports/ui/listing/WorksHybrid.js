@@ -79,7 +79,7 @@ export default function WorksHybrid({ works, Host }) {
           {(work) => (
             <Box
               key={work._id}
-              borderRadius="8px"
+              borderRadius="lg"
               cursor="pointer"
               mb="2"
               onClick={() => setModalItem(work)}

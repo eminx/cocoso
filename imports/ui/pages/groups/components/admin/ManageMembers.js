@@ -40,13 +40,7 @@ export default function ManageMembers({ onClose }) {
       <NiceList actionsDisabled={false} keySelector="username" list={members} py="4" spacing="4">
         {(member) => (
           <Flex align="center">
-            <Avatar
-              borderRadius="8px"
-              mr="2"
-              name={member.username}
-              size="md"
-              src={member.avatar}
-            />
+            <Avatar borderRadius="lg" mr="2" name={member.username} size="md" src={member.avatar} />
             <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
               {member.username}
             </CLink>

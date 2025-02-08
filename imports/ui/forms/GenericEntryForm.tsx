@@ -64,9 +64,9 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
       );
     case 'checkbox':
       return (
-        <Flex align="center" display="inline-flex" bg="white" borderRadius="md" p="1" pl="2">
+        <Flex align="center" display="inline-flex" bg="white" borderRadius="lg" p="1" pl="2">
           <Checkbox size="lg" {...props}>
-            <FormLabel style={{ cursor: 'pointer', fontWeight: 'bold' }} mb="0">
+            <FormLabel style={{ cursor: 'pointer' }} mb="0">
               {item.placeholder}
             </FormLabel>
           </Checkbox>

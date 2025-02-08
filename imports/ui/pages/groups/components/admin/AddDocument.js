@@ -81,7 +81,7 @@ export default function AddDocument({ onClose }) {
             bg={isDragActive ? 'brand.300' : 'brand.50'}
             border="1x dashed"
             borderColor="brand.300"
-            borderRadius="8px"
+            borderRadius="lg"
             cursor="grab"
             h="180px"
             p="4"

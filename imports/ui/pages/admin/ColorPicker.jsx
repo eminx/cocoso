@@ -69,7 +69,7 @@ export default function ColorPicker() {
             </Flex>
           </Center>
 
-          <Box bg="red.50" borderRadius={8} fontWeight="bold" p="4">
+          <Box bg="red.50" borderRadius="lg" fontWeight="bold" p="4">
             <Text mb="2">{t('color.alert1')}</Text> <Text>{t('color.alert2')}</Text>
           </Box>
         </Box>

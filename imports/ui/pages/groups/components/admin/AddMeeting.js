@@ -53,7 +53,7 @@ function AddMeetingForm({
 
   return (
     <>
-      <Box bg="gray.100" borderRadius="8px" p="4">
+      <Box bg="gray.100" borderRadius="lg" p="4">
         <Text textAlign="center">{t('meeting.info.admin')}</Text>
         <DateTimePicker value={newMeeting} onChange={handleDateChange} />
 

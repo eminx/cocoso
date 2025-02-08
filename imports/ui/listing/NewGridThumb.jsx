@@ -33,8 +33,8 @@ export default function NewGridThumb({
     host && allHosts && isClient ? allHosts?.find((h) => h.host === host)?.name : host;
 
   return (
-    <Box _hover={{ bg: 'brand.50' }} border="1px solid white" borderRadius="8px" cursor="pointer">
-      <Box borderRadius="8px" className="text-link-container" position="relative">
+    <Box _hover={{ bg: 'brand.50' }} border="1px solid white" borderRadius="lg" cursor="pointer">
+      <Box borderRadius="lg" className="text-link-container" position="relative">
         <Center
           bg={imageUrl ? 'white' : 'brand.100'}
           borderTopLeftRadius="8px"
@@ -110,7 +110,7 @@ export default function NewGridThumb({
 
           {avatar && (
             <Box pt="2">
-              <Avatar borderRadius="8px" name={avatar.name} src={avatar.url} />
+              <Avatar borderRadius="lg" name={avatar.name} src={avatar.url} />
             </Box>
           )}
         </Flex>

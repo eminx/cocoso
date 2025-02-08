@@ -98,7 +98,7 @@ export default function FiltrerSorter(props) {
             bg="gray.50"
             borderColor="brand.200"
             borderWidth={1}
-            borderRadius={8}
+            borderRadius="lg"
             mb="4"
             mx="2"
             p="4"

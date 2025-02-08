@@ -73,7 +73,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
       {selectedProfile && (
         <Box
           _hover={{ bg: 'brand.50' }}
-          borderRadius="8px"
+          borderRadius="lg"
           cursor="pointer"
           maxH="480px"
           mx="2"
@@ -85,7 +85,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
             <Box>
               <Center>
                 <Avatar
-                  borderRadius="8px"
+                  borderRadius="lg"
                   name={selectedProfile.username}
                   size="2xl"
                   src={selectedProfile.avatar?.src}

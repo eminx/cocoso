@@ -60,7 +60,7 @@ export function UserThumb({ isNotification = false }) {
       <Avatar
         _hover={{ bg: 'brand.500' }}
         bg="brand.600"
-        borderRadius="8px"
+        borderRadius="lg"
         showBorder
         size={isDesktop ? 'md' : 'sm'}
         src={currentUser.avatar && currentUser.avatar.src}
@@ -146,7 +146,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
         <MenuButton
           _hover={{ bg: 'white' }}
           bg="rgba(255, 252, 250, 0.9)"
-          borderRadius={8}
+          borderRadius="lg"
           mr="1"
           p="1"
           onClick={() => setIsOpen(!isOpen)}

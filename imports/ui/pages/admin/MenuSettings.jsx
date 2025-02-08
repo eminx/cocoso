@@ -43,12 +43,12 @@ function MenuTable({
   return (
     <Accordion allowToggle>
       {menu.map((item, index) => (
-        <AccordionItem key={item.name} borderRadius={8} mb="4">
+        <AccordionItem key={item.name} borderRadius="lg" mb="4">
           <AccordionButton
             _expanded={{ bg: 'brand.50' }}
             _hover={{ bg: 'white' }}
             bg="gray.50"
-            borderRadius={8}
+            borderRadius="lg"
           >
             <Flex justify="space-between" w="100%">
               <Flex direction="column">
@@ -270,7 +270,7 @@ export default function MenuSettings() {
                       <Flex
                         align="center"
                         bg="gray.50"
-                        borderRadius={8}
+                        borderRadius="lg"
                         cursor="move"
                         mb="4"
                         p="2"

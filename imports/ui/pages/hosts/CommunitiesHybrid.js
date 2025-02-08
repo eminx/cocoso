@@ -130,7 +130,7 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
 
             // <Box
             //   key={host._id}
-            //   borderRadius="8px"
+            //   borderRadius="lg"
             //   cursor="pointer"
             //   mb="2"
             //   onClick={() => setModalItem(host)}

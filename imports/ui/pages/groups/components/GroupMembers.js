@@ -42,7 +42,7 @@ export default function GroupMembers({ group }) {
             <Link to={`/@${member.username}/bio`}>
               <Flex align="center">
                 <Avatar
-                  borderRadius="8px"
+                  borderRadius="lg"
                   mr="2"
                   name={member.username}
                   size="md"

@@ -34,7 +34,7 @@ function AvatarHolder({ author }) {
       <Link to={`/@${author.username}/`}>
         <VStack _hover={{ textDecoration: 'underline' }} justify="center" spacing="0">
           <Avatar
-            borderRadius="8px"
+            borderRadius="lg"
             elevation="medium"
             name={author.username}
             showBorder

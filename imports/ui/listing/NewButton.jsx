@@ -54,7 +54,7 @@ export default function NewButton() {
       bg="gray.200"
       borderColor="gray.200"
       borderWidth="2px"
-      borderRadius="8px"
+      borderRadius="lg"
       color="gray.600"
       cursor="pointer"
       icon={<AddIcon />}

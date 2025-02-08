@@ -23,7 +23,7 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
     <Box mb="6">
       <Center>
         <Avatar
-          borderRadius="8px"
+          borderRadius="lg"
           maxW={350}
           name={user.username}
           showBorder

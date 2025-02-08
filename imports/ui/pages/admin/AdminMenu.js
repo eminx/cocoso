@@ -43,7 +43,7 @@ export function AdminUserThumb({ currentUser }) {
         <Avatar
           _hover={{ bg: 'brand.500' }}
           bg="brand.600"
-          borderRadius="8px"
+          borderRadius="lg"
           showBorder
           size="lg"
           src={currentUser.avatar && currentUser.avatar.src}

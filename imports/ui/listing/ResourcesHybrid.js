@@ -22,7 +22,7 @@ export default function ResourcesHybrid({ resources, Host }) {
           {(resource) => (
             <Box
               key={resource._id}
-              borderRadius="8px"
+              borderRadius="lg"
               cursor="pointer"
               mb="2"
               onClick={() => setModalItem(resource)}
