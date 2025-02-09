@@ -4,8 +4,10 @@ import { StateContext } from '../../LayoutContainer';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import WorksHybrid from '../../listing/WorksHybrid';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import NewWork from './NewWork';
 
-function Works() {
+export default function Works() {
   const initialWorks = window?.__PRELOADED_STATE__?.works || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
@@ -38,7 +40,12 @@ function Works() {
     return null;
   }
 
-  return <WorksHybrid Host={currentHost} works={works} />;
+  return (
+    <>
+      <WorksHybrid Host={currentHost} works={works} />
+      <NewEntryHandler title="Create a Work">
+        <NewWork />
+      </NewEntryHandler>
+    </>
+  );
 }
-
-export default Works;

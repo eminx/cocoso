@@ -88,8 +88,11 @@ works:
     label: İletişim bilgisi
     holder: eposta@alanadi.com
     helper: İsteğe bağlı olarak, lütfen bu öğeyle ilgili iletişim kurmak için kullanılabilecek iletişim bilgilerini girin. Görünmemesini tercih ediyorsanız lütfen varsayılan değeri silin.
-  images:
-    label: İmajlar ({{ count }})
+  avatar:
+    label: Avatarı görüntüle
+    helper: Bu içerik ile avatarını görüntülemek için işaretle
+  image:
+    label: İmajlar
     helper: İçeriği temsil etmek için, lütfen cihazındaki galeriden bir imaj veya bir dizi imaj veya şimdi çekeceğin bir fotoğraf seç. İsteğe bağlıdır
   documents:
     label: Dokümanlar

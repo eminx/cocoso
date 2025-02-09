@@ -440,7 +440,7 @@ const getCategoriesAssignedToWorks = (works) => {
       label,
       color: hslValues[i],
     }))
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .sort((a, b) => a.label?.localeCompare(b.label));
 };
 
 export {

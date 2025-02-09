@@ -28,6 +28,7 @@ export default function NewResource() {
     isSendingForm: false,
     isSuccess: false,
     isUploadingImages: false,
+    resources: [],
   });
 
   const navigate = useNavigate();
@@ -62,8 +63,6 @@ export default function NewResource() {
   }, [state.isCreating]);
 
   const handleSubmit = (formValues) => {
-    console.log(formValues);
-    console.log(state.resourcesForCombo);
     setState((prevState) => ({
       ...prevState,
       formValues: {

@@ -150,7 +150,7 @@ function AdminMenu({ adminMenu }) {
       <MenuList>
         {adminMenu.items.map((item) =>
           item.link ? (
-            <Link to={item.link} key={item.label}>
+            <Link key={item.label} to={item.link}>
               <MenuItem>{item.label}</MenuItem>
             </Link>
           ) : (

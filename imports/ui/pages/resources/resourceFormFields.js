@@ -1,6 +1,6 @@
 import React from 'react';
 
-const groupFormFields = (t) => [
+const resourceFormFields = (t) => [
   {
     helper: t('form.name.helper'),
     label: t('form.name.label'),
@@ -29,4 +29,4 @@ const groupFormFields = (t) => [
   },
 ];
 
-export default groupFormFields;
+export default resourceFormFields;

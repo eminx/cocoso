@@ -88,7 +88,7 @@ Meteor.methods({
     }
   },
 
-  createWork(values, images) {
+  createWork(values) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('You are not a member anyways!');
@@ -101,7 +101,6 @@ Meteor.methods({
       const newWorkId = Works.insert({
         ...values,
         host,
-        images,
         authorId: user._id,
         authorAvatar: userAvatar,
         authorUsername: user.username,

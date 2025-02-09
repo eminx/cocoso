@@ -13,9 +13,18 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    return Categories.find({
-      host,
-    }).fetch();
+    return Categories.find(
+      {
+        host,
+      },
+      {
+        fields: {
+          _id: 1,
+          label: 1,
+          color: 1,
+        },
+      }
+    ).fetch();
   },
 
   addNewCategory(category, type) {
