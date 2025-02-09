@@ -42,7 +42,7 @@ export default function NewCalendarActivity() {
       const resources = await call('getResourcesDry');
       setState((prevState) => ({
         ...prevState,
-        resources: resources.filter((r) => r.isBookable),
+        resources: resources?.filter((r) => r?.isBookable),
       }));
     } catch (error) {
       console.log(error);

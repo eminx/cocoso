@@ -46,14 +46,14 @@ function Calendar({ tc }) {
   const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
   const navigate = useNavigate();
 
+  if (!currentHost) {
+    return null;
+  }
+
   const activitiesParsed = useMemo(
     () => parseAllBookingsWithResources(activities, resources),
     [activities, resources]
   );
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const getData = async () => {
     const isPortalHost = Boolean(currentHost?.isPortalHost);
@@ -71,6 +71,10 @@ function Calendar({ tc }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleSelectActivity = (activity, e) => {
     e.preventDefault();

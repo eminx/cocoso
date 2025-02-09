@@ -9,7 +9,7 @@ import '../../utils/styles/bigcalendar-custom.css';
 import NewEntryHandler from '../../listing/NewEntryHandler';
 import NewCalendarActivity from './NewCalendarActivity';
 
-function CalendarView(props) {
+export default function CalendarView(props) {
   const { activities } = props;
   const [t] = useTranslation('calendar');
 
@@ -59,5 +59,3 @@ function CalendarView(props) {
     </>
   );
 }
-
-export default CalendarView;
