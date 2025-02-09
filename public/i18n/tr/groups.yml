@@ -56,7 +56,7 @@ actions:
   leave: Ayrıl
   archive: Arşivle
   unarchive: Aktifleştir
-  register: Buluşmalar & Kaydol
+  register: Zamanları gör ve Kaydol
 
 meeting:
   attends:

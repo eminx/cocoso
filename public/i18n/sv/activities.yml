@@ -73,8 +73,8 @@ members:
 public:
   labels:
     address: Adress
-    dates: Datum
-    datesAndRegistration: Datum & OSA
+    dates: Se datum
+    datesAndRegistration: Se datum & OSA
     info: Info
     location: Plats
     resource: Resurs

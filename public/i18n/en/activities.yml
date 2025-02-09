@@ -1,7 +1,7 @@
 label:
   new: Create a New Booking
   edit: Edit Booking
-  rsvp: Dates & RSVP
+  rsvp: See dates & RSVP
   next: Next Activity
 
 form:
@@ -73,8 +73,8 @@ members:
 public:
   labels:
     address: Address
-    dates: Dates
-    datesAndRegistration: Dates & RSVP
+    dates: See dates
+    datesAndRegistration: See Dates & RSVP
     info: Info
     location: Location
     resource: Resource

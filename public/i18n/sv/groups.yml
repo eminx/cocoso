@@ -56,7 +56,7 @@ actions:
   leave: Lämna
   archive: Arkivera
   unarchive: Avarkivera
-  register: Datum & OSA
+  register: Se datum & OSA
 
 meeting:
   attends:

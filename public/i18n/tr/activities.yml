@@ -73,8 +73,8 @@ members:
 public:
   labels:
     address: Adres
-    dates: Zaman
-    datesAndRegistration: Zaman ve Kayıt
+    dates: Zamanını gör
+    datesAndRegistration: Zamanını gör ve Kaydol
     info: Bilgi
     location: Yer
     resource: Kaynak
