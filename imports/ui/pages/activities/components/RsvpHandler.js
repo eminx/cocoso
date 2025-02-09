@@ -69,7 +69,7 @@ function AccordionDates({ activity, onCloseModal }) {
           {t('public.register.disabled.false')}
         </Text>
       )}
-      <Accordion allowToggle index={items.length === 1 ? 0 : null}>
+      <Accordion allowToggle>
         {items.map((occurrence, occurrenceIndex) => (
           <AccordionItem key={occurrence.startDate + occurrence.startTime} {...itemProps}>
             <AccordionButton {...buttonProps}>

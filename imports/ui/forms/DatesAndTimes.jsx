@@ -128,7 +128,7 @@ export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) 
   const containerProps = {
     bg: 'white',
     borderWidth: '2px',
-    borderRadius: '8px',
+    borderRadius: 'lg',
     mb: '4',
     p: '4',
     position: 'relative',

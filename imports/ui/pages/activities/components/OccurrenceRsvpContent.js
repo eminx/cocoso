@@ -335,7 +335,9 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
       </Modal>
 
       <Modal
+        bg="white"
         isOpen={Boolean(selectedOccurrence)}
+        size="xl"
         title={
           <Box mr="8">
             <FancyDate occurrence={selectedOccurrence} />
@@ -343,10 +345,10 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
         }
         onClose={() => setState({ ...state, selectedOccurrence: null })}
       >
-        <Box p="1">
-          <Heading as="h3" mb="2" size="md">
-            {t('public.attendance.label')}
-          </Heading>
+        <Heading as="h3" mb="2" size="md">
+          {t('public.attendance.label')}
+        </Heading>
+        <Box bg="white" p="2">
           <RsvpList occurrence={selectedOccurrence} title={activity?.title} />
         </Box>
       </Modal>

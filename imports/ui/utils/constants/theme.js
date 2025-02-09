@@ -4,7 +4,7 @@ const brand = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 
 export const luxxStyle = {
   field: {
-    borderColor: 'gray.400',
+    borderColor: 'gray.300',
     borderRadius: '8px',
     borderWidth: '2px',
     _hover: {
