@@ -18,7 +18,7 @@ export default function NewButton() {
 
   const menu = currentHost?.settings?.menu;
 
-  if (!currentUser || !canCreateContent || !menu) {
+  if (!canCreateContent || !menu) {
     return null;
   }
 
@@ -38,9 +38,12 @@ export default function NewButton() {
 
   const { pathname } = location;
 
-  const activeMenuItem = menuItems.find(
-    (item) => pathname.includes(item.name) && item.name !== 'people'
-  );
+  const activeMenuItem = menuItems.find((item, index) => {
+    if (pathname === '/') {
+      return index === 0;
+    }
+    return pathname.includes(item?.name);
+  });
 
   if (!activeMenuItem || ['members', 'people'].includes(activeMenuItem.name)) {
     return null;
