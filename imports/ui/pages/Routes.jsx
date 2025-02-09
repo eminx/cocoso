@@ -10,28 +10,20 @@ const Communities = lazy(() => import('../pages/hosts/Communities'));
 // Activities
 const Activities = lazy(() => import('./activities/Activities'));
 const Activity = lazy(() => import('./activities/Activity'));
-const EditActivityContainer = lazy(() => import('./activities/EditActivityContainer'));
-const NewActivityContainer = lazy(() => import('./activities/NewActivityPublic'));
 
 // Groups
 const Groups = lazy(() => import('./groups/Groups'));
 const Group = lazy(() => import('./groups/Group'));
-const EditGroupContainer = lazy(() => import('./groups/EditGroupContainer'));
-const NewGroupContainer = lazy(() => import('./groups/NewGroupContainer'));
 
 // Resources
 const Resources = lazy(() => import('./resources/Resources'));
 const Resource = lazy(() => import('./resources/Resource'));
-const EditResource = lazy(() => import('./resources/EditResource'));
-const NewResource = lazy(() => import('./resources/NewResource'));
 
 // Calendar
 const CalendarContainer = lazy(() => import('./calendar/CalendarContainer'));
-const NewActivityPrivate = lazy(() => import('./activities/NewActivityPrivate'));
 
 // Works
 const Works = lazy(() => import('./works/Works'));
-const NewWork = lazy(() => import('./works/NewWork'));
 
 // Profile
 const UserProfile = lazy(() => import('./profile/UserProfile'));
@@ -40,9 +32,7 @@ const Work = lazy(() => import('./works/Work'));
 const EditWork = lazy(() => import('./works/EditWork'));
 
 // Pages
-const EditPage = lazy(() => import('./pages/EditPage'));
 const Page = lazy(() => import('./pages/Page'));
-const NewPage = lazy(() => import('./pages/NewPage'));
 
 // Users
 const Users = lazy(() => import('./profile/Users'));
@@ -115,37 +105,27 @@ export default function AppRoutes() {
 
           {/* Calendar */}
           <Route path="/calendar" element={<CalendarContainer />} />
-          <Route exact path="/calendar/new" element={<NewActivityPrivate />} />
 
           {/* Activities */}
           <Route exact path="/activities" element={<Activities />} />
-          <Route exact path="/activities/new" element={<NewActivityContainer />} />
           <Route path="/activities/:activityId/*" element={<Activity />} />
-          <Route exact path="/activities/:activityId/edit" element={<EditActivityContainer />} />
           <Route exact path="/my-activities" element={<MyActivities />} />
 
           {/* Groups */}
           <Route exact path="/groups" element={<Groups />} />
-          <Route exact path="/groups/new" element={<NewGroupContainer />} />
           <Route path="/groups/:groupId/*" element={<Group />} />
-          <Route path="/groups/:groupId/edit" element={<EditGroupContainer />} />
 
           {/* Resources */}
           <Route exact path="/resources" element={<Resources />} />
-          <Route exact path="/resources/new" element={<NewResource />} />
           <Route path="/resources/:resourceId/*" element={<Resource />} />
-          <Route path="/resources/:resourceId/edit" element={<EditResource />} />
 
           {/* Pages */}
           <Route exact path="/info" element={<Page />} />
-          <Route exact path="/info/new" element={<NewPage />} />
           <Route path="/info/:pageTitle/*" element={<Page />} />
           <Route path="/pages/:pageTitle/*" element={<Page />} />
-          <Route path="/info/:pageTitle/edit" element={<EditPage />} />
 
           {/* Works */}
           <Route exact path="/works" element={<Works />} />
-          <Route exact path="/works/new" element={<NewWork />} />
 
           {/* Communities: Only on Portal App */}
           <Route exact path="/communities" element={<Communities />} />

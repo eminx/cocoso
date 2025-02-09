@@ -5,7 +5,7 @@ import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
 import ActivitiesHybrid from '../../listing/ActivitiesHybrid';
-import NewActivityPublic from './NewActivityPublic';
+import NewPublicActivity from './NewPublicActivity';
 import NewEntryHandler from '../../listing/NewEntryHandler';
 
 export default function Activities() {
@@ -52,7 +52,7 @@ export default function Activities() {
       <ActivitiesHybrid activities={activities} Host={currentHost} showPast={showPast} />
 
       <NewEntryHandler title="Create a Public Event">
-        <NewActivityPublic />
+        <NewPublicActivity />
       </NewEntryHandler>
     </>
   );

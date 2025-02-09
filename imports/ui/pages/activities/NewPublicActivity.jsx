@@ -31,7 +31,7 @@ export const emptyFormValues = {
   isExclusiveActivity: false,
 };
 
-export default function NewActivityPublic() {
+export default function NewPublicActivity() {
   const [state, setState] = useState({
     datesAndTimes: [emptyDateAndTime],
     formValues: emptyFormValues,
@@ -125,6 +125,11 @@ export default function NewActivityPublic() {
       navigate(`/activities/${newEntryId}`);
     } catch (error) {
       console.log(error);
+      setState((prevState) => ({
+        ...prevState,
+        isCreating: false,
+        isSendingForm: false,
+      }));
     }
   };
 

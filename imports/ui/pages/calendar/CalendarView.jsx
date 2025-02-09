@@ -6,6 +6,8 @@ import i18n from 'i18next';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../../utils/styles/bigcalendar-custom.css';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import NewCalendarActivity from './NewCalendarActivity';
 
 function CalendarView(props) {
   const { activities } = props;
@@ -30,26 +32,31 @@ function CalendarView(props) {
   };
 
   return (
-    <Calendar
-      allDayAccessor="isMultipleDay"
-      culture={i18n.language}
-      defaultView="month"
-      defaultDate={moment().toDate()}
-      events={activities}
-      localizer={localizer}
-      messages={messages}
-      popup
-      popupOffset={30}
-      selectable
-      showMultiDayTimes
-      step={60}
-      views={['month', 'week', 'day', 'agenda']}
-      eventPropGetter={(event) => ({
-        style: { backgroundColor: event.resourceColor },
-      })}
-      onSelectEvent={props.onSelect}
-      onSelectSlot={props.onSelectSlot}
-    />
+    <>
+      <Calendar
+        allDayAccessor="isMultipleDay"
+        culture={i18n.language}
+        defaultView="month"
+        defaultDate={moment().toDate()}
+        events={activities}
+        localizer={localizer}
+        messages={messages}
+        popup
+        popupOffset={30}
+        selectable
+        showMultiDayTimes
+        step={60}
+        views={['month', 'week', 'day', 'agenda']}
+        eventPropGetter={(event) => ({
+          style: { backgroundColor: event.resourceColor },
+        })}
+        onSelectEvent={props.onSelect}
+        onSelectSlot={props.onSelectSlot}
+      />
+      <NewEntryHandler title="Create a new activity">
+        <NewCalendarActivity />
+      </NewEntryHandler>
+    </>
   );
 }
 
