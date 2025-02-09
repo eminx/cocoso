@@ -150,11 +150,17 @@ export default function NewActivityPublic() {
         formFields={publicActivityFormFields(t)}
         onSubmit={handleSubmit}
       >
-        <FormField helperText={t('form.image.helper')} label={t('form.image.label')}>
+        <FormField
+          helperText={t('form.image.helper')}
+          isRequired
+          label={t('form.image.label')}
+          mt="4"
+          mb="8"
+        >
           <ImageUploader ping={state.isUploadingImages} onUploadedImages={handleUploadedImages} />
         </FormField>
 
-        <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')}>
+        <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')} my="12">
           <AutoCompleteSelect
             isClearable
             onChange={handleSelectResource}
@@ -177,6 +183,8 @@ export default function NewActivityPublic() {
         <FormField
           helperText="Select the dates and time. Click + for more occurrences"
           label="Date and Time"
+          mb="14"
+          isRequired
         >
           <DatesAndTimes
             datesAndTimes={state.datesAndTimes}

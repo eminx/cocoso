@@ -87,7 +87,13 @@ export default function NewGroup() {
         formFields={groupFormFields(t)}
         onSubmit={handleSubmit}
       >
-        <FormField helperText={t('form.image.helper')} label={t('form.image.label')}>
+        <FormField
+          helperText={t('form.image.helper')}
+          isRequired
+          label={t('form.image.label')}
+          mt="4"
+          mb="12"
+        >
           <ImageUploader
             isMultiple={false}
             ping={state.isUploadingImages}

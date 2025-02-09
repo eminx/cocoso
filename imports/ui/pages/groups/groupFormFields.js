@@ -7,9 +7,6 @@ const groupFormFields = (t) => [
     placeholder: t('form.private.holder'),
     type: 'checkbox',
     value: 'isPrivate',
-    props: {
-      isRequired: true,
-    },
   },
   {
     helper: t('form.title.helper'),
@@ -37,6 +34,9 @@ const groupFormFields = (t) => [
     placeholder: t('form.description.holder'),
     type: 'quill',
     value: 'description',
+    props: {
+      isRequired: true,
+    },
   },
   {
     helper: t('form.capacity.helper'),

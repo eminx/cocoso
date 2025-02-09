@@ -125,7 +125,7 @@ export default function NewResource() {
         formFields={resourceFormFields(t)}
         onSubmit={handleSubmit}
       >
-        <FormField helperText={t('form.image.helper')} label={t('form.image.label')} my="4">
+        <FormField helperText={t('form.image.helper')} label={t('form.image.label')} mb="12">
           <ImageUploader
             isMultiple={false}
             ping={state.isUploadingImages}
@@ -136,8 +136,8 @@ export default function NewResource() {
         <FormField
           helperText={t('form.combo.switch.helper')}
           label={t('form.combo.switch.label')}
-          mb="8"
-          mt="4"
+          mt="6"
+          mb="12"
         >
           <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
             <Checkbox

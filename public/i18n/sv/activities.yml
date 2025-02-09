@@ -21,7 +21,7 @@ form:
     helper: Välj en eller flera bilder som du vill ska representera ditt evenemang
   resource:
     label: Resurs
-    helper: Välj den resurs du vill boka
+    helper: Valfritt, välj en artikel som du vill boka, för att den ska visas i kalendern.
     holder: Välj
   occurrences:
     label: Tid och datum
@@ -42,11 +42,11 @@ form:
     label: Ange detaljer
   place:
     label: Plats
-    helper: Ange namnet platsen där ditt evenemang kommer äga rum (ej obligatoriskt)
+    helper: Valfritt, ange namnet platsen där ditt evenemang kommer äga rum
     holder: Artistosphere
   address:
     label: Adress
-    helper: Ange adressen till den plats där ditt evenemang kommer äga rum (ej obligatoriskt)
+    helper: Valfritt, ange adressen till den plats där ditt evenemang kommer äga rum
     holder: 17th Street, Berlin...
   rsvp:
     label: Registration (RSVP) Enabled

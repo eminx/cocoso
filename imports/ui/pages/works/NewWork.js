@@ -138,7 +138,9 @@ export default function NewWork() {
         <FormField
           helperText={t('works.category.helper')}
           label={t('works.category.label')}
-          my="10"
+          mt="10"
+          mb="12"
+          isRequired
         >
           <AutoCompleteSelect
             // isMulti

@@ -107,7 +107,7 @@ export default function ImageUploader({
   }
 
   return (
-    <>
+    <Box>
       <Center>
         <Box w="100%">
           <SortableList
@@ -139,6 +139,6 @@ export default function ImageUploader({
         </Box>
       </Center>
       <FileDropper setUploadableImage={setUploadableImages} isMultiple={isMultiple} />
-    </>
+    </Box>
   );
 }

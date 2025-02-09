@@ -138,9 +138,9 @@ newsletter:
     appeal:
       helper: Ange hur du vill tilltala de som kommer ta emot ditt nyhetsbrev
     body:
-      helper: Lägg till en text till nyhetsbrevet (ej obligatoriskt)
+      helper: Valfritt, Lägg till en text till nyhetsbrevet
     image:
-      helper: Lägg till en bild eller logotyp som kommer visas högst upp i nyhetsbrevet (ej obligatoriskt)
+      helper: Valfritt, lägg till en bild eller logotyp som kommer visas högst upp i nyhetsbrevet
   notification:
     success:
       emailsent: Ditt e-postmeddelande har skickats till alla medlemmar

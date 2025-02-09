@@ -26,7 +26,7 @@ interface Option {
 interface FormFieldItem {
   type: 'input' | 'textarea' | 'checkbox' | 'select' | 'quill' | 'number';
   value: string;
-  itemProps?: Record<string, any>;
+  props?: Record<string, any>;
   placeholder?: string | undefined;
   options?: Option[];
   helper?: string;
@@ -49,7 +49,7 @@ interface GenericEntryFormProps {
 
 function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
   const props = {
-    ...register(item.value, item.itemProps),
+    ...register(item.value, item.props),
     placeholder: item.placeholder,
   };
 
@@ -117,18 +117,22 @@ export default function GenericEntryForm({
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <VStack>
+      <VStack spacing="4">
         {formFields.map((item, index) => (
           <Box key={item.value} w="100%">
             {index === childrenIndex && children}
-            <FormField helperText={item.helper} label={item.label}>
+            <FormField
+              helperText={item.helper}
+              isRequired={item.props?.isRequired}
+              label={item.label}
+            >
               <FieldItemHandler control={control} item={item} register={register} />
             </FormField>
           </Box>
         ))}
       </VStack>
 
-      <Flex justify="flex-end" my="4">
+      <Flex justify="flex-end" my="12">
         <Button type="submit">Submit</Button>
       </Flex>
     </form>

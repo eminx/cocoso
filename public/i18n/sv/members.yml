@@ -71,7 +71,7 @@ works:
   shortDescription:
     label: Kort beskrivning
     holder: upphovspersoner, undertitel eller en kort beskrivning…
-    helper: Lägg till en kort beskrivning (ej obligatoriskt)
+    helper: Valfritt, lägg till en kort beskrivning
   category:
     label: Kategori
     holder: Välj alternativ
@@ -90,7 +90,7 @@ works:
     helper: Om du vill kan du ange kontaktuppgifterna som kan användas för att kommunicera om detta objekt. Om du föredrar att det inte visas, vänligen ta bort standardvärdet.
   image:
     label: Bilder
-    helper: Välj en eller flera bilder som du vill ska representera ditt inlägg (ej obligatoriskt)
+    helper: Valfritt, välj en eller flera bilder som du vill ska representera ditt inlägg
   avatar:
     label: Visa din avatar
     helper: Visa din avatar vid det här inlägget

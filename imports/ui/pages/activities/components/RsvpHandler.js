@@ -141,7 +141,7 @@ export default function RsvpHandler({ activity }) {
             borderWidth="2px"
             colorScheme="green"
             height="48px"
-            size="lg"
+            size={isDesktop ? 'lg' : 'md'}
             width={isDesktop ? '240px' : '180px'}
             onClick={() => setModalOpen(true)}
           >

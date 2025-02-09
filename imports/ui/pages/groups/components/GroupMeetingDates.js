@@ -229,6 +229,7 @@ export default function GroupMeetingDates(props) {
                 borderWidth="2px"
                 colorScheme="brand"
                 height="48px"
+                size={isDesktop ? 'lg' : 'md'}
                 variant="outline"
                 width={isDesktop ? '240px' : '180px'}
                 onClick={() => setModalOpen(true)}

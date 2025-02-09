@@ -17,9 +17,6 @@ const workFormFields = (t, tc) => [
     placeholder: t('works.shortDescription.holder'),
     type: 'textarea',
     value: 'shortDescription',
-    props: {
-      isRequired: true,
-    },
   },
   {
     helper: t('works.longDescription.helper'),
@@ -37,9 +34,6 @@ const workFormFields = (t, tc) => [
     placeholder: t('works.extra.holder'),
     type: 'input',
     value: 'additionalInfo',
-    props: {
-      isRequired: true,
-    },
   },
   {
     helper: t('works.contact.helper'),
@@ -47,9 +41,6 @@ const workFormFields = (t, tc) => [
     placeholder: t('works.contact.holder'),
     type: 'textarea',
     value: 'contactInfo',
-    props: {
-      isRequired: true,
-    },
   },
   {
     helper: t('works.avatar.helper'),
@@ -57,9 +48,6 @@ const workFormFields = (t, tc) => [
     placeholder: tc('labels.select'),
     type: 'checkbox',
     value: 'showAvatar',
-    props: {
-      isRequired: true,
-    },
   },
 ];
 

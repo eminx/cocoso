@@ -21,7 +21,7 @@ form:
     helper: Etkinliği temsilen, lütfen cihazındaki galeriden bir imaj veya bir dizi imaj veya şimdi çekeceğin bir fotoğraf seç. En az bir tane gerekli.
   resource:
     label: Kaynak
-    helper: Takvimde görünmesi için rezerve etmek istediğin bir ögeyi seç. Zorunlu değil
+    helper: İsteğe bağlı olarak, takvimde görünmesi için rezerve etmek istediğin bir ögeyi seç.
     holder: Seç
   occurrences:
     label: Tekrarlar

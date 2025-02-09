@@ -17,41 +17,47 @@ const publicActivityFormFields = (t) => [
     placeholder: t('form.subtitle.holder'),
     type: 'input',
     value: 'subTitle',
+    props: {
+      isRequired: true,
+    },
   },
   {
     helper: t('form.description.helper'),
     label: t('form.description.label'),
+    placeholder: t('form.description.holder'),
     type: 'quill',
     value: 'longDescription',
-    placeholder: t('form.description.holder'),
+    props: {
+      isRequired: true,
+    },
   },
   {
     helper: t('form.place.helper'),
     label: t('form.place.label'),
     type: 'input',
-    value: 'place',
     placeholder: t('form.place.holder'),
+    value: 'place',
   },
 
   {
     helper: t('form.address.helper'),
     label: t('form.address.label'),
     type: 'textarea',
-    value: 'address',
     placeholder: t('form.address.holder'),
+    value: 'address',
   },
   {
     helper: t('form.rsvp.helper'),
     label: t('form.rsvp.label'),
-    type: 'checkbox',
     placeholder: t('form.rsvp.holder'),
+    type: 'checkbox',
     value: 'isRegistrationEnabled',
   },
   {
     helper: t('form.exclusive.helper'),
     label: t('form.exclusive.label'),
-    type: 'checkbox',
     placeholder: t('form.exclusive.holder'),
+    type: 'checkbox',
     value: 'isExclusiveActivity',
   },
 ];
