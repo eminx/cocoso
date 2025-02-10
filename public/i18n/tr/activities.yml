@@ -24,8 +24,8 @@ form:
     helper: İsteğe bağlı olarak, takvimde görünmesi için rezerve etmek istediğin bir ögeyi seç.
     holder: Seç
   occurrences:
-    label: Tekrarlar
-    helper: Lütfen aktivitenin zamanlarını gir
+    label: Tarih ve saat
+    helper: Etkinlik tekrarları için tarih ve saat seç. Eklemek için +'ya tıkla
   days:
     single: Gün
     multiple: Birden fazla gün

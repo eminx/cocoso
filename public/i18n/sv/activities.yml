@@ -24,8 +24,8 @@ form:
     helper: Valfritt, välj en artikel som du vill boka, för att den ska visas i kalendern.
     holder: Välj
   occurrences:
-    label: Tid och datum
-    helper: Lägg in start och sluttid för din bokning eller ditt publika evenemang. Vill du skapa flera identiska bokningar eller evenemang som sker vid upprepade tillfällen klickar du på + tecknet.
+    label: Datum och tid
+    helper: Lägg in start och sluttid för ditt publika evenemang. Vill du skapa flera identiska bokningar eller evenemang som sker vid upprepade tillfällen klickar du på + tecknet.
   days:
     single: Dag
     multiple: Samma aktivitet pågår under flera dagar

@@ -24,8 +24,8 @@ form:
     holder: Select
     helper: Optionally, select an item that you want to book, to appear in the calendar
   occurrences:
-    label: Occurrences
-    helper: Please enter timely details of each of the occurrences that will happen
+    label: Date & Time of occurrences
+    helper: Select the date and time of the occurrences of the event. Click + to add more occurrence
   days:
     single: Day
     multiple: Multiple Days

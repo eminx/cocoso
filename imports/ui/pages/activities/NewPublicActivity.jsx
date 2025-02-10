@@ -186,8 +186,8 @@ export default function NewPublicActivity() {
         </FormField>
 
         <FormField
-          helperText="Select the dates and time. Click + for more occurrences"
-          label="Date and Time"
+          helperText={t('form.occurrences.helper')}
+          label={t('form.occurrences.label')}
           mb="14"
           isRequired
         >
