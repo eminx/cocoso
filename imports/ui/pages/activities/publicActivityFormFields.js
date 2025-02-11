@@ -1,5 +1,3 @@
-import React from 'react';
-
 const publicActivityFormFields = (t) => [
   {
     helper: t('form.title.helper'),

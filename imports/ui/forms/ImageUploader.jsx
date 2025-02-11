@@ -13,25 +13,29 @@ const thumbStyle = (backgroundImage) => ({
 });
 
 export default function ImageUploader({
-  images = [],
+  preExistingImages = [],
   isMultiple = true,
   ping = false,
   uploadParam = 'genericEntryImageUpload',
   onUploadedImages,
 }) {
-  const [state, setState] = useState({
-    preExistingImages: images,
-    uploadableImages: [],
-    uploadableImagesLocal: [],
-  });
+  const [localImages, setLocalImages] = useState(
+    preExistingImages
+      ? preExistingImages.map((image) => ({
+          src: image,
+          uploaded: true,
+        }))
+      : []
+  );
 
   const uploadImages = async () => {
-    const { uploadableImages } = state;
-
     try {
       const imagesReadyToSave = await Promise.all(
-        uploadableImages.map(async (uploadableImage) => {
-          const resizedImage = await resizeImage(uploadableImage, 1200);
+        localImages.map(async (uploadableImage) => {
+          if (uploadableImage.uploaded) {
+            return uploadableImage.src;
+          }
+          const resizedImage = await resizeImage(uploadableImage.resizableData, 1200);
           const uploadedImage = await uploadImage(resizedImage, uploadParam);
           return uploadedImage;
         })
@@ -56,11 +60,10 @@ export default function ImageUploader({
       reader.addEventListener(
         'load',
         () => {
-          setState((prevState) => ({
-            ...prevState,
-            uploadableImages: [...prevState.uploadableImages, uploadableImage],
-            uploadableImagesLocal: [...prevState.uploadableImagesLocal, reader.result],
-          }));
+          setLocalImages((prevLocalImages) => [
+            ...prevLocalImages,
+            { src: reader.result, resizableData: uploadableImage, uploaded: false },
+          ]);
         },
         false
       );
@@ -68,13 +71,9 @@ export default function ImageUploader({
   };
 
   const handleRemoveImage = (imageIndex) => {
-    setState((prevState) => ({
-      ...prevState,
-      uploadableImages: prevState.uploadableImages.filter((image, index) => imageIndex !== index),
-      uploadableImagesLocal: prevState.uploadableImagesLocal.filter(
-        (image, index) => imageIndex !== index
-      ),
-    }));
+    setLocalImages((prevLocalImages) =>
+      prevLocalImages.filter((image, index) => index !== imageIndex)
+    );
   };
 
   const handleSortImages = (oldIndex, newIndex) => {
@@ -82,20 +81,10 @@ export default function ImageUploader({
       return;
     }
 
-    setState((prevState) => ({
-      ...prevState,
-      uploadableImages: arrayMoveImmutable(prevState.uploadableImages, oldIndex, newIndex),
-      uploadableImagesLocal: arrayMoveImmutable(
-        prevState.uploadableImagesLocal,
-        oldIndex,
-        newIndex
-      ),
-    }));
+    setLocalImages((prevLocalImages) => arrayMoveImmutable(prevLocalImages, oldIndex, newIndex));
   };
 
-  const allImagesRendered = [...state.preExistingImages, ...state.uploadableImagesLocal];
-
-  if (!allImagesRendered || allImagesRendered.length === 0) {
+  if (!localImages || localImages.length === 0) {
     return (
       <>
         <Center>
@@ -121,9 +110,9 @@ export default function ImageUploader({
             }}
             onSortEnd={handleSortImages}
           >
-            {allImagesRendered.map((image, index) => (
-              <SortableItem key={image}>
-                <Box className="sortable-thumb" style={thumbStyle(image)}>
+            {localImages.map((image, index) => (
+              <SortableItem key={image.src}>
+                <Box className="sortable-thumb" style={thumbStyle(image.src)}>
                   <IconButton
                     className="sortable-thumb-icon"
                     colorScheme="gray.900"

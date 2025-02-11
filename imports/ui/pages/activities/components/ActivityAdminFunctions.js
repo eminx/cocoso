@@ -1,18 +1,22 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import AdminFunctions from '../../../entry/AdminFunctions';
 import { ActivityContext } from '../Activity';
+import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 
 export default function ActivityAdminFunctions() {
   const [tc] = useTranslation('common');
   const navigate = useNavigate();
   const { activity } = useContext(ActivityContext);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSelect = (item) => {
     if (item.kind === 'edit') {
-      navigate(`/activities/${activity?._id}/edit`);
+      setSearchParams({ edit: 'true' });
+    } else if (item.kind === 'delete') {
+      setSearchParams({ delete: 'true' });
     }
   };
 
@@ -21,7 +25,16 @@ export default function ActivityAdminFunctions() {
       kind: 'edit',
       label: tc('actions.update'),
     },
+    {
+      kind: 'delete',
+      label: tc('actions.remove'),
+    },
   ];
 
-  return <AdminFunctions menuItems={menuItems} onSelect={handleSelect} />;
+  return (
+    <>
+      <AdminFunctions menuItems={menuItems} onSelect={handleSelect} />
+      <DeleteEntryHandler item={activity} context="activities" />
+    </>
+  );
 }

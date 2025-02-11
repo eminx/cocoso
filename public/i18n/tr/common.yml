@@ -127,7 +127,8 @@ modals:
   confirm:
     delete:
       title: Silmeyi onayla
-      body: '{{ domain }} silmek istediğine emin misin?'
+      body: Bu içeriği silmek istediğine emin misin?
+      cantundo: Bu işlem geri alınamaz
       yes: Evet, sil
 
   # FEEDBACK FORM

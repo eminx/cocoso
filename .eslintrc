@@ -29,7 +29,7 @@
         "tsx": "never"
       }
     ],
-    "no-underscore-dangle": "on",
+    "no-underscore-dangle": "off",
     "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }]
   },
   "settings": {

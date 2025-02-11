@@ -6,6 +6,8 @@ import ActivityHybrid from '../../entry/ActivityHybrid';
 import ActivityInteractionHandler from './components/ActivityInteractionHandler';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import EditPublicActivity from './EditPublicActivity';
 
 export const ActivityContext = createContext(null);
 
@@ -63,6 +65,10 @@ export default function Activity() {
       {rendered && (
         <ActivityContext.Provider value={contextValue}>
           <ActivityInteractionHandler slideStart={rendered} />
+
+          <NewEntryHandler title="Edit Activity">
+            <EditPublicActivity />
+          </NewEntryHandler>
         </ActivityContext.Provider>
       )}
     </>

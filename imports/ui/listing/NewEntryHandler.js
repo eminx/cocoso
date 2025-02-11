@@ -7,10 +7,17 @@ import { StateContext } from '../LayoutContainer';
 
 export default function NewEntryHandler({ title, children }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const isOpen = searchParams.get('new') === 'true';
+  const forNew = searchParams.get('new') === 'true';
+  const forEdit = searchParams.get('edit') === 'true';
+  const isOpen = forNew || forEdit;
+
   const { canCreateContent } = useContext(StateContext);
 
   const onClose = () => {
+    if (forEdit) {
+      setSearchParams((params) => ({ ...params, edit: 'false' }));
+      return;
+    }
     setSearchParams((params) => ({ ...params, new: 'false' }));
   };
 

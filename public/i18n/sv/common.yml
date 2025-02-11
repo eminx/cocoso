@@ -127,7 +127,8 @@ modals:
   confirm:
     delete:
       title: Bekräfta radering
-      body: Är du säker på att du vill ta bort denna {{ domain }}?
+      body: Är du säker på att du vill ta bort denna inlägg?
+      cantundo: Detta kan inte ångras
       yes: Ja, radera
 
   # FEEDBACK FORM

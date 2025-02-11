@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Checkbox, FormLabel, Heading, Text } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -47,12 +47,12 @@ export default function NewWork() {
         categories,
       }));
     } catch (error) {
-      message.error(error.reason);
+      // message.error(error.reason);
     }
   };
 
-  getCategories(() => {
-    getWorks();
+  useEffect(() => {
+    getCategories();
     // setWorksForCombo(defaultValues && defaultValues.isCombo && defaultValues.worksForCombo);
   }, []);
 
@@ -107,7 +107,7 @@ export default function NewWork() {
     createWork(images);
   };
 
-  const handleAutoCompleteSelectChange = (newValue, actionMeta) => {
+  const handleAutoCompleteSelectChange = (newValue) => {
     setState((prevState) => ({
       ...prevState,
       selectedCategory: newValue,
