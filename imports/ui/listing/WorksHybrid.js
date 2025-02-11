@@ -52,6 +52,7 @@ export default function WorksHybrid({ works, Host }) {
       <Center px="4">
         <Flex justify="center" wrap="wrap">
           <Tag
+            key="all"
             label={t('all')}
             checkable
             checked={Boolean(category) === false || category === 'all'}

@@ -433,9 +433,9 @@ const getLastPastOccurence = (occurence) =>
 
 const getCategoriesAssignedToWorks = (works) => {
   const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
-
   const hslValues = getHslValuesFromLength(labels.length);
   return labels
+    .filter((label) => label !== '' && label !== undefined)
     .map((label, i) => ({
       label,
       color: hslValues[i],
