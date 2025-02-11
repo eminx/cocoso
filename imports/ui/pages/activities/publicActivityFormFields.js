@@ -53,13 +53,6 @@ const publicActivityFormFields = (t) => [
     type: 'checkbox',
     value: 'isRegistrationEnabled',
   },
-  {
-    helper: t('form.exclusive.helper'),
-    label: t('form.exclusive.label'),
-    placeholder: t('form.exclusive.holder'),
-    type: 'checkbox',
-    value: 'isExclusiveActivity',
-  },
 ];
 
 export default publicActivityFormFields;

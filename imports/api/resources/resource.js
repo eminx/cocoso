@@ -46,11 +46,12 @@ Resources.attachSchema(Resources.schema);
 
 Resources.publicFields = {
   _id: 1,
-  label: 1,
   description: 1,
+  host: 1,
   images: 1,
   isBookable: 1,
   isCombo: 1,
+  label: 1,
   resourcesForCombo: 1,
   createdAt: 1,
   userId: 1,

@@ -59,7 +59,7 @@ form:
   submit: 'Onayla ve oluştur'
   waiting: 'Aktivite oluşturuluyor...'
   conflict:
-    alert: 'Bu tarih ve saatte bu kaynak için zaten bir ayırma var:'
+    alert: 'Bu tarih ve saatte bu kaynak için zaten bir ayırma var'
     notExclusiveInfo: 'Her iki aktivite de eksklusif olmadığı için devam edip rezervasyonunu tamamlayabilirsin'
 
 members:

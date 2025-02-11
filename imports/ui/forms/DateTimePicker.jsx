@@ -116,7 +116,7 @@ export default function DateTimePicker({ value, onChange }) {
           <Box w="170px" mr="2">
             <DatePicker
               label={isRange ? t('form.date.start') : t('form.days.single')}
-              value={value.startDate}
+              value={value?.startDate}
               onChange={(date) => handleDateChange(date, 'startDate')}
             />
           </Box>
@@ -125,7 +125,7 @@ export default function DateTimePicker({ value, onChange }) {
             <DatePicker
               disabledDate={value.startDate}
               label={t('form.date.finish')}
-              value={value.endDate}
+              value={value?.endDate}
               onChange={(date) => handleDateChange(date, 'endDate')}
             />
           )}
@@ -135,14 +135,14 @@ export default function DateTimePicker({ value, onChange }) {
           <Box w="170px">
             <TimePicker
               label={t('form.time.start')}
-              value={value?.startTime || '08:00'}
+              value={value?.startTime}
               onChange={(time) => handleTimeChange(time, 'startTime')}
             />
           </Box>
 
           <TimePicker
             label={t('form.time.finish')}
-            value={value?.endTime || '16:00'}
+            value={value?.endTime}
             onChange={(time) => handleTimeChange(time, 'endTime')}
           />
         </Flex>

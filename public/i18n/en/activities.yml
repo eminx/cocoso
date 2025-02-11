@@ -24,7 +24,7 @@ form:
     holder: Select
     helper: Optionally, select an item that you want to book, to appear in the calendar
   occurrences:
-    label: Date & Time of occurrences
+    label: Date & time of occurrences
     helper: Select the date and time of the occurrences of the event. Click + to add more occurrence
   days:
     single: Day
@@ -59,7 +59,7 @@ form:
   submit: 'Confirm and Create'
   waiting: 'Creating your booking...'
   conflict:
-    alert: "There's already a booking at this date & time:"
+    alert: "There's already a booking at this date & time"
     notExclusiveInfo: 'Since both bookings are not exclusive, you may go ahead and finalise it'
 
 members:

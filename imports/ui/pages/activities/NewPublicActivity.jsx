@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heading } from '@chakra-ui/react';
+import { Box, Checkbox, FormLabel, Heading } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
@@ -28,7 +28,6 @@ export const emptyFormValues = {
   address: '',
   // capacity: defaultCapacity,
   isRegistrationEnabled: true,
-  isExclusiveActivity: false,
 };
 
 export default function NewPublicActivity() {
@@ -37,6 +36,7 @@ export default function NewPublicActivity() {
     formValues: emptyFormValues,
     selectedResource: null,
     isCreating: false,
+    isExclusiveActivity: true,
     isSendingForm: false,
     isSuccess: false,
     isUploadingImages: false,
@@ -110,17 +110,35 @@ export default function NewPublicActivity() {
     setState((prevState) => ({
       ...prevState,
       selectedResource,
+      datesAndTimes: [emptyDateAndTime],
     }));
   };
 
   const createActivity = async (images) => {
+    const cleanDatesAndTimes = state.datesAndTimes.map(
+      ({ startTime, endTime, startDate, endDate }) => ({
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+      })
+    );
+
+    const newActivity = {
+      ...state.formValues,
+      datesAndTimes: cleanDatesAndTimes,
+      images,
+      isPublicActivity: true,
+      isExclusiveActivity: state.isExclusiveActivity,
+    };
+
+    if (selectedResource) {
+      newActivity.resourceId = selectedResource._id;
+      newActivity.resource = selectedResource.label;
+    }
+
     try {
-      const newEntryId = await call('createActivity', {
-        ...state.formValues,
-        datesAndTimes: state.datesAndTimes,
-        images,
-        isPublicActivity: true,
-      });
+      const newEntryId = await call('createActivity', newActivity);
       // message.success(t('form.success'));
       navigate(`/activities/${newEntryId}`);
     } catch (error) {
@@ -165,6 +183,30 @@ export default function NewPublicActivity() {
           <ImageUploader ping={state.isUploadingImages} onUploadedImages={handleUploadedImages} />
         </FormField>
 
+        <FormField
+          helperText={t('form.exclusive.helper')}
+          label={t('form.exclusive.label')}
+          mt="8"
+          mb="4"
+        >
+          <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
+            <Checkbox
+              size="lg"
+              value={state.isExclusiveActivity}
+              onChange={() =>
+                setState((prevState) => ({
+                  ...prevState,
+                  isExclusiveActivity: !prevState.isExclusiveActivity,
+                }))
+              }
+            >
+              <FormLabel style={{ cursor: 'pointer' }} mb="0">
+                {t('form.exclusive.holder')}
+              </FormLabel>
+            </Checkbox>
+          </Box>
+        </FormField>
+
         <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')} my="12">
           <AutoCompleteSelect
             isClearable
@@ -193,6 +235,8 @@ export default function NewPublicActivity() {
         >
           <DatesAndTimes
             datesAndTimes={state.datesAndTimes}
+            isExclusiveActivity={state.isExclusiveActivity}
+            resourceId={state.selectedResource?._id}
             onDatesAndTimesChange={handleDatesAndTimesChange}
           />
         </FormField>

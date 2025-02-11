@@ -15,6 +15,7 @@ import {
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import DeleteIcon from 'lucide-react/dist/esm/icons/x';
 import { useTranslation } from 'react-i18next';
+import { call } from '../utils/shared';
 
 import DateTimePicker from './DateTimePicker';
 
@@ -36,14 +37,15 @@ function ConflictMarker({ occurrence, t }) {
   if (!occurrence) {
     return null;
   }
+
   return (
     <Box>
-      <Text fontSize="sm" textAlign="center" fontWeight="bold">
+      <Text color="red.600" fontSize="sm" fontWeight="bold" my="4" textAlign="center">
         {t('form.conflict.alert')}
         <br />
       </Text>
-      <Code
-        colorScheme={occurrence.isConflictOK ? 'orange' : 'red'}
+      {/* <Code
+        colorScheme={occurrence.isConflictHard ? 'tomato' : 'orange'}
         mx="auto"
         display="block"
         width="fit-content"
@@ -54,8 +56,8 @@ function ConflictMarker({ occurrence, t }) {
           : `${occurrence.conflict.startDate}-${occurrence.conflict.endDate}`}
         {', '}
         {`${occurrence.conflict.startTime} – ${occurrence.conflict.endTime}`}
-      </Code>
-      {occurrence.isConflictOK && (
+      </Code> */}
+      {!occurrence.isConflictHard && (
         <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center">
           {t('form.conflict.notExclusiveInfo')}
         </Text>
@@ -64,7 +66,12 @@ function ConflictMarker({ occurrence, t }) {
   );
 }
 
-export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) {
+export default function DatesAndTimes({
+  datesAndTimes,
+  isExclusiveActivity,
+  resourceId,
+  onDatesAndTimesChange,
+}) {
   const [t] = useTranslation('activities');
 
   const addOccurrence = () => {
@@ -79,12 +86,25 @@ export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) 
     onDatesAndTimesChange(newDatesAndTimes);
   };
 
-  const handleDateTimeChange = (date, occurrenceIndex) => {
-    console.log('date', date);
-    console.log('occurrenceIndex', occurrenceIndex);
+  const handleDateTimeChange = async (occurrence, occurrenceIndex) => {
+    if (!occurrence) {
+      return;
+    }
+
+    const params = {
+      ...occurrence,
+      resourceId,
+    };
+
+    const conflict = resourceId ? await call('getActivitiesBetweenCertainDates', params) : null;
+
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (index === occurrenceIndex) {
-        return date;
+        return {
+          ...occurrence,
+          conflict,
+          isConflictHard: conflict && (isExclusiveActivity || conflict?.isExclusiveActivity),
+        };
       }
       return item;
     });
@@ -109,12 +129,12 @@ export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) 
   };
 
   const getBorderColor = (occurrence) => {
-    if (!occurrence.conflict) {
+    if (!occurrence || !occurrence.conflict) {
       return 'gray.400';
-    } else if (occurrence.isConflictOK) {
-      return 'orange';
+    } else if (occurrence.isConflictHard) {
+      return 'tomato';
     }
-    return 'tomato';
+    return 'orange';
   };
 
   const getOccurrenceId = (occurrence) => {
@@ -157,7 +177,7 @@ export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) 
             <Box mb="2">
               <FormControl w="auto" alignItems="center" display="flex">
                 <Switch
-                  isChecked={occurrence.isRange}
+                  isChecked={occurrence?.isRange}
                   id={id}
                   onChange={(event) => handleRangeSwitch(event, index)}
                   py="2"
@@ -198,7 +218,7 @@ export default function DatesAndTimes({ datesAndTimes, onDatesAndTimesChange }) 
               </Box> */}
             </Wrap>
 
-            {occurrence.conflict && <ConflictMarker occurrence={occurrence} t={t} />}
+            {occurrence?.conflict && <ConflictMarker occurrence={occurrence} t={t} />}
           </Box>
         );
       })}

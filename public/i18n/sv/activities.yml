@@ -59,7 +59,7 @@ form:
   submit: Bekräfta och Skapa
   waiting: Skapar din aktivitet...
   conflict:
-    alert: 'Det finns redan en bokning för den här resursen vid detta datum och tid:'
+    alert: 'Det finns redan en bokning för den här resursen vid detta datum och tid'
     notExclusiveInfo: 'Eftersom båda bokningarna tillåter att fler bokar samma tid kan du gå vidare och slutföra din bokning'
 
 members:

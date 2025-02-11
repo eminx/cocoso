@@ -48,6 +48,7 @@ Meteor.methods({
       {
         fields: {
           _id: 1,
+          host: 1,
           label: 1,
           isBookable: 1,
           isCombo: 1,

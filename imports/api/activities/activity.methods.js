@@ -179,6 +179,41 @@ Meteor.methods({
     }
   },
 
+  getActivitiesBetweenCertainDates({ startDate, endDate, startTime, endTime, resourceId }) {
+    const host = getHost(this);
+    if (!resourceId) {
+      return;
+    }
+
+    const activityWithConflict = Activities.findOne(
+      {
+        host,
+        resourceId,
+        $or: [
+          {
+            'datesAndTimes.startDate': { $gte: startDate, $lte: endDate },
+          },
+          {
+            'datesAndTimes.endDate': { $gte: startDate, $lte: endDate },
+          },
+          {
+            'datesAndTimes.startDate': { $lte: startDate },
+            'datesAndTimes.endDate': { $gte: endDate },
+          },
+        ],
+      },
+      {
+        fields: {
+          _id: 1,
+          isExclusiveActivity: 1,
+          title: 1,
+        },
+      }
+    );
+    console.log(activityWithConflict);
+    return activityWithConflict;
+  },
+
   async createActivity(values) {
     if (!values) {
       return;
