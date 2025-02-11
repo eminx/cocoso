@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import AdminFunctions from '../../../entry/AdminFunctions';
 import { ActivityContext } from '../Activity';
@@ -8,9 +8,8 @@ import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 
 export default function ActivityAdminFunctions() {
   const [tc] = useTranslation('common');
-  const navigate = useNavigate();
   const { activity } = useContext(ActivityContext);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   const handleSelect = (item) => {
     if (item.kind === 'edit') {

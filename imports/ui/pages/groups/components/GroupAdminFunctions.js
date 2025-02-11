@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AddDocument from './admin/AddDocument';
 import AddMeeting from './admin/AddMeeting';
 import ManageMembers from './admin/ManageMembers';
 import AdminFunctions from '../../../entry/AdminFunctions';
+import { GroupContext } from '../Group';
+import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 
 export default function GroupAdminFunctions() {
   const [popup, setPopup] = useState('none');
+  const { group } = useContext(GroupContext);
   const [t] = useTranslation('groups');
 
   const handleSelect = (item) => {
@@ -40,6 +43,8 @@ export default function GroupAdminFunctions() {
       {popup === 'document' ? <AddDocument onClose={handleClose} /> : null}
       {popup === 'meeting' ? <AddMeeting onClose={handleClose} /> : null}
       {popup === 'members' ? <ManageMembers onClose={handleClose} /> : null}
+
+      <DeleteEntryHandler item={group} context="groups" />
     </>
   );
 }

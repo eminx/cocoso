@@ -1,24 +1,12 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import moment from 'moment';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Link as CLink,
-  Tag as CTag,
-  TagLabel,
-  Text,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
-import ArrowForwardIcon from 'lucide-react/dist/esm/icons/move-right';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { Box, Button, Center, Flex, Link as CLink, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
-import { stringify } from 'query-string';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { useTranslation } from 'react-i18next';
 
 import CalendarView from './CalendarView';
 import ConfirmModal from '../../generic/ConfirmModal';
@@ -31,20 +19,37 @@ import {
 } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import PageHeading from '../../listing/PageHeading';
-import Loader from '../../generic/Loader';
 
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;
 
-function Calendar({ tc }) {
+const parseNewEntryParams = (slotInfo, selectedResource, type) => {
+  const params = {
+    startDate: dayjs(slotInfo?.start).format('YYYY-MM-DD'),
+    endDate: dayjs(slotInfo?.end).format('YYYY-MM-DD'),
+    startTime: dayjs(slotInfo?.start).format('HH:mm'),
+    endTime: dayjs(slotInfo?.end).format('HH:mm'),
+    resource: selectedResource ? selectedResource._id : '',
+  };
+
+  if (type !== 'other') {
+    params.endDate = dayjs(slotInfo?.end).add(-1, 'days').format('YYYY-MM-DD');
+    params.endTime = '23:59';
+  }
+
+  return params;
+};
+
+export default function Calendar() {
   const [activities, setActivities] = useState([]);
   const [resources, setResources] = useState([]);
-  const [selectedSlot, setSelectedSlot] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [calendarFilter, setCalendarFilter] = useState(null);
+
   const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
   const navigate = useNavigate();
+  const [, setSearchParams] = useSearchParams();
+  const [tc] = useTranslation('common');
 
   if (!currentHost) {
     return null;
@@ -66,7 +71,6 @@ function Calendar({ tc }) {
         : await call('getResources');
       setActivities(activitiesResponse);
       setResources(resourcesResponse);
-      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -90,52 +94,26 @@ function Calendar({ tc }) {
       (resource) => calendarFilter && resource._id === calendarFilter._id
     );
 
+    let type = 'other';
+
     if (slotInfo?.slots?.length === 1) {
       // One day selected in month view
-      const type = 'month-oneday';
-      setSelectedSlot({
-        ...slotInfo,
-        type,
-        content: moment(slotInfo?.start).format('DD MMMM'),
-        bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
-      });
+      type = 'month-oneday';
     } else if (
       // Multiple days selected in month view
       slotInfo?.slots?.length > 1 &&
-      moment(slotInfo?.end).format('HH:mm') === '00:00'
+      dayjs(slotInfo?.end).format('HH:mm') === '00:00'
     ) {
-      const type = 'month-multipledays';
-      setSelectedSlot({
-        ...slotInfo,
-        type,
-        content:
-          moment(slotInfo?.start).format('DD MMMM') +
-          ' – ' +
-          moment(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
-        bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
-      });
-    } else {
-      // All other, i.e. weekly, daily bookings
-      const type = 'other';
-      setSelectedSlot({
-        ...slotInfo,
-        type,
-        content:
-          moment(slotInfo?.start).format('DD MMMM') +
-          ': ' +
-          moment(slotInfo?.start).format('HH:mm') +
-          ' – ' +
-          moment(slotInfo?.end).format('HH:mm'),
-        bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
-      });
+      type = 'month-multipledays';
     }
-  };
 
-  const activateRedirectToBooking = () => {
-    setSelectedSlot({
-      ...selectedSlot,
-      isRedirectActive: true,
-    });
+    const dateParams = parseNewEntryParams(slotInfo, selectedResource, type);
+
+    setSearchParams((params) => ({
+      ...params,
+      ...dateParams,
+      new: true,
+    }));
   };
 
   const getActivityTimes = (activity) => {
@@ -143,21 +121,18 @@ function Calendar({ tc }) {
       return '';
     }
     if (activity.startDate === activity.endDate) {
-      return `${activity.startTime}–${activity.endTime} ${moment(activity.startDate).format(
+      return `${activity.startTime}–${activity.endTime} ${dayjs(activity.startDate).format(
         'DD MMMM'
       )}`;
     }
-    return `${moment(activity.startDate).format('DD MMM')} ${activity.startTime} – ${moment(
+    return `${dayjs(activity.startDate).format('DD MMM')} ${activity.startTime} – ${dayjs(
       activity.endDate
     ).format('DD MMM')} ${activity.endTime}`;
   };
 
-  const isCreatorOrAdmin = () => {
-    return (
-      (selectedActivity && currentUser && currentUser.username === selectedActivity.authorName) ||
-      role === 'admin'
-    );
-  };
+  const isCreatorOrAdmin = () =>
+    (selectedActivity && currentUser && currentUser.username === selectedActivity.authorName) ||
+    role === 'admin';
 
   const handlePrimaryButtonClick = () => {
     const isSameHost = selectedActivity.host === currentHost.host;
@@ -190,21 +165,12 @@ function Calendar({ tc }) {
     }
   };
 
-  if (isLoading) {
-    return (
-      <Center>
-        <Loader />
-      </Center>
-    );
-  }
-
-  const filteredActivities = activitiesParsed.filter((activity) => {
-    return (
+  const filteredActivities = activitiesParsed.filter(
+    (activity) =>
       !calendarFilter ||
       calendarFilter._id === activity.resourceId ||
       calendarFilter._id === activity.comboResourceId
-    );
-  });
+  );
 
   const nonComboResources = resources.filter((resource) => !resource.isCombo);
   const nonComboResourcesWithColor = getNonComboResourcesWithColor(nonComboResources);
@@ -215,7 +181,7 @@ function Calendar({ tc }) {
     nonComboResourcesWithColor
   );
 
-  const allFilteredActsWithColors = filteredActivities.map((act, i) => {
+  const allFilteredActsWithColors = filteredActivities.map((act) => {
     const resource = nonComboResourcesWithColor.find((res) => res._id === act.resourceId);
     const resourceColor = (resource && resource.color) || '#484848';
 
@@ -224,10 +190,6 @@ function Calendar({ tc }) {
       resourceColor,
     };
   });
-
-  if (selectedSlot?.bookingUrl && selectedSlot?.isRedirectActive) {
-    return <Navigate to={selectedSlot.bookingUrl} />;
-  }
 
   const selectFilterView =
     nonComboResourcesWithColor.filter((r) => r.isBookable)?.length >= maxResourceLabelsToShow;
@@ -268,7 +230,7 @@ function Calendar({ tc }) {
 
                 {nonComboResourcesWithColor
                   .filter((r) => r.isBookable)
-                  .map((resource, i) => (
+                  .map((resource) => (
                     <WrapItem key={resource._id}>
                       <Tag
                         checkable
@@ -283,7 +245,7 @@ function Calendar({ tc }) {
               <Wrap justify="center" mb="2" px="1">
                 {comboResourcesWithColor
                   .filter((r) => r.isBookable)
-                  .map((resource, i) => (
+                  .map((resource) => (
                     <WrapItem key={resource._id}>
                       <Tag
                         checkable
@@ -384,54 +346,6 @@ function Calendar({ tc }) {
             </Center>
           )} */}
       </ConfirmModal>
-
-      <ConfirmModal
-        visible={Boolean(selectedSlot)}
-        title={`${tc('labels.newBooking')}?`}
-        confirmText={
-          <span>
-            {tc('actions.create')} <ArrowForwardIcon />
-          </span>
-        }
-        cancelText={tc('actions.close')}
-        onConfirm={activateRedirectToBooking}
-        onCancel={() => setSelectedSlot(null)}
-        onClickOutside={() => setSelectedSlot(null)}
-      >
-        <Box bg="light-1" p="1" my="1">
-          <Box>
-            <CTag mr="2">
-              <TagLabel>
-                {calendarFilter ? calendarFilter?.label : tc('labels.unselected')}
-              </TagLabel>
-            </CTag>
-            <Text as="span" fontWeight="bold">
-              {selectedSlot?.content}
-            </Text>
-          </Box>
-        </Box>
-      </ConfirmModal>
     </Box>
   );
 }
-
-function parseDatesForQuery(slotInfo, selectedResource, type) {
-  let bookingUrl = '/activities/new/?';
-  const params = {
-    startDate: moment(slotInfo?.start).format('YYYY-MM-DD'),
-    endDate: moment(slotInfo?.end).format('YYYY-MM-DD'),
-    startTime: moment(slotInfo?.start).format('HH:mm'),
-    endTime: moment(slotInfo?.end).format('HH:mm'),
-    resource: selectedResource ? selectedResource._id : '',
-  };
-
-  if (type !== 'other') {
-    params.endDate = moment(slotInfo?.end).add(-1, 'days').format('YYYY-MM-DD');
-    params.endTime = '23:59';
-  }
-
-  bookingUrl += stringify(params);
-  return bookingUrl;
-}
-
-export default Calendar;

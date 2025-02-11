@@ -20,7 +20,7 @@ const Resources = lazy(() => import('./resources/Resources'));
 const Resource = lazy(() => import('./resources/Resource'));
 
 // Calendar
-const CalendarContainer = lazy(() => import('./calendar/CalendarContainer'));
+const Calendar = lazy(() => import('./calendar/Calendar'));
 
 // Works
 const Works = lazy(() => import('./works/Works'));
@@ -29,7 +29,6 @@ const Works = lazy(() => import('./works/Works'));
 const UserProfile = lazy(() => import('./profile/UserProfile'));
 const EditProfile = lazy(() => import('./profile/EditProfile'));
 const Work = lazy(() => import('./works/Work'));
-const EditWork = lazy(() => import('./works/EditWork'));
 
 // Pages
 const Page = lazy(() => import('./pages/Page'));
@@ -73,7 +72,7 @@ function getComponentBasedOnFirstRoute(menuItems) {
     case 'resources':
       return <Resources />;
     case 'calendar':
-      return <CalendarContainer />;
+      return <Calendar />;
     case 'info':
       return <Page />;
     default:
@@ -104,7 +103,7 @@ export default function AppRoutes() {
           <Route path="/people" element={<Users />} />
 
           {/* Calendar */}
-          <Route path="/calendar" element={<CalendarContainer />} />
+          <Route path="/calendar" element={<Calendar />} />
 
           {/* Activities */}
           <Route exact path="/activities" element={<Activities />} />
@@ -147,7 +146,6 @@ export default function AppRoutes() {
           <Route path="/edit/*" element={<EditProfile />} />
           <Route path="/:usernameSlug/*" element={<UserProfile />} />
           <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
-          <Route path="/:usernameSlug/works/:workId/edit" element={<EditWork />} />
 
           {/* Auth */}
           <Route exact path="/register" element={<SignupPage />} />
