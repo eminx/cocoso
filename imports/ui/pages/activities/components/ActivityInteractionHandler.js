@@ -16,17 +16,25 @@ export default function ActivityInteractionHandler({ slideStart }) {
     return null;
   }
 
+  const { isPublicActivity } = activity;
+
   if (currentUser && (role === 'admin' || activity.authorId === currentUser._id)) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <ActivityAdminFunctions />
-        <RsvpHandler activity={activity} />
-        <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
+        {isPublicActivity ? (
+          <>
+            <RsvpHandler activity={activity} />
+            <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
+          </>
+        ) : (
+          <Box />
+        )}
       </SlideWidget>
     );
   }
 
-  if (currentUser && canCreateContent) {
+  if (currentUser && canCreateContent && isPublicActivity) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <Box />
@@ -36,9 +44,13 @@ export default function ActivityInteractionHandler({ slideStart }) {
     );
   }
 
-  return (
-    <SlideWidget slideStart={slideStart}>
-      <RsvpHandler activity={activity} />
-    </SlideWidget>
-  );
+  if (activity.isPublicActivity) {
+    return (
+      <SlideWidget slideStart={slideStart}>
+        <RsvpHandler activity={activity} />
+      </SlideWidget>
+    );
+  }
+
+  return null;
 }

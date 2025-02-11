@@ -1,5 +1,3 @@
-import React from 'react';
-
 const calendarActivityFormFields = (t) => [
   {
     helper: t('form.title.helper'),

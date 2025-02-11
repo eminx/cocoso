@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import PublicActivityForm from './PublicActivityForm';
-import { ActivityContext } from './Activity';
+import CalendarActivityForm from './CalendarActivityForm';
+import { ActivityContext } from '../activities/Activity';
 import { call } from '../../utils/shared';
 
 export default function EditPublicActivity() {
@@ -14,6 +14,8 @@ export default function EditPublicActivity() {
 
   const updateActivity = async (newActivity) => {
     const activityId = activity._id;
+    console.log(newActivity);
+    // return;
     try {
       await call('updateActivity', activityId, newActivity);
       await getActivityById(activityId);
@@ -25,36 +27,24 @@ export default function EditPublicActivity() {
   };
 
   const activityFields = (({
-    address,
-    capacity,
     datesAndTimes,
-    images,
     isExclusiveActivity,
-    isRegistrationEnabled,
     longDescription,
-    place,
     resource,
     resourceId,
-    subTitle,
     title,
   }) => ({
-    address,
-    capacity,
     datesAndTimes,
-    images,
     isExclusiveActivity,
-    isRegistrationEnabled,
     longDescription,
-    place,
     resource,
     resourceId,
-    subTitle,
     title,
   }))(activity);
 
   return (
     <>
-      <PublicActivityForm activity={activityFields} onFinalize={updateActivity} />
+      <CalendarActivityForm activity={activityFields} onFinalize={updateActivity} />
     </>
   );
 }

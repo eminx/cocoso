@@ -1,42 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Checkbox, FormLabel, Heading, NumberInput, NumberInputField } from '@chakra-ui/react';
+import { Box, Checkbox, FormLabel, Heading } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
 import { call } from '../../utils/shared';
 import GenericEntryForm from '../../forms/GenericEntryForm';
-import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
-import publicActivityFormFields from './publicActivityFormFields';
+import calendarActivityFormFields from './calendarActivityFormFields';
 
 const animatedComponents = makeAnimated();
-const defaultCapacity = 40;
-const maxAttendees = 1000;
 
 export const emptyFormValues = {
-  address: '',
   longDescription: '',
-  place: '',
-  subTitle: '',
   title: '',
 };
 
-export default function PublicActivityForm({ activity, onFinalize }) {
+export default function CalendarActivityForm({ activity, onFinalize }) {
   const [state, setState] = useState({
-    capacity: activity ? activity.capacity : defaultCapacity,
     datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
-    selectedResource: activity ? { label: activity.resource, _id: activity.resourceId } : null,
+    selectedResource: activity ? { label: activity.resource, value: activity.resourceId } : null,
     isCreating: false,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
-    isRegistrationEnabled: activity
-      ? !activity.isRegistrationDisabled || activity.isRegistrationEnabled
-      : true,
     isSendingForm: false,
     isSuccess: false,
-    isUploadingImages: false,
     resources: [],
   });
 
@@ -72,14 +61,38 @@ export default function PublicActivityForm({ activity, onFinalize }) {
     return !isTimesInValid && !isConflictHard;
   };
 
+  const parseActivity = async () => {
+    const cleanDatesAndTimes = state.datesAndTimes.map(
+      ({ startTime, endTime, startDate, endDate }) => ({
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+      })
+    );
+
+    const newActivity = {
+      ...state.formValues,
+      datesAndTimes: cleanDatesAndTimes,
+      isPublicActivity: false,
+      isExclusiveActivity: state.isExclusiveActivity,
+    };
+
+    const { selectedResource } = state;
+
+    if (selectedResource) {
+      newActivity.resourceId = selectedResource._id;
+      newActivity.resource = selectedResource.label;
+    }
+
+    onFinalize(newActivity);
+  };
+
   useEffect(() => {
     if (!state.isCreating) {
       return;
     }
-    setState((prevState) => ({
-      ...prevState,
-      isUploadingImages: true,
-    }));
+    parseActivity();
   }, [state.isCreating]);
 
   const handleSubmit = (formValues) => {
@@ -91,6 +104,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       ...prevState,
       formValues,
       isCreating: true,
+      isSendingForm: true,
     }));
   };
 
@@ -116,62 +130,6 @@ export default function PublicActivityForm({ activity, onFinalize }) {
     }));
   };
 
-  const handleRsvpSwitch = (e) => {
-    const checked = e.target.checked;
-    setState((prevState) => ({
-      ...prevState,
-      isRegistrationEnabled: checked,
-    }));
-  };
-
-  const handleCapacityChange = (value) => {
-    setState((prevState) => ({
-      ...prevState,
-      capacity: value,
-    }));
-  };
-
-  const parseActivity = async (images) => {
-    const cleanDatesAndTimes = state.datesAndTimes.map(
-      ({ startTime, endTime, startDate, endDate, attendees }) => ({
-        startDate,
-        endDate,
-        startTime,
-        endTime,
-        attendees: attendees || [],
-      })
-    );
-
-    const newActivity = {
-      ...state.formValues,
-      capacity: state.capacity,
-      datesAndTimes: cleanDatesAndTimes,
-      images,
-      isPublicActivity: true,
-      isRegistrationEnabled: state.isRegistrationEnabled,
-      isExclusiveActivity: state.isExclusiveActivity,
-    };
-
-    const { selectedResource } = state;
-
-    if (selectedResource) {
-      newActivity.resourceId = selectedResource._id;
-      newActivity.resource = selectedResource.label;
-    }
-
-    onFinalize(newActivity);
-  };
-
-  const handleUploadedImages = (images) => {
-    setState((prevState) => ({
-      ...prevState,
-      isUploadingImages: false,
-      isSendingForm: true,
-    }));
-
-    parseActivity(images);
-  };
-
   return (
     <>
       <Heading mb="4" size="md">
@@ -179,31 +137,12 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       </Heading>
 
       <GenericEntryForm
-        childrenIndex={2}
+        childrenIndex={1}
         defaultValues={activity || emptyFormValues}
-        formFields={publicActivityFormFields(t)}
+        formFields={calendarActivityFormFields(t)}
         onSubmit={handleSubmit}
       >
-        <FormField
-          helperText={t('form.image.helper')}
-          isRequired
-          label={t('form.image.label')}
-          mt="4"
-          mb="8"
-        >
-          <ImageUploader
-            preExistingImages={activity ? activity.images : []}
-            ping={state.isUploadingImages}
-            onUploadedImages={handleUploadedImages}
-          />
-        </FormField>
-
-        <FormField
-          helperText={t('form.exclusive.helper')}
-          label={t('form.exclusive.label')}
-          mt="8"
-          mb="4"
-        >
+        <FormField helperText={t('form.exclusive.helper')} label={t('form.exclusive.label')} my="4">
           <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
             <Checkbox
               isChecked={state.isExclusiveActivity}
@@ -250,34 +189,6 @@ export default function PublicActivityForm({ activity, onFinalize }) {
             onDatesAndTimesChange={handleDatesAndTimesChange}
           />
         </FormField>
-
-        <FormField helperText={t('form.rsvp.helper')} label={t('form.rsvp.label')} mt="4" mb="10">
-          <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
-            <Checkbox isChecked={state.isRegistrationEnabled} size="lg" onChange={handleRsvpSwitch}>
-              <FormLabel style={{ cursor: 'pointer' }} mb="0">
-                {t('form.rsvp.holder')}
-              </FormLabel>
-            </Checkbox>
-          </Box>
-        </FormField>
-
-        {(!state.isRegistrationDisabled || state.isRegistrationEnabled) && (
-          <FormField
-            helperText={t('form.capacity.helper')}
-            label={t('form.capacity.label')}
-            mt="4"
-            mb="12"
-          >
-            <NumberInput
-              min={1}
-              max={maxAttendees}
-              value={state.capacity}
-              onChange={handleCapacityChange}
-            >
-              <NumberInputField placeholder={t('form.capacity.label')} />
-            </NumberInput>
-          </FormField>
-        )}
       </GenericEntryForm>
     </>
   );

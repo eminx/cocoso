@@ -8,6 +8,7 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
 import NewEntryHandler from '../../listing/NewEntryHandler';
 import EditPublicActivity from './EditPublicActivity';
+import EditCalendarActivity from '../calendar/EditCalendarActivity';
 
 export const ActivityContext = createContext(null);
 
@@ -18,7 +19,7 @@ export default function Activity() {
   const [activity, setActivity] = useState(initialActivity);
   const [rendered, setRendered] = useState(false);
   const { activityId } = useParams();
-  const { currentHost, currentUser } = useContext(StateContext);
+  const { currentHost } = useContext(StateContext);
 
   useLayoutEffect(() => {
     setTimeout(() => {
@@ -56,18 +57,14 @@ export default function Activity() {
 
   return (
     <>
-      <ActivityHybrid
-        activity={activity}
-        currentUser={rendered ? currentUser : null}
-        Host={currentHost || Host}
-      />
+      <ActivityHybrid activity={activity} Host={currentHost || Host} />
 
       {rendered && (
         <ActivityContext.Provider value={contextValue}>
           <ActivityInteractionHandler slideStart={rendered} />
 
           <NewEntryHandler title="Edit Activity">
-            <EditPublicActivity />
+            {activity.isPublicActivity ? <EditPublicActivity /> : <EditCalendarActivity />}
           </NewEntryHandler>
         </ActivityContext.Provider>
       )}

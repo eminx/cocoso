@@ -243,10 +243,9 @@ Meteor.methods({
         isPublished: true,
         creationDate: new Date(),
       });
-      if (!values.isPublicActivity) {
-        return;
+      if (values.isPublicActivity) {
+        await Meteor.callAsync('createChat', values.title, activityId, 'activities');
       }
-      await Meteor.callAsync('createChat', values.title, activityId, 'activities');
       return activityId;
     } catch (error) {
       console.log(error);
