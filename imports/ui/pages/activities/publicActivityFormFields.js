@@ -46,13 +46,6 @@ const publicActivityFormFields = (t) => [
     placeholder: t('form.address.holder'),
     value: 'address',
   },
-  {
-    helper: t('form.rsvp.helper'),
-    label: t('form.rsvp.label'),
-    placeholder: t('form.rsvp.holder'),
-    type: 'checkbox',
-    value: 'isRegistrationEnabled',
-  },
 ];
 
 export default publicActivityFormFields;

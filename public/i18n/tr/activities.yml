@@ -38,6 +38,7 @@ form:
     startFinish: Başlangıç ve bitiş saati
   capacity:
     label: Kapasite
+    helper: Etkinliğe kaç kişi katılabilir?
   details:
     label: Detaylari gir
   place:

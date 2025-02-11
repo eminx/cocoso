@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Center,
-  Code,
   FormControl,
   FormLabel,
   IconButton,
-  NumberInput,
-  NumberInputField,
   Switch,
   Text,
   Wrap,
@@ -20,8 +17,6 @@ import { call } from '../utils/shared';
 import DateTimePicker from './DateTimePicker';
 
 const today = new Date().toISOString().substring(0, 10);
-const defaultCapacity = 40;
-const maxAttendees = 1000;
 
 export const emptyDateAndTime = {
   startDate: today,
@@ -193,29 +188,6 @@ export default function DatesAndTimes({
                 value={occurrence}
                 onChange={(value) => handleDateTimeChange(value, index)}
               />
-              {/* 
-              <Box
-                flexDirection="column"
-                mb="6"
-                justify="space-around"
-                flexGrow={0}
-                flexBasis="180px"
-              >
-                {isPublicActivity && (
-                  <Box mt="4">
-                    <Text mb="2">{t('form.capacity.label')}:</Text>
-                    <NumberInput
-                      min={1}
-                      max={maxAttendees}
-                      value={occurrence.capacity}
-                      variant="filled"
-                      onChange={handleCapacityChange}
-                    >
-                      <NumberInputField placeholder="Capacity" />
-                    </NumberInput>
-                  </Box>
-                )}
-              </Box> */}
             </Wrap>
 
             {occurrence?.conflict && <ConflictMarker occurrence={occurrence} t={t} />}

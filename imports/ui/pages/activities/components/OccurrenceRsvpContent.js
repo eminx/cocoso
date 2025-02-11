@@ -36,9 +36,11 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
   const { getActivityById } = useContext(ActivityContext);
   const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } = state;
 
-  if (!occurrence || !occurrence.attendees) {
+  if (!activity || !occurrence || !occurrence.attendees) {
     return null;
   }
+
+  const { capacity } = activity;
 
   const eventPast = dayjs(occurrence.endDate).isBefore(yesterday);
 
@@ -81,10 +83,13 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
 
   const handleRsvpSubmit = async (values) => {
     let isAlreadyRegistered = false;
-    occurrence.attendees.forEach((attendee) => {
+    occurrence.attendees?.forEach((attendee) => {
+      if (!attendee) {
+        return;
+      }
       if (
-        attendee.lastName.trim().toLowerCase() === values.lastName.trim().toLowerCase() &&
-        attendee.email.trim().toLowerCase() === values.email.trim().toLowerCase()
+        attendee?.lastName?.trim().toLowerCase() === values?.lastName?.trim()?.toLowerCase() &&
+        attendee?.email?.trim().toLowerCase() === values?.email?.trim()?.toLowerCase()
       ) {
         isAlreadyRegistered = true;
       }
@@ -101,8 +106,10 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
 
     const numberOfPeople = Number(values.numberOfPeople);
 
-    if (occurrence.capacity < registeredNumberOfAttendees + numberOfPeople) {
-      const capacityLeft = occurrence.capacity - registeredNumberOfAttendees;
+    console.log('capacity', capacity, registeredNumberOfAttendees, numberOfPeople);
+    if (capacity < registeredNumberOfAttendees + numberOfPeople) {
+      const capacityLeft = capacity - registeredNumberOfAttendees;
+      console.log(capacityLeft);
       message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
     }
@@ -139,8 +146,8 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
 
     const numberOfPeople = Number(values.numberOfPeople);
 
-    if (occurrence.capacity < registeredNumberOfAttendees + numberOfPeople) {
-      const capacityLeft = occurrence.capacity - registeredNumberOfAttendees;
+    if (capacity < registeredNumberOfAttendees + numberOfPeople) {
+      const capacityLeft = capacity - registeredNumberOfAttendees;
       message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
     }
@@ -255,7 +262,7 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
           </Button>
         </Center>
 
-        {occurrence.capacity && occurrence.attendees && getTotalNumber() >= occurrence.capacity ? (
+        {capacity && occurrence.attendees && getTotalNumber() >= capacity ? (
           <p>
             {capacityGotFullByYou && t('public.capacity.fullByYou')}
             {t('public.capacity.full')}

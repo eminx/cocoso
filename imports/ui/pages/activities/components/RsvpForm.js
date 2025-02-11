@@ -26,10 +26,6 @@ export default function RsvpForm({ isUpdateMode = false, defaultValues, onSubmit
       name: 'email',
       label: t('public.register.form.email'),
     },
-    // {
-    //   name: 'numberOfPeople',
-    //   label: 'Number of people',
-    // },
   ];
 
   return (

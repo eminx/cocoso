@@ -17,14 +17,13 @@ Activities.schema = new SimpleSchema({
     optional: true,
   },
   longDescription: { type: String, optional: true },
-  imageUrl: { type: String, optional: true },
   images: { type: Array, optional: true },
   'images.$': { type: String },
   resource: { type: String, optional: true },
   resourceId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
 
   address: { type: String, optional: true },
-  capacity: { type: SimpleSchema.Integer, defaultValue: 20 },
+  capacity: { type: SimpleSchema.Integer, defaultValue: 40 },
   place: { type: String, optional: true },
 
   datesAndTimes: { type: Array },
@@ -33,14 +32,7 @@ Activities.schema = new SimpleSchema({
     startTime: { type: String },
     endDate: { type: String },
     endTime: { type: String },
-    capacity: { type: SimpleSchema.Integer, optional: true },
-    isRange: { type: Boolean, optional: true },
-    conflict: { type: String, optional: true },
-
-    resource: { type: String, optional: true },
-    resourceId: { type: String, optional: true },
-
-    attendees: { type: Array, optional: true },
+    attendees: { type: Array, defaultValue: [] },
     'attendees.$': {
       type: new SimpleSchema({
         email: Schemas.Email,

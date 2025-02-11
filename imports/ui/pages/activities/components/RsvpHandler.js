@@ -34,26 +34,21 @@ function AccordionDates({ activity, onCloseModal }) {
     return null;
   }
 
-  const noReg = activity.isRegistrationDisabled || !activity.isPublicActivity;
-
   if (!activity.datesAndTimes || activity.datesAndTimes.length < 1) {
     return null;
   }
 
-  const items = activity.datesAndTimes;
-
-  if (noReg) {
+  const isRsvpEnabled = !activity.isRegistrationDisabled || activity.isRegistrationEnabled;
+  if (!isRsvpEnabled) {
     return (
       <Box>
-        {activity.isRegistrationDisabled ? (
-          <Text mb="2" mt="4" size="sm" textAlign="center">
-            {t('public.register.disabled.true')}
-          </Text>
-        ) : null}
+        <Text mb="2" mt="4" size="sm" textAlign="center">
+          {t('public.register.disabled.true')}
+        </Text>
 
         <Box>
           {items.map((occurrence) => (
-            <Box {...buttonProps} p="2">
+            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2">
               <FancyDate occurrence={occurrence} />
             </Box>
           ))}
@@ -61,6 +56,8 @@ function AccordionDates({ activity, onCloseModal }) {
       </Box>
     );
   }
+
+  const items = activity.datesAndTimes;
 
   return (
     <Box>
@@ -130,7 +127,7 @@ export default function RsvpHandler({ activity }) {
     return null;
   }
 
-  const noReg = activity.isRegistrationDisabled || !activity.isPublicActivity;
+  const isRsvpEnabled = !activity.isRegistrationDisabled || activity.isRegistrationEnabled;
 
   return (
     <>
@@ -145,7 +142,7 @@ export default function RsvpHandler({ activity }) {
             width={isDesktop ? '240px' : '180px'}
             onClick={() => setModalOpen(true)}
           >
-            {noReg ? t('public.labels.dates') : t('public.labels.datesAndRegistration')}
+            {isRsvpEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')}
           </Button>
         </Center>
 
@@ -155,7 +152,7 @@ export default function RsvpHandler({ activity }) {
       <Modal
         isOpen={modalOpen}
         size="lg"
-        title={noReg ? t('public.labels.dates') : t('public.labels.datesAndRegistration')}
+        title={isRsvpEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')}
         onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >

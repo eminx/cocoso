@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Checkbox, FormLabel, Heading } from '@chakra-ui/react';
+import { Box, Checkbox, FormLabel, Heading, NumberInput, NumberInputField } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
@@ -21,22 +21,22 @@ const defaultCapacity = 40;
 const maxAttendees = 1000;
 
 export const emptyFormValues = {
-  title: '',
-  subTitle: '',
+  address: '',
   longDescription: '',
   place: '',
-  address: '',
-  // capacity: defaultCapacity,
-  isRegistrationEnabled: true,
+  subTitle: '',
+  title: '',
 };
 
 export default function NewPublicActivity() {
   const [state, setState] = useState({
+    capacity: defaultCapacity,
     datesAndTimes: [emptyDateAndTime],
     formValues: emptyFormValues,
     selectedResource: null,
     isCreating: false,
     isExclusiveActivity: true,
+    isRegistrationDisabled: false,
     isSendingForm: false,
     isSuccess: false,
     isUploadingImages: false,
@@ -121,6 +121,21 @@ export default function NewPublicActivity() {
     }));
   };
 
+  const handleRsvpSwitch = (e) => {
+    const checked = e.target.checked;
+    setState((prevState) => ({
+      ...prevState,
+      isRegistrationDisabled: !checked,
+    }));
+  };
+
+  const handleCapacityChange = (value) => {
+    setState((prevState) => ({
+      ...prevState,
+      capacity: value,
+    }));
+  };
+
   const createActivity = async (images) => {
     const cleanDatesAndTimes = state.datesAndTimes.map(
       ({ startTime, endTime, startDate, endDate }) => ({
@@ -128,14 +143,17 @@ export default function NewPublicActivity() {
         endDate,
         startTime,
         endTime,
+        attendees: [],
       })
     );
 
     const newActivity = {
       ...state.formValues,
+      capacity: state.capacity,
       datesAndTimes: cleanDatesAndTimes,
       images,
       isPublicActivity: true,
+      isRegistrationEnabled: state.isRegistrationEnabled,
       isExclusiveActivity: state.isExclusiveActivity,
     };
 
@@ -244,6 +262,38 @@ export default function NewPublicActivity() {
             onDatesAndTimesChange={handleDatesAndTimesChange}
           />
         </FormField>
+
+        <FormField helperText={t('form.rsvp.helper')} label={t('form.rsvp.label')} mt="4" mb="10">
+          <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
+            <Checkbox
+              isChecked={!state.isRegistrationDisabled}
+              size="lg"
+              onChange={handleRsvpSwitch}
+            >
+              <FormLabel style={{ cursor: 'pointer' }} mb="0">
+                {t('form.rsvp.holder')}
+              </FormLabel>
+            </Checkbox>
+          </Box>
+        </FormField>
+
+        {!state.isRegistrationDisabled && (
+          <FormField
+            helperText={t('form.capacity.helper')}
+            label={t('form.capacity.label')}
+            mt="4"
+            mb="12"
+          >
+            <NumberInput
+              min={1}
+              max={maxAttendees}
+              value={state.capacity}
+              onChange={handleCapacityChange}
+            >
+              <NumberInputField placeholder={t('form.capacity.label')} />
+            </NumberInput>
+          </FormField>
+        )}
       </GenericEntryForm>
     </>
   );

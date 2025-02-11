@@ -38,6 +38,7 @@ form:
     finish: Finish time
   capacity:
     label: Capacity
+    helper: How many people can attend the event?
   details:
     label: Enter Details
   place:

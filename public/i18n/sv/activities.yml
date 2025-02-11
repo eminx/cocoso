@@ -38,6 +38,7 @@ form:
     startFinish: Start och sluttid
   capacity:
     label: Kapacitet
+    helper: Hur många personer kan delta i ditt evenemang?
   details:
     label: Ange detaljer
   place:
