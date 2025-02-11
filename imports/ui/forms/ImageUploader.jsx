@@ -54,6 +54,20 @@ export default function ImageUploader({
   }, [ping]);
 
   const setUploadableImages = (files) => {
+    if (!isMultiple) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.addEventListener(
+        'load',
+        () => {
+          setLocalImages([{ src: reader.result, resizableData: file, uploaded: false }]);
+        },
+        false
+      );
+      return;
+    }
+
     files.forEach((uploadableImage) => {
       const reader = new FileReader();
       reader.readAsDataURL(uploadableImage);
@@ -88,7 +102,22 @@ export default function ImageUploader({
     return (
       <>
         <Center>
-          <FileDropper setUploadableImage={setUploadableImages} isMultiple />
+          <FileDropper setUploadableImage={setUploadableImages} isMultiple={isMultiple} />
+        </Center>
+        <DocumentUploadHelper />
+      </>
+    );
+  }
+
+  if (!isMultiple) {
+    return (
+      <>
+        <Center>
+          <FileDropper
+            imageUrl={localImages?.length > 0 ? localImages[0].src : null}
+            setUploadableImage={setUploadableImages}
+            isMultiple={false}
+          />
         </Center>
         <DocumentUploadHelper />
       </>
@@ -127,7 +156,7 @@ export default function ImageUploader({
           </SortableList>
         </Box>
       </Center>
-      <FileDropper setUploadableImage={setUploadableImages} isMultiple={isMultiple} />
+      <FileDropper setUploadableImage={setUploadableImages} isMultiple />
     </Box>
   );
 }

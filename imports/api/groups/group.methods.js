@@ -233,7 +233,7 @@ Meteor.methods({
     }
   },
 
-  updateGroup(groupId, formValues, imageUrl) {
+  updateGroup(groupId, values) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -247,18 +247,10 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
 
-    check(formValues.title, String);
-    check(formValues.description, String);
-    check(formValues.capacity, Number);
-
     try {
       Groups.update(groupId, {
         $set: {
-          title: formValues.title,
-          description: formValues.description,
-          readingMaterial: formValues.readingMaterial,
-          capacity: formValues.capacity,
-          imageUrl,
+          ...values,
         },
       });
 
@@ -268,10 +260,13 @@ Meteor.methods({
         },
         {
           $set: {
-            title: formValues.title,
-            longDescription: formValues.description,
-            images: [imageUrl],
+            title: values.title,
+            longDescription: values.description,
+            images: [values.imageUrl],
           },
+        },
+        {
+          multi: true,
         }
       );
       return groupId;

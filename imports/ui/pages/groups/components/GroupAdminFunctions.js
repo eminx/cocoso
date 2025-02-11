@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import AddDocument from './admin/AddDocument';
@@ -11,9 +12,15 @@ import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 export default function GroupAdminFunctions() {
   const [popup, setPopup] = useState('none');
   const { group } = useContext(GroupContext);
+  const [, setSearchParams] = useSearchParams();
   const [t] = useTranslation('groups');
+  const [tc] = useTranslation('common');
 
   const handleSelect = (item) => {
+    if (item.kind === 'edit') {
+      setSearchParams({ edit: 'true' });
+      return;
+    }
     setPopup(item.kind);
   };
 
@@ -33,6 +40,10 @@ export default function GroupAdminFunctions() {
     {
       kind: 'members',
       label: t('admin.manage_members'),
+    },
+    {
+      kind: 'edit',
+      label: tc('actions.update'),
     },
   ];
 

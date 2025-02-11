@@ -1,5 +1,3 @@
-import React from 'react';
-
 const groupFormFields = (t) => [
   {
     helper: t('form.private.helper'),

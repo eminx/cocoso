@@ -6,6 +6,8 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
 import GroupHybrid from '../../entry/GroupHybrid';
 import GroupInteractionHandler from './components/GroupInteractionHandler';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import EditGroup from './EditGroup';
 
 export const GroupContext = createContext(null);
 
@@ -53,6 +55,10 @@ export default function Group() {
       {rendered && (
         <GroupContext.Provider value={contextValue}>
           <GroupInteractionHandler currentUser={currentUser} group={group} slideStart={rendered} />
+
+          <NewEntryHandler title="Edit Group">
+            <EditGroup />
+          </NewEntryHandler>
         </GroupContext.Provider>
       )}
     </>

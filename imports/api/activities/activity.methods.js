@@ -264,6 +264,10 @@ Meteor.methods({
 
     const theActivity = Activities.findOne(activityId);
 
+    if (!theActivity) {
+      throw new Meteor.Error('Activity not found!');
+    }
+
     if (user._id !== theActivity.authorId && !isAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed!');
     }
