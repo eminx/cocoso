@@ -114,6 +114,13 @@ export default function NewPublicActivity() {
     }));
   };
 
+  const handleExclusiveSwitch = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      isExclusiveActivity: e.target.checked,
+    }));
+  };
+
   const createActivity = async (images) => {
     const cleanDatesAndTimes = state.datesAndTimes.map(
       ({ startTime, endTime, startDate, endDate }) => ({
@@ -131,6 +138,8 @@ export default function NewPublicActivity() {
       isPublicActivity: true,
       isExclusiveActivity: state.isExclusiveActivity,
     };
+
+    const { selectedResource } = state;
 
     if (selectedResource) {
       newActivity.resourceId = selectedResource._id;
@@ -191,14 +200,9 @@ export default function NewPublicActivity() {
         >
           <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
             <Checkbox
+              isChecked={state.isExclusiveActivity}
               size="lg"
-              value={state.isExclusiveActivity}
-              onChange={() =>
-                setState((prevState) => ({
-                  ...prevState,
-                  isExclusiveActivity: !prevState.isExclusiveActivity,
-                }))
-              }
+              onChange={handleExclusiveSwitch}
             >
               <FormLabel style={{ cursor: 'pointer' }} mb="0">
                 {t('form.exclusive.holder')}
