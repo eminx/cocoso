@@ -96,7 +96,7 @@ export default function DatesAndTimes({
       resourceId,
     };
 
-    const conflict = resourceId ? await call('getActivitiesBetweenCertainDates', params) : null;
+    const conflict = resourceId ? await call('checkDatesForConflict', params) : null;
 
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (index === occurrenceIndex) {

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heading } from '@chakra-ui/react';
+import { Box, Checkbox, FormLabel, Heading } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
@@ -28,6 +28,7 @@ export default function NewCalendarActivity() {
     formValues: emptyFormValues,
     selectedResource: null,
     isCreating: false,
+    isExclusiveActivity: true,
     isSendingForm: false,
     isSuccess: false,
     resources: [],
@@ -67,11 +68,19 @@ export default function NewCalendarActivity() {
     return !isTimesInValid && !isConflictHard;
   };
 
+  const handleExclusiveSwitch = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      isExclusiveActivity: e.target.checked,
+    }));
+  };
+
   const createActivity = async (images) => {
     try {
       const newEntryId = await call('createActivity', {
         ...state.formValues,
         datesAndTimes: state.datesAndTimes,
+        isExclusiveActivity: state.isExclusiveActivity,
         isPublicActivity: false,
       });
       // message.success(t('form.success'));
@@ -133,6 +142,25 @@ export default function NewCalendarActivity() {
         onSubmit={handleSubmit}
       >
         <FormField
+          helperText={t('form.exclusive.helper')}
+          label={t('form.exclusive.label')}
+          mt="4"
+          mb="6"
+        >
+          <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
+            <Checkbox
+              isChecked={state.isExclusiveActivity}
+              size="lg"
+              onChange={handleExclusiveSwitch}
+            >
+              <FormLabel style={{ cursor: 'pointer' }} mb="0">
+                {t('form.exclusive.holder')}
+              </FormLabel>
+            </Checkbox>
+          </Box>
+        </FormField>
+
+        <FormField
           helperText={t('form.resource.helper')}
           label={t('form.resource.label')}
           mt="4"
@@ -165,6 +193,8 @@ export default function NewCalendarActivity() {
         >
           <DatesAndTimes
             datesAndTimes={state.datesAndTimes}
+            isExclusiveActivity={state.isExclusiveActivity}
+            resourceId={state.selectedResource?._id}
             onDatesAndTimesChange={handleDatesAndTimesChange}
           />
         </FormField>

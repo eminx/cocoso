@@ -179,13 +179,13 @@ Meteor.methods({
     }
   },
 
-  getActivitiesBetweenCertainDates({ startDate, endDate, startTime, endTime, resourceId }) {
+  async checkDatesForConflict({ startDate, endDate, startTime, endTime, resourceId }) {
     const host = getHost(this);
     if (!resourceId) {
       return;
     }
 
-    const activityWithConflict = Activities.findOne(
+    const activityWithConflict = await Activities.findOneAsync(
       {
         host,
         resourceId,
@@ -210,7 +210,7 @@ Meteor.methods({
         },
       }
     );
-    console.log(activityWithConflict);
+
     return activityWithConflict;
   },
 
