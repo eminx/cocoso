@@ -1,5 +1,3 @@
-import React from 'react';
-
 const workFormFields = (t, tc) => [
   {
     helper: t('works.title.helper'),

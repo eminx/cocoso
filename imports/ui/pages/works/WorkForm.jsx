@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { Heading } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
@@ -10,7 +9,6 @@ import GenericEntryForm from '../../forms/GenericEntryForm';
 import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import workFormFields from './workFormFields';
-import { StateContext } from '../../LayoutContainer';
 
 export const emptyFormValues = {
   additionalInfo: '',
@@ -24,20 +22,24 @@ export const emptyFormValues = {
 
 const animatedComponents = makeAnimated();
 
-export default function NewWork() {
+export default function WorkForm({ work, onFinalize }) {
   const [state, setState] = useState({
-    formValues: emptyFormValues,
+    categories: [],
+    formValues: work || emptyFormValues,
     isCreating: false,
     isSendingForm: false,
     isSuccess: false,
     isUploadingImages: false,
-    categories: [],
+    selectedCategory: work
+      ? {
+          label: work.category?.label,
+          _id: work.category?.categoryId,
+        }
+      : null,
   });
 
-  const navigate = useNavigate();
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-  const { currentUser } = useContext(StateContext);
 
   const getCategories = async () => {
     try {
@@ -74,24 +76,19 @@ export default function NewWork() {
     }));
   };
 
-  const createWork = async (images) => {
+  const parseWork = async (images) => {
     const selectedCategory = state.selectedCategory;
     try {
-      const newEntryId = await call(
-        'createWork',
-        {
-          ...state.formValues,
-          category: {
-            categoryId: selectedCategory._id,
-            color: selectedCategory.color,
-            label: selectedCategory.label,
-          },
-          images,
+      const newWork = {
+        ...state.formValues,
+        category: {
+          categoryId: selectedCategory._id,
+          color: selectedCategory.color,
+          label: selectedCategory.label,
         },
-        'work'
-      );
-      // message.success(t('form.success'));
-      navigate(`/@${currentUser.username}/works/${newEntryId}`);
+        images,
+      };
+      onFinalize(newWork);
     } catch (error) {
       console.log(error);
     }
@@ -104,7 +101,7 @@ export default function NewWork() {
       isSendingForm: true,
     }));
 
-    createWork(images);
+    parseWork(images);
   };
 
   const handleAutoCompleteSelectChange = (newValue) => {
@@ -123,14 +120,14 @@ export default function NewWork() {
 
       <GenericEntryForm
         childrenIndex={1}
-        defaultValues={emptyFormValues}
+        defaultValues={work || emptyFormValues}
         formFields={workFormFields(t, tc)}
         onSubmit={handleSubmit}
       >
         <FormField helperText={t('works.image.helper')} label={t('works.image.label')} my="4">
           <ImageUploader
-            isMultiple={false}
             ping={state.isUploadingImages}
+            preExistingImages={work ? work.images : []}
             onUploadedImages={handleUploadedImages}
           />
         </FormField>

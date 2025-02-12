@@ -1,10 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { createContext, useContext, useLayoutEffect, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
 import { call } from '../../utils/shared';
 import WorkHybrid from '../../entry/WorkHybrid';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import WorkInteractionHandler from './components/WorkInteractionHandler';
+import EditWork from './EditWork';
+
+export const WorkContext = createContext(null);
 
 export default function Work() {
   const initialWork = window?.__PRELOADED_STATE__?.work || null;
@@ -13,6 +18,7 @@ export default function Work() {
 
   const [work, setWork] = useState(initialWork);
   const [documents, setDocuments] = useState(initialDocuments);
+  const [rendered, setRendered] = useState(false);
 
   let { currentHost } = useContext(StateContext);
   const { usernameSlug, workId } = useParams();
@@ -22,24 +28,59 @@ export default function Work() {
     currentHost = Host;
   }
 
-  const getData = async () => {
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
+  }, []);
+
+  const getWorkById = async () => {
     try {
       const response = await call('getWork', workId, username);
       setWork(response);
-      const docs = await call('getDocumentsByAttachments', response._id);
+    } catch (error) {
+      console.log(error);
+      // message.error(error.reason);
+    }
+  };
+
+  const getDocuments = async () => {
+    try {
+      const docs = await call('getDocumentsByAttachments', workId);
       setDocuments(docs);
     } catch (error) {
+      console.log(error);
       // message.error(error.reason);
     }
   };
 
   useEffect(() => {
-    getData();
+    getWorkById();
+    getDocuments();
   }, []);
 
   if (!work) {
     return <Loader />;
   }
 
-  return <WorkHybrid documents={documents} work={work} Host={currentHost} />;
+  const contextValue = {
+    work,
+    getWorkById,
+  };
+
+  return (
+    <>
+      <WorkHybrid documents={documents} work={work} Host={currentHost} />
+
+      {rendered && (
+        <WorkContext.Provider value={contextValue}>
+          <WorkInteractionHandler slideStart={rendered} />
+
+          <NewEntryHandler title="Edit Work">
+            <EditWork />
+          </NewEntryHandler>
+        </WorkContext.Provider>
+      )}
+    </>
+  );
 }

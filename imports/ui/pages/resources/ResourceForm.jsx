@@ -125,7 +125,6 @@ export default function ResourceForm({ resource, onFinalize }) {
       >
         <FormField helperText={t('form.image.helper')} label={t('form.image.label')} mb="12">
           <ImageUploader
-            isMultiple={false}
             ping={state.isUploadingImages}
             preExistingImages={resource ? resource.images : []}
             onUploadedImages={handleUploadedImages}

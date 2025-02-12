@@ -1,5 +1,3 @@
-import React from 'react';
-
 const resourceFormFields = (t) => [
   {
     helper: t('form.name.helper'),
