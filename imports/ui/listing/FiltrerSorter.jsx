@@ -38,7 +38,7 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
       <Box w="2xs" px="4">
         <Heading fontSize="sm">
           <Trans i18nKey="labels.sort" ns="common">
-            Sort:
+            Sort
           </Trans>
         </Heading>
         <Select
@@ -96,7 +96,7 @@ export default function FiltrerSorter(props) {
         <Collapse in={isOpen} animateOpacity>
           <Box
             bg="gray.50"
-            borderColor="brand.200"
+            borderColor="gray.400"
             borderWidth={1}
             borderRadius="lg"
             mb="4"

@@ -48,10 +48,6 @@ const renderToasts = (loaders, tc) => {
   }
   if (loaders.isCreating) {
     toast.loading(tc('message.loading.creating'), options);
-    return;
-  }
-  if (!loaders.isCreating) {
-    toast.dismiss(options);
   }
 };
 
@@ -95,6 +91,7 @@ export default function NewEntryHandler({ title, children }) {
 
   return (
     <Modal
+      closeOnEsc={false}
       isOpen={isOpen}
       motionPreset="slideInBottom"
       size="full"
