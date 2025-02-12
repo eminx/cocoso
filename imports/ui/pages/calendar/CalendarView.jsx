@@ -10,7 +10,7 @@ import NewEntryHandler from '../../listing/NewEntryHandler';
 import NewCalendarActivity from './NewCalendarActivity';
 
 export default function CalendarView(props) {
-  const { activities } = props;
+  const { activities, resources } = props;
   const [t] = useTranslation('calendar');
 
   const localizer = useMemo(() => momentLocalizer(moment), []);
@@ -54,7 +54,7 @@ export default function CalendarView(props) {
         onSelectSlot={props.onSelectSlot}
       />
       <NewEntryHandler title="Create a new activity">
-        <NewCalendarActivity />
+        <NewCalendarActivity resources={resources} />
       </NewEntryHandler>
     </>
   );

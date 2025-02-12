@@ -29,7 +29,7 @@ const parseNewEntryParams = (slotInfo, selectedResource, type) => {
     endDate: dayjs(slotInfo?.end).format('YYYY-MM-DD'),
     startTime: dayjs(slotInfo?.start).format('HH:mm'),
     endTime: dayjs(slotInfo?.end).format('HH:mm'),
-    resource: selectedResource ? selectedResource._id : '',
+    resourceId: selectedResource ? selectedResource._id : '',
   };
 
   if (type !== 'other') {
@@ -298,6 +298,7 @@ export default function Calendar() {
         <Box mb="4">
           <CalendarView
             activities={allFilteredActsWithColors}
+            resources={resources}
             onSelect={handleSelectActivity}
             onSelectSlot={handleSelectSlot}
           />

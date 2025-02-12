@@ -19,7 +19,12 @@ export const emptyFormValues = {
 
 export default function CalendarActivityForm({ activity, onFinalize }) {
   const [state, setState] = useState({
-    datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
+    datesAndTimes: activity
+      ? activity.datesAndTimes?.map((d) => ({
+          ...d,
+          isRange: d?.startDate !== d?.endDate,
+        }))
+      : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
     selectedResource: activity ? { label: activity.resource, value: activity.resourceId } : null,
     isCreating: false,
@@ -46,6 +51,26 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   useEffect(() => {
     getResources();
   }, []);
+
+  useEffect(() => {
+    if (activity) {
+      setState((prevState) => ({
+        ...prevState,
+        formValues: {
+          ...prevState.formValues,
+          ...activity,
+        },
+        datesAndTimes: activity.datesAndTimes?.map((d) => ({
+          ...d,
+          isRange: d?.startDate !== d?.endDate,
+        })),
+        selectedResource: {
+          label: activity.resource,
+          _id: activity.resourceId,
+        },
+      }));
+    }
+  }, [activity]);
 
   const isFormValid = () => {
     const { datesAndTimes } = state;
