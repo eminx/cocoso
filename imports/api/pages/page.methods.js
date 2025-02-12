@@ -7,10 +7,8 @@ import Pages from './page';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
-  getPages(host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getPages(hostPredefined) {
+    const host = hostPredefined || getHost(this);
 
     try {
       return Pages.find(
@@ -24,10 +22,8 @@ Meteor.methods({
     }
   },
 
-  getPageTitles(host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getPageTitles(hostPredefined) {
+    const host = hostPredefined || getHost(this);
 
     try {
       const pages = Pages.find(
@@ -53,9 +49,10 @@ Meteor.methods({
     return Pages.find({ host: portalHost.host }, { sort: { creationDate: -1 } }).fetch();
   },
 
-  createPage(formValues, images) {
+  createPage(formValues, images, hostPredefined) {
     const user = Meteor.user();
-    const host = getHost(this);
+    const host = hostPredefined || getHost(this);
+
     const currentHost = Hosts.findOne({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
@@ -79,9 +76,9 @@ Meteor.methods({
     }
   },
 
-  updatePage(pageId, formValues, images) {
+  updatePage(pageId, formValues, images, hostPredefined) {
     const user = Meteor.user();
-    const host = getHost(this);
+    const host = hostPredefined || getHost(this);
     const currentHost = Hosts.findOne({ host });
 
     if (!user || !isAdmin(user, currentHost)) {

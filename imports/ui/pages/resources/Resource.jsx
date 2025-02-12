@@ -7,6 +7,8 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
 import ResourceHybrid from '../../entry/ResourceHybrid';
 import ResourceInteractionHandler from './components/ResourceInteractionHandler';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import EditResource from './EditResource';
 
 export const ResourceContext = createContext(null);
 
@@ -61,6 +63,10 @@ export default function Resource() {
       {rendered && (
         <ResourceContext.Provider value={contextValue}>
           <ResourceInteractionHandler slideStart={rendered} />
+
+          <NewEntryHandler title="Edit Resource">
+            <EditResource />
+          </NewEntryHandler>
         </ResourceContext.Provider>
       )}
     </>

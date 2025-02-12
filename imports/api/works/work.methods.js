@@ -13,10 +13,8 @@ Meteor.methods({
     }
   },
 
-  getAllWorks(host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getAllWorks(hostPredefined) {
+    const host = hostPredefined || getHost(this);
 
     try {
       return Works.find(
@@ -53,12 +51,12 @@ Meteor.methods({
     }
   },
 
-  getMyWorks() {
+  getMyWorks(hostPredefined) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
-    const host = getHost(this);
+    const host = hostPredefined || getHost(this);
 
     try {
       const works = Works.find({
@@ -122,7 +120,7 @@ Meteor.methods({
     const theWork = Works.findOne(workId);
 
     if (user._id !== theWork.authorId) {
-      throw new Meteor.Error(error, 'You are not allowed');
+      throw new Meteor.Error('You are not allowed');
     }
 
     try {

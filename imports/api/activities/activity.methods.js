@@ -13,8 +13,8 @@ import {
   parseGroupActivities,
 } from '../../ui/utils/shared';
 
-const filterPrivateGroups = (activities, user) => {
-  return activities.filter((act) => {
+const filterPrivateGroups = (activities, user) =>
+  activities.filter((act) => {
     if (!act.isGroupPrivate) {
       return true;
     }
@@ -29,7 +29,6 @@ const filterPrivateGroups = (activities, user) => {
       group.peopleInvited.some((person) => person.email === user.emails[0].address)
     );
   });
-};
 
 Meteor.methods({
   getAllPublicActivitiesFromAllHosts(showPast = false) {
@@ -61,10 +60,9 @@ Meteor.methods({
     }
   },
 
-  getAllPublicActivities(showPast = false, host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getAllPublicActivities(showPast = false, hostPredefined) {
+    const host = hostPredefined || getHost(this);
+
     const user = Meteor.user();
     const dateNow = new Date().toISOString().substring(0, 10);
 
@@ -106,10 +104,9 @@ Meteor.methods({
     }
   },
 
-  getAllActivities(host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getAllActivities(hostPredefined) {
+    const host = hostPredefined || getHost(this);
+
     const user = Meteor.user();
     try {
       const allActs = Activities.find({
@@ -136,15 +133,13 @@ Meteor.methods({
     }
   },
 
-  getMyActivities(host) {
+  getMyActivities(hostPredefined) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    if (!host) {
-      host = getHost(this);
-    }
+    const host = hostPredefined || getHost(this);
 
     try {
       const activities = Activities.find({
@@ -182,7 +177,7 @@ Meteor.methods({
   async checkDatesForConflict({ startDate, endDate, startTime, endTime, resourceId }) {
     const host = getHost(this);
     if (!resourceId) {
-      return;
+      return null;
     }
 
     const activityWithConflict = await Activities.findOneAsync(
@@ -216,7 +211,7 @@ Meteor.methods({
 
   async createActivity(values) {
     if (!values) {
-      return;
+      return null;
     }
 
     const user = Meteor.user();
@@ -394,9 +389,8 @@ Meteor.methods({
     newOccurences[occurenceIndex].attendees = theOccurence.attendees.filter((a) => {
       if (theActivity.isGroupMeeting) {
         return email !== a.email;
-      } else {
-        return a.email !== email || a.lastName !== lastName;
       }
+      return a.email !== email || a.lastName !== lastName;
     });
 
     const host = getHost(this);

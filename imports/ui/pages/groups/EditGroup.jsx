@@ -5,7 +5,7 @@ import GroupForm from './GroupForm';
 import { GroupContext } from './Group';
 import { call } from '../../utils/shared';
 
-export default function EditPublicActivity() {
+export default function EditGroup() {
   const { group, getGroupById } = useContext(GroupContext);
   const [, setSearchParams] = useSearchParams();
   if (!group) {

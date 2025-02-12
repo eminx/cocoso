@@ -50,10 +50,9 @@ Meteor.methods({
     };
   },
 
-  async getGroupsWithMeetings(isPortalHost = false, host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  async getGroupsWithMeetings(isPortalHost = false, hostPredefined) {
+    const host = hostPredefined || getHost(this);
+
     try {
       const retrievedGroups = await Meteor.callAsync('getGroups', isPortalHost, host);
       const allGroupActivities = await Meteor.callAsync(
@@ -69,11 +68,10 @@ Meteor.methods({
     }
   },
 
-  getGroups(isPortalHost = false, host) {
+  getGroups(isPortalHost = false, hostPredefined) {
     const user = Meteor.user();
-    if (!host) {
-      host = getHost(this);
-    }
+    const host = hostPredefined || getHost(this);
+
     const allGroups = isPortalHost
       ? Groups.find({}, { sort: { creationDate: -1 } }).fetch()
       : Groups.find({ host }).fetch();
@@ -109,10 +107,8 @@ Meteor.methods({
     }));
   },
 
-  getAllGroupMeetingsFuture(isPortalHost = false, host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getAllGroupMeetingsFuture(isPortalHost = false, hostPredefined) {
+    const host = hostPredefined || getHost(this);
 
     const dateNow = new Date().toISOString();
 

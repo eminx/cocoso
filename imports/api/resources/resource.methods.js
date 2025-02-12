@@ -64,9 +64,10 @@ Meteor.methods({
     return Resources.findOne(resourceId, { fields });
   },
 
-  getResourceBookingsForUser(resourceId) {
+  getResourceBookingsForUser(resourceId, hostPredefined) {
     const user = Meteor.user();
-    const host = getHost(this);
+    const host = hostPredefined || getHost(this);
+
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
     if (!isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not valid user!');
@@ -87,7 +88,7 @@ Meteor.methods({
         }
       ).fetch();
 
-      return bookings.map((booking) => ({
+      const userBookings = bookings.map((booking) => ({
         _id: booking._id,
         startDate: booking.datesAndTimes[0].startDate,
         startTime: booking.datesAndTimes[0].startTime,
@@ -96,8 +97,10 @@ Meteor.methods({
         title: booking.title,
         description: booking.longDescription,
       }));
+
+      return userBookings;
     } catch (error) {
-      console.error(error);
+      throw new Meteor.Error(error, "Couldn't fetch bookings");
     }
   },
 
