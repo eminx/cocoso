@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +14,7 @@ export default function GroupJoinButton() {
   const [t] = useTranslation('groups');
   const { group, getGroupById } = useContext(GroupContext);
   const { currentUser, isDesktop } = useContext(StateContext);
+  const navigate = useNavigate();
 
   if (!group) {
     return null;
@@ -20,7 +22,7 @@ export default function GroupJoinButton() {
 
   const joinGroup = async () => {
     if (!currentUser) {
-      alert('Login first!');
+      navigate('/login');
       return;
     }
 
