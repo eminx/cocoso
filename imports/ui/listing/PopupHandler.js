@@ -102,12 +102,35 @@ function PopupContent({ action = null, content, images, subTitle, title, tags = 
         {action}
       </Center>
 
-      <Box bg="white" className="text-content" p="4">
-        {content}
-      </Box>
+      <Box className="text-content">{content}</Box>
     </>
   );
 }
+
+const getLinkPath = (item, kind, isCurrentHost = false) => {
+  if (isCurrentHost) {
+    if (kind === 'works') {
+      return {
+        isHref: false,
+        path: `/@${item.authorUsername}/${kind}/${item._id}/info`,
+      };
+    }
+    return {
+      isHref: false,
+      path: `/${kind}/${item._id}/info`,
+    };
+  }
+  if (kind === 'works') {
+    return {
+      isHref: true,
+      path: `https://${item.host}/@${item.authorUsername}/${kind}/${item._id}/info`,
+    };
+  }
+  return {
+    isHref: true,
+    path: `https://${item.host}/${kind}/${item._id}/info`,
+  };
+};
 
 export default function PopupHandler({ item, kind, onClose }) {
   const [copied, setCopied] = useState(false);
@@ -127,9 +150,9 @@ export default function PopupHandler({ item, kind, onClose }) {
   };
 
   const handleCopyLink = async () => {
-    const link = `https://${item.host}/activities/${item._id}`;
+    const link = getLinkPath(item, kind);
     try {
-      await navigator.clipboard.writeText(link);
+      await navigator.clipboard.writeText(link.path);
       setCopied(true);
     } catch (error) {
       console.log(error);
@@ -137,19 +160,12 @@ export default function PopupHandler({ item, kind, onClose }) {
   };
 
   const handleActionButtonClick = () => {
-    if (item.host === currentHost.host) {
-      if (kind === 'works') {
-        navigate(`/@${item.authorUsername}/${kind}/${item._id}/info`);
-        return;
-      }
-      navigate(`/${kind}/${item._id}/info`);
+    const link = getLinkPath(item, kind, item.host === currentHost.host);
+    if (link.isHref) {
+      window.open(link.path, '_self');
       return;
     }
-    if (kind === 'works') {
-      window.location.href = `https://${item.host}/@${item.authorUsername}/${kind}/${item._id}/info`;
-      return;
-    }
-    window.location.href = `https://${item.host}/${kind}/${item._id}/info`;
+    navigate(link.path);
   };
 
   return (
