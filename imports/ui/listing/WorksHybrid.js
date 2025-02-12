@@ -77,7 +77,7 @@ export default function WorksHybrid({ works, Host }) {
 
       <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={worksWithCategoryColors}>
-          {(work) => (
+          {(work, index) => (
             <Box
               key={work._id}
               borderRadius="lg"
@@ -95,6 +95,7 @@ export default function WorksHybrid({ works, Host }) {
                 color={categories.find((cat) => cat?.label === work.category?.label)?.color}
                 host={Host?.isPortalHost ? work.host : null}
                 imageUrl={work?.images && work.images[0]}
+                index={index}
                 tag={work.category?.label}
                 title={work.title}
               />

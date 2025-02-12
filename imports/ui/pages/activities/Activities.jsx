@@ -13,7 +13,7 @@ export default function Activities() {
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
   const [activities, setActivities] = useState(initialActivities);
-  let { currentHost, canCreateContent } = useContext(StateContext);
+  let { currentHost } = useContext(StateContext);
   const [searchParams] = useSearchParams();
 
   const showPast = searchParams.get('showPast') === 'true';

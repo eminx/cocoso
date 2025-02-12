@@ -19,7 +19,7 @@ export default function ResourcesHybrid({ resources, Host }) {
 
       <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={resources}>
-          {(resource) => (
+          {(resource, index) => (
             <Box
               key={resource._id}
               borderRadius="lg"
@@ -31,6 +31,7 @@ export default function ResourcesHybrid({ resources, Host }) {
                 fixedImageHeight
                 host={Host?.isPortalHost ? resource.host : null}
                 imageUrl={resource.images?.[0]}
+                index={index}
                 title={resource.label}
               />
             </Box>

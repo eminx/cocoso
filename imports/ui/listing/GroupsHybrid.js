@@ -19,9 +19,13 @@ export default function GroupsHybrid({ groups, Host }) {
 
       <Box px="2" pb="8">
         <InfiniteScroller items={groups}>
-          {(item) => (
+          {(item, index) => (
             <Center key={item._id} flex="1 1 355px" onClick={() => setModalItem(item)}>
-              <SexyThumb activity={item} host={Host?.isPortalHost ? item.host : null} />
+              <SexyThumb
+                activity={item}
+                host={Host?.isPortalHost ? item.host : null}
+                index={index}
+              />
             </Center>
           )}
         </InfiniteScroller>

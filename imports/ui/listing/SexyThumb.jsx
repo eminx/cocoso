@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import dayjs from 'dayjs';
-import { Box, Flex, HStack, Tag as CTag } from '@chakra-ui/react';
+import { Box, Flex, HStack, Img, Tag as CTag } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { DateJust } from '../entry/FancyDate';
@@ -49,7 +49,7 @@ function ThumbDate({ date }) {
   );
 }
 
-export default function SexyThumb({ activity, host, showPast = false }) {
+export default function SexyThumb({ activity, host, index, showPast = false }) {
   const { allHosts } = isClient && useContext(StateContext);
 
   if (!activity) {
@@ -88,7 +88,11 @@ export default function SexyThumb({ activity, host, showPast = false }) {
       maxW={imageStyle.maxWidth}
     >
       <div className="thumb-cover">
-        <LazyLoadImage alt={title} effect="black-and-white" src={imageUrl} style={imageStyle} />
+        {index < 6 ? (
+          <Img alt={title} src={imageUrl} style={imageStyle} />
+        ) : (
+          <LazyLoadImage alt={title} effect="black-and-white" src={imageUrl} style={imageStyle} />
+        )}
       </div>
 
       {host && (

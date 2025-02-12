@@ -124,7 +124,7 @@ export default function InfiniteScroller({
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
           >
-            {currentItems?.map((item) => children(item))}
+            {currentItems?.map((item, index) => children(item, index))}
             {hasMore && <Skeleton endColor="gray.300" w="185px" h="185px" m="4" />}
             {!hasMore && canCreateContent && (
               <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
@@ -132,7 +132,7 @@ export default function InfiniteScroller({
           </Masonry>
         ) : (
           <Wrap align="center" justify="center" spacing="2">
-            {currentItems?.map((item) => children(item))}
+            {currentItems?.map((item, index) => children(item, index))}
             {hasMore && (
               <Skeleton
                 // className="sexy-thumb-container"

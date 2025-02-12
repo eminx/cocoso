@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
-import { Avatar, Box, Center, Flex, Heading, Tag as CTag, Text } from '@chakra-ui/react';
+import { Avatar, Box, Center, Flex, Heading, Img, Tag as CTag, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { StateContext } from '../LayoutContainer';
@@ -12,6 +12,12 @@ if (isClient) {
   import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 }
 
+const imageStyle = {
+  margin: '0 auto',
+  position: 'relative',
+  width: '100%',
+};
+
 export default function NewGridThumb({
   avatar,
   color,
@@ -19,6 +25,7 @@ export default function NewGridThumb({
   fixedImageHeight = false,
   footer = null,
   host,
+  index,
   imageUrl,
   subTitle,
   title,
@@ -33,7 +40,13 @@ export default function NewGridThumb({
     host && allHosts && isClient ? allHosts?.find((h) => h.host === host)?.name : host;
 
   return (
-    <Box _hover={{ bg: 'brand.50' }} border="1px solid white" borderRadius="lg" cursor="pointer">
+    <Box
+      _hover={{ bg: 'brand.50' }}
+      bg="brand.200"
+      border="1px solid white"
+      borderRadius="lg"
+      cursor="pointer"
+    >
       <Box borderRadius="lg" className="text-link-container" position="relative">
         <Center
           bg={imageUrl ? 'white' : 'brand.100'}
@@ -43,16 +56,17 @@ export default function NewGridThumb({
           overflow="hidden"
         >
           {imageUrl ? (
-            <LazyLoadImage
-              alt={title}
-              effect="black-and-white"
-              fit={fixedImageHeight ? 'cover' : 'contain'}
-              src={imageUrl}
-              style={{
-                margin: '0 auto',
-                position: 'relative',
-              }}
-            />
+            index < 8 ? (
+              <Img alt={title} src={imageUrl} style={imageStyle} />
+            ) : (
+              <LazyLoadImage
+                alt={title}
+                effect="black-and-white"
+                fit={fixedImageHeight ? 'cover' : 'contain'}
+                src={imageUrl}
+                style={imageStyle}
+              />
+            )
           ) : (
             coverText && (
               <Text color="brand.600" fontSize="3xl" fontWeight="light" m="4">
