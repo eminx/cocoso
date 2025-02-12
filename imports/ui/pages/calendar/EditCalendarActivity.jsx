@@ -1,11 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import CalendarActivityForm from './CalendarActivityForm';
 import { ActivityContext } from '../activities/Activity';
 import { call } from '../../utils/shared';
+import { message } from '../../generic/message';
+import SuccessRedirector from '../../forms/SuccessRedirector';
 
 export default function EditPublicActivity() {
+  const [updated, setUpdated] = useState(null);
   const { activity, getActivityById } = useContext(ActivityContext);
   const [, setSearchParams] = useSearchParams();
   if (!activity) {
@@ -14,15 +17,12 @@ export default function EditPublicActivity() {
 
   const updateActivity = async (newActivity) => {
     const activityId = activity._id;
-    console.log(newActivity);
-    // return;
     try {
       await call('updateActivity', activityId, newActivity);
       await getActivityById(activityId);
-      // message.success(t('form.success'));
-      setSearchParams({ edit: 'false' });
+      setUpdated(activityId);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 
@@ -43,8 +43,8 @@ export default function EditPublicActivity() {
   }))(activity);
 
   return (
-    <>
+    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
       <CalendarActivityForm activity={activityFields} onFinalize={updateActivity} />
-    </>
+    </SuccessRedirector>
   );
 }

@@ -9,6 +9,7 @@ import Loader from '../../generic/Loader';
 import NewEntryHandler from '../../listing/NewEntryHandler';
 import EditPublicActivity from './EditPublicActivity';
 import EditCalendarActivity from '../calendar/EditCalendarActivity';
+import { message } from '../../generic/message';
 
 export const ActivityContext = createContext(null);
 
@@ -31,8 +32,7 @@ export default function Activity() {
     try {
       setActivity(await call('getActivityById', activityId));
     } catch (error) {
-      console.log(error);
-      // message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 

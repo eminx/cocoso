@@ -24,6 +24,7 @@ import {
 import Modal from '../../../../generic/Modal';
 import { StateContext } from '../../../../LayoutContainer';
 import { GroupContext } from '../../Group';
+import { message } from '../../../../generic/message';
 
 const today = dayjs();
 
@@ -110,6 +111,7 @@ export default function AddMeeting({ onClose }) {
   const { group, getGroupById } = useContext(GroupContext);
   const { currentHost } = useContext(StateContext);
   const [t] = useTranslation('groups');
+  const [tc] = useTranslation('common');
   const { activities, conflictingBooking, isFormValid, newMeeting, resources } = state;
 
   const getData = async () => {
@@ -122,7 +124,7 @@ export default function AddMeeting({ onClose }) {
         resources: resourcesReceived,
       });
     } catch (error) {
-      // console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 
@@ -223,8 +225,7 @@ export default function AddMeeting({ onClose }) {
     }
 
     if (!newMeeting.resource || newMeeting.resource.length < 4) {
-      // message.error(t('errors.noresource'));
-      // console.log('no resource');
+      message.error(t('errors.noresource'));
       return;
     }
 
@@ -265,10 +266,9 @@ export default function AddMeeting({ onClose }) {
         isSubmitted: false,
       });
       onClose();
-      // message.success(tc('message.success.create'));
+      message.success(tc('message.success.create'));
     } catch (error) {
-      console.log(error);
-      // message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 

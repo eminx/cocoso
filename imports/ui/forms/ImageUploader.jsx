@@ -7,6 +7,7 @@ import { arrayMoveImmutable } from 'array-move';
 import FileDropper from './FileDropper';
 import { resizeImage, uploadImage } from '../utils/shared';
 import DocumentUploadHelper from './UploadHelpers';
+import { message } from '../generic/message';
 
 const thumbStyle = (backgroundImage) => ({
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
@@ -43,7 +44,7 @@ export default function ImageUploader({
       onUploadedImages(imagesReadyToSave);
     } catch (error) {
       console.log('Error uploading:', error);
-      // message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 

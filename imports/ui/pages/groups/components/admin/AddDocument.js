@@ -9,6 +9,7 @@ import Modal from '../../../../generic/Modal';
 import DocumentUploadHelper from '../../../../forms/UploadHelpers';
 import GroupDocuments from '../GroupDocuments';
 import { GroupContext } from '../../Group';
+import { message } from '../../../../generic/message';
 
 export default function AddDocument({ onClose }) {
   const [isUploading, setIsUploading] = useState(false);
@@ -21,7 +22,7 @@ export default function AddDocument({ onClose }) {
 
   const handleFileDrop = (files) => {
     if (files.length !== 1) {
-      // message.error(tc('plugins.fileDropper.single'));
+      message.error(tc('plugins.fileDropper.single'));
       return;
     }
 
@@ -40,8 +41,7 @@ export default function AddDocument({ onClose }) {
 
     upload.send(uploadableFile, (error, downloadUrl) => {
       if (error) {
-        // console.error('Error uploading:', error);
-        // message.error(error.reason);
+        message.error(error.reason || error.error);
         closeLoader();
       } else {
         Meteor.call(
@@ -52,7 +52,6 @@ export default function AddDocument({ onClose }) {
           group._id,
           (error1) => {
             if (error1) {
-              // console.log(error);
               return;
             }
             Meteor.call(
@@ -61,7 +60,6 @@ export default function AddDocument({ onClose }) {
               group._id,
               (error2) => {
                 if (error2) {
-                  // console.log(error2);
                   return;
                 }
                 closeLoader();

@@ -8,6 +8,7 @@ import WorkHybrid from '../../entry/WorkHybrid';
 import NewEntryHandler from '../../listing/NewEntryHandler';
 import WorkInteractionHandler from './components/WorkInteractionHandler';
 import EditWork from './EditWork';
+import { message } from '../../generic/message';
 
 export const WorkContext = createContext(null);
 
@@ -39,8 +40,7 @@ export default function Work() {
       const response = await call('getWork', workId, username);
       setWork(response);
     } catch (error) {
-      console.log(error);
-      // message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 
@@ -49,8 +49,7 @@ export default function Work() {
       const docs = await call('getDocumentsByAttachments', workId);
       setDocuments(docs);
     } catch (error) {
-      console.log(error);
-      // message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 

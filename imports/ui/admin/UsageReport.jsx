@@ -44,7 +44,7 @@ function UsageReport({ user, onClose }) {
       parseActivities(response);
     } catch (error) {
       console.log(error);
-      message.error(error);
+      message.error(error.reason || error.error);
     }
   };
 

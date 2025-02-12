@@ -11,6 +11,7 @@ import FormField from '../../forms/FormField';
 import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
 import publicActivityFormFields from './publicActivityFormFields';
 import { LoaderContext } from '../../listing/NewEntryHandler';
+import { message } from '../../generic/message';
 
 const animatedComponents = makeAnimated();
 const defaultCapacity = 40;
@@ -81,7 +82,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
 
   const handleSubmit = (formValues) => {
     if (!isFormValid()) {
-      // message.error(t('form.error'));
+      message.error(t('form.error'));
       return;
     }
     setState((prevState) => ({

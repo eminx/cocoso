@@ -6,6 +6,7 @@ import ConfirmModal from '../../../generic/ConfirmModal';
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
 import { StateContext } from '../../../LayoutContainer';
+import { message } from '../../../generic/message';
 
 export default function LeaveButton() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -21,9 +22,9 @@ export default function LeaveButton() {
     try {
       await call('leaveGroup', group._id);
       getGroupById();
-      // message.success(t('message.removed'));
+      message.success(t('message.removed'));
     } catch (error) {
-      // message.error(error.error || error.reason);
+      message.error(error.error || error.reason);
     }
   };
 

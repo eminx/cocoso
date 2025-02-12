@@ -6,6 +6,7 @@ import ConfirmModal from '../../../generic/ConfirmModal';
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
 import { StateContext } from '../../../LayoutContainer';
+import { message } from '../../../generic/message';
 
 export default function GroupJoinButton() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function GroupJoinButton() {
 
   const joinGroup = async () => {
     if (!currentUser) {
-      // alert('Login first!');
+      alert('Login first!');
       return;
     }
 
@@ -27,9 +28,9 @@ export default function GroupJoinButton() {
       await call('joinGroup', group._id);
       await getGroupById();
       setModalOpen(false);
-      // message.success(t('message.added'));
+      message.success(t('message.added'));
     } catch (error) {
-      // message.error(error.error || error.reason);
+      message.error(error.error || error.reason);
     }
   };
 

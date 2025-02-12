@@ -34,7 +34,6 @@ export default function Activities() {
         setActivities(allActivities);
       }
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
