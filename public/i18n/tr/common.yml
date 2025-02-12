@@ -84,7 +84,10 @@ labels:
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
-  loading: '{{ something }} yükleniyor...'
+  loading:
+    creating: Oluşturuluyor...
+    uploading: Seçilen resimler yükleniyor...
+    sending: Gönderiliyor...
 
   success:
     create: Öge oluşturuldu

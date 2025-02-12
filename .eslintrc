@@ -13,7 +13,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "import"],
   "rules": {
     "prettier/prettier": ["error"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
@@ -30,7 +30,16 @@
       }
     ],
     "no-underscore-dangle": "off",
-    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }]
+    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": false,
+        "optionalDependencies": false,
+        "peerDependencies": false,
+        "packageDir": "./"
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

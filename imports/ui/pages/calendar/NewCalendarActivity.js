@@ -3,8 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import CalendarActivityForm from './CalendarActivityForm';
 import { call } from '../../utils/shared';
+import SuccessRedirector from '../../forms/SuccessRedirector';
 
 export default function NewCalendarActivity({ resources }) {
+  const [newEntryId, setNewEntryId] = useState(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [initialActivity, setInitialActivity] = useState(null);
@@ -42,17 +44,20 @@ export default function NewCalendarActivity({ resources }) {
 
   const createActivity = async (newActivity) => {
     try {
-      const newEntryId = await call('createActivity', newActivity);
-      // message.success(t('form.success'));
-      navigate(`/activities/${newEntryId}`);
+      const respond = await call('createActivity', newActivity);
+      setNewEntryId(respond);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleSuccess = () => {
+    navigate(`/activities/${newEntryId}`);
+  };
+
   return (
-    <>
+    <SuccessRedirector ping={newEntryId} onSuccess={handleSuccess}>
       <CalendarActivityForm activity={initialActivity || null} onFinalize={createActivity} />
-    </>
+    </SuccessRedirector>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Checkbox, FormLabel, Heading, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
@@ -10,6 +10,7 @@ import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import resourceFormFields from './resourceFormFields';
 import { message } from '../../generic/message';
+import { LoaderContext } from '../../listing/NewEntryHandler';
 
 export const emptyFormValues = {
   label: '',
@@ -24,13 +25,9 @@ export default function ResourceForm({ resource, onFinalize }) {
     formValues: resource || emptyFormValues,
     isCombo: resource ? resource.isCombo : false,
     resourcesForCombo: resource ? resource.resourcesForCombo : [],
-    isCreating: false,
-    isSendingForm: false,
-    isSuccess: false,
-    isUploadingImages: false,
     resources: [],
   });
-
+  const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
 
@@ -48,18 +45,17 @@ export default function ResourceForm({ resource, onFinalize }) {
 
   useEffect(() => {
     getResources();
-    // setResourcesForCombo(defaultValues && defaultValues.isCombo && defaultValues.resourcesForCombo);
   }, []);
 
   useEffect(() => {
-    if (!state.isCreating) {
+    if (!loaders.isCreating) {
       return;
     }
-    setState((prevState) => ({
+    setLoaders((prevState) => ({
       ...prevState,
       isUploadingImages: true,
     }));
-  }, [state.isCreating]);
+  }, [loaders?.isCreating]);
 
   const handleSubmit = (formValues) => {
     setState((prevState) => ({
@@ -68,6 +64,9 @@ export default function ResourceForm({ resource, onFinalize }) {
         ...formValues,
         capacity: Number(formValues.capacity),
       },
+    }));
+    setLoaders((prevState) => ({
+      ...prevState,
       isCreating: true,
     }));
   };
@@ -87,9 +86,8 @@ export default function ResourceForm({ resource, onFinalize }) {
   };
 
   const handleUploadedImages = (images) => {
-    setState((prevState) => ({
+    setLoaders((prevState) => ({
       ...prevState,
-      isUploadingImages: false,
       isSendingForm: true,
     }));
 
@@ -125,7 +123,7 @@ export default function ResourceForm({ resource, onFinalize }) {
       >
         <FormField helperText={t('form.image.helper')} label={t('form.image.label')} mb="12">
           <ImageUploader
-            ping={state.isUploadingImages}
+            ping={loaders?.isUploadingImages}
             preExistingImages={resource ? resource.images : []}
             onUploadedImages={handleUploadedImages}
           />
@@ -137,7 +135,7 @@ export default function ResourceForm({ resource, onFinalize }) {
           mt="6"
           mb="12"
         >
-          <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
+          <Box bg="white" borderRadius="lg" display="inline" p="2">
             <Checkbox
               isChecked={state.isCombo}
               size="lg"

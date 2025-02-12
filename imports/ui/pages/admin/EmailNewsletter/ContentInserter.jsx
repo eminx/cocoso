@@ -223,7 +223,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
                             colorScheme="green"
                             isChecked={Boolean(activity.isSelected)}
                             size="lg"
-                            onChange={(e) => handleSelectItem(activity, 'activities')}
+                            onChange={() => handleSelectItem(activity, 'activities')}
                           >
                             <HStack alignItems="flex-start">
                               <Image
@@ -271,7 +271,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
                             colorScheme="green"
                             isChecked={Boolean(work.isSelected)}
                             size="lg"
-                            onChange={(e) => handleSelectItem(work, 'works')}
+                            onChange={() => handleSelectItem(work, 'works')}
                           >
                             <HStack alignItems="flex-start">
                               <Image

@@ -8,8 +8,10 @@ import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 
 export default function ActivityAdminFunctions() {
   const [tc] = useTranslation('common');
-  const { activity } = useContext(ActivityContext);
+  const activityContext = useContext(ActivityContext);
   const [, setSearchParams] = useSearchParams();
+
+  const activity = activityContext?.activity;
 
   const handleSelect = (item) => {
     if (item.kind === 'edit') {

@@ -10,7 +10,8 @@ import { ChatButton } from '../../../chattery/ChatHandler';
 
 export default function ActivityInteractionHandler({ slideStart }) {
   const { canCreateContent, currentUser, role } = useContext(StateContext);
-  const { activity } = useContext(ActivityContext);
+  const activityContext = useContext(ActivityContext);
+  const activity = activityContext?.activity;
 
   if (!activity) {
     return null;

@@ -1,25 +1,36 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
 import WorkForm from './WorkForm';
+import { StateContext } from '../../LayoutContainer';
+import SuccessRedirector from '../../forms/SuccessRedirector';
 
 export default function NewWork() {
+  const [newEntryId, setNewEntryId] = useState(null);
+  const { currentUser } = useContext(StateContext);
   const navigate = useNavigate();
 
   const createWork = async (newWork) => {
     try {
-      const newEntryId = await call('createWork', newWork);
-      // message.success(t('form.success'));
-      navigate(`/resources${newEntryId}`);
+      const respond = await call('createWork', newWork);
+      setNewEntryId(respond);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleSuccess = () => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+    navigate(`@${currentUser.username}/works/${newEntryId}`);
+  };
+
   return (
-    <>
+    <SuccessRedirector ping={newEntryId} onSuccess={handleSuccess}>
       <WorkForm onFinalize={createWork} />
-    </>
+    </SuccessRedirector>
   );
 }

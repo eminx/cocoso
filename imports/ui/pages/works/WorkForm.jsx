@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Heading } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
@@ -9,6 +9,8 @@ import GenericEntryForm from '../../forms/GenericEntryForm';
 import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import workFormFields from './workFormFields';
+import { LoaderContext } from '../../listing/NewEntryHandler';
+import { message } from '../../generic/message';
 
 export const emptyFormValues = {
   additionalInfo: '',
@@ -26,10 +28,6 @@ export default function WorkForm({ work, onFinalize }) {
   const [state, setState] = useState({
     categories: [],
     formValues: work || emptyFormValues,
-    isCreating: false,
-    isSendingForm: false,
-    isSuccess: false,
-    isUploadingImages: false,
     selectedCategory: work
       ? {
           label: work.category?.label,
@@ -37,7 +35,7 @@ export default function WorkForm({ work, onFinalize }) {
         }
       : null,
   });
-
+  const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
 
@@ -49,7 +47,7 @@ export default function WorkForm({ work, onFinalize }) {
         categories,
       }));
     } catch (error) {
-      // message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 
@@ -59,45 +57,42 @@ export default function WorkForm({ work, onFinalize }) {
   }, []);
 
   useEffect(() => {
-    if (!state.isCreating) {
+    if (!loaders.isCreating) {
       return;
     }
-    setState((prevState) => ({
+    setLoaders((prevState) => ({
       ...prevState,
       isUploadingImages: true,
     }));
-  }, [state.isCreating]);
+  }, [loaders?.isCreating]);
 
   const handleSubmit = (formValues) => {
     setState((prevState) => ({
       ...prevState,
       formValues,
+    }));
+    setLoaders((prevState) => ({
+      ...prevState,
       isCreating: true,
     }));
   };
 
   const parseWork = async (images) => {
     const selectedCategory = state.selectedCategory;
-    try {
-      const newWork = {
-        ...state.formValues,
-        category: {
-          categoryId: selectedCategory._id,
-          color: selectedCategory.color,
-          label: selectedCategory.label,
-        },
-        images,
-      };
-      onFinalize(newWork);
-    } catch (error) {
-      console.log(error);
-    }
+    const newWork = {
+      ...state.formValues,
+      category: {
+        categoryId: selectedCategory._id,
+        label: selectedCategory.label,
+      },
+      images,
+    };
+    onFinalize(newWork);
   };
 
   const handleUploadedImages = (images) => {
-    setState((prevState) => ({
+    setLoaders((prevState) => ({
       ...prevState,
-      isUploadingImages: false,
       isSendingForm: true,
     }));
 
@@ -126,7 +121,7 @@ export default function WorkForm({ work, onFinalize }) {
       >
         <FormField helperText={t('works.image.helper')} label={t('works.image.label')} my="4">
           <ImageUploader
-            ping={state.isUploadingImages}
+            ping={loaders?.isUploadingImages}
             preExistingImages={work ? work.images : []}
             onUploadedImages={handleUploadedImages}
           />
@@ -140,8 +135,6 @@ export default function WorkForm({ work, onFinalize }) {
           isRequired
         >
           <AutoCompleteSelect
-            // isMulti
-            // closeMenuOnSelect={false}
             components={animatedComponents}
             defaultValue={state.selectedCategory}
             options={state.categories}

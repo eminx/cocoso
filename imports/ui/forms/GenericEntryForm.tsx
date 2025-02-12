@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Button,
@@ -17,6 +17,7 @@ import { Controller, useForm, Control, UseFormRegister } from 'react-hook-form';
 import Quill from './Quill';
 import FormField from './FormField';
 import { luxxStyle } from '../utils/constants/theme';
+import { LoaderContext } from '../listing/NewEntryHandler';
 
 interface Option {
   value: string;
@@ -44,7 +45,7 @@ interface GenericEntryFormProps {
   children?: React.ReactNode;
   defaultValues?: Record<string, any> | null;
   formFields: FormFieldItem[];
-  onSubmit: (data: object) => void;
+  onSubmit: () => void;
 }
 
 function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
@@ -67,7 +68,7 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
       );
     case 'checkbox':
       return (
-        <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
+        <Box bg="white" borderRadius="lg" display="inline" p="2">
           <Checkbox size="lg" {...props}>
             <FormLabel style={{ cursor: 'pointer' }} mb="0">
               {item.placeholder}
@@ -114,6 +115,7 @@ export default function GenericEntryForm({
   const { control, handleSubmit, register } = useForm({
     defaultValues: defaultValues || undefined,
   });
+  const { loaders } = useContext(LoaderContext);
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -133,7 +135,9 @@ export default function GenericEntryForm({
       </VStack>
 
       <Flex justify="flex-end" my="12">
-        <Button type="submit">Submit</Button>
+        <Button isLoading={loaders?.isCreating} type="submit">
+          Submit
+        </Button>
       </Flex>
     </form>
   );

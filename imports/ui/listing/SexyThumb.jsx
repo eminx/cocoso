@@ -82,9 +82,9 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
       borderColor="white"
       borderRadius="lg"
       boxShadow="xl"
-      h={imageStyle.height}
       className="thumb-cover-container"
       fontWeight="bold"
+      h={imageStyle.height}
       maxW={imageStyle.maxWidth}
     >
       <div className="thumb-cover">
@@ -96,8 +96,8 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
       </div>
 
       {host && (
-        <Box p="1" position="absolute" right="0" top="0">
-          <CTag bg="rgba(0, 0, 0, 0.5)" color="white" size="sm">
+        <Box bottom="32px" p="1" position="absolute" right="12px">
+          <CTag bg="rgba(0, 0, 0, 0.7)" color="white" size="sm">
             {hostValue}
           </CTag>
         </Box>
@@ -105,7 +105,7 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
 
       <div className="thumb-text-container">
         <Flex direction="column" h="100%" justify="space-between">
-          <Box>
+          <Box mt="2">
             <h3 className="thumb-title">{title}</h3>
             <h4 className="thumb-subtitle">{subTitle}</h4>
           </Box>

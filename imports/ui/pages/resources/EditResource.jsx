@@ -1,11 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import ResourceForm from './ResourceForm';
 import { ResourceContext } from './Resource';
 import { call } from '../../utils/shared';
+import SuccessRedirector from '../../forms/SuccessRedirector';
 
 export default function EditResource() {
+  const [updated, setUpdated] = useState(null);
   const { resource, getResourceById } = useContext(ResourceContext);
   const [, setSearchParams] = useSearchParams();
   if (!resource) {
@@ -17,8 +19,7 @@ export default function EditResource() {
     try {
       await call('updateResource', resourceId, newResource);
       await getResourceById(resourceId);
-      // message.success(t('form.success'));
-      setSearchParams({ edit: 'false' });
+      setUpdated(resourceId);
     } catch (error) {
       console.log(error);
     }
@@ -43,8 +44,8 @@ export default function EditResource() {
   }))(resource);
 
   return (
-    <>
+    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
       <ResourceForm resource={resourceFields} onFinalize={updateResource} />
-    </>
+    </SuccessRedirector>
   );
 }

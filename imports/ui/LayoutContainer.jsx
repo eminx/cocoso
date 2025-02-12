@@ -4,6 +4,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ChakraProvider, ColorModeProvider, useMediaQuery } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { Toaster } from 'react-hot-toast';
 import moment from 'moment';
 import 'moment/locale/en-gb';
 import 'moment/locale/sv';
@@ -18,6 +19,7 @@ import HelmetHybrid from './layout/HelmetHybrid';
 import { Footer, PlatformFooter } from './layout/Footers';
 import TopBarHandler from './layout/TopBarHandler';
 import DummyWrapper from './layout/DummyWrapper';
+import { message } from './generic/message';
 
 export const StateContext = React.createContext(null);
 
@@ -35,6 +37,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [isDesktop, isMobile] = useMediaQuery(['(min-width: 960px)', '(max-width: 480px)']);
   const location = useLocation();
   const { pathname } = location;
+  const [tc] = useTranslation('common');
 
   useLayoutEffect(() => {
     setTimeout(() => {
@@ -109,10 +112,10 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const setSelectedHue = async () => {
     try {
       await call('setHostHue', hue);
-      // message.success(tc('message.success.update'));
+      message.success(tc('message.success.update'));
       await getCurrentHost();
     } catch (error) {
-      // message.error(error.reason || error.error);
+      message.error(error.reason || error.error);
     }
   };
 
@@ -169,6 +172,8 @@ function LayoutPage({ currentUser, userLoading, children }) {
           </StateContext.Provider>
         </ColorModeProvider>
       </ChakraProvider>
+
+      <Toaster containerStyle={{ minWidth: '120px' }} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Checkbox, FormLabel, Heading, NumberInput, NumberInputField } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
@@ -10,6 +10,7 @@ import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
 import publicActivityFormFields from './publicActivityFormFields';
+import { LoaderContext } from '../../listing/NewEntryHandler';
 
 const animatedComponents = makeAnimated();
 const defaultCapacity = 40;
@@ -29,17 +30,13 @@ export default function PublicActivityForm({ activity, onFinalize }) {
     datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
     selectedResource: activity ? { label: activity.resource, _id: activity.resourceId } : null,
-    isCreating: false,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
     isRegistrationEnabled: activity
       ? !activity.isRegistrationDisabled || activity.isRegistrationEnabled
       : true,
-    isSendingForm: false,
-    isSuccess: false,
-    isUploadingImages: false,
     resources: [],
   });
-
+  const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('activities');
 
   const getResources = async () => {
@@ -73,14 +70,14 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   };
 
   useEffect(() => {
-    if (!state.isCreating) {
+    if (!loaders.isCreating) {
       return;
     }
-    setState((prevState) => ({
+    setLoaders((prevState) => ({
       ...prevState,
       isUploadingImages: true,
     }));
-  }, [state.isCreating]);
+  }, [loaders?.isCreating]);
 
   const handleSubmit = (formValues) => {
     if (!isFormValid()) {
@@ -90,6 +87,9 @@ export default function PublicActivityForm({ activity, onFinalize }) {
     setState((prevState) => ({
       ...prevState,
       formValues,
+    }));
+    setLoaders((prevState) => ({
+      ...prevState,
       isCreating: true,
     }));
   };
@@ -163,9 +163,8 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   };
 
   const handleUploadedImages = (images) => {
-    setState((prevState) => ({
+    setLoaders((prevState) => ({
       ...prevState,
-      isUploadingImages: false,
       isSendingForm: true,
     }));
 
@@ -193,7 +192,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         >
           <ImageUploader
             preExistingImages={activity ? activity.images : []}
-            ping={state.isUploadingImages}
+            ping={loaders.isUploadingImages}
             onUploadedImages={handleUploadedImages}
           />
         </FormField>
@@ -204,7 +203,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
           mt="8"
           mb="4"
         >
-          <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
+          <Box bg="white" borderRadius="lg" display="inline" p="2">
             <Checkbox
               isChecked={state.isExclusiveActivity}
               size="lg"
@@ -252,9 +251,9 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         </FormField>
 
         <FormField helperText={t('form.rsvp.helper')} label={t('form.rsvp.label')} mt="4" mb="10">
-          <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
+          <Box bg="white" borderRadius="lg" display="inline" p="2">
             <Checkbox isChecked={state.isRegistrationEnabled} size="lg" onChange={handleRsvpSwitch}>
-              <FormLabel style={{ cursor: 'pointer' }} mb="0">
+              <FormLabel cursor="pointer" mb="0">
                 {t('form.rsvp.holder')}
               </FormLabel>
             </Checkbox>

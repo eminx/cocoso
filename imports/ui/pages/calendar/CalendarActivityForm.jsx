@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Checkbox, FormLabel, Heading } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
@@ -9,6 +9,7 @@ import GenericEntryForm from '../../forms/GenericEntryForm';
 import FormField from '../../forms/FormField';
 import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
 import calendarActivityFormFields from './calendarActivityFormFields';
+import { LoaderContext } from '../../listing/NewEntryHandler';
 
 const animatedComponents = makeAnimated();
 
@@ -27,13 +28,11 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
     selectedResource: activity ? { label: activity.resource, value: activity.resourceId } : null,
-    isCreating: false,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
-    isSendingForm: false,
-    isSuccess: false,
     resources: [],
   });
 
+  const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('activities');
 
   const getResources = async () => {
@@ -114,11 +113,11 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   };
 
   useEffect(() => {
-    if (!state.isCreating) {
+    if (!loaders.isCreating) {
       return;
     }
     parseActivity();
-  }, [state.isCreating]);
+  }, [loaders.isCreating]);
 
   const handleSubmit = (formValues) => {
     if (!isFormValid()) {
@@ -128,6 +127,9 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
     setState((prevState) => ({
       ...prevState,
       formValues,
+    }));
+    setLoaders((prevState) => ({
+      ...prevState,
       isCreating: true,
       isSendingForm: true,
     }));
@@ -168,7 +170,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
         onSubmit={handleSubmit}
       >
         <FormField helperText={t('form.exclusive.helper')} label={t('form.exclusive.label')} my="4">
-          <Box display="inline" bg="white" borderRadius="lg" p="1" pl="2">
+          <Box bg="white" borderRadius="lg" display="inline" p="2">
             <Checkbox
               isChecked={state.isExclusiveActivity}
               size="lg"
