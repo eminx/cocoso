@@ -14,9 +14,7 @@
 }
 
 .quill-megacontainer .ql-container.ql-snow {
-  border-color: rgb(245, 245, 245);
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+  border: none;
 }
 
 .quill-megacontainer .ql-container.ql-snow .ql-editor {

@@ -238,6 +238,8 @@ input::placeholder {
 .my-masonry-grid_column {
   padding-left: 8px; /* gutter size */
   background-clip: padding-box;
+  flex-basis: 240px;
+  flex-grow: 1;
 }
 
 .chakra-switch__track {
