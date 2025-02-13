@@ -4,26 +4,27 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import CalendarActivityForm from './CalendarActivityForm';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
+import { emptyDateAndTime } from '../../forms/DatesAndTimes';
 
 export default function NewCalendarActivity({ resources }) {
   const [newEntryId, setNewEntryId] = useState(null);
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [initialActivity, setInitialActivity] = useState(null);
+  const navigate = useNavigate();
 
   const setInitialValuesWithQueryParams = () => {
     const params = {
-      startDate: searchParams.get('startDate'),
-      endDate: searchParams.get('endDate'),
-      startTime: searchParams.get('startTime'),
-      endTime: searchParams.get('endTime'),
+      startDate: searchParams.get('startDate') || emptyDateAndTime.startDate,
+      endDate: searchParams.get('endDate') || emptyDateAndTime.endDate,
+      startTime: searchParams.get('startTime') || emptyDateAndTime.startTime,
+      endTime: searchParams.get('endTime') || emptyDateAndTime.endTime,
     };
 
     const parsedActivity = {
       datesAndTimes: [
         {
           ...params,
-          isRange: params?.startDate && params?.endDate && params.startDate !== params.endDate,
+          isRange: params?.startDate !== params?.endDate,
         },
       ],
     };

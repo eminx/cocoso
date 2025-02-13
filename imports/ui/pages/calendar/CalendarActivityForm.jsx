@@ -21,12 +21,7 @@ export const emptyFormValues = {
 
 export default function CalendarActivityForm({ activity, onFinalize }) {
   const [state, setState] = useState({
-    datesAndTimes: activity
-      ? activity.datesAndTimes?.map((d) => ({
-          ...d,
-          isRange: d?.startDate !== d?.endDate,
-        }))
-      : [emptyDateAndTime],
+    datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
     selectedResource: activity ? { label: activity.resource, value: activity.resourceId } : null,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
