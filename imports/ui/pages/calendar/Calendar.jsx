@@ -3,7 +3,6 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Box, Button, Center, Flex, Link as CLink, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import parseHtml from 'html-react-parser';
-import { Helmet } from 'react-helmet';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { useTranslation } from 'react-i18next';
@@ -50,10 +49,6 @@ export default function Calendar() {
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
   const [tc] = useTranslation('common');
-
-  if (!currentHost) {
-    return null;
-  }
 
   const activitiesParsed = useMemo(
     () => parseAllBookingsWithResources(activities, resources),
@@ -198,6 +193,10 @@ export default function Calendar() {
     (r) => r.isBookable
   );
 
+  if (!currentHost) {
+    return null;
+  }
+
   const { settings } = currentHost;
   const calendarInMenu = settings?.menu.find((item) => item.name === 'calendar');
   const heading = calendarInMenu?.label;
@@ -205,10 +204,6 @@ export default function Calendar() {
 
   return (
     <Box>
-      <Helmet>
-        <title>{heading}</title>
-      </Helmet>
-
       <PageHeading description={description} heading={heading} />
 
       <Box>
