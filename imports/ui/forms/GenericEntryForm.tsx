@@ -13,6 +13,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Controller, useForm, Control, UseFormRegister } from 'react-hook-form';
+import { Trans } from 'react-i18next';
 
 import Quill from './Quill';
 import FormField from './FormField';
@@ -134,9 +135,9 @@ export default function GenericEntryForm({
         ))}
       </VStack>
 
-      <Flex justify="flex-end" my="12">
+      <Flex justify="flex-end" mt="8" mb="12">
         <Button isLoading={loaders?.isCreating} type="submit">
-          Submit
+          <Trans i18nKey="common:actions.submit">Submit</Trans>
         </Button>
       </Flex>
     </form>
