@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Heading } from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import GenericEntryForm from '../../forms/GenericEntryForm';
 import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import groupFormFields from './groupFormFields';
+import { LoaderContext } from '../../listing/NewEntryHandler';
 
 export const emptyFormValues = {
   isPrivate: false,
@@ -18,23 +18,19 @@ export const emptyFormValues = {
 export default function GroupForm({ group, onFinalize }) {
   const [state, setState] = useState({
     formValues: group || emptyFormValues,
-    isCreating: false,
-    isSendingForm: false,
-    isSuccess: false,
-    isUploadingImages: false,
   });
-
+  const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('groups');
 
   useEffect(() => {
-    if (!state.isCreating) {
+    if (!loaders.isCreating) {
       return;
     }
-    setState((prevState) => ({
+    setLoaders((prevState) => ({
       ...prevState,
       isUploadingImages: true,
     }));
-  }, [state.isCreating]);
+  }, [loaders?.isCreating]);
 
   const handleSubmit = (formValues) => {
     setState((prevState) => ({
@@ -43,6 +39,9 @@ export default function GroupForm({ group, onFinalize }) {
         ...formValues,
         capacity: Number(formValues.capacity),
       },
+    }));
+    setLoaders((prevState) => ({
+      ...prevState,
       isCreating: true,
     }));
   };
@@ -57,9 +56,8 @@ export default function GroupForm({ group, onFinalize }) {
   };
 
   const handleUploadedImages = (images) => {
-    setState((prevState) => ({
+    setLoaders((prevState) => ({
       ...prevState,
-      isUploadingImages: false,
       isSendingForm: true,
     }));
 
@@ -67,33 +65,26 @@ export default function GroupForm({ group, onFinalize }) {
   };
 
   return (
-    <>
-      <Heading mb="4" size="md">
-        {/* {t('form.details.label')} */}
-        Enter the details
-      </Heading>
-
-      <GenericEntryForm
-        childrenIndex={3}
-        defaultValues={group || emptyFormValues}
-        formFields={groupFormFields(t)}
-        onSubmit={handleSubmit}
+    <GenericEntryForm
+      childrenIndex={3}
+      defaultValues={group || emptyFormValues}
+      formFields={groupFormFields(t)}
+      onSubmit={handleSubmit}
+    >
+      <FormField
+        helperText={t('form.image.helper')}
+        isRequired
+        label={t('form.image.label')}
+        mt="4"
+        mb="12"
       >
-        <FormField
-          helperText={t('form.image.helper')}
-          isRequired
-          label={t('form.image.label')}
-          mt="4"
-          mb="12"
-        >
-          <ImageUploader
-            isMultiple={false}
-            ping={state.isUploadingImages}
-            preExistingImages={group ? [group.imageUrl] : []}
-            onUploadedImages={handleUploadedImages}
-          />
-        </FormField>
-      </GenericEntryForm>
-    </>
+        <ImageUploader
+          isMultiple={false}
+          ping={loaders?.isUploadingImages}
+          preExistingImages={group ? [group.imageUrl] : []}
+          onUploadedImages={handleUploadedImages}
+        />
+      </FormField>
+    </GenericEntryForm>
   );
 }

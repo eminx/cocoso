@@ -93,6 +93,8 @@ labels:
   items: öge
   allCommunities: Tüm Topluluklar
   select: Seç
+  form:
+    title: Detayları gir
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Checkbox, FormLabel, Heading, Text } from '@chakra-ui/react';
+import { Box, Checkbox, FormLabel, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -109,65 +109,56 @@ export default function ResourceForm({ resource, onFinalize }) {
     }));
 
   return (
-    <>
-      <Heading mb="4" size="md">
-        {/* {t('form.details.label')} */}
-        Enter the details
-      </Heading>
+    <GenericEntryForm
+      childrenIndex={1}
+      defaultValues={resource || emptyFormValues}
+      formFields={resourceFormFields(t)}
+      onSubmit={handleSubmit}
+    >
+      <FormField helperText={t('form.image.helper')} label={t('form.image.label')} mb="12">
+        <ImageUploader
+          ping={loaders?.isUploadingImages}
+          preExistingImages={resource ? resource.images : []}
+          onUploadedImages={handleUploadedImages}
+        />
+      </FormField>
 
-      <GenericEntryForm
-        childrenIndex={1}
-        defaultValues={resource || emptyFormValues}
-        formFields={resourceFormFields(t)}
-        onSubmit={handleSubmit}
+      <FormField
+        helperText={t('form.combo.switch.helper')}
+        label={t('form.combo.switch.label')}
+        mt="6"
+        mb="12"
       >
-        <FormField helperText={t('form.image.helper')} label={t('form.image.label')} mb="12">
-          <ImageUploader
-            ping={loaders?.isUploadingImages}
-            preExistingImages={resource ? resource.images : []}
-            onUploadedImages={handleUploadedImages}
-          />
-        </FormField>
-
-        <FormField
-          helperText={t('form.combo.switch.helper')}
-          label={t('form.combo.switch.label')}
-          mt="6"
-          mb="12"
-        >
-          <Box bg="white" borderRadius="lg" display="inline" p="2">
-            <Checkbox
-              isChecked={state.isCombo}
-              size="lg"
-              onChange={(e) =>
-                setState((prevState) => ({ ...prevState, isCombo: e.target.checked }))
-              }
-            >
-              <FormLabel style={{ cursor: 'pointer' }} mb="0">
-                {tc('labels.select')}
-              </FormLabel>
-            </Checkbox>
+        <Box bg="white" borderRadius="lg" display="inline" p="2">
+          <Checkbox
+            isChecked={state.isCombo}
+            size="lg"
+            onChange={(e) => setState((prevState) => ({ ...prevState, isCombo: e.target.checked }))}
+          >
+            <FormLabel style={{ cursor: 'pointer' }} mb="0">
+              {tc('labels.select')}
+            </FormLabel>
+          </Checkbox>
+        </Box>
+        {state.isCombo && (
+          <Box w="100%" pt="2">
+            <Text fontSize="sm" mb="2">
+              {t('form.combo.select.helper')}
+            </Text>
+            <AutoCompleteSelect
+              isMulti
+              closeMenuOnSelect={false}
+              components={animatedComponents}
+              defaultValue={state.resourcesForCombo}
+              options={autoCompleteOptions}
+              placeholder={t('form.combo.select.holder')}
+              style={{ width: '100%', marginTop: '1rem' }}
+              getOptionValue={(option) => option._id}
+              onChange={handleAutoCompleteSelectChange}
+            />
           </Box>
-          {state.isCombo && (
-            <Box w="100%" pt="2">
-              <Text fontSize="sm" mb="2">
-                {t('form.combo.select.helper')}
-              </Text>
-              <AutoCompleteSelect
-                isMulti
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                defaultValue={state.resourcesForCombo}
-                options={autoCompleteOptions}
-                placeholder={t('form.combo.select.holder')}
-                style={{ width: '100%', marginTop: '1rem' }}
-                getOptionValue={(option) => option._id}
-                onChange={handleAutoCompleteSelectChange}
-              />
-            </Box>
-          )}
-        </FormField>
-      </GenericEntryForm>
-    </>
+        )}
+      </FormField>
+    </GenericEntryForm>
   );
 }

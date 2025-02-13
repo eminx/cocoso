@@ -5,6 +5,7 @@ import GroupForm from './GroupForm';
 import { GroupContext } from './Group';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
+import { message } from '../../generic/message';
 
 export default function EditGroup() {
   const [updated, setUpdated] = useState(null);
@@ -21,7 +22,7 @@ export default function EditGroup() {
       await getGroupById(groupId);
       setUpdated(groupId);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Checkbox, FormLabel, Heading } from '@chakra-ui/react';
+import { Box, Checkbox, FormLabel } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -159,65 +159,59 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   };
 
   return (
-    <>
-      <Heading mb="4" size="md">
-        {t('form.details.label')}
-      </Heading>
+    <GenericEntryForm
+      childrenIndex={1}
+      defaultValues={activity || emptyFormValues}
+      formFields={calendarActivityFormFields(t)}
+      onSubmit={handleSubmit}
+    >
+      <FormField helperText={t('form.exclusive.helper')} label={t('form.exclusive.label')} my="4">
+        <Box bg="white" borderRadius="lg" display="inline" p="2">
+          <Checkbox
+            isChecked={state.isExclusiveActivity}
+            size="lg"
+            onChange={handleExclusiveSwitch}
+          >
+            <FormLabel style={{ cursor: 'pointer' }} mb="0">
+              {t('form.exclusive.holder')}
+            </FormLabel>
+          </Checkbox>
+        </Box>
+      </FormField>
 
-      <GenericEntryForm
-        childrenIndex={1}
-        defaultValues={activity || emptyFormValues}
-        formFields={calendarActivityFormFields(t)}
-        onSubmit={handleSubmit}
+      <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')} my="12">
+        <AutoCompleteSelect
+          isClearable
+          onChange={handleSelectResource}
+          components={animatedComponents}
+          options={state.resources}
+          placeholder={t('form.resource.holder')}
+          style={{ width: '100%', marginTop: '1rem' }}
+          styles={{
+            option: (styles, { data }) => ({
+              ...styles,
+              fontWeight: data.isCombo ? 'bold' : 'normal',
+              'content:after': data.isCombo ? ' (combo)' : '',
+            }),
+          }}
+          value={state.selectedResource}
+          getOptionValue={(option) => option._id}
+        />
+      </FormField>
+
+      <FormField
+        helperText={t('form.occurrences.helper')}
+        label={t('form.occurrences.label')}
+        mb="14"
+        isRequired
       >
-        <FormField helperText={t('form.exclusive.helper')} label={t('form.exclusive.label')} my="4">
-          <Box bg="white" borderRadius="lg" display="inline" p="2">
-            <Checkbox
-              isChecked={state.isExclusiveActivity}
-              size="lg"
-              onChange={handleExclusiveSwitch}
-            >
-              <FormLabel style={{ cursor: 'pointer' }} mb="0">
-                {t('form.exclusive.holder')}
-              </FormLabel>
-            </Checkbox>
-          </Box>
-        </FormField>
-
-        <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')} my="12">
-          <AutoCompleteSelect
-            isClearable
-            onChange={handleSelectResource}
-            components={animatedComponents}
-            options={state.resources}
-            placeholder={t('form.resource.holder')}
-            style={{ width: '100%', marginTop: '1rem' }}
-            styles={{
-              option: (styles, { data }) => ({
-                ...styles,
-                fontWeight: data.isCombo ? 'bold' : 'normal',
-                'content:after': data.isCombo ? ' (combo)' : '',
-              }),
-            }}
-            value={state.selectedResource}
-            getOptionValue={(option) => option._id}
-          />
-        </FormField>
-
-        <FormField
-          helperText={t('form.occurrences.helper')}
-          label={t('form.occurrences.label')}
-          mb="14"
-          isRequired
-        >
-          <DatesAndTimes
-            datesAndTimes={state.datesAndTimes}
-            isExclusiveActivity={state.isExclusiveActivity}
-            resourceId={state.selectedResource?._id}
-            onDatesAndTimesChange={handleDatesAndTimesChange}
-          />
-        </FormField>
-      </GenericEntryForm>
-    </>
+        <DatesAndTimes
+          datesAndTimes={state.datesAndTimes}
+          isExclusiveActivity={state.isExclusiveActivity}
+          resourceId={state.selectedResource?._id}
+          onDatesAndTimesChange={handleDatesAndTimesChange}
+        />
+      </FormField>
+    </GenericEntryForm>
   );
 }

@@ -5,6 +5,7 @@ import {
   Checkbox,
   Flex,
   FormLabel,
+  Heading,
   Input,
   NumberInput,
   NumberInputField,
@@ -119,27 +120,32 @@ export default function GenericEntryForm({
   const { loaders } = useContext(LoaderContext);
 
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <VStack spacing="4">
-        {formFields.map((item, index) => (
-          <Box key={item.value} w="100%">
-            {index === childrenIndex && children}
-            <FormField
-              helperText={item.helper}
-              isRequired={item.props?.isRequired}
-              label={item.label}
-            >
-              <FieldItemHandler control={control} item={item} register={register} />
-            </FormField>
-          </Box>
-        ))}
-      </VStack>
+    <>
+      <Heading my="4" size="md">
+        <Trans i18nKey="common:labels.form.title">Enter the details</Trans>
+      </Heading>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <VStack spacing="4">
+          {formFields.map((item, index) => (
+            <Box key={item.value} w="100%">
+              {index === childrenIndex && children}
+              <FormField
+                helperText={item.helper}
+                isRequired={item.props?.isRequired}
+                label={item.label}
+              >
+                <FieldItemHandler control={control} item={item} register={register} />
+              </FormField>
+            </Box>
+          ))}
+        </VStack>
 
-      <Flex justify="flex-end" mt="8" mb="12">
-        <Button isLoading={loaders?.isCreating} type="submit">
-          <Trans i18nKey="common:actions.submit">Submit</Trans>
-        </Button>
-      </Flex>
-    </form>
+        <Flex justify="flex-end" mt="8" mb="12">
+          <Button isLoading={loaders?.isCreating} type="submit">
+            <Trans i18nKey="common:actions.submit">Submit</Trans>
+          </Button>
+        </Flex>
+      </form>
+    </>
   );
 }

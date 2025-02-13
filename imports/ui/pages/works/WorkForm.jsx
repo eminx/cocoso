@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Heading } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -107,44 +106,37 @@ export default function WorkForm({ work, onFinalize }) {
   };
 
   return (
-    <>
-      <Heading mb="4" size="md">
-        {/* {t('form.details.label')} */}
-        Enter the details
-      </Heading>
+    <GenericEntryForm
+      childrenIndex={1}
+      defaultValues={work || emptyFormValues}
+      formFields={workFormFields(t, tc)}
+      onSubmit={handleSubmit}
+    >
+      <FormField helperText={t('works.image.helper')} label={t('works.image.label')} my="4">
+        <ImageUploader
+          ping={loaders?.isUploadingImages}
+          preExistingImages={work ? work.images : []}
+          onUploadedImages={handleUploadedImages}
+        />
+      </FormField>
 
-      <GenericEntryForm
-        childrenIndex={1}
-        defaultValues={work || emptyFormValues}
-        formFields={workFormFields(t, tc)}
-        onSubmit={handleSubmit}
+      <FormField
+        helperText={t('works.category.helper')}
+        label={t('works.category.label')}
+        mt="10"
+        mb="12"
+        isRequired
       >
-        <FormField helperText={t('works.image.helper')} label={t('works.image.label')} my="4">
-          <ImageUploader
-            ping={loaders?.isUploadingImages}
-            preExistingImages={work ? work.images : []}
-            onUploadedImages={handleUploadedImages}
-          />
-        </FormField>
-
-        <FormField
-          helperText={t('works.category.helper')}
-          label={t('works.category.label')}
-          mt="10"
-          mb="12"
-          isRequired
-        >
-          <AutoCompleteSelect
-            components={animatedComponents}
-            defaultValue={state.selectedCategory}
-            options={state.categories}
-            placeholder={t('works.category.holder')}
-            style={{ width: '100%', marginTop: '1rem' }}
-            getOptionValue={(option) => option._id}
-            onChange={handleAutoCompleteSelectChange}
-          />
-        </FormField>
-      </GenericEntryForm>
-    </>
+        <AutoCompleteSelect
+          components={animatedComponents}
+          defaultValue={state.selectedCategory}
+          options={state.categories}
+          placeholder={t('works.category.holder')}
+          style={{ width: '100%', marginTop: '1rem' }}
+          getOptionValue={(option) => option._id}
+          onChange={handleAutoCompleteSelectChange}
+        />
+      </FormField>
+    </GenericEntryForm>
   );
 }

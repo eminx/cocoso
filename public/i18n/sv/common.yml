@@ -93,6 +93,8 @@ labels:
   items: artiklar
   allCommunities: Alla communities
   select: Välja
+  form:
+    title: Ange detaljer
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
