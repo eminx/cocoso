@@ -31,7 +31,7 @@ function Modal({
     <CModal {...modalProps} {...otherProps}>
       <ModalOverlay />
       <ModalContent bg="gray.100" borderRadius="lg" h={h}>
-        <ModalHeader fontSize="2xl">{title}</ModalHeader>
+        {title && <ModalHeader fontSize="2xl">{title}</ModalHeader>}
         <ModalCloseButton onClick={onClose} />
         <ModalBody>{children}</ModalBody>
 

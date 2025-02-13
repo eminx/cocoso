@@ -174,7 +174,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
 
   return (
     <>
-      <Heading mb="4" size="md">
+      <Heading my="4" size="md">
         {t('form.details.label')}
       </Heading>
 

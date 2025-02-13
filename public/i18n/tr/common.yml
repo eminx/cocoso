@@ -41,7 +41,20 @@ labels:
   booked: 'ayırdı:'
   contact: İletişim
   content: İçerik
-  create: Yeni {{ domain }} Oluştur
+  create:
+    activities: Yeni etkinlik
+    calendar: Yeni aktivite
+    groups: Yeni süreç grubu
+    info: Yeni sayfa
+    resources: Yeni kaynak
+    works: Yeni İlan
+  update:
+    activities: Etkinliği güncelle
+    calendar: Aktiviteyi güncelle
+    groups: Süreç grubunu güncelle
+    pages: Sayfayı güncelle
+    resources: Kaynağı güncelle
+    works: İlanı güncelle
   event: Etkinlik
   bookings: Rezervasyon
   newBooking: Yeni Rezervasyon
@@ -58,7 +71,6 @@ labels:
     date: Tarih
     name: İsim
     random: Rastgele
-  update: '{{ domain }} güncelle'
   unselected: Kaynak seçilmedi
   admin:
     actions: Admin
@@ -195,6 +207,7 @@ domains:
   calendar: Takvim
   activity: Aktivite
   activities: Aktiviteler
+  event: Etkinlik
   group: Süreç
   groups: Süreçler
   resource: Kaynak

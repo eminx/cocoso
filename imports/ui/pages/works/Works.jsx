@@ -43,7 +43,7 @@ export default function Works() {
   return (
     <>
       <WorksHybrid Host={currentHost} works={works} />
-      <NewEntryHandler title="Create a Work">
+      <NewEntryHandler>
         <NewWork />
       </NewEntryHandler>
     </>

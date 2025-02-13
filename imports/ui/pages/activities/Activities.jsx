@@ -50,7 +50,7 @@ export default function Activities() {
     <>
       <ActivitiesHybrid activities={activities} Host={currentHost} showPast={showPast} />
 
-      <NewEntryHandler title="Create a Public Event">
+      <NewEntryHandler>
         <NewPublicActivity />
       </NewEntryHandler>
     </>

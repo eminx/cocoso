@@ -41,7 +41,20 @@ labels:
   booked: booked
   contact: Contact
   content: Content
-  create: Create a New {{ domain }}
+  create:
+    activities: New Event
+    calendar: New Activity
+    groups: New Process-group
+    info: New Page
+    resources: New Resource
+    works: New Post
+  update:
+    activities: Update Event
+    calendar: Update Activity
+    groups: Update Process-group
+    pages: Update Page
+    resources: Update Resource
+    works: Update Post
   event: Event
   bookings: Bookings
   newBooking: New Booking
@@ -58,7 +71,6 @@ labels:
     date: Date
     name: Name
     random: Random
-  update: Edit this {{ domain }}
   unselected: No resource
   admin:
     actions: Admin
@@ -198,6 +210,7 @@ domains:
   calendar: Calendar
   activity: Activity
   activities: Activities
+  event: Public Event
   group: Group
   groups: Groups
   resource: Resource

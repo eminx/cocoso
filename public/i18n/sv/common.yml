@@ -41,7 +41,20 @@ labels:
   booked: bokad
   contact: Kontakt
   content: Innehåll
-  create: Skapa en ny {{ domain }}
+  create:
+    activities: Nytt evenemang
+    calendar: Ny aktivitet
+    groups: Ny processgrupp
+    pages: Ny sida
+    resources: Ny resurs
+    works: Ny inlägg
+  update:
+    activities: Uppdatera evenemang
+    calendar: Uppdatera aktivitet
+    groups: Uppdatera processgrupp
+    pages: Uppdatera sida
+    resources: Uppdatera resurs
+    works: İlanı güncelle
   event: Arrangemang
   bookings: Bokningar
   newBooking: Ny bokning
@@ -58,7 +71,6 @@ labels:
     date: Datum
     name: Namn
     random: Slumpmässigt
-  update: Redigera detta/denna {{ domain }}
   unselected: Ej resurs
   admin:
     actions: Admin
@@ -195,6 +207,7 @@ domains:
   calendar: Kalender
   activity: Aktivitet
   activities: Aktiviteter
+  event: Evenemang
   group: Group
   groups: Grouper
   resource: Resurs

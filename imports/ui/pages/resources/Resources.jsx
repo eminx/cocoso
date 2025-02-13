@@ -43,7 +43,7 @@ export default function Resources() {
   return (
     <>
       <ResourcesHybrid Host={currentHost} resources={resources} />
-      <NewEntryHandler title="Create a Resources">
+      <NewEntryHandler>
         <NewResource />
       </NewEntryHandler>
     </>

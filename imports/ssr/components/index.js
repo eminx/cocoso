@@ -240,7 +240,7 @@ export function UsersList({ host, sink }) {
 export function User({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const { usernameSlug } = useParams();
-  if (usernameSlug[0] !== '@') {
+  if (usernameSlug && usernameSlug[0] !== '@') {
     return null;
   }
   const [, username] = usernameSlug.split('@');

@@ -1,5 +1,6 @@
 label:
   new: Create a New Booking
+  newevent: Create a New Event
   edit: Edit Booking
   rsvp: See dates & RSVP
   next: Next Activity
@@ -40,7 +41,7 @@ form:
     label: Capacity
     helper: How many people can attend the event?
   details:
-    label: Enter Details
+    label: Enter the details
   place:
     label: Place
     holder: Artistosphere

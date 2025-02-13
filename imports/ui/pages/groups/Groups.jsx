@@ -41,7 +41,7 @@ export default function Groups() {
   return (
     <>
       <GroupsHybrid groups={groups} Host={currentHost} />
-      <NewEntryHandler title="Create a Group">
+      <NewEntryHandler>
         <NewGroup />
       </NewEntryHandler>
     </>

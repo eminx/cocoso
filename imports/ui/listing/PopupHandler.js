@@ -179,7 +179,7 @@ export default function PopupHandler({ item, kind, onClose }) {
       onClose={onClose}
       onSecondaryButtonClick={handleCopyLink}
     >
-      <ModalBody p="0">
+      <ModalBody pt="6">
         <PopupContent
           action={<DatesForAction item={item} />}
           content={
