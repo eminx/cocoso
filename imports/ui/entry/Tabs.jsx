@@ -48,7 +48,7 @@ function Tabs({ tabs, children, ...otherProps }) {
           {tabs?.map((tab, index) =>
             tab.path ? (
               <Link
-                key={tab.path || tab.title}
+                key={tab.key || tab.title}
                 to={tab.path}
                 style={linkStyle}
                 onClick={tab.onClick}
@@ -57,7 +57,7 @@ function Tabs({ tabs, children, ...otherProps }) {
               </Link>
             ) : (
               <CLink
-                key={tab.path || tab.title}
+                key={tab.key || tab.title}
                 _hover={{ textDecoration: 'none' }}
                 style={linkStyle}
                 onClick={tab.onClick}

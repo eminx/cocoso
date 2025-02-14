@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { parse } from 'query-string';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import WrapperSSR from '../../ui/layout/WrapperSSR';
 import ActivityHybrid from '../../ui/entry/ActivityHybrid';
@@ -17,9 +16,8 @@ import ActivitiesHybrid from '../../ui/listing/ActivitiesHybrid';
 import CommunitiesHybrid from '../../ui/pages/hosts/CommunitiesHybrid';
 
 export function ActivitiesList({ host, sink }) {
-  const location = useLocation();
-  const { search } = location;
-  const { showPast } = parse(search, { parseBooleans: true });
+  const [searchParams] = useSearchParams();
+  const showPast = Boolean(searchParams.get('showPast') === 'true');
 
   const Host = Meteor.call('getHost', host);
   const activities = Host.isPortalHost
@@ -38,7 +36,7 @@ export function ActivitiesList({ host, sink }) {
 
   return (
     <WrapperSSR Host={Host} sink={sink}>
-      <ActivitiesHybrid activities={activities} Host={Host} showPast={Boolean(showPast)} />
+      <ActivitiesHybrid activities={activities} Host={Host} showPast={showPast} />
     </WrapperSSR>
   );
 }

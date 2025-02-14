@@ -72,7 +72,7 @@ export default function WorkHybrid({ documents, work, Host }) {
   // };
 
   const tags = work && [work.category?.label];
-  const worksInMenu = Host.settings?.menu.find((item) => item.name === 'works');
+  const worksInMenu = Host?.settings?.menu.find((item) => item.name === 'works');
 
   return (
     <TablyCentered

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Box, Center } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 
@@ -10,6 +11,7 @@ import SexyThumb from './SexyThumb';
 
 export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const [modalItem, setModalItem] = useState(null);
+  const [, setSearchParams] = useSearchParams();
 
   const activitiesInMenu = Host?.settings?.menu?.find((item) => item.name === 'activities');
   const description = activitiesInMenu?.description;
@@ -17,20 +19,22 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
 
   const tabs = [
     {
-      path: '/activities?showPast=true',
+      key: 'past',
       title: (
         <Trans i18nKey="labels.past" ns="common">
           Past
         </Trans>
       ),
+      onClick: () => setSearchParams({ showPast: 'true' }),
     },
     {
-      path: '/activities',
+      key: 'upcoming',
       title: (
         <Trans i18nKey="labels.upcoming" ns="common">
           Upcoming
         </Trans>
       ),
+      onClick: () => setSearchParams({ showPast: 'false' }),
     },
   ];
 

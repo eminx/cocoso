@@ -4,13 +4,13 @@ import { Box, Menu, MenuButton, MenuList, MenuItem, Select, Text } from '@chakra
 
 import { allLangs } from '../../startup/i18n';
 
-export default ChangeLanguage = ({
+export default function ChangeLanguage({
   hideHelper = false,
   isCentered = false,
   register,
   select,
   onChange,
-}) => {
+}) {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
 
@@ -31,7 +31,7 @@ export default ChangeLanguage = ({
                 onClick={() => i18n.changeLanguage(lang.value)}
               >
                 {lang.label}
-                {/* {t(`common:langs.${lang}`)} */}
+                {t(`common:langs.${lang}`)}
               </MenuItem>
             ))}
           </MenuList>
@@ -57,4 +57,4 @@ export default ChangeLanguage = ({
       </Select>
     </Box>
   );
-};
+}

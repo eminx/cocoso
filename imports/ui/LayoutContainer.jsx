@@ -167,13 +167,15 @@ function LayoutPage({ currentUser, userLoading, children }) {
               {children}
             </DummyWrapper>
 
-            <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} />
+            {rendered && (
+              <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} />
+            )}
             {isFederationFooter && <PlatformFooter platform={platform} />}
           </StateContext.Provider>
         </ColorModeProvider>
       </ChakraProvider>
 
-      <Toaster containerStyle={{ minWidth: '120px' }} />
+      {rendered && <Toaster containerStyle={{ minWidth: '120px' }} />}
     </>
   );
 }

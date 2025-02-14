@@ -16,7 +16,7 @@ export default function Activities() {
   let { currentHost } = useContext(StateContext);
   const [searchParams] = useSearchParams();
 
-  const showPast = searchParams.get('showPast') === 'true';
+  const showPast = Boolean(searchParams.get('showPast') === 'true');
 
   if (!currentHost) {
     currentHost = Host;

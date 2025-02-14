@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+import { useHydrated } from 'react-hydration-provider';
 
 import { parseTitle } from '../utils/shared';
 
@@ -32,21 +33,38 @@ const textProps = {
 function InfoPagesMenu({ label, pageTitles, pathname }) {
   const context = pathname.split('/')[1];
   const isCurrentContext = context === 'info';
+  const hydrated = useHydrated();
+
+  const itemProps = {
+    align: 'center',
+    as: 'span',
+    borderBottom: isCurrentContext ? '2px solid' : null,
+    pointerEvents: 'none',
+    px: '2',
+  };
+
+  if (!hydrated) {
+    return (
+      <Link key={label} to="/info">
+        <Flex {...itemProps}>
+          <Text {...textProps} mr="1">
+            {label}
+          </Text>
+          <ChevronDownIcon size="16px" />
+        </Flex>
+      </Link>
+    );
+  }
 
   return (
     <Menu placement="bottom-end">
       <MenuButton
         _hover={{ borderBottom: '1px solid' }}
         id="info-pages-menu"
-        mx="2"
         // instanceId={useId()}
         suppressHydrationWarning
       >
-        <Flex
-          borderBottom={isCurrentContext ? '2px solid' : null}
-          align="center"
-          pointerEvents="none"
-        >
+        <Flex {...itemProps}>
           <Text {...textProps} mr="1">
             {label}
           </Text>
