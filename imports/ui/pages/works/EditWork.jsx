@@ -5,6 +5,7 @@ import WorkForm from './WorkForm';
 import { WorkContext } from './Work';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
+import { message } from '../../generic/message';
 
 export default function EditWork() {
   const [updated, setUpdated] = useState(null);
@@ -22,7 +23,7 @@ export default function EditWork() {
       await getWorkById(workId);
       setUpdated(workId);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { call } from '../../utils/shared';
 import ResourceForm from './ResourceForm';
 import SuccessRedirector from '../../forms/SuccessRedirector';
+import { message } from '../../generic/message';
 
 export default function NewResource() {
   const [newEntryId, setNewEntryId] = useState(null);
@@ -14,7 +15,7 @@ export default function NewResource() {
       const respond = await call('createResource', newResource);
       setNewEntryId(respond);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 

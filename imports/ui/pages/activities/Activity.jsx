@@ -63,7 +63,7 @@ export default function Activity() {
         <ActivityContext.Provider value={contextValue}>
           <ActivityInteractionHandler slideStart={rendered} />
 
-          <NewEntryHandler title="Edit Activity">
+          <NewEntryHandler>
             {activity.isPublicActivity ? <EditPublicActivity /> : <EditCalendarActivity />}
           </NewEntryHandler>
         </ActivityContext.Provider>

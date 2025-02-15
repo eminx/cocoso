@@ -5,6 +5,7 @@ import ResourceForm from './ResourceForm';
 import { ResourceContext } from './Resource';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
+import { message } from '../../generic/message';
 
 export default function EditResource() {
   const [updated, setUpdated] = useState(null);
@@ -21,7 +22,7 @@ export default function EditResource() {
       await getResourceById(resourceId);
       setUpdated(resourceId);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 

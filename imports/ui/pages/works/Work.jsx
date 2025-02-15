@@ -75,7 +75,7 @@ export default function Work() {
         <WorkContext.Provider value={contextValue}>
           <WorkInteractionHandler slideStart={rendered} />
 
-          <NewEntryHandler title="Edit Work">
+          <NewEntryHandler>
             <EditWork />
           </NewEntryHandler>
         </WorkContext.Provider>

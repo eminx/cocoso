@@ -5,7 +5,6 @@ import {
   Checkbox,
   Flex,
   FormLabel,
-  Heading,
   Input,
   NumberInput,
   NumberInputField,
@@ -121,9 +120,6 @@ export default function GenericEntryForm({
 
   return (
     <>
-      <Heading my="4" size="md">
-        <Trans i18nKey="common:labels.form.title">Enter the details</Trans>
-      </Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing="4">
           {formFields.map((item, index) => (

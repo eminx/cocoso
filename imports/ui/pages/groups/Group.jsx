@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
+import { message } from '../../generic/message';
 import GroupHybrid from '../../entry/GroupHybrid';
 import GroupInteractionHandler from './components/GroupInteractionHandler';
 import NewEntryHandler from '../../listing/NewEntryHandler';
@@ -25,8 +26,7 @@ export default function Group() {
       const response = await call('getGroupWithMeetings', groupId);
       setGroup(response);
     } catch (error) {
-      console.log(error);
-      // message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 
@@ -56,7 +56,7 @@ export default function Group() {
         <GroupContext.Provider value={contextValue}>
           <GroupInteractionHandler currentUser={currentUser} group={group} slideStart={rendered} />
 
-          <NewEntryHandler title="Edit Group">
+          <NewEntryHandler>
             <EditGroup />
           </NewEntryHandler>
         </GroupContext.Provider>

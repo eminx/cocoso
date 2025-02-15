@@ -5,6 +5,7 @@ import { call } from '../../utils/shared';
 import WorkForm from './WorkForm';
 import { StateContext } from '../../LayoutContainer';
 import SuccessRedirector from '../../forms/SuccessRedirector';
+import { message } from '../../generic/message';
 
 export default function NewWork() {
   const [newEntryId, setNewEntryId] = useState(null);
@@ -16,7 +17,7 @@ export default function NewWork() {
       const respond = await call('createWork', newWork);
       setNewEntryId(respond);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 

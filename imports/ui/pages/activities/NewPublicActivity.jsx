@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import PublicActivityForm from './PublicActivityForm';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
+import { message } from '../../generic/message';
 
 export default function NewPublicActivity() {
   const [newEntryId, setNewEntryId] = useState(null);
@@ -14,7 +15,7 @@ export default function NewPublicActivity() {
       const respond = await call('createActivity', newActivity);
       setNewEntryId(respond);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 

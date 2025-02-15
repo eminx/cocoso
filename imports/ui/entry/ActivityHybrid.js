@@ -77,6 +77,12 @@ export default function ActivityHybrid({ activity, Host }) {
   }
 
   const activitiesInMenu = Host?.settings?.menu.find((item) => item.name === 'activities');
+  const calendarInMenu = Host?.settings?.menu.find((item) => item.name === 'calendar');
+  const { isPublicActivity } = activity;
+  const backLink = {
+    value: isPublicActivity ? '/activities' : '/calendar',
+    label: isPublicActivity ? activitiesInMenu?.label : calendarInMenu?.label,
+  };
 
   return (
     <TablyCentered
@@ -85,7 +91,7 @@ export default function ActivityHybrid({ activity, Host }) {
           <ActionDates activity={activity} />
         </Center>
       }
-      backLink={{ value: '/activities', label: activitiesInMenu?.label }}
+      backLink={backLink}
       images={activity?.isPublicActivity ? activity?.images || [activity?.imageUrl] : null}
       subTitle={activity?.subTitle}
       tabs={tabs}

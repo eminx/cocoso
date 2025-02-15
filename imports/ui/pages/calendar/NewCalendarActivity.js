@@ -5,6 +5,7 @@ import CalendarActivityForm from './CalendarActivityForm';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { emptyDateAndTime } from '../../forms/DatesAndTimes';
+import { message } from '../../generic/message';
 
 export default function NewCalendarActivity({ resources }) {
   const [newEntryId, setNewEntryId] = useState(null);
@@ -48,7 +49,7 @@ export default function NewCalendarActivity({ resources }) {
       const respond = await call('createActivity', newActivity);
       setNewEntryId(respond);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 

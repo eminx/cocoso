@@ -5,6 +5,7 @@ import PublicActivityForm from './PublicActivityForm';
 import { ActivityContext } from './Activity';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
+import { message } from '../../generic/message';
 
 export default function EditPublicActivity() {
   const [updated, setUpdated] = useState(null);
@@ -18,7 +19,7 @@ export default function EditPublicActivity() {
       await getActivityById(activityId);
       setUpdated(activityId);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 

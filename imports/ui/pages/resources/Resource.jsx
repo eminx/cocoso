@@ -64,7 +64,7 @@ export default function Resource() {
         <ResourceContext.Provider value={contextValue}>
           <ResourceInteractionHandler slideStart={rendered} />
 
-          <NewEntryHandler title="Edit Resource">
+          <NewEntryHandler>
             <EditResource />
           </NewEntryHandler>
         </ResourceContext.Provider>
