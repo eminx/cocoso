@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Box, Link as CLink, Tabs as CTabs, Tab, TabList } from '@chakra-ui/react';
 
@@ -24,12 +24,13 @@ const tabProps = {
 };
 
 function CoTab({ tab }) {
+  const instanceId = useId();
   if (!tab) {
     return null;
   }
 
   return (
-    <Tab {...tabProps}>
+    <Tab {...tabProps} id={instanceId}>
       {tab.title}
       {tab.badge && (
         <Badge colorScheme="red" size="xs" mt="-2">

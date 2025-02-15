@@ -10,14 +10,12 @@ import {
   Wrap,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Trans, useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import ListFilter from 'lucide-react/dist/esm/icons/list-filter';
 import ChevronDown from 'lucide-react/dist/esm/icons/chevron-down';
 import ChevronUp from 'lucide-react/dist/esm/icons/chevron-up';
 
 function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
-  const [tc] = useTranslation('common');
-
   return (
     <Wrap justify="space-around">
       <Box w="2xs" px="4">
@@ -28,7 +26,6 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
         </Heading>
         <Input
           my="2"
-          placeholder={tc('domains.props.title')}
           size="sm"
           value={filterValue}
           onChange={(event) => setFilterValue(event.target.value)}

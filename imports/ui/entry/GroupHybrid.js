@@ -21,6 +21,7 @@ export default function GroupHybrid({ group, Host }) {
         </Box>
       ),
       path: 'info',
+      id: 'info',
     },
   ];
 
@@ -29,6 +30,7 @@ export default function GroupHybrid({ group, Host }) {
       title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: <GroupDocuments documents={group.documents} />,
       path: 'documents',
+      id: 'documents',
     });
   }
 
