@@ -1,62 +1,59 @@
-import React, { useContext } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import LayoutContainer, { StateContext } from '../LayoutContainer';
 import Terms from '../entry/Terms';
-// import Loader from '../generic/Loader';
+import Loader from '../generic/Loader';
 
-import Communities from '../pages/hosts/Communities';
+const Communities = lazy(() => import('../pages/hosts/Communities'));
 
 // Activities
-import Activities from './activities/Activities';
-import Activity from './activities/Activity';
+const Activities = lazy(() => import('./activities/Activities'));
+const Activity = lazy(() => import('./activities/Activity'));
 
 // Groups
-import Groups from './groups/Groups';
-import Group from './groups/Group';
+const Groups = lazy(() => import('./groups/Groups'));
+const Group = lazy(() => import('./groups/Group'));
 
 // Resources
-import Resources from './resources/Resources';
-import Resource from './resources/Resource';
+const Resources = lazy(() => import('./resources/Resources'));
+const Resource = lazy(() => import('./resources/Resource'));
 
 // Calendar
-import Calendar from './calendar/Calendar';
+const Calendar = lazy(() => import('./calendar/Calendar'));
 
 // Works
-import Works from './works/Works';
-
-// Profile
-import UserProfile from './profile/UserProfile';
-import EditProfile from './profile/EditProfile';
-import Work from './works/Work';
-
-// Pages
-import Page from './pages/Page';
+const Works = lazy(() => import('./works/Works'));
+const Work = lazy(() => import('./works/Work'));
 
 // Users
-import Users from './profile/Users';
+const Users = lazy(() => import('./profile/Users'));
+const UserProfile = lazy(() => import('./profile/UserProfile'));
 
-// Admin
-import AdminContainer from './admin/AdminContainer';
-import PreviousNewsletters from './admin/EmailNewsletter/PreviousNewsletters';
-
-// Super admin
-import PlatformSettings from './admin/PlatformSettings';
-import PlatformRegistrationIntro from './admin/PlatformRegistrationIntro';
+// Pages
+const Page = lazy(() => import('./pages/Page'));
 
 // Auth
-import SignupPage from './auth/SignupPage';
-import LoginPage from './auth/LoginPage';
-import ForgotPasswordPage from './auth/ForgotPasswordPage';
-import ResetPasswordPage from './auth/ResetPasswordPage';
-import RegistrationIntro from './auth/RegistrationIntro';
+const SignupPage = lazy(() => import('./auth/SignupPage'));
+const LoginPage = lazy(() => import('./auth/LoginPage'));
+const ForgotPasswordPage = lazy(() => import('./auth/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./auth/ResetPasswordPage'));
+const RegistrationIntro = lazy(() => import('./auth/RegistrationIntro'));
 
+// Admin
+const EditProfile = lazy(() => import('./profile/EditProfile'));
+const AdminContainer = lazy(() => import('./admin/AdminContainer'));
+const PreviousNewsletters = lazy(() => import('./admin/EmailNewsletter/PreviousNewsletters'));
+
+// Super admin
+const PlatformSettings = lazy(() => import('./admin/PlatformSettings'));
+const PlatformRegistrationIntro = lazy(() => import('./admin/PlatformRegistrationIntro'));
 // SuperAdmin
-import NewHost from './hosts/NewHost';
+const NewHost = lazy(() => import('./hosts/NewHost'));
 
 // NotFound
-import NotFoundPage from './NotFoundPage';
-import MyActivities from './activities/MyActivities';
+const NotFoundPage = lazy(() => import('./NotFoundPage'));
+const MyActivities = lazy(() => import('./activities/MyActivities'));
 
 function getComponentBasedOnFirstRoute(menuItems) {
   const visibleMenu = menuItems.filter((item) => item.isVisible);
@@ -95,76 +92,76 @@ function HomePage() {
 export default function AppRoutes() {
   return (
     <LayoutContainer>
-      {/* <Suspense fallback={<Loader relative={false} />}> */}
-      <Routes>
-        <Route exact path="/" element={<HomePage />} />
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route exact path="/" element={<HomePage />} />
 
-        {/* Members list public */}
-        <Route path="/people" element={<Users />} />
+          {/* Members list public */}
+          <Route path="/people" element={<Users />} />
 
-        {/* Calendar */}
-        <Route path="/calendar" element={<Calendar />} />
+          {/* Calendar */}
+          <Route path="/calendar" element={<Calendar />} />
 
-        {/* Activities */}
-        <Route exact path="/activities" element={<Activities />} />
-        <Route path="/activities/:activityId/*" element={<Activity />} />
-        <Route exact path="/my-activities" element={<MyActivities />} />
+          {/* Activities */}
+          <Route exact path="/activities" element={<Activities />} />
+          <Route path="/activities/:activityId/*" element={<Activity />} />
+          <Route exact path="/my-activities" element={<MyActivities />} />
 
-        {/* Groups */}
-        <Route exact path="/groups" element={<Groups />} />
-        <Route path="/groups/:groupId/*" element={<Group />} />
+          {/* Groups */}
+          <Route exact path="/groups" element={<Groups />} />
+          <Route path="/groups/:groupId/*" element={<Group />} />
 
-        {/* Resources */}
-        <Route exact path="/resources" element={<Resources />} />
-        <Route path="/resources/:resourceId/*" element={<Resource />} />
+          {/* Resources */}
+          <Route exact path="/resources" element={<Resources />} />
+          <Route path="/resources/:resourceId/*" element={<Resource />} />
 
-        {/* Pages */}
-        <Route exact path="/info" element={<Page />} />
-        <Route path="/info/:pageTitle/*" element={<Page />} />
-        <Route path="/pages/:pageTitle/*" element={<Page />} />
+          {/* Pages */}
+          <Route exact path="/info" element={<Page />} />
+          <Route path="/info/:pageTitle/*" element={<Page />} />
+          <Route path="/pages/:pageTitle/*" element={<Page />} />
 
-        {/* Works */}
-        <Route exact path="/works" element={<Works />} />
+          {/* Works */}
+          <Route exact path="/works" element={<Works />} />
 
-        {/* Communities: Only on Portal App */}
-        <Route exact path="/communities" element={<Communities />} />
+          {/* Communities: Only on Portal App */}
+          <Route exact path="/communities" element={<Communities />} />
 
-        {/* Newsletter Emails */}
-        <Route path="/newsletters/*" element={<PreviousNewsletters />} />
+          {/* Newsletter Emails */}
+          <Route path="/newsletters/*" element={<PreviousNewsletters />} />
 
-        {/* Admin */}
-        <Route path="/admin/*" element={<AdminContainer />} />
+          {/* Admin */}
+          <Route path="/admin/*" element={<AdminContainer />} />
 
-        {/* Super Admin */}
-        <Route path="/superadmin/platform/settings/*" element={<PlatformSettings />} />
-        <Route
-          path="/superadmin/platform/registration-intro"
-          element={<PlatformRegistrationIntro />}
-        />
+          {/* Super Admin */}
+          <Route path="/superadmin/platform/settings/*" element={<PlatformSettings />} />
+          <Route
+            path="/superadmin/platform/registration-intro"
+            element={<PlatformRegistrationIntro />}
+          />
 
-        {/* Profile & Profile Related Pages */}
-        <Route path="/edit/*" element={<EditProfile />} />
-        <Route path="/:usernameSlug/*" element={<UserProfile />} />
-        <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
+          {/* Profile & Profile Related Pages */}
+          <Route path="/edit/*" element={<EditProfile />} />
+          <Route path="/:usernameSlug/*" element={<UserProfile />} />
+          <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
 
-        {/* Auth */}
-        <Route exact path="/register" element={<SignupPage />} />
-        <Route exact path="/login" element={<LoginPage />} />
-        <Route exact path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+          {/* Auth */}
+          <Route exact path="/register" element={<SignupPage />} />
+          <Route exact path="/login" element={<LoginPage />} />
+          <Route exact path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
-        <Route path="/intro" element={<RegistrationIntro />} />
+          <Route path="/intro" element={<RegistrationIntro />} />
 
-        {/* SuperAdmin */}
-        <Route exact path="/new-host" element={<NewHost />} />
-        <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
+          {/* SuperAdmin */}
+          <Route exact path="/new-host" element={<NewHost />} />
+          <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
 
-        {/* NotFoundPage */}
-        <Route exact path="/not-found" element={<NotFoundPage />} />
-        <Route exact path="/404" element={<NotFoundPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-      {/* </Suspense> */}
+          {/* NotFoundPage */}
+          <Route exact path="/not-found" element={<NotFoundPage />} />
+          <Route exact path="/404" element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
     </LayoutContainer>
   );
 }
