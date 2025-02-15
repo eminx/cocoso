@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { StateContext } from '../LayoutContainer';
 import { call } from '../utils/shared';
 import ConfirmModal from '../generic/ConfirmModal';
+import { message } from '../generic/message';
 
 function getDeleteMethod(context) {
   switch (context) {
@@ -38,9 +39,10 @@ export default function DeleteEntryHandler({ item, context }) {
     }
     try {
       await call(deleteMethod, item._id);
+      message.success(tc('message.success.remove'));
       navigate(`/${context}`);
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 
