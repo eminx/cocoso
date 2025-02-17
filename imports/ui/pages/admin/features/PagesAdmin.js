@@ -50,6 +50,9 @@ export default function PagesAdmin() {
         ...prevState,
         updating: false,
       }));
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
 

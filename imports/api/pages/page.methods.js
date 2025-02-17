@@ -35,8 +35,8 @@ Meteor.methods({
             _id: 1,
             title: 1,
             order: 1,
-            sort: { order: 1 },
           },
+          sort: { order: 1 },
         }
       ).fetch();
     } catch (error) {
