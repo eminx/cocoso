@@ -34,7 +34,7 @@ function ConfirmModal({
       isOpen={visible}
       leastDestructiveRef={cancelRef}
       scrollBehavior="inside"
-      onClose={onCancel}
+      onClose={onOverlayClick || onCancel}
       onOverlayClick={onOverlayClick || onCancel}
       {...otherProps}
     >
@@ -44,7 +44,7 @@ function ConfirmModal({
             {title}
           </AlertDialogHeader>
 
-          <AlertDialogCloseButton onClick={onOverlayClick} />
+          <AlertDialogCloseButton onClick={onOverlayClick || onCancel} />
 
           <AlertDialogBody>{children}</AlertDialogBody>
 
