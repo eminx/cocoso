@@ -150,13 +150,12 @@ export default function DatesAndTimes({
   };
 
   const iconProps = {
-    bg: 'gray.700',
-    icon: <DeleteIcon />,
+    bg: 'gray.600',
+    icon: <DeleteIcon size="16px" style={{ zIndex: 1 }} />,
     position: 'absolute',
     right: '12px',
     top: '12px',
-    size: 'sm',
-    zIndex: 9,
+    size: 'xs',
   };
 
   const isDeletable = datesAndTimes.length > 1;
