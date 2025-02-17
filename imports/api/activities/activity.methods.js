@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import dayjs from 'dayjs';
 
 import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
@@ -200,13 +201,40 @@ Meteor.methods({
       {
         fields: {
           _id: 1,
+          datesAndTimes: 1,
           isExclusiveActivity: 1,
           title: 1,
         },
       }
     );
 
-    return activityWithConflict;
+    if (!activityWithConflict) {
+      return null;
+    }
+
+    const conflictingOccurrenceInSameDay = activityWithConflict?.datesAndTimes?.find(
+      (occurrence) => occurrence.startDate === endDate || occurrence.endDate === startDate
+    );
+
+    if (!conflictingOccurrenceInSameDay) {
+      return activityWithConflict;
+    }
+
+    if (
+      endDate === conflictingOccurrenceInSameDay.startDate &&
+      dayjs(endTime).isAfter(dayjs(conflictingOccurrenceInSameDay.startTime))
+    ) {
+      return activityWithConflict;
+    }
+
+    if (
+      startDate === conflictingOccurrenceInSameDay.endDate &&
+      dayjs(startTime).isBefore(dayjs(conflictingOccurrenceInSameDay.endTime))
+    ) {
+      return activityWithConflict;
+    }
+
+    return null;
   },
 
   async createActivity(values) {
