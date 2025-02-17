@@ -48,23 +48,24 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   }, []);
 
   useEffect(() => {
-    if (activity) {
-      setState((prevState) => ({
-        ...prevState,
-        formValues: {
-          ...prevState.formValues,
-          ...activity,
-        },
-        datesAndTimes: activity.datesAndTimes?.map((d) => ({
-          ...d,
-          isRange: d?.startDate !== d?.endDate,
-        })),
-        selectedResource: {
-          label: activity.resource,
-          _id: activity.resourceId,
-        },
-      }));
+    if (!activity) {
+      return;
     }
+    setState((prevState) => ({
+      ...prevState,
+      formValues: {
+        ...prevState.formValues,
+        ...activity,
+      },
+      datesAndTimes: activity.datesAndTimes?.map((d) => ({
+        ...d,
+        isRange: d?.startDate !== d?.endDate,
+      })),
+      selectedResource: {
+        label: activity.resource,
+        _id: activity.resourceId,
+      },
+    }));
   }, [activity]);
 
   const isFormValid = () => {
@@ -80,6 +81,10 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
 
     return !isTimesInValid && !isConflictHard;
   };
+
+  useEffect(() => {
+    isFormValid();
+  }, [state.datesAndTimes, state.selectedResource, state.isExclusiveActivity]);
 
   const parseActivity = async () => {
     const cleanDatesAndTimes = state.datesAndTimes.map(
@@ -142,7 +147,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
     setState((prevState) => ({
       ...prevState,
       selectedResource,
-      datesAndTimes: [emptyDateAndTime],
+      // datesAndTimes: [emptyDateAndTime],
     }));
   };
 
@@ -158,6 +163,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       childrenIndex={1}
       defaultValues={activity || emptyFormValues}
       formFields={calendarActivityFormFields(t)}
+      isSubmitButtonDisabled={!isFormValid()}
       onSubmit={handleSubmit}
     >
       <FormField helperText={t('form.exclusive.helper')} label={t('form.exclusive.label')} my="4">

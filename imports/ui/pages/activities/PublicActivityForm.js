@@ -71,6 +71,10 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   };
 
   useEffect(() => {
+    isFormValid();
+  }, [state.datesAndTimes, state.selectedResource, state.isExclusiveActivity]);
+
+  useEffect(() => {
     if (!loaders.isCreating) {
       return;
     }
@@ -177,6 +181,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       childrenIndex={2}
       defaultValues={activity || emptyFormValues}
       formFields={publicActivityFormFields(t)}
+      isSubmitButtonDisabled={!isFormValid()}
       onSubmit={handleSubmit}
     >
       <FormField

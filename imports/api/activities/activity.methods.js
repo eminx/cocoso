@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import dayjs from 'dayjs';
 
 import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
@@ -222,14 +221,14 @@ Meteor.methods({
 
     if (
       endDate === conflictingOccurrenceInSameDay.startDate &&
-      dayjs(endTime).isAfter(dayjs(conflictingOccurrenceInSameDay.startTime))
+      endTime > conflictingOccurrenceInSameDay.startTime
     ) {
       return activityWithConflict;
     }
 
     if (
       startDate === conflictingOccurrenceInSameDay.endDate &&
-      dayjs(startTime).isBefore(dayjs(conflictingOccurrenceInSameDay.endTime))
+      startTime < conflictingOccurrenceInSameDay.endTime
     ) {
       return activityWithConflict;
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Center,
@@ -69,17 +69,32 @@ export default function DatesAndTimes({
 }) {
   const [t] = useTranslation('activities');
 
-  const addOccurrence = () => {
-    const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
+  const checkDatesForConflict = async () => {
+    if (!resourceId || !datesAndTimes) {
+      return null;
+    }
 
-    onDatesAndTimesChange(newDatesAndTimes);
+    const newDatesAndTimes = await Promise.all(
+      datesAndTimes.map(async (occurrence) => {
+        const params = {
+          ...occurrence,
+          resourceId,
+        };
+        const conflict = await call('checkDatesForConflict', params);
+        return {
+          ...occurrence,
+          conflict,
+          isConflictHard: conflict && (isExclusiveActivity || conflict?.isExclusiveActivity),
+        };
+      })
+    );
+
+    return onDatesAndTimesChange(newDatesAndTimes);
   };
 
-  const removeOccurrence = (index) => {
-    const newDatesAndTimes = datesAndTimes.filter((item, i) => i !== index);
-
-    onDatesAndTimesChange(newDatesAndTimes);
-  };
+  useEffect(() => {
+    checkDatesForConflict();
+  }, [resourceId]);
 
   const handleDateTimeChange = async (occurrence, occurrenceIndex) => {
     if (!occurrence) {
@@ -103,6 +118,18 @@ export default function DatesAndTimes({
       }
       return item;
     });
+
+    onDatesAndTimesChange(newDatesAndTimes);
+  };
+
+  const addOccurrence = () => {
+    const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
+
+    onDatesAndTimesChange(newDatesAndTimes);
+  };
+
+  const removeOccurrence = (index) => {
+    const newDatesAndTimes = datesAndTimes.filter((item, i) => i !== index);
 
     onDatesAndTimesChange(newDatesAndTimes);
   };
@@ -158,11 +185,15 @@ export default function DatesAndTimes({
     size: 'xs',
   };
 
+  if (!datesAndTimes || datesAndTimes.length === 0) {
+    return null;
+  }
+
   const isDeletable = datesAndTimes.length > 1;
 
   return (
     <Box mb="4" mt="2">
-      {datesAndTimes.map((occurrence, index) => {
+      {datesAndTimes?.map((occurrence, index) => {
         const id = getOccurrenceId(occurrence);
         return (
           <Box key={id} {...containerProps} borderColor={getBorderColor(occurrence)}>

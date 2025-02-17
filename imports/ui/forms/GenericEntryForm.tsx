@@ -46,6 +46,7 @@ interface GenericEntryFormProps {
   children?: React.ReactNode;
   defaultValues?: Record<string, any> | null;
   formFields: FormFieldItem[];
+  isSubmitButtonDisabled: boolean;
   onSubmit: () => void;
 }
 
@@ -111,6 +112,7 @@ export default function GenericEntryForm({
   children,
   defaultValues,
   formFields,
+  isSubmitButtonDisabled = false,
   onSubmit,
 }: GenericEntryFormProps) {
   const { control, handleSubmit, register } = useForm({
@@ -137,7 +139,7 @@ export default function GenericEntryForm({
         </VStack>
 
         <Flex justify="flex-end" mt="8" mb="12">
-          <Button isLoading={loaders?.isCreating} type="submit">
+          <Button isDisabled={isSubmitButtonDisabled} isLoading={loaders?.isCreating} type="submit">
             <Trans i18nKey="common:actions.submit">Submit</Trans>
           </Button>
         </Flex>
