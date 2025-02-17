@@ -44,7 +44,7 @@ labels:
   create:
     activities: Nytt evenemang
     calendar: Ny aktivitet
-    groups: Ny processgrupp
+    groups: Ny grupp / process
     pages: Ny sida
     resources: Ny resurs
     works: Ny inlägg

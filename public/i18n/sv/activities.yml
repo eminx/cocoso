@@ -22,7 +22,7 @@ form:
     helper: Välj en eller flera bilder som du vill ska representera ditt evenemang
   resource:
     label: Resurs
-    helper: Valfritt, välj en artikel som du vill boka, för att den ska visas i kalendern.
+    helper: Välj en resurs om evenemanget använder ett rum eller en resurs (bokas då i kalendern). Om arrangemangen inte använder en av era rum/resurser lämnas rutan tom. Valfritt
     holder: Välj
   occurrences:
     label: Datum och tid
@@ -51,12 +51,12 @@ form:
     helper: Valfritt, ange adressen till den plats där ditt evenemang kommer äga rum
     holder: 17th Street, Berlin...
   rsvp:
-    label: Registration (RSVP) Enabled
-    helper: Om det väljs kan personer registrera sig/RSVP för att delta i händelsen/händelserna
+    label: Bokning aktiverad
+    helper: Om rutan är vald kan personer boka plats för att delta i evenemanget.
     holder: Välj
   exclusive:
     label: Exklusiv aktivitet (för att undvika konflikter)
-    helper: Om det väljs kan andra verifierade användare inte boka samma resurs inom samma datum och tid
+    helper: Resursen blockeras i kalendern och andra kan inte inte boka samma resurs samma tid. Klicka av om andra kan använda resursen samtidigt.
     holder: Välj
   submit: Bekräfta och Skapa
   waiting: Skapar din aktivitet...

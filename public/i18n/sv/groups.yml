@@ -19,13 +19,13 @@ tabs:
 
 form:
   private:
-    label: Privat (endast för inbjudningar)
-    helper: Privata grouper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den. Du kommer hantera inbjudningarna efter att du har skapat objektet.
+    label: Sluten grupp (endast för inbjudna)
+    helper: Slutna grupper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den. Du kommer hantera inbjudningarna efter att du har skapat objektet.
     holder: Välj
   title:
     label: Titel
     holder: Att förstå Benjamin
-    helper: Ange en titel på ditt inlägg
+    helper: Ange en titel för din grupp / process
   subtitle:
     label: Undertitel
     holder: Studiegrupp, kurs, öppen konstnärlig group etc…
@@ -38,7 +38,7 @@ form:
     helper: Ange om det finns en maxgräns för deltagare
   image:
     label: Bild
-    helper: För att representera inlägget, välj en bild från galleriet på din enhet eller ett foto som du ska ta nu
+    helper: Välj en bild från din enhet eller ett foto som du ska ta nu (bara i mobilen)
   submit: Bekräfta och skapa group
   waiting: Skapar din group...
 
