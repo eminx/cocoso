@@ -167,3 +167,6 @@ pages:
     images:
       label: Images ({{ count }})
       helper: Optionally, please enter an image or a set of images that will be displayed within a slider in this page when published
+  order:
+    label: Reorder pages
+    info: You may reorder the pages by dragging them up and down. It affects their display order in the navigation menu

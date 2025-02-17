@@ -218,18 +218,16 @@ domains:
   works: işler
   host: host
   page: sayfa
+  pageOrder: Sayfaların sırası
   profile: profil
   community: Topluluk
   platform: Platform
-
   settings: Ayarlar
   email: eposta
-
   account: hesap
   data: veri
   avatar: avatar
   static: static
-
   props:
     name: isim
     title: başlık

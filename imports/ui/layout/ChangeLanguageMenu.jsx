@@ -31,7 +31,6 @@ export default function ChangeLanguage({
                 onClick={() => i18n.changeLanguage(lang.value)}
               >
                 {lang.label}
-                {t(`common:langs.${lang}`)}
               </MenuItem>
             ))}
           </MenuList>

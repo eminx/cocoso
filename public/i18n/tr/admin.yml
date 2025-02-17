@@ -167,3 +167,6 @@ pages:
     images:
       label: İmajlar ({{ count }})
       helper: Tercihen, lütfen yayınlandığında bu sayfada bir slayt içinde görüntülenecek bir imaj veya bir dizi imaj seç
+  order:
+    label: Sayfaların sırasını düzenle
+    info: Sayfaları yukarı ve aşağı sürükleyerek yeniden sıralayabilirsin. Navigasyon menüsündeki görüntülenme sırasını etkiler

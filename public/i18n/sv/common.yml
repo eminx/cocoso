@@ -218,19 +218,17 @@ domains:
   works: Arbetar
   host: Community
   page: sida
+  pageOrder: Sidordning
   profil: profil
   community: Community
   platform: Plattform
-
   settings: Inställningar
   email: E-postmeddelanden
-
   account: konto
   data: data
   avatar: avatar
   static: statisk
   profile: profil
-
   props:
     name: namn
     title: titel

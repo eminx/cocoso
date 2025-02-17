@@ -15,7 +15,9 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
     return null;
   }
 
-  const pageTitles = Meteor.call('getPageTitles');
+  const pages = Meteor.call('getPageTitles');
+
+  const pageTitles = pages.map((p) => p.title);
 
   const hue = Host?.settings?.hue;
   const chakraTheme = generateTheme(hue || '233');

@@ -96,7 +96,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const getPageTitles = async () => {
     try {
       const respond = await call('getPageTitles');
-      setPageTitles(respond);
+      setPageTitles(respond.map((p) => p.title));
     } catch (error) {
       console.log(error);
     }

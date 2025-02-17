@@ -221,18 +221,16 @@ domains:
   works: Works
   host: Host
   page: Page
+  pageOrder: Page order
   profile: profile
   community: Community
   platform: Platform
-
   settings: Settings
   email: Email
-
   account: account
   data: data
   avatar: avatar
   static: static
-
   props:
     name: name
     title: title

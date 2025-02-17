@@ -167,3 +167,6 @@ pages:
     images:
       label: Bilder ({{ count }})
       helper: Ange en eller flera bilder. Om du väljer flera bilder kommer de visas som ett bildspel
+  order:
+    label: Ändra sidordning
+    info: Du kan ändra ordningen på sidorna genom att dra dem uppåt och nedåt. Det påverkar deras visningsordning i navigeringsmenyn
