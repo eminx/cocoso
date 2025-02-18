@@ -47,7 +47,7 @@ function MenuTable({
           <AccordionButton
             _expanded={{ bg: 'brand.50' }}
             _hover={{ bg: 'white' }}
-            bg="gray.50"
+            bg="blueGray.50"
             borderRadius="lg"
           >
             <Flex justify="space-between" w="100%">
@@ -269,7 +269,7 @@ export default function MenuSettings() {
                     <SortableItem key={value.name}>
                       <Flex
                         align="center"
-                        bg="gray.50"
+                        bg="blueGray.50"
                         borderRadius="lg"
                         cursor="move"
                         mb="4"

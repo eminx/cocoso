@@ -5,7 +5,7 @@ function FormField(props) {
   const { children, errorMessage = null, helperText, label, ...otherProps } = props;
   return (
     <FormControl my="4" {...otherProps}>
-      <FormLabel color="gray.800" fontWeight="bold" mb="0" requiredIndicator={'*'}>
+      <FormLabel color="gray.800" fontWeight="bold" mb="2" requiredIndicator={'*'}>
         {label}
       </FormLabel>
       {helperText && (

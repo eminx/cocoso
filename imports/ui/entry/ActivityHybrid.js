@@ -56,7 +56,7 @@ export default function ActivityHybrid({ activity, Host }) {
     tabs.push({
       title: <Trans i18nKey="activities:public.labels.location">Location</Trans>,
       content: (
-        <Box bg="white" p="4">
+        <Box bg="white" p="6">
           {activity?.place && (
             <Text fontWeight="bold" fontSize="lg" mb="2" textAlign="center">
               {activity?.place}

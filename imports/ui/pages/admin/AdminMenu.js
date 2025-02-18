@@ -10,21 +10,14 @@ import { getFullName } from '../../utils/shared';
 export function AdminMenuHeader({ currentHost }) {
   return (
     <Link to="/">
-      <Box
-        _hover={{ bg: 'gray.800' }}
-        _focus={{ bg: 'gray.700' }}
-        bg="gray.700"
-        color="gray.100"
-        px="4"
-        py="2"
-      >
+      <Box _hover={{ bg: 'blueGray.200' }} _focus={{ bg: 'blueGray.300' }} bg="white" px="4" py="2">
         <Flex align="center">
           <Eye />
           <Text fontWeight="bold" fontSize="lg" ml="2" mt="-0.5">
             {currentHost.settings?.name}
           </Text>
         </Flex>
-        <Code bg="gray.700" color="inherit" fontSize="xs">
+        <Code bg="blueGray.50" color="inherit" fontSize="xs">
           {currentHost.host}
         </Code>
       </Box>
@@ -38,18 +31,18 @@ export function AdminUserThumb({ currentUser }) {
   }
 
   return (
-    <Box bg="gray.800" p="4">
+    <Box _hover={{ bg: 'blueGray.800' }} bg="blueGray.700" color="white" p="4">
       <Flex>
         <Avatar
-          _hover={{ bg: 'brand.500' }}
-          bg="brand.600"
+          _hover={{ bg: 'brand.200' }}
+          bg="brand.100"
           borderRadius="8px"
           showBorder
           size="lg"
           src={currentUser.avatar && currentUser.avatar.src}
         />
 
-        <Box align="flex-start" color="gray.50" textAlign="left" px="3">
+        <Box align="flex-start" textAlign="left" px="3">
           <Text fontSize="lg" fontWeight="bold">
             {currentUser.username}
           </Text>
@@ -76,21 +69,16 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
 
   return (
     <Box
-      _hover={{ bg: 'gray.700' }}
-      bg={isCurrentRoute && !item.isMulti ? 'gray.700' : 'inherit'}
+      _hover={{ bg: 'blueGray.100' }}
+      // bg={isCurrentRoute && !item.isMulti ? 'blueGray.100' : 'inherit'}
       borderRightWidth={isCurrentRoute && !item.isMulti ? '3px' : '0'}
-      borderRightColor="gray.500"
+      borderRightColor="blueGray.500"
       cursor="pointer"
       p="2.5"
       ml={isSub ? '4' : '0'}
       onClick={() => onItemClick(item)}
     >
-      <Text
-        color={isCurrentRoute ? 'gray.50' : 'inherit'}
-        fontWeight={isCurrentRoute ? 'bold' : 'normal'}
-      >
-        {item.label}
-      </Text>
+      <Text fontWeight={isCurrentRoute ? 'bold' : 'normal'}>{item.label}</Text>
     </Box>
   );
 }
@@ -108,8 +96,8 @@ export default function AdminMenu({ routes, onItemClick }) {
 
   return (
     <Flex
-      bg="gray.600"
-      color="gray.200"
+      bg="blueGray.50"
+      color="blueGray.800"
       direction="column"
       justify="space-between"
       h={isDesktop ? '100%' : 'calc(100% - 60px)'}
@@ -119,7 +107,7 @@ export default function AdminMenu({ routes, onItemClick }) {
       {isDesktop && <AdminMenuHeader currentHost={currentHost} />}
       <Flex direction="column" h="100%" overflowY="auto">
         {isDesktop && (
-          <Heading flexGrow="0" color="gray.100" p="4" pb="0" size="md" textAlign="center">
+          <Heading flexGrow="0" color="blueGray.800" p="4" pb="0" size="md" textAlign="center">
             {t('panel')}
           </Heading>
         )}
@@ -144,13 +132,13 @@ export default function AdminMenu({ routes, onItemClick }) {
           </List>
         </Box>
 
-        <Box flexGrow="0">
+        <Box flexGrow="0" mt="-8">
           <AdminUserThumb currentUser={currentUser} />
         </Box>
 
         {/* {isSuperAdmin && isPortalHost && platform && (
           <Box mb="2" mt="6">
-            <Heading color="gray.50" size="sm">
+            <Heading color="blueGray.50" size="sm">
               {`${platform.name} ${tc('domains.platform')}`}
             </Heading>
             <ListMenu list={superadminMenu} />

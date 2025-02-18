@@ -79,19 +79,19 @@ export default function AdminContainer() {
   const iconContainerProps = {
     align: 'center',
     direction: 'column',
-    color: 'gray.800',
+    color: 'blueGray.800',
     cursor: 'pointer',
     p: '2',
   };
 
   if (!isDesktop) {
     return (
-      <Box bg="gray.100" minH="100vh">
+      <Box bg="blueGray.100" minH="100vh">
         <Drawer
           bg="white"
           isOpen={drawerMenuOpen}
           bodyProps={{ p: '0' }}
-          headerProps={{ bg: 'gray.700' }}
+          headerProps={{ bg: 'blueGray.700' }}
           placement="left"
           size="xs"
           title={t('menulabel')}
@@ -101,12 +101,12 @@ export default function AdminContainer() {
           <AdminSidebar routes={routes} onItemClick={handleItemClick} />
         </Drawer>
         <Box>
-          <Flex align="center" bg="gray.50" w="100%">
+          <Flex align="center" bg="blueGray.50" w="100%">
             <Flex {...iconContainerProps} onClick={() => setDrawerMenuOpen(true)}>
               <Bolt />
               <Text fontSize="xs">{t('menu.title')}</Text>
             </Flex>
-            <Heading flexGrow="1" color="gray.900" size="md" textAlign="center">
+            <Heading flexGrow="1" color="blueGray.900" size="md" textAlign="center">
               {t('panel')}
             </Heading>
             <Link to="/">
@@ -136,7 +136,7 @@ export default function AdminContainer() {
   }
 
   return (
-    <Box bg="gray.100" minH="100vh">
+    <Box bg="blueGray.100" minH="100vh">
       <SimpleGrid columns={2} h="100%" templateColumns="320px 50%">
         <Box>
           <AdminSidebar routes={routes} onItemClick={handleItemClick} />

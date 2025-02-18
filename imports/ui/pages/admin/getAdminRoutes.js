@@ -7,7 +7,7 @@ import MenuSettings from './MenuSettings';
 import ColorPicker from './ColorPicker';
 import Members from './Members';
 import Emails from './Emails';
-import EmailNewsletter from './EmailNewsletter';
+import EmailNewsletter from './EmailNewsletter/index';
 import {
   ActivitiesAdmin,
   CalendarAdmin,
@@ -22,7 +22,7 @@ import {
 const getMenuLabel = (menuItems, key) => (
   <Text as="span">
     {menuItems?.find((item) => item.name === key)?.label}
-    <Code bg="gray.400" fontSize="xs" ml="2">
+    <Code bg="gray.50" fontSize="xs" ml="2">
       /{key}
     </Code>
   </Text>
@@ -70,7 +70,7 @@ const getAdminRoutes = (menuItems) => [
         label: (
           <Text as="span">
             <Trans i18nKey="common:platform.communities" />
-            <Code bg="gray.400" fontSize="xs" ml="2">
+            <Code bg="gray.50" fontSize="xs" ml="2">
               /communities
             </Code>
           </Text>
