@@ -32,15 +32,17 @@ const emailModel = {
 };
 
 export default function EmailNewsletter() {
-  const [isSending, setIsSending] = useState(false);
-  const [email, setEmail] = useState(emailModel);
-  const [isPreview, setIsPreview] = useState(false);
-  const [isLastConfirm, setIsLastConfirm] = useState(false);
+  const [state, setState] = useState({
+    sending: false,
+    email: emailModel,
+    preview: false,
+    lastConfirm: false,
+  });
   const { currentHost, currentUser, role, platform } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  if (!email) {
+  if (!state.email) {
     return <Loader />;
   }
 
@@ -54,14 +56,20 @@ export default function EmailNewsletter() {
 
   const handleFormChange = (field, value) => {
     const newEmail = {
-      ...email,
+      ...state.email,
     };
     newEmail[field] = value;
-    setEmail(newEmail);
+    setState((prevState) => ({
+      ...prevState,
+      email: newEmail,
+    }));
   };
 
   const handleFormConfirm = () => {
-    setIsPreview(true);
+    setState((prevState) => ({
+      ...prevState,
+      preview: true,
+    }));
   };
 
   const setUploadableImage = (files) => {
@@ -75,27 +83,35 @@ export default function EmailNewsletter() {
     reader.addEventListener(
       'load',
       () => {
-        setEmail({
-          ...email,
-          image: {
-            uploadableImage,
-            uploadableImageLocal: reader.result,
-            imageUrl: null,
+        setState((prevState) => ({
+          ...prevState,
+          email: {
+            ...prevState.email,
+            image: {
+              uploadableImage,
+              uploadableImageLocal: reader.result,
+              imageUrl: null,
+            },
           },
-        });
+        }));
       },
       false
     );
   };
 
   const handleSelectItems = (items) => {
-    setEmail({
-      ...email,
-      items,
-    });
+    setState((prevState) => ({
+      ...prevState,
+      email: {
+        ...prevState.email,
+        items,
+      },
+    }));
   };
 
   const sendEmail = async (imageUrl) => {
+    const { email } = state;
+
     const emailHtml = renderEmail(
       <EmailPreview currentHost={currentHost} email={email} imageUrl={imageUrl} />
     );
@@ -111,21 +127,30 @@ export default function EmailNewsletter() {
 
     try {
       await call('sendNewsletter', emailValues, emailHtml, imageUrl);
-      setEmail(emailModel);
+      setState((prevState) => ({
+        ...prevState,
+        email: emailModel,
+      }));
       message.success(t('newsletter.notification.success.emailsent'));
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {
-      setIsSending(false);
-      setIsLastConfirm(false);
+      setState((prevState) => ({
+        ...prevState,
+        sending: false,
+        lastConfirm: false,
+      }));
     }
   };
 
   const uploadLocalImage = async () => {
-    setIsSending(true);
-    setIsPreview(false);
+    setState((prevState) => ({
+      ...prevState,
+      sending: true,
+      preview: false,
+    }));
 
-    const { image } = email;
+    const image = state.email?.image;
     const { uploadableImage } = image;
 
     try {
@@ -139,7 +164,7 @@ export default function EmailNewsletter() {
   };
 
   const handleConfirmSendingEmail = () => {
-    const { appeal, body, image, items, subject } = email;
+    const { appeal, body, image, items, subject } = state.email;
     if (!appeal || !subject) {
       message.error(t('newsletter.error.required'));
       return;
@@ -155,9 +180,12 @@ export default function EmailNewsletter() {
       return;
     }
 
-    setIsSending(true);
+    setState((prevState) => ({
+      ...prevState,
+      sending: true,
+    }));
 
-    if (email?.image?.uploadableImage) {
+    if (state.email?.image?.uploadableImage) {
       uploadLocalImage();
     } else {
       sendEmail();
@@ -189,7 +217,7 @@ export default function EmailNewsletter() {
         <Boxling>
           <EmailForm
             currentHost={currentHost}
-            email={email}
+            email={state.email}
             onSelectItems={handleSelectItems}
             onChange={handleFormChange}
             onSubmit={handleFormConfirm}
@@ -200,32 +228,45 @@ export default function EmailNewsletter() {
 
       <Modal
         actionButtonLabel="Send email"
-        isOpen={isPreview}
+        isOpen={state.preview}
         motionPreset="slideInBottom"
         scrollBehavior="inside"
         size="2xl"
-        title={email?.subject}
+        title={state?.email?.subject}
         onActionButtonClick={() => {
-          setIsPreview(false);
-          setIsLastConfirm(true);
+          setState((prevState) => ({
+            ...prevState,
+            preview: false,
+            lastConfirm: true,
+          }));
         }}
-        onClose={() => setIsPreview(false)}
+        onClose={() =>
+          setState((prevState) => ({
+            ...prevState,
+            preview: false,
+          }))
+        }
       >
         <Center>
-          <EmailPreview currentHost={currentHost} email={email} />
+          <EmailPreview currentHost={currentHost} email={state.email} />
         </Center>
       </Modal>
 
       <ConfirmModal
         confirmButtonProps={{
-          isLoading: isSending,
+          isLoading: state.sending,
         }}
         confirmText={t('newsletter.modals.yes')}
         title={t('newsletter.modals.title')}
-        visible={isLastConfirm}
+        visible={state.lastConfirm}
         zIndex={99999}
         onConfirm={() => handleConfirmSendingEmail()}
-        onCancel={() => setIsLastConfirm(false)}
+        onCancel={() =>
+          setState((prevState) => ({
+            ...prevState,
+            lastConfirm: false,
+          }))
+        }
       >
         {t('newsletter.modals.body')}
       </ConfirmModal>

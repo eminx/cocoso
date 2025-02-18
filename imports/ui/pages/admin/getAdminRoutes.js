@@ -7,7 +7,7 @@ import MenuSettings from './MenuSettings';
 import ColorPicker from './ColorPicker';
 import Members from './Members';
 import Emails from './Emails';
-import EmailNewsletter from './EmailNewsletter/index';
+import EmailNewsletter from './EmailNewsletter';
 import {
   ActivitiesAdmin,
   CalendarAdmin,
