@@ -80,6 +80,7 @@ Meteor.methods({
         title: `About ${values.name}`,
         longDescription: values.about,
         isPublished: true,
+        order: 1,
         creationDate: new Date(),
       });
 
@@ -176,10 +177,8 @@ Meteor.methods({
     return currentHost.members;
   },
 
-  getHostMembers(host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getHostMembers(hostPredefined) {
+    const host = hostPredefined || getHost(this);
 
     const users = Meteor.users
       .find(

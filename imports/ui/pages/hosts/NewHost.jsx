@@ -21,7 +21,6 @@ const hostModel = {
 function NewHost() {
   const { currentUser } = useContext(StateContext);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
   const handleSubmit = async (values) => {
@@ -40,7 +39,6 @@ function NewHost() {
       window.scrollTo(0, 0);
       setIsSuccess(true);
     } catch (error) {
-      console.log(error);
       message.error(`Error: ${error.reason || error.error}`);
     }
   };
@@ -63,7 +61,7 @@ function NewHost() {
 
   return (
     <Box w="100%">
-      <Template heading={tc('labels.create', { domain: tc('domains.host') })}>
+      <Template heading={tc('labels.create', 'Community')}>
         <Box py="6">
           <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
         </Box>
