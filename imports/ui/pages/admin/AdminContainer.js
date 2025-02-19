@@ -7,7 +7,7 @@ import Eye from 'lucide-react/dist/esm/icons/eye';
 
 import { StateContext } from '../../LayoutContainer';
 import { Alert } from '../../generic/message';
-import AdminSidebar from './AdminMenu';
+import AdminMenu from './AdminMenu';
 import Drawer from '../../generic/Drawer';
 import getAdminRoutes from './getAdminRoutes';
 import EditProfile from '../profile/EditProfile';
@@ -92,6 +92,10 @@ export default function AdminContainer() {
     p: '2',
   };
 
+  const EditProfileRoute = (
+    <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
+  );
+
   if (!isDesktop) {
     return (
       <Box bg="blueGray.100" minH="100vh">
@@ -99,14 +103,14 @@ export default function AdminContainer() {
           bg="white"
           isOpen={drawerMenuOpen}
           bodyProps={{ p: '0' }}
-          headerProps={{ bg: 'blueGray.700' }}
+          headerProps={{ bg: 'blueGray.800' }}
           placement="left"
           size="xs"
           title={t('menulabel')}
           titleColor="brand.50"
           onClose={() => setDrawerMenuOpen(false)}
         >
-          <AdminSidebar routes={routes} onItemClick={handleItemClick} />
+          <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Drawer>
         <Box>
           <Flex align="center" bg="blueGray.50" w="100%">
@@ -136,6 +140,7 @@ export default function AdminContainer() {
                   <Route key={route.value} path={route.value} element={route.content} />
                 )
               )}
+              {EditProfileRoute}
             </Routes>
           </Box>
         </Box>
@@ -147,7 +152,7 @@ export default function AdminContainer() {
     <Box bg="blueGray.100" minH="100vh">
       <SimpleGrid columns={2} h="100%" templateColumns="320px 50%">
         <Box>
-          <AdminSidebar routes={routes} onItemClick={handleItemClick} />
+          <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Box>
 
         <Box p="8">
@@ -162,7 +167,7 @@ export default function AdminContainer() {
                 <Route key={route.value} path={route.value} element={route.content} />
               )
             )}
-            <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
+            {EditProfileRoute}
           </Routes>
         </Box>
       </SimpleGrid>

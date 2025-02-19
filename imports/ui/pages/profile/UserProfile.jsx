@@ -26,13 +26,16 @@ export default function UserProfile() {
   }
 
   const getUserInfo = async () => {
+    if (!username) {
+      return;
+    }
     try {
       const respond = await call('getUserInfo', username);
       setUser(respond);
       setLoading(false);
     } catch (error) {
-      message.error(error.reason || error.error);
       setLoading(false);
+      message.error(error.reason || error.error);
     }
   };
 
@@ -40,7 +43,7 @@ export default function UserProfile() {
     getUserInfo();
   }, [username]);
 
-  if (usernameSlug[0] !== '@') {
+  if (usernameSlug[0] !== '@' || !username) {
     return null;
   }
 
@@ -57,7 +60,6 @@ export default function UserProfile() {
   }
 
   const role = currentHost.members?.find((m) => m.username === username)?.role;
-  console.log(role);
 
   return <UserHybrid role={role} user={user} Host={currentHost} />;
 }

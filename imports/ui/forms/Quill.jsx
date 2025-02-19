@@ -4,7 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import '../utils/styles/quilleditor-custom.css';
 import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 
-export default function (props) {
+export default function Quill(props) {
   const [isFocused, setIsFocused] = useState(false);
   let megaContainer = 'quill-megacontainer';
   if (isFocused) {

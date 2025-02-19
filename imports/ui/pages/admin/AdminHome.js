@@ -50,7 +50,7 @@ export default function AdminHome() {
       {shortCuts.map((item) => (
         <Link to={item.link} key={item.label}>
           <Boxling _hover={{ bg: 'white' }} w="200px">
-            <Heading mb="2" size="md">
+            <Heading color="blue.700" mb="2" size="md">
               {item.label}
             </Heading>
             <Text>{item.helper}</Text>

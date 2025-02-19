@@ -148,10 +148,12 @@ export default function AdminMenu({ routes, onItemClick }) {
           </List>
         </Box>
 
-        <Box flexGrow="0">
-          <Link to="/admin/my-profile">
-            <AdminUserThumb currentUser={currentUser} />
-          </Link>
+        <Box
+          cursor="pointer"
+          flexGrow="0"
+          onClick={() => onItemClick({ label: 'My Profile', value: '/admin/my-profile' })}
+        >
+          <AdminUserThumb currentUser={currentUser} />
         </Box>
 
         {/* {isSuperAdmin && isPortalHost && platform && (

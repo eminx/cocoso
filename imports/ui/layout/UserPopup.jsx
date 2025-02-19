@@ -226,7 +226,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
           <MenuGroup>
             <Center py="2">
-              <Button variant="outline" onClick={() => handleLogout()}>
+              <Button size="sm" variant="ghost" onClick={() => handleLogout()}>
                 <Trans i18nKey="common:actions.logout">Logout</Trans>
               </Button>
             </Center>

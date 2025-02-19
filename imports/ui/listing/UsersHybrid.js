@@ -21,29 +21,31 @@ export default function UsersHybrid({ users, keywords, Host }) {
   const { search } = location;
   const { showKeywordSearch } = parse(search, { parseBooleans: true });
 
-  const cascaderOptions = useMemo(
-    () => [
-      ...keywords.map((kw) => ({
-        label: kw.label,
-        value: kw._id,
-        children: users
-          .filter((m) => m?.keywords?.map((k) => k.keywordId)?.includes(kw._id))
-          ?.map((mx) => ({
-            label: mx.username,
-            value: mx.username,
-          })),
-      })),
-      {
-        label: <Trans i18nKey="members:all">All</Trans>,
-        value: 'allMembers',
-        children: users.map((m) => ({
-          label: m.username,
-          value: m.username,
+  const cascaderOptions =
+    keywords &&
+    useMemo(
+      () => [
+        ...keywords.map((kw) => ({
+          label: kw.label,
+          value: kw._id,
+          children: users
+            .filter((m) => m?.keywords?.map((k) => k.keywordId)?.includes(kw._id))
+            ?.map((mx) => ({
+              label: mx.username,
+              value: mx.username,
+            })),
         })),
-      },
-    ],
-    [users?.length, keywords?.length]
-  );
+        {
+          label: <Trans i18nKey="members:all">All</Trans>,
+          value: 'allMembers',
+          children: users.map((m) => ({
+            label: m.username,
+            value: m.username,
+          })),
+        },
+      ],
+      [users?.length, keywords?.length]
+    );
 
   const usersInMenu = Host?.settings?.menu?.find((item) => item.name === 'people');
   const description = usersInMenu?.description;
@@ -181,7 +183,9 @@ export default function UsersHybrid({ users, keywords, Host }) {
         onActionButtonClick={() => navigate(`/@${modalItem.username}`)}
         onClose={() => setModalItem(null)}
       >
-        <MemberAvatarEtc isThumb={false} user={modalItem} />
+        <Box pt="8">
+          <MemberAvatarEtc isThumb={false} user={modalItem} />
+        </Box>
       </Modal>
     </>
   );

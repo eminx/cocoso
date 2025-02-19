@@ -79,10 +79,6 @@ export default function NewEntryHandler({ children }) {
     setLoaders(initialLoaderValues);
   };
 
-  if (!canCreateContent) {
-    return null;
-  }
-
   const loaderValue = getLoaderValue(loaders);
   renderToasts(loaders, tc);
 
@@ -102,6 +98,10 @@ export default function NewEntryHandler({ children }) {
       <Trans i18nKey={string} />
     </Box>
   );
+
+  if (!canCreateContent) {
+    return null;
+  }
 
   return (
     <LoaderContext.Provider value={{ loaders, setLoaders }}>

@@ -67,6 +67,9 @@ const sortItems = (items, sortValue) => {
 };
 
 const filterSortItems = (items, filterValue, sortValue, currentPage, itemsPerPage) => {
+  if (!items) {
+    return [];
+  }
   const filteredItems = filterItems(items, filterValue);
   const filteredSortedItems = sortItems(filteredItems, sortValue);
   return filteredSortedItems.slice(0, itemsPerPage * currentPage);
@@ -97,7 +100,7 @@ export default function InfiniteScroller({
     }, 300);
   };
 
-  const hasMore = items.length > currentItems.length && currentItems.length >= itemsPerPage;
+  const hasMore = items?.length > currentItems?.length && currentItems?.length >= itemsPerPage;
 
   const skeletonWidth = smallThumb || isMasonry ? '2xs' : 'auto';
   const skeletonHeight = smallThumb || isMasonry ? '180px' : '315px';

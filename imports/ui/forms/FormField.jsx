@@ -4,7 +4,7 @@ import { FormControl, FormLabel, FormErrorMessage, FormHelperText } from '@chakr
 function FormField(props) {
   const { children, errorMessage = null, helperText, label, ...otherProps } = props;
   return (
-    <FormControl my="4" {...otherProps}>
+    <FormControl my="3" {...otherProps}>
       <FormLabel color="gray.800" fontWeight="bold" mb="2" requiredIndicator={'*'}>
         {label}
       </FormLabel>
