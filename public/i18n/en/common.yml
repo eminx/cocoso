@@ -48,6 +48,7 @@ labels:
     info: New Page
     resources: New Resource
     works: New Post
+    host: New Community
   update:
     activities: Update Event
     calendar: Update Activity

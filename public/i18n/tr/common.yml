@@ -48,6 +48,7 @@ labels:
     info: Yeni sayfa
     resources: Yeni kaynak
     works: Yeni İlan
+    host: Yeni topluluk
   update:
     activities: Etkinliği güncelle
     calendar: Aktiviteyi güncelle

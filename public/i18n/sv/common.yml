@@ -48,6 +48,7 @@ labels:
     pages: Ny sida
     resources: Ny resurs
     works: Ny inlägg
+    host: Ny community
   update:
     activities: Uppdatera evenemang
     calendar: Uppdatera aktivitet

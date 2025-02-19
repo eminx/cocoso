@@ -4,7 +4,8 @@ import { Box, Center } from '@chakra-ui/react';
 
 import Template from '../../layout/Template';
 import NewHostForm from '../../forms/NewHostForm';
-import { message, Alert } from '../../generic/message';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
@@ -53,7 +54,7 @@ function NewHost() {
 
   if (isSuccess) {
     return (
-      <Center>
+      <Center py="6">
         <Alert type="success">{tc('message.success.create')}</Alert>
       </Center>
     );
@@ -61,7 +62,7 @@ function NewHost() {
 
   return (
     <Box w="100%">
-      <Template heading={tc('labels.create', 'Community')}>
+      <Template heading={tc('labels.create.host')}>
         <Box py="6">
           <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
         </Box>
