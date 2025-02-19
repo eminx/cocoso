@@ -6,8 +6,8 @@ import Bolt from 'lucide-react/dist/esm/icons/bolt';
 import Eye from 'lucide-react/dist/esm/icons/eye';
 
 import { StateContext } from '../../LayoutContainer';
-import { Alert } from '../../generic/message';
-import AdminMenu from './AdminMenu';
+import Alert from '../../generic/Alert';
+import AdminMenu, { AdminMenuHeader } from './AdminMenu';
 import Drawer from '../../generic/Drawer';
 import getAdminRoutes from './getAdminRoutes';
 import EditProfile from '../profile/EditProfile';
@@ -22,24 +22,16 @@ export default function AdminContainer() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  if (!currentHost) {
-    return null;
-  }
-
-  if (!currentUser || role !== 'admin') {
-    return (
-      <Center>
-        <Alert>{tc('message.access.deny')}</Alert>
-      </Center>
-    );
-  }
-
   const menuItems = currentHost.settings?.menu;
-  const routes = getAdminRoutes(menuItems);
+  const isAdmin = role === 'admin';
+  const routes = isAdmin ? getAdminRoutes(menuItems) : null;
 
   const pathname = location?.pathname;
 
   const getCurrentRoute = () => {
+    if (!routes) {
+      return null;
+    }
     const allRoutes = [];
     routes.forEach((item) => {
       if (item.isMulti) {
@@ -55,11 +47,6 @@ export default function AdminContainer() {
         ...item,
         value: item.value.replace('*', ''),
       });
-    });
-
-    allRoutes.push({
-      value: '/my-profile',
-      label: ta('profile.settings'),
     });
 
     return allRoutes.find((r) => pathname.includes(r.value));
@@ -92,9 +79,21 @@ export default function AdminContainer() {
     p: '2',
   };
 
-  const EditProfileRoute = (
+  const EditProfileRoute = currentUser && (
     <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
   );
+
+  if (!currentHost) {
+    return null;
+  }
+
+  if (!currentUser) {
+    return (
+      <Center p="12">
+        <Alert>{tc('message.access.deny')}</Alert>
+      </Center>
+    );
+  }
 
   if (!isDesktop) {
     return (
@@ -119,7 +118,7 @@ export default function AdminContainer() {
               <Text fontSize="xs">{t('menu.title')}</Text>
             </Flex>
             <Heading flexGrow="1" color="blueGray.900" size="md" textAlign="center">
-              {t('panel')}
+              {isAdmin ? t('panel') : ta('profile.settings')}
             </Heading>
             <Link to="/">
               <Flex {...iconContainerProps}>
@@ -129,9 +128,9 @@ export default function AdminContainer() {
             </Link>
           </Flex>
           <Box p="6">
-            <Heading mb="8">{currentRoute?.label}</Heading>
+            {isAdmin && <Heading mb="8">{currentRoute?.label}</Heading>}
             <Routes>
-              {routes.map((route) =>
+              {routes?.map((route) =>
                 route.isMulti ? (
                   route.content.map((routeSub) => (
                     <Route key={routeSub.value} path={routeSub.value} element={routeSub.content} />
@@ -156,9 +155,9 @@ export default function AdminContainer() {
         </Box>
 
         <Box p="8">
-          <Heading mb="8">{currentRoute?.label}</Heading>
+          <Heading mb="8">{isAdmin ? currentRoute?.label : ta('profile.settings')}</Heading>
           <Routes>
-            {routes.map((route) =>
+            {routes?.map((route) =>
               route.isMulti ? (
                 route.content.map((routeSub) => (
                   <Route key={routeSub.value} path={routeSub.value} element={routeSub.content} />

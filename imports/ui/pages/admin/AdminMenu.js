@@ -102,7 +102,9 @@ export default function AdminMenu({ routes, onItemClick }) {
   const { currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
 
-  if (!currentHost || !currentUser || role !== 'admin') {
+  const isAdmin = role === 'admin';
+
+  if (!currentHost || !currentUser) {
     return null;
   }
 
@@ -122,7 +124,7 @@ export default function AdminMenu({ routes, onItemClick }) {
       {isDesktop && <AdminMenuHeader currentHost={currentHost} />}
 
       <Flex direction="column" h="100%" overflowY="auto">
-        {isDesktop && (
+        {isDesktop && isAdmin && (
           <Heading flexGrow="0" color="blueGray.800" p="4" pb="0" size="md" textAlign="center">
             {t('panel')}
           </Heading>
@@ -130,7 +132,7 @@ export default function AdminMenu({ routes, onItemClick }) {
 
         <Box h="100%" flexGrow="1" p="4">
           <List>
-            {routes.map((item) => (
+            {routes?.map((item) => (
               <ListItem key={item.value} p="0">
                 <AdminMenuItem item={item} onItemClick={onItemClick} />
                 {item.isMulti &&

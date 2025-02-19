@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Button,
   Center,
-  Flex,
   Input,
   Modal,
   ModalBody,
@@ -20,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 import FormField from '../forms/FormField';
 
-function FeedbackForm({ isDarkText = true }) {
+function FeedbackForm({ isDarkText = false }) {
   const [tc] = useTranslation('common');
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 

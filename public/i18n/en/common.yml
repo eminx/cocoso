@@ -44,14 +44,14 @@ labels:
   create:
     activities: New Event
     calendar: New Activity
-    groups: New Process-group
+    groups: New Process/Group
     info: New Page
     resources: New Resource
     works: New Post
   update:
     activities: Update Event
     calendar: Update Activity
-    groups: Update Process-group
+    groups: Update Process/Group
     pages: Update Page
     resources: Update Resource
     works: Update Post
