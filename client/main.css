@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+html {
+  background-color: rgb(48, 40, 32);
+}
+
 body {
   min-height: 101vh;
   margin: 0;

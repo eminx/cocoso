@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ChakraProvider, ColorModeProvider, useMediaQuery } from '@chakra-ui/react';
+import { Box, ChakraProvider, ColorModeProvider, useMediaQuery } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
 import moment from 'moment';
@@ -168,9 +168,11 @@ function LayoutPage({ currentUser, userLoading, children }) {
             </DummyWrapper>
 
             {rendered && (
-              <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} />
+              <Box>
+                <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} />
+                {isFederationFooter && <PlatformFooter platform={platform} />}
+              </Box>
             )}
-            {isFederationFooter && <PlatformFooter platform={platform} />}
           </StateContext.Provider>
         </ColorModeProvider>
       </ChakraProvider>
