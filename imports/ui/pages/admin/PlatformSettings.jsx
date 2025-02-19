@@ -6,7 +6,8 @@ import { useForm } from 'react-hook-form';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
-import { message, Alert } from '../../generic/message';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import FormField from '../../forms/FormField';
 import FileDropper from '../../forms/FileDropper';

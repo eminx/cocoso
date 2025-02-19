@@ -6,13 +6,14 @@ import parseHtml from 'html-react-parser';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../generic/Loader';
-import { message, Alert } from '../../generic/message';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { call } from '../../utils/shared';
 import ReactQuill from '../../forms/Quill';
 import Template from '../../layout/Template';
 import { AdminMenu } from './Settings';
 
-export default function PlatformRegistrationIntro({ history }) {
+export default function PlatformRegistrationIntro() {
   const [loading, setLoading] = useState(true);
   const [platform, setPlatform] = useState(null);
   const [registrationIntro, setRegistrationIntro] = useState(['']);
@@ -21,10 +22,6 @@ export default function PlatformRegistrationIntro({ history }) {
   const { currentUser, getPlatform } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
-
-  useEffect(() => {
-    getPlatformNow();
-  }, []);
 
   const getPlatformNow = async () => {
     try {
@@ -40,6 +37,10 @@ export default function PlatformRegistrationIntro({ history }) {
     }
   };
 
+  useEffect(() => {
+    getPlatformNow();
+  }, []);
+
   const handleAddSlide = () => {
     setRegistrationIntro([...registrationIntro, '']);
   };
@@ -48,9 +49,8 @@ export default function PlatformRegistrationIntro({ history }) {
     const slides = registrationIntro.map((slide, i) => {
       if (i === index) {
         return value;
-      } else {
-        return slide;
       }
+      return slide;
     });
 
     setRegistrationIntro(slides);

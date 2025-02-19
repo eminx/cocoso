@@ -7,7 +7,8 @@ import { useTranslation } from 'react-i18next';
 
 import { call, resizeImage, uploadImage } from '../../../utils/shared';
 import Loader from '../../../generic/Loader';
-import { message, Alert } from '../../../generic/message';
+import { message } from '../../../generic/message';
+import Alert from '../../../generic/Alert';
 import { StateContext } from '../../../LayoutContainer';
 import Modal from '../../../generic/Modal';
 import EmailPreview from './EmailPreview';

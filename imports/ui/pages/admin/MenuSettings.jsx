@@ -27,7 +27,8 @@ import { arrayMoveImmutable } from 'array-move';
 
 import { call } from '../../utils/shared';
 import Loader from '../../generic/Loader';
-import { message, Alert } from '../../generic/message';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../forms/FormField';
 import TablyRouter from '../../generic/TablyRouter';

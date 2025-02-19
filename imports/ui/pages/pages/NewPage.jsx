@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next';
 
 import PageForm from '../../generic/PageForm';
 import Template from '../../layout/Template';
-import { message, Alert } from '../../generic/message';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { call, parseTitle, resizeImage, uploadImage } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import FormTitle from '../../forms/FormTitle';

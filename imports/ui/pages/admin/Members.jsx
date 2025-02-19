@@ -6,7 +6,8 @@ import { Box, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
 
 import Loader from '../../generic/Loader';
 import NiceList from '../../generic/NiceList';
-import { message, Alert } from '../../generic/message';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import UsageReport from '../../admin/UsageReport';
