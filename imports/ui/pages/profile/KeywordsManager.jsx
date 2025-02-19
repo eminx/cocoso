@@ -16,10 +16,6 @@ function KeywordsManager({ currentUser }) {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
-  useEffect(() => {
-    getKeywords();
-  }, []);
-
   const getKeywords = async () => {
     try {
       const respond = await call('getKeywords');
@@ -33,6 +29,10 @@ function KeywordsManager({ currentUser }) {
       message.error(error.reason);
     }
   };
+
+  useEffect(() => {
+    getKeywords();
+  }, []);
 
   const saveKeywords = async () => {
     try {
@@ -79,7 +79,7 @@ function KeywordsManager({ currentUser }) {
 
   return (
     <Box>
-      <Heading mb="2" size="sm" textAlign="center">
+      <Heading mb="2" size="md">
         {t('profile.menu.keywords.label')}
       </Heading>
       <Text fontSize="sm" mb="4">

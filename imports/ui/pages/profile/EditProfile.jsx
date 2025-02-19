@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useLayoutEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Trans } from 'react-i18next';
-import { useTranslation } from 'react-i18next';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Trans, useTranslation } from 'react-i18next';
 import {
   Alert,
   AlertIcon,
@@ -26,9 +25,8 @@ import { StateContext } from '../../LayoutContainer';
 import AvatarUploader from './AvatarUploader';
 import Tabs from '../../entry/Tabs';
 import ChangeLanguage from '../../layout/ChangeLanguageMenu';
-import Template from '../../layout/Template';
 import KeywordsManager from './KeywordsManager';
-import BackLink from '../../entry/BackLink';
+import Boxling from '../admin/Boxling';
 
 function EditProfile() {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
@@ -60,14 +58,14 @@ function EditProfile() {
       return;
     }
 
-    const uploadableAvatar = files[0];
+    const uploadableAvatarFile = files[0];
 
     const reader = new FileReader();
-    reader.readAsDataURL(uploadableAvatar);
+    reader.readAsDataURL(uploadableAvatarFile);
     reader.addEventListener(
       'load',
       () => {
-        setUploadableAvatar(uploadableAvatar);
+        setUploadableAvatar(uploadableAvatarFile);
         setUploadableAvatarLocal(reader.result);
       },
       false
@@ -87,7 +85,6 @@ function EditProfile() {
         })
       );
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
     } finally {
       setIsUploading(false);
@@ -109,7 +106,6 @@ function EditProfile() {
         })
       );
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -123,16 +119,14 @@ function EditProfile() {
         })
       );
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
 
   const deleteAccount = () => {
     setIsDeleting(true);
-    Meteor.call('deleteAccount', (error, respond) => {
+    Meteor.call('deleteAccount', (error) => {
       if (error) {
-        console.log(error);
         message.error(error.reason);
         return;
       }
@@ -153,8 +147,7 @@ function EditProfile() {
       Meteor.logout();
       navigate('/');
       setIsLeaveModalOn(false);
-    } catch {
-      console.log(error);
+    } catch (error) {
       message.error(error.reason);
     } finally {
       setIsLeaving(false);
@@ -170,7 +163,6 @@ function EditProfile() {
         })
       );
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -184,7 +176,6 @@ function EditProfile() {
         })
       );
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -198,7 +189,6 @@ function EditProfile() {
         })
       );
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -227,9 +217,9 @@ function EditProfile() {
       title: tc('menu.member.general'),
       path: 'general',
       content: (
-        <Center>
-          <Box>
-            <Heading mb="4" size="sm" textAlign="center">
+        <Box>
+          <Boxling mb="8">
+            <Heading mb="4" size="md">
               {t('profile.image')}
             </Heading>
             <AvatarUploader
@@ -241,42 +231,46 @@ function EditProfile() {
               setUploadableAvatar={handleSetUploadableAvatar}
               setUploadableAvatarLocal={setUploadableAvatarLocal}
             />
-            <Box py="4">
-              <Heading mb="2" size="sm" textAlign="center">
-                {t('profile.label')}
-              </Heading>
-              <Box mb="4">
-                <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
-              </Box>
-              <KeywordsManager currentUser={currentUser} />
+          </Boxling>
+
+          <Boxling mb="8">
+            <Heading my="2" size="md">
+              {t('profile.label')}
+            </Heading>
+            <Box mb="4">
+              <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
             </Box>
-          </Box>
-        </Center>
+          </Boxling>
+
+          <Boxling>
+            <KeywordsManager currentUser={currentUser} />
+          </Boxling>
+        </Box>
       ),
     },
     {
       title: t('profile.menu.language'),
       path: 'language',
       content: (
-        <Box>
-          <Heading mb="4" size="sm" textAlign="center">
+        <Boxling>
+          <Heading mb="4" size="md">
             {tc('langs.form.label')}
           </Heading>
-          <ChangeLanguage hideHelper select onChange={(lang) => setLang(lang)} />
+          <ChangeLanguage hideHelper select onChange={(selectedLang) => setLang(selectedLang)} />
 
           <Flex justify="flex-end" mt="4">
             <Button disabled={lang === currentUser.lang} onClick={handleSetLanguage}>
               {tc('actions.submit')}
             </Button>
           </Flex>
-        </Box>
+        </Boxling>
       ),
     },
     {
       title: t('profile.menu.privacy'),
       path: 'privacy',
       content: (
-        <Box>
+        <Boxling>
           <Box mb="4">
             <Heading size="md" pb="4">
               {platform?.name}{' '}
@@ -340,7 +334,7 @@ function EditProfile() {
               </Button>
             </Box>
           </Box>
-        </Box>
+        </Boxling>
       ),
     },
   ];
@@ -355,89 +349,72 @@ function EditProfile() {
 
   return (
     <>
-      <Box p="2">
-        <BackLink backLink={{ label: username, value: `/@${username}` }} />
-      </Box>
-      <Template>
-        <Box mb="8">
-          <Box pt="4" mb="8">
-            <Heading color="gray.800" size="lg" textAlign="center">
-              <Text as="span" fontWeight="normal">
-                {t('profile.settings')}
-              </Text>
-            </Heading>
-          </Box>
+      <Box mb="8" minHeight="100vh">
+        <Box>
+          <Heading mb="4" size="md">
+            {platform?.name}{' '}
+            <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
+              {tc('domains.platform')}
+            </Text>
+          </Heading>
+
+          <Alert bg="blueGray.50" borderRadius="lg" mb="8" status="info">
+            <AlertIcon color="gray.800" />
+            <Text fontSize="sm" mr="4">
+              {t('profile.message.platform', { platform: platform?.name })}
+            </Text>
+          </Alert>
+
+          <Tabs align="center" index={tabIndex} mb="4" tabs={tabs} />
 
           <Box>
-            <Heading size="md" textAlign="center">
-              {platform?.name}{' '}
-              <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
-                {tc('domains.platform')}
-              </Text>
-            </Heading>
-
-            <Alert bg="none" mb="4" status="info">
-              <AlertIcon color="gray.800" />
-              <Text fontSize="sm" mr="4" textAlign="center">
-                {t('profile.message.platform', { platform: platform?.name })}
-              </Text>
-            </Alert>
-
-            <Tabs align="center" index={tabIndex} mb="4" tabs={tabs} />
-
-            <Box>
-              <Routes>
-                {tabs.map((tab) => (
-                  <Route
-                    key={tab.title}
-                    path={tab.path}
-                    element={<Box pt="2">{tab.content}</Box>}
-                  />
-                ))}
-              </Routes>
-            </Box>
-
-            <Divider my="4" />
+            <Routes>
+              {tabs.map((tab) => (
+                <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+              ))}
+            </Routes>
           </Box>
 
-          <Box bg="red.100">
-            <VStack spacing="4" p="4">
-              <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
-                {t('delete.action')}
-              </Button>
-            </VStack>
-          </Box>
-
-          <ConfirmModal
-            visible={isLeaveModalOn}
-            title={t('leave.title')}
-            confirmText={t('leave.label')}
-            confirmButtonProps={{
-              colorScheme: 'red',
-              isLoading: isLeaving,
-            }}
-            onConfirm={leaveHost}
-            onCancel={() => setIsLeaveModalOn(false)}
-          >
-            <Text>{t('leave.body')}</Text>
-          </ConfirmModal>
-
-          <ConfirmModal
-            visible={isDeleteModalOn}
-            title={t('delete.title')}
-            confirmText={t('delete.label')}
-            confirmButtonProps={{
-              colorScheme: 'red',
-              isLoading: isDeleting,
-              isDisabled: isDeleting,
-            }}
-            onConfirm={deleteAccount}
-            onCancel={() => setIsDeleteModalOn(false)}
-          >
-            <Text>{t('delete.body')}</Text>
-          </ConfirmModal>
+          <Divider my="4" />
         </Box>
-      </Template>
+
+        <Box bg="red.100" mt="24">
+          <VStack spacing="4" p="4">
+            <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
+              {t('delete.action')}
+            </Button>
+          </VStack>
+        </Box>
+
+        <ConfirmModal
+          visible={isLeaveModalOn}
+          title={t('leave.title')}
+          confirmText={t('leave.label')}
+          confirmButtonProps={{
+            colorScheme: 'red',
+            isLoading: isLeaving,
+          }}
+          onConfirm={leaveHost}
+          onCancel={() => setIsLeaveModalOn(false)}
+        >
+          <Text>{t('leave.body')}</Text>
+        </ConfirmModal>
+
+        <ConfirmModal
+          visible={isDeleteModalOn}
+          title={t('delete.title')}
+          confirmText={t('delete.label')}
+          confirmButtonProps={{
+            colorScheme: 'red',
+            isLoading: isDeleting,
+            isDisabled: isDeleting,
+          }}
+          onConfirm={deleteAccount}
+          onCancel={() => setIsDeleteModalOn(false)}
+        >
+          <Text>{t('delete.body')}</Text>
+        </ConfirmModal>
+      </Box>
     </>
   );
 }

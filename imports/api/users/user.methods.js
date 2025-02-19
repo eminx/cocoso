@@ -8,11 +8,10 @@ import Works from '../works/work';
 import Groups from '../groups/group';
 
 Meteor.methods({
-  getUserInfo(username, host) {
+  getUserInfo(username, hostPredefined) {
     check(username, String);
-    if (!host) {
-      host = getHost(this);
-    }
+    const host = hostPredefined || getHost(this);
+
     const currentHost = Hosts.findOne({ host });
     const user = Meteor.users.findOne({ username });
     if (!user) {
@@ -188,7 +187,6 @@ Meteor.methods({
 
     if (!avatar) {
       throw new Meteor.Error('Not valid file');
-      return;
     }
 
     const newAvatar = {
@@ -290,7 +288,7 @@ Meteor.methods({
           _id: userId,
           memberships: {
             $elemMatch: {
-              host: host,
+              host,
             },
           },
         },
@@ -333,7 +331,7 @@ Meteor.methods({
           _id: userId,
           memberships: {
             $elemMatch: {
-              host: host,
+              host,
             },
           },
         },
@@ -412,7 +410,7 @@ Meteor.methods({
           },
         }
       );
-    } catch {
+    } catch (error) {
       throw new Meteor.Error(error);
     }
   },

@@ -10,12 +10,15 @@ import { Alert } from '../../generic/message';
 import AdminSidebar from './AdminMenu';
 import Drawer from '../../generic/Drawer';
 import getAdminRoutes from './getAdminRoutes';
+import EditProfile from '../profile/EditProfile';
 
 export default function AdminContainer() {
   const { currentUser, currentHost, isDesktop, role } = useContext(StateContext);
   const [drawerMenuOpen, setDrawerMenuOpen] = useState(false);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
+  const [ta] = useTranslation('accounts');
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -52,6 +55,11 @@ export default function AdminContainer() {
         ...item,
         value: item.value.replace('*', ''),
       });
+    });
+
+    allRoutes.push({
+      value: '/my-profile',
+      label: ta('profile.settings'),
     });
 
     return allRoutes.find((r) => pathname.includes(r.value));
@@ -154,6 +162,7 @@ export default function AdminContainer() {
                 <Route key={route.value} path={route.value} element={route.content} />
               )
             )}
+            <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
           </Routes>
         </Box>
       </SimpleGrid>

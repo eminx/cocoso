@@ -17,7 +17,7 @@ function ProfileForm({ defaultValues, onSubmit }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit((data) => onSubmit(data))} defaultValues={defaultValues}>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           <FormField label={t('profile.form.firstname.label')}>
             <Input {...register('firstName')} placeholder="" />

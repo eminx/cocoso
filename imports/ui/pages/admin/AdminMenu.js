@@ -10,14 +10,20 @@ import { getFullName } from '../../utils/shared';
 export function AdminMenuHeader({ currentHost }) {
   return (
     <Link to="/">
-      <Box _hover={{ bg: 'blueGray.200' }} _focus={{ bg: 'blueGray.300' }} bg="white" px="4" py="2">
+      <Box
+        _hover={{ bg: 'blueGray.800', color: 'white' }}
+        _focus={{ bg: 'blueGray.300' }}
+        bg="white"
+        px="4"
+        py="2"
+      >
         <Flex align="center">
           <Eye />
           <Text fontWeight="bold" fontSize="lg" ml="2" mt="-0.5">
             {currentHost.settings?.name}
           </Text>
         </Flex>
-        <Code bg="blueGray.50" color="inherit" fontSize="xs">
+        <Code bg="blueGray.50" color="blueGray.900" fontSize="xs">
           {currentHost.host}
         </Code>
       </Box>
@@ -26,12 +32,21 @@ export function AdminMenuHeader({ currentHost }) {
 }
 
 export function AdminUserThumb({ currentUser }) {
+  const location = useLocation();
+
   if (!currentUser) {
     return null;
   }
 
+  const isCurrentRoute = location?.pathname?.includes('my-profile');
+
   return (
-    <Box _hover={{ bg: 'blueGray.800' }} bg="blueGray.700" color="white" p="4">
+    <Box
+      _hover={{ bg: 'blueGray.800' }}
+      bg={isCurrentRoute ? 'blueGray.900' : 'blueGray.700'}
+      color="white"
+      p="4"
+    >
       <Flex>
         <Avatar
           _hover={{ bg: 'brand.200' }}
@@ -134,7 +149,9 @@ export default function AdminMenu({ routes, onItemClick }) {
         </Box>
 
         <Box flexGrow="0">
-          <AdminUserThumb currentUser={currentUser} />
+          <Link to="/admin/my-profile">
+            <AdminUserThumb currentUser={currentUser} />
+          </Link>
         </Box>
 
         {/* {isSuperAdmin && isPortalHost && platform && (

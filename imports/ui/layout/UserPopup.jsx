@@ -207,7 +207,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
                   <Trans i18nKey="common:menu.member.profile">My Profile</Trans>
                 </MenuItem>
               </Link>
-              <Link to={'/edit'}>
+              <Link to={'/admin/my-profile'}>
                 <MenuItem as="span">
                   <Trans i18nKey="common:menu.member.settings">Profile Settings</Trans>
                 </MenuItem>

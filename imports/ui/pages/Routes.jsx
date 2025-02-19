@@ -41,7 +41,6 @@ const ResetPasswordPage = lazy(() => import('./auth/ResetPasswordPage'));
 const RegistrationIntro = lazy(() => import('./auth/RegistrationIntro'));
 
 // Admin
-const EditProfile = lazy(() => import('./profile/EditProfile'));
 const AdminContainer = lazy(() => import('./admin/AdminContainer'));
 const PreviousNewsletters = lazy(() => import('./admin/EmailNewsletter/PreviousNewsletters'));
 
@@ -140,7 +139,6 @@ export default function AppRoutes() {
           />
 
           {/* Profile & Profile Related Pages */}
-          <Route path="/edit/*" element={<EditProfile />} />
           <Route path="/:usernameSlug/*" element={<UserProfile />} />
           <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
 
