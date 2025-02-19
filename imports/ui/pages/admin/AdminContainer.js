@@ -7,7 +7,7 @@ import Eye from 'lucide-react/dist/esm/icons/eye';
 
 import { StateContext } from '../../LayoutContainer';
 import Alert from '../../generic/Alert';
-import AdminMenu, { AdminMenuHeader } from './AdminMenu';
+import AdminMenu from './AdminMenu';
 import Drawer from '../../generic/Drawer';
 import getAdminRoutes from './getAdminRoutes';
 import EditProfile from '../profile/EditProfile';
@@ -22,7 +22,7 @@ export default function AdminContainer() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const menuItems = currentHost.settings?.menu;
+  const menuItems = currentHost?.settings?.menu;
   const isAdmin = role === 'admin';
   const routes = isAdmin ? getAdminRoutes(menuItems) : null;
 
@@ -47,6 +47,11 @@ export default function AdminContainer() {
         ...item,
         value: item.value.replace('*', ''),
       });
+    });
+
+    allRoutes.push({
+      label: ta('profile.settings'),
+      value: 'my-profile',
     });
 
     return allRoutes.find((r) => pathname.includes(r.value));
