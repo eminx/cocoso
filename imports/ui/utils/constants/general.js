@@ -144,7 +144,7 @@ const accordionProps = {
   buttonProps: {
     _hover: { bg: 'brand.400', color: 'white' },
     _expanded: { bg: 'brand.500', color: 'white' },
-    bg: 'brand.300',
+    bg: 'brand.100',
     borderWidth: '0',
     borderRadius: 'lg',
     color: 'brand.900',

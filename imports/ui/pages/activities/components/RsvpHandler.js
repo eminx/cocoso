@@ -39,6 +39,9 @@ function AccordionDates({ activity, onCloseModal }) {
   }
 
   const isRsvpEnabled = !activity.isRegistrationDisabled || activity.isRegistrationEnabled;
+
+  const items = activity.datesAndTimes;
+
   if (!isRsvpEnabled) {
     return (
       <Box>
@@ -56,8 +59,6 @@ function AccordionDates({ activity, onCloseModal }) {
       </Box>
     );
   }
-
-  const items = activity.datesAndTimes;
 
   return (
     <Box>

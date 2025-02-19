@@ -4,7 +4,10 @@ import { Trans } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from './TablyCentered';
-import { DateJust } from './FancyDate';
+import FancyDate, { DateJust } from './FancyDate';
+import { accordionProps } from '../utils/constants/general';
+
+const { buttonProps } = accordionProps;
 
 function ActionDates({ activity }) {
   return (
@@ -73,6 +76,22 @@ export default function ActivityHybrid({ activity, Host }) {
         </Box>
       ),
       path: 'location',
+    });
+  }
+
+  if (!activity.isPublicActivity) {
+    tabs.push({
+      title: <Trans i18nKey="activities:public.labels.dates">See Dates</Trans>,
+      content: (
+        <Box bg="white" p="6">
+          {activity.datesAndTimes?.map((occurrence) => (
+            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2">
+              <FancyDate occurrence={occurrence} />
+            </Box>
+          ))}
+        </Box>
+      ),
+      path: 'dates',
     });
   }
 
