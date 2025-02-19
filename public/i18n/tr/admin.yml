@@ -3,6 +3,7 @@ label: Admin
 panel: Admin Paneli
 menulabel: Admin Menü
 site: Site
+home: Anasayfa
 
 settings:
   title: Ayarlar

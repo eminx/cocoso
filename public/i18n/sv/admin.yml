@@ -3,6 +3,7 @@ label: Admin
 panel: Adminpanel
 menulabel: Adminmenu
 site: Sidan
+home: Hem
 
 settings:
   title: Inställningar

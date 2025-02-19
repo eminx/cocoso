@@ -172,7 +172,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
           {isAdmin && <MenuDivider />}
           {isAdmin && (
-            <Link to="/admin">
+            <Link to="/admin/home">
               <MenuItem px="4">
                 <Bolt size="20" style={{ marginRight: '6px' }} />
                 <Trans i18nKey="members:dashboard">Admin Dashboard</Trans>

@@ -3,6 +3,7 @@ label: Admin
 panel: Admin Panel
 menulabel: Admin Menu
 site: Site
+home: Home
 
 settings:
   title: Settings
