@@ -244,6 +244,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         isRequired
       >
         <DatesAndTimes
+          activityId={activity?._id}
           datesAndTimes={state.datesAndTimes}
           isExclusiveActivity={state.isExclusiveActivity}
           resourceId={state.selectedResource?._id}

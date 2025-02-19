@@ -174,7 +174,10 @@ Meteor.methods({
     }
   },
 
-  async checkDatesForConflict({ startDate, endDate, startTime, endTime, resourceId }) {
+  async checkDatesForConflict(
+    { startDate, endDate, startTime, endTime, resourceId },
+    currentActivityId
+  ) {
     const host = getHost(this);
     if (!resourceId) {
       return null;
@@ -182,18 +185,32 @@ Meteor.methods({
 
     const activityWithConflict = await Activities.findOneAsync(
       {
+        _id: { $ne: currentActivityId },
         host,
-        resourceId,
-        $or: [
+        $and: [
           {
-            'datesAndTimes.startDate': { $gte: startDate, $lte: endDate },
+            $or: [
+              {
+                resourceId,
+              },
+              {
+                'resourcesForCombo._id': resourceId,
+              },
+            ],
           },
           {
-            'datesAndTimes.endDate': { $gte: startDate, $lte: endDate },
-          },
-          {
-            'datesAndTimes.startDate': { $lte: startDate },
-            'datesAndTimes.endDate': { $gte: endDate },
+            $or: [
+              {
+                'datesAndTimes.startDate': { $gte: startDate, $lte: endDate },
+              },
+              {
+                'datesAndTimes.endDate': { $gte: startDate, $lte: endDate },
+              },
+              {
+                'datesAndTimes.startDate': { $lte: startDate },
+                'datesAndTimes.endDate': { $gte: endDate },
+              },
+            ],
           },
         ],
       },

@@ -24,6 +24,7 @@ export default function EditPublicActivity() {
   };
 
   const activityFields = (({
+    _id,
     address,
     capacity,
     datesAndTimes,
@@ -37,6 +38,7 @@ export default function EditPublicActivity() {
     subTitle,
     title,
   }) => ({
+    _id,
     address,
     capacity,
     datesAndTimes,

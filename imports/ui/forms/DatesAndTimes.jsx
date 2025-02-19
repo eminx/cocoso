@@ -66,6 +66,7 @@ export default function DatesAndTimes({
   isExclusiveActivity,
   resourceId,
   onDatesAndTimesChange,
+  activityId,
 }) {
   const [t] = useTranslation('activities');
 
@@ -80,7 +81,7 @@ export default function DatesAndTimes({
           ...occurrence,
           resourceId,
         };
-        const conflict = await call('checkDatesForConflict', params);
+        const conflict = await call('checkDatesForConflict', params, activityId);
         return {
           ...occurrence,
           conflict,
@@ -106,7 +107,7 @@ export default function DatesAndTimes({
       resourceId,
     };
 
-    const conflict = resourceId ? await call('checkDatesForConflict', params) : null;
+    const conflict = resourceId ? await call('checkDatesForConflict', params, activityId) : null;
 
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (index === occurrenceIndex) {

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import { LoaderContext } from '../listing/NewEntryHandler';
+
+import { initialLoaderValues, LoaderContext } from '../listing/NewEntryHandler';
 
 export default function SuccessRedirector({ ping, onSuccess, children }) {
   const { loaders, setLoaders } = useContext(LoaderContext);
@@ -8,6 +9,9 @@ export default function SuccessRedirector({ ping, onSuccess, children }) {
     if (typeof ping === 'string') {
       setLoaders((prevState) => ({ ...prevState, isSuccess: true }));
     }
+    setTimeout(() => {
+      setLoaders(initialLoaderValues);
+    }, 2000);
   }, [ping]);
 
   useEffect(() => {

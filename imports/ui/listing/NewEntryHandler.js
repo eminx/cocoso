@@ -16,7 +16,7 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
 
-const initialLoaderValues = {
+export const initialLoaderValues = {
   isCreating: false,
   isUploadingImages: false,
   isSendingForm: false,

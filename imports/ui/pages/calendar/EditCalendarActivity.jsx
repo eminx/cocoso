@@ -27,6 +27,7 @@ export default function EditPublicActivity() {
   };
 
   const activityFields = (({
+    _id,
     datesAndTimes,
     isExclusiveActivity,
     longDescription,
@@ -34,6 +35,7 @@ export default function EditPublicActivity() {
     resourceId,
     title,
   }) => ({
+    _id,
     datesAndTimes,
     isExclusiveActivity,
     longDescription,
