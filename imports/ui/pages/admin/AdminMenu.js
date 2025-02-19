@@ -105,6 +105,7 @@ export default function AdminMenu({ routes, onItemClick }) {
       position="fixed"
     >
       {isDesktop && <AdminMenuHeader currentHost={currentHost} />}
+
       <Flex direction="column" h="100%" overflowY="auto">
         {isDesktop && (
           <Heading flexGrow="0" color="blueGray.800" p="4" pb="0" size="md" textAlign="center">
@@ -132,7 +133,7 @@ export default function AdminMenu({ routes, onItemClick }) {
           </List>
         </Box>
 
-        <Box flexGrow="0" mt="-8">
+        <Box flexGrow="0">
           <AdminUserThumb currentUser={currentUser} />
         </Box>
 

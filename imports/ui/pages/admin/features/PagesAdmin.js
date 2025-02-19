@@ -79,16 +79,20 @@ export default function PagesAdmin() {
                 align="center"
                 bg="gray.50"
                 borderRadius="lg"
-                cursor="move"
                 boxShadow="md"
+                cursor="move"
                 mb="4"
-                p="2"
+                px="4"
+                py="2"
                 style={{ fontFamily: 'Sarabun, sans-serif' }}
               >
                 <Text fontWeight="bold" mr="4">
                   {page.order}
                 </Text>
-                <DragHandleIcon /> <Text ml="2">{page.title}</Text>
+                <DragHandleIcon />
+                <Text isTruncated ml="2">
+                  {page.title}
+                </Text>
               </Flex>
             </SortableItem>
           ))}

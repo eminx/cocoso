@@ -9,7 +9,7 @@ import Boxling from './Boxling';
 const getDefaultColor = (hue) => ({ h: hue, s: 80, l: 0.1, a: 0 });
 
 const getHue = (pickedColor) => {
-  const hue = parseInt(pickedColor?.hsl?.h) + 1;
+  const hue = parseInt(pickedColor?.hsl?.h, 10) + 1;
   return hue.toString();
 };
 
@@ -43,7 +43,7 @@ export default function ColorPicker() {
         <Text mb="4">{t('color.info')}</Text>
       </Box>
       <Boxling>
-        <Center pb="4" pt="2" position="relative">
+        <Center pb="4" position="relative">
           <HuePicker color={color} height="20px" width="100%" onChange={handleChange} />
         </Center>
 
