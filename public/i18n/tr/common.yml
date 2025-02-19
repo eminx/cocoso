@@ -45,7 +45,7 @@ labels:
     activities: Yeni etkinlik
     calendar: Yeni aktivite
     groups: Yeni süreç grubu
-    info: Yeni sayfa
+    info: Yeni bilgi sayfası
     resources: Yeni kaynak
     works: Yeni İlan
     host: Yeni topluluk
@@ -53,7 +53,7 @@ labels:
     activities: Etkinliği güncelle
     calendar: Aktiviteyi güncelle
     groups: Süreç grubunu güncelle
-    pages: Sayfayı güncelle
+    info: Bilgi sayfasını güncelle
     resources: Kaynağı güncelle
     works: İlanı güncelle
   event: Etkinlik

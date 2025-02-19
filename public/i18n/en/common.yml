@@ -45,7 +45,7 @@ labels:
     activities: New Event
     calendar: New Activity
     groups: New Process/Group
-    info: New Page
+    info: New Info Page
     resources: New Resource
     works: New Post
     host: New Community
@@ -56,6 +56,7 @@ labels:
     pages: Update Page
     resources: Update Resource
     works: Update Post
+    info: Update Info Page
   event: Event
   bookings: Bookings
   newBooking: New Booking

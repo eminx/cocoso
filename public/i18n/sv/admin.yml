@@ -166,7 +166,7 @@ pages:
       holder: Sidans textinnehåll
       helper: Lägg till textinnehållet som du vill publicera här
     images:
-      label: Bilder ({{ count }})
+      label: Bilder
       helper: Ange en eller flera bilder. Om du väljer flera bilder kommer de visas som ett bildspel
   order:
     label: Ändra sidordning

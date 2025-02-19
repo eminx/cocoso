@@ -2,7 +2,6 @@ import React, { createContext, useContext, useLayoutEffect, useEffect, useState 
 import { useParams } from 'react-router-dom';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
 import { call } from '../../utils/shared';
 import WorkHybrid from '../../entry/WorkHybrid';
 import NewEntryHandler from '../../listing/NewEntryHandler';
@@ -58,15 +57,14 @@ export default function Work() {
     getDocuments();
   }, []);
 
-  if (!work) {
-    return <Loader />;
-  }
-
   const contextValue = {
     work,
     getWorkById,
   };
 
+  if (!work) {
+    return null;
+  }
   return (
     <>
       <WorkHybrid documents={documents} work={work} Host={currentHost} />

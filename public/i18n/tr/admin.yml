@@ -166,7 +166,7 @@ pages:
       holder: Katkı sağlama prosedürünün işleyiş şekli...
       helper: Lütfen bu sayfada yayınlamak istediğin metin içeriğinin tamamını buraya gir
     images:
-      label: İmajlar ({{ count }})
+      label: İmajlar
       helper: Tercihen, lütfen yayınlandığında bu sayfada bir slayt içinde görüntülenecek bir imaj veya bir dizi imaj seç
   order:
     label: Sayfaların sırasını düzenle

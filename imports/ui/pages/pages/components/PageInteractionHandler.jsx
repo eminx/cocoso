@@ -2,22 +2,19 @@ import React, { useContext } from 'react';
 import { Box } from '@chakra-ui/react';
 
 import { StateContext } from '../../../LayoutContainer';
-import { WorkContext } from '../Work';
 import SlideWidget from '../../../entry/SlideWidget';
-import WorkAdminFunctions from './WorkAdminFunctions';
+import PageAdminFunctions from './PageAdminFunctions';
 
-export default function WorkInteractionHandler({ slideStart }) {
-  const { currentUser } = useContext(StateContext);
-  const { work } = useContext(WorkContext);
+export default function PageInteractionHandler({ slideStart }) {
+  const { currentUser, role } = useContext(StateContext);
 
-  if (!currentUser || !work || currentUser._id !== work.authorId) {
+  if (!currentUser || role !== 'admin') {
     return null;
   }
-
   return (
     <SlideWidget justify="space-between" slideStart={slideStart}>
       <Box w="40px">
-        <WorkAdminFunctions />
+        <PageAdminFunctions />
       </Box>
       <Box w="40px" />
     </SlideWidget>

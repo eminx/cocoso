@@ -11,9 +11,6 @@ export default function EditWork() {
   const [updated, setUpdated] = useState(null);
   const { work, getWorkById } = useContext(WorkContext);
   const [, setSearchParams] = useSearchParams();
-  if (!work) {
-    return null;
-  }
 
   const updateWork = async (newWork) => {
     const workId = work._id;
@@ -46,6 +43,10 @@ export default function EditWork() {
     showAvatar,
     title,
   }))(work);
+
+  if (!work) {
+    return null;
+  }
 
   return (
     <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>

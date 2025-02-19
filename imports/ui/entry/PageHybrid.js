@@ -1,12 +1,11 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Center } from '@chakra-ui/react';
+import { Box, Center, Heading } from '@chakra-ui/react';
 import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 import NiceSlider from '../generic/NiceSlider';
 
 import { parseTitle } from '../utils/shared';
-import PagesList from './PagesList';
 
 function SimplePage({ description, images, title }) {
   return (
@@ -22,18 +21,11 @@ function SimplePage({ description, images, title }) {
         <meta property="og:type" content="article" />
       </Helmet>
 
-      {/* <Center>
-        <Heading
-          as="h1"
-          lineHeight={1}
-          my="4"
-          size="lg"
-          textAlign="center"
-          textShadow="1px 1px 1px #fff"
-        >
+      <Center>
+        <Heading as="h1" color="gray.800" mb="6" mt="4" size="lg">
           {title}
         </Heading>
-      </Center> */}
+      </Center>
 
       {images && (
         <Center py="2" mb="0">
@@ -67,13 +59,10 @@ export default function PageHybrid({ pages }) {
   }
 
   return (
-    <>
-      <PagesList currentPage={currentPage} pages={pages} />
-      <SimplePage
-        description={currentPage.longDescription}
-        images={currentPage.images}
-        title={currentPage.title}
-      />
-    </>
+    <SimplePage
+      description={currentPage.longDescription}
+      images={currentPage.images}
+      title={currentPage.title}
+    />
   );
 }

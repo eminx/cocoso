@@ -166,7 +166,7 @@ pages:
       holder: Contributing guidelines are...
       helper: Please enter the entire text content you would like to publish within this page here
     images:
-      label: Images ({{ count }})
+      label: Images
       helper: Optionally, please enter an image or a set of images that will be displayed within a slider in this page when published
   order:
     label: Reorder pages
