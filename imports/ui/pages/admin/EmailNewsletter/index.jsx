@@ -43,18 +43,6 @@ export default function EmailNewsletter() {
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  if (!state.email) {
-    return <Loader />;
-  }
-
-  if (!currentUser || role !== 'admin') {
-    return <Alert>{tc('message.access.deny')}</Alert>;
-  }
-
-  if (!currentHost || !platform) {
-    return null;
-  }
-
   const handleFormChange = (field, value) => {
     const newEmail = {
       ...state.email,
@@ -159,7 +147,6 @@ export default function EmailNewsletter() {
       const uploadedImage = await uploadImage(resizedImage, 'genericEntryImageUpload');
       sendEmail(uploadedImage);
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
     }
   };
@@ -192,6 +179,18 @@ export default function EmailNewsletter() {
       sendEmail();
     }
   };
+
+  if (!currentUser || role !== 'admin') {
+    return <Alert>{tc('message.access.deny')}</Alert>;
+  }
+
+  if (!currentHost || !platform) {
+    return null;
+  }
+
+  if (!state.email) {
+    return <Loader />;
+  }
 
   return (
     <>

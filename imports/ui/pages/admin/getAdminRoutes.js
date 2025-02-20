@@ -7,7 +7,7 @@ import MenuSettings from './MenuSettings';
 import ColorPicker from './ColorPicker';
 import Members from './Members';
 import Emails from './Emails';
-// import EmailNewsletter from './EmailNewsletter';
+import EmailNewsletter from './EmailNewsletter';
 import AdminHome from './AdminHome';
 import {
   ActivitiesAdmin,
@@ -121,11 +121,11 @@ const getAdminRoutes = (menuItems) => [
     value: 'emails/*',
     content: <Emails />,
   },
-  // {
-  //   label: <Trans i18nKey="admin:newsletter.title" />,
-  //   value: 'email-newsletter',
-  //   content: <EmailNewsletter />,
-  // },
+  {
+    label: <Trans i18nKey="admin:newsletter.title" />,
+    value: 'email-newsletter',
+    content: <EmailNewsletter />,
+  },
 ];
 
 export default getAdminRoutes;
