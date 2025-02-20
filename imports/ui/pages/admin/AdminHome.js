@@ -24,7 +24,7 @@ const shortCuts = [
   {
     label: 'Menu',
     helper: 'Manage the menu of your website',
-    link: '/admin/settings/organization/menu',
+    link: '/admin/settings/menu',
   },
   {
     label: 'Generic Page settings',
@@ -41,6 +41,11 @@ const shortCuts = [
     label: 'Users',
     helper: 'Manege your users. Verify or unverify them',
     link: '/admin/users/all',
+  },
+  {
+    label: 'Newsletter',
+    helper: 'Send a newsletter to all your users',
+    link: '/admin/email-newsletter',
   },
 ];
 
