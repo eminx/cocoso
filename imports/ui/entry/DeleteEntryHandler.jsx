@@ -41,6 +41,9 @@ export default function DeleteEntryHandler({ item, context }) {
       await call(deleteMethod, item._id);
       message.success(tc('message.success.remove'));
       navigate(`/${context}`);
+      if (context === 'info') {
+        window.location.reload();
+      }
     } catch (error) {
       message.error(error.reason || error.error);
     }
@@ -51,10 +54,10 @@ export default function DeleteEntryHandler({ item, context }) {
   }
 
   if (context === 'resources') {
-    if (currentUser._id !== item.userId && role !== 'admin') {
+    if (currentUser._id !== item?.userId && role !== 'admin') {
       return null;
     }
-  } else if (currentUser._id !== item.authorId && role !== 'admin') {
+  } else if (currentUser._id !== item?.authorId && role !== 'admin') {
     return null;
   }
 

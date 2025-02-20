@@ -6,10 +6,12 @@ import { PageContext } from './Page';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';
+import { StateContext } from '../../LayoutContainer';
 
 export default function EditPage() {
   const [updated, setUpdated] = useState(null);
   const { currentPage, getPages } = useContext(PageContext);
+  const { getPageTitles } = useContext(StateContext);
   const [, setSearchParams] = useSearchParams();
 
   const updatePage = async (newPage) => {
@@ -17,6 +19,7 @@ export default function EditPage() {
 
     try {
       await call('updatePage', pageId, newPage);
+      await getPageTitles();
       await getPages();
       setUpdated(pageId);
     } catch (error) {

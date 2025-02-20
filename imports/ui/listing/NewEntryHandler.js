@@ -41,10 +41,13 @@ const getLoaderValue = (loaders) => {
   return progress;
 };
 
-const renderToasts = (loaders, tc) => {
+const renderToasts = (loaders, tc, justUpdated = false) => {
   const options = { id: 'loader' };
   if (loaders.isSuccess) {
-    toast.success(tc('message.success.create'), { ...options, duration: 3000 });
+    toast.success(tc(`message.success.${justUpdated ? 'update' : 'create'}`), {
+      ...options,
+      duration: 3000,
+    });
     return;
   }
   if (loaders.isSendingForm) {
@@ -80,7 +83,8 @@ export default function NewEntryHandler({ children }) {
   };
 
   const loaderValue = getLoaderValue(loaders);
-  renderToasts(loaders, tc);
+  const justUpdated = searchParams.get('edit') === 'true' || searchParams.get('edit') === 'false';
+  renderToasts(loaders, tc, justUpdated);
 
   const href = useHref();
   const context = href.split('/')[1] || currentHost?.settings?.menu[0]?.name;
@@ -110,7 +114,8 @@ export default function NewEntryHandler({ children }) {
         isOpen={isOpen}
         motionPreset="slideInBottom"
         scrollBehavior="inside"
-        size="full"
+        size="3xl"
+        height="100%"
         onClose={onClose}
       >
         <ModalOverlay />

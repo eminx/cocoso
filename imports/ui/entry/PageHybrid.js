@@ -46,8 +46,8 @@ function SimplePage({ description, images, title }) {
 
 export default function PageHybrid({ pages }) {
   const { pageTitle } = useParams();
-  const currentPage = pages.find((page) => parseTitle(page.title) === pageTitle);
   const navigate = useNavigate();
+  const currentPage = pages.find((page) => parseTitle(page.title) === pageTitle);
 
   if (!pages || pages.length === 0) {
     return null;

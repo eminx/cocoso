@@ -24,7 +24,7 @@ export default function PageAdminFunctions() {
   const menuItems = [
     {
       kind: 'create',
-      label: tc('actions.create'),
+      label: tc('labels.create.info'),
     },
     {
       kind: 'edit',

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import PageHybrid from '../../entry/PageHybrid';
 import { StateContext } from '../../LayoutContainer';
@@ -21,6 +21,9 @@ function Page() {
   let { currentHost } = useContext(StateContext);
   const { role } = useContext(StateContext);
   const { pageTitle } = useParams();
+  const [searchParams] = useSearchParams();
+  const forNew = searchParams.get('new') === 'true';
+  const forEdit = searchParams.get('edit') === 'true';
 
   useLayoutEffect(() => {
     setTimeout(() => {
@@ -64,11 +67,8 @@ function Page() {
           <PageInteractionHandler slideStart={rendered} />
 
           <NewEntryHandler>
-            <EditPage />
-          </NewEntryHandler>
-
-          <NewEntryHandler>
-            <NewPage />
+            {forEdit ? <EditPage /> : null}
+            {forNew ? <NewPage /> : null}
           </NewEntryHandler>
         </PageContext.Provider>
       )}

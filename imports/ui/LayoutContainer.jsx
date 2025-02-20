@@ -152,6 +152,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               role,
               userLoading,
               getCurrentHost,
+              getPageTitles,
               getPlatform,
               setHue,
               setSelectedHue,

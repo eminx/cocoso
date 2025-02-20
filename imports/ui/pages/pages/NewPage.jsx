@@ -1,21 +1,25 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { call } from '../../utils/shared';
+import { call, parseTitle } from '../../utils/shared';
 import PageForm from './PageForm';
+import { PageContext } from './Page';
 import { StateContext } from '../../LayoutContainer';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';
 
 export default function NewPage() {
-  const [newEntryId, setNewEntryId] = useState(null);
-  const { currentUser } = useContext(StateContext);
+  const [newEntryTitle, setNewEntryTitle] = useState(null);
+  const { currentUser, getPageTitles } = useContext(StateContext);
+  const { getPages } = useContext(PageContext);
   const navigate = useNavigate();
 
   const createPage = async (newPage) => {
     try {
-      const respond = await call('createPage', newPage);
-      setNewEntryId(respond);
+      await call('createPage', newPage);
+      await getPageTitles();
+      await getPages();
+      setNewEntryTitle(newPage.title);
     } catch (error) {
       message.error(error.reason || error.error);
     }
@@ -26,11 +30,11 @@ export default function NewPage() {
       navigate('/login');
       return;
     }
-    navigate(`/info/${newEntryId}`);
+    navigate(`/info/${parseTitle(newEntryTitle)}`);
   };
 
   return (
-    <SuccessRedirector ping={newEntryId} onSuccess={handleSuccess}>
+    <SuccessRedirector ping={newEntryTitle} onSuccess={handleSuccess}>
       <PageForm onFinalize={createPage} />
     </SuccessRedirector>
   );

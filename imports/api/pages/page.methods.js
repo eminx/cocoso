@@ -49,7 +49,7 @@ Meteor.methods({
     return Pages.find({ host: portalHost.host }, { sort: { creationDate: -1 } }).fetch();
   },
 
-  createPage(formValues, images, hostPredefined) {
+  createPage(formValues, hostPredefined) {
     const user = Meteor.user();
     const host = hostPredefined || getHost(this);
 
@@ -59,15 +59,16 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
+    const pageCount = Pages.find({ host }).count();
+
     try {
       Pages.insert({
+        ...formValues,
         host,
         authorId: user._id,
         authorName: user.username,
-        images,
-        title: formValues.title,
-        longDescription: formValues.longDescription,
         isPublished: true,
+        order: pageCount + 1,
         creationDate: new Date(),
       });
       return formValues.title;
@@ -137,7 +138,7 @@ Meteor.methods({
     }
   },
 
-  deletePage(pageId) {
+  async deletePage(pageId) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -152,7 +153,12 @@ Meteor.methods({
     }
 
     try {
-      Pages.remove(pageId);
+      await Pages.removeAsync(pageId);
+      let order = 1;
+      Pages.find({ host }, { sort: { order: 1 } }).forEach((page) => {
+        Pages.update({ _id: page._id }, { $set: { order } });
+        order += 1;
+      });
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
