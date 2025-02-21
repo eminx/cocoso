@@ -109,7 +109,7 @@ Meteor.methods({
   getAllGroupMeetingsFuture(isPortalHost = false, hostPredefined) {
     const host = hostPredefined || getHost(this);
 
-    const dateNow = new Date().toISOString();
+    const dateNow = new Date().toISOString().substring(0, 10);
 
     try {
       if (isPortalHost) {
@@ -121,6 +121,7 @@ Meteor.methods({
       return Activities.find({
         host,
         isGroupMeeting: true,
+        'datesAndTimes.startDate': { $gte: dateNow },
       }).fetch();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");

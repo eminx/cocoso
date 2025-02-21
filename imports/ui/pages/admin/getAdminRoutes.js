@@ -12,7 +12,7 @@ import AdminHome from './AdminHome';
 import {
   ActivitiesAdmin,
   CalendarAdmin,
-  CommunitiesAdmin,
+  // CommunitiesAdmin,
   GroupsAdmin,
   PagesAdmin,
   PeopleAdmin,
