@@ -48,7 +48,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         resources: resources.filter((r) => r.isBookable),
       }));
     } catch (error) {
-      console.log(error);
+      message.error(error.reason || error.error);
     }
   };
 
