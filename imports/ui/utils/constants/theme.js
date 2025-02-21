@@ -55,8 +55,8 @@ const generateTheme = (hue) => {
         50: '#f4f7ff',
         100: '#E0E5F2',
         200: '#E1E9F8',
-        300: '#F4F7FE',
-        400: '#E9EDF7',
+        300: '#DFE5ED',
+        400: '#DCE1E2',
         500: '#8F9BBA',
         600: '#A3AED0',
         700: '#707EAE',
@@ -108,8 +108,8 @@ const generateTheme = (hue) => {
       Modal: {
         baseStyle: {
           dialog: {
-            backgroundColor: '#fff',
-            // borderRadius: 0,
+            borderTopLeftRadius: '8px',
+            borderTopRightRadius: '8px',
           },
         },
       },

@@ -59,18 +59,6 @@ export default function WorkHybrid({ documents, work, Host }) {
     });
   }
 
-  // const isOwner = currentUser && currentUser.username === username;
-
-  // const adminMenu = {
-  //   label: 'Admin',
-  //   items: [
-  //     {
-  //       label: tc('actions.update'),
-  //       link: 'edit',
-  //     },
-  //   ],
-  // };
-
   const tags = work && [work.category?.label];
   const worksInMenu = Host?.settings?.menu.find((item) => item.name === 'works');
 

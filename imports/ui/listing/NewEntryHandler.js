@@ -1,20 +1,11 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useHref, useSearchParams } from 'react-router-dom';
-import {
-  Box,
-  Center,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalCloseButton,
-  ModalHeader,
-  ModalOverlay,
-  Progress,
-} from '@chakra-ui/react';
+import { Box, Progress } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
+import Modal from '../generic/Modal';
 
 export const initialLoaderValues = {
   isCreating: false,
@@ -73,6 +64,10 @@ export default function NewEntryHandler({ children }) {
   const [tc] = useTranslation('common');
 
   const onClose = () => {
+    // if (!confirm('Your changes will be lost')) {
+    //   return;
+    // }
+
     setLoaders(initialLoaderValues);
     if (forEdit) {
       setSearchParams((params) => ({ ...params, edit: 'false' }));
@@ -91,14 +86,16 @@ export default function NewEntryHandler({ children }) {
   const string = `common:labels.${forEdit ? 'update' : 'create'}.${context}`;
 
   const entryHeader = (
-    <Box>
-      <Progress
-        colorScheme="brand"
-        hasStripe
-        size="md"
-        value={loaderValue}
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}
-      />
+    <Box bg="transparent">
+      {loaderValue ? (
+        <Progress
+          colorScheme="brand"
+          hasStripe
+          size="md"
+          value={loaderValue}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}
+        />
+      ) : null}
       <Trans i18nKey={string} />
     </Box>
   );
@@ -111,42 +108,22 @@ export default function NewEntryHandler({ children }) {
     <LoaderContext.Provider value={{ loaders, setLoaders }}>
       <Modal
         closeOnEsc={false}
+        contentProps={{
+          bg: 'blueGray.100',
+          h: 'auto',
+          mt: '12',
+        }}
         isOpen={isOpen}
         motionPreset="slideInBottom"
-        scrollBehavior="inside"
-        size="full"
+        scrollBehavior="outside"
+        size="3xl"
+        title={entryHeader}
         onClose={onClose}
       >
-        <ModalOverlay />
-        <ModalContent bg="gray.200" maxWidth="720px">
-          <ModalHeader
-            bg="gray.100"
-            borderBottomWidth="2px"
-            borderBottomColor="gray.400"
-            fontSize="2xl"
-          >
-            {entryHeader}
-          </ModalHeader>
-          <ModalCloseButton size="lg" onClick={onClose} />
-          <ModalBody py="4">
-            <Center>
-              <Box maxW="480px" w="100%">
-                {children}
-              </Box>
-            </Center>
-
-            {loaders.isCreating && (
-              <Box
-                bg="rgba(0, 0, 0, 0.5)"
-                w="100%"
-                h="100%"
-                position="absolute"
-                top="12px"
-                left="0"
-              />
-            )}
-          </ModalBody>
-        </ModalContent>
+        <Box px="8">{children}</Box>
+        {loaders.isCreating && (
+          <Box bg="rgba(0, 0, 0, 0.5)" w="100%" h="100%" position="absolute" top="12px" left="0" />
+        )}
       </Modal>
     </LoaderContext.Provider>
   );

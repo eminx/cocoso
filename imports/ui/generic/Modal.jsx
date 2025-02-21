@@ -10,10 +10,16 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 
+const defaultContentProps = {
+  bg: 'gray.100',
+  borderRadius: 'lg',
+  h: '80%',
+};
+
 function Modal({
   actionButtonLabel,
   actionButtonProps,
-  h = '80%',
+  contentProps,
   isCentered = true,
   isOpen,
   scrollBehavior = 'inside',
@@ -30,7 +36,7 @@ function Modal({
   return (
     <CModal {...modalProps} {...otherProps}>
       <ModalOverlay />
-      <ModalContent bg="gray.100" borderRadius="lg" h={h}>
+      <ModalContent {...defaultContentProps} {...contentProps}>
         {title && <ModalHeader fontSize="2xl">{title}</ModalHeader>}
         <ModalCloseButton onClick={onClose} />
         <ModalBody>{children}</ModalBody>

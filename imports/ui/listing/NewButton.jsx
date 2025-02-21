@@ -12,7 +12,7 @@ const getRoute = (item) => {
 };
 
 export default function NewButton() {
-  const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, role } = useContext(StateContext);
   const location = useLocation();
   const [, setSearchParams] = useSearchParams();
 
@@ -51,11 +51,11 @@ export default function NewButton() {
 
   return (
     <IconButton
-      _hover={{ bg: 'gray.300' }}
-      _focus={{ bg: 'gray.400' }}
+      _hover={{ bg: 'blueGray.200' }}
+      _focus={{ bg: 'blueGray.300' }}
       as="span"
-      bg="gray.200"
-      borderColor="gray.200"
+      bg="blueGray.50"
+      borderColor="blueGray.400"
       borderWidth="2px"
       borderRadius="lg"
       color="gray.600"

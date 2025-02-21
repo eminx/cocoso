@@ -127,11 +127,7 @@ export default function GenericEntryForm({
           {formFields.map((item, index) => (
             <Box key={item.value} w="100%">
               {index === childrenIndex && children}
-              <FormField
-                helperText={item.helper}
-                isRequired={item.props?.isRequired}
-                label={item.label}
-              >
+              <FormField {...item.props} helperText={item.helper} label={item.label}>
                 <FieldItemHandler control={control} item={item} register={register} />
               </FormField>
             </Box>
