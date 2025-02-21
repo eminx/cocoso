@@ -12,7 +12,6 @@ import {
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import DeleteIcon from 'lucide-react/dist/esm/icons/x';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
 
 import { call } from '../utils/shared';
 
@@ -194,13 +193,9 @@ export default function DatesAndTimes({
 
   const isDeletable = datesAndTimes.length > 1;
 
-  const datesAndTimesSorted = datesAndTimes?.sort(
-    (a, b) => dayjs(a?.startDate) - dayjs(b?.startDate)
-  );
-
   return (
     <Box mb="4" mt="2">
-      {datesAndTimesSorted.map((occurrence, index) => {
+      {datesAndTimes?.map((occurrence, index) => {
         const id = getOccurrenceId(occurrence);
         return (
           <Box key={id} {...containerProps} borderColor={getBorderColor(occurrence)}>

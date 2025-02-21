@@ -130,6 +130,9 @@ export default function RsvpHandler({ activity }) {
 
   const isRsvpEnabled = !activity.isRegistrationDisabled || activity.isRegistrationEnabled;
 
+  const today = new Date().toISOString().substring(0, 10);
+  const nextEvent = activity.datesAndTimes?.find((d) => d.startDate > today);
+
   return (
     <>
       <Box>
@@ -147,7 +150,7 @@ export default function RsvpHandler({ activity }) {
           </Button>
         </Center>
 
-        <SubInfo occurrence={activity.datesAndTimes[0]} />
+        <SubInfo occurrence={nextEvent} />
       </Box>
 
       <Modal
