@@ -63,7 +63,6 @@ Meteor.methods({
       const parsedGroups = parseGroupsWithMeetings(retrievedGroups, allGroupActivities);
       return parsedGroups;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },

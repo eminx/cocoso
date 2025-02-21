@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Heading, Text, Wrap } from '@chakra-ui/react';
 // import { Trans } from 'react-i18next';
 
@@ -50,17 +50,22 @@ const shortCuts = [
 ];
 
 export default function AdminHome() {
+  const navigate = useNavigate();
+
   return (
     <Wrap spacing="4">
       {shortCuts.map((item) => (
-        <Link to={item.link} key={item.label}>
-          <Boxling _hover={{ bg: 'white' }} w="200px">
-            <Heading color="blue.700" mb="2" size="md">
-              {item.label}
-            </Heading>
-            <Text>{item.helper}</Text>
-          </Boxling>
-        </Link>
+        <Boxling
+          key={item.label}
+          _hover={{ bg: 'white' }}
+          style={{ flex: '1 1 200px', cursor: 'pointer' }}
+          onClick={() => navigate(item.link)}
+        >
+          <Heading color="blue.700" mb="2" size="md">
+            {item.label}
+          </Heading>
+          <Text>{item.helper}</Text>
+        </Boxling>
       ))}
     </Wrap>
   );

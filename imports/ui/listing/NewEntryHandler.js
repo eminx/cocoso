@@ -114,12 +114,11 @@ export default function NewEntryHandler({ children }) {
         isOpen={isOpen}
         motionPreset="slideInBottom"
         scrollBehavior="inside"
-        size="3xl"
-        height="100%"
+        size="full"
         onClose={onClose}
       >
         <ModalOverlay />
-        <ModalContent bg="gray.200" borderRadius="lg">
+        <ModalContent bg="gray.200" maxWidth="720px">
           <ModalHeader
             bg="gray.100"
             borderBottomWidth="2px"
