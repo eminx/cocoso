@@ -59,7 +59,7 @@ menu:
   tabs:
     menuitems:
       label: Görünürlük, İsimlendirme ve Açıklama
-      info: Görünürlük için ögeleri aktif/pasifleştirebilir, menüyü oluşturmak için tercih ettiğin şekilde isimlendirebilir ve başlığın altında görünecek şekilde açıklama ekleyebilirsin.
+      info: Görünürlük için ögeleri aktif/pasifleştirebilir, menüyü oluşturmak için tercih ettiğin şekilde isimlendirebilir ve başlığın altında görünecek şekilde açıklama ekleyebilirsin. Açıklama, kullanıcılar listeleme sayfasını açtıklarında başlığın hemen altında görüntülenecektir. Dilersen boş bırak.
     order:
       label: Sıralama
       info: Görüntüleme sırasını değiştirmek istiyorsan, ögeleri yukarı ve aşağı sürükleyerek yeniden sırala

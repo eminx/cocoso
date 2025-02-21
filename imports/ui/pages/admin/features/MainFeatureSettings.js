@@ -135,9 +135,13 @@ export default function MainFeatureSettings({ itemName }) {
 
   return (
     <>
-      <Heading as="h3" size="sm" mt="6" mb="4">
+      <Heading as="h3" size="sm" mt="6" mb="2">
         {t('menu.tabs.menuitems.label')}
       </Heading>
+
+      <Text fontSize="sm" mb="4">
+        {t('menu.tabs.menuitems.info')}
+      </Text>
 
       <Boxling>
         <VStack align="flex-start" spacing="6">

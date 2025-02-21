@@ -59,7 +59,7 @@ menu:
   tabs:
     menuitems:
       label: Visibility, Labels & Description
-      info: Check/uncheck items for visibility, and label them as you prefer in order to compose the menu
+      info: Check/uncheck items for visibility, and label them as you prefer in order to compose the navigation menu. The description you provide will be displayed right under title when users open the listing page. Leave it empty if you prefer so.
     order:
       label: Order
       info: Reorder items by dragging up and down, if you want to change the display order

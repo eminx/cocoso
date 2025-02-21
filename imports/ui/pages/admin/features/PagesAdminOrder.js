@@ -62,10 +62,10 @@ export default function PagesAdminOrder() {
 
   return (
     <>
-      <Heading size="sm" mt="6" mb="4">
+      <Heading as="h3" size="sm" mt="6" mb="2">
         <Trans i18nKey="admin:pages.order.label" />
       </Heading>
-      <Text mb="4">
+      <Text fontSize="sm" mb="4">
         <Trans i18nKey="admin:pages.order.info" />
       </Text>
 

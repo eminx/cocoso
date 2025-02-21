@@ -59,7 +59,7 @@ menu:
   tabs:
     menuitems:
       label: Synlighet, benämning och beskrivning
-      info: Välj vilka funktioner du vill använda genom att markera/avmarkera menyns rubriker. Benämn menyns rubriker som det passar din community.
+      info: Välj vilka funktioner du vill använda genom att markera/avmarkera menyns rubriker. Benämn menyns rubriker som det passar din community. Beskrivningen du anger kommer att visas precis under rubriken när användare öppnar listsidan. Lämna den tom om du föredrar det.
     order:
       label: Ordning
       info: Du kan ändra ordning i menyn genom att dra de olika sidorna uppåt eller neråt. Den sida du lägger överst kommer fungera som er hemsida (här landar nya besökare när de kommer till er community)
