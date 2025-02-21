@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import parseHtml from 'html-react-parser';
+import dayjs from 'dayjs';
 
 import TablyCentered from './TablyCentered';
 import FancyDate, { DateJust } from './FancyDate';
@@ -10,9 +11,13 @@ import { accordionProps } from '../utils/constants/general';
 const { buttonProps } = accordionProps;
 
 function ActionDates({ activity }) {
+  const datesAndTimesSorted = activity?.datesAndTimes?.sort(
+    (a, b) => dayjs(a.startDate) - dayjs(b.startDate)
+  );
+
   return (
     <Flex justify="center" wrap="wrap">
-      {activity?.datesAndTimes.map(
+      {datesAndTimesSorted?.map(
         (occurence, occurenceIndex) =>
           occurence && (
             <Flex
