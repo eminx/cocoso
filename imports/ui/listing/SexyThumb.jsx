@@ -56,7 +56,7 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
     return null;
   }
 
-  const { datesAndTimes, hostName, subTitle, tag, title } = activity;
+  const { datesAndTimes, hostName, readingMaterial, subTitle, tag, title } = activity;
   const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
 
   const dates = datesAndTimes;
@@ -107,7 +107,7 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
         <Flex direction="column" h="100%" justify="space-between">
           <Box mt="2">
             <h3 className="thumb-title">{title}</h3>
-            <h4 className="thumb-subtitle">{subTitle}</h4>
+            <h4 className="thumb-subtitle">{subTitle || readingMaterial}</h4>
           </Box>
 
           {dates && (
