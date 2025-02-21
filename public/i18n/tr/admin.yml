@@ -58,7 +58,7 @@ menu:
   title: Menü
   tabs:
     menuitems:
-      label: Görünürlük ve İsimlendirme
+      label: Görünürlük, İsimlendirme ve Açıklama
       info: Görünürlük için ögeleri aktif/pasifleştirebilir, menüyü oluşturmak için tercih ettiğin şekilde isimlendirebilir ve başlığın altında görünecek şekilde açıklama ekleyebilirsin.
     order:
       label: Sıralama

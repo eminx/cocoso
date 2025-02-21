@@ -58,7 +58,7 @@ menu:
   title: Menu
   tabs:
     menuitems:
-      label: Visibility & Labels
+      label: Visibility, Labels & Description
       info: Check/uncheck items for visibility, and label them as you prefer in order to compose the menu
     order:
       label: Order

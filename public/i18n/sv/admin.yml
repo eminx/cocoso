@@ -58,7 +58,7 @@ menu:
   title: Meny
   tabs:
     menuitems:
-      label: Synlighet & benämning
+      label: Synlighet, benämning och beskrivning
       info: Välj vilka funktioner du vill använda genom att markera/avmarkera menyns rubriker. Benämn menyns rubriker som det passar din community.
     order:
       label: Ordning
