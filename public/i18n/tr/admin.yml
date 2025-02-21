@@ -67,12 +67,12 @@ menu:
   itemLabel: İsim
   info:
     activities: Etkinlikler ve grup toplantılarını içeren listeleme sayfası
-    groups: Gruplar ve süreçleri içeren listeleme sayfası
     calendar: Takvim sayfası
-    info: Bilgi sayfaları
-    works: Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası
-    members: Topluluk üyelerini içeren listeleme sayfası
+    groups: Gruplar ve süreçleri içeren listeleme sayfası
+    info: Statik bilgi sayfaları için listeleme sayfası
+    people: Topluluk üyelerini içeren listeleme sayfası
     resources: Topluluk kaynaklarını içeren listeleme sayfası
+    works: Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası
   headerMenu:
     title: Başlık Menüsü
     label: Başlık Menüsü masaüstü görünümde etkin
@@ -81,7 +81,7 @@ menu:
     label: Seçenekler
 
 categories:
-  title: İş kategorileri
+  title: Kategoriler
   info: İşler için kategorileri burdan girebilirsin
   message:
     denySpecialChars: Kısa çizgi (-) dışındaki özel karakterlere izin verilmez
@@ -169,5 +169,6 @@ pages:
       label: İmajlar
       helper: Tercihen, lütfen yayınlandığında bu sayfada bir slayt içinde görüntülenecek bir imaj veya bir dizi imaj seç
   order:
+    title: Sıra
     label: Sayfaların sırasını düzenle
     info: Sayfaları yukarı ve aşağı sürükleyerek yeniden sıralayabilirsin. Navigasyon menüsündeki görüntülenme sırasını etkiler

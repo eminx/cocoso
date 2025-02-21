@@ -85,7 +85,7 @@ export default function MenuSettings() {
 
           <Text mb="4">{t('menu.tabs.order.info')}</Text>
 
-          <Box>
+          <Boxling>
             {localSettings && localSettings.menu && (
               <SortableList onSortEnd={onSortMenuEnd}>
                 {localSettings.menu
@@ -94,7 +94,8 @@ export default function MenuSettings() {
                     <SortableItem key={value.name}>
                       <Flex
                         align="center"
-                        bg="blueGray.50"
+                        bg="white"
+                        boxShadow="md"
                         borderRadius="lg"
                         cursor="move"
                         mb="4"
@@ -107,13 +108,12 @@ export default function MenuSettings() {
                   ))}
               </SortableList>
             )}
-          </Box>
-
-          <Flex justify="flex-end" my="4">
-            <Button onClick={handleMenuSave} type="submit">
-              {tc('actions.submit')}
-            </Button>
-          </Flex>
+            <Flex justify="flex-end" my="6">
+              <Button onClick={handleMenuSave} type="submit">
+                {tc('actions.submit')}
+              </Button>
+            </Flex>
+          </Boxling>
         </Box>
       ),
     },

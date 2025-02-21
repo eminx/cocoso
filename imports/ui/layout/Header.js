@@ -78,9 +78,9 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
         suppressHydrationWarning
       >
         {pageTitles.map((item) => (
-          <Link key={item} to={`/info/${parseTitle(item)}`} suppressHydrationWarning>
-            <MenuItem as="span" id={item}>
-              {item}
+          <Link key={item._id} to={`/info/${parseTitle(item.title)}`} suppressHydrationWarning>
+            <MenuItem as="span" id={item._id}>
+              {item.title}
             </MenuItem>
           </Link>
         ))}

@@ -67,12 +67,12 @@ menu:
   itemLabel: Benämning
   info:
     activities: Den här funktionen listar offentliga evenemang och gruppmöten. Om ni klickar bort funktionen kan ni inte skapa eller synliggöra publika evenemang
-    groups: Den här funktionen listar grupper eller grouper. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller grouper
     calendar: Den här funktionen synliggör er kalender. Om ni klickar av funktionen blir kalendern inte synlig. Ni kan då inte göra bokningar av era resurser i kalendern
-    info: Den här funktionen används för att skapa informationssidor.
-    works: Den här funktionen kan användas för att skapa ett arkiv eller en portfolio, eller för att skapa poster för försäljning
-    members: Den här funktionen listar alla som gått med i er community. Om ni klickar bort funktionen blir listan inte synlig. Det går då heller inte att nå era medlemmars profilsidor
+    groups: Den här funktionen listar grupper eller grouper. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller grouper
+    info: Den här funktionen listar statiska informationssidorna
+    people: Den här funktionen listar alla som gått med i er community. Om ni klickar bort funktionen blir listan inte synlig. Det går då heller inte att nå era medlemmars profilsidor
     resources: Den här funktionen listar resurserna i er community. Om ni klickar bort funktionen blir listan inte synlig, och ni kan inte lägga till nya resurser. Befintliga resurser fortfarande kan ses och bokas i er kalender
+    works: Den här funktionen kan användas för att skapa ett arkiv eller en portfolio, eller för att skapa poster för försäljning
   headerMenu:
     title: Huvudmeny
     label: Huvudmeny aktiv på skrivbordet
@@ -81,7 +81,7 @@ menu:
     label: Alternativ
 
 categories:
-  title: Arbetskategorier
+  title: Kategorier
   info: Du kan ställa in kategorier för arbetsinlägg här
   message:
     denySpecialChars: Specialtecken, förutom bindestreck (-), är inte tillåtna
@@ -169,5 +169,6 @@ pages:
       label: Bilder
       helper: Ange en eller flera bilder. Om du väljer flera bilder kommer de visas som ett bildspel
   order:
+    title: Ordning
     label: Ändra sidordning
     info: Du kan ändra ordningen på sidorna genom att dra dem uppåt och nedåt. Det påverkar deras visningsordning i navigeringsmenyn

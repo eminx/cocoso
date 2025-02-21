@@ -96,7 +96,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const getPageTitles = async () => {
     try {
       const respond = await call('getPageTitles');
-      setPageTitles(respond.map((p) => p.title));
+      setPageTitles(respond);
     } catch (error) {
       console.log(error);
     }
@@ -148,6 +148,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               hue,
               isDesktop,
               isMobile,
+              pageTitles,
               platform,
               role,
               userLoading,

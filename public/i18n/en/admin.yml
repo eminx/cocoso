@@ -66,13 +66,13 @@ menu:
   itemActive: Active
   itemLabel: Label
   info:
-    activities: Listing page for public events & group (group) meetings
-    groups: Listing page for all groups (groups)
+    activities: Listing page for public events & process/group meetings
     calendar: Calendar page
-    info: Informational pages
-    works: Listing page for portfolio, marketplace or such entries
-    members: Listing page for all community members
+    groups: Listing page for all groups (groups)
+    info: Listing page for the static informational pages
+    people: Listing page for all community members
     resources: Listing page for the resources in your community
+    works: Listing page for portfolio, marketplace or such entries
   headerMenu:
     title: Header Menu
     label: Header Menu active on desktop
@@ -81,7 +81,7 @@ menu:
     label: Options
 
 categories:
-  title: Work Categories
+  title: Categories
   info: You can set categories for work entries here
   message:
     denySpecialChars: Special characters, except dash (-), are not allowed
@@ -169,5 +169,6 @@ pages:
       label: Images
       helper: Optionally, please enter an image or a set of images that will be displayed within a slider in this page when published
   order:
+    title: Order
     label: Reorder pages
     info: You may reorder the pages by dragging them up and down. It affects their display order in the navigation menu

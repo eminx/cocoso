@@ -24,7 +24,7 @@ const keyProps = {
 
 function Tablish({ rowItem }) {
   return (
-    <Flex>
+    <Flex w="100%">
       <Text {...keyProps}>{rowItem.key}</Text>
       <Box flexGrow="1">{rowItem.value}</Box>
     </Flex>
@@ -109,6 +109,7 @@ export default function MainFeatureSettings({ itemName }) {
       value: (
         <Input
           isDisabled={!localItem.isVisible}
+          maxW="240px"
           size="sm"
           value={localItem.label}
           onChange={(event) => handleMenuItemLabelChange(event.target.value)}
@@ -119,8 +120,12 @@ export default function MainFeatureSettings({ itemName }) {
       key: 'Description',
       value: (
         <Textarea
+          _focus={{
+            borderColor: 'gray.600',
+          }}
+          border="2px solid"
+          borderColor="gray.300"
           isDisabled={!localItem.isVisible}
-          w="lg"
           value={localItem.description}
           onChange={(event) => handleMenuItemDescriptionChange(event.target.value)}
         />
@@ -129,27 +134,29 @@ export default function MainFeatureSettings({ itemName }) {
   ];
 
   return (
-    <Boxling>
-      <Heading as="h4" fontSize="18px" mb="6">
+    <>
+      <Heading as="h3" size="sm" mt="6" mb="4">
         {t('menu.tabs.menuitems.label')}
       </Heading>
 
-      <VStack align="flex-start" spacing="6">
-        {rowItems.map((rowItem) => (
-          <Tablish key={rowItem.key} rowItem={rowItem} />
-        ))}
-      </VStack>
+      <Boxling>
+        <VStack align="flex-start" spacing="6">
+          {rowItems.map((rowItem) => (
+            <Tablish key={rowItem.key} rowItem={rowItem} />
+          ))}
+        </VStack>
 
-      <Flex justify="flex-end" my="4">
-        <Button
-          isDisabled={localItem === selectedMenuItem}
-          isLoading={submitting}
-          type="submit"
-          onClick={handleSave}
-        >
-          {tc('actions.submit')}
-        </Button>
-      </Flex>
-    </Boxling>
+        <Flex justify="flex-end" mt="6">
+          <Button
+            isDisabled={localItem === selectedMenuItem}
+            isLoading={submitting}
+            type="submit"
+            onClick={handleSave}
+          >
+            {tc('actions.submit')}
+          </Button>
+        </Flex>
+      </Boxling>
+    </>
   );
 }

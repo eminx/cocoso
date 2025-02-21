@@ -2,7 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Categories from '../Categories';
-import TablyRouter from '../../../generic/TablyRouter';
+import FeatureAdminWrapper from './_FeatureAdminWrapper';
+
+const menuItemName = 'works';
 
 export default function WorksAdmin() {
   const [t] = useTranslation('admin');
@@ -15,5 +17,5 @@ export default function WorksAdmin() {
     },
   ];
 
-  return <TablyRouter tabs={tabs} />;
+  return <FeatureAdminWrapper menuItemName={menuItemName} furtherTabs={tabs} />;
 }

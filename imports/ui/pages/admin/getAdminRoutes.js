@@ -64,44 +64,44 @@ const getAdminRoutes = (menuItems) => [
     content: [
       {
         label: getMenuLabel(menuItems, 'activities'),
-        value: 'features/activities',
+        value: 'features/activities/*',
         content: <ActivitiesAdmin />,
       },
       {
         label: getMenuLabel(menuItems, 'calendar'),
-        value: 'features/calendar',
+        value: 'features/calendar/*',
         content: <CalendarAdmin />,
       },
-      {
-        label: (
-          <Text as="span">
-            <Trans i18nKey="common:platform.communities" />
-            <Code bg="gray.50" fontSize="xs" ml="2">
-              /communities
-            </Code>
-          </Text>
-        ),
-        value: 'features/communities',
-        content: <CommunitiesAdmin />,
-      },
+      // {
+      //   label: (
+      //     <Text as="span">
+      //       <Trans i18nKey="common:platform.communities" />
+      //       <Code bg="gray.50" fontSize="xs" ml="2">
+      //         /communities
+      //       </Code>
+      //     </Text>
+      //   ),
+      //   value: 'features/communities/*',
+      //   content: <CommunitiesAdmin />,
+      // },
       {
         label: getMenuLabel(menuItems, 'groups'),
-        value: 'features/groups',
+        value: 'features/groups/*',
         content: <GroupsAdmin />,
       },
       {
         label: getMenuLabel(menuItems, 'info'),
-        value: 'features/pages',
+        value: 'features/pages/*',
         content: <PagesAdmin />,
       },
       {
         label: getMenuLabel(menuItems, 'people'),
-        value: 'features/people',
+        value: 'features/people/*',
         content: <PeopleAdmin />,
       },
       {
         label: getMenuLabel(menuItems, 'resources'),
-        value: 'features/resources',
+        value: 'features/resources/*',
         content: <ResourcesAdmin />,
       },
       {

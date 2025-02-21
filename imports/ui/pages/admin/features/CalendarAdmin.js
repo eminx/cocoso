@@ -1,6 +1,9 @@
 import React from 'react';
-import Boxling from '../Boxling';
+
+import FeatureAdminWrapper from './_FeatureAdminWrapper';
+
+const menuItemName = 'calendar';
 
 export default function CalendarAdmin() {
-  return <Boxling>Currently no settings enabled</Boxling>;
+  return <FeatureAdminWrapper menuItemName={menuItemName} />;
 }
