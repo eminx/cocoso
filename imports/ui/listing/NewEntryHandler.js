@@ -107,18 +107,18 @@ export default function NewEntryHandler({ children }) {
       <Modal
         closeOnEsc={false}
         contentProps={{
-          bg: 'blueGray.100',
+          bg: 'blueGray.50',
           h: 'auto',
           mt: '12',
         }}
         isOpen={isOpen}
         motionPreset="slideInBottom"
         scrollBehavior="outside"
-        size="3xl"
+        size="2xl"
         title={entryHeader}
         onClose={() => setConfirmOpen(true)}
       >
-        <Box px="8">{children}</Box>
+        {children}
         {loaders.isCreating && (
           <Box bg="rgba(0, 0, 0, 0.5)" w="100%" h="100%" position="absolute" top="12px" left="0" />
         )}
