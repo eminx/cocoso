@@ -151,6 +151,11 @@ modals:
       body: Are you sure you want to delete this entry?
       cantundo: You can NOT undo this action
       yes: Yes, delete
+    newentry:
+      title: Confirm Cancelling
+      body: Are you sure you want to cancel? Your changes will be lost.
+      cancel: Go back
+      yes: Yes, it's OK
 
   # FEEDBACK FORM
   feedback:

@@ -148,6 +148,11 @@ modals:
       body: Är du säker på att du vill ta bort denna inlägg?
       cantundo: Detta kan inte ångras
       yes: Ja, radera
+    newentry:
+      title: Bekräfta avbrytningen
+      body: Är du säker på att du vill avbryta? Dina ändringar kommer att raderas.
+      cancel: Gå tillbaka
+      yes: Ja, det är okej
 
   # FEEDBACK FORM
   feedback:

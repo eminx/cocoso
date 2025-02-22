@@ -148,6 +148,11 @@ modals:
       body: Bu içeriği silmek istediğine emin misin?
       cantundo: Bu işlem geri alınamaz
       yes: Evet, sil
+    newentry:
+      title: İptali onayla
+      body: İptal etmek istediğinden emin misin? Değişiklikler silinecektir.
+      cancel: Geri dön
+      yes: Evet, sıkıntı yok
 
   # FEEDBACK FORM
   feedback:

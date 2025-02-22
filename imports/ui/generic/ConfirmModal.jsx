@@ -34,12 +34,13 @@ function ConfirmModal({
       isOpen={visible}
       leastDestructiveRef={cancelRef}
       scrollBehavior="inside"
+      zIndex={9999}
       onClose={onOverlayClick || onCancel}
       onOverlayClick={onOverlayClick || onCancel}
       {...otherProps}
     >
-      <AlertDialogOverlay zIndex="1404">
-        <AlertDialogContent>
+      <AlertDialogOverlay zIndex={9999}>
+        <AlertDialogContent zIndex={9999}>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
           </AlertDialogHeader>
@@ -53,7 +54,13 @@ function ConfirmModal({
               <Button ref={cancelRef} size="sm" variant="outline" onClick={onCancel}>
                 {cancelText || tc('actions.cancel')}
               </Button>
-              <Button ml={3} size="sm" onClick={onConfirm} {...confirmButtonProps}>
+              <Button
+                colorScheme="red"
+                ml={3}
+                size="sm"
+                onClick={onConfirm}
+                {...confirmButtonProps}
+              >
                 {confirmText || tc('actions.submit')}
               </Button>
             </AlertDialogFooter>

@@ -6,6 +6,7 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
 import Modal from '../generic/Modal';
+import ConfirmModal from '../generic/ConfirmModal';
 
 export const initialLoaderValues = {
   isCreating: false,
@@ -61,20 +62,17 @@ export default function NewEntryHandler({ children }) {
   const isOpen = forNew || forEdit;
   const { canCreateContent, currentHost } = useContext(StateContext);
   const [loaders, setLoaders] = useState(initialLoaderValues);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [tc] = useTranslation('common');
 
   const onClose = () => {
-    // if (!confirm('Your changes will be lost')) {
-    //   return;
-    // }
-
+    setConfirmOpen(false);
     setLoaders(initialLoaderValues);
     if (forEdit) {
       setSearchParams((params) => ({ ...params, edit: 'false' }));
       return;
     }
     setSearchParams((params) => ({ ...params, new: 'false' }));
-    setLoaders(initialLoaderValues);
   };
 
   const loaderValue = getLoaderValue(loaders);
@@ -118,13 +116,24 @@ export default function NewEntryHandler({ children }) {
         scrollBehavior="outside"
         size="3xl"
         title={entryHeader}
-        onClose={onClose}
+        onClose={() => setConfirmOpen(true)}
       >
         <Box px="8">{children}</Box>
         {loaders.isCreating && (
           <Box bg="rgba(0, 0, 0, 0.5)" w="100%" h="100%" position="absolute" top="12px" left="0" />
         )}
       </Modal>
+
+      <ConfirmModal
+        confirmText={tc('modals.confirm.newentry.yes')}
+        cancelText={tc('modals.confirm.newentry.cancel')}
+        title={tc('modals.confirm.newentry.title')}
+        visible={confirmOpen}
+        onConfirm={onClose}
+        onCancel={() => setConfirmOpen(false)}
+      >
+        {tc('modals.confirm.newentry.body')}
+      </ConfirmModal>
     </LoaderContext.Provider>
   );
 }
