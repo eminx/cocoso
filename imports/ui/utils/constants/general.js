@@ -142,12 +142,12 @@ const maximumDocumentSizeForUploads = '30 MB';
 
 const accordionProps = {
   buttonProps: {
-    _hover: { bg: 'brand.400', color: 'white' },
+    _hover: { bg: 'brand.600', color: 'white' },
     _expanded: { bg: 'brand.500', color: 'white' },
-    bg: 'brand.100',
+    bg: 'brand.700',
     borderWidth: '0',
     borderRadius: 'lg',
-    color: 'brand.900',
+    color: 'brand.50',
     cursor: 'pointer',
   },
   itemProps: {
