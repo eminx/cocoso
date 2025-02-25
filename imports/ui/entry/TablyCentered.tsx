@@ -25,7 +25,59 @@ import NiceSlider from '../generic/NiceSlider';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
 
-function AvatarHolder({ author }) {
+interface Author {
+  username: string;
+  src?: string;
+}
+
+interface AvatarHolderProps {
+  author: Author | null;
+}
+
+interface HeaderProps {
+  author: Author | null;
+  backLink?: string;
+  subTitle?: string;
+  tags?: string[] | null;
+  title: string;
+}
+
+interface AdminMenuItem {
+  label: string;
+  link?: string;
+  onClick?: () => void;
+}
+
+interface AdminMenuProps {
+  adminMenu: {
+    label: string;
+    items: AdminMenuItem[];
+  } | null;
+}
+
+interface Tab {
+  path: string;
+  title: string;
+  content: React.ReactNode;
+}
+
+interface TablyCenteredProps {
+  action?: React.ReactNode;
+  adminMenu?: {
+    label: string;
+    items: AdminMenuItem[];
+  } | null;
+  author?: Author | null;
+  backLink?: string;
+  content?: React.ReactNode;
+  images?: string[];
+  subTitle?: string;
+  tabs?: Tab[];
+  title: string;
+  tags?: string[];
+}
+
+const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
   if (!author) {
     return null;
   }
@@ -33,13 +85,7 @@ function AvatarHolder({ author }) {
     <Box mt="2">
       <Link to={`/@${author.username}/`}>
         <VStack _hover={{ textDecoration: 'underline' }} justify="center" spacing="0">
-          <Avatar
-            borderRadius="lg"
-            elevation="medium"
-            name={author.username}
-            showBorder
-            src={author.src}
-          />
+          <Avatar borderRadius="lg" name={author.username} showBorder src={author.src} />
           <CLink as="span" color="brand.500">
             {author.username}
           </CLink>
@@ -47,13 +93,13 @@ function AvatarHolder({ author }) {
       </Link>
     </Box>
   );
-}
+};
 
-function Header({ author, backLink, subTitle, tags, title }) {
-  const [copied, setCopied] = useState(false);
+const Header: React.FC<HeaderProps> = ({ author, backLink, subTitle, tags, title }) => {
+  const [copied, setCopied] = useState<boolean>(false);
   const location = useLocation();
 
-  const handleCopyLink = async () => {
+  const handleCopyLink = async (): Promise<void> => {
     const host = window?.location?.host;
     try {
       await navigator.clipboard.writeText(`https://${host}${location.pathname}`);
@@ -66,7 +112,6 @@ function Header({ author, backLink, subTitle, tags, title }) {
   const renderTitles = () => (
     <Center>
       <Flex p="4" justify={author ? 'space-between' : 'center'} w="100%" maxW="720px">
-        {/* {author && <Box w="48px" />} */}
         <Box px="2">
           <Heading
             as="h1"
@@ -120,7 +165,6 @@ function Header({ author, backLink, subTitle, tags, title }) {
           variant="link"
           onClick={() => handleCopyLink()}
         >
-          {/* {copied ? tc('actions.copied') : tc('actions.share')} */}
           {copied ? (
             <Trans i18nKey="actions.copied" ns="common">
               Link copied!
@@ -135,9 +179,9 @@ function Header({ author, backLink, subTitle, tags, title }) {
       {renderTitles()}
     </Box>
   );
-}
+};
 
-function AdminMenu({ adminMenu }) {
+const AdminMenu: React.FC<AdminMenuProps> = ({ adminMenu }) => {
   if (!adminMenu || !adminMenu.label || !adminMenu.items) {
     return null;
   }
@@ -162,9 +206,9 @@ function AdminMenu({ adminMenu }) {
       </MenuList>
     </Menu>
   );
-}
+};
 
-function TablyCentered({
+const TablyCentered: React.FC<TablyCenteredProps> = ({
   action = null,
   adminMenu = null,
   author = null,
@@ -175,13 +219,13 @@ function TablyCentered({
   tabs,
   title,
   tags = null,
-}) {
+}) => {
   const location = useLocation();
 
   const pathnameLastPart = location.pathname.split('/').pop();
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  const description = subTitle || content || author?.username;
+  const description = subTitle || content?.toString() || author?.username;
   const imageUrl = images && images[0];
 
   return (
@@ -239,7 +283,7 @@ function TablyCentered({
                       {tabs.map((tab) => (
                         <Route key={tab.title} path={tab.path} element={<Box>{tab.content}</Box>} />
                       ))}
-                      <Route path="*" exact element={tabs[0].content} />
+                      <Route path="*" element={tabs[0].content} />
                     </Routes>
                   ) : (
                     <Box pt="2">{content}</Box>
@@ -252,6 +296,6 @@ function TablyCentered({
       </Center>
     </>
   );
-}
+};
 
 export default TablyCentered;
