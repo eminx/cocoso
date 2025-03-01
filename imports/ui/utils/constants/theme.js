@@ -21,10 +21,6 @@ const generateTheme = (hue) => {
   const color = brand(hue, '40');
 
   const theme = extendTheme({
-    // fontFamily: {
-    //   heading: `'Raleway', ${baseTheme.fonts?.heading}`,
-    //   body: `'Sarabun', ${baseTheme.fonts?.body}`,
-    // },
     initialColorMode: 'dark',
     colors: {
       brand: {
@@ -67,7 +63,6 @@ const generateTheme = (hue) => {
     components: {
       Button: {
         baseStyle: {
-          // borderRadius: 0,
           whiteSpace: 'normal',
         },
         defaultProps: {
@@ -82,11 +77,11 @@ const generateTheme = (hue) => {
           luxx: luxxStyle,
         },
       },
-      Heading: defineStyle({
+      Heading: {
         baseStyle: {
           fontFamily: 'Raleway',
         },
-      }),
+      },
       Input: {
         defaultProps: {
           _placeholderShown: { opacity: 0.71, color: 'gray.700' },
@@ -95,14 +90,6 @@ const generateTheme = (hue) => {
         },
         variants: {
           luxx: luxxStyle,
-        },
-      },
-      Menu: {
-        baseStyle: {
-          list: {
-            // borderColor: 'brand.500',
-            // borderRadius: 0,
-          },
         },
       },
       Modal: {
@@ -171,8 +158,6 @@ const generateTheme = (hue) => {
     styles: {
       global: () => ({
         body: {
-          // color: mode('gray.800', 'whiteAlpha.900')(props),
-          // bg: mode('gray.100', '#141214')(props),
           fontFamily: 'Sarabun',
         },
       }),
