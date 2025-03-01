@@ -39,7 +39,9 @@
         "peerDependencies": false,
         "packageDir": "./"
       }
-    ]
+    ],
+    "import/no-absolute-path": "off",
+    "import/prefer-default-export": "off"
   },
   "settings": {
     "import/resolver": {
