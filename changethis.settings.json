@@ -1,3 +1,5 @@
+// Move this file into a new folder called "private" and rename it to "settings.json" with your secret credentials. Like: /private/settings.json
+
 {
   "public": {
     "name": "Cocoso",
