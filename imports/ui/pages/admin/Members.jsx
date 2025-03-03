@@ -10,7 +10,7 @@ import { message } from '../../generic/message';
 import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
-import UsageReport from '../../admin/UsageReport';
+import UsageReport from './UsageReport';
 import Boxling from './Boxling';
 import TablyRouter from '../../generic/TablyRouter';
 
