@@ -1,4 +1,4 @@
-// Move this file into a new folder called "private" and rename it to "settings.json" with your secret credentials. Like: /private/settings.json
+// Please move this file into a new folder called "private" and rename it to "settings.json" (like: /private/settings.json) with your relevant, secret credentials.
 
 {
   "public": {
