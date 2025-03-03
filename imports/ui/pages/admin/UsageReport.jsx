@@ -8,9 +8,9 @@ import Select from 'react-select';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
-import Drawer from '../generic/Drawer';
-import { call } from '../utils/shared';
-import { message } from '../generic/message';
+import Drawer from '../../generic/Drawer';
+import { call } from '../../utils/shared';
+import { message } from '../../generic/message';
 
 function compareDatesForSort(a, b) {
   const dateA = new Date(`${a.startDate}T${a.startTime}:00Z`);
@@ -18,7 +18,30 @@ function compareDatesForSort(a, b) {
   return dateB - dateA;
 }
 
-function UsageReport({ user, onClose }) {
+function Title({ username, resources, onChange, value }) {
+  const [t] = useTranslation('members');
+
+  return (
+    <Flex align="center" w="100%" wrap="wrap">
+      <Heading size="md" mr="4" mb="2">
+        {t('report.title', { username })}
+      </Heading>
+      <Text w="240px" size="md">
+        <Select
+          isClearable
+          isSearchable
+          name="resource"
+          options={resources}
+          size="sm"
+          value={value}
+          onChange={onChange}
+        />
+      </Text>
+    </Flex>
+  );
+}
+
+export default function UsageReport({ user, onClose }) {
   const [activities, setActivities] = useState(null);
   const [totalHours, setTotalHours] = useState(null);
   const [resources, setResources] = useState(null);
@@ -26,10 +49,6 @@ function UsageReport({ user, onClose }) {
 
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-
-  useEffect(() => {
-    getActivitiesbyUserId();
-  }, [user, selectedResource]);
 
   const getActivitiesbyUserId = async () => {
     if (!user) {
@@ -47,6 +66,10 @@ function UsageReport({ user, onClose }) {
       message.error(error.reason || error.error);
     }
   };
+
+  useEffect(() => {
+    getActivitiesbyUserId();
+  }, [user, selectedResource]);
 
   const parseActivities = (response) => {
     const allParsedActivities = [];
@@ -202,28 +225,3 @@ function UsageReport({ user, onClose }) {
     </Drawer>
   );
 }
-
-function Title({ username, resources, onChange, value }) {
-  const [t] = useTranslation('members');
-
-  return (
-    <Flex align="center" w="100%" wrap="wrap">
-      <Heading size="md" mr="4" mb="2">
-        {t('report.title', { username: username })}
-      </Heading>
-      <Text w="240px" size="md">
-        <Select
-          isClearable
-          isSearchable
-          name="resource"
-          options={resources}
-          size="sm"
-          value={value}
-          onChange={onChange}
-        />
-      </Text>
-    </Flex>
-  );
-}
-
-export default UsageReport;
