@@ -162,12 +162,12 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
       </form>
 
       <ConfirmModal
-        title="Terms of Service & Privacy Policy"
-        visible={modalOpen}
         confirmText={tc('actions.confirmRead')}
         cancelText={tc('actions.close')}
         scrollBehavior="inside"
         size="full"
+        title="Terms of Service & Privacy Policy"
+        visible={modalOpen}
         onConfirm={confirmModal}
         onCancel={() => setModalOpen(false)}
         onClickOutside={() => setModalOpen(false)}

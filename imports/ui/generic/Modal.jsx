@@ -33,6 +33,8 @@ function Modal({
 }) {
   const modalProps = { isCentered, isOpen, scrollBehavior, onClose };
 
+  console.log('actionButtonProps', actionButtonProps);
+
   return (
     <CModal {...modalProps} {...otherProps}>
       <ModalOverlay />

@@ -81,8 +81,7 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
         message.success(t('meeting.attends.remove'));
         onClose();
       } catch (error) {
-        console.log('error', error);
-        message.error(error.error);
+        message.error(error.error || error.reason);
       }
     } else {
       try {
@@ -92,8 +91,7 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
         message.success(t('meeting.attends.register'));
         onClose();
       } catch (error) {
-        console.log('error', error);
-        message.error(error.error);
+        message.error(error.error || error.reason);
       }
     }
   };
@@ -112,7 +110,6 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
       getGroupById();
       setDelButtonDisabled(false);
     } catch (error) {
-      console.log(error);
       message.error(error.error);
     }
   };
@@ -224,13 +221,11 @@ export default function GroupMeetingDates(props) {
           <Center>
             {isMember && (
               <Button
-                bg="white"
                 borderColor="brand.100"
                 borderWidth="2px"
                 colorScheme="brand"
                 height="48px"
                 size={isDesktop ? 'lg' : 'md'}
-                variant="outline"
                 width={isDesktop ? '240px' : '180px'}
                 onClick={() => setModalOpen(true)}
               >
@@ -253,7 +248,7 @@ export default function GroupMeetingDates(props) {
           <Center>
             {!isMember && (
               <Button
-                color="green.200"
+                color="brand.50"
                 fontSize="sm"
                 variant="link"
                 onClick={() => setModalOpen(true)}

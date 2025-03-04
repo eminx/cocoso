@@ -37,6 +37,9 @@ export default function LeaveButton() {
       </Center>
 
       <ConfirmModal
+        confirmButtonProps={{
+          colorScheme: 'red',
+        }}
         visible={modalOpen}
         title={t('modal.leave.title')}
         onConfirm={leaveGroup}
