@@ -35,7 +35,7 @@ function SimplePage({ description, images, title }) {
 
       {description && (
         <Center>
-          <Box bg="white" className="text-content" maxW="540px" p="6" my="4">
+          <Box bg="white" className="text-content" maxW="540px" mt="2" mb="24" p="6">
             {description && parseHtml(description)}
           </Box>
         </Center>
