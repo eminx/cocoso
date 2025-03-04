@@ -20,6 +20,8 @@ export default function GroupAdminFunctions() {
     if (item.kind === 'edit') {
       setSearchParams({ edit: 'true' });
       return;
+    } else if (item.kind === 'delete') {
+      setSearchParams({ delete: 'true' });
     }
     setPopup(item.kind);
   };
@@ -44,6 +46,10 @@ export default function GroupAdminFunctions() {
     {
       kind: 'edit',
       label: tc('actions.update'),
+    },
+    {
+      kind: 'delete',
+      label: tc('actions.remove'),
     },
   ];
 
