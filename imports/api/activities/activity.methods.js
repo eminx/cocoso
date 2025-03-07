@@ -201,14 +201,18 @@ Meteor.methods({
           {
             $or: [
               {
-                'datesAndTimes.startDate': { $gte: startDate, $lte: endDate },
+                'datesAndTimes.startDate': { $lt: endDate },
+                'datesAndTimes.endDate': { $gt: startDate },
               },
               {
-                'datesAndTimes.endDate': { $gte: startDate, $lte: endDate },
+                'datesAndTimes.startDate': endDate,
+                'datesAndTimes.startTime': { $lt: endTime },
+                'datesAndTimes.endTime': { $gt: startTime },
               },
               {
-                'datesAndTimes.startDate': { $lte: startDate },
-                'datesAndTimes.endDate': { $gte: endDate },
+                'datesAndTimes.endDate': startDate,
+                'datesAndTimes.startTime': { $lt: endTime },
+                'datesAndTimes.endTime': { $gt: startTime },
               },
             ],
           },
@@ -228,29 +232,7 @@ Meteor.methods({
       return null;
     }
 
-    const conflictingOccurrenceInSameDay = activityWithConflict?.datesAndTimes?.find(
-      (occurrence) => occurrence.startDate === endDate || occurrence.endDate === startDate
-    );
-
-    if (!conflictingOccurrenceInSameDay) {
-      return activityWithConflict;
-    }
-
-    if (
-      endDate === conflictingOccurrenceInSameDay.startDate &&
-      endTime > conflictingOccurrenceInSameDay.startTime
-    ) {
-      return activityWithConflict;
-    }
-
-    if (
-      startDate === conflictingOccurrenceInSameDay.endDate &&
-      startTime < conflictingOccurrenceInSameDay.endTime
-    ) {
-      return activityWithConflict;
-    }
-
-    return null;
+    return activityWithConflict;
   },
 
   async createActivity(values) {
