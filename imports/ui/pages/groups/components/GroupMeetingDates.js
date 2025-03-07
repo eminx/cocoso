@@ -22,7 +22,7 @@ import { accordionProps } from '../../../utils/constants/general';
 import { message } from '../../../generic/message';
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
-import { StateContext } from '../../../LayoutContainer';
+import ActionButton from '../../../generic/ActionButton';
 
 const { buttonProps, itemProps, panelProps } = accordionProps;
 
@@ -193,7 +193,6 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
 export default function GroupMeetingDates(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
-  const { isDesktop } = useContext(StateContext);
 
   const { group, isMember } = props;
 
@@ -220,17 +219,7 @@ export default function GroupMeetingDates(props) {
         <Box>
           <Center>
             {isMember && (
-              <Button
-                borderColor="brand.100"
-                borderWidth="2px"
-                colorScheme="brand"
-                height="48px"
-                size={isDesktop ? 'lg' : 'md'}
-                width={isDesktop ? '240px' : '180px'}
-                onClick={() => setModalOpen(true)}
-              >
-                {t('actions.register')}
-              </Button>
+              <ActionButton label={t('actions.register')} onClick={() => setModalOpen(true)} />
             )}
           </Center>
           <Center>

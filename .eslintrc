@@ -30,6 +30,7 @@
       }
     ],
     "no-underscore-dangle": "off",
+    "import/no-absolute-path": "off",
     "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }],
     "import/no-extraneous-dependencies": [
       "error",
