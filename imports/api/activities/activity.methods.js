@@ -55,7 +55,6 @@ Meteor.methods({
       );
       return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
@@ -88,7 +87,6 @@ Meteor.methods({
       );
       return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
@@ -115,7 +113,6 @@ Meteor.methods({
       const allActsParsed = parseGroupActivities(allActs);
       return filterPrivateGroups(allActsParsed, user);
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
