@@ -106,10 +106,8 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
 
     const numberOfPeople = Number(values.numberOfPeople);
 
-    console.log('capacity', capacity, registeredNumberOfAttendees, numberOfPeople);
     if (capacity < registeredNumberOfAttendees + numberOfPeople) {
       const capacityLeft = capacity - registeredNumberOfAttendees;
-      console.log(capacityLeft);
       message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
     }
@@ -127,7 +125,6 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
       resetRsvpModal();
       message.success(t('public.attendance.create'));
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -171,7 +168,6 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
       resetRsvpModal();
       message.success(t('public.attendance.update'));
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -207,7 +203,6 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
         isRsvpCancelModalOn: false,
       });
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -225,7 +220,6 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
 
     if (!foundAttendee) {
       message.error(t('public.register.notFound'));
-      alert('Attendee not found');
       return;
     }
 
