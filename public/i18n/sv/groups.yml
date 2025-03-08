@@ -57,6 +57,7 @@ actions:
   archive: Arkivera
   unarchive: Avarkivera
   register: Se datum & OSA
+  invite: Bjuda in
 
 meeting:
   attends:

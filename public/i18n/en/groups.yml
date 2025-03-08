@@ -57,6 +57,7 @@ actions:
   archive: Archive
   unarchive: Unarchive
   register: See dates & RSVP
+  invite: Invite to Group
 
 meeting:
   attends:
