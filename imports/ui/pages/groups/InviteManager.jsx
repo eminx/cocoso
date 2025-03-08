@@ -1,5 +1,4 @@
-import { Meteor } from 'meteor/meteor';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   Box,
@@ -15,9 +14,10 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import FormField from '../../forms/FormField';
-import { emailIsValid, includesSpecialCharacters } from '../../utils/shared';
+import { call, emailIsValid, includesSpecialCharacters } from '../../utils/shared';
 import { message } from '../../generic/message';
 import Drawer from '../../generic/Drawer';
+import { GroupContext } from './Group';
 
 const EmailsContainer = (props) => (
   <Box>
@@ -28,11 +28,12 @@ const EmailsContainer = (props) => (
   </Box>
 );
 
-export default function InviteManager({ group }) {
+export default function InviteManager() {
   const [state, setState] = useState({
     emailInput: '',
     firstNameInput: '',
   });
+  const { group, getGroupById } = useContext(GroupContext);
   const [t] = useTranslation('groups');
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -45,7 +46,6 @@ export default function InviteManager({ group }) {
       message.error(t('invite.email.already'));
       return true;
     }
-
     return false;
   };
 
@@ -61,11 +61,10 @@ export default function InviteManager({ group }) {
       message.error(t('invite.firstName.valid'));
       return true;
     }
-
     return false;
   };
 
-  const handleSendInvite = (event) => {
+  const handleSendInvite = async (event) => {
     event.preventDefault();
     if (isAlreadyInvited() || isValuesInvalid()) {
       return;
@@ -76,28 +75,28 @@ export default function InviteManager({ group }) {
       email: state.emailInput,
     };
 
-    Meteor.call('invitePersonToPrivateGroup', group._id, person, (error) => {
-      if (error) {
-        message.error(error.reason);
-        return;
-      }
+    try {
+      await call('invitePersonToPrivateGroup', group._id, person);
+      await getGroupById();
       message.success(t('invite.success', { name: state.firstNameInput }));
       setState((prevState) => ({
         ...prevState,
         firstNameInput: '',
         emailInput: '',
       }));
-    });
+    } catch (error) {
+      message.error(error.reason || error.error);
+    }
   };
 
-  const handleRemoveInvite = (person) => {
-    Meteor.call('removePersonFromInvitedList', group._id, person, (error) => {
-      if (error) {
-        message.error(error.error);
-        return;
-      }
+  const handleRemoveInvite = async (person) => {
+    try {
+      await call('removePersonFromInvitedList', group._id, person);
+      await getGroupById();
       message.success(t('invite.remove.success'));
-    });
+    } catch (error) {
+      message.error(error.reason || error.error);
+    }
   };
 
   const handleEmailInputChange = (event) => {
@@ -117,7 +116,7 @@ export default function InviteManager({ group }) {
   };
 
   const isOpen = searchParams.get('invite') === 'true';
-  console.log('wtf', isOpen);
+
   return (
     <Drawer
       isOpen={isOpen}
