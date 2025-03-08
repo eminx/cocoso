@@ -101,12 +101,8 @@ const Header: React.FC<HeaderProps> = ({ author, backLink, subTitle, tags, title
 
   const handleCopyLink = async (): Promise<void> => {
     const host = window?.location?.host;
-    try {
-      await navigator.clipboard.writeText(`https://${host}${location.pathname}`);
-      setCopied(true);
-    } catch (error) {
-      console.log(error);
-    }
+    await navigator.clipboard.writeText(`https://${host}${location.pathname}`);
+    setCopied(true);
   };
 
   const renderTitles = () => (
@@ -136,7 +132,7 @@ const Header: React.FC<HeaderProps> = ({ author, backLink, subTitle, tags, title
             </Heading>
           )}
           {tags && tags.length > 0 && (
-            <Wrap flexGrow="0" justify={author ? 'flex-start' : 'center'} mt="4">
+            <Wrap flexGrow="0" justify={author ? 'flex-start' : 'center'} mt="2">
               {tags.map((tag, i) => (
                 <Badge key={tag + i} bg="gray.50" color="gray.800" fontSize="14px">
                   {tag}
@@ -218,7 +214,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
   subTitle,
   tabs,
   title,
-  tags = null,
+  tags,
 }) => {
   const location = useLocation();
 

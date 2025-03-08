@@ -53,10 +53,10 @@ labels:
     activities: Update Event
     calendar: Update Activity
     groups: Update Process/Group
+    info: Update Info Page
     pages: Update Page
     resources: Update Resource
     works: Update Post
-    info: Update Info Page
   event: Event
   bookings: Bookings
   newBooking: New Booking
@@ -97,6 +97,7 @@ labels:
   select: Select
   form:
     title: Enter the details
+  private: Private
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

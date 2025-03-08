@@ -91,7 +91,7 @@ function PopupHeader({ subTitle, tags, title }) {
   );
 }
 
-function PopupContent({ action = null, content, images, subTitle, title, tags = null }) {
+function PopupContent({ action = null, content, images, subTitle, title, tags }) {
   return (
     <>
       <PopupHeader subTitle={subTitle} tags={tags} title={title} />
@@ -151,12 +151,8 @@ export default function PopupHandler({ item, kind, onClose }) {
 
   const handleCopyLink = async () => {
     const link = getLinkPath(item, kind);
-    try {
-      await navigator.clipboard.writeText(link.path);
-      setCopied(true);
-    } catch (error) {
-      console.log(error);
-    }
+    await navigator.clipboard.writeText(link.path);
+    setCopied(true);
   };
 
   const handleActionButtonClick = () => {
@@ -167,6 +163,15 @@ export default function PopupHandler({ item, kind, onClose }) {
     }
     navigate(link.path);
   };
+
+  const tags = [];
+  if (isPortalHost) {
+    const hostName = allHosts?.find((h) => h.host === item.host)?.name;
+    tags.push(hostName);
+  }
+  if (item.isPrivate) {
+    tags.push(tc('labels.private'));
+  }
 
   return (
     <Modal
@@ -188,7 +193,7 @@ export default function PopupHandler({ item, kind, onClose }) {
           }
           images={item.images || [item.imageUrl]}
           subTitle={item.subTitle || item.readingMaterial || item.shortDescription || null}
-          tags={isPortalHost ? [allHosts?.find((h) => h.host === item.host)?.name] : null}
+          tags={tags}
           title={item.title || item.label}
         />
       </ModalBody>

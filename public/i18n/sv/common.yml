@@ -54,6 +54,7 @@ labels:
     calendar: Uppdatera aktivitetet
     groups: Uppdatera processgruppen
     info: Uppdatera infosidan
+    pages: Update sidan
     resources: Uppdatera resursen
     works: Uppdatera inlägget
   event: Arrangemang
@@ -96,6 +97,7 @@ labels:
   select: Välja
   form:
     title: Ange detaljer
+  private: Privat
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

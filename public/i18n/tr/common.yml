@@ -54,6 +54,7 @@ labels:
     calendar: Aktiviteyi güncelle
     groups: Süreç grubunu güncelle
     info: Bilgi sayfasını güncelle
+    pages: Sayfayı güncelle
     resources: Kaynağı güncelle
     works: İlanı güncelle
   event: Etkinlik
@@ -96,6 +97,7 @@ labels:
   select: Seç
   form:
     title: Detayları gir
+  private: Gizli
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
