@@ -49,7 +49,7 @@ function ThumbDate({ date }) {
   );
 }
 
-export default function SexyThumb({ activity, host, index, showPast = false }) {
+export default function SexyThumb({ activity, host, index, showPast = false, tags }) {
   const { allHosts } = isClient && useContext(StateContext);
 
   if (!activity) {
@@ -110,6 +110,15 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
           <Box mt="2">
             <h3 className="thumb-title">{title}</h3>
             <h4 className="thumb-subtitle">{subTitle || readingMaterial}</h4>
+            {tags && (
+              <Flex my="2">
+                {tags.map((t) => (
+                  <CTag key={t} bg="rgba(255, 255, 255, .8)" size="sm">
+                    {t}
+                  </CTag>
+                ))}
+              </Flex>
+            )}
           </Box>
 
           {dates && (
