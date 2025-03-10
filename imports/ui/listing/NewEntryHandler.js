@@ -107,7 +107,7 @@ export default function NewEntryHandler({ children }) {
       <Modal
         closeOnEsc={false}
         contentProps={{
-          bg: 'blueGray.50',
+          bg: 'gray.50',
           h: 'auto',
           mt: '12',
         }}
