@@ -80,7 +80,10 @@ export default function NewEntryHandler({ children }) {
   renderToasts(loaders, tc, justUpdated);
 
   const href = useHref();
-  const context = href.split('/')[1] || currentHost?.settings?.menu[0]?.name;
+  let context = href.split('/')[1] || currentHost?.settings?.menu[0]?.name;
+  if (context[0] === '@') {
+    context = 'works';
+  }
   const string = `common:labels.${forEdit ? 'update' : 'create'}.${context}`;
 
   const entryHeader = (
