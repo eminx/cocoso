@@ -29,7 +29,7 @@ export default function SlideWidget({ slideStart, children, ...otherProps }) {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      if (scrollTop > contentContainerHeight - 620) {
+      if (scrollTop > contentContainerHeight - 626) {
         if (position === 'relative') {
           return;
         }
