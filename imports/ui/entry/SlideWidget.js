@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Slide } from '@chakra-ui/react';
 
 const flexProps = {
@@ -20,8 +20,33 @@ const slideProps = (slideStart) => ({
 });
 
 export default function SlideWidget({ slideStart, children, ...otherProps }) {
+  const [position, setPosition] = useState('fixed');
+
+  const contentContainer = document?.getElementById('main-content-container');
+  const contentContainerHeight = contentContainer.offsetHeight;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      if (scrollTop > contentContainerHeight - 620) {
+        if (position === 'relative') {
+          return;
+        }
+        setPosition('relative');
+      } else {
+        setPosition('fixed');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <Slide {...slideProps(slideStart)} style={{ zIndex: 10 }}>
+    <Slide {...slideProps(slideStart)} style={{ zIndex: 10, position }}>
       <Flex {...flexProps} {...otherProps}>
         {children}
       </Flex>

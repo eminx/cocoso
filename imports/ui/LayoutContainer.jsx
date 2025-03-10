@@ -169,7 +169,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               {children}
             </DummyWrapper>
 
-            {rendered && (
+            {rendered && !adminPage && (
               <Box>
                 <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} />
                 {isFederationFooter && <PlatformFooter platform={platform} />}
