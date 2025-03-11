@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
+import { Trans } from 'react-i18next';
 
 import { StateContext } from '../../../LayoutContainer';
 import { ActivityContext } from '../Activity';
@@ -19,10 +20,20 @@ export default function ActivityInteractionHandler({ slideStart }) {
 
   const { isPublicActivity } = activity;
 
+  const title = (
+    <Flex align="center">
+      <Trans i18nKey="common:labels.discussion" />
+      <Text fontSize="sm" fontWeight="normal" ml="2" mt="1">
+        <Trans i18nKey="common:labels.chat.onlyverified" />
+      </Text>
+    </Flex>
+  );
+
   const chatProps = {
     context: 'activities',
     currentUser,
     item: activity,
+    title,
     withInput: true,
   };
 

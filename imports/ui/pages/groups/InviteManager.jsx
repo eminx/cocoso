@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import {
   Box,
   Button,
+  Flex,
   Heading,
   Input,
   Tag,
@@ -141,11 +142,14 @@ export default function InviteManager() {
               value={state.firstNameInput}
             />
           </FormField>
-
-          <Button onClick={handleSendInvite}>{t('invite.submit')}</Button>
+          <FormField>
+            <Flex justifyContent="flex-end">
+              <Button onClick={handleSendInvite}>{t('invite.submit')}</Button>
+            </Flex>
+          </FormField>
         </VStack>
 
-        <Box py="6">
+        <Box py="8">
           <EmailsContainer title="People Invited" count={peopleInvited?.length}>
             {peopleInvited?.map((person) => (
               <Tag
@@ -153,6 +157,7 @@ export default function InviteManager() {
                 borderRadius="full"
                 colorScheme="green"
                 mb="2"
+                mr="2"
                 px="4"
                 py="2"
                 variant="solid"

@@ -98,6 +98,9 @@ labels:
   form:
     title: Enter the details
   private: Private
+  chat:
+    onlymembers: Only for group members
+    onlyverified: Only for verified users
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

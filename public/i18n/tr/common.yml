@@ -98,6 +98,9 @@ labels:
   form:
     title: Detayları gir
   private: Gizli
+  chat:
+    onlymembers: Yalnızca grup üyeleri için
+    onlyverified: Yalnızca onaylanmış kullanıcılar için
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Center, IconButton, VStack } from '@chakra-ui/react';
+import { Button, Center, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
@@ -7,7 +7,7 @@ import { call } from '../utils/shared';
 import Drawer from '../generic/Drawer';
 import { Chattery, useChattery } from '../chattery';
 
-export function ChatUI({ context, currentUser, item, open, withInput, setOpen }) {
+export function ChatUI({ context, currentUser, item, open, title, withInput, setOpen }) {
   const [tc] = useTranslation('common');
   const { discussion } = item && useChattery(item._id);
 
@@ -53,8 +53,7 @@ export function ChatUI({ context, currentUser, item, open, withInput, setOpen })
       bg="gray.300"
       bodyProps={{ paddingTop: 0, paddingBottom: 0 }}
       isOpen={open}
-      title={tc('labels.discussion')}
-      // titleColor="gray.50"
+      title={title || tc('labels.discussion')}
       onClose={() => setOpen(false)}
     >
       <Chattery
@@ -67,11 +66,11 @@ export function ChatUI({ context, currentUser, item, open, withInput, setOpen })
   );
 }
 
-export function ChatButton({ context, currentUser, item, withInput }) {
+export function ChatButton({ context, currentUser, item, title, withInput }) {
   const [open, setOpen] = useState(false);
   const [tc] = useTranslation('common');
 
-  const props = { context, currentUser, item, open, withInput, setOpen };
+  const props = { context, currentUser, item, open, title, withInput, setOpen };
 
   return (
     <>
