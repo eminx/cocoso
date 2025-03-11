@@ -1,4 +1,4 @@
-import { defineStyle, extendTheme } from '@chakra-ui/react';
+import { extendTheme } from '@chakra-ui/react';
 
 const brand = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 

@@ -65,9 +65,9 @@ export default function NewEntryHandler({ children }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [tc] = useTranslation('common');
 
-  const onClose = () => {
-    setConfirmOpen(false);
+  const handleCancelAndClose = () => {
     setLoaders(initialLoaderValues);
+    setConfirmOpen(false);
     if (forEdit) {
       setSearchParams((params) => ({ ...params, edit: 'false' }));
       return;
@@ -132,7 +132,7 @@ export default function NewEntryHandler({ children }) {
         cancelText={tc('modals.confirm.newentry.cancel')}
         title={tc('modals.confirm.newentry.title')}
         visible={confirmOpen}
-        onConfirm={onClose}
+        onConfirm={handleCancelAndClose}
         onCancel={() => setConfirmOpen(false)}
       >
         {tc('modals.confirm.newentry.body')}

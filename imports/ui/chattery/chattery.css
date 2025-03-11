@@ -1,22 +1,27 @@
+.main-chatter-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .chattery-window-container {
+  flex-grow: 1;
   width: 100%;
-  float: none;
 }
 
 .chattery-window {
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  max-height: 70vh;
-  min-height: 320px;
+  height: calc(100vh - 183px);
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: white;
 }
 
 .chattery-inputform-container {
-  padding: 12px;
-  background-color: #fff;
+  flex-grow: 0;
+  padding: 12px 0;
+  border-top: 1px solid #aaa;
 }
 
 .chattery-inputform {
@@ -27,15 +32,15 @@
   min-height: 96px;
   padding: 6px 10px;
   background-color: #fff;
-  border: 1px solid #888;
-  border-radius: 4px;
+  border: 2px solid #888;
+  border-radius: 8px;
   box-shadow: none;
   box-sizing: border-box;
   flex-grow: 1;
 }
 
 .chattery-input:focus {
-  border: 1px solid cornflowerblue;
+  border: 2px solid #555;
   outline: 0;
 }
 
@@ -43,13 +48,17 @@
   width: 60px;
   height: 38px;
   margin-left: 8px;
-  border: 1px solid #888;
-  border-radius: 4px;
+  border: 2px solid #888;
+  border-radius: 8px;
   box-sizing: border-box;
   background-color: #fff;
   font-size: 14px;
   font-weight: 500;
   flex-basis: 60px;
+}
+
+.chattery-submitbutton:focus {
+  border: 2px solid #555;
 }
 
 .talk-bubble-container {
@@ -135,7 +144,7 @@
   top: 10px;
   bottom: auto;
   border: 12px solid;
-  border-color: #eee #eee transparent transparent;
+  border-color: #fff #fff transparent transparent;
 }
 
 /*Right triangle, placed bottom left side slightly in*/
@@ -332,7 +341,7 @@
 }
 
 .talk-bubble.left-in {
-  background-color: #eee;
+  background-color: #fff;
 }
 
 .talk-bubble.left-in .talktext,
@@ -353,7 +362,8 @@
 
 /* Handle */
 .chattery-window::-webkit-scrollbar-thumb {
-  background: #888;
+  border-radius: 8px;
+  background: #777;
 }
 
 /* Handle on hover */

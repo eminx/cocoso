@@ -44,17 +44,24 @@ export function ChatUI({ context, currentUser, item, open, withInput, setOpen })
     try {
       await call('removeNotification', item._id, messageIndex);
     } catch (error) {
-      // console.log('error', error);
+      console.log('error', error);
     }
   };
 
   return (
-    <Drawer isOpen={open} title={tc('labels.discussion')} onClose={() => setOpen(false)}>
+    <Drawer
+      bg="gray.300"
+      bodyProps={{ paddingTop: 0, paddingBottom: 0 }}
+      isOpen={open}
+      title={tc('labels.discussion')}
+      // titleColor="gray.50"
+      onClose={() => setOpen(false)}
+    >
       <Chattery
         messages={discussion}
+        withInput={withInput}
         onNewMessage={addNewChatMessage}
         removeNotification={removeNotification}
-        withInput={withInput}
       />
     </Drawer>
   );
@@ -82,18 +89,13 @@ export function ChatButton({ context, currentUser, item, withInput }) {
             variant="ghost"
             onClick={() => setOpen(true)}
           />
-          <Button
-            color="brand.50"
-            // fontWeight="normal"
-            size="xs"
-            variant="link"
-            onClick={() => setOpen(true)}
-          >
+          <Button color="brand.50" size="xs" variant="link" onClick={() => setOpen(true)}>
             {tc('labels.discussion')}
           </Button>
         </VStack>
       </Center>
-      {open && <ChatUI {...props} />}
+
+      <ChatUI {...props} />
     </>
   );
 }

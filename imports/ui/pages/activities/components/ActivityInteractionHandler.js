@@ -19,6 +19,13 @@ export default function ActivityInteractionHandler({ slideStart }) {
 
   const { isPublicActivity } = activity;
 
+  const chatProps = {
+    context: 'activities',
+    currentUser,
+    item: activity,
+    withInput: true,
+  };
+
   if (currentUser && (role === 'admin' || activity.authorId === currentUser._id)) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
@@ -26,7 +33,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
         {isPublicActivity ? (
           <>
             <RsvpHandler activity={activity} />
-            <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
+            <ChatButton {...chatProps} />
           </>
         ) : (
           <Box />
@@ -40,7 +47,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <Box />
         <RsvpHandler activity={activity} />
-        <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
+        <ChatButton {...chatProps} />
       </SlideWidget>
     );
   }
