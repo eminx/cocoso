@@ -42,7 +42,7 @@ labels:
   contact: Contact
   content: Content
   create:
-    activities: New Event
+    activities: New Activity
     calendar: New Activity
     groups: New Process/Group
     info: New Info Page
@@ -50,7 +50,7 @@ labels:
     works: New Post
     host: New Community
   update:
-    activities: Update Event
+    activities: Update Activity
     calendar: Update Activity
     groups: Update Process/Group
     info: Update Info Page

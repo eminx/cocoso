@@ -42,17 +42,17 @@ labels:
   contact: İletişim
   content: İçerik
   create:
-    activities: Yeni etkinlik
+    activities: Yeni aktivite
     calendar: Yeni aktivite
-    groups: Yeni süreç grubu
+    groups: Yeni grup/süreç
     info: Yeni bilgi sayfası
     resources: Yeni kaynak
     works: Yeni İlan
     host: Yeni topluluk
   update:
-    activities: Etkinliği güncelle
+    activities: Aktiviteyi güncelle
     calendar: Aktiviteyi güncelle
-    groups: Süreç grubunu güncelle
+    groups: Grubu/Süreci güncelle
     info: Bilgi sayfasını güncelle
     pages: Sayfayı güncelle
     resources: Kaynağı güncelle

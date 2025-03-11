@@ -42,17 +42,17 @@ labels:
   contact: Kontakt
   content: Innehåll
   create:
-    activities: Nytt evenemang
+    activities: Nytt aktivitet
     calendar: Ny aktivitet
-    groups: Ny grupp / process
+    groups: Ny grupp/process
     info: Ny infosida
     resources: Ny resurs
     works: Ny inlägg
     host: Ny community
   update:
-    activities: Uppdatera evenemanget
+    activities: Uppdatera aktivitetet
     calendar: Uppdatera aktivitetet
-    groups: Uppdatera processgruppen
+    groups: Uppdatera gruppen/processen
     info: Uppdatera infosidan
     pages: Update sidan
     resources: Uppdatera resursen
