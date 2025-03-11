@@ -204,7 +204,7 @@ export default function DatesAndTimes({
             <Box mb="2">
               <FormControl w="auto" alignItems="center" display="flex">
                 <Switch
-                  isChecked={occurrence?.isRange}
+                  isChecked={occurrence?.isRange || occurrence.startDate !== occurrence.endDate}
                   id={id}
                   onChange={(event) => handleRangeSwitch(event, index)}
                   py="2"

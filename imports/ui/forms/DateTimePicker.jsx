@@ -58,7 +58,7 @@ export default function DateTimePicker({ value, onChange }) {
   const [t] = useTranslation('activities');
   const { i18n } = useTranslation();
 
-  const isRange = value?.isRange;
+  const isRange = value?.isRange || value.startDate !== value.endDate;
   let locale = en;
   if (i18n.language === 'sv') {
     locale = sv;
