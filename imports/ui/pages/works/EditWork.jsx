@@ -14,7 +14,6 @@ export default function EditWork() {
 
   const updateWork = async (newWork) => {
     const workId = work._id;
-
     try {
       await call('updateWork', workId, newWork);
       await getWorkById(workId);

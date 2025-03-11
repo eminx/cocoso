@@ -41,6 +41,7 @@ message:
   usage:
     noUsage: Bu kullanıcı henüz bir kaynak kullanmamış
   sortedRandomly: Rastgele sıralandı
+  categorymissing: Lütfen bir kategori seç
 
 profile:
   labels:

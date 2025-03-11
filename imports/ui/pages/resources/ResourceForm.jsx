@@ -60,10 +60,7 @@ export default function ResourceForm({ resource, onFinalize }) {
   const handleSubmit = (formValues) => {
     setState((prevState) => ({
       ...prevState,
-      formValues: {
-        ...formValues,
-        capacity: Number(formValues.capacity),
-      },
+      formValues,
     }));
     setLoaders((prevState) => ({
       ...prevState,
@@ -72,17 +69,13 @@ export default function ResourceForm({ resource, onFinalize }) {
   };
 
   const parseResource = async (images) => {
-    try {
-      const newResource = {
-        ...state.formValues,
-        images,
-        isCombo: state.isCombo,
-        resourcesForCombo: state.resourcesForCombo,
-      };
-      onFinalize(newResource);
-    } catch (error) {
-      console.log(error);
-    }
+    const newResource = {
+      ...state.formValues,
+      images,
+      isCombo: state.isCombo,
+      resourcesForCombo: state.resourcesForCombo,
+    };
+    onFinalize(newResource);
   };
 
   const handleUploadedImages = (images) => {

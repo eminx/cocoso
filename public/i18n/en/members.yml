@@ -41,6 +41,7 @@ message:
   usage:
     noUsage: No usage is recorded for this user
   sortedRandomly: Sorted randomly
+  categorymissing: Please select a category
 
 profile:
   labels:

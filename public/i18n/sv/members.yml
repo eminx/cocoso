@@ -41,6 +41,7 @@ message:
   usage:
     noUsage: Inga bokningar har registrerats för denna användare
   sortedRandomly: Sorteras slumpmässigt
+  categorymissing: Välj en kategori
 
 profile:
   labels:
