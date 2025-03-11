@@ -134,7 +134,16 @@ const Header: React.FC<HeaderProps> = ({ author, backLink, subTitle, tags, title
           {tags && tags.length > 0 && (
             <Wrap flexGrow="0" justify={author ? 'flex-start' : 'center'} mt="2">
               {tags.map((tag, i) => (
-                <Badge key={tag + i} bg="gray.50" color="gray.800" fontSize="14px">
+                <Badge
+                  key={tag + i}
+                  bg="gray.50"
+                  borderRadius="lg"
+                  color="gray.800"
+                  fontSize="14px"
+                  px="2"
+                  py="1"
+                  textTransform="capitalize"
+                >
                   {tag}
                 </Badge>
               ))}

@@ -31,23 +31,25 @@ function Tag({
     <Flex
       background={getBackground()}
       border={gradientBackground && checkable ? 'none' : `1px solid ${filterColor || '#484848'}`}
-      borderRadius="0px"
-      display="inline-block"
+      borderRadius="lg"
+      display="inline-flex"
       p={gradientBackground && checkable ? '2px' : '0'}
       {...otherProps}
     >
       <Box
         bg={checkable && checked ? 'none' : 'white'}
         border={checkable && !checked ? 'white' : 'none'}
+        borderRadius="lg"
         cursor="pointer"
         px="2"
+        pb="1px"
         onClick={onClick}
       >
         <Text
           as="span"
           color={checked ? 'white' : filterColor}
-          fontSize="xs"
-          fontWeight={checkable ? 'normal' : 'bold'}
+          fontSize="sm"
+          textTransform="capitalize"
         >
           {label}
         </Text>

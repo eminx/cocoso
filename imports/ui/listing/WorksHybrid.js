@@ -66,7 +66,7 @@ export default function WorksHybrid({ works, Host }) {
               checkable
               checked={category === cat.label}
               filterColor={cat.color}
-              label={cat.label && cat.label.toUpperCase()}
+              label={cat.label}
               mb="2"
               mr="2"
               onClick={() => setCategoryFilter(cat.label)}
