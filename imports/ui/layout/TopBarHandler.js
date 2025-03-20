@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Fade, Flex, Slide } from '@chakra-ui/react';
 
 import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
-import { StateContext } from '../LayoutContainer';
 
 export default function TopBarHandler({ slideStart }) {
-  const { isDesktop } = useContext(StateContext);
   const [scrollTop, setScrollTop] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,8 +39,6 @@ export default function TopBarHandler({ slideStart }) {
           </Flex>
         </Fade>
       </Slide>
-
-      {!isDesktop && <Box h="42px" w="100%" />}
     </>
   );
 }

@@ -90,7 +90,7 @@ export default function ActivityHybrid({ activity, Host }) {
       content: (
         <Box bg="white" p="6">
           {activity.datesAndTimes?.map((occurrence) => (
-            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2">
+            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2" mb="4">
               <FancyDate occurrence={occurrence} />
             </Box>
           ))}

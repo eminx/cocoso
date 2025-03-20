@@ -31,6 +31,18 @@ body {
   }
 }
 
+.wrapper {
+  background-color: var(--chakra-colors-gray-100);
+  min-height: 100vh;
+  margin-bottom: 480px;
+  padding-top: 0;
+  transition: all 0.5s ease;
+}
+
+.wrapper.mobile-wrapper {
+  padding-top: 48px;
+}
+
 .logo {
   max-width: 280px;
   max-height: 120px;
