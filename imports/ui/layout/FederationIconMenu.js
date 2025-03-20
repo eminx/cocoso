@@ -24,11 +24,12 @@ import NiceSlider from '../generic/NiceSlider';
 const buttonProps = {
   color: 'gray.700',
   fontFamily: "'Sarabun', sans-serif",
-  fontSize: '16px',
+  fontSize: '14px',
   fontWeight: 'normal',
   p: '2',
+  px: '0',
   textAlign: 'left',
-  variant: 'ghost',
+  variant: 'link',
 };
 
 export default function FederationIconMenu() {
@@ -73,8 +74,8 @@ export default function FederationIconMenu() {
           cursor="pointer"
           fit="contain"
           src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
-          w={isDesktop ? '54px' : '40px'}
-          h={isDesktop ? '54px' : '40px'}
+          w={isDesktop ? '44px' : '28px'}
+          h={isDesktop ? '44px' : '28px'}
           onClick={() => handleSetHostInfo()}
         />
         {currentUser ? (
@@ -83,7 +84,7 @@ export default function FederationIconMenu() {
             onOpen={() => setMenuOpen(true)}
             onClose={() => setMenuOpen(false)}
           >
-            <MenuButton {...buttonProps} as={Button} rightIcon={<ChevronDownIcon size="18px" />}>
+            <MenuButton {...buttonProps} as={Button} rightIcon={<ChevronDownIcon size="16px" />}>
               {currentUser ? t('profile.myCommunities') : tc('labels.allCommunities')}
             </MenuButton>
 
