@@ -29,7 +29,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
       content: (
         <Wrap justify="center" spacing="2" pt="4">
           {resource.resourcesForCombo.map((res) => (
-            <Box key={res._id} bg="white" borderRadius="lg" cursor="pointer" p="2" textAlign="left">
+            <Box key={res._id} bg="white" borderRadius="lg" p="2" textAlign="left">
               <Text fontSize="lg">{res.label}</Text>
             </Box>
           ))}
