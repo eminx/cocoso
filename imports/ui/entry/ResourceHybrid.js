@@ -1,7 +1,7 @@
 import React from 'react';
-import { Badge, Box, Wrap } from '@chakra-ui/react';
+import { Box, Wrap, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
-import parseHtml from 'html-react-parser';
+import HTMLReactParser from 'html-react-parser';
 
 import TablyCentered from './TablyCentered';
 import DocumentsField from '../pages/resources/components/DocumentsField';
@@ -16,7 +16,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {resource?.description && parseHtml(resource?.description)}
+          {resource?.description && HTMLReactParser(resource?.description)}
         </Box>
       ),
       path: 'info',
@@ -27,11 +27,11 @@ export default function ResourceHybrid({ documents, resource, Host }) {
     tabs.push({
       title: <Trans i18nKey="resources:labels.combo">Combo</Trans>,
       content: (
-        <Wrap>
+        <Wrap justify="center" spacing="2" pt="4">
           {resource.resourcesForCombo.map((res) => (
-            <Badge key={res._id} fontSize="16px">
-              {res.label}
-            </Badge>
+            <Box key={res._id} bg="white" borderRadius="lg" cursor="pointer" p="2" textAlign="left">
+              <Text fontSize="lg">{res.label}</Text>
+            </Box>
           ))}
         </Wrap>
       ),
