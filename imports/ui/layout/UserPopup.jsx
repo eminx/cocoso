@@ -85,7 +85,9 @@ export function UserThumb({ isNotification = false }) {
         textAlign="left"
         noOfLines={1}
       >
-        <Text fontSize={isDesktop ? 'md' : 'sm'}>{currentUser.username}</Text>
+        <Text fontSize={isDesktop ? 'md' : 'sm'} fontWeight="bold">
+          {currentUser.username}
+        </Text>
         <Text fontSize={isDesktop ? 'sm' : 'xs'} fontWeight="light" isTruncated>
           {getFullName(currentUser)}
         </Text>

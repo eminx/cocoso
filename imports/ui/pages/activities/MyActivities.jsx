@@ -34,16 +34,18 @@ function ActivityItem({ act }) {
     <HStack align="flex-start" bg="white" p="3" w="100%">
       {act.isPublicActivity && (
         <Box p="2">
-          <Image fit="cover" w="xs" fill src={act.imageUrl} />
+          <Image fit="cover" w="xs" fill src={act.imageUrl || (act.images && act.images[0])} />
         </Box>
       )}
       <Box w="100%">
         <Heading mb="2" overflowWrap="anywhere" size="md">
           {act.title}
         </Heading>
-        <Tag>
-          <TagLabel>{act.resource}</TagLabel>
-        </Tag>
+        {act.resource && (
+          <Tag mb="2">
+            <TagLabel>{act.resource}</TagLabel>
+          </Tag>
+        )}
         <Text fontWeight="light">{act.subTitle}</Text>
         <Text fontStyle="italic" p="1" textAlign="right">
           {act.datesAndTimes.length} {t('members.occurences')}
