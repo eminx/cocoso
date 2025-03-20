@@ -11,11 +11,12 @@ import ResourceHybrid from '../../ui/entry/ResourceHybrid';
 import WorksHybrid from '../../ui/listing/WorksHybrid';
 import WorkHybrid from '../../ui/entry/WorkHybrid';
 import UsersHybrid from '../../ui/listing/UsersHybrid';
+// import UserHybrid from '../../ui/entry/UserHybrid';
 import PageHybrid from '../../ui/entry/PageHybrid';
 import ActivitiesHybrid from '../../ui/listing/ActivitiesHybrid';
 import CommunitiesHybrid from '../../ui/pages/hosts/CommunitiesHybrid';
 
-export function ActivitiesList({ host, sink }) {
+export function ActivityList({ host, sink }) {
   const [searchParams] = useSearchParams();
   const showPast = Boolean(searchParams.get('showPast') === 'true');
 
@@ -63,7 +64,7 @@ export function Activity({ host, sink }) {
   );
 }
 
-export function GroupsList({ host, sink }) {
+export function GroupList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const groups = Meteor.call('getGroupsWithMeetings', Host?.isPortalHost, host);
 
@@ -102,7 +103,7 @@ export function Group({ host, sink }) {
   );
 }
 
-export function ResourcesList({ host, sink }) {
+export function ResourceList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const resources = Host.isPortalHost
     ? Meteor.call('getResourcesFromAllHosts')
@@ -147,7 +148,7 @@ export function Resource({ host, sink }) {
   );
 }
 
-export function WorksList({ host, sink }) {
+export function WorkList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const works = Host.isPortalHost
     ? Meteor.call('getAllWorksFromAllHosts')
@@ -211,7 +212,7 @@ export function Page({ host, sink }) {
   );
 }
 
-export function UsersList({ host, sink }) {
+export function UserList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const users = Host.isPortalHost
     ? Meteor.call('getAllMembersFromAllHosts')
@@ -289,17 +290,17 @@ export function Home(props) {
 
     switch (firstRoute) {
       case 'activities':
-        return <ActivitiesList {...props} />;
+        return <ActivityList {...props} />;
       case 'groups':
-        return <GroupsList {...props} />;
+        return <GroupList {...props} />;
       case 'works':
-        return <WorksList {...props} />;
+        return <WorkList {...props} />;
       case 'resources':
-        return <ResourcesList {...props} />;
+        return <ResourceList {...props} />;
       case 'info':
         return <Page {...props} />;
       default:
-        return <UsersList {...props} />;
+        return <UserList {...props} />;
     }
   };
 
