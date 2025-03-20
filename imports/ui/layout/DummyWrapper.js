@@ -2,9 +2,9 @@ import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { HydrationProvider } from 'react-hydration-provider';
 
-export default function DummyWrapper({ children, isDesktop = true, otherProps }) {
+export default function DummyWrapper({ children, animate = false, otherProps }) {
   let wrapperClass = 'wrapper';
-  if (!isDesktop) {
+  if (animate) {
     wrapperClass += ' mobile-wrapper';
   }
 

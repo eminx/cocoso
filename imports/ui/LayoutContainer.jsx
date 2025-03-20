@@ -159,7 +159,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               setSelectedHue,
             }}
           >
-            <DummyWrapper isDesktop={isDesktop}>
+            <DummyWrapper animate={rendered && !isDesktop}>
               {rendered && !adminPage && (
                 <TopBarHandler currentUser={currentUser} slideStart={rendered} />
               )}

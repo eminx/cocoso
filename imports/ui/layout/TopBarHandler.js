@@ -3,6 +3,7 @@ import { Box, Fade, Flex, Slide } from '@chakra-ui/react';
 
 import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
+import MenuDrawer from './MenuDrawer';
 
 export default function TopBarHandler({ slideStart }) {
   const [scrollTop, setScrollTop] = useState(0);
@@ -20,6 +21,12 @@ export default function TopBarHandler({ slideStart }) {
     };
   }, []);
 
+  // const burgerMenuStyle = {
+  //   position: 'fixed',
+  //   top: isDesktop ? '72px' : '60px',
+  //   right: '8px',
+  // };
+
   return (
     <>
       <Slide
@@ -33,12 +40,21 @@ export default function TopBarHandler({ slideStart }) {
             <Box p="1" pointerEvents="all">
               <FederationIconMenu />
             </Box>
-            <Box p="1" pointerEvents="all">
+            <Flex p="1" pointerEvents="all">
               <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
-            </Box>
+              <Box px="2">
+                <MenuDrawer />
+              </Box>
+            </Flex>
           </Flex>
         </Fade>
       </Slide>
+
+      {/* <Fade in={scrollTop < 120}>
+        <Box style={burgerMenuStyle}>
+          <MenuDrawer in={slideStart} />
+        </Box>
+      </Fade> */}
     </>
   );
 }

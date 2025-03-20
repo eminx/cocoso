@@ -30,6 +30,8 @@ const buttonProps = {
   px: '0',
   textAlign: 'left',
   variant: 'link',
+  isTruncated: true,
+  noOfLines: 1,
 };
 
 export default function FederationIconMenu() {

@@ -73,10 +73,12 @@ menu:
     people: Topluluk üyelerini içeren listeleme sayfası
     resources: Topluluk kaynaklarını içeren listeleme sayfası
     works: Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası
-  headerMenu:
-    title: Başlık Menüsü
-    label: Başlık Menüsü masaüstü görünümde etkin
-    text: Menü simgesine tıklandığında çekmecenin gösterilmesi yerine, menünün masaüstünde sayfanın üst kısmında görünmesini sağlar
+  burgermenu:
+    title: Burger Menü
+    label: Burger Menü aktif
+    mobile: Burger Menü mobil görüntülemede aktif
+    desktop: Burger Menü masaüstü görüntülemede aktif
+    text: İsteğe bağlı olarak burger menüyü aktifleştir. Burger menü, ekranın sağ üst köşesindeki "burger" simgesine tıklandığında görünen menüdür.
   options:
     label: Seçenekler
 

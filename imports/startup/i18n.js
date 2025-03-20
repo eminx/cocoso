@@ -62,8 +62,8 @@ const options = {
   },
   saveMissing: true,
   supportedLngs: allLangs.map((l) => l.value),
-  // useSuspense: process && !process.release,
-  useSuspense: false,
+  useSuspense: process && !process.release,
+  // useSuspense: false,
 };
 
 // for browser use http backend to load translations and browser lng detector

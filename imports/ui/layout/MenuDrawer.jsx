@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Box, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
 import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
-import { useTranslation } from 'react-i18next';
 
 import Drawer from '../generic/Drawer';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
+import { StateContext } from '../LayoutContainer';
 
 function MenuContent({ menuItems, onToggle }) {
   const location = useLocation();
@@ -56,14 +57,26 @@ const getRoute = (item) => {
   return `/${item.name}`;
 };
 
-export default function MenuDrawer({ currentHost, isDesktop, platform }) {
+export default function MenuDrawer() {
+  const { currentHost, isDesktop, platform } = useContext(StateContext);
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
 
-  const { menu } = currentHost?.settings;
+  const settings = currentHost?.settings;
+  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } = settings || {};
+
+  if (isDesktop && !isBurgerMenuOnDesktop) {
+    return null;
+  }
+
+  if (!isDesktop && !isBurgerMenuOnMobile) {
+    return null;
+  }
+
+  const menu = currentHost?.settings?.menu;
 
   const menuItems = menu
-    .filter((item) => item.isVisible)
+    ?.filter((item) => item.isVisible)
     .map((item, index) => ({
       ...item,
       route: getRoute(item, index),
@@ -84,9 +97,9 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
       <Flex align="center" flexDirection="column">
         <IconButton
           _hover={{
-            bg: 'brand.500',
+            bg: 'gray.800',
           }}
-          bg="gray.800"
+          bg="gray.600"
           borderColor="#fff"
           borderWidth="2px"
           icon={<HamburgerIcon fontSize="24px" />}
@@ -102,6 +115,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
       <Drawer
         bg="white"
         isOpen={isOpen}
+        size="sm"
         title={tc('menu.label')}
         titleColor="brand.900"
         onClose={onToggle}

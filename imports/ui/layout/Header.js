@@ -12,6 +12,7 @@ import {
   MenuItem,
   MenuList,
   Text,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
@@ -88,16 +89,23 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
   );
 }
 
-export default function Header({ Host, pageTitles, isLogoSmall = false }) {
-  const currentHost = Host;
+function HeaderMenu({ Host, pageTitles }) {
   const location = useLocation();
+  const { pathname } = location;
+  const [isDesktop] = useMediaQuery(['(min-width: 960px)']);
 
-  if (!currentHost) {
+  const settings = Host?.settings;
+  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } = settings || {};
+
+  if (isDesktop && isBurgerMenuOnDesktop) {
     return null;
   }
 
-  const { pathname } = location;
-  const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
+  if (!isDesktop && isBurgerMenuOnMobile) {
+    return null;
+  }
+
+  const menuItems = settings?.menu?.filter((item) => item.isVisible);
 
   const isCurrentContext = (item, index) => {
     if (pathname === '/') {
@@ -107,8 +115,63 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
   };
 
   return (
+    <Center mb="4" px="4">
+      <HStack
+        alignItems="center"
+        bg="gray.50"
+        borderRadius={6}
+        justify="center"
+        mb="2"
+        p="2"
+        wrap="wrap"
+      >
+        {menuItems?.map((item, index) =>
+          item.name === 'info' ? (
+            <InfoPagesMenu
+              key="info"
+              label={item.label}
+              pageTitles={pageTitles}
+              pathname={pathname}
+            />
+          ) : (
+            <Link key={item.name} to={`/${item.name}`}>
+              <Box as="span" px="2">
+                <Text
+                  {...textProps}
+                  borderBottom={isCurrentContext(item, index) ? '2px solid' : null}
+                >
+                  {item.label}
+                </Text>
+              </Box>
+            </Link>
+          )
+        )}
+        {Host.isPortalHost && (
+          <Link to="/communities">
+            <Box as="span" px="2">
+              <Text {...textProps} borderBottom={pathname === '/communities' ? '2px solid' : null}>
+                <Trans i18nKey="platform.communities" ns="common">
+                  Communities
+                </Trans>
+              </Text>
+            </Box>
+          </Link>
+        )}
+      </HStack>
+    </Center>
+  );
+}
+
+export default function Header({ Host, pageTitles, isLogoSmall = false }) {
+  const currentHost = Host;
+
+  if (!currentHost) {
+    return null;
+  }
+
+  return (
     <Box w="100%">
-      <Center mb="2">
+      <Center mb="10">
         <Link to="/">
           {currentHost.logo ? (
             <Box maxHeight={isLogoSmall ? '48px' : '76px'} p="2">
@@ -129,53 +192,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
         </Link>
       </Center>
 
-      <Center p="4" mt="4">
-        <HStack
-          alignItems="center"
-          bg="gray.50"
-          borderRadius={6}
-          justify="center"
-          mb="2"
-          p="2"
-          wrap="wrap"
-        >
-          {menuItems?.map((item, index) =>
-            item.name === 'info' ? (
-              <InfoPagesMenu
-                key="info"
-                label={item.label}
-                pageTitles={pageTitles}
-                pathname={pathname}
-              />
-            ) : (
-              <Link key={item.name} to={`/${item.name}`}>
-                <Box as="span" px="2">
-                  <Text
-                    {...textProps}
-                    borderBottom={isCurrentContext(item, index) ? '2px solid' : null}
-                  >
-                    {item.label}
-                  </Text>
-                </Box>
-              </Link>
-            )
-          )}
-          {Host.isPortalHost && (
-            <Link to="/communities">
-              <Box as="span" px="2">
-                <Text
-                  {...textProps}
-                  borderBottom={pathname === '/communities' ? '2px solid' : null}
-                >
-                  <Trans i18nKey="platform.communities" ns="common">
-                    Communities
-                  </Trans>
-                </Text>
-              </Box>
-            </Link>
-          )}
-        </HStack>
-      </Center>
+      <HeaderMenu Host={Host} pageTitles={pageTitles} />
     </Box>
   );
 }

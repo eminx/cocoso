@@ -73,10 +73,12 @@ menu:
     people: Listing page for all community members
     resources: Listing page for the resources in your community
     works: Listing page for portfolio, marketplace or such entries
-  headerMenu:
-    title: Header Menu
-    label: Header Menu active on desktop
-    text: Activates the menu to show up on the top of the page on desktop, rather than the drawer showing by clicking menu icon
+  burgermenu:
+    title: Burger Menu
+    label: Burger Menu active
+    mobile: Burger Menu active on mobile view
+    desktop: Burger Menu active on desktop view
+    text: Optionally activate the burger menu. Burger menu is a menu that appears when you click the "burger" menu icon in the top right corner of the screen.
   options:
     label: Options
 
