@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import HTMLReactParser from 'html-react-parser';
@@ -10,20 +10,8 @@ import MemberGroups from '../pages/groups/MemberGroups';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
 
-function stripHtml(html) {
-  const tmp = document.createElement('DIV');
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || '';
-}
-
 function Bio({ user }) {
   if (!user || !user.bio) {
-    return null;
-  }
-
-  const bareBio = stripHtml(user.bio);
-
-  if (!bareBio || bareBio.length < 2) {
     return null;
   }
 
@@ -44,28 +32,9 @@ function Bio({ user }) {
   );
 }
 
-// function ContactInfo({ user }) {
-//   if (!user || !user.contactInfo) {
-//     return null;
-//   }
-
-//   return (
-//     <Flex justifyContent="center">
-//       <Box maxWidth="480px" className="text-content" p="4">
-//         {HTMLReactParser(user.contactInfo)}
-//       </Box>
-//     </Flex>
-//   );
-// }
-
 export default function UserHybrid({ user, Host }) {
   const location = useLocation();
   const { usernameSlug } = useParams();
-  const [, username] = usernameSlug.split('@');
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [username]);
 
   if (usernameSlug[0] !== '@') {
     return null;
@@ -74,26 +43,6 @@ export default function UserHybrid({ user, Host }) {
   if (!user) {
     return null;
   }
-
-  // const setAsParticipant = async (user) => {
-  //   try {
-  //     await call('setAsParticipant', user.id);
-  //     message.success(`${user.username} is now set back as a participant`);
-  //   } catch (error) {
-  //     console.log(error);
-  //     message.error(error.reason || error.error);
-  //   }
-  // };
-
-  // const setAsContributor = async (user) => {
-  //   try {
-  //     await call('setAsContributor', user.id);
-  //     message.success(`${user.username} is now set as a cocreator`);
-  //   } catch (error) {
-  //     console.log(error);
-  //     message.error(error.reason || error.error);
-  //   }
-  // };
 
   const { menu } = Host?.settings;
 

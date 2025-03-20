@@ -49,6 +49,7 @@ export default function UserProfile() {
 
   useEffect(() => {
     getUserInfo();
+    window.scrollTo(0, 0);
   }, [username]);
 
   if (usernameSlug[0] !== '@' || !username) {
@@ -68,6 +69,26 @@ export default function UserProfile() {
   }
 
   const role = currentHost.members?.find((m) => m.username === username)?.role;
+
+  // const setAsParticipant = async (user) => {
+  //   try {
+  //     await call('setAsParticipant', user.id);
+  //     message.success(`${user.username} is now set back as a participant`);
+  //   } catch (error) {
+  //     console.log(error);
+  //     message.error(error.reason || error.error);
+  //   }
+  // };
+
+  // const setAsContributor = async (user) => {
+  //   try {
+  //     await call('setAsContributor', user.id);
+  //     message.success(`${user.username} is now set as a cocreator`);
+  //   } catch (error) {
+  //     console.log(error);
+  //     message.error(error.reason || error.error);
+  //   }
+  // };
 
   return (
     <>

@@ -11,7 +11,7 @@ import ResourceHybrid from '../../ui/entry/ResourceHybrid';
 import WorksHybrid from '../../ui/listing/WorksHybrid';
 import WorkHybrid from '../../ui/entry/WorkHybrid';
 import UsersHybrid from '../../ui/listing/UsersHybrid';
-// import UserHybrid from '../../ui/entry/UserHybrid';
+import UserHybrid from '../../ui/entry/UserHybrid';
 import PageHybrid from '../../ui/entry/PageHybrid';
 import ActivitiesHybrid from '../../ui/listing/ActivitiesHybrid';
 import CommunitiesHybrid from '../../ui/pages/hosts/CommunitiesHybrid';
@@ -253,7 +253,7 @@ export function User({ host, sink }) {
 
   return (
     <WrapperSSR isEntryPage Host={Host}>
-      <UsersHybrid Host={Host} user={user} />
+      <UserHybrid Host={Host} user={user} />
     </WrapperSSR>
   );
 }
