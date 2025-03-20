@@ -61,7 +61,6 @@ function InfoPagesMenu({ label, pageTitles, pathname }) {
       <MenuButton
         _hover={{ borderBottom: '1px solid' }}
         id="info-pages-menu"
-        // instanceId={useId()}
         suppressHydrationWarning
       >
         <Flex {...itemProps}>
