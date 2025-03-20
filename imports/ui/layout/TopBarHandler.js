@@ -30,10 +30,10 @@ export default function TopBarHandler({ slideStart }) {
       >
         <Fade in={scrollTop < 120}>
           <Flex justify="space-between" w="100%">
-            <Box pointerEvents="all">
+            <Box p="1" pointerEvents="all">
               <FederationIconMenu />
             </Box>
-            <Box p="2" pointerEvents="all">
+            <Box p="1" pointerEvents="all">
               <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
             </Box>
           </Flex>

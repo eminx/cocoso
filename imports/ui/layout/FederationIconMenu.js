@@ -22,11 +22,10 @@ import ConfirmModal from '../generic/ConfirmModal';
 import NiceSlider from '../generic/NiceSlider';
 
 const buttonProps = {
-  color: 'brand.700',
+  color: 'gray.700',
   fontFamily: "'Sarabun', sans-serif",
-  fontSize: '15px',
+  fontSize: '16px',
   fontWeight: 'normal',
-  lineHeight: 1.2,
   p: '2',
   textAlign: 'left',
   variant: 'ghost',
@@ -35,8 +34,8 @@ const buttonProps = {
 export default function FederationIconMenu() {
   const [infoOpen, setInfoOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { allHosts, currentHost, currentUser, isDesktop, platform } = useContext(StateContext);
   const [hostInfo, setHostInfo] = useState(null);
+  const { allHosts, currentHost, currentUser, isDesktop, platform } = useContext(StateContext);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const navigate = useNavigate();
@@ -59,59 +58,67 @@ export default function FederationIconMenu() {
 
   return (
     <>
-      <HStack ml="2" className="federation-logo">
+      <HStack
+        _hover={{ bg: 'white' }}
+        bg="rgba(255, 252, 250, 0.9)"
+        borderRadius="lg"
+        className="federation-logo"
+        ml="2"
+        mr="1"
+        p="1"
+      >
         <Image
+          _hover={{ filter: 'invert(100%)', transition: 'all .2s ease-in-out' }}
+          borderRadius="lg"
+          cursor="pointer"
           fit="contain"
           src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
           w={isDesktop ? '54px' : '40px'}
           h={isDesktop ? '54px' : '40px'}
           onClick={() => handleSetHostInfo()}
         />
+        {currentUser ? (
+          <Menu
+            infoOpen={menuOpen}
+            onOpen={() => setMenuOpen(true)}
+            onClose={() => setMenuOpen(false)}
+          >
+            <MenuButton {...buttonProps} as={Button} rightIcon={<ChevronDownIcon size="18px" />}>
+              {currentUser ? t('profile.myCommunities') : tc('labels.allCommunities')}
+            </MenuButton>
 
-        <Box>
-          {!currentUser ? (
-            <Link to="/communities">
-              <Button {...buttonProps} as="span">
+            <MenuList>
+              {currentUser
+                ? currentUser.memberships?.map((m) => (
+                    <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
+                      {m.hostname}
+                    </MenuItem>
+                  ))
+                : allHosts.map((h) => (
+                    <MenuItem key={h.host} onClick={() => (location.href = `https://${h.host}`)}>
+                      {h.name}
+                    </MenuItem>
+                  ))}
+              <Divider colorScheme="gray.700" mt="2" />
+              <MenuItem
+                key="all-communities"
+                onClick={() =>
+                  currentHost?.isPortalHost
+                    ? navigate('/communities')
+                    : (location.href = `https://${platform?.portalHost}/communities`)
+                }
+              >
                 {tc('labels.allCommunities')}
-              </Button>
-            </Link>
-          ) : (
-            <Menu
-              infoOpen={menuOpen}
-              onOpen={() => setMenuOpen(true)}
-              onClose={() => setMenuOpen(false)}
-            >
-              <MenuButton {...buttonProps} as={Button} rightIcon={<ChevronDownIcon size="18px" />}>
-                {currentUser ? t('profile.myCommunities') : tc('labels.allCommunities')}
-              </MenuButton>
-
-              <MenuList>
-                {currentUser
-                  ? currentUser.memberships?.map((m) => (
-                      <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
-                        {m.hostname}
-                      </MenuItem>
-                    ))
-                  : allHosts.map((h) => (
-                      <MenuItem key={h.host} onClick={() => (location.href = `https://${h.host}`)}>
-                        {h.name}
-                      </MenuItem>
-                    ))}
-                <Divider colorScheme="gray.700" mt="2" />
-                <MenuItem
-                  key="all-communities"
-                  onClick={() =>
-                    currentHost?.isPortalHost
-                      ? navigate('/communities')
-                      : (location.href = `https://${platform?.portalHost}/communities`)
-                  }
-                >
-                  {tc('labels.allCommunities')}
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          )}
-        </Box>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        ) : (
+          <Link to="/communities">
+            <Button {...buttonProps} as="span">
+              {tc('labels.allCommunities')}
+            </Button>
+          </Link>
+        )}
       </HStack>
 
       <ConfirmModal
