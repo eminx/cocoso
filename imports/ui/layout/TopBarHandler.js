@@ -42,9 +42,7 @@ export default function TopBarHandler({ slideStart }) {
             </Box>
             <Flex p="1" pointerEvents="all">
               <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
-              <Box px="2">
-                <MenuDrawer />
-              </Box>
+              <MenuDrawer />
             </Flex>
           </Flex>
         </Fade>

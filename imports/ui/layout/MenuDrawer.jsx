@@ -94,7 +94,7 @@ export default function MenuDrawer() {
 
   return (
     <Box>
-      <Flex align="center" flexDirection="column">
+      <Flex align="center" flexDirection="column" px="2">
         <IconButton
           _hover={{
             bg: 'gray.800',
