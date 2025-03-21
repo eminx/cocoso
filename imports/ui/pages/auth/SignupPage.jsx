@@ -7,9 +7,8 @@ import { StateContext } from '../../LayoutContainer';
 import { Signup } from './index';
 import { createAccount } from './functions';
 import Modal from '../../generic/Modal';
-// import NewPlatform from '';
 
-function SignupPage() {
+export default function SignupPage() {
   const [t] = useTranslation('accounts');
   const { currentUser, platform } = useContext(StateContext);
   const navigate = useNavigate();
@@ -69,5 +68,3 @@ function SignupPage() {
     </Box>
   );
 }
-
-export default SignupPage;

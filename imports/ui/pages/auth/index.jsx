@@ -15,6 +15,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { z } from 'zod';
+import i18next from 'i18next';
 
 import FormField from '../../forms/FormField';
 import ConfirmModal from '../../generic/ConfirmModal';
@@ -34,16 +35,16 @@ import {
 const Login = ({ isSubmitted, onSubmit }) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
+
   const schema = z.object({
     ...usernameOrEmailSchema,
     ...passwordSchema,
   });
+
   const { handleSubmit, register } = useForm({
     defaultValues: loginModel,
     resolver: zodResolver(schema),
   });
-
-  // const { errors, isDirty, isSubmitting } = formState;
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -71,10 +72,13 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
+
+  const tr = i18next.t;
+
   const schema = z.object({
-    ...usernameSchema,
-    ...emailSchema,
-    ...passwordSchema,
+    ...usernameSchema(tr),
+    ...emailSchema(tr),
+    ...passwordSchema(tr),
   });
 
   const passwordHelperText = t('signup.form.password.helper');

@@ -283,3 +283,10 @@ platform:
     notice1: These blocks of information composed below will be shown as an onboarding orientation to the users who register themselves to be part of any of the communities within the {{ platform }} platform.
     notice2: You may preview via here
     linkLabel: Preview
+
+auth:
+  errors:
+    username: Username can only be composed of lowercase letters and numbers
+    email: Please enter a valid email address
+    passwordMin: Password must be at least 8 characters long
+    passwordRegex: Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters
