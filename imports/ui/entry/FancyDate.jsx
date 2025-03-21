@@ -46,7 +46,7 @@ function FancyDate({ occurrence, resources, ...otherProps }) {
           </div>
         )}
       </div>
-      <div style={fancyDateStyle}>
+      <div style={{ ...fancyDateStyle, fontSize: 18, fontStyle: 'italic' }}>
         <div>
           {occurrence.startTime} – {occurrence.endTime}
         </div>
