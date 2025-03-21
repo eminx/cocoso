@@ -13,7 +13,7 @@ function MenuContent({ menuItems, pageTitles, onToggle }) {
   const location = useLocation();
   const { pathname } = location;
 
-  const isCurrentPage = (item, index) => {
+  const isCurrentPage = (item) => {
     if (item.name === 'info') {
       const pathSplitted = pathname.split('/');
       return pathSplitted && pathSplitted[1] === 'pages';
@@ -26,8 +26,8 @@ function MenuContent({ menuItems, pageTitles, onToggle }) {
 
   return (
     <VStack align="flex-start">
-      {menuItems.map((item, index) => {
-        const isCurrentPageLabel = isCurrentPage(item, index);
+      {menuItems.map((item) => {
+        const isCurrentPageLabel = isCurrentPage(item);
         if (item.name === 'info') {
           return (
             <Box py="2" key="info">
