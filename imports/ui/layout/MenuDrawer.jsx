@@ -7,29 +7,39 @@ import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
 import Drawer from '../generic/Drawer';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
 import { StateContext } from '../LayoutContainer';
+import { InfoPagesMenu } from './Header';
 
-function MenuContent({ menuItems, onToggle }) {
+function MenuContent({ menuItems, pageTitles, onToggle }) {
   const location = useLocation();
   const { pathname } = location;
 
-  const isCurrentPage = (item) => {
+  const isCurrentPage = (item, index) => {
     if (item.name === 'info') {
       const pathSplitted = pathname.split('/');
       return pathSplitted && pathSplitted[1] === 'pages';
+    }
+    if (pathname === '/') {
+      return item.route === menuItems[0]?.route;
     }
     return item.route === pathname;
   };
 
   return (
     <VStack align="flex-start">
-      {menuItems.map((item) => {
-        const isCurrentPageLabel = isCurrentPage(item);
+      {menuItems.map((item, index) => {
+        const isCurrentPageLabel = isCurrentPage(item, index);
+        if (item.name === 'info') {
+          return (
+            <Box py="2" key="info">
+              <InfoPagesMenu label={item.label} pageTitles={pageTitles} pathname={pathname} />
+            </Box>
+          );
+        }
         return (
           <Link key={item.name} style={{ textShadow: 'none' }} to={item.route} onClick={onToggle}>
-            <Box py="1">
+            <Box px="2" py="1">
               <Text
                 _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
-                color="brand.600"
                 fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
               >
                 {item.label}
@@ -58,7 +68,7 @@ const getRoute = (item) => {
 };
 
 export default function MenuDrawer() {
-  const { currentHost, isDesktop, platform } = useContext(StateContext);
+  const { currentHost, isDesktop, pageTitles, platform } = useContext(StateContext);
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
 
@@ -121,7 +131,7 @@ export default function MenuDrawer() {
         onClose={onToggle}
       >
         <Flex flexDirection="column" h="100%" justify="space-between">
-          <MenuContent menuItems={menuItems} onToggle={onToggle} />
+          <MenuContent menuItems={menuItems} pageTitles={pageTitles} onToggle={onToggle} />
 
           <Box color="brand.600" mt="4">
             <MenuFooter />

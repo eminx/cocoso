@@ -31,7 +31,7 @@ const textProps = {
   textShadow: '1px 1px 1px #fff',
 };
 
-function InfoPagesMenu({ label, pageTitles, pathname }) {
+export function InfoPagesMenu({ label, pageTitles, pathname }) {
   const context = pathname.split('/')[1];
   const isCurrentContext = context === 'info';
   const hydrated = useHydrated();
