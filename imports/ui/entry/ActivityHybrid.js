@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Box, Center, Tag, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
@@ -36,6 +36,11 @@ export default function ActivityHybrid({ activity, Host }) {
             <Text fontWeight="bold" fontSize="lg" mb="2" textAlign="center">
               {activity?.place}
             </Text>
+          )}
+          {activity.resource && (
+            <Center mb="2">
+              <Tag>{activity.resource}</Tag>
+            </Center>
           )}
           {activity?.address && (
             <Text fontSize="lg">
