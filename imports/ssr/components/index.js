@@ -64,6 +64,18 @@ export function Activity({ host, sink }) {
   );
 }
 
+export function Calendar({ host, sink }) {
+  const Host = Meteor.call('getHost', host);
+
+  sink.appendToBody(parsePreloadedState({ Host }));
+
+  if (!Host) {
+    return null;
+  }
+
+  return <WrapperSSR Host={Host} sink={sink} />;
+}
+
 export function GroupList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const groups = Meteor.call('getGroupsWithMeetings', Host?.isPortalHost, host);
@@ -254,7 +266,7 @@ export function Home(props) {
       case 'info':
         return <Page {...props} />;
       case 'calendar':
-        return <div />;
+        return <Calendar {...props} />;
       default:
         return <UserList {...props} />;
     }
