@@ -63,11 +63,11 @@ function ConflictMarker({ occurrence, t }) {
 }
 
 export default function DatesAndTimes({
+  activityId,
   datesAndTimes,
   isExclusiveActivity,
   resourceId,
   onDatesAndTimesChange,
-  activityId,
 }) {
   const [t] = useTranslation('activities');
 

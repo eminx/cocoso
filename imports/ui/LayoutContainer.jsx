@@ -10,6 +10,9 @@ import 'moment/locale/en-gb';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
 import dayjs from 'dayjs';
+import 'dayjs/locale/en';
+import 'dayjs/locale/sv';
+import 'dayjs/locale/tr';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
 import { call } from './utils/shared';
@@ -51,9 +54,10 @@ function LayoutPage({ currentUser, userLoading, children }) {
         dow: 1,
       },
     });
-    dayjs.updateLocale('en', {
-      weekStart: 1,
-    });
+    dayjs.locale(i18n?.language || 'en');
+    // dayjs.updateLocale(i18n?.language || 'en', {
+    //   weekStart: 1,
+    // });
   }, [i18n?.language]);
 
   const pathnameSplitted = pathname.split('/');
