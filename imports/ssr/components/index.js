@@ -219,6 +219,10 @@ export function User({ host, sink }) {
   const [, username] = usernameSlug.split('@');
   const user = Meteor.call('getUserInfo', username, host);
 
+  if (!user) {
+    return null;
+  }
+
   sink.appendToBody(parsePreloadedState({ user, Host }));
 
   return (

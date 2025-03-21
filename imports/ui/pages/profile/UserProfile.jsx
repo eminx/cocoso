@@ -19,7 +19,7 @@ export default function UserProfile() {
   const [rendered, setRendered] = useState(false);
   const [ta] = useTranslation('accounts');
   const { usernameSlug } = useParams();
-  const [, username] = usernameSlug.split('@');
+  const [, username] = usernameSlug?.split('@');
 
   let { currentHost } = useContext(StateContext);
 
@@ -52,12 +52,12 @@ export default function UserProfile() {
     window.scrollTo(0, 0);
   }, [username]);
 
-  if (usernameSlug[0] !== '@' || !username) {
-    return null;
-  }
-
   if (loading) {
     return <Loader />;
+  }
+
+  if (usernameSlug[0] !== '@' || !username) {
+    return null;
   }
 
   if (!user) {
