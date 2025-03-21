@@ -48,7 +48,7 @@ export default function SignupPage() {
               </Center>
             )}
 
-            <Center pb="4">
+            <Center py="4">
               <Text>
                 {t('signup.labels.subtitle')}{' '}
                 <Link to="/login">
