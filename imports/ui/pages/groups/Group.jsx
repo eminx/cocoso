@@ -32,7 +32,7 @@ export default function Group() {
 
   useEffect(() => {
     getGroupById();
-  }, []);
+  }, [groupId]);
 
   useLayoutEffect(() => {
     setTimeout(() => {
