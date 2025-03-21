@@ -38,6 +38,7 @@ actions:
 labels:
   activity: Aktivite
   all: Tümü
+  book: Ayır
   booked: 'ayırdı:'
   contact: İletişim
   content: İçerik

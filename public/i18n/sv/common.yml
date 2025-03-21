@@ -38,6 +38,7 @@ actions:
 labels:
   activity: Aktiviteten
   all: Alla
+  book: Boka
   booked: bokad
   contact: Kontakt
   content: Innehåll

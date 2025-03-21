@@ -30,7 +30,7 @@ function ReserveButton({ resource }) {
         height="48px"
         width={isDesktop ? '240px' : '180px'}
       >
-        <Trans i18nKey="common:labels.reserve">Reserve</Trans>
+        <Trans i18nKey="common:labels.book">Reserve</Trans>
       </Button>
     </Link>
   );
