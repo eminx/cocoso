@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Center, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
+import { Badge, Button, Center, IconButton, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
@@ -66,7 +66,7 @@ export function ChatUI({ context, currentUser, item, open, title, withInput, set
   );
 }
 
-export function ChatButton({ context, currentUser, item, title, withInput }) {
+export function ChatButton({ context, currentUser, item, notificationCount, title, withInput }) {
   const [open, setOpen] = useState(false);
   const [tc] = useTranslation('common');
 
@@ -75,7 +75,7 @@ export function ChatButton({ context, currentUser, item, title, withInput }) {
   return (
     <>
       <Center>
-        <VStack spacing="0">
+        <VStack spacing="0" position="relative">
           <IconButton
             _hover={{ bg: 'brand.100' }}
             _active={{ bg: 'brand.200' }}
@@ -88,6 +88,20 @@ export function ChatButton({ context, currentUser, item, title, withInput }) {
             variant="ghost"
             onClick={() => setOpen(true)}
           />
+          {notificationCount && (
+            <Badge
+              borderRadius="full"
+              border="2px solid white"
+              colorScheme="red"
+              position="absolute"
+              right="-6px"
+              size="md"
+              top="24px"
+              variant="solid"
+            >
+              {notificationCount}
+            </Badge>
+          )}
           <Button color="brand.50" size="xs" variant="link" onClick={() => setOpen(true)}>
             {tc('labels.discussion')}
           </Button>

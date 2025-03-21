@@ -31,7 +31,17 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
   );
 
   const memberProps = { currentUser, group, isAdmin, isMember };
-  const chatProps = { context: 'groups', currentUser, item: group, title, withInput: true };
+  const notificationCount = currentUser?.notifications?.find((n) => n.contextId === group._id)
+    ?.unSeenIndexes?.length;
+
+  const chatProps = {
+    context: 'groups',
+    currentUser,
+    item: group,
+    notificationCount,
+    title,
+    withInput: true,
+  };
 
   if (isAdmin) {
     return (
