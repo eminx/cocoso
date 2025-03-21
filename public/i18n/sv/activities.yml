@@ -76,7 +76,7 @@ public:
   labels:
     address: Adress
     dates: Se datum
-    datesAndRegistration: Se datum & OSA
+    datesAndRegistration: Se datum & boka
     info: Info
     location: Plats
     resource: Resurs

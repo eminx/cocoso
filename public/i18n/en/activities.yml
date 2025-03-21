@@ -76,7 +76,7 @@ public:
   labels:
     address: Address
     dates: See Dates
-    datesAndRegistration: See Dates & RSVP
+    datesAndRegistration: See Dates & Book
     info: Info
     location: Location
     resource: Resource
