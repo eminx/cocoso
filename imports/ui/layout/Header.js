@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -19,6 +20,8 @@ import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 import { useHydrated } from 'react-hydration-provider';
 
 import { parseTitle } from '../utils/shared';
+
+const isClient = Meteor?.isClient;
 
 const textProps = {
   _hover: { borderBottom: '1px solid' },
@@ -101,7 +104,7 @@ function HeaderMenu({ Host, pageTitles }) {
     return null;
   }
 
-  if (!isDesktop && isBurgerMenuOnMobile) {
+  if (!isDesktop && isBurgerMenuOnMobile && isClient) {
     return null;
   }
 
