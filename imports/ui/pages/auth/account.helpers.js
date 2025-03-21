@@ -36,9 +36,19 @@ const emailSchema = (t) => ({
   email: z.string().email(t('common:auth.errors.email')),
 });
 
-const usernameOrEmailSchema = {
-  username: z.union([usernameSchema.username, emailSchema.email]),
-};
+const usernameOrEmailSchema = (t) =>
+  z
+    .object({
+      username: z
+        .string()
+        .min(4, t('common:auth.errors.username'))
+        .regex(regexUsername, t('common:auth.errors.username'))
+        .optional(),
+      email: z.string().email(t('common:auth.errors.email')).optional(),
+    })
+    .refine((data) => data.username || data.email, {
+      message: t('common:auth.errors.usernameOrEmail'),
+    });
 
 const passwordSchema = (t) => ({
   password: z

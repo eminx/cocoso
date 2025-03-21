@@ -11,7 +11,7 @@ import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import Modal from '../../generic/Modal';
 
-function LoginPage() {
+export default function LoginPage() {
   const [t] = useTranslation('accounts');
   const { currentUser, currentHost, platform, role } = useContext(StateContext);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -121,5 +121,3 @@ function LoginPage() {
     </Box>
   );
 }
-
-export default LoginPage;
