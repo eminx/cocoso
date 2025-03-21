@@ -2,7 +2,7 @@ label:
   new: Create a New Booking
   newevent: Create a New Event
   edit: Edit Booking
-  rsvp: See Dates & RSVP
+  rsvp: See Dates & Book
   next: Next Event
 
 form:
