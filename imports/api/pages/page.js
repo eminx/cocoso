@@ -6,12 +6,12 @@ const Pages = new Mongo.Collection('pages');
 
 Pages.schema = new SimpleSchema({
   _id: Schemas.Id,
+  title: { type: String },
   host: Schemas.Hostname,
 
   authorId: Schemas.Id,
   authorName: { type: String },
 
-  title: { type: String },
   longDescription: { type: String },
   isPublished: {
     type: Boolean,
@@ -20,6 +20,8 @@ Pages.schema = new SimpleSchema({
 
   images: { type: Array, optional: true },
   'images.$': { type: String },
+
+  order: { type: Number },
 
   creationDate: { type: Date },
   latestUpdate: {

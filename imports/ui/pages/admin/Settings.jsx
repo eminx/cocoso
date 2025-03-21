@@ -1,23 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Divider, Heading, Link as CLink, Text } from '@chakra-ui/react';
-import ReactQuill from '../../components/Quill';
+import { Box, Button, Center, Flex, Text } from '@chakra-ui/react';
 
+import ReactQuill from '../../forms/Quill';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../components/Loader';
-import Template from '../../components/Template';
-import ListMenu from '../../components/ListMenu';
-import { message, Alert } from '../../components/message';
+import Loader from '../../generic/Loader';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
-import { adminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
-import FileDropper from '../../components/FileDropper';
-import Menu from './MenuSettings';
-import Tabs from '../../components/Tabs';
-import Categories from './Categories';
-import ColorPicker from './ColorPicker';
-import { superadminMenu } from '../../utils/constants/general';
+import FileDropper from '../../forms/FileDropper';
+import Tabs from '../../entry/Tabs';
+import Boxling from './Boxling';
 
 export default function Settings() {
   const [localSettings, setLocalSettings] = useState(null);
@@ -30,7 +25,9 @@ export default function Settings() {
   const [tc] = useTranslation('common');
 
   useEffect(() => {
-    currentHost && setLocalSettings(currentHost.settings);
+    if (currentHost) {
+      setLocalSettings(currentHost.settings);
+    }
     setLoading(false);
   }, []);
 
@@ -107,15 +104,18 @@ export default function Settings() {
 
   const tabs = [
     {
-      title: t('settings.tabs.general'),
-      path: 'organization',
+      title: t('settings.tabs.logo'),
+      path: 'logo',
       content: (
-        <AlphaContainer>
-          <Box mb="8">
-            <Text mb="3" fontWeight="bold">
+        <>
+          <Center>
+            <Text fontWeight="bold" mb="3" textAlign="center">
               {t('logo.info')}
             </Text>
-            <Box>
+          </Center>
+
+          <Boxling>
+            <Center>
               <FileDropper
                 imageUrl={currentHost && currentHost.logo}
                 height={isImage && '120px'}
@@ -124,68 +124,56 @@ export default function Settings() {
                 setUploadableImage={setUploadableImage}
                 uploadableImageLocal={localImage && localImage.uploadableImageLocal}
               />
-            </Box>
+            </Center>
             {localImage && localImage.uploadableImageLocal && (
-              <Center p="2">
+              <Center p="4">
                 <Button isLoading={uploading} onClick={() => uploadLogo()}>
                   {tc('actions.submit')}
                 </Button>
               </Center>
             )}
-          </Box>
-          <Text mb="3" fontWeight="bold">
-            {t('info.info')}
-          </Text>
-          <SettingsForm initialValues={localSettings} onSubmit={updateHostSettings} />
-        </AlphaContainer>
+          </Boxling>
+        </>
       ),
     },
     {
-      title: t('settings.tabs.menu'),
-      path: 'menu',
+      title: t('settings.tabs.info'),
+      path: 'info',
       content: (
-        <AlphaContainer>
-          <Menu />
-        </AlphaContainer>
-      ),
-    },
-    {
-      title: t('settings.tabs.categories'),
-      path: 'categories',
-      content: (
-        <AlphaContainer>
-          <Categories />
-        </AlphaContainer>
-      ),
-    },
-    {
-      title: t('settings.tabs.color'),
-      path: 'color',
-      content: (
-        <AlphaContainer>
-          <ColorPicker />
-        </AlphaContainer>
+        <>
+          <Center>
+            <Text mb="3" fontWeight="bold">
+              {t('info.info')}
+            </Text>
+          </Center>
+
+          <Boxling>
+            <SettingsForm initialValues={localSettings} onSubmit={updateHostSettings} />
+          </Boxling>
+        </>
       ),
     },
     {
       title: t('settings.tabs.footer'),
       path: 'footer',
       content: (
-        <AlphaContainer>
+        <>
           <Text mb="4">{t('info.platform.footer.description')}</Text>
-          <ReactQuill
-            className="ql-editor-text-align-center"
-            placeholder={t('pages.form.description.holder')}
-            value={localSettings?.footer}
-            onChange={(value) => setLocalSettings({ ...localSettings, footer: value })}
-          />
+          <Boxling>
+            <ReactQuill
+              className="ql-editor-text-align-center"
+              placeholder={t('pages.form.description.holder')}
+              value={localSettings?.footer}
+              onChange={(value) => setLocalSettings({ ...localSettings, footer: value })}
+            />
 
-          <Center p="4">
-            <Button onClick={() => updateHostSettings(localSettings)}>
-              {tc('actions.submit')}
-            </Button>
-          </Center>
-        </AlphaContainer>
+            <Flex justify="flex-end" pt="4">
+              <Button onClick={() => updateHostSettings(localSettings)}>
+                {tc('actions.submit')}
+              </Button>
+            </Flex>
+          </Boxling>
+        </>
       ),
     },
   ];
@@ -198,48 +186,16 @@ export default function Settings() {
   }
 
   return (
-    <>
-      <Template heading={t('settings.label')} leftContent={<AdminMenu />}>
-        <Tabs index={tabIndex} mb="4" tabs={tabs} />
-
-        <Box mb="24">
-          <Routes>
-            {tabs.map((tab) => (
-              <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
-            ))}
-          </Routes>
-        </Box>
-      </Template>
-    </>
-  );
-}
-
-export function AdminMenu({}) {
-  const { currentHost, currentUser, platform } = useContext(StateContext);
-  const location = useLocation();
-  const [tc] = useTranslation('common');
-
-  const pathname = location?.pathname;
-  const isSuperAdmin = currentUser?.isSuperAdmin;
-  const isPortalHost = currentHost?.isPortalHost;
-
-  return (
     <Box>
-      <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="4" size="sm">
-        {currentHost?.settings?.name}
-      </Heading>
-      <ListMenu pathname={pathname} list={adminMenu} />
+      <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
-      {isSuperAdmin && isPortalHost && (
-        <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="6" size="sm">
-          {platform?.name + ' ' + tc('domains.platform')}
-        </Heading>
-      )}
-      {isSuperAdmin && isPortalHost && <ListMenu pathname={pathname} list={superadminMenu} />}
+      <Box mb="24">
+        <Routes>
+          {tabs.map((tab) => (
+            <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+          ))}
+        </Routes>
+      </Box>
     </Box>
   );
-}
-
-function AlphaContainer({ title, children }) {
-  return <Box>{children}</Box>;
 }

@@ -1,20 +1,22 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
-import ConfirmModal from '../../components/ConfirmModal';
+import ConfirmModal from '../../generic/ConfirmModal';
 import { Login } from './index';
-import { message } from '../../components/message';
+import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
+import Modal from '../../generic/Modal';
 
 function LoginPage() {
   const [t] = useTranslation('accounts');
   const { currentUser, currentHost, platform, role } = useContext(StateContext);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isJoinModal, setIsJoinModal] = useState(false);
+  const navigate = useNavigate();
 
   if (currentUser && ['participant', 'contributor', 'admin'].includes(role)) {
     return <Navigate to={`/@${currentUser.username}/profile`} />;
@@ -50,52 +52,59 @@ function LoginPage() {
       await call('setSelfAsParticipant');
       message.success(t('profile.message.participant'));
     } catch (error) {
-      console.error(error);
-      message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 
   return (
-    <Box pb="8" minHeight="100vh">
-      <Center>
-        <Box w="xs">
-          {platform && (
-            <Center p="4">
-              <Image w="240px" src={platform?.logo} />
+    <Box pb="8">
+      <Modal
+        contentProps={{ h: 'auto' }}
+        isOpen
+        scrollBehavior="outside"
+        size="2xl"
+        onClose={() => navigate('/')}
+      >
+        <Center>
+          <Box w="xs">
+            {platform && (
+              <Center p="4">
+                <Image w="240px" src={platform?.logo} />
+              </Center>
+            )}
+
+            <Heading mb="4" size="md" textAlign="center">
+              {t('login.labels.title')}
+            </Heading>
+
+            <Center mb="6">
+              <Text>
+                {t('login.labels.subtitle')}{' '}
+                <Link to="/register">
+                  <CLink as="span" color="blue.500">
+                    <b>{t('actions.signup')}</b>
+                  </CLink>
+                </Link>
+              </Text>
             </Center>
-          )}
 
-          <Heading mb="4" size="md" textAlign="center">
-            {t('login.labels.title')}
-          </Heading>
-
-          <Center mb="6">
-            <Text>
-              {t('login.labels.subtitle')}{' '}
-              <Link to="/register">
-                <CLink as="span" color="blue.500">
-                  <b>{t('actions.signup')}</b>
-                </CLink>
-              </Link>
-            </Text>
-          </Center>
-
-          <Box bg="gray.50" borderColor="gray.300" borderWidth={1} mb="4" p="6">
-            <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
+            <Box bg="gray.50" borderColor="gray.300" borderWidth={1} mb="4" p="6">
+              <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
+            </Box>
+            <Center>
+              <Text textAlign="center">
+                {t('actions.forgot')}
+                <br />
+                <Link to="/forgot-password">
+                  <CLink as="span" color="blue.500">
+                    <b>{t('actions.reset')}</b>
+                  </CLink>
+                </Link>
+              </Text>
+            </Center>
           </Box>
-          <Center>
-            <Text textAlign="center">
-              {t('actions.forgot')}
-              <br />
-              <Link to="/forgot-password">
-                <CLink as="span" color="blue.500">
-                  <b>{t('actions.reset')}</b>
-                </CLink>
-              </Link>
-            </Text>
-          </Center>
-        </Box>
-      </Center>
+        </Center>
+      </Modal>
 
       <ConfirmModal
         title={t('profile.joinHost', { host: currentHost?.settings?.name })}

@@ -1,43 +1,31 @@
-import React, { useContext } from 'react';
-import { Box, Center } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import Template from '../../components/Template';
-import ResourceForm from './components/ResourceForm';
-import { StateContext } from '../../LayoutContainer';
-import { Alert } from '../../components/message';
-import FormTitle from '../../components/FormTitle';
+import { call } from '../../utils/shared';
+import ResourceForm from './ResourceForm';
+import SuccessRedirector from '../../forms/SuccessRedirector';
+import { message } from '../../generic/message';
 
-function NewResourcePage({ history }) {
-  const [tc] = useTranslation('common');
-  const { currentUser, role } = useContext(StateContext);
+export default function NewResource() {
+  const [newEntryId, setNewEntryId] = useState(null);
+  const navigate = useNavigate();
 
-  const resourceModel = {
-    label: '',
-    description: '',
-    isBookable: true,
-    isCombo: false,
-    resourcesForCombo: [],
+  const createResource = async (newResource) => {
+    try {
+      const respond = await call('createResource', newResource);
+      setNewEntryId(respond);
+    } catch (error) {
+      message.error(error.reason || error.error);
+    }
   };
 
-  if (!currentUser || role !== 'admin') {
-    return (
-      <Center m="8">
-        <Alert message={tc('message.access.deny')} type="error" />
-      </Center>
-    );
-  }
+  const handleSuccess = () => {
+    navigate(`/resources/${newEntryId}`);
+  };
 
   return (
-    <Box>
-      <FormTitle context="resources" isNew />
-      <Template>
-        <Box>
-          <ResourceForm defaultValues={resourceModel} />
-        </Box>
-      </Template>
-    </Box>
+    <SuccessRedirector ping={newEntryId} onSuccess={handleSuccess}>
+      <ResourceForm onFinalize={createResource} />
+    </SuccessRedirector>
   );
 }
-
-export default NewResourcePage;

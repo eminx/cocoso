@@ -38,10 +38,26 @@ actions:
 labels:
   activity: Aktivite
   all: Tümü
+  book: Ayır
   booked: 'ayırdı:'
   contact: İletişim
   content: İçerik
-  create: Yeni {{ domain }} Oluştur
+  create:
+    activities: Yeni aktivite
+    calendar: Yeni aktivite
+    groups: Yeni grup/süreç
+    info: Yeni bilgi sayfası
+    resources: Yeni kaynak
+    works: Yeni İlan
+    host: Yeni topluluk
+  update:
+    activities: Aktiviteyi güncelle
+    calendar: Aktiviteyi güncelle
+    groups: Grubu/Süreci güncelle
+    info: Bilgi sayfasını güncelle
+    pages: Sayfayı güncelle
+    resources: Kaynağı güncelle
+    works: İlanı güncelle
   event: Etkinlik
   bookings: Rezervasyon
   newBooking: Yeni Rezervasyon
@@ -58,7 +74,6 @@ labels:
     date: Tarih
     name: İsim
     random: Rastgele
-  update: '{{ domain }} güncelle'
   unselected: Kaynak seçilmedi
   admin:
     actions: Admin
@@ -81,10 +96,19 @@ labels:
   items: öge
   allCommunities: Tüm Topluluklar
   select: Seç
+  form:
+    title: Detayları gir
+  private: Gizli
+  chat:
+    onlymembers: Yalnızca grup üyeleri için
+    onlyverified: Yalnızca onaylanmış kullanıcılar için
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
-  loading: '{{ something }} yükleniyor...'
+  loading:
+    creating: Oluşturuluyor...
+    uploading: Seçilen resimler yükleniyor...
+    sending: Gönderiliyor...
 
   success:
     create: Öge oluşturuldu
@@ -127,8 +151,14 @@ modals:
   confirm:
     delete:
       title: Silmeyi onayla
-      body: '{{ domain }} silmek istediğine emin misin?'
+      body: Bu içeriği silmek istediğine emin misin?
+      cantundo: Bu işlem geri alınamaz
       yes: Evet, sil
+    newentry:
+      title: İptali onayla
+      body: İptal etmek istediğinden emin misin? Değişiklikler silinecektir.
+      cancel: Geri dön
+      yes: Evet, sıkıntı yok
 
   # FEEDBACK FORM
   feedback:
@@ -191,6 +221,7 @@ domains:
   calendar: Takvim
   activity: Aktivite
   activities: Aktiviteler
+  event: Etkinlik
   group: Süreç
   groups: Süreçler
   resource: Kaynak
@@ -199,18 +230,16 @@ domains:
   works: işler
   host: host
   page: sayfa
+  pageOrder: Sayfaların sırası
   profile: profil
   community: Topluluk
   platform: Platform
-
   settings: Ayarlar
   email: eposta
-
   account: hesap
   data: veri
   avatar: avatar
   static: static
-
   props:
     name: isim
     title: başlık
@@ -251,3 +280,10 @@ platform:
     notice1: Aşağıda oluşturulacak olan bu bilgi blokları, {{ platform }} platformundaki topluluklardan herhangi birinin parçası olmak üzere kaydolan kullanıcılara ilk katılım yönlendirmesi olarak gösterilecektir..
     notice2: Bu link üzerinden görünümünü inceleyebilirsiniz
     linkLabel: İncele
+
+auth:
+  errors:
+    username: Kullanıcı adı yalnızca küçük harflerden ve sayılardan oluşabilir
+    email: Lütfen geçerli bir e-posta adresi girin
+    passwordMin: Şifre en az 8 karakter uzunluğunda olmalıdır
+    passwordRegex: Lütfen en az bir küçük harf, bir büyük harf, bir rakam ve toplamda en az 8 karakter girdiğinizden emin olun

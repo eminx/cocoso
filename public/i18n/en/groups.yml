@@ -6,6 +6,8 @@ labels:
   invite: Manage access
   attendees: Attendees
   meetings: Meetings
+  meeting_dates: See all meeting dates
+  next_meeting: Next meeting
 
 tabs:
   active: Active
@@ -18,10 +20,8 @@ tabs:
 form:
   private:
     label: Private (invite-only)
-    tooltip:
-      title: Private Groups
-      P1: Private groups are only visible by their members, and participation is possible only via invites by their admins. You can not change it to public after you've created it.
-      P2: You will be able to manage the invites after you create the group.
+    helper: Private groups are only visible by their members, and participation is possible only via invites by their admins. You can not change it to public after you've created it. You will be able to manage the invites after you create the group.
+    holder: Select
   title:
     label: Title
     holder: Understanding Benjamin
@@ -56,6 +56,8 @@ actions:
   leave: Leave
   archive: Archive
   unarchive: Unarchive
+  register: See dates & Book
+  invite: Invite to Group
 
 meeting:
   attends:
@@ -90,6 +92,8 @@ meeting:
     resource: Select resource
     location: Location
     submit: Add Meeting
+  errors:
+    noresource: Please select a resource or enter a location for the meeting (minimum 3 characters)
 
 confirm:
   check: Are you sure?
@@ -120,6 +124,8 @@ invite:
     holder: Samuel
     valid: Please enter a valid first name
   submit: Send Invite
+  remove:
+    success: The invite is removed
 
 modal:
   join:
@@ -132,3 +138,9 @@ modal:
 private:
   title: private
   info: Private groups are only visible by their members, and participation is possible only via invites by their admins.
+
+admin:
+  admin: Admin
+  add_document: Add Document
+  add_meeting: Add Meeting
+  manage_members: Manage Members

@@ -1,13 +1,14 @@
-import React, { useContext, useState } from 'react';
+import { Meteor } from 'meteor/meteor';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Center } from '@chakra-ui/react';
 
-import NewHostForm from '../../components/NewHostForm';
-import { message, Alert } from '../../components/message';
+import NewHostForm from '../../forms/NewHostForm';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { call } from '../../utils/shared';
 
 function NewHost({ setFinished }) {
-  const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
   const currentUser = Meteor.user();
@@ -38,8 +39,7 @@ function NewHost({ setFinished }) {
       window.scrollTo(0, 0);
       setFinished();
     } catch (error) {
-      console.log(error.error);
-      message.error(`Error: ${error.reason || error.error}`);
+      message.error(error.reason || error.error);
     }
   };
 

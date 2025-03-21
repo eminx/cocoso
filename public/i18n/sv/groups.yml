@@ -6,6 +6,8 @@ labels:
   invite: Hantera medlemmar
   attendees: Deltagare
   meetings: Möten
+  meeting_dates: Se alla mötesdatum
+  next_meeting: Nästa möte
 
 tabs:
   active: Aktiva
@@ -17,15 +19,13 @@ tabs:
 
 form:
   private:
-    label: Privat (endast för inbjudningar)
-    tooltip:
-      title: Privata objekt
-      P1: Privata grouper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
-      P2: Du kommer hantera inbjudningarna efter att du har skapat objektet.
+    label: Sluten grupp (endast för inbjudna)
+    helper: Slutna grupper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den. Du kommer hantera inbjudningarna efter att du har skapat objektet.
+    holder: Välj
   title:
     label: Titel
     holder: Att förstå Benjamin
-    helper: Ange en titel på ditt inlägg
+    helper: Ange en titel för din grupp / process
   subtitle:
     label: Undertitel
     holder: Studiegrupp, kurs, öppen konstnärlig group etc…
@@ -38,7 +38,7 @@ form:
     helper: Ange om det finns en maxgräns för deltagare
   image:
     label: Bild
-    helper: För att representera inlägget, välj en bild från galleriet på din enhet eller ett foto som du ska ta nu
+    helper: Välj en bild från din enhet eller ett foto som du ska ta nu (bara i mobilen)
   submit: Bekräfta och skapa group
   waiting: Skapar din group...
 
@@ -56,6 +56,8 @@ actions:
   leave: Lämna
   archive: Arkivera
   unarchive: Avarkivera
+  register: Se datum & boka
+  invite: Bjuda in
 
 meeting:
   attends:
@@ -90,6 +92,8 @@ meeting:
     resource: Välj lokal eller resurs
     location: Plats
     submit: Lägg till möte
+  errors:
+    noresource: Välj en resurs eller ange en plats för mötet (minst 4 tecken)
 
 confirm:
   check: Är du säker?
@@ -120,6 +124,8 @@ invite:
     holder: Samuel
     valid: Ange ett giltigt förnamn
   submit: Skicka inbjudan
+  remove:
+    success: Inbjudan tas bort
 
 modal:
   join:
@@ -132,3 +138,9 @@ modal:
 private:
   title: privat
   info: Privata grouper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer.
+
+admin:
+  admin: Admin
+  add_document: Lägg till dokument
+  add_meeting: Lägg till möte
+  manage_members: Hantera medlemmar

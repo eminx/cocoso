@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  Box,
   Button,
   HStack,
   Input,
@@ -14,9 +13,11 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { call } from '../../utils/shared';
-import Loader from '../../components/Loader';
-import { message, Alert } from '../../components/message';
+import Loader from '../../generic/Loader';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
+import Boxling from './Boxling';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -27,10 +28,6 @@ function Categories() {
   const { currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
-
-  useEffect(() => {
-    getCategories();
-  }, []);
 
   const getCategories = async () => {
     try {
@@ -43,6 +40,10 @@ function Categories() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   if (loading) {
     return <Loader />;
@@ -84,18 +85,9 @@ function Categories() {
 
   return (
     <>
-      <Box maxWidth={400}>
-        <Text mb="3">{t('categories.info')}</Text>
-        <Wrap p="1" spacing="2" mb="2">
-          {categories.map((category) => (
-            <WrapItem key={category.label}>
-              <Tag colorScheme="messenger">
-                <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
-                <TagCloseButton onClick={() => removeCategory(category._id)} />
-              </Tag>
-            </WrapItem>
-          ))}
-        </Wrap>
+      <Text mb="3">{t('categories.info')}</Text>
+
+      <Boxling mb="4">
         <form onSubmit={addNewCategory}>
           <HStack align="center" maxWidth={240} py="2">
             <Input
@@ -106,7 +98,20 @@ function Categories() {
             <Button type="submit">{tc('actions.add')}</Button>
           </HStack>
         </form>
-      </Box>
+      </Boxling>
+
+      <Boxling>
+        <Wrap p="1" spacing="2" mb="2">
+          {categories.map((category) => (
+            <WrapItem key={category._id}>
+              <Tag size="sm" colorScheme="messenger">
+                <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
+                <TagCloseButton onClick={() => removeCategory(category._id)} />
+              </Tag>
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Boxling>
     </>
   );
 }

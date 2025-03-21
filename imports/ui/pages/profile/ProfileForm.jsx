@@ -3,8 +3,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { Button, Flex, Input, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import FormField from '../../components/FormField';
-import ReactQuill from '../../components/Quill';
+import FormField from '../../forms/FormField';
+import ReactQuill from '../../forms/Quill';
 
 function ProfileForm({ defaultValues, onSubmit }) {
   const { control, formState, handleSubmit, register } = useForm({
@@ -17,7 +17,7 @@ function ProfileForm({ defaultValues, onSubmit }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit((data) => onSubmit(data))} defaultValues={defaultValues}>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           <FormField label={t('profile.form.firstname.label')}>
             <Input {...register('firstName')} placeholder="" />

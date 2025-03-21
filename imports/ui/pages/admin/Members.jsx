@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import moment from 'moment';
+import { useLocation } from 'react-router-dom';
+import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { Box, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
 
-import Loader from '../../components/Loader';
-import NiceList from '../../components/NiceList';
-import Template from '../../components/Template';
-import { message, Alert } from '../../components/message';
+import Loader from '../../generic/Loader';
+import NiceList from '../../generic/NiceList';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
-import UsageReport from '../../components/UsageReport';
-import Tabs from '../../components/Tabs';
-import { AdminMenu } from './Settings';
+import UsageReport from './UsageReport';
+import Boxling from './Boxling';
+import TablyRouter from '../../generic/TablyRouter';
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -20,19 +20,43 @@ const compareUsersByDate = (a, b) => {
   return dateA - dateB;
 };
 
-function Members() {
+function MemberItem({ member, t }) {
+  return (
+    <Box p="4">
+      <Heading size="md" fontWeight="bold">
+        {member.username}
+      </Heading>
+      <Text>{member && member.email}</Text>
+      <Text fontSize="sm" fontStyle="italic">
+        {t(`roles.${member.role}`).toLowerCase()}
+      </Text>
+      <Text fontSize="xs" color="gray.500">
+        {t('joinedAt', {
+          date: dayjs(member.date).format('D MMM YYYY'),
+        })}
+        <br />
+      </Text>
+    </Box>
+  );
+}
+
+function MemberList({ members, t }) {
+  return (
+    <NiceList actionsDisabled={false} itemBg="white" keySelector="email" list={members}>
+      {(member) => <MemberItem key={member.username} t={t} member={member} />}
+    </NiceList>
+  );
+}
+
+export default function Members() {
   const [members, setMembers] = useState(null);
   const [sortBy, setSortBy] = useState('join-date');
   const [filterWord, setFilterWord] = useState('');
   const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-  const { currentUser, isDesktop, role, getCurrentHost } = useContext(StateContext);
+  const { currentUser, isDesktop, role } = useContext(StateContext);
   const location = useLocation();
-
-  useEffect(() => {
-    getMembers();
-  }, []);
 
   const getMembers = async () => {
     try {
@@ -42,6 +66,9 @@ function Members() {
       console.log(error);
     }
   };
+  useEffect(() => {
+    getMembers();
+  }, []);
 
   if (!members) {
     return <Loader />;
@@ -50,7 +77,7 @@ function Members() {
   const setAsParticipant = async (user) => {
     try {
       await call('setAsParticipant', user.id);
-      getCurrentHost();
+      getMembers();
       message.success(t('message.success.participant', { username: user.username }));
     } catch (error) {
       console.log(error);
@@ -64,7 +91,7 @@ function Members() {
   const setAsContributor = async (user) => {
     try {
       await call('setAsContributor', user.id);
-      getCurrentHost();
+      getMembers();
       message.success(t('message.success.contributor', { username: user.username }));
     } catch (error) {
       console.log(error);
@@ -78,7 +105,7 @@ function Members() {
   const setAsAdmin = async (user) => {
     try {
       await call('setAsAdmin', user.id);
-      getCurrentHost();
+      getMembers();
       message.success(t('message.success.admin', { username: user.username }));
     } catch (error) {
       console.log(error);
@@ -185,31 +212,21 @@ function Members() {
     (m) => filterInPath === 'all' || filterInPath === m.role
   );
 
-  const tabs = filterOptions.map((item) => {
-    return {
-      title: item.label,
-      path: item.value,
-      content: <MemberList members={membersRendered} t={t} />,
-    };
-  });
-
-  const pathnameLastPart = pathname.split('/').pop();
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
-
-  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
-    return <Navigate to={tabs[0].path} />;
-  }
+  const tabs = filterOptions.map((item) => ({
+    title: item.label,
+    path: item.value,
+    content: <MemberList members={membersRendered} t={t} />,
+  }));
 
   return (
     <>
-      <Template heading={`${t('label')} (${membersRendered.length})`} leftContent={<AdminMenu />}>
-        <Box>
-          <Tabs index={tabIndex} mb="8" tabs={tabs} />
-
-          <Box>
+      <TablyRouter tabs={tabs}>
+        <Boxling mb="4" mt="8">
+          <Box mb="2">
             <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
           </Box>
-          <Flex flexDirection={isDesktop ? 'row' : 'column'} py="2" w="100%">
+
+          <Flex flexDirection={isDesktop ? 'row' : 'column'} w="100%">
             <Box pr={isDesktop ? '4' : '0'} pb={isDesktop ? '0' : '2'} flexBasis="60%">
               <Input
                 placeholder={t('form.holder')}
@@ -227,52 +244,14 @@ function Members() {
               </Select>
             </Box>
           </Flex>
+        </Boxling>
+      </TablyRouter>
 
-          <Box mb="24">
-            <Routes>
-              {tabs.map((tab) => (
-                <Route key={tab.title} path={tab.path} element={<Box p="2">{tab.content}</Box>} />
-              ))}
-            </Routes>
-          </Box>
-        </Box>
-
-        <UsageReport
-          isOpen={Boolean(userForUsageReport)}
-          user={userForUsageReport}
-          onClose={() => setUserForUsageReport(null)}
-        />
-      </Template>
+      <UsageReport
+        isOpen={Boolean(userForUsageReport)}
+        user={userForUsageReport}
+        onClose={() => setUserForUsageReport(null)}
+      />
     </>
   );
 }
-
-function MemberList({ members, t }) {
-  return (
-    <NiceList itemBg="white" keySelector="email" list={members}>
-      {(member) => <MemberItem key={member.username} t={t} member={member} />}
-    </NiceList>
-  );
-}
-
-function MemberItem({ member, t }) {
-  return (
-    <Box border="1px solid" borderColor="brand.500" p="4">
-      <Heading size="md" fontWeight="bold">
-        {member.username}
-      </Heading>
-      <Text>{member && member.email}</Text>
-      <Text fontSize="sm" fontStyle="italic">
-        {t('roles.' + member.role).toLowerCase()}
-      </Text>
-      <Text fontSize="xs" color="gray.500">
-        {t('joinedAt', {
-          date: moment(member.date).format('D MMM YYYY'),
-        })}
-        <br />
-      </Text>
-    </Box>
-  );
-}
-
-export default Members;

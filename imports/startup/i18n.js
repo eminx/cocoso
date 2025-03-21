@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import Backend from 'i18next-http-backend';
+import I18NextHttpBackend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
@@ -25,37 +25,47 @@ const allLangs = [
 
 const defaultLang = 'en';
 
-const namespaces = [
-  'common',
-  'accounts',
-  'members',
-  'hosts',
-  'admin',
-  'activities',
-  'groups',
-  'calendar',
-  'resources',
-];
+// const namespaces = [
+//   'common',
+//   'accounts',
+//   'members',
+//   'hosts',
+//   'admin',
+//   'activities',
+//   'groups',
+//   'calendar',
+//   'resources',
+// ];
 
 const path = '/i18n/{{lng}}/{{ns}}.yml';
 const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
 
+// const Backend = Meteor.isClient ? I18NextHttpBackend : I18NexFsBackend;
+const Backend = I18NextHttpBackend;
+
 const options = {
-  allowMultiLoading: false,
   backend: {
     loadPath,
-    parse: function (data) {
-      return yaml.load(data);
-    },
+    parse: (data) => yaml.load(data),
   },
   debug: false,
   defaultNS: 'common',
-  fallbackLng: 'en',
+  detection: {
+    order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'], // Specify the order of language detection
+    caches: ['cookie'], // Cache the selected language
+  },
+  fallbackLng: defaultLang,
+  interpolation: {
+    escapeValue: false,
+  },
   lng: defaultLang,
   load: 'languageOnly',
-  ns: 'common',
+  ns: ['common'],
   only: '*',
-  // preload: allLangs,
+  preload: ['en'],
+  react: {
+    useSuspense: true,
+  },
   saveMissing: true,
   supportedLngs: allLangs.map((l) => l.value),
   useSuspense: process && !process.release,
@@ -63,7 +73,7 @@ const options = {
 
 // for browser use http backend to load translations and browser lng detector
 if (process && !process.release) {
-  i18n.use(Backend).use(initReactI18next).use(LanguageDetector);
+  i18n.use(Backend).use(LanguageDetector).use(initReactI18next);
 }
 
 // initialize if not already initialized
@@ -71,13 +81,15 @@ if (!i18n.isInitialized) {
   i18n.init(options);
   // check & set lang for user(logged) or host prefences
   Tracker.autorun(() => {
-    if (Meteor.userId()) {
-      const handler = Meteor.subscribe('me');
-      if (handler.ready()) {
-        const userLang = Meteor.user()?.lang;
-        i18n.changeLanguage(userLang);
+    if (Meteor.isClient) {
+      if (Meteor.userId()) {
+        const handler = Meteor.subscribe('me');
+        if (handler.ready()) {
+          const userLang = Meteor.user()?.lang;
+          i18n.changeLanguage(userLang);
+        }
+        return;
       }
-      return;
     }
     Meteor.call('getCurrentHost', (error, respond) => {
       if (!error) {

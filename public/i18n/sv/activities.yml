@@ -1,19 +1,32 @@
 label:
   new: Skapa ett aktivitet
+  newevent: Skapa ett evenemang
   edit: Redigera
+  rsvp: Datum & boka
+  next: Nästa aktivitet
 
 form:
-  switch:
-    public: Offentligt evenemang
-    exclusive: Exklusiv aktivitet (Andra kan inte boka samma tid)
-    rsvp: Bokning aktiverad (Människor kan boka sig/OSA för att delta i händelsen/händelserna)
+  title:
+    label: Titel
+    helper: Ange ett namn på din aktivitet eller bokning
+    holder: Ange en titel
+  subtitle:
+    label: Undertitel
+    helper: Exempelvis artistnamn, eller en undertitel…
+    holder: Ange en undertitel
+  description:
+    label: Beskrivning
+    helper: Lägg till en beskrivning av din aktivitet eller bokning
+  image:
+    label: Bilder
+    helper: Välj en eller flera bilder som du vill ska representera ditt evenemang
   resource:
-    label: '{{ resources }}'
+    label: Resurs
+    helper: Välj en resurs om evenemanget använder ett rum eller en resurs (bokas då i kalendern). Om arrangemangen inte använder en av era rum/resurser lämnas rutan tom. Valfritt
     holder: Välj
-    helper: Välj den resurs du vill boka
   occurrences:
-    label: Tid och datum
-    helper: Lägg in start och sluttid för din bokning eller ditt publika evenemang. Vill du skapa flera identiska bokningar eller evenemang som sker vid upprepade tillfällen klickar du på + tecknet.
+    label: Datum och tid
+    helper: Lägg in start och sluttid för ditt publika evenemang. Vill du skapa flera identiska bokningar eller evenemang som sker vid upprepade tillfällen klickar du på + tecknet.
   days:
     single: Dag
     multiple: Samma aktivitet pågår under flera dagar
@@ -26,34 +39,29 @@ form:
     startFinish: Start och sluttid
   capacity:
     label: Kapacitet
+    helper: Hur många personer kan delta i ditt evenemang?
   details:
-    label: Detaljer
-  title:
-    label: Titel
-    holder: Ange en titel
-    helper: Ange ett namn på din aktivitet eller bokning
-  subtitle:
-    label: Undertitel
-    holder: Ange en undertitel
-    helper: Exempelvis artistnamn, eller en undertitel…
-  description:
-    label: Beskrivning
-    helper: Lägg till en beskrivning av din aktivitet eller bokning
+    label: Ange detaljer
   place:
     label: Plats
+    helper: Valfritt, ange namnet platsen där ditt evenemang kommer äga rum
     holder: Artistosphere
-    helper: Ange namnet platsen där ditt evenemang kommer äga rum (ej obligatoriskt)
   address:
     label: Adress
+    helper: Valfritt, ange adressen till den plats där ditt evenemang kommer äga rum
     holder: 17th Street, Berlin...
-    helper: Ange adressen till den plats där ditt evenemang kommer äga rum (ej obligatoriskt)
-  image:
-    label: Bilder ({{ count }})
-    helper: Välj en eller flera bilder som du vill ska representera ditt evenemang
+  rsvp:
+    label: Bokning aktiverad
+    helper: Om rutan är vald kan personer boka plats för att delta i evenemanget.
+    holder: Välj
+  exclusive:
+    label: Exklusiv aktivitet (för att undvika konflikter)
+    helper: Resursen blockeras i kalendern och andra kan inte inte boka samma resurs samma tid. Klicka av om andra kan använda resursen samtidigt.
+    holder: Välj
   submit: Bekräfta och Skapa
   waiting: Skapar din aktivitet...
   conflict:
-    alert: 'Det finns redan en bokning för den här resursen vid detta datum och tid:'
+    alert: 'Det finns redan en bokning för den här resursen vid detta datum och tid'
     notExclusiveInfo: 'Eftersom båda bokningarna tillåter att fler bokar samma tid kan du gå vidare och slutföra din bokning'
 
 members:
@@ -67,8 +75,8 @@ members:
 public:
   labels:
     address: Adress
-    dates: Datum
-    datesAndRegistration: Datum & bokning
+    dates: Se datum
+    datesAndRegistration: Se datum & boka
     info: Info
     location: Plats
     resource: Resurs
@@ -111,3 +119,5 @@ public:
   past: Detta arrangemang har redan passerat
   acceess:
     deny: Endast synligt för admins och verifierade användare
+  chat:
+    heading: Endast för admins och verifierade användare

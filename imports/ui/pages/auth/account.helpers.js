@@ -1,10 +1,8 @@
-const Joi = require('joi');
-
-const passwordErrorMessage =
-  'Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters';
+import { z } from 'zod';
 
 // REGEX
-const regexPassword = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
+const regexUsername = /^[a-z0-9]+$/;
+const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
 
 // DEFAULT VALUES
 const loginModel = {
@@ -27,21 +25,27 @@ const resetPasswordModel = {
 };
 
 // SCHEMAS
-const usernameSchema = {
-  username: Joi.string().alphanum().case('lower').min(4).max(15).required(),
-};
+const usernameSchema = (t) => ({
+  username: z
+    .string()
+    .min(4, t('common:auth.errors.username'))
+    .regex(regexUsername, t('common:auth.errors.username')),
+});
 
-const emailSchema = {
-  email: Joi.string().email({ tlds: { allow: false } }),
-};
+const emailSchema = (t) => ({
+  email: z.string().email(t('common:auth.errors.email')),
+});
 
 const usernameOrEmailSchema = {
-  username: Joi.allow(usernameSchema, emailSchema),
+  username: z.union([usernameSchema.username, emailSchema.email]),
 };
 
-const passwordSchema = {
-  password: Joi.string().pattern(new RegExp(regexPassword)).message(passwordErrorMessage),
-};
+const passwordSchema = (t) => ({
+  password: z
+    .string()
+    .min(8, t('common:auth.errors.passwordMin'))
+    .regex(regexPassword, t('common:auth.errors.passwordRegex')),
+});
 
 export {
   regexPassword,

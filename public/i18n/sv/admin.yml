@@ -1,6 +1,12 @@
 # ADMIN SETTINGS PAGE
+label: Admin
+panel: Adminpanel
+menulabel: Adminmenu
+site: Sidan
+home: Hem
+
 settings:
-  label: Inställningar
+  title: Inställningar
   tabs:
     general: Allmänt
     logo: Logotyp
@@ -42,12 +48,18 @@ info:
     federationLabel: Use Federation Layout (with topbar and footer)
     federationText: Fosters federation layout by showing a dedicated topbar and footer to navigate in between different member communities and get informed about the federation
 
+organization:
+  title: Organization
+
+users:
+  title: Användare
+
 menu:
-  label: Meny
+  title: Meny
   tabs:
     menuitems:
-      label: Synlighet & benämning
-      info: Välj vilka funktioner du vill använda genom att markera/avmarkera menyns rubriker. Benämn menyns rubriker som det passar din community.
+      label: Synlighet, benämning och beskrivning
+      info: Välj vilka funktioner du vill använda genom att markera/avmarkera menyns rubriker. Benämn menyns rubriker som det passar din community. Beskrivningen du anger kommer att visas precis under rubriken när användare öppnar listsidan. Lämna den tom om du föredrar det.
     order:
       label: Ordning
       info: Du kan ändra ordning i menyn genom att dra de olika sidorna uppåt eller neråt. Den sida du lägger överst kommer fungera som er hemsida (här landar nya besökare när de kommer till er community)
@@ -55,19 +67,23 @@ menu:
   itemLabel: Benämning
   info:
     activities: Den här funktionen listar offentliga evenemang och gruppmöten. Om ni klickar bort funktionen kan ni inte skapa eller synliggöra publika evenemang
-    groups: Den här funktionen listar grupper eller grouper. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller grouper
     calendar: Den här funktionen synliggör er kalender. Om ni klickar av funktionen blir kalendern inte synlig. Ni kan då inte göra bokningar av era resurser i kalendern
-    info: Den här funktionen används för att skapa informationssidor.
-    works: Den här funktionen kan användas för att skapa ett arkiv eller en portfolio, eller för att skapa poster för försäljning
-    members: Den här funktionen listar alla som gått med i er community. Om ni klickar bort funktionen blir listan inte synlig. Det går då heller inte att nå era medlemmars profilsidor
+    groups: Den här funktionen listar grupper eller grouper. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller grouper
+    info: Den här funktionen listar statiska informationssidorna
+    people: Den här funktionen listar alla som gått med i er community. Om ni klickar bort funktionen blir listan inte synlig. Det går då heller inte att nå era medlemmars profilsidor
     resources: Den här funktionen listar resurserna i er community. Om ni klickar bort funktionen blir listan inte synlig, och ni kan inte lägga till nya resurser. Befintliga resurser fortfarande kan ses och bokas i er kalender
-  headerMenu:
-    title: Huvudmeny
-    label: Huvudmeny aktiv på skrivbordet
-    text: Aktivera att menyn visas överst på sidan i desktop format, istället för att menyn öppnas genom att klicka på meny-ikonen i vänstermarginalen. I mobilformat visas menyn alltid via menyknappen längst upp till höger.
+    works: Den här funktionen kan användas för att skapa ett arkiv eller en portfolio, eller för att skapa poster för försäljning
+  burgermenu:
+    title: Burgermeny
+    label: Burgermeny aktiverad
+    mobile: Burgermeny aktiverad på mobilview
+    desktop: Burgermeny aktiverad på desktop
+    text: Aktivera eventuellt burgermenyn. Burgermeny är en meny som visas när man klickar på "burger"-ikonen i det övre högra hörnet av skärmen.
+  options:
+    label: Alternativ
 
 categories:
-  label: Arbetskategorier
+  title: Kategorier
   info: Du kan ställa in kategorier för arbetsinlägg här
   message:
     denySpecialChars: Specialtecken, förutom bindestreck (-), är inte tillåtna
@@ -80,7 +96,7 @@ color:
 
 # ADMIN EMAILS PAGE
 emails:
-  label: E-postmeddelanden
+  title: Automatiserade e-postmeddelanden
   form:
     subject:
       label: Ämne
@@ -96,16 +112,16 @@ emails:
       helper: Välj en bild som ska visas överst i e-postmeddelandet
     footer:
       label: E-postsidfot
-  participant:
+  new:
     title: Ny användare
-  cocreator:
+  verified:
     title: Användaren verifierad
   admin:
     title: Ny admin
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
-  title: Nyhetsbrev
+  title: Skicka ett nyhetsbrev
   subtitle: Här kan du skapa ett nyhetsbrev som går ut till alla medlemmar i er community. Du kan enkelt komponera brevet med egen text och bifoga material som är publicerade på er sida.
   subtitle2: 'För att skriva e-postmeddelandet nedan måste du ange minst en av: brödtext, en bild och/eller valda innehållsobjekt som listas i community-appen.'
   contenthelper: Du kan infoga befintligt innehåll från din sida genom att välja poster i listan här nedanför. Text och bild samt länk till posterna läggs automatiskt in i nyhetsbrevet.
@@ -125,14 +141,17 @@ newsletter:
     appeal:
       helper: Ange hur du vill tilltala de som kommer ta emot ditt nyhetsbrev
     body:
-      helper: Lägg till en text till nyhetsbrevet (ej obligatoriskt)
+      helper: Valfritt, Lägg till en text till nyhetsbrevet
     image:
-      helper: Lägg till en bild eller logotyp som kommer visas högst upp i nyhetsbrevet (ej obligatoriskt)
+      helper: Valfritt, lägg till en bild eller logotyp som kommer visas högst upp i nyhetsbrevet
   notification:
     success:
       emailsent: Ditt e-postmeddelande har skickats till alla medlemmar
   portalHost:
     info: Eftersom detta är federationens portalapp kommer din e-post att skickas till alla {{ platform }} plattformsmedlemmar
+
+features:
+  title: Huvudfunktioner
 
 # ADMIN STATIC PAGES
 pages:
@@ -149,5 +168,9 @@ pages:
       holder: Sidans textinnehåll
       helper: Lägg till textinnehållet som du vill publicera här
     images:
-      label: Bilder ({{ count }})
+      label: Bilder
       helper: Ange en eller flera bilder. Om du väljer flera bilder kommer de visas som ett bildspel
+  order:
+    title: Ordning
+    label: Ändra sidordning
+    info: Du kan ändra ordningen på sidorna genom att dra dem uppåt och nedåt. Det påverkar deras visningsordning i navigeringsmenyn

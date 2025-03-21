@@ -10,13 +10,12 @@ messages:
 form:
   holder: tipi
   bookable:
-    switch:
-      label: Ayrılabilir
-      helper: Bu ögenin takvimde görünebilmesi ve rezerve edilebilir olmasını istiyorsan bunu seç
+    label: Ayrılabilir
+    helper: Bu ögenin takvimde görünebilmesi ve rezerve edilebilir olmasını istiyorsan bunu seç
   combo:
     switch:
       label: Kombo
-      helper: Kombo, bu listedeki diğer birkaç ögenin "Kombinasyonu" anlamına gelir. Kullanıcıların aynı anda birkaç ögeyi ayırabilmesini sağlar. Rezervasyonlar buna göre takvimde görünecektir.
+      helper: Kombo, bu listedeki diğer birkaç kaynağın "Kombinasyonu" anlamına gelir. Kullanıcıların aynı anda birkaç ögeyi rezerve edebilmesini sağlar. Rezervasyonlar buna göre takvimde görünecektir.
     select:
       holder: Seçenek seç
       helper: Kombo öge oluşturmak için lütfen birden çok öge seç
@@ -28,9 +27,10 @@ form:
     label: Açıklama
     holder: Stüdyoyu kullanmak için gerekli olan...
     helper: İsteğe bağlı olarak, Lütfen oluşturduğun bu içerik ögesi hakkında ayrıntılı bir açıklama gir. Örneğin bir kaynak hakkında detaylı bilgi, kullanım koşulları, nasıl çalıştığı, nasıl kullanılması ve teslim edilmesi gerektiği ile ilgili ayrıntıları içerebilir...
-  images:
-    label: Imajlar ({{ count }})
+  image:
+    label: İmajlar
     helper: İsteğe bağlı olarak, lütfen cihazındaki galeriden fotoğraf/fotoğraflar veya şimdi çekeceğin bir fotoğraf seç
+  select: Seç
 
 tabs:
   info: Bilgi

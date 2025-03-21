@@ -1,5 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap');
+/* @import 'react-slideshow-image/dist/styles.css';
+@import 'react-lazy-load-image-component/src/effects/black-and-white.css'; */
+
+*,
+*:hover {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: rgb(68, 60, 52);
+}
 
 body {
   min-height: 101vh;
@@ -18,6 +29,18 @@ body {
   #main-viewport {
     width: 100%;
   }
+}
+
+.wrapper {
+  background-color: var(--chakra-colors-gray-100);
+  min-height: 100vh;
+  margin-bottom: 480px;
+  padding-top: 0;
+  transition: all 0.5s ease;
+}
+
+.wrapper.mobile-wrapper {
+  padding-top: 48px;
 }
 
 .logo {
@@ -67,6 +90,7 @@ body {
 
 .sortable-thumb {
   position: relative;
+  cursor: move;
   width: 120px;
   height: 90px;
   margin: 8px;
@@ -74,6 +98,10 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-color: #1c1c1c;
+}
+
+.sortable-thumb--dragged {
+  z-index: 1500;
 }
 
 .sortable-thumb:hover {
@@ -147,9 +175,9 @@ input::placeholder {
 /* Sexy Thumb */
 
 .thumb-cover-container {
-  height: 315px;
   position: relative;
   width: 100%;
+  cursor: pointer;
 }
 
 .thumb-cover-container:hover .thumb-cover {
@@ -169,21 +197,14 @@ input::placeholder {
 .thumb-text-container {
   font-family: Raleway, sans-serif;
   height: 100%;
-  padding: 24px 16px;
+  padding: 24px;
   position: absolute;
-  z-index: 1;
   top: 0;
   width: 100%;
 }
 
 .lazy-load-image-background {
   width: 100%;
-}
-
-.sexy-thumb-container {
-  cursor: pointer;
-  flex: 1 1 355px;
-  max-width: 550px;
 }
 
 .cover-highlight-title {
@@ -193,7 +214,7 @@ input::placeholder {
 .thumb-title {
   color: #fff;
   font-size: 24px;
-  margin-bottom: 6px;
+  /* margin-bottom: 6px; */
   line-height: 32px;
   overflow-wrap: anywhere;
   font-family: 'Raleway', sans-serif;
@@ -207,31 +228,35 @@ input::placeholder {
   font-weight: normal;
 }
 
-.chakra-input,
+/* .chakra-input,
 .chakra-select,
 .chakra-numberinput__field,
 .chakra-checkbox__control:not([data-checked]),
 .chakra-textarea {
   background-color: #fff !important;
-}
+} */
 
-.chakra-input:hover,
+/* .chakra-input:hover,
 .chakra-select:hover,
 .chakra-numberinput__field:hover,
 .chakra-textarea:hover {
   background-color: #f7f7f7 !important;
-}
+} */
 
 .my-masonry-grid {
   display: -webkit-box; /* Not needed if autoprefixing */
   display: -ms-flexbox; /* Not needed if autoprefixing */
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: auto;
 }
 .my-masonry-grid_column {
   padding-left: 8px; /* gutter size */
   background-clip: padding-box;
+  flex-basis: 240px;
+  flex-grow: 1;
+  max-width: 480px;
 }
 
 .chakra-switch__track {
@@ -245,17 +270,10 @@ input::placeholder {
 }
 
 .ant-cascader-menus > ul.ant-cascader-menu {
-  border-radius: 0;
-  border: 1px solid;
-  border-color: var(--chakra-colors-brand-500);
+  border-radius: 8px;
   overflow-y: visible;
   width: 150px;
   height: 280px;
-}
-
-.ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
-  border-radius: 0;
-  border: 1px solid;
 }
 
 ul.ant-cascader-menu,

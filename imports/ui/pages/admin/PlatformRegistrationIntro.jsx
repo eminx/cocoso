@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
-import { PlusSquareIcon } from '@chakra-ui/icons';
-import renderHTML from 'react-render-html';
+import PlusSquareIcon from 'lucide-react/dist/esm/icons/plus-square';
+import parseHtml from 'html-react-parser';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../components/Loader';
-import { message, Alert } from '../../components/message';
+import Loader from '../../generic/Loader';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { call } from '../../utils/shared';
-import ReactQuill from '../../components/Quill';
-import Template from '../../components/Template';
+import ReactQuill from '../../forms/Quill';
+import Template from '../../layout/Template';
 import { AdminMenu } from './Settings';
 
-export default function PlatformRegistrationIntro({ history }) {
+export default function PlatformRegistrationIntro() {
   const [loading, setLoading] = useState(true);
   const [platform, setPlatform] = useState(null);
   const [registrationIntro, setRegistrationIntro] = useState(['']);
@@ -21,10 +22,6 @@ export default function PlatformRegistrationIntro({ history }) {
   const { currentUser, getPlatform } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
-
-  useEffect(() => {
-    getPlatformNow();
-  }, []);
 
   const getPlatformNow = async () => {
     try {
@@ -40,6 +37,10 @@ export default function PlatformRegistrationIntro({ history }) {
     }
   };
 
+  useEffect(() => {
+    getPlatformNow();
+  }, []);
+
   const handleAddSlide = () => {
     setRegistrationIntro([...registrationIntro, '']);
   };
@@ -48,9 +49,8 @@ export default function PlatformRegistrationIntro({ history }) {
     const slides = registrationIntro.map((slide, i) => {
       if (i === index) {
         return value;
-      } else {
-        return slide;
       }
+      return slide;
     });
 
     setRegistrationIntro(slides);
@@ -88,7 +88,7 @@ export default function PlatformRegistrationIntro({ history }) {
     <Box>
       <Template heading={tc('menu.superadmin.intro')} leftContent={<AdminMenu />}>
         <Text mb="2">
-          {renderHTML(tc('platform.registrationIntro.notice1', { platform: platform.name }))}
+          {parseHtml(tc('platform.registrationIntro.notice1', { platform: platform.name }))}
         </Text>
 
         <Text mb="4">

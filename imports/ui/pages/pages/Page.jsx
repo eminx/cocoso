@@ -1,99 +1,76 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { Box, Button, Center, Text } from '@chakra-ui/react';
-import renderHTML from 'react-render-html';
-import { Helmet } from 'react-helmet';
-import { useTranslation } from 'react-i18next';
+import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 
+import PageHybrid from '../../entry/PageHybrid';
 import { StateContext } from '../../LayoutContainer';
-import PagesList from '../../components/PagesList';
-import Loader from '../../components/Loader';
-import NiceSlider from '../../components/NiceSlider';
-import { parseTitle } from '../../utils/shared';
-import PageHeading from '../../components/PageHeading';
+import { message } from '../../generic/message';
+import { call, parseTitle } from '../../utils/shared';
+import NewPage from './NewPage';
+import EditPage from './EditPage';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import PageInteractionHandler from './components/PageInteractionHandler';
 
-const publicSettings = Meteor.settings.public;
+export const PageContext = createContext(null);
 
 function Page() {
-  const { currentHost, currentUser, isDesktop, role } = useContext(StateContext);
-  const [pages, setPages] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const { pageId } = useParams();
-  const [tc] = useTranslation('common');
+  const initialPages = window?.__PRELOADED_STATE__?.pages || [];
+  const Host = window?.__PRELOADED_STATE__?.Host || null;
 
-  useEffect(() => {
-    Meteor.call('getPages', (error, respond) => {
-      setPages(respond);
-      setIsLoading(false);
-    });
+  const [pages, setPages] = useState(initialPages);
+  const [rendered, setRendered] = useState(false);
+  let { currentHost } = useContext(StateContext);
+  const { role } = useContext(StateContext);
+  const { pageTitle } = useParams();
+  const [searchParams] = useSearchParams();
+  const forNew = searchParams.get('new') === 'true';
+  const forEdit = searchParams.get('edit') === 'true';
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
   }, []);
 
-  const currentPage = pages?.find((page) => parseTitle(page?.title) === parseTitle(pageId));
+  const getPages = async () => {
+    try {
+      const response = await call('getPages');
+      setPages(response);
+    } catch (error) {
+      message.error(error.reason || error.error);
+    }
+  };
 
-  if (isLoading) {
-    return <Loader />;
+  useEffect(() => {
+    getPages();
+  }, []);
+
+  if (!currentHost) {
+    currentHost = Host;
   }
 
-  if (!currentPage && pages && pages.length > 0) {
-    return <Navigate to={`/pages/${parseTitle(pages[0].title)}`} />;
-  }
+  const currentPage = pages.find((page) => parseTitle(page.title) === pageTitle);
 
-  if (!currentPage || !currentPage.title || !currentPage.longDescription) {
-    return <Loader />;
-  }
+  const contextValue = {
+    currentPage,
+    pages,
+    getPages,
+  };
 
-  const pageTitles = pages && pages.map((page) => page.title);
-
-  const isAdmin = currentUser && role === 'admin';
-
-  const { settings } = currentHost;
+  const isAdmin = role === 'admin';
 
   return (
     <>
-      <Helmet>
-        <title>{`${currentPage.title} | ${settings.name} | ${publicSettings.name}`}</title>
-      </Helmet>
+      <PageHybrid pages={pages} Host={currentHost} />
 
-      <PageHeading description={settings.menu.find((item) => item.name === 'info')?.description} />
+      {rendered && isAdmin && (
+        <PageContext.Provider value={contextValue}>
+          <PageInteractionHandler slideStart={rendered} />
 
-      <Box mt="-2" mb="2">
-        <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
-      </Box>
-
-      <Box>
-        {currentPage.images && currentPage.images.length > 0 && (
-          <Center py="4">
-            <NiceSlider
-              alt={currentPage.title}
-              isFade={isDesktop}
-              height={isDesktop ? '400px' : 'auto'}
-              images={currentPage.images}
-            />
-          </Center>
-        )}
-        <Center>
-          <Box
-            bg="white"
-            className="text-content"
-            maxWidth="520px"
-            overflow="auto"
-            m="2"
-            p="6"
-            w="100%"
-          >
-            {currentPage.longDescription && renderHTML(currentPage.longDescription)}
-          </Box>
-        </Center>
-      </Box>
-
-      {isAdmin && (
-        <Center m="4">
-          <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
-            <Button as="span" variant="ghost" size="sm">
-              <Text>{tc('actions.update')}</Text>
-            </Button>
-          </Link>
-        </Center>
+          <NewEntryHandler>
+            {forEdit ? <EditPage /> : null}
+            {forNew ? <NewPage /> : null}
+          </NewEntryHandler>
+        </PageContext.Provider>
       )}
     </>
   );

@@ -1,10 +1,16 @@
 # ADMIN SETTINGS PAGE
+label: Admin
+panel: Admin Paneli
+menulabel: Admin Menü
+site: Site
+home: Anasayfa
+
 settings:
-  label: Ayarlar
+  title: Ayarlar
   tabs:
     general: Genel
     logo: Logo
-    info: Info
+    info: Bilgi
     categories: Kategoriler
     menu: Menü
     cats: Kategoriler
@@ -42,12 +48,18 @@ info:
     federationLabel: Federasyon şablonunu kullan (tepe sekmesi ve altbilgi ile)
     federationText: Tepe sekmesi ve alt bilgiyi görüntüleyerek topluluklar arasında gidip gelmeyi ve federasyon hakkında bilgi edinebilmeyi sağlar
 
+organization:
+  title: Organizasyon
+
+users:
+  title: Kullanıcılar
+
 menu:
-  label: Menü
+  title: Menü
   tabs:
     menuitems:
-      label: Görünürlük ve İsimlendirme
-      info: Görünürlük için ögeleri aktif/pasifleştirebilir, menüyü oluşturmak için tercih ettiğin şekilde isimlendirebilir ve başlığın altında görünecek şekilde açıklama ekleyebilirsin.
+      label: Görünürlük, İsimlendirme ve Açıklama
+      info: Görünürlük için ögeleri aktif/pasifleştirebilir, menüyü oluşturmak için tercih ettiğin şekilde isimlendirebilir ve başlığın altında görünecek şekilde açıklama ekleyebilirsin. Açıklama, kullanıcılar listeleme sayfasını açtıklarında başlığın hemen altında görüntülenecektir. Dilersen boş bırak.
     order:
       label: Sıralama
       info: Görüntüleme sırasını değiştirmek istiyorsan, ögeleri yukarı ve aşağı sürükleyerek yeniden sırala
@@ -55,19 +67,23 @@ menu:
   itemLabel: İsim
   info:
     activities: Etkinlikler ve grup toplantılarını içeren listeleme sayfası
-    groups: Gruplar ve süreçleri içeren listeleme sayfası
     calendar: Takvim sayfası
-    info: Bilgi sayfaları
-    works: Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası
-    members: Topluluk üyelerini içeren listeleme sayfası
+    groups: Gruplar ve süreçleri içeren listeleme sayfası
+    info: Statik bilgi sayfaları için listeleme sayfası
+    people: Topluluk üyelerini içeren listeleme sayfası
     resources: Topluluk kaynaklarını içeren listeleme sayfası
-  headerMenu:
-    title: Başlık Menüsü
-    label: Başlık Menüsü masaüstü görünümde etkin
-    text: Menü simgesine tıklandığında çekmecenin gösterilmesi yerine, menünün masaüstünde sayfanın üst kısmında görünmesini sağlar
+    works: Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası
+  burgermenu:
+    title: Burger Menü
+    label: Burger Menü aktif
+    mobile: Burger Menü mobil görüntülemede aktif
+    desktop: Burger Menü masaüstü görüntülemede aktif
+    text: İsteğe bağlı olarak burger menüyü aktifleştir. Burger menü, ekranın sağ üst köşesindeki "burger" simgesine tıklandığında görünen menüdür.
+  options:
+    label: Seçenekler
 
 categories:
-  label: İş kategorileri
+  title: Kategoriler
   info: İşler için kategorileri burdan girebilirsin
   message:
     denySpecialChars: Kısa çizgi (-) dışındaki özel karakterlere izin verilmez
@@ -80,7 +96,7 @@ color:
 
 # ADMIN EMAILS PAGE
 emails:
-  label: Otomatik Epostalar
+  title: Otomatik Epostalar
   form:
     subject:
       label: Konu
@@ -96,16 +112,16 @@ emails:
       helper: E-postanın üst kısmında görünecek bir imaj seç
     footer:
       label: Altbilgi
-  participant:
+  new:
     title: Yeni kullanıcı
-  cocreator:
+  verified:
     title: Onaylanmış kullanıcı
   admin:
     title: Yeni admin
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
-  title: Eposta Bülteni
+  title: Eposta Bülteni Yolla
   subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsin.
   subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik ögeleri.'
   contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsin.
@@ -134,6 +150,9 @@ newsletter:
   portalHost:
     info: Bu federasyonun portal uygulaması olduğu için, e-posta tüm {{ platform }} platformu üyelerine gönderilecektir
 
+features:
+  title: Ana Özellikler
+
 # ADMIN STATIC PAGES
 pages:
   actions:
@@ -149,5 +168,9 @@ pages:
       holder: Katkı sağlama prosedürünün işleyiş şekli...
       helper: Lütfen bu sayfada yayınlamak istediğin metin içeriğinin tamamını buraya gir
     images:
-      label: İmajlar ({{ count }})
+      label: İmajlar
       helper: Tercihen, lütfen yayınlandığında bu sayfada bir slayt içinde görüntülenecek bir imaj veya bir dizi imaj seç
+  order:
+    title: Sıra
+    label: Sayfaların sırasını düzenle
+    info: Sayfaları yukarı ve aşağı sürükleyerek yeniden sıralayabilirsin. Navigasyon menüsündeki görüntülenme sırasını etkiler

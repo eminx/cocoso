@@ -7,43 +7,68 @@ import Pages from './page';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
-  getPages(host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getPages(hostPredefined) {
+    const host = hostPredefined || getHost(this);
 
     try {
-      return Pages.find({
-        host,
-      }).fetch();
+      return Pages.find(
+        {
+          host,
+        },
+        { sort: { order: 1 } }
+      ).fetch();
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't add to Collection");
+      throw new Meteor.Error(error, "Couldn't get pages");
+    }
+  },
+
+  getPageTitles(hostPredefined) {
+    const host = hostPredefined || getHost(this);
+
+    try {
+      return Pages.find(
+        {
+          host,
+        },
+        {
+          fields: {
+            _id: 1,
+            title: 1,
+            order: 1,
+          },
+          sort: { order: 1 },
+        }
+      ).fetch();
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't get pages");
     }
   },
 
   getPortalHostPages() {
     const portalHost = Hosts.findOne({ isPortalHost: true });
-    return Pages.find({ host: portalHost.host }).fetch();
+    return Pages.find({ host: portalHost.host }, { sort: { creationDate: -1 } }).fetch();
   },
 
-  createPage(formValues, images) {
+  createPage(formValues, hostPredefined) {
     const user = Meteor.user();
-    const host = getHost(this);
+    const host = hostPredefined || getHost(this);
+
     const currentHost = Hosts.findOne({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
+    const pageCount = Pages.find({ host }).count();
+
     try {
       Pages.insert({
+        ...formValues,
         host,
         authorId: user._id,
         authorName: user.username,
-        images,
-        title: formValues.title,
-        longDescription: formValues.longDescription,
         isPublished: true,
+        order: pageCount + 1,
         creationDate: new Date(),
       });
       return formValues.title;
@@ -52,9 +77,9 @@ Meteor.methods({
     }
   },
 
-  updatePage(pageId, formValues, images) {
+  updatePage(pageId, formValues, hostPredefined) {
     const user = Meteor.user();
-    const host = getHost(this);
+    const host = hostPredefined || getHost(this);
     const currentHost = Hosts.findOne({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
@@ -72,9 +97,7 @@ Meteor.methods({
     try {
       Pages.update(pageId, {
         $set: {
-          title: formValues.title,
-          longDescription: formValues.longDescription,
-          images,
+          ...formValues,
           latestUpdate: new Date(),
         },
       });
@@ -84,7 +107,38 @@ Meteor.methods({
     }
   },
 
-  deletePage(pageId) {
+  async savePageOrder(pages) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+
+    if (!user || !isAdmin(user, currentHost)) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    if (!pages || !pages.length) {
+      throw new Meteor.Error('No pages to update');
+    }
+
+    try {
+      await Promise.all(
+        pages.map(async (page) => {
+          await Pages.updateAsync(
+            { _id: page._id },
+            {
+              $set: {
+                order: page.order,
+              },
+            }
+          );
+        })
+      );
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't update collection");
+    }
+  },
+
+  async deletePage(pageId) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -99,7 +153,12 @@ Meteor.methods({
     }
 
     try {
-      Pages.remove(pageId);
+      await Pages.removeAsync(pageId);
+      let order = 1;
+      Pages.find({ host }, { sort: { order: 1 } }).forEach((page) => {
+        Pages.update({ _id: page._id }, { $set: { order } });
+        order += 1;
+      });
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }

@@ -38,10 +38,26 @@ actions:
 labels:
   activity: Activity
   all: All
+  book: Book
   booked: booked
   contact: Contact
   content: Content
-  create: Create a New {{ domain }}
+  create:
+    activities: New Activity
+    calendar: New Activity
+    groups: New Process/Group
+    info: New Info Page
+    resources: New Resource
+    works: New Post
+    host: New Community
+  update:
+    activities: Update Activity
+    calendar: Update Activity
+    groups: Update Process/Group
+    info: Update Info Page
+    pages: Update Page
+    resources: Update Resource
+    works: Update Post
   event: Event
   bookings: Bookings
   newBooking: New Booking
@@ -51,14 +67,13 @@ labels:
   remove: Remove
   info: Info
   extra: Extra
-  discussion: Discussion
+  discussion: Chat
   combo: Combo
   sortBy:
     placeholder: Sort by
     date: Date
     name: Name
     random: Random
-  update: Edit this {{ domain }}
   unselected: No resource
   admin:
     actions: Admin
@@ -81,10 +96,19 @@ labels:
   items: items
   allCommunities: All Communities
   select: Select
+  form:
+    title: Enter the details
+  private: Private
+  chat:
+    onlymembers: Only for group members
+    onlyverified: Only for verified users
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
-  loading: loading {{ something }} ...
+  loading:
+    creating: Started creating...
+    uploading: Uploading selected images...
+    sending: Sending the form...
 
   success:
     create: Your entry is successfully created
@@ -99,7 +123,7 @@ message:
   access:
     deny: You are not allowed
     admin: You have to be an admin to create a {{ domain }}
-    contributor: You have to become a cocreator to create {{ domain }}
+    contributor: You have to be verified to create {{ domain }}
     register: You have to become a registered member to create {{ domain }}
 
   exists: A {{ domain }} with this {{ property }} already exists
@@ -129,8 +153,14 @@ modals:
   confirm:
     delete:
       title: Confirm Delete
-      body: Are you sure you want to delete this {{ domain }}?
+      body: Are you sure you want to delete this entry?
+      cantundo: You can NOT undo this action
       yes: Yes, delete
+    newentry:
+      title: Confirm Cancelling
+      body: Are you sure you want to cancel? Your changes will be lost.
+      cancel: Go back
+      yes: Yes, it's OK
 
   # FEEDBACK FORM
   feedback:
@@ -194,6 +224,7 @@ domains:
   calendar: Calendar
   activity: Activity
   activities: Activities
+  event: Public Event
   group: Group
   groups: Groups
   resource: Resource
@@ -202,18 +233,16 @@ domains:
   works: Works
   host: Host
   page: Page
+  pageOrder: Page order
   profile: profile
   community: Community
   platform: Platform
-
   settings: Settings
   email: Email
-
   account: account
   data: data
   avatar: avatar
   static: static
-
   props:
     name: name
     title: title
@@ -254,3 +283,10 @@ platform:
     notice1: These blocks of information composed below will be shown as an onboarding orientation to the users who register themselves to be part of any of the communities within the {{ platform }} platform.
     notice2: You may preview via here
     linkLabel: Preview
+
+auth:
+  errors:
+    username: Username can only be composed of lowercase letters and numbers
+    email: Please enter a valid email address
+    passwordMin: Password must be at least 8 characters long
+    passwordRegex: Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters

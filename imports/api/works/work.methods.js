@@ -7,23 +7,22 @@ import Platform from '../platform/platform';
 Meteor.methods({
   getAllWorksFromAllHosts() {
     try {
-      return Works.find().fetch();
+      return Works.find({}, { sort: { creationDate: -1 } }).fetch();
     } catch (error) {
       throw new Meteor.Error(error, 'Could not retrieve data');
     }
   },
 
-  getAllWorks(host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getAllWorks(hostPredefined) {
+    const host = hostPredefined || getHost(this);
 
     try {
-      const works = Works.find({
-        host,
-      }).fetch();
-
-      return works;
+      return Works.find(
+        {
+          host,
+        },
+        { sort: { creationDate: -1 } }
+      ).fetch();
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, 'Could not retrieve data');
@@ -52,12 +51,12 @@ Meteor.methods({
     }
   },
 
-  getMyWorks() {
+  getMyWorks(hostPredefined) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
-    const host = getHost(this);
+    const host = hostPredefined || getHost(this);
 
     try {
       const works = Works.find({
@@ -87,7 +86,7 @@ Meteor.methods({
     }
   },
 
-  createWork(values, images) {
+  createWork(values) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('You are not a member anyways!');
@@ -100,7 +99,6 @@ Meteor.methods({
       const newWorkId = Works.insert({
         ...values,
         host,
-        images,
         authorId: user._id,
         authorAvatar: userAvatar,
         authorUsername: user.username,
@@ -113,7 +111,7 @@ Meteor.methods({
     }
   },
 
-  updateWork(workId, values, images) {
+  updateWork(workId, values) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -122,14 +120,13 @@ Meteor.methods({
     const theWork = Works.findOne(workId);
 
     if (user._id !== theWork.authorId) {
-      throw new Meteor.Error(error, 'You are not allowed');
+      throw new Meteor.Error('You are not allowed');
     }
 
     try {
       Works.update(workId, {
         $set: {
           ...values,
-          images,
           latestUpdate: new Date(),
         },
       });

@@ -3,7 +3,7 @@ import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
 import { useTranslation } from 'react-i18next';
-import { message } from '../../components/message';
+import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 
 const animatedComponents = makeAnimated();
@@ -15,10 +15,6 @@ function KeywordsManager({ currentUser }) {
   const [isChanged, setIsChanged] = useState(false);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
-
-  useEffect(() => {
-    getKeywords();
-  }, []);
 
   const getKeywords = async () => {
     try {
@@ -33,6 +29,10 @@ function KeywordsManager({ currentUser }) {
       message.error(error.reason);
     }
   };
+
+  useEffect(() => {
+    getKeywords();
+  }, []);
 
   const saveKeywords = async () => {
     try {
@@ -79,7 +79,7 @@ function KeywordsManager({ currentUser }) {
 
   return (
     <Box>
-      <Heading mb="2" size="sm" textAlign="center">
+      <Heading mb="2" size="md">
         {t('profile.menu.keywords.label')}
       </Heading>
       <Text fontSize="sm" mb="4">

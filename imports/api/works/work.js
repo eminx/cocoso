@@ -13,7 +13,7 @@ Works.schema = new SimpleSchema({
   category: { type: Object, optional: true },
   'category.categoryId': { type: Schemas.Id },
   'category.label': { type: String },
-  'category.color': { type: String },
+  'category.color': { type: String, optional: true },
   contactInfo: { type: String, optional: true },
   creationDate: { type: Date },
   documents: { type: Array, optional: true, defaultValue: [] },

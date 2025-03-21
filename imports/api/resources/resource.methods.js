@@ -22,18 +22,38 @@ function validateLabel(label, host, resourceId) {
 // RESOURCE METHODS
 Meteor.methods({
   getResourcesFromAllHosts() {
+    const fields = Resources.publicFields;
     const sort = { createdAt: -1 };
-    return Resources.find({}, { sort }).fetch();
+    return Resources.find({}, { fields, sort }).fetch();
   },
 
-  getResources(host) {
-    if (!host) {
-      host = getHost(this);
-    }
+  getResources(hostPredefined) {
+    const host = hostPredefined || getHost(this);
+
+    const fields = Resources.publicFields;
+    return Resources.find(
+      { host },
+      {
+        fields,
+        sort: { createdAt: -1 },
+      }
+    ).fetch();
+  },
+
+  getResourcesDry(hostPredefined) {
+    const host = hostPredefined || getHost(this);
 
     return Resources.find(
       { host },
       {
+        fields: {
+          _id: 1,
+          host: 1,
+          label: 1,
+          isBookable: 1,
+          isCombo: 1,
+          resourcesForCombo: 1,
+        },
         sort: { createdAt: -1 },
       }
     ).fetch();
@@ -44,9 +64,10 @@ Meteor.methods({
     return Resources.findOne(resourceId, { fields });
   },
 
-  getResourceBookingsForUser(resourceId) {
+  getResourceBookingsForUser(resourceId, hostPredefined) {
     const user = Meteor.user();
-    const host = getHost(this);
+    const host = hostPredefined || getHost(this);
+
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
     if (!isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not valid user!');
@@ -67,7 +88,7 @@ Meteor.methods({
         }
       ).fetch();
 
-      return bookings.map((booking) => ({
+      const userBookings = bookings.map((booking) => ({
         _id: booking._id,
         startDate: booking.datesAndTimes[0].startDate,
         startTime: booking.datesAndTimes[0].startTime,
@@ -76,8 +97,10 @@ Meteor.methods({
         title: booking.title,
         description: booking.longDescription,
       }));
+
+      return userBookings;
     } catch (error) {
-      console.error(error);
+      throw new Meteor.Error(error, "Couldn't fetch bookings");
     }
   },
 
@@ -85,7 +108,6 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
-    const resourceIndex = Resources.find({ host }).count();
     if (!isAdmin(user, currentHost) || !validateLabel(values.label, host)) {
       return 'Not valid user or label!';
     }
@@ -95,7 +117,6 @@ Meteor.methods({
           ...values,
           host,
           userId: user._id,
-          resourceIndex,
           createdBy: user.username,
           createdAt: new Date(),
         },

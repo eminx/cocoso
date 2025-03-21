@@ -6,6 +6,8 @@ labels:
   invite: Erişimi Yönet
   attendees: Katılımcılar
   meetings: Buluşmalar
+  meeting_dates: Tüm buluşma tarihlerini göster
+  next_meeting: Bir sonraki buluşma
 
 tabs:
   active: Aktif
@@ -18,10 +20,8 @@ tabs:
 form:
   private:
     label: Gizli (sadece davet ile)
-    tooltip:
-      title: Gizli Süreçler
-      P1: Gizli süreçleri sadece üyeleri görebilir ve katılım sadece süreç adminlerinin daveti ile mümkündür. Oluşturduktan sonra onu herkese açık olarak değiştiremezsin.
-      P2: Süreci oluşturduktan sonra davetleri yönetebileceksin.
+    helper: Gizli süreçleri sadece üyeleri görebilir ve katılım sadece süreç adminlerinin daveti ile mümkündür. Oluşturduktan sonra onu herkese açık olarak değiştiremezsin. Süreci oluşturduktan sonra davetleri yönetebileceksin.
+    holder: Seç
   title:
     label: Başlık
     holder: Benjamin'i Anlamak...
@@ -56,6 +56,8 @@ actions:
   leave: Ayrıl
   archive: Arşivle
   unarchive: Aktifleştir
+  register: Zamanları gör ve Kaydol
+  invite: Davet yolla
 
 meeting:
   attends:
@@ -90,6 +92,8 @@ meeting:
     resource: Kaynak seç
     location: Yer
     submit: Buluşma ekle
+  errors:
+    noresource: Lütfen bir kaynak seçin veya buluşma için bir yer girin (en az 4 karakter)
 
 confirm:
   check: Emin misin?
@@ -120,6 +124,8 @@ invite:
     holder: Murat
     valid: Lütfen geçerli bir ad gir
   submit: Daveti gönder
+  remove:
+    success: Kişi davet listesinden çıkarıldı
 
 modal:
   join:
@@ -132,3 +138,9 @@ modal:
 private:
   title: Gizli
   info: Gizli süreçleri sadece üyeleri görebilir ve katılım sadece adminlerinin daveti ile mümkündür.
+
+admin:
+  admin: Admin
+  add_document: Doküman Ekle
+  add_meeting: Buluşma Ekle
+  manage_members: Üyeleri Yönet

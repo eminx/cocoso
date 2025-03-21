@@ -7,7 +7,7 @@ import { StaticRouter } from 'react-router-dom/server';
 import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
 
-import { AppRoutesSSR } from '../../ssr/AppRoutes';
+import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
 
@@ -32,32 +32,27 @@ Meteor.startup(() => {
 
   onPageLoad((sink) => {
     const host = sink.request.headers['host'];
+    const context = {};
 
     const App = (props) => (
-      <StaticRouter location={sink.request.url}>
+      <StaticRouter location={sink.request.url} context={context}>
         <Routes>
-          {AppRoutesSSR(host).map((route) => (
+          {AppRoutesSSR(host, sink).map((route) => (
             <Route
               key={route.path}
               path={route.path}
               element={route.element}
               url={sink.request.url}
+              sink={sink}
             />
           ))}
         </Routes>
       </StaticRouter>
     );
 
-    sink.renderIntoElementById('root', renderToString(<App />));
-
+    sink.renderIntoElementById('root', renderToString(<App location={sink.request.url} />));
     const helmet = Helmet.renderStatic();
     sink.appendToHead(helmet.meta.toString());
     sink.appendToHead(helmet.title.toString());
-
-    // sink.appendToBody(`
-    //   <script>
-    //     window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
-    //   </script>
-    // `);
   });
 });

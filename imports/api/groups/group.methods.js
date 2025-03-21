@@ -8,6 +8,7 @@ import Groups from './group';
 import Activities from '../activities/activity';
 import Platform from '../platform/platform';
 import { getGroupRegistrationEmailBody, getInviteToPrivateGroupEmailBody } from './group.mails';
+import { compareDatesWithStartDateForSort, parseGroupsWithMeetings } from '../../ui/utils/shared';
 
 const publicSettings = Meteor.settings.public;
 
@@ -27,15 +28,84 @@ Meteor.methods({
     if (!group) {
       throw new Meteor.Error('Group not found');
     }
+
+    if (group.isPrivate) {
+      const currentUser = Meteor.user();
+      const currentUserId = currentUser._id;
+      if (!currentUser) {
+        return null;
+      }
+      if (
+        group.adminId !== currentUserId &&
+        !group.members.some((member) => member.memberId === currentUserId) &&
+        !group.peopleInvited.some((person) => person.email === currentUser.emails[0]?.address)
+      ) {
+        return null;
+      }
+    }
     return group;
   },
 
-  getGroups(isPortalHost = false, host) {
-    const user = Meteor.user();
-    if (!host) {
-      host = getHost(this);
+  async getGroupWithMeetings(groupId) {
+    check(groupId, String);
+
+    const group = await Groups.findOneAsync({
+      _id: groupId,
+    });
+
+    if (group.isPrivate) {
+      const currentUser = Meteor.user();
+      if (!currentUser) {
+        return null;
+      }
+
+      const currentUserId = currentUser._id;
+      if (
+        group.adminId !== currentUserId &&
+        !group.members?.some((member) => member.memberId === currentUserId) &&
+        !group.peopleInvited?.some((person) => person.email === currentUser.emails[0]?.address)
+      ) {
+        return null;
+      }
     }
-    const allGroups = isPortalHost ? Groups.find().fetch() : Groups.find({ host }).fetch();
+
+    const groupActivities = await Meteor.callAsync('getGroupMeetingsFuture', groupId);
+
+    return {
+      ...group,
+      meetings: groupActivities
+        .map((a) => ({
+          ...a.datesAndTimes[0],
+          meetingId: a._id,
+        }))
+        .sort(compareDatesWithStartDateForSort),
+    };
+  },
+
+  async getGroupsWithMeetings(isPortalHost = false, hostPredefined) {
+    const host = hostPredefined || getHost(this);
+
+    try {
+      const retrievedGroups = await Meteor.callAsync('getGroups', isPortalHost, host);
+      const allGroupActivities = await Meteor.callAsync(
+        'getAllGroupMeetingsFuture',
+        isPortalHost,
+        host
+      );
+      const parsedGroups = parseGroupsWithMeetings(retrievedGroups, allGroupActivities);
+      return parsedGroups;
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  getGroups(isPortalHost = false, hostPredefined) {
+    const user = Meteor.user();
+    const host = hostPredefined || getHost(this);
+
+    const allGroups = isPortalHost
+      ? Groups.find({}, { sort: { creationDate: -1 } }).fetch()
+      : Groups.find({ host }).fetch();
     const groupsFiltered = allGroups.filter((group) => {
       if (!group.isPrivate) {
         return true;
@@ -68,11 +138,37 @@ Meteor.methods({
     }));
   },
 
-  getGroupMeetings(groupId) {
+  getAllGroupMeetingsFuture(isPortalHost = false, hostPredefined) {
+    const host = hostPredefined || getHost(this);
+
+    const dateNow = new Date().toISOString().substring(0, 10);
+
+    try {
+      if (isPortalHost) {
+        return Activities.find({
+          isGroupMeeting: true,
+          'datesAndTimes.startDate': { $gte: dateNow },
+        }).fetch();
+      }
+      return Activities.find({
+        host,
+        isGroupMeeting: true,
+        'datesAndTimes.startDate': { $gte: dateNow },
+      }).fetch();
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch data");
+    }
+  },
+
+  getGroupMeetingsFuture(groupId) {
     check(groupId, String);
+
+    const dateNow = new Date().toISOString().substring(0, 10);
     return Activities.find({
-      isGroupMeeting: true,
       groupId,
+      isGroupMeeting: true,
+      'datesAndTimes.startDate': { $gte: dateNow },
+      datesAndTimes: { $exists: true, $ne: [] },
     }).fetch();
   },
 
@@ -102,7 +198,7 @@ Meteor.methods({
     }
   },
 
-  createGroup(formValues, imageUrl, isPrivate = false) {
+  createGroup(formValues) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -115,15 +211,13 @@ Meteor.methods({
 
     try {
       const newGroupId = Groups.insert({
+        ...formValues,
         host,
         authorId: user._id,
         authorUsername: user.username,
         authorAvatar: userAvatar,
-        title: formValues.title,
-        description: formValues.description,
-        readingMaterial: formValues.readingMaterial,
-        imageUrl,
-        capacity: formValues.capacity,
+        documents: [],
+        isPublished: true,
         members: [
           {
             avatar: userAvatar,
@@ -133,8 +227,6 @@ Meteor.methods({
             username: user.username,
           },
         ],
-        isPublished: true,
-        isPrivate,
         creationDate: new Date(),
       });
 
@@ -169,7 +261,7 @@ Meteor.methods({
     }
   },
 
-  updateGroup(groupId, formValues, imageUrl) {
+  updateGroup(groupId, values) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -183,31 +275,26 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
 
-    check(formValues.title, String);
-    check(formValues.description, String);
-    check(formValues.capacity, Number);
-
     try {
       Groups.update(groupId, {
         $set: {
-          title: formValues.title,
-          description: formValues.description,
-          readingMaterial: formValues.readingMaterial,
-          capacity: formValues.capacity,
-          imageUrl,
+          ...values,
         },
       });
 
       Activities.update(
         {
-          groupId: groupId,
+          groupId,
         },
         {
           $set: {
-            title: formValues.title,
-            longDescription: formValues.description,
-            imageUrl,
+            title: values.title,
+            longDescription: values.description,
+            images: [values.imageUrl],
           },
+        },
+        {
+          multi: true,
         }
       );
       return groupId;
@@ -269,6 +356,7 @@ Meteor.methods({
           },
         },
       });
+
       Meteor.users.update(user._id, {
         $addToSet: {
           groups: {
@@ -278,6 +366,7 @@ Meteor.methods({
           },
         },
       });
+
       Meteor.call('sendEmail', user._id, `"${theGroup.title}", ${currentHostName}`, emailBody);
     } catch (error) {
       console.log(error);
@@ -494,9 +583,8 @@ Meteor.methods({
 
     const currentHostName = currentHost.settings?.name;
     const emailBody = getInviteToPrivateGroupEmailBody(theGroup, currentHost, user, person);
-    try {
-      Meteor.call('sendEmail', person.email, `"${theGroup.title}", ${currentHostName}`, emailBody);
 
+    try {
       Groups.update(groupId, {
         $addToSet: {
           peopleInvited: {
@@ -505,9 +593,50 @@ Meteor.methods({
           },
         },
       });
+
+      Meteor.call('sendEmail', person.email, `"${theGroup.title}", ${currentHostName}`, emailBody);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, 'Could not send the invite to the person');
+    }
+  },
+
+  removePersonFromInvitedList(groupId, person) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+
+    if (!user || !isContributorOrAdmin(user, currentHost)) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    const theGroup = Groups.findOne(groupId);
+    if (!isUserGroupAdmin(theGroup, user._id)) {
+      throw new Meteor.Error('You are not admin!');
+    }
+
+    if (!theGroup.isPrivate) {
+      throw new Meteor.Error('This group is not private');
+    }
+
+    const invitedEmailsList = theGroup.peopleInvited.map((p) => p.email);
+
+    if (invitedEmailsList.indexOf(person.email) === -1) {
+      throw new Meteor.Error('The invite is not found');
+    }
+
+    try {
+      Groups.update(groupId, {
+        $pull: {
+          peopleInvited: {
+            email: person.email,
+            firstName: person.firstName,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error, 'Could not remove the invite');
     }
   },
 });

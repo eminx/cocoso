@@ -1,19 +1,32 @@
 label:
   new: Yeni bir aktivite oluştur
+  newevent: Yeni bir etkinlik oluştur
   edit: Aktiviteyi düzenle
+  rsvp: Zamanları gör ve Kaydol
+  next: Bir sonraki aktivite
 
 form:
-  switch:
-    public: Herkese açık etkinlik
-    exclusive: Eksklusif (Başkaları aynı tarih ve saati ayıramaz)
-    rsvp: Kayıt alınabilir (İnsanlar etkinliğe katılmak için kayıt olabilirler)
+  title:
+    label: Başlık
+    helper: Tipik olarak etkinliğin başlığı
+    holder: Bir başlık ver
+  subtitle:
+    label: Alt başlık
+    helper: Mesela sanatçının ismi ya da etkinliğin formu
+    holder: Bir alt başlık ver
+  description:
+    label: Açıklama
+    helper: Lütfen başkalarının bilgi sahibi olmasına yardımcı olacak ayrıntılı bir açıklama sağla
+  image:
+    label: İmajlar
+    helper: Etkinliği temsilen, lütfen cihazındaki galeriden bir imaj veya bir dizi imaj veya şimdi çekeceğin bir fotoğraf seç. En az bir tane gerekli.
   resource:
-    label: '{{ resources }}'
+    label: Kaynak
+    helper: İsteğe bağlı olarak, takvimde görünmesi için rezerve etmek istediğin bir ögeyi seç.
     holder: Seç
-    helper: Takvimde görünmesi için rezerve etmek istediğin bir ögeyi seç. Zorunlu değil
   occurrences:
-    label: Tekrarlar
-    helper: Lütfen aktivitenin zamanlarını gir
+    label: Tarih ve saat
+    helper: Etkinlik tekrarları için tarih ve saat seç. Eklemek için +'ya tıkla
   days:
     single: Gün
     multiple: Birden fazla gün
@@ -26,34 +39,29 @@ form:
     startFinish: Başlangıç ve bitiş saati
   capacity:
     label: Kapasite
+    helper: Etkinliğe kaç kişi katılabilir?
   details:
-    label: Detaylar
-  title:
-    label: Başlık
-    holder: Bir başlık ver
-    helper: Tipik olarak etkinliğin başlığı
-  subtitle:
-    label: Alt başlık
-    holder: Bir alt başlık ver
-    helper: Mesela sanatçının ismi ya da etkinliğin formu
-  description:
-    label: Açıklama
-    helper: Lütfen başkalarının bilgi sahibi olmasına yardımcı olacak ayrıntılı bir açıklama sağla
+    label: Detaylari gir
   place:
     label: Yer
-    holder: Atmosfer
     helper: İsteğe bağlı olarak, lütfen genel etkinliğin gerçekleşeceği fiziksel yerin genel adını gir
+    holder: Atmosfer
   address:
     label: Adres
-    holder: 17. cadde, Çukurcuma...
     helper: İsteğe bağlı olarak, lütfen etkinliğin gerçekleşeceği yerin ayrıntılı adresini gir
-  image:
-    label: İmajlar ({{ count }})
-    helper: Etkinliği temsilen, lütfen cihazındaki galeriden bir imaj veya bir dizi imaj veya şimdi çekeceğin bir fotoğraf seç. En az bir tane gerekli.
+    holder: 17. cadde, Çukurcuma...
+  rsvp:
+    label: Kayıt alınabilir
+    helper: Seçili ise, insanlar etkinliğe katılmak için kayıt olabilirler
+    holder: Seç
+  exclusive:
+    label: Harici bir aktivite
+    helper: Seçilirse, diğer onaylanmış kullanıcılar aynı tarih ve saat içinde aynı kaynağı rezerve edemezler
+    holder: Seç
   submit: 'Onayla ve oluştur'
   waiting: 'Aktivite oluşturuluyor...'
   conflict:
-    alert: 'Bu tarih ve saatte bu kaynak için zaten bir ayırma var:'
+    alert: 'Bu tarih ve saatte bu kaynak için zaten bir ayırma var'
     notExclusiveInfo: 'Her iki aktivite de eksklusif olmadığı için devam edip rezervasyonunu tamamlayabilirsin'
 
 members:
@@ -67,8 +75,8 @@ members:
 public:
   labels:
     address: Adres
-    dates: Zaman
-    datesAndRegistration: Zaman ve Kayıt
+    dates: Zamanları gör
+    datesAndRegistration: Zamanları gör ve Kaydol
     info: Bilgi
     location: Yer
     resource: Kaynak
@@ -111,3 +119,5 @@ public:
   past: Etkinlik geçti
   acceess:
     deny: Sadece onaylanmış kullanıcılara açık
+  chat:
+    heading: Sadece adminler ve onaylanmış kullanıcılar için

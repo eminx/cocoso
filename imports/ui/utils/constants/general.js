@@ -28,12 +28,12 @@ const adminMenu = [
   {
     menu: 'admin',
     key: 'settings',
-    value: '/admin/settings',
+    value: '/admin/settings/organization',
   },
   {
     menu: 'admin',
     key: 'users',
-    value: '/admin/users',
+    value: '/admin/users/all',
   },
   {
     menu: 'admin',
@@ -44,6 +44,11 @@ const adminMenu = [
     menu: 'admin',
     key: 'email-newsletter',
     value: '/admin/email-newsletter',
+  },
+  {
+    menu: 'admin',
+    key: 'categories',
+    value: '/admin/categories',
   },
 ];
 
@@ -135,9 +140,32 @@ const acceptedDocumentFormatsForUploads = [
 
 const maximumDocumentSizeForUploads = '30 MB';
 
+const accordionProps = {
+  buttonProps: {
+    _hover: { bg: 'brand.600', color: 'white' },
+    _expanded: { bg: 'brand.500', color: 'white' },
+    bg: 'brand.100',
+    borderWidth: '0',
+    borderRadius: 'lg',
+    boxShadow: 'sm',
+    color: 'brand.900',
+    cursor: 'pointer',
+  },
+  itemProps: {
+    borderTopWidth: '0',
+    mb: '4',
+  },
+  panelProps: {
+    bg: 'white',
+    borderRadius: 'lg',
+    mt: '2',
+  },
+};
+
 export {
   acceptedImageFormatsForUploads,
   acceptedDocumentFormatsForUploads,
+  accordionProps,
   adminMenu,
   hostFields,
   platformFields,

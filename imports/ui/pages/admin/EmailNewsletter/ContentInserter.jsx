@@ -16,38 +16,17 @@ import {
   TabPanels,
   Text,
 } from '@chakra-ui/react';
-import { CloseIcon } from '@chakra-ui/icons';
+import CloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
-import { call, compareDatesForSortActivities } from '../../../utils/shared';
-import Loader from '../../../components/Loader';
-import { message } from '../../../components/message';
+import { call, compareDatesForSortActivities, parseGroupActivities } from '../../../utils/shared';
+import Loader from '../../../generic/Loader';
+import { message } from '../../../generic/message';
 import { ActivityDates } from './EmailPreview';
-import FormField from '../../../components/FormField';
+import FormField from '../../../forms/FormField';
 
 const yesterday = moment(new Date()).add(-1, 'days');
-
-function parseGroupActivities(activities) {
-  const activitiesParsed = [];
-
-  activities?.forEach((act, index) => {
-    if (!act.isGroupMeeting) {
-      activitiesParsed.push(act);
-    } else {
-      const indexParsed = activitiesParsed.findIndex((actP, indexP) => {
-        return actP.groupId === act.groupId;
-      });
-      if (indexParsed === -1) {
-        activitiesParsed.push(act);
-      } else {
-        activitiesParsed[indexParsed].datesAndTimes.push(act.datesAndTimes[0]);
-      }
-    }
-  });
-
-  return activitiesParsed;
-}
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -244,7 +223,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
                             colorScheme="green"
                             isChecked={Boolean(activity.isSelected)}
                             size="lg"
-                            onChange={(e) => handleSelectItem(activity, 'activities')}
+                            onChange={() => handleSelectItem(activity, 'activities')}
                           >
                             <HStack alignItems="flex-start">
                               <Image
@@ -292,7 +271,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
                             colorScheme="green"
                             isChecked={Boolean(work.isSelected)}
                             size="lg"
-                            onChange={(e) => handleSelectItem(work, 'works')}
+                            onChange={() => handleSelectItem(work, 'works')}
                           >
                             <HStack alignItems="flex-start">
                               <Image

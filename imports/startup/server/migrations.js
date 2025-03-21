@@ -293,7 +293,6 @@ Migrations.add({
               ...newActivity,
               resource: theResource.label || '',
               resourceId: theResource._id || '',
-              resourceIndex: theResource.resourceIndex,
             };
           }
         } catch (error) {

@@ -1,6 +1,12 @@
 # ADMIN SETTINGS PAGE
+label: Admin
+panel: Admin Panel
+menulabel: Admin Menu
+site: Site
+home: Home
+
 settings:
-  label: Settings
+  title: Settings
   tabs:
     general: General
     logo: Logo
@@ -23,8 +29,8 @@ logo:
     fileDropper: Please drop only one file at a time
 
 info:
-  label: Organisation
-  info: Enter Information About your Organisation
+  label: Organization
+  info: Enter Information About your Organization
   platform:
     info: Enter Information About the Global Platform
     name: Name
@@ -42,32 +48,42 @@ info:
     federationLabel: Use Federation Layout (with topbar and footer)
     federationText: Renders federation layout by showing a dedicated topbar and footer to navigate in between different member communities and get informed about the federation
 
+organization:
+  title: Organization
+
+users:
+  title: Users
+
 menu:
-  label: Menu
+  title: Menu
   tabs:
     menuitems:
-      label: Visibility & Labels
-      info: Check/uncheck items for visibility, and label them as you prefer in order to compose the menu
+      label: Visibility, Labels & Description
+      info: Check/uncheck items for visibility, and label them as you prefer in order to compose the navigation menu. The description you provide will be displayed right under title when users open the listing page. Leave it empty if you prefer so.
     order:
       label: Order
       info: Reorder items by dragging up and down, if you want to change the display order
   itemActive: Active
   itemLabel: Label
   info:
-    activities: Listing page for public events & group (group) meetings
-    groups: Listing page for all groups (groups)
+    activities: Listing page for public events & process/group meetings
     calendar: Calendar page
-    info: Informational pages
-    works: Listing page for portfolio, marketplace or such entries
-    members: Listing page for all community members
+    groups: Listing page for all groups (groups)
+    info: Listing page for the static informational pages
+    people: Listing page for all community members
     resources: Listing page for the resources in your community
-  headerMenu:
-    title: Header Menu
-    label: Header Menu active on desktop
-    text: Activates the menu to show up on the top of the page on desktop, rather than the drawer showing by clicking menu icon
+    works: Listing page for portfolio, marketplace or such entries
+  burgermenu:
+    title: Burger Menu
+    label: Burger Menu active
+    mobile: Burger Menu active on mobile view
+    desktop: Burger Menu active on desktop view
+    text: Optionally activate the burger menu. Burger menu is a menu that appears when you click the "burger" menu icon in the top right corner of the screen.
+  options:
+    label: Options
 
 categories:
-  label: Work Categories
+  title: Categories
   info: You can set categories for work entries here
   message:
     denySpecialChars: Special characters, except dash (-), are not allowed
@@ -80,7 +96,7 @@ color:
 
 # ADMIN EMAILS PAGE
 emails:
-  label: Emails
+  title: Automated Emails
   form:
     subject:
       label: Subject
@@ -96,16 +112,16 @@ emails:
       helper: Select an image to appear at the top of the email
     footer:
       label: Footer
-  participant:
+  new:
     title: New User
-  cocreator:
+  verified:
     title: User Verified
   admin:
     title: New Admin
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
-  title: Email Newsletter
+  title: Send a Newsletter
   subtitle: Here you can compose an email and easily attach published content from the website, and then send out to all members of your community.
   subtitle2: 'To compose the email below, you have to enter at least one of: body text, an image and/or selected content items listed in the community app.'
   contenthelper: You may insert existing content from the listing pages by selecting the entries you want to attach within the email below.
@@ -134,6 +150,9 @@ newsletter:
   portalHost:
     info: Since this is the portal app of the federation, your email will be sent to all {{ platform }} platform members
 
+features:
+  title: Main Features
+
 # ADMIN STATIC PAGES
 pages:
   actions:
@@ -149,5 +168,9 @@ pages:
       holder: Contributing guidelines are...
       helper: Please enter the entire text content you would like to publish within this page here
     images:
-      label: Images ({{ count }})
+      label: Images
       helper: Optionally, please enter an image or a set of images that will be displayed within a slider in this page when published
+  order:
+    title: Order
+    label: Reorder pages
+    info: You may reorder the pages by dragging them up and down. It affects their display order in the navigation menu

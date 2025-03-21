@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -13,26 +12,69 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import Template from '../../components/Template';
 import { call } from '../../utils/shared';
-import Loader from '../../components/Loader';
-import { message, Alert } from '../../components/message';
+import Loader from '../../generic/Loader';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
-import FormField from '../../components/FormField';
+import FormField from '../../forms/FormField';
 import { defaultEmails } from '../../../startup/constants';
-import ReactQuill from '../../components/Quill';
-import { AdminMenu } from './Settings';
+import ReactQuill from '../../forms/Quill';
+import Boxling from './Boxling';
+import TablyRouter from '../../generic/TablyRouter';
 
-function Emails() {
+function EmailForm({ defaultValues, key, onSubmit }) {
+  const { control, handleSubmit, register, formState } = useForm({
+    defaultValues,
+  });
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
+
+  const { isDirty, isSubmitting } = formState;
+
+  return (
+    <>
+      {key && <Heading>{defaultValues.title}</Heading>}
+      <Boxling>
+        <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+          <VStack spacing="4">
+            <FormField label={t('emails.form.subject.label')}>
+              <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
+            </FormField>
+
+            <FormField label={t('emails.form.appeal.label')}>
+              <InputGroup w="280px">
+                <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
+                <InputRightAddon>{t('emails.form.appeal.addon')}</InputRightAddon>
+              </InputGroup>
+            </FormField>
+
+            <FormField label={t('emails.form.body.label')}>
+              <Controller
+                control={control}
+                name="body"
+                render={({ field }) => <ReactQuill {...field} />}
+              />
+            </FormField>
+
+            <Flex justify="flex-end" py="2" w="100%">
+              <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+                {tc('actions.submit')}
+              </Button>
+            </Flex>
+          </VStack>
+        </form>
+      </Boxling>
+    </>
+  );
+}
+
+export default function Emails() {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
   const { currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
-
-  useEffect(() => {
-    getEmails();
-  }, []);
 
   const getEmails = async () => {
     try {
@@ -43,10 +85,13 @@ function Emails() {
       setLoading(false);
     } catch (error) {
       setEmails(defaultEmails);
-      console.log(error);
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getEmails();
+  }, []);
 
   if (loading) {
     return <Loader />;
@@ -72,71 +117,33 @@ function Emails() {
     }
   };
 
-  const parsedEmails = emails.map((e, i) => {
-    const key = i === 2 ? 'admin' : i === 1 ? 'cocreator' : 'participant';
+  const parsedEmails = emails.map((email, index) => {
+    let key = 'new';
+    if (index === 1) {
+      key = 'verified';
+    } else if (index === 2) {
+      key = 'admin';
+    }
+
+    const title = t(`emails.${key}.title`);
+
     return {
-      ...e,
-      title: t(`emails.${key}.title`),
+      title,
+      path: key,
+      content: (
+        <Box py="4" mb="4">
+          <Heading size="md" mb="4">
+            {title}
+          </Heading>
+          <EmailForm
+            key={key}
+            onSubmit={(values) => handleSubmit(values, index)}
+            defaultValues={email}
+          />
+        </Box>
+      ),
     };
   });
 
-  return (
-    <>
-      <Template heading={t('emails.label')} leftContent={<AdminMenu />}>
-        {parsedEmails?.map((email, index) => (
-          <Box key={email.title} py="4" mb="4">
-            <Heading size="md" mb="4">
-              {email.title}
-            </Heading>
-            <EmailForm onSubmit={(values) => handleSubmit(values, index)} defaultValues={email} />
-          </Box>
-        ))}
-      </Template>
-    </>
-  );
+  return <TablyRouter tabs={parsedEmails} />;
 }
-
-function EmailForm({ defaultValues, onSubmit }) {
-  const { control, handleSubmit, register, formState } = useForm({
-    defaultValues,
-  });
-  const [t] = useTranslation('admin');
-  const [tc] = useTranslation('common');
-
-  const { isDirty, isSubmitting } = formState;
-
-  return (
-    <Box>
-      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <VStack spacing="4">
-          <FormField label={t('emails.form.subject.label')}>
-            <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
-          </FormField>
-
-          <FormField label={t('emails.form.appeal.label')}>
-            <InputGroup w="280px">
-              <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
-              <InputRightAddon children={t('emails.form.appeal.addon')} />
-            </InputGroup>
-          </FormField>
-
-          <FormField label={t('emails.form.body.label')}>
-            <Controller
-              control={control}
-              name="body"
-              render={({ field }) => <ReactQuill {...field} />}
-            />
-          </FormField>
-
-          <Flex justify="flex-end" py="2" w="100%">
-            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-              {tc('actions.submit')}
-            </Button>
-          </Flex>
-        </VStack>
-      </form>
-    </Box>
-  );
-}
-
-export default Emails;

@@ -1,20 +1,20 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Center, Link as CLink, Text } from '@chakra-ui/react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
 
-import Template from '../../../components/Template';
 import { call, resizeImage, uploadImage } from '../../../utils/shared';
-import Loader from '../../../components/Loader';
-import { message, Alert } from '../../../components/message';
+import Loader from '../../../generic/Loader';
+import { message } from '../../../generic/message';
+import Alert from '../../../generic/Alert';
 import { StateContext } from '../../../LayoutContainer';
-import Modal from '../../../components/Modal';
+import Modal from '../../../generic/Modal';
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';
-import ConfirmModal from '../../../components/ConfirmModal';
-import { AdminMenu } from '../Settings';
+import ConfirmModal from '../../../generic/ConfirmModal';
+import Boxling from '../Boxling';
 
 const emailModel = {
   appeal: '',
@@ -32,33 +32,33 @@ const emailModel = {
   },
 };
 
-function EmailNewsletter({ history }) {
-  const [isSending, setIsSending] = useState(false);
-  const [email, setEmail] = useState(emailModel);
-  const [isPreview, setIsPreview] = useState(false);
-  const [isLastConfirm, setIsLastConfirm] = useState(false);
+export default function EmailNewsletter() {
+  const [state, setState] = useState({
+    sending: false,
+    email: emailModel,
+    preview: false,
+    lastConfirm: false,
+  });
   const { currentHost, currentUser, role, platform } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  if (!email) {
-    return <Loader />;
-  }
-
-  if (!currentUser || role !== 'admin') {
-    return <Alert>{tc('message.access.deny')}</Alert>;
-  }
-
   const handleFormChange = (field, value) => {
     const newEmail = {
-      ...email,
+      ...state.email,
     };
     newEmail[field] = value;
-    setEmail(newEmail);
+    setState((prevState) => ({
+      ...prevState,
+      email: newEmail,
+    }));
   };
 
   const handleFormConfirm = () => {
-    setIsPreview(true);
+    setState((prevState) => ({
+      ...prevState,
+      preview: true,
+    }));
   };
 
   const setUploadableImage = (files) => {
@@ -72,70 +72,35 @@ function EmailNewsletter({ history }) {
     reader.addEventListener(
       'load',
       () => {
-        setEmail({
-          ...email,
-          image: {
-            uploadableImage,
-            uploadableImageLocal: reader.result,
-            imageUrl: null,
+        setState((prevState) => ({
+          ...prevState,
+          email: {
+            ...prevState.email,
+            image: {
+              uploadableImage,
+              uploadableImageLocal: reader.result,
+              imageUrl: null,
+            },
           },
-        });
+        }));
       },
       false
     );
   };
 
-  const uploadLocalImage = async () => {
-    setIsSending(true);
-    setIsPreview(false);
-
-    const { image } = email;
-    const { uploadableImage } = image;
-
-    try {
-      const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
-      sendEmail(uploadedImage);
-    } catch (error) {
-      console.error('Error uploading:', error);
-      message.error(error.reason);
-    }
-  };
-
   const handleSelectItems = (items) => {
-    setEmail({
-      ...email,
-      items,
-    });
-  };
-
-  const handleConfirmSendingEmail = () => {
-    const { appeal, body, image, items, subject } = email;
-    if (!appeal || !subject) {
-      message.error(t('newsletter.error.required'));
-      return;
-    }
-
-    if (
-      (!body || body.length < 3) &&
-      !image &&
-      !image?.uploadableImageLocal &&
-      items.length === 0
-    ) {
-      message.error(t('newsletter.error.required'));
-      return;
-    }
-
-    setIsSending(true);
-
-    if (email?.image?.uploadableImage) {
-      uploadLocalImage();
-    } else {
-      sendEmail();
-    }
+    setState((prevState) => ({
+      ...prevState,
+      email: {
+        ...prevState.email,
+        items,
+      },
+    }));
   };
 
   const sendEmail = async (imageUrl) => {
+    const { email } = state;
+
     const emailHtml = renderEmail(
       <EmailPreview currentHost={currentHost} email={email} imageUrl={imageUrl} />
     );
@@ -151,19 +116,85 @@ function EmailNewsletter({ history }) {
 
     try {
       await call('sendNewsletter', emailValues, emailHtml, imageUrl);
-      setEmail(emailModel);
+      setState((prevState) => ({
+        ...prevState,
+        email: emailModel,
+      }));
       message.success(t('newsletter.notification.success.emailsent'));
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {
-      setIsSending(false);
-      setIsLastConfirm(false);
+      setState((prevState) => ({
+        ...prevState,
+        sending: false,
+        lastConfirm: false,
+      }));
     }
   };
 
+  const uploadLocalImage = async () => {
+    setState((prevState) => ({
+      ...prevState,
+      sending: true,
+      preview: false,
+    }));
+
+    const image = state.email?.image;
+    const { uploadableImage } = image;
+
+    try {
+      const resizedImage = await resizeImage(uploadableImage, 1200);
+      const uploadedImage = await uploadImage(resizedImage, 'genericEntryImageUpload');
+      sendEmail(uploadedImage);
+    } catch (error) {
+      message.error(error.reason);
+    }
+  };
+
+  const handleConfirmSendingEmail = () => {
+    const { appeal, body, image, items, subject } = state.email;
+    if (!appeal || !subject) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    if (
+      (!body || body.length < 3) &&
+      !image &&
+      !image?.uploadableImageLocal &&
+      items.length === 0
+    ) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    setState((prevState) => ({
+      ...prevState,
+      sending: true,
+    }));
+
+    if (state.email?.image?.uploadableImage) {
+      uploadLocalImage();
+    } else {
+      sendEmail();
+    }
+  };
+
+  if (!currentUser || role !== 'admin') {
+    return <Alert>{tc('message.access.deny')}</Alert>;
+  }
+
+  if (!currentHost || !platform) {
+    return null;
+  }
+
+  if (!state.email) {
+    return <Loader />;
+  }
+
   return (
     <>
-      <Template heading={t('newsletter.title')} leftContent={<AdminMenu />}>
+      <Box>
         {currentHost?.isPortalHost && (
           <Box mb="4">
             <Alert
@@ -175,57 +206,70 @@ function EmailNewsletter({ history }) {
 
         <Box mb="4">
           <Link target="_blank" to="/newsletters">
-            <CLink as="span">
-              {t('newsletter.labels.previouslink')} <ExternalLinkIcon mt="-1" />
+            <CLink as="span" color="blue.500" display="flex">
+              {t('newsletter.labels.previouslink')}{' '}
+              <ExternalLinkIcon size="16px" style={{ marginLeft: '4px', marginTop: '4px' }} />
             </CLink>
           </Link>
         </Box>
         <Text mb="4">{t('newsletter.subtitle')}</Text>
-        <Box pb="4" mb="4">
+
+        <Boxling>
           <EmailForm
             currentHost={currentHost}
-            email={email}
+            email={state.email}
             onSelectItems={handleSelectItems}
             onChange={handleFormChange}
             onSubmit={handleFormConfirm}
             setUploadableImage={setUploadableImage}
           />
-        </Box>
-      </Template>
+        </Boxling>
+      </Box>
 
       <Modal
         actionButtonLabel="Send email"
-        isOpen={isPreview}
+        isOpen={state.preview}
         motionPreset="slideInBottom"
         scrollBehavior="inside"
         size="2xl"
-        title={email?.subject}
+        title={state?.email?.subject}
         onActionButtonClick={() => {
-          setIsPreview(false);
-          setIsLastConfirm(true);
+          setState((prevState) => ({
+            ...prevState,
+            preview: false,
+            lastConfirm: true,
+          }));
         }}
-        onClose={() => setIsPreview(false)}
+        onClose={() =>
+          setState((prevState) => ({
+            ...prevState,
+            preview: false,
+          }))
+        }
       >
         <Center>
-          <EmailPreview currentHost={currentHost} email={email} />
+          <EmailPreview currentHost={currentHost} email={state.email} />
         </Center>
       </Modal>
 
       <ConfirmModal
         confirmButtonProps={{
-          isLoading: isSending,
+          isLoading: state.sending,
         }}
         confirmText={t('newsletter.modals.yes')}
         title={t('newsletter.modals.title')}
-        visible={isLastConfirm}
+        visible={state.lastConfirm}
         zIndex={99999}
         onConfirm={() => handleConfirmSendingEmail()}
-        onCancel={() => setIsLastConfirm(false)}
+        onCancel={() =>
+          setState((prevState) => ({
+            ...prevState,
+            lastConfirm: false,
+          }))
+        }
       >
         {t('newsletter.modals.body')}
       </ConfirmModal>
     </>
   );
 }
-
-export default EmailNewsletter;

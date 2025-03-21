@@ -2,9 +2,10 @@ import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Center } from '@chakra-ui/react';
 
-import Template from '../../components/Template';
-import NewHostForm from '../../components/NewHostForm';
-import { message, Alert } from '../../components/message';
+import Template from '../../layout/Template';
+import NewHostForm from '../../forms/NewHostForm';
+import { message } from '../../generic/message';
+import Alert from '../../generic/Alert';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
@@ -21,7 +22,6 @@ const hostModel = {
 function NewHost() {
   const { currentUser } = useContext(StateContext);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
   const handleSubmit = async (values) => {
@@ -40,7 +40,6 @@ function NewHost() {
       window.scrollTo(0, 0);
       setIsSuccess(true);
     } catch (error) {
-      console.log(error);
       message.error(`Error: ${error.reason || error.error}`);
     }
   };
@@ -55,7 +54,7 @@ function NewHost() {
 
   if (isSuccess) {
     return (
-      <Center>
+      <Center py="6">
         <Alert type="success">{tc('message.success.create')}</Alert>
       </Center>
     );
@@ -63,7 +62,7 @@ function NewHost() {
 
   return (
     <Box w="100%">
-      <Template heading={tc('labels.create', { domain: tc('domains.host') })}>
+      <Template heading={tc('labels.create.host')}>
         <Box py="6">
           <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
         </Box>

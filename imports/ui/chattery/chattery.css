@@ -1,0 +1,372 @@
+.main-chatter-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chattery-window-container {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.chattery-window {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  height: calc(100vh - 183px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.chattery-inputform-container {
+  flex-grow: 0;
+  padding: 12px 0;
+  border-top: 1px solid #aaa;
+}
+
+.chattery-inputform {
+  display: flex;
+}
+
+.chattery-input {
+  min-height: 96px;
+  padding: 6px 10px;
+  background-color: #fff;
+  border: 2px solid #888;
+  border-radius: 8px;
+  box-shadow: none;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+.chattery-input:focus {
+  border: 2px solid #555;
+  outline: 0;
+}
+
+.chattery-submitbutton {
+  width: 60px;
+  height: 38px;
+  margin-left: 8px;
+  border: 2px solid #888;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  flex-basis: 60px;
+}
+
+.chattery-submitbutton:focus {
+  border: 2px solid #555;
+}
+
+.talk-bubble-container {
+  position: relative;
+  width: 100%;
+}
+
+.talk-bubble.right-in {
+  float: right;
+  background-color: var(--chakra-colors-brand-500);
+  color: #fff;
+}
+
+/* container */
+.container {
+  padding: 5% 5%;
+}
+
+/* CSS talk bubble */
+.talk-bubble {
+  margin: 10px 20px;
+  display: inline-block;
+  position: relative;
+  width: 80%;
+  height: auto;
+  background-color: #fff;
+}
+.border {
+  border: 8px solid #666;
+}
+.round {
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+}
+
+/* Right triangle placed top left flush. */
+.tri-right.border.left-top:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -40px;
+  right: auto;
+  top: -8px;
+  bottom: auto;
+  border: 32px solid;
+  border-color: #434343 transparent transparent #434343;
+}
+.tri-right.left-top:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -12px;
+  right: auto;
+  top: 0px;
+  bottom: auto;
+  border: 22px solid;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Right triangle, left side slightly down */
+.tri-right.border.left-in:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -40px;
+  right: auto;
+  top: 30px;
+  bottom: auto;
+  border: 20px solid;
+  border-color: #666 #666 transparent transparent;
+}
+.tri-right.left-in:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -12px;
+  right: auto;
+  top: 10px;
+  bottom: auto;
+  border: 12px solid;
+  border-color: #fff #fff transparent transparent;
+}
+
+/*Right triangle, placed bottom left side slightly in*/
+.tri-right.border.btm-left:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -8px;
+  right: auto;
+  top: auto;
+  bottom: -40px;
+  border: 32px solid;
+  border-color: transparent transparent transparent #666;
+}
+.tri-right.btm-left:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 0px;
+  right: auto;
+  top: auto;
+  bottom: -20px;
+  border: 22px solid;
+  border-color: transparent transparent transparent #fff;
+}
+
+/*Right triangle, placed bottom left side slightly in*/
+.tri-right.border.btm-left-in:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 30px;
+  right: auto;
+  top: auto;
+  bottom: -40px;
+  border: 20px solid;
+  border-color: #666 transparent transparent #666;
+}
+.tri-right.btm-left-in:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 38px;
+  right: auto;
+  top: auto;
+  bottom: -20px;
+  border: 12px solid;
+  border-color: #fff transparent transparent #fff;
+}
+
+/*Right triangle, placed bottom right side slightly in*/
+.tri-right.border.btm-right-in:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: 30px;
+  bottom: -40px;
+  border: 20px solid;
+  border-color: var(--chakra-colors-brand-500) transparent transparent
+    var(--chakra-colors-brand-500);
+}
+.tri-right.btm-right-in:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: 38px;
+  bottom: -20px;
+  border: 12px solid;
+  border-color: var(--chakra-colors-brand-500) transparent transparent
+    var(--chakra-colors-brand-500);
+}
+/*
+	left: -8px;
+  right: auto;
+  top: auto;
+	bottom: -40px;
+	border: 32px solid;
+	border-color: transparent transparent transparent #666;
+	left: 0px;
+  right: auto;
+  top: auto;
+	bottom: -20px;
+	border: 22px solid;
+	border-color: transparent transparent transparent #fff;
+
+/*Right triangle, placed bottom right side slightly in*/
+.tri-right.border.btm-right:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -8px;
+  bottom: -40px;
+  border: 20px solid;
+  border-color: #666 #666 transparent transparent;
+}
+.tri-right.btm-right:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: 0px;
+  bottom: -20px;
+  border: 12px solid;
+  border-color: #fff #fff transparent transparent;
+}
+
+/* Right triangle, right side slightly down*/
+.tri-right.border.right-in:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -40px;
+  top: 30px;
+  bottom: auto;
+  border: 20px solid;
+  border-color: #666 transparent transparent #666;
+}
+.tri-right.right-in:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -12px;
+  top: 10px;
+  bottom: auto;
+  border: 12px solid;
+  border-color: var(--chakra-colors-brand-500) transparent transparent
+    var(--chakra-colors-brand-500);
+}
+
+/* Right triangle placed top right flush. */
+.tri-right.border.right-top:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -40px;
+  top: -8px;
+  bottom: auto;
+  border: 32px solid;
+}
+.tri-right.right-top:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -12px;
+  top: 0px;
+  bottom: auto;
+  border: 20px solid;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* talk bubble contents */
+.talktext {
+  color: #fff;
+  padding: 0.5em 1em;
+  text-align: left;
+  line-height: 16px;
+}
+.talktext p {
+  /* remove webkit p margins */
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+  white-space: pre-line;
+}
+
+.talktext-senderinfo {
+  color: #fff;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.talktext-dateinfo {
+  color: #fff;
+  font-size: 0.7em;
+  text-align: right;
+}
+
+.talk-bubble.left-in {
+  background-color: #fff;
+}
+
+.talk-bubble.left-in .talktext,
+.talk-bubble.left-in .talktext-senderinfo,
+.talk-bubble.left-in .talktext-dateinfo {
+  color: #222;
+}
+
+/* width */
+.chattery-window::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.chattery-window::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+/* Handle */
+.chattery-window::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: #777;
+}
+
+/* Handle on hover */
+.chattery-window::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
