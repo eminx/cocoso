@@ -17,7 +17,7 @@ const getPastOccurrences = (dates) =>
     .filter((date) => dayjs(date.startDate)?.isBefore(today))
     .sort((a, b) => dayjs(b.startDate) - dayjs(a.startDate));
 
-export default function ActionDates({ activity, showPast = false }) {
+export default function ActionDates({ activity, showPast = false, showTime = false }) {
   if (!activity || !activity.datesAndTimes || !activity.datesAndTimes.length) {
     return null;
   }
@@ -33,22 +33,26 @@ export default function ActionDates({ activity, showPast = false }) {
   return (
     <Flex justify="center" wrap="wrap">
       {dates.map(
-        (occurence, occurenceIndex) =>
-          occurence && (
+        (occurrence, occurrenceIndex) =>
+          occurrence && (
             <Flex
-              key={occurence.startDate + occurence.startTime}
+              key={occurrence.startDate + occurrence.startTime}
               color="gray.700"
               mx="2"
-              ml={occurenceIndex === 0 ? '0' : '2'}
+              ml={occurrenceIndex === 0 ? '0' : '2'}
               textShadow="1px 1px 1px #fff"
             >
               <Box>
-                <DateJust>{occurence.startDate}</DateJust>
+                <DateJust time={showTime ? occurrence.startTime : null}>
+                  {occurrence.startDate}
+                </DateJust>
               </Box>
-              {occurence.startDate !== occurence.endDate && (
+              {occurrence.startDate !== occurrence.endDate && (
                 <Flex>
                   {'-'}
-                  <DateJust>{occurence.endDate}</DateJust>
+                  <DateJust time={showTime ? occurrence.endTime : null}>
+                    {occurrence.endDate}
+                  </DateJust>
                 </Flex>
               )}
             </Flex>

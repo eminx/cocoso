@@ -141,7 +141,7 @@ export default function PopupHandler({ item, kind, onClose }) {
     >
       <ModalBody pt="6">
         <PopupContent
-          action={<ActionDates activity={item} />}
+          action={<ActionDates activity={item} showTime />}
           content={
             (item.longDescription && parseHtml(item.longDescription)) ||
             (item.description && parseHtml(item.description))

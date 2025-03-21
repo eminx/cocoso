@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Wrap, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Box, Text, VStack } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
@@ -27,13 +28,22 @@ export default function ResourceHybrid({ documents, resource, Host }) {
     tabs.push({
       title: <Trans i18nKey="resources:labels.combo">Combo</Trans>,
       content: (
-        <Wrap justify="center" spacing="2" pt="4">
+        <VStack pt="4" spacing="2">
           {resource.resourcesForCombo.map((res) => (
-            <Box key={res._id} bg="white" borderRadius="lg" p="2" textAlign="left">
-              <Text fontSize="lg">{res.label}</Text>
-            </Box>
+            <Link key={res._id} to={`/resources/${res._id}/info`}>
+              <Box
+                _hover={{ bg: 'white' }}
+                bg="gray.50"
+                borderRadius="lg"
+                color="blue.500"
+                p="2"
+                textAlign="left"
+              >
+                <Text fontSize="lg">{res.label}</Text>
+              </Box>
+            </Link>
           ))}
-        </Wrap>
+        </VStack>
       ),
       path: 'combo',
     });
