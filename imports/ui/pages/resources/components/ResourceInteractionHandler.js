@@ -46,7 +46,7 @@ export default function ResourceInteractionHandler({ slideStart }) {
         <Box w="40px">
           <ResourceAdminFunctions />
         </Box>
-        <ReserveButton resource={resource} />
+        {resource.isBookable ? <ReserveButton resource={resource} /> : null}
         <Box>
           <ChatButton context="resources" currentUser={currentUser} item={resource} withInput />
         </Box>
