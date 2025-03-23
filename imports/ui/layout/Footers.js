@@ -32,7 +32,7 @@ export function Footer({ currentHost, isFederationFooter }) {
   const { settings } = currentHost;
 
   return (
-    <Box bg="gray.700" bottom={0} color="gray.100" mb="4" position="fixed" w="100%" zIndex={-1}>
+    <Box bg="gray.700" bottom={0} color="gray.100" mb="4">
       <Center p="4">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
@@ -52,7 +52,7 @@ export function Footer({ currentHost, isFederationFooter }) {
             <Center>
               {settings.footer ? (
                 <Box
-                  className="text-content"
+                  className="text-content dark"
                   fontSize="85%"
                   maxWidth="480px"
                   mt="4"
