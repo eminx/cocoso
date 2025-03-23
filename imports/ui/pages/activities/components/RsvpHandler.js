@@ -50,7 +50,7 @@ function AccordionDates({ activity, onCloseModal }) {
 
         <Box>
           {items.map((occurrence) => (
-            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2">
+            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2" mb="4">
               <FancyDate occurrence={occurrence} />
             </Box>
           ))}
