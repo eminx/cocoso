@@ -124,7 +124,8 @@ a,
 }
 
 .platform-footer a,
-.platform-footer .text-content a {
+.platform-footer .text-content a,
+.text-content.dark a {
   color: var(--chakra-colors-brand-100);
 }
 
