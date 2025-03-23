@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Badge, Box, Center, Flex, Heading, ModalBody } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, ModalBody, Tag } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
@@ -35,9 +35,9 @@ function PopupHeader({ subTitle, tags, title }) {
           {tags.map(
             (tag) =>
               tag && (
-                <Badge key={tag} bg="gray.50" color="gray.800" fontSize="14px">
+                <Tag key={tag} bg="gray.50" color="gray.800" fontSize="14px" fontWeight="bold">
                   {tag}
-                </Badge>
+                </Tag>
               )
           )}
         </Flex>

@@ -9,7 +9,6 @@ import { getFullName } from '../utils/shared';
 
 const tagProps = {
   bg: 'white',
-  borderRadius: '0',
   border: '1px solid',
   borderColor: 'brand.500',
 };

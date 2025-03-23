@@ -98,8 +98,8 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
       </div>
 
       {host && (
-        <Box bottom="32px" p="1" position="absolute" right="12px">
-          <CTag bg="rgba(0, 0, 0, 0.7)" color="white" size="sm">
+        <Box p="1" position="absolute" right="12px" bottom="8px">
+          <CTag bg="rgba(255, 255, 255, 0.7)" size="sm">
             {hostValue}
           </CTag>
         </Box>
@@ -113,7 +113,7 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
             {tags && (
               <Flex my="2">
                 {tags.map((t) => (
-                  <CTag key={t} bg="rgba(255, 255, 255, .8)" size="sm">
+                  <CTag bg="gray.700" color="white" key={t} size="sm">
                     {t}
                   </CTag>
                 ))}
