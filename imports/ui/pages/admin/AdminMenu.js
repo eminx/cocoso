@@ -89,11 +89,13 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
       borderRightWidth={isCurrentRoute && !item.isMulti ? '3px' : '0'}
       borderRightColor="blueGray.500"
       cursor="pointer"
-      p="2.5"
       ml={isSub ? '4' : '0'}
+      p="2.5"
       onClick={() => onItemClick(item)}
     >
-      <Text fontWeight={isCurrentRoute ? 'bold' : 'normal'}>{item.label}</Text>
+      <Text fontWeight={isCurrentRoute ? 'bold' : 'normal'} isTruncated textOverflow="ellipsis">
+        {item.label}
+      </Text>
     </Box>
   );
 }
@@ -118,8 +120,8 @@ export default function AdminMenu({ routes, onItemClick }) {
       direction="column"
       justify="space-between"
       h={isDesktop ? '100%' : 'calc(100% - 60px)'}
-      minW="320px"
       position="fixed"
+      w={isDesktop ? '320px' : '100%'}
     >
       {isDesktop && <AdminMenuHeader currentHost={currentHost} />}
 
