@@ -270,8 +270,12 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
       </Box>
 
       {canCreateContent && (
-        <Center mt="2">
-          <Button size="sm" onClick={() => setState({ ...state, selectedOccurrence: occurrence })}>
+        <Center>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => setState({ ...state, selectedOccurrence: occurrence })}
+          >
             {t('public.attendance.show')}
           </Button>
         </Center>

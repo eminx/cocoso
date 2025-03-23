@@ -37,11 +37,12 @@ function AccordionDates({ activity, onCloseModal }) {
     return null;
   }
 
-  const isRsvpEnabled = !activity.isRegistrationDisabled || activity.isRegistrationEnabled;
+  const isRegistrationEnabled =
+    activity.isRegistrationEnabled || activity.isRegistrationDisabled === true;
 
   const items = activity.datesAndTimes;
 
-  if (!isRsvpEnabled) {
+  if (!isRegistrationEnabled) {
     return (
       <Box>
         <Text mb="2" mt="4" size="sm" textAlign="center">
@@ -126,7 +127,8 @@ export default function RsvpHandler({ activity }) {
     return null;
   }
 
-  const isRsvpEnabled = !activity.isRegistrationDisabled || activity.isRegistrationEnabled;
+  const isRegistrationEnabled =
+    activity.isRegistrationEnabled || activity.isRegistrationDisabled === true;
 
   const today = new Date().toISOString().substring(0, 10);
   const nextEvent = activity.datesAndTimes?.find((d) => d.startDate > today);
@@ -137,7 +139,9 @@ export default function RsvpHandler({ activity }) {
         <Center>
           <ActionButton
             label={
-              isRsvpEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')
+              isRegistrationEnabled
+                ? t('public.labels.datesAndRegistration')
+                : t('public.labels.dates')
             }
             onClick={() => setModalOpen(true)}
           />
@@ -149,7 +153,9 @@ export default function RsvpHandler({ activity }) {
       <Modal
         isOpen={modalOpen}
         size="lg"
-        title={isRsvpEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')}
+        title={
+          isRegistrationEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')
+        }
         onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >
