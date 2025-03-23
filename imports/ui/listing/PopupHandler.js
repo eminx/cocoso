@@ -53,7 +53,7 @@ function PopupContent({ action = null, content, images, subTitle, title, tags })
       <Center mb="4" mx="4">
         {action}
       </Center>
-      <Center>
+      <Center mb="4">
         <NiceSlider alt={title} images={images} isFade={false} />
       </Center>
 
