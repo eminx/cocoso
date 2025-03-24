@@ -38,7 +38,7 @@ function AccordionDates({ activity, onCloseModal }) {
   }
 
   const isRegistrationEnabled =
-    activity.isRegistrationEnabled || activity.isRegistrationDisabled === true;
+    activity.isRegistrationEnabled || activity.isRegistrationDisabled === false;
 
   const items = activity.datesAndTimes;
 
@@ -128,7 +128,7 @@ export default function RsvpHandler({ activity }) {
   }
 
   const isRegistrationEnabled =
-    activity.isRegistrationEnabled || activity.isRegistrationDisabled === true;
+    activity.isRegistrationEnabled || activity.isRegistrationDisabled === false;
 
   const today = new Date().toISOString().substring(0, 10);
   const nextEvent = activity.datesAndTimes?.find((d) => d.startDate > today);
