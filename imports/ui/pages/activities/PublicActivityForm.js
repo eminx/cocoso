@@ -137,7 +137,13 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   };
 
   const parseActivity = async (images) => {
-    const cleanDatesAndTimes = state.datesAndTimes.map(
+    const sortedDatesAndTimes = state.datesAndTimes.sort((a, b) => {
+      const dateA = new Date(`${a.startDate}T${a.startTime}:00Z`);
+      const dateB = new Date(`${b.startDate}T${b.startTime}:00Z`);
+      return dateA - dateB;
+    });
+
+    const cleanDatesAndTimes = sortedDatesAndTimes.map(
       ({ startTime, endTime, startDate, endDate, attendees }) => ({
         startDate,
         endDate,
