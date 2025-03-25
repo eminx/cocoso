@@ -14,8 +14,8 @@ const getFutureOccurrences = (dates) =>
 
 const getPastOccurrences = (dates) =>
   dates
-    .filter((date) => dayjs(date.startDate)?.isBefore(today))
-    .sort((a, b) => dayjs(b.startDate) - dayjs(a.startDate));
+    .filter((date) => date && dayjs(date.startDate)?.isBefore(today))
+    .sort((a, b) => dayjs(b?.startDate) - dayjs(a?.startDate));
 
 export default function ActionDates({ activity, showPast = false, showTime = false }) {
   if (!activity || !activity.datesAndTimes || !activity.datesAndTimes.length) {
