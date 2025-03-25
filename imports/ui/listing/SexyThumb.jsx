@@ -13,8 +13,7 @@ if (isClient) {
   import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 }
 
-const yesterday = dayjs(new Date()).add(-1, 'days');
-const today = dayjs(new Date());
+const now = dayjs(new Date());
 
 const dateStyle = {
   fontWeight: 700,
@@ -34,7 +33,7 @@ function ThumbDate({ date }) {
     return null;
   }
 
-  const isPast = dayjs(date.endDate)?.isBefore(yesterday);
+  const isPast = dayjs(date.endDate)?.isBefore(now);
 
   return (
     <Flex
@@ -61,17 +60,15 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
 
   const dates = datesAndTimes;
 
-  const futureDates =
-    dates &&
-    dates
-      .filter((date) => dayjs(date?.endDate)?.isAfter(yesterday))
-      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
+  const futureDates = dates.filter((date) =>
+    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
+  );
+
+  const pastDates = dates.filter((date) =>
+    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
+  );
+
   const remaining = futureDates && futureDates.length - 3;
-  const pastDates =
-    dates &&
-    dates
-      .filter((date) => dayjs(date?.startDate)?.isBefore(today))
-      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
 
   const hostValue = host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
 
