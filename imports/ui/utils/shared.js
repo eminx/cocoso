@@ -1,13 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
-import dayjs from 'dayjs';
 import { Slingshot } from 'meteor/edgee:slingshot';
+import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
 dayjs.extend(isBetween);
 
-const yesterday = dayjs(new Date()).add(-1, 'days');
-const today = dayjs();
+const now = dayjs();
 
 function localeSort(a, b) {
   return a.label.localeCompare(b.label);
@@ -344,8 +343,8 @@ function compareDatesForSortActivities(a, b) {
 }
 
 function compareDatesForSortActivitiesReverse(a, b) {
-  const firstOccurenceA = a?.datesAndTimes?.reverse().find(getLastPastOccurence);
-  const firstOccurenceB = b?.datesAndTimes?.reverse().find(getLastPastOccurence);
+  const firstOccurenceA = a?.datesAndTimes?.find(getLastPastOccurence);
+  const firstOccurenceB = b?.datesAndTimes?.find(getLastPastOccurence);
   const dateA = new Date(`${firstOccurenceA?.startDate}T${firstOccurenceA?.startTime}:00Z`);
   const dateB = new Date(`${firstOccurenceB?.startDate}T${firstOccurenceB?.startTime}:00Z`);
   return dateB - dateA;
@@ -425,11 +424,15 @@ const compareForSortFutureMeeting = (a, b) => {
   return dateA - dateB;
 };
 
-const getFirstFutureOccurence = (occurence) =>
-  occurence && dayjs(occurence.endDate)?.isAfter(yesterday);
+function createDateTime(dateStr, timeStr) {
+  return dayjs(`${dateStr} ${timeStr}`, 'YYYY-MM-DD HH:mm');
+}
 
-const getLastPastOccurence = (occurence) =>
-  occurence && dayjs(occurence.startDate)?.isBefore(today);
+const getFirstFutureOccurence = (occurrence) =>
+  occurrence && createDateTime(occurrence.endDate, occurrence.endTime)?.isAfter(now);
+
+const getLastPastOccurence = (occurrence) =>
+  occurrence && createDateTime(occurrence.startDate, occurrence.startTime)?.isBefore(now);
 
 const getCategoriesAssignedToWorks = (works) => {
   const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
