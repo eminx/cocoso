@@ -60,7 +60,7 @@ export default function ActivityHybrid({ activity, Host }) {
     tabs.push({
       title: <Trans i18nKey="activities:public.labels.dates">See Dates</Trans>,
       content: (
-        <Box bg="white" p="6">
+        <Box p="6">
           {activity.datesAndTimes?.map((occurrence) => (
             <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2" mb="4">
               <FancyDate occurrence={occurrence} />
