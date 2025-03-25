@@ -4,18 +4,17 @@ import dayjs from 'dayjs';
 
 import { DateJust } from './FancyDate';
 
-const yesterday = dayjs().add(-1, 'days');
-const today = dayjs();
+const now = dayjs();
 
 const getFutureOccurrences = (dates) =>
-  dates
-    .filter((date) => date && dayjs(date.endDate)?.isAfter(yesterday))
-    .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
+  dates.filter((date) =>
+    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
+  );
 
 const getPastOccurrences = (dates) =>
-  dates
-    .filter((date) => date && dayjs(date.startDate)?.isBefore(today))
-    .sort((a, b) => dayjs(b?.startDate) - dayjs(a?.startDate));
+  dates.filter((date) =>
+    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
+  );
 
 export default function ActionDates({ activity, showPast = false, showTime = false }) {
   if (!activity || !activity.datesAndTimes || !activity.datesAndTimes.length) {
