@@ -61,11 +61,11 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
   const dates = datesAndTimes;
 
   const futureDates = dates.filter((date) =>
-    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
+    dayjs(`${date.endDate} ${date.endTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
   );
 
   const pastDates = dates.filter((date) =>
-    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
+    dayjs(`${date.endDate} ${date.endTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
   );
 
   const remainingFuture = futureDates && futureDates.length - 3;

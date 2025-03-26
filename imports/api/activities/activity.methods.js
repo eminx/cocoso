@@ -62,16 +62,15 @@ Meteor.methods({
 
   getAllPublicActivities(showPast = false, hostPredefined) {
     const host = hostPredefined || getHost(this);
-
     const user = Meteor.user();
-    const dateNow = new Date().toISOString().substring(0, 10);
+    const today = dayjs().format('YYYY-MM-DD');
 
     try {
       if (showPast) {
         const pastActs = Activities.find({
           host,
           $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-          'datesAndTimes.startDate': { $lte: dateNow },
+          'datesAndTimes.endDate': { $lte: today },
         }).fetch();
         const pastActsSorted = parseGroupActivities(pastActs)?.sort(
           compareDatesForSortActivitiesReverse
@@ -81,7 +80,7 @@ Meteor.methods({
       const futureActs = Activities.find({
         host,
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-        'datesAndTimes.startDate': { $gte: dateNow },
+        'datesAndTimes.endDate': { $gte: today },
       }).fetch();
       const futureActsSorted = parseGroupActivities(futureActs)?.sort(
         compareDatesForSortActivities
