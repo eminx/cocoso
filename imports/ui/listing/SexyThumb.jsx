@@ -58,15 +58,11 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
   const { datesAndTimes, hostName, readingMaterial, subTitle, tag, title } = activity;
   const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
 
+  const today = dayjs();
+  const yesterday = dayjs().subtract(1, 'day');
   const dates = datesAndTimes;
-
-  const futureDates = dates.filter((date) =>
-    dayjs(`${date.endDate} ${date.endTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
-  );
-
-  const pastDates = dates.filter((date) =>
-    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
-  );
+  const futureDates = dates.filter((date) => dayjs(date.endDate).isAfter(yesterday));
+  const pastDates = dates.filter((date) => dayjs(date.endDate).isBefore(today));
 
   const remainingFuture = futureDates && futureDates.length - 3;
   const remainingPast = futureDates && pastDates.length - 1;
