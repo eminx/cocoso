@@ -96,7 +96,7 @@ export default function DatesAndTimes({
 
   useEffect(() => {
     checkDatesForConflict();
-  }, [resourceId]);
+  }, [resourceId, isExclusiveActivity]);
 
   const handleDateTimeChange = async (occurrence, occurrenceIndex) => {
     if (!occurrence) {

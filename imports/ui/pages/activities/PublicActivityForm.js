@@ -39,6 +39,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   });
   const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('activities');
+  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
 
   const getResources = async () => {
     try {
@@ -59,7 +60,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   const isFormValid = () => {
     const { datesAndTimes } = state;
     const isConflictHard = datesAndTimes.some(
-      (occurence) => Boolean(occurence.conflict) && !occurence.isConflictOK
+      (occurrence) => Boolean(occurrence.conflict) && occurrence.isConflictHard
     );
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -67,7 +68,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
     );
 
-    return !isTimesInValid && !isConflictHard;
+    setIsSubmitButtonDisabled(isTimesInValid || isConflictHard);
   };
 
   useEffect(() => {
@@ -85,7 +86,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   }, [loaders?.isCreating]);
 
   const handleSubmit = (formValues) => {
-    if (!isFormValid()) {
+    if (isSubmitButtonDisabled) {
       message.error(t('form.error'));
       return;
     }
@@ -110,7 +111,6 @@ export default function PublicActivityForm({ activity, onFinalize }) {
     setState((prevState) => ({
       ...prevState,
       selectedResource,
-      datesAndTimes: [emptyDateAndTime],
     }));
   };
 
@@ -187,7 +187,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       childrenIndex={2}
       defaultValues={activity || emptyFormValues}
       formFields={publicActivityFormFields(t)}
-      isSubmitButtonDisabled={!isFormValid()}
+      isSubmitButtonDisabled={isSubmitButtonDisabled}
       onSubmit={handleSubmit}
     >
       <FormField

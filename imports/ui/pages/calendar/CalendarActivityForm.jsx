@@ -27,6 +27,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
     resources: [],
   });
+  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
 
   const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('activities');
@@ -79,7 +80,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
     );
 
-    return !isTimesInValid && !isConflictHard;
+    setIsSubmitButtonDisabled(isTimesInValid || isConflictHard);
   };
 
   useEffect(() => {
@@ -153,7 +154,6 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
     setState((prevState) => ({
       ...prevState,
       selectedResource,
-      // datesAndTimes: [emptyDateAndTime],
     }));
   };
 
@@ -169,7 +169,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       childrenIndex={1}
       defaultValues={activity || emptyFormValues}
       formFields={calendarActivityFormFields(t)}
-      isSubmitButtonDisabled={!isFormValid()}
+      isSubmitButtonDisabled={isSubmitButtonDisabled}
       onSubmit={handleSubmit}
     >
       <FormField helperText={t('form.exclusive.helper')} label={t('form.exclusive.label')} my="4">
