@@ -87,7 +87,7 @@ const getLinkPath = (item, kind, isCurrentHost = false) => {
   };
 };
 
-export default function PopupHandler({ item, kind, onClose }) {
+export default function PopupHandler({ item, kind, showPast, onClose }) {
   const [copied, setCopied] = useState(false);
   const { allHosts, currentHost } = useContext(StateContext);
   const navigate = useNavigate();
@@ -141,7 +141,7 @@ export default function PopupHandler({ item, kind, onClose }) {
     >
       <ModalBody pt="6">
         <PopupContent
-          action={<ActionDates activity={item} showTime />}
+          action={<ActionDates activity={item} showPast={showPast} showTime />}
           content={
             (item.longDescription && parseHtml(item.longDescription)) ||
             (item.description && parseHtml(item.description))

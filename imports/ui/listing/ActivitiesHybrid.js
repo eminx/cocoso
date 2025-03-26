@@ -63,7 +63,12 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
         </InfiniteScroller>
 
         {modalItem && (
-          <PopupHandler item={modalItem} kind="activities" onClose={() => setModalItem(null)} />
+          <PopupHandler
+            item={modalItem}
+            kind="activities"
+            showPast={showPast}
+            onClose={() => setModalItem(null)}
+          />
         )}
       </Box>
     </>

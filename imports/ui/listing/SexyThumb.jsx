@@ -13,12 +13,13 @@ if (isClient) {
   import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 }
 
-const yesterday = dayjs(new Date()).add(-1, 'days');
-const today = dayjs(new Date());
+const now = dayjs(new Date());
 
-const dateStyle = {
-  fontWeight: 700,
+const datePlusStyle = {
+  fontSize: '20px',
+  fontWeight: 'bold',
   lineHeight: 1,
+  marginBottom: '16px',
 };
 
 const imageStyle = {
@@ -34,7 +35,7 @@ function ThumbDate({ date }) {
     return null;
   }
 
-  const isPast = dayjs(date.endDate)?.isBefore(yesterday);
+  const isPast = dayjs(date.endDate)?.isBefore(now);
 
   return (
     <Flex
@@ -61,17 +62,16 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
 
   const dates = datesAndTimes;
 
-  const futureDates =
-    dates &&
-    dates
-      .filter((date) => dayjs(date?.endDate)?.isAfter(yesterday))
-      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
-  const remaining = futureDates && futureDates.length - 3;
-  const pastDates =
-    dates &&
-    dates
-      .filter((date) => dayjs(date?.startDate)?.isBefore(today))
-      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
+  const futureDates = dates.filter((date) =>
+    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
+  );
+
+  const pastDates = dates.filter((date) =>
+    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
+  );
+
+  const remainingFuture = futureDates && futureDates.length - 3;
+  const remainingPast = futureDates && pastDates.length - 1;
 
   const hostValue = host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
 
@@ -127,7 +127,6 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
                 alignItems: 'center',
                 display: 'flex',
                 flexWrap: 'wrap',
-                // justifyContent: 'flex-end',
               }}
             >
               {!showPast && futureDates && (
@@ -135,22 +134,15 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
                   {futureDates.slice(0, 3).map((date) => (
                     <ThumbDate key={date?.startDate + date?.startTime} date={date} />
                   ))}
-                  {remaining > 0 && (
-                    <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>
-                      + {remaining}
-                    </div>
-                  )}
+                  {remainingFuture > 0 && <div style={datePlusStyle}>+ {remainingFuture}</div>}
                 </HStack>
               )}
               {showPast && (
-                <HStack spacing="4" mb="4">
-                  {pastDates.slice(0, 3).map((date) => (
-                    <ThumbDate
-                      key={date?.startDate + date?.startTime}
-                      color="gray.400"
-                      date={date}
-                    />
+                <HStack color="gray.400" spacing="4" mb="4">
+                  {pastDates.slice(0, 1).map((date) => (
+                    <ThumbDate key={date?.startDate + date?.startTime} date={date} />
                   ))}
+                  {remainingPast > 0 && <div style={datePlusStyle}>+ {remainingPast}</div>}
                 </HStack>
               )}
             </div>

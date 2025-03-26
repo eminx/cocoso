@@ -40,12 +40,7 @@ function AccordionDates({ activity, onCloseModal }) {
   const isRegistrationEnabled =
     activity.isRegistrationEnabled || activity.isRegistrationDisabled === false;
 
-  const items = activity.datesAndTimes.sort((a, b) => {
-    if (a.startDate === b.startDate) {
-      return new Date(a.startTime) - new Date(b.startTime);
-    }
-    return new Date(a.startDate) - new Date(b.startDate);
-  });
+  const items = [...activity.datesAndTimes];
 
   if (!isRegistrationEnabled) {
     return (
