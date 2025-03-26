@@ -15,6 +15,11 @@ export default function CalendarView(props) {
 
   const localizer = useMemo(() => momentLocalizer(moment), []);
 
+  let culture = 'en-GB';
+  if (i18n.language !== 'en') {
+    culture = i18n.language;
+  }
+
   const messages = {
     allDay: t('bigCal.allDay'),
     previous: t('bigCal.previous'),
@@ -35,9 +40,8 @@ export default function CalendarView(props) {
     <>
       <Calendar
         allDayAccessor="isMultipleDay"
-        culture={i18n.language}
+        culture={culture}
         defaultView="month"
-        defaultDate={moment().toDate()}
         events={activities}
         localizer={localizer}
         messages={messages}
