@@ -20,7 +20,12 @@ import CloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
-import { call, compareDatesForSortActivities, parseGroupActivities } from '../../../utils/shared';
+import { call } from '/imports/ui/utils/shared.js';
+import {
+  compareDatesForSortActivities,
+  parseGroupActivities,
+} from '/imports/api/activities/activity.helpers';
+
 import Loader from '../../../generic/Loader';
 import { message } from '../../../generic/message';
 import { ActivityDates } from './EmailPreview';

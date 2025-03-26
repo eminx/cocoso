@@ -11,7 +11,7 @@ import {
   compareDatesForSortActivities,
   compareDatesForSortActivitiesReverse,
   parseGroupActivities,
-} from '../../ui/utils/shared';
+} from './activity.helpers';
 
 const filterPrivateGroups = (activities, user) =>
   activities.filter((act) => {
