@@ -54,7 +54,7 @@ export default function NewCalendarActivity({ resources }) {
   };
 
   const handleSuccess = () => {
-    navigate(`/calendar/${newEntryId}`);
+    navigate(`/calendar/${newEntryId}/info`);
   };
 
   return (

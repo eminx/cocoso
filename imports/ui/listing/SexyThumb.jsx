@@ -16,7 +16,7 @@ if (isClient) {
 const now = dayjs(new Date());
 
 const datePlusStyle = {
-  fontSize: '20px',
+  fontSize: '24px',
   fontWeight: 'bold',
   lineHeight: 1,
   marginBottom: '16px',
