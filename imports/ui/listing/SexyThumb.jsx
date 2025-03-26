@@ -17,7 +17,7 @@ const now = dayjs(new Date());
 
 const datePlusStyle = {
   fontSize: '20px',
-  fontWeight: 700,
+  fontWeight: 'bold',
   lineHeight: 1,
   marginBottom: '16px',
 };
@@ -65,12 +65,10 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
   const futureDates = dates.filter((date) =>
     dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
   );
-  console.log('futureDates', futureDates);
 
   const pastDates = dates.filter((date) =>
     dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
   );
-  console.log('pastDates', pastDates);
 
   const remainingFuture = futureDates && futureDates.length - 3;
   const remainingPast = futureDates && pastDates.length - 3;
@@ -129,7 +127,6 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
                 alignItems: 'center',
                 display: 'flex',
                 flexWrap: 'wrap',
-                // justifyContent: 'flex-end',
               }}
             >
               {!showPast && futureDates && (
