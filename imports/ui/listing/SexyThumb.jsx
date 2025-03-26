@@ -15,9 +15,11 @@ if (isClient) {
 
 const now = dayjs(new Date());
 
-const dateStyle = {
+const datePlusStyle = {
+  fontSize: '20px',
   fontWeight: 700,
   lineHeight: 1,
+  marginBottom: '16px',
 };
 
 const imageStyle = {
@@ -63,12 +65,15 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
   const futureDates = dates.filter((date) =>
     dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
   );
+  console.log('futureDates', futureDates);
 
   const pastDates = dates.filter((date) =>
     dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
   );
+  console.log('pastDates', pastDates);
 
-  const remaining = futureDates && futureDates.length - 3;
+  const remainingFuture = futureDates && futureDates.length - 3;
+  const remainingPast = futureDates && pastDates.length - 3;
 
   const hostValue = host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
 
@@ -132,11 +137,7 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
                   {futureDates.slice(0, 3).map((date) => (
                     <ThumbDate key={date?.startDate + date?.startTime} date={date} />
                   ))}
-                  {remaining > 0 && (
-                    <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>
-                      + {remaining}
-                    </div>
-                  )}
+                  {remainingFuture > 0 && <div style={datePlusStyle}>+ {remainingFuture}</div>}
                 </HStack>
               )}
               {showPast && (
@@ -148,6 +149,7 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
                       date={date}
                     />
                   ))}
+                  {remainingPast > 0 && <div style={datePlusStyle}>+ {remainingPast}</div>}
                 </HStack>
               )}
             </div>
