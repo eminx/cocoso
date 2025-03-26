@@ -15,11 +15,9 @@ if (isClient) {
 
 const now = dayjs(new Date());
 
-const datePlusStyle = {
-  fontSize: '24px',
+const remainingStyle = {
+  fontSize: '27px',
   fontWeight: 'bold',
-  lineHeight: 1,
-  marginBottom: '16px',
 };
 
 const imageStyle = {
@@ -134,7 +132,12 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
                   {futureDates.slice(0, 3).map((date) => (
                     <ThumbDate key={date?.startDate + date?.startTime} date={date} />
                   ))}
-                  {remainingFuture > 0 && <div style={datePlusStyle}>+ {remainingFuture}</div>}
+                  {remainingFuture > 0 && (
+                    <span style={remainingStyle}>
+                      <span>+ </span>
+                      <span>{remainingFuture}</span>
+                    </span>
+                  )}
                 </HStack>
               )}
               {showPast && (
@@ -142,7 +145,12 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
                   {pastDates.slice(0, 1).map((date) => (
                     <ThumbDate key={date?.startDate + date?.startTime} date={date} />
                   ))}
-                  {remainingPast > 0 && <div style={datePlusStyle}>+ {remainingPast}</div>}
+                  {remainingPast > 0 && (
+                    <span style={remainingStyle}>
+                      <span>+ </span>
+                      <span>{remainingPast}</span>
+                    </span>
+                  )}
                 </HStack>
               )}
             </div>
