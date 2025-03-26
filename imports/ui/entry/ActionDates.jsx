@@ -11,7 +11,7 @@ const getFutureOccurrences = (dates) =>
 
 const getPastOccurrences = (dates) =>
   dates.filter((date) =>
-    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
+    dayjs(`${date.endDate} ${date.endTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
   );
 
 export default function ActionDates({ activity, showPast = false, showTime = false }) {
