@@ -158,7 +158,7 @@ export default function Calendar() {
     if (selectedActivity.isGroupMeeting) {
       navigate(`/groups/${selectedActivity.groupId}/info`);
     } else {
-      navigate(`/activities/${selectedActivity.activityId}?edit=true`);
+      navigate(`/calendar/${selectedActivity.activityId}?edit=true`);
     }
   };
 

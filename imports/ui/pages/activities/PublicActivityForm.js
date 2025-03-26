@@ -86,10 +86,6 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   }, [loaders?.isCreating]);
 
   const handleSubmit = (formValues) => {
-    if (isSubmitButtonDisabled) {
-      message.error(t('form.error'));
-      return;
-    }
     setState((prevState) => ({
       ...prevState,
       formValues,

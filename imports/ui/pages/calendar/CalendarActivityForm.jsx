@@ -10,7 +10,6 @@ import FormField from '../../forms/FormField';
 import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
 import calendarActivityFormFields from './calendarActivityFormFields';
 import { LoaderContext } from '../../listing/NewEntryHandler';
-import { message } from '../../generic/message';
 
 const animatedComponents = makeAnimated();
 
@@ -128,10 +127,6 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   }, [loaders.isCreating]);
 
   const handleSubmit = (formValues) => {
-    if (!isFormValid()) {
-      message.error(t('form.error'));
-      return;
-    }
     setState((prevState) => ({
       ...prevState,
       formValues,

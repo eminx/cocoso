@@ -198,18 +198,34 @@ Meteor.methods({
           {
             $or: [
               {
-                'datesAndTimes.startDate': { $lt: endDate },
-                'datesAndTimes.endDate': { $gt: startDate },
+                datesAndTimes: {
+                  $elemMatch: {
+                    startDate: {
+                      $lt: endDate,
+                    },
+                    endDate: {
+                      $gt: startDate,
+                    },
+                  },
+                },
               },
               {
-                'datesAndTimes.startDate': endDate,
-                'datesAndTimes.startTime': { $lt: endTime },
-                'datesAndTimes.endTime': { $gt: startTime },
+                datesAndTimes: {
+                  $elemMatch: {
+                    startDate: endDate,
+                    startTime: { $lt: endTime },
+                    endTime: { $gt: startTime },
+                  },
+                },
               },
               {
-                'datesAndTimes.endDate': startDate,
-                'datesAndTimes.startTime': { $lt: endTime },
-                'datesAndTimes.endTime': { $gt: startTime },
+                datesAndTimes: {
+                  $elemMatch: {
+                    endDate: startDate,
+                    startTime: { $lt: endTime },
+                    endTime: { $gt: startTime },
+                  },
+                },
               },
             ],
           },

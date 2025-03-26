@@ -54,7 +54,7 @@
     "@react-email/row": "0.0.8",
     "@react-email/section": "0.0.12",
     "@react-email/text": "0.0.8",
-    "antd": "^5.20.6",
+    "antd": "^5.24.5",
     "array-move": "^4.0.0",
     "bcrypt": "^5.0.1",
     "dayjs": "^1.11.13",
