@@ -7,9 +7,7 @@ import { DateJust } from './FancyDate';
 const now = dayjs();
 
 const getFutureOccurrences = (dates) =>
-  dates.filter((date) =>
-    dayjs(`${date.startDate} ${date.startTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
-  );
+  dates.filter((date) => dayjs(`${date.endDate} ${date.endTime}`, 'YYYY-MM-DD HH:mm').isAfter(now));
 
 const getPastOccurrences = (dates) =>
   dates.filter((date) =>
