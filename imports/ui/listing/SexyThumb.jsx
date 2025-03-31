@@ -13,7 +13,7 @@ if (isClient) {
   import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 }
 
-const now = dayjs(new Date());
+const today = dayjs(new Date());
 
 const remainingStyle = {
   fontSize: '27px',
@@ -60,13 +60,8 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
 
   const dates = datesAndTimes;
 
-  const futureDates = dates.filter((date) =>
-    dayjs(`${date.endDate} ${date.endTime}`, 'YYYY-MM-DD HH:mm').isAfter(now)
-  );
-
-  const pastDates = dates.filter((date) =>
-    dayjs(`${date.endDate} ${date.endTime}`, 'YYYY-MM-DD HH:mm').isBefore(now)
-  );
+  const futureDates = dates.filter((date) => dayjs(`${date.endDate}`, 'YYYY-MM-DD').isAfter(today));
+  const pastDates = dates.filter((date) => dayjs(`${date.endDate}`, 'YYYY-MM-DD').isBefore(today));
 
   const remainingFuture = futureDates && futureDates.length - 3;
   const remainingPast = futureDates && pastDates.length - 1;
