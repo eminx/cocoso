@@ -14,7 +14,7 @@ actions:
   update: Redigera
   remove: Radera
   submit: Bekräfta
-  send: Bekräfta
+  send: Skicka
   cancel: Avbryt
   close: Stäng
   reset: Återställa
@@ -38,22 +38,24 @@ actions:
 labels:
   activity: Aktiviteten
   all: Alla
+  book: Boka
   booked: bokad
   contact: Kontakt
   content: Innehåll
   create:
-    activities: Nytt evenemang
+    activities: Ny aktivitet
     calendar: Ny aktivitet
-    groups: Ny grupp / process
+    groups: Ny grupp/process
     info: Ny infosida
     resources: Ny resurs
     works: Ny inlägg
     host: Ny community
   update:
-    activities: Uppdatera evenemanget
+    activities: Uppdatera aktivitetet
     calendar: Uppdatera aktivitetet
-    groups: Uppdatera processgruppen
+    groups: Uppdatera gruppen/processen
     info: Uppdatera infosidan
+    pages: Update sidan
     resources: Uppdatera resursen
     works: Uppdatera inlägget
   event: Arrangemang
@@ -96,6 +98,10 @@ labels:
   select: Välja
   form:
     title: Ange detaljer
+  private: Privat
+  chat:
+    onlymembers: Endast för gruppmedlemmar
+    onlyverified: Endast för verifierade användare
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -275,3 +281,11 @@ platform:
     notice1: Dessa informationsblock som sammanställs nedan kommer att visas som en introduktionsorientering för de användare som registrerar sig för att vara en del av någon av gemenskaperna inom {{ platform }}-plattformen.
     notice2: Du kan förhandsgranska här
     linkLabel: Preview
+
+auth:
+  errors:
+    username: Användarnamn kan endast bestå av små bokstäver och siffror
+    email: Ange en giltig e-postadress
+    passwordMin: Lösenordet måste vara minst 8 tecken långt
+    passwordRegex: Se till att ange minst en liten bokstav, en versal, en siffra och totalt minst 8 tecken
+    usernameOrEmail: Ange ditt användarnamn eller e-postadress

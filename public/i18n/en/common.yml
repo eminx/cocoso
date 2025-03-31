@@ -38,11 +38,12 @@ actions:
 labels:
   activity: Activity
   all: All
+  book: Book
   booked: booked
   contact: Contact
   content: Content
   create:
-    activities: New Event
+    activities: New Activity
     calendar: New Activity
     groups: New Process/Group
     info: New Info Page
@@ -50,13 +51,13 @@ labels:
     works: New Post
     host: New Community
   update:
-    activities: Update Event
+    activities: Update Activity
     calendar: Update Activity
     groups: Update Process/Group
+    info: Update Info Page
     pages: Update Page
     resources: Update Resource
     works: Update Post
-    info: Update Info Page
   event: Event
   bookings: Bookings
   newBooking: New Booking
@@ -97,6 +98,10 @@ labels:
   select: Select
   form:
     title: Enter the details
+  private: Private
+  chat:
+    onlymembers: Only for group members
+    onlyverified: Only for verified users
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -278,3 +283,11 @@ platform:
     notice1: These blocks of information composed below will be shown as an onboarding orientation to the users who register themselves to be part of any of the communities within the {{ platform }} platform.
     notice2: You may preview via here
     linkLabel: Preview
+
+auth:
+  errors:
+    username: Username can only be composed of lowercase letters and numbers
+    email: Please enter a valid email address
+    passwordMin: Password must be at least 8 characters long
+    passwordRegex: Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters
+    usernameOrEmail: Please enter your username or email address

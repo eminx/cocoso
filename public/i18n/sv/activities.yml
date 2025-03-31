@@ -2,7 +2,7 @@ label:
   new: Skapa ett aktivitet
   newevent: Skapa ett evenemang
   edit: Redigera
-  rsvp: Datum & OSA
+  rsvp: Datum & boka
   next: Nästa aktivitet
 
 form:
@@ -76,7 +76,7 @@ public:
   labels:
     address: Adress
     dates: Se datum
-    datesAndRegistration: Se datum & OSA
+    datesAndRegistration: Se datum & boka
     info: Info
     location: Plats
     resource: Resurs

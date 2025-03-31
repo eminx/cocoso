@@ -32,7 +32,7 @@ export function Footer({ currentHost, isFederationFooter }) {
   const { settings } = currentHost;
 
   return (
-    <Box bg="gray.800" bottom={0} color="gray.100" position="fixed" w="100%" zIndex={-1}>
+    <Box bg="gray.700" bottom={0} color="gray.100">
       <Center p="4">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
@@ -52,7 +52,7 @@ export function Footer({ currentHost, isFederationFooter }) {
             <Center>
               {settings.footer ? (
                 <Box
-                  className="text-content"
+                  className="text-content dark"
                   fontSize="85%"
                   maxWidth="480px"
                   mt="4"
@@ -93,7 +93,7 @@ export function PlatformFooter({ platform, children }) {
     return null;
   }
   return (
-    <Center bg="black" className="platform-footer">
+    <Center bg="gray.900" className="platform-footer">
       <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
         <Box p="4">
           <a href={`https://${platform?.portalHost}`}>

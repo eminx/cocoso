@@ -63,11 +63,11 @@ function ConflictMarker({ occurrence, t }) {
 }
 
 export default function DatesAndTimes({
+  activityId,
   datesAndTimes,
   isExclusiveActivity,
   resourceId,
   onDatesAndTimesChange,
-  activityId,
 }) {
   const [t] = useTranslation('activities');
 
@@ -96,7 +96,7 @@ export default function DatesAndTimes({
 
   useEffect(() => {
     checkDatesForConflict();
-  }, [resourceId]);
+  }, [resourceId, isExclusiveActivity]);
 
   const handleDateTimeChange = async (occurrence, occurrenceIndex) => {
     if (!occurrence) {
@@ -204,7 +204,7 @@ export default function DatesAndTimes({
             <Box mb="2">
               <FormControl w="auto" alignItems="center" display="flex">
                 <Switch
-                  isChecked={occurrence?.isRange}
+                  isChecked={occurrence?.isRange || occurrence.startDate !== occurrence.endDate}
                   id={id}
                   onChange={(event) => handleRangeSwitch(event, index)}
                   py="2"

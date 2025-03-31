@@ -38,22 +38,24 @@ actions:
 labels:
   activity: Aktivite
   all: Tümü
+  book: Ayır
   booked: 'ayırdı:'
   contact: İletişim
   content: İçerik
   create:
-    activities: Yeni etkinlik
+    activities: Yeni aktivite
     calendar: Yeni aktivite
-    groups: Yeni süreç grubu
+    groups: Yeni grup/süreç
     info: Yeni bilgi sayfası
     resources: Yeni kaynak
     works: Yeni İlan
     host: Yeni topluluk
   update:
-    activities: Etkinliği güncelle
+    activities: Aktiviteyi güncelle
     calendar: Aktiviteyi güncelle
-    groups: Süreç grubunu güncelle
+    groups: Grubu/Süreci güncelle
     info: Bilgi sayfasını güncelle
+    pages: Sayfayı güncelle
     resources: Kaynağı güncelle
     works: İlanı güncelle
   event: Etkinlik
@@ -96,6 +98,10 @@ labels:
   select: Seç
   form:
     title: Detayları gir
+  private: Gizli
+  chat:
+    onlymembers: Yalnızca grup üyeleri için
+    onlyverified: Yalnızca onaylanmış kullanıcılar için
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -274,3 +280,11 @@ platform:
     notice1: Aşağıda oluşturulacak olan bu bilgi blokları, {{ platform }} platformundaki topluluklardan herhangi birinin parçası olmak üzere kaydolan kullanıcılara ilk katılım yönlendirmesi olarak gösterilecektir..
     notice2: Bu link üzerinden görünümünü inceleyebilirsiniz
     linkLabel: İncele
+
+auth:
+  errors:
+    username: Kullanıcı adı yalnızca küçük harflerden ve sayılardan oluşabilir
+    email: Lütfen geçerli bir e-posta adresi girin
+    passwordMin: Şifre en az 8 karakter uzunluğunda olmalıdır
+    passwordRegex: Lütfen en az bir küçük harf, bir büyük harf, bir rakam ve toplamda en az 8 karakter girdiğinizden emin olun
+    usernameOrEmail: Lütfen kullanıcı adınızı veya e-posta adresinizi girin

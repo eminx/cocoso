@@ -90,7 +90,12 @@ function ImageHandler({ height, width, images, children }) {
   }
   return (
     <Box className="slide-container" h={height} w={width}>
-      <Slide arrows transitionDuration={400} onStartChange={(from, to) => setCurrentSlideIndex(to)}>
+      <Slide
+        arrows
+        easing="cubic"
+        transitionDuration={800}
+        onStartChange={(from, to) => setCurrentSlideIndex(to)}
+      >
         {images.map((image, index) => children(image, index))}
       </Slide>
       <Dots currentSlideIndex={currentSlideIndex} images={images} />

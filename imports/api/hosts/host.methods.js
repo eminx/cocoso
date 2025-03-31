@@ -189,7 +189,9 @@ Meteor.methods({
       )
       .fetch();
 
-    return getUsersRandomlyWithAvatarsFirst(users);
+    const usersFiltered = users.filter((u) => u.memberships.find((m) => m.host === host)?.isPublic);
+
+    return getUsersRandomlyWithAvatarsFirst(usersFiltered);
   },
 
   getAllMembersFromAllHosts() {

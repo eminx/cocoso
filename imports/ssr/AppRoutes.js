@@ -4,18 +4,18 @@ import { ChakraProvider, Progress } from '@chakra-ui/react';
 import generateTheme from '../ui/utils/constants/theme';
 
 import {
-  ActivitiesList,
+  ActivityList,
   Activity,
   Communities,
   Home,
-  GroupsList,
+  GroupList,
   Group,
   Page,
-  ResourcesList,
+  ResourceList,
   Resource,
-  WorksList,
+  WorkList,
   Work,
-  UsersList,
+  UserList,
   User,
 } from './components';
 
@@ -42,23 +42,23 @@ const AppRoutesSSR = (host, sink) => {
     },
     {
       path: '/activities',
-      element: <ActivitiesList {...props} />,
+      element: <ActivityList {...props} />,
     },
     {
       path: '/groups',
-      element: <GroupsList {...props} />,
+      element: <GroupList {...props} />,
     },
     {
       path: '/resources',
-      element: <ResourcesList {...props} />,
+      element: <ResourceList {...props} />,
     },
     {
       path: '/works',
-      element: <WorksList {...props} />,
+      element: <WorkList {...props} />,
     },
     {
       path: '/people',
-      element: <UsersList {...props} />,
+      element: <UserList {...props} />,
     },
     {
       path: '/communities',

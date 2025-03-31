@@ -13,12 +13,13 @@ if (isClient) {
   import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 }
 
-const yesterday = dayjs(new Date()).add(-1, 'days');
-const today = dayjs(new Date());
+const today = dayjs().format('YYYY-MM-DD');
+const yesterday = dayjs(new Date()).add(-1, 'days').format('YYYY-MM-DD');
+const tomorrow = dayjs(new Date()).add(1, 'days').format('YYYY-MM-DD');
 
-const dateStyle = {
-  fontWeight: 700,
-  lineHeight: 1,
+const remainingStyle = {
+  fontSize: '27px',
+  fontWeight: 'bold',
 };
 
 const imageStyle = {
@@ -29,27 +30,27 @@ const imageStyle = {
   borderRadius: '8px',
 };
 
-function ThumbDate({ date }) {
-  if (!date) {
+function ThumbDate({ occurrence }) {
+  if (!occurrence) {
     return null;
   }
 
-  const isPast = dayjs(date.endDate)?.isBefore(yesterday);
+  const isPast = dayjs(occurrence.endDate)?.isBefore(today);
 
   return (
     <Flex
-      key={date.startDate + date.startTime}
+      key={occurrence.startDate + occurrence.startTime}
       align="center"
       color={isPast ? 'gray.400' : 'white'}
     >
-      <DateJust>{date.startDate}</DateJust>
-      {date.startDate !== date.endDate && <span style={{ margin: '0 2px' }}>–</span>}
-      {date.startDate !== date.endDate && <DateJust>{date.endDate}</DateJust>}
+      <DateJust>{occurrence.startDate}</DateJust>
+      {occurrence.startDate !== occurrence.endDate && <span style={{ margin: '0 2px' }}>–</span>}
+      {occurrence.startDate !== occurrence.endDate && <DateJust>{occurrence.endDate}</DateJust>}
     </Flex>
   );
 }
 
-export default function SexyThumb({ activity, host, index, showPast = false }) {
+export default function SexyThumb({ activity, host, index, showPast = false, tags }) {
   const { allHosts } = isClient && useContext(StateContext);
 
   if (!activity) {
@@ -60,18 +61,10 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
   const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
 
   const dates = datesAndTimes;
-
-  const futureDates =
-    dates &&
-    dates
-      .filter((date) => dayjs(date?.endDate)?.isAfter(yesterday))
-      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
-  const remaining = futureDates && futureDates.length - 3;
-  const pastDates =
-    dates &&
-    dates
-      .filter((date) => dayjs(date?.startDate)?.isBefore(today))
-      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
+  const futureDates = dates.filter((date) => dayjs(date.endDate, 'YYYY-MM-DD').isAfter(yesterday));
+  const pastDates = dates.filter((date) => dayjs(date.endDate, 'YYYY-MM-DD').isBefore(tomorrow));
+  const remainingFuture = futureDates && futureDates.length - 3;
+  const remainingPast = futureDates && pastDates.length - 1;
 
   const hostValue = host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
 
@@ -98,8 +91,8 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
       </div>
 
       {host && (
-        <Box bottom="32px" p="1" position="absolute" right="12px">
-          <CTag bg="rgba(0, 0, 0, 0.7)" color="white" size="sm">
+        <Box p="1" position="absolute" right="12px" bottom="8px">
+          <CTag bg="rgba(255, 255, 255, 0.7)" size="sm">
             {hostValue}
           </CTag>
         </Box>
@@ -110,6 +103,15 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
           <Box mt="2">
             <h3 className="thumb-title">{title}</h3>
             <h4 className="thumb-subtitle">{subTitle || readingMaterial}</h4>
+            {tags && (
+              <Flex my="2">
+                {tags.map((t) => (
+                  <CTag bg="gray.700" color="white" key={t} size="sm">
+                    {t}
+                  </CTag>
+                ))}
+              </Flex>
+            )}
           </Box>
 
           {dates && (
@@ -118,30 +120,38 @@ export default function SexyThumb({ activity, host, index, showPast = false }) {
                 alignItems: 'center',
                 display: 'flex',
                 flexWrap: 'wrap',
-                // justifyContent: 'flex-end',
               }}
             >
               {!showPast && futureDates && (
                 <HStack align="center" color="brand.50" mb="4" spacing="4">
-                  {futureDates.slice(0, 3).map((date) => (
-                    <ThumbDate key={date?.startDate + date?.startTime} date={date} />
+                  {futureDates.slice(0, 3).map((occurrence) => (
+                    <ThumbDate
+                      key={occurrence?.startDate + occurrence?.startTime}
+                      occurrence={occurrence}
+                    />
                   ))}
-                  {remaining > 0 && (
-                    <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>
-                      + {remaining}
-                    </div>
+                  {remainingFuture > 0 && (
+                    <span style={remainingStyle}>
+                      <span>+ </span>
+                      <span>{remainingFuture}</span>
+                    </span>
                   )}
                 </HStack>
               )}
               {showPast && (
-                <HStack spacing="4" mb="4">
-                  {pastDates.slice(0, 3).map((date) => (
+                <HStack color="gray.400" spacing="4" mb="4">
+                  {pastDates.slice(0, 1).map((occurrence) => (
                     <ThumbDate
-                      key={date?.startDate + date?.startTime}
-                      color="gray.400"
-                      date={date}
+                      key={occurrence?.startDate + occurrence?.startTime}
+                      occurrence={occurrence}
                     />
                   ))}
+                  {remainingPast > 0 && (
+                    <span style={remainingStyle}>
+                      <span>+ </span>
+                      <span>{remainingPast}</span>
+                    </span>
+                  )}
                 </HStack>
               )}
             </div>

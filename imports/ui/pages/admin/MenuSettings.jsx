@@ -42,11 +42,19 @@ export default function MenuSettings() {
     return <Alert>{tc('message.accesss.deny')}</Alert>;
   }
 
-  const handleSwitchHeaderMenu = (checked) => {
-    setLocalSettings({
-      ...localSettings,
-      isHeaderMenu: checked,
-    });
+  const handleSwitchBurgerMenuMobile = (checked) => {
+    setLocalSettings((prevSettings) => ({
+      ...prevSettings,
+      isBurgerMenuOnMobile: checked,
+      isBurgerMenuOnDesktop: !checked ? false : prevSettings.isBurgerMenuOnDesktop,
+    }));
+  };
+
+  const handleSwitchBurgerMenuDesktop = (checked) => {
+    setLocalSettings((prevSettings) => ({
+      ...prevSettings,
+      isBurgerMenuOnDesktop: checked,
+    }));
   };
 
   const onSortMenuEnd = (oldIndex, newIndex) => {
@@ -72,6 +80,11 @@ export default function MenuSettings() {
       setLoading(false);
     }
   };
+
+  const settings = currentHost?.settings;
+  const isOptionsSubmitButtonDisabled =
+    settings.isBurgerMenuOnDesktop === localSettings.isBurgerMenuOnDesktop &&
+    settings.isBurgerMenuOnMobile === localSettings.isBurgerMenuOnMobile;
 
   const tabs = [
     {
@@ -124,31 +137,43 @@ export default function MenuSettings() {
         <Box my="8">
           <Boxling mb="4">
             <Heading as="h4" fontSize="18px" mb="2">
-              {t('menu.headerMenu.title')}
+              {t('menu.burgermenu.title')}
             </Heading>
 
-            <Text mb="4">{t('menu.headerMenu.text')}</Text>
+            <Text mb="4">{t('menu.burgermenu.text')}</Text>
 
-            <Flex>
+            <Flex mb="4">
               <Switch
                 mr="2"
                 mt="1"
-                name="isHeaderMenu"
-                isChecked={localSettings.isHeaderMenu}
-                onChange={(event) => handleSwitchHeaderMenu(event.target.checked)}
+                name="isBurgerMenuOnMobile"
+                isChecked={Boolean(localSettings.isBurgerMenuOnMobile)}
+                onChange={(event) => handleSwitchBurgerMenuMobile(event.target.checked)}
               />
 
               <Box>
-                <Text fontWeight="bold">{t('menu.headerMenu.label')}</Text>
+                <Text fontWeight="bold">{t('menu.burgermenu.mobile')}</Text>
+              </Box>
+            </Flex>
+
+            <Flex mb="4">
+              <Switch
+                isDisabled={!localSettings.isBurgerMenuOnMobile}
+                mr="2"
+                mt="1"
+                name="isBurgerMenuOnDesktop"
+                isChecked={Boolean(localSettings.isBurgerMenuOnDesktop)}
+                onChange={(event) => handleSwitchBurgerMenuDesktop(event.target.checked)}
+              />
+
+              <Box>
+                <Text fontWeight="bold">{t('menu.burgermenu.desktop')}</Text>
               </Box>
             </Flex>
           </Boxling>
 
           <Flex justify="flex-end" pt="2">
-            <Button
-              isDisabled={currentHost?.settings?.isHeaderMenu === localSettings?.isHeaderMenu}
-              onClick={() => handleMenuSave()}
-            >
+            <Button isDisabled={isOptionsSubmitButtonDisabled} onClick={() => handleMenuSave()}>
               {tc('actions.submit')}
             </Button>
           </Flex>

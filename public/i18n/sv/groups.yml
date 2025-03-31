@@ -56,7 +56,8 @@ actions:
   leave: Lämna
   archive: Arkivera
   unarchive: Avarkivera
-  register: Se datum & OSA
+  register: Se datum & boka
+  invite: Bjuda in
 
 meeting:
   attends:

@@ -22,7 +22,7 @@ import { accordionProps } from '../../../utils/constants/general';
 import { message } from '../../../generic/message';
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
-import { StateContext } from '../../../LayoutContainer';
+import ActionButton from '../../../generic/ActionButton';
 
 const { buttonProps, itemProps, panelProps } = accordionProps;
 
@@ -81,8 +81,7 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
         message.success(t('meeting.attends.remove'));
         onClose();
       } catch (error) {
-        console.log('error', error);
-        message.error(error.error);
+        message.error(error.error || error.reason);
       }
     } else {
       try {
@@ -92,8 +91,7 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
         message.success(t('meeting.attends.register'));
         onClose();
       } catch (error) {
-        console.log('error', error);
-        message.error(error.error);
+        message.error(error.error || error.reason);
       }
     }
   };
@@ -112,7 +110,6 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
       getGroupById();
       setDelButtonDisabled(false);
     } catch (error) {
-      console.log(error);
       message.error(error.error);
     }
   };
@@ -196,7 +193,6 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
 export default function GroupMeetingDates(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
-  const { isDesktop } = useContext(StateContext);
 
   const { group, isMember } = props;
 
@@ -223,19 +219,7 @@ export default function GroupMeetingDates(props) {
         <Box>
           <Center>
             {isMember && (
-              <Button
-                bg="white"
-                borderColor="brand.100"
-                borderWidth="2px"
-                colorScheme="brand"
-                height="48px"
-                size={isDesktop ? 'lg' : 'md'}
-                variant="outline"
-                width={isDesktop ? '240px' : '180px'}
-                onClick={() => setModalOpen(true)}
-              >
-                {t('actions.register')}
-              </Button>
+              <ActionButton label={t('actions.register')} onClick={() => setModalOpen(true)} />
             )}
           </Center>
           <Center>
@@ -253,7 +237,7 @@ export default function GroupMeetingDates(props) {
           <Center>
             {!isMember && (
               <Button
-                color="green.200"
+                color="brand.50"
                 fontSize="sm"
                 variant="link"
                 onClick={() => setModalOpen(true)}

@@ -9,15 +9,22 @@ const fancyDateStyle = {
   fontFamily: `'Raleway', sans-serif`,
   fontWeight: 'bold',
   justifyContent: 'space-between',
-  lineHeight: 1,
+  lineHeight: 0.9,
   width: '100%',
 };
 
-function DateJust({ children, ...otherProps }) {
+const fancyTimeStyle = {
+  fontSize: 14,
+  paddingTop: 6,
+  fontStyle: 'italic',
+};
+
+function DateJust({ time, children, ...otherProps }) {
   return (
     <div {...otherProps}>
-      <div style={{ ...fancyDateStyle, fontSize: 24 }}>{dayjs(children).format('DD')}</div>
-      <div style={{ ...fancyDateStyle, fontSize: 17 }}>{dayjs(children).format('MMM')}</div>
+      <div style={{ ...fancyDateStyle, fontSize: 28 }}>{dayjs(children).format('DD')}</div>
+      <div style={{ ...fancyDateStyle, fontSize: 20 }}>{dayjs(children).format('MMM')}</div>
+      {time && <div style={{ ...fancyDateStyle, ...fancyTimeStyle }}>{time}</div>}
     </div>
   );
 }
@@ -39,7 +46,7 @@ function FancyDate({ occurrence, resources, ...otherProps }) {
           </div>
         )}
       </div>
-      <div style={fancyDateStyle}>
+      <div style={{ ...fancyDateStyle, fontSize: 18, fontStyle: 'italic' }}>
         <div>
           {occurrence.startTime} – {occurrence.endTime}
         </div>

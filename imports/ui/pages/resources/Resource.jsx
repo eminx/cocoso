@@ -46,7 +46,7 @@ export default function Resource() {
 
   useEffect(() => {
     getResourceById();
-  }, []);
+  }, [resourceId]);
 
   if (!resource) {
     return <Loader />;

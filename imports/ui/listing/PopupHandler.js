@@ -1,64 +1,19 @@
 import React, { useContext, useState } from 'react';
-import { Badge, Box, Center, Flex, Heading, ModalBody } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, ModalBody, Tag } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
 import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 
 import Modal from '../generic/Modal';
 import { StateContext } from '../LayoutContainer';
-import { DateJust } from '../entry/FancyDate';
 import NiceSlider from '../generic/NiceSlider';
-
-const yesterday = dayjs().add(-1, 'days');
-const today = dayjs();
-
-const getFutureOccurrences = (dates) =>
-  dates
-    .filter((date) => date && dayjs(date.endDate)?.isAfter(yesterday))
-    .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
-
-const getPastOccurrences = (dates) =>
-  dates
-    .filter((date) => dayjs(date.startDate)?.isBefore(today))
-    .sort((a, b) => dayjs(b.startDate) - dayjs(a.startDate));
-
-function DatesForAction({ activity, showPast = false }) {
-  if (!activity || !activity.datesAndTimes || !activity.datesAndTimes.length) {
-    return null;
-  }
-
-  const dates = showPast
-    ? getPastOccurrences(activity.datesAndTimes)
-    : getFutureOccurrences(activity.datesAndTimes);
-
-  return (
-    <Flex pt="4">
-      {dates.map(
-        (occurence) =>
-          occurence && (
-            <Flex key={occurence.startDate + occurence.endTime} pr="6">
-              <Box>
-                <DateJust>{occurence.startDate}</DateJust>
-              </Box>
-              {occurence.startDate !== occurence.endDate && (
-                <Flex>
-                  {'-'}
-                  <DateJust>{occurence.endDate}</DateJust>
-                </Flex>
-              )}
-            </Flex>
-          )
-      )}
-    </Flex>
-  );
-}
+import ActionDates from '../entry/ActionDates';
 
 function PopupHeader({ subTitle, tags, title }) {
   const fontFamily = "'Raleway', sans-serif";
 
   return (
-    <Box mb="8">
+    <Box mb="4">
       <Heading
         as="h1"
         fontFamily={fontFamily}
@@ -80,9 +35,9 @@ function PopupHeader({ subTitle, tags, title }) {
           {tags.map(
             (tag) =>
               tag && (
-                <Badge key={tag} bg="gray.50" color="gray.800" fontSize="14px">
+                <Tag key={tag} bg="gray.50" color="gray.800" fontSize="14px" fontWeight="bold">
                   {tag}
-                </Badge>
+                </Tag>
               )
           )}
         </Flex>
@@ -91,15 +46,15 @@ function PopupHeader({ subTitle, tags, title }) {
   );
 }
 
-function PopupContent({ action = null, content, images, subTitle, title, tags = null }) {
+function PopupContent({ action = null, content, images, subTitle, title, tags }) {
   return (
     <>
       <PopupHeader subTitle={subTitle} tags={tags} title={title} />
-      <Center>
-        <NiceSlider alt={title} images={images} isFade={false} />
-      </Center>
       <Center mb="4" mx="4">
         {action}
+      </Center>
+      <Center mb="4">
+        <NiceSlider alt={title} images={images} isFade={false} />
       </Center>
 
       <Box className="text-content">{content}</Box>
@@ -132,7 +87,7 @@ const getLinkPath = (item, kind, isCurrentHost = false) => {
   };
 };
 
-export default function PopupHandler({ item, kind, onClose }) {
+export default function PopupHandler({ item, kind, showPast, onClose }) {
   const [copied, setCopied] = useState(false);
   const { allHosts, currentHost } = useContext(StateContext);
   const navigate = useNavigate();
@@ -151,12 +106,8 @@ export default function PopupHandler({ item, kind, onClose }) {
 
   const handleCopyLink = async () => {
     const link = getLinkPath(item, kind);
-    try {
-      await navigator.clipboard.writeText(link.path);
-      setCopied(true);
-    } catch (error) {
-      console.log(error);
-    }
+    await navigator.clipboard.writeText(link.path);
+    setCopied(true);
   };
 
   const handleActionButtonClick = () => {
@@ -167,6 +118,15 @@ export default function PopupHandler({ item, kind, onClose }) {
     }
     navigate(link.path);
   };
+
+  const tags = [];
+  if (isPortalHost) {
+    const hostName = allHosts?.find((h) => h.host === item.host)?.name;
+    tags.push(hostName);
+  }
+  if (item.isPrivate) {
+    tags.push(tc('labels.private'));
+  }
 
   return (
     <Modal
@@ -181,14 +141,14 @@ export default function PopupHandler({ item, kind, onClose }) {
     >
       <ModalBody pt="6">
         <PopupContent
-          action={<DatesForAction item={item} />}
+          action={<ActionDates activity={item} showPast={showPast} showTime />}
           content={
             (item.longDescription && parseHtml(item.longDescription)) ||
             (item.description && parseHtml(item.description))
           }
           images={item.images || [item.imageUrl]}
           subTitle={item.subTitle || item.readingMaterial || item.shortDescription || null}
-          tags={isPortalHost ? [allHosts?.find((h) => h.host === item.host)?.name] : null}
+          tags={tags}
           title={item.title || item.label}
         />
       </ModalBody>

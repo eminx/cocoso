@@ -140,11 +140,13 @@ export default function Calendar() {
       window.location.href = `https://${selectedActivity.host}/groups/${selectedActivity.groupId}/info`;
       return;
     }
+
+    const listing = selectedActivity.isPublicActivity ? 'activities' : 'calendar';
     if (isSameHost) {
-      navigate(`/activities/${selectedActivity.activityId}/info`);
+      navigate(`/${listing}/${selectedActivity.activityId}/info`);
       return;
     }
-    window.location.href = `https://${selectedActivity.host}/activities/${selectedActivity.activityId}/info`;
+    window.location.href = `https://${selectedActivity.host}/${listing}/${selectedActivity.activityId}/info`;
   };
 
   const handleSecondaryButtonClick = () => {
@@ -156,7 +158,7 @@ export default function Calendar() {
     if (selectedActivity.isGroupMeeting) {
       navigate(`/groups/${selectedActivity.groupId}/info`);
     } else {
-      navigate(`/activities/${selectedActivity.activityId}?edit=true`);
+      navigate(`/calendar/${selectedActivity.activityId}?edit=true`);
     }
   };
 

@@ -111,7 +111,7 @@ Meteor.methods({
     }
   },
 
-  updateWork(workId, values, images) {
+  updateWork(workId, values) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -127,7 +127,6 @@ Meteor.methods({
       Works.update(workId, {
         $set: {
           ...values,
-          images,
           latestUpdate: new Date(),
         },
       });

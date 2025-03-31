@@ -57,6 +57,7 @@ actions:
   archive: Arşivle
   unarchive: Aktifleştir
   register: Zamanları gör ve Kaydol
+  invite: Davet yolla
 
 meeting:
   attends:

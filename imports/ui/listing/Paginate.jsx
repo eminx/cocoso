@@ -3,9 +3,11 @@ import { Center, Wrap } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
 import Masonry from 'react-masonry-css';
 
-import '../utils/styles/paginate.css';
-
 import NewEntryHelper from '../generic/NewEntryHelper';
+
+if (typeof window !== 'undefined') {
+  import '/imports/ui/utils/styles/paginate.css';
+}
 
 const defaultItemsPerPage = 12;
 

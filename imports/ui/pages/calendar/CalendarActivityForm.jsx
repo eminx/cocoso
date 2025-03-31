@@ -10,7 +10,6 @@ import FormField from '../../forms/FormField';
 import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
 import calendarActivityFormFields from './calendarActivityFormFields';
 import { LoaderContext } from '../../listing/NewEntryHandler';
-import { message } from '../../generic/message';
 
 const animatedComponents = makeAnimated();
 
@@ -27,6 +26,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
     resources: [],
   });
+  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
 
   const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('activities');
@@ -79,7 +79,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
     );
 
-    return !isTimesInValid && !isConflictHard;
+    setIsSubmitButtonDisabled(isTimesInValid || isConflictHard);
   };
 
   useEffect(() => {
@@ -87,7 +87,13 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   }, [state.datesAndTimes, state.selectedResource, state.isExclusiveActivity]);
 
   const parseActivity = async () => {
-    const cleanDatesAndTimes = state.datesAndTimes.map(
+    const sortedDatesAndTimes = state.datesAndTimes.sort((a, b) => {
+      const dateA = new Date(`${a.startDate}T${a.startTime}:00Z`);
+      const dateB = new Date(`${b.startDate}T${b.startTime}:00Z`);
+      return dateA - dateB;
+    });
+
+    const cleanDatesAndTimes = sortedDatesAndTimes.map(
       ({ startTime, endTime, startDate, endDate }) => ({
         startDate,
         endDate,
@@ -121,10 +127,6 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   }, [loaders.isCreating]);
 
   const handleSubmit = (formValues) => {
-    if (!isFormValid()) {
-      message.error(t('form.error'));
-      return;
-    }
     setState((prevState) => ({
       ...prevState,
       formValues,
@@ -147,7 +149,6 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
     setState((prevState) => ({
       ...prevState,
       selectedResource,
-      // datesAndTimes: [emptyDateAndTime],
     }));
   };
 
@@ -163,7 +164,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       childrenIndex={1}
       defaultValues={activity || emptyFormValues}
       formFields={calendarActivityFormFields(t)}
-      isSubmitButtonDisabled={!isFormValid()}
+      isSubmitButtonDisabled={isSubmitButtonDisabled}
       onSubmit={handleSubmit}
     >
       <FormField helperText={t('form.exclusive.helper')} label={t('form.exclusive.label')} my="4">

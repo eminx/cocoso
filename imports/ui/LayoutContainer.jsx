@@ -5,11 +5,10 @@ import { useLocation } from 'react-router-dom';
 import { Box, ChakraProvider, ColorModeProvider, useMediaQuery } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
-import moment from 'moment';
-import 'moment/locale/en-gb';
-import 'moment/locale/sv';
-import 'moment/locale/tr';
 import dayjs from 'dayjs';
+import 'dayjs/locale/en-gb';
+import 'dayjs/locale/sv';
+import 'dayjs/locale/tr';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
 import { call } from './utils/shared';
@@ -46,12 +45,14 @@ function LayoutPage({ currentUser, userLoading, children }) {
   }, []);
 
   useEffect(() => {
-    moment.locale(i18n?.language || 'en-gb', {
-      week: {
-        dow: 1,
-      },
-    });
-    dayjs.updateLocale('en', {
+    if (!i18n || !i18n.language) {
+      return;
+    }
+    let culture = 'en-GB';
+    if (i18n.language !== 'en') {
+      culture = i18n.language;
+    }
+    dayjs.updateLocale(culture, {
       weekStart: 1,
     });
   }, [i18n?.language]);
@@ -159,7 +160,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               setSelectedHue,
             }}
           >
-            <DummyWrapper>
+            <DummyWrapper animate={rendered && !isDesktop}>
               {rendered && !adminPage && (
                 <TopBarHandler currentUser={currentUser} slideStart={rendered} />
               )}
@@ -169,7 +170,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               {children}
             </DummyWrapper>
 
-            {rendered && (
+            {rendered && !adminPage && (
               <Box>
                 <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} />
                 {isFederationFooter && <PlatformFooter platform={platform} />}

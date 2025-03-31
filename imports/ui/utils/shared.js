@@ -1,13 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
-import dayjs from 'dayjs';
 import { Slingshot } from 'meteor/edgee:slingshot';
+import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
 dayjs.extend(isBetween);
-
-const yesterday = dayjs(new Date()).add(-1, 'days');
-const today = dayjs();
 
 function localeSort(a, b) {
   return a.label.localeCompare(b.label);
@@ -184,8 +181,8 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
   return {
     activityId: activity._id,
     title: activity.title,
-    start: dayjs(startDate + startTime, 'YYYY-MM-DD HH:mm').toDate(),
-    end: dayjs(endDate + endTime, 'YYYY-MM-DD HH:mm').toDate(),
+    start: dayjs(startDate + startTime, 'YYYY-MM-DDHH:mm').toDate(),
+    end: dayjs(endDate + endTime, 'YYYY-MM-DDHH:mm').toDate(),
     startDate,
     startTime,
     endDate,
@@ -335,50 +332,10 @@ function parseHtmlEntities(input) {
   return input.replace(/\\+u([0-9a-fA-F]{4})/g, (a, b) => String.fromCharCode(parseInt(b, 16)));
 }
 
-function compareDatesForSortActivities(a, b) {
-  const firstOccurenceA = a?.datesAndTimes?.find(getFirstFutureOccurence);
-  const firstOccurenceB = b?.datesAndTimes?.find(getFirstFutureOccurence);
-  const dateA = new Date(`${firstOccurenceA?.startDate}T${firstOccurenceA?.startTime}:00Z`);
-  const dateB = new Date(`${firstOccurenceB?.startDate}T${firstOccurenceB?.startTime}:00Z`);
-  return dateA - dateB;
-}
-
-function compareDatesForSortActivitiesReverse(a, b) {
-  const firstOccurenceA = a?.datesAndTimes?.reverse().find(getLastPastOccurence);
-  const firstOccurenceB = b?.datesAndTimes?.reverse().find(getLastPastOccurence);
-  const dateA = new Date(`${firstOccurenceA?.startDate}T${firstOccurenceA?.startTime}:00Z`);
-  const dateB = new Date(`${firstOccurenceB?.startDate}T${firstOccurenceB?.startTime}:00Z`);
-  return dateB - dateA;
-}
-
 function compareMeetingDatesForSort(a, b) {
   const dateA = new Date(a.startDate);
   const dateB = new Date(b.startDate);
   return dateA - dateB;
-}
-
-function parseGroupActivities(activities) {
-  const activitiesParsed = [];
-
-  activities?.forEach((act) => {
-    if (!act.isGroupMeeting) {
-      activitiesParsed.push(act);
-    } else {
-      const indexParsed = activitiesParsed.findIndex((actP) => {
-        return actP.groupId === act.groupId;
-      });
-      if (indexParsed === -1) {
-        activitiesParsed.push(act);
-      } else {
-        activitiesParsed[indexParsed].datesAndTimes.push(act.datesAndTimes[0]);
-      }
-    }
-  });
-
-  return activitiesParsed.map((act) => ({
-    ...act,
-    datesAndTimes: act.datesAndTimes.sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate)),
-  }));
 }
 
 function parseGroupsWithMeetings(groups, meetings) {
@@ -425,12 +382,6 @@ const compareForSortFutureMeeting = (a, b) => {
   return dateA - dateB;
 };
 
-const getFirstFutureOccurence = (occurence) =>
-  occurence && dayjs(occurence.endDate)?.isAfter(yesterday);
-
-const getLastPastOccurence = (occurence) =>
-  occurence && dayjs(occurence.startDate)?.isBefore(today);
-
 const getCategoriesAssignedToWorks = (works) => {
   const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
   const hslValues = getHslValuesFromLength(labels.length);
@@ -465,9 +416,6 @@ export {
   getComboResourcesWithColor,
   getFullName,
   parseHtmlEntities,
-  parseGroupActivities,
   parseGroupsWithMeetings,
-  compareDatesForSortActivities,
-  compareDatesForSortActivitiesReverse,
   getCategoriesAssignedToWorks,
 };

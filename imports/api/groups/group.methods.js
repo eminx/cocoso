@@ -28,6 +28,21 @@ Meteor.methods({
     if (!group) {
       throw new Meteor.Error('Group not found');
     }
+
+    if (group.isPrivate) {
+      const currentUser = Meteor.user();
+      const currentUserId = currentUser._id;
+      if (!currentUser) {
+        return null;
+      }
+      if (
+        group.adminId !== currentUserId &&
+        !group.members.some((member) => member.memberId === currentUserId) &&
+        !group.peopleInvited.some((person) => person.email === currentUser.emails[0]?.address)
+      ) {
+        return null;
+      }
+    }
     return group;
   },
 
@@ -37,6 +52,23 @@ Meteor.methods({
     const group = await Groups.findOneAsync({
       _id: groupId,
     });
+
+    if (group.isPrivate) {
+      const currentUser = Meteor.user();
+      if (!currentUser) {
+        return null;
+      }
+
+      const currentUserId = currentUser._id;
+      if (
+        group.adminId !== currentUserId &&
+        !group.members?.some((member) => member.memberId === currentUserId) &&
+        !group.peopleInvited?.some((person) => person.email === currentUser.emails[0]?.address)
+      ) {
+        return null;
+      }
+    }
+
     const groupActivities = await Meteor.callAsync('getGroupMeetingsFuture', groupId);
 
     return {
@@ -334,8 +366,6 @@ Meteor.methods({
           },
         },
       });
-
-      console.log(theGroup);
 
       Meteor.call('sendEmail', user._id, `"${theGroup.title}", ${currentHostName}`, emailBody);
     } catch (error) {

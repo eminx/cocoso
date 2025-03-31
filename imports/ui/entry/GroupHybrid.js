@@ -35,6 +35,10 @@ export default function GroupHybrid({ group, Host }) {
   }
 
   const groupsInMenu = Host.settings?.menu.find((item) => item.name === 'groups');
+  const tags = [];
+  if (group.isPrivate) {
+    tags.push(<Trans i18nKey="common:labels.private">Private</Trans>);
+  }
 
   return (
     <TablyCentered
@@ -48,6 +52,7 @@ export default function GroupHybrid({ group, Host }) {
       images={[group.imageUrl]}
       subTitle={group.readingMaterial}
       tabs={tabs}
+      tags={tags}
       title={group.title}
     />
   );

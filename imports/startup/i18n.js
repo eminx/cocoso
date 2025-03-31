@@ -44,31 +44,36 @@ const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
 const Backend = I18NextHttpBackend;
 
 const options = {
-  allowMultiLoading: true,
   backend: {
     loadPath,
     parse: (data) => yaml.load(data),
   },
   debug: false,
   defaultNS: 'common',
-  fallbackLng: 'en',
+  detection: {
+    order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'], // Specify the order of language detection
+    caches: ['cookie'], // Cache the selected language
+  },
+  fallbackLng: defaultLang,
+  interpolation: {
+    escapeValue: false,
+  },
   lng: defaultLang,
   load: 'languageOnly',
-  ns: 'common',
+  ns: ['common'],
   only: '*',
   preload: ['en'],
   react: {
-    useSuspense: false,
+    useSuspense: true,
   },
   saveMissing: true,
   supportedLngs: allLangs.map((l) => l.value),
-  // useSuspense: process && !process.release,
-  useSuspense: false,
+  useSuspense: process && !process.release,
 };
 
 // for browser use http backend to load translations and browser lng detector
 if (process && !process.release) {
-  i18n.use(Backend).use(initReactI18next).use(LanguageDetector);
+  i18n.use(Backend).use(LanguageDetector).use(initReactI18next);
 }
 
 // initialize if not already initialized

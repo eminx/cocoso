@@ -55,7 +55,7 @@ export default function Work() {
   useEffect(() => {
     getWorkById();
     getDocuments();
-  }, []);
+  }, [workId]);
 
   const contextValue = {
     work,

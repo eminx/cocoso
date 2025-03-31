@@ -85,7 +85,6 @@ export default function Emails() {
       setLoading(false);
     } catch (error) {
       setEmails(defaultEmails);
-      console.log(error);
       setLoading(false);
     }
   };

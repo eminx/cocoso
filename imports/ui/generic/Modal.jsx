@@ -14,6 +14,7 @@ const defaultContentProps = {
   bg: 'gray.100',
   borderRadius: 'lg',
   h: '80%',
+  mt: '8',
 };
 
 function Modal({

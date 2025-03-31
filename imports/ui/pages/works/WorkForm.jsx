@@ -52,7 +52,6 @@ export default function WorkForm({ work, onFinalize }) {
 
   useEffect(() => {
     getCategories();
-    // setWorksForCombo(defaultValues && defaultValues.isCombo && defaultValues.worksForCombo);
   }, []);
 
   useEffect(() => {
@@ -66,6 +65,10 @@ export default function WorkForm({ work, onFinalize }) {
   }, [loaders?.isCreating]);
 
   const handleSubmit = (formValues) => {
+    if (!state.selectedCategory) {
+      message.error(t('message.categorymissing'));
+      return;
+    }
     setState((prevState) => ({
       ...prevState,
       formValues,

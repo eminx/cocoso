@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Fade, Flex, Slide } from '@chakra-ui/react';
 
 import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
-import { StateContext } from '../LayoutContainer';
+import MenuDrawer from './MenuDrawer';
 
 export default function TopBarHandler({ slideStart }) {
-  const { isDesktop } = useContext(StateContext);
   const [scrollTop, setScrollTop] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,6 +21,12 @@ export default function TopBarHandler({ slideStart }) {
     };
   }, []);
 
+  // const burgerMenuStyle = {
+  //   position: 'fixed',
+  //   top: isDesktop ? '72px' : '60px',
+  //   right: '8px',
+  // };
+
   return (
     <>
       <Slide
@@ -32,17 +37,22 @@ export default function TopBarHandler({ slideStart }) {
       >
         <Fade in={scrollTop < 120}>
           <Flex justify="space-between" w="100%">
-            <Box pointerEvents="all">
+            <Box p="1" pointerEvents="all">
               <FederationIconMenu />
             </Box>
-            <Box p="2" pointerEvents="all">
+            <Flex p="1" pointerEvents="all">
               <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
-            </Box>
+              <MenuDrawer />
+            </Flex>
           </Flex>
         </Fade>
       </Slide>
 
-      {!isDesktop && <Box h="42px" w="100%" />}
+      {/* <Fade in={scrollTop < 120}>
+        <Box style={burgerMenuStyle}>
+          <MenuDrawer in={slideStart} />
+        </Box>
+      </Fade> */}
     </>
   );
 }

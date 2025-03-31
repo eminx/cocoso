@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import dayjs from 'dayjs';
 
 import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
@@ -11,7 +12,7 @@ import {
   compareDatesForSortActivities,
   compareDatesForSortActivitiesReverse,
   parseGroupActivities,
-} from '../../ui/utils/shared';
+} from './activity.helpers';
 
 const filterPrivateGroups = (activities, user) =>
   activities.filter((act) => {
@@ -33,13 +34,13 @@ const filterPrivateGroups = (activities, user) =>
 Meteor.methods({
   getAllPublicActivitiesFromAllHosts(showPast = false) {
     const user = Meteor.user();
-    const dateNow = new Date().toISOString().substring(0, 10);
+    const today = dayjs().format('YYYY-MM-DD');
 
     try {
       if (showPast) {
         const pastActs = Activities.find({
           $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-          'datesAndTimes.startDate': { $lte: dateNow },
+          'datesAndTimes.endDate': { $lte: today },
         }).fetch();
         const pastActsSorted = parseGroupActivities(pastActs)?.sort(
           compareDatesForSortActivitiesReverse
@@ -48,30 +49,28 @@ Meteor.methods({
       }
       const futureActs = Activities.find({
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-        'datesAndTimes.startDate': { $gte: dateNow },
+        'datesAndTimes.endDate': { $gte: today },
       }).fetch();
       const futureActsSorted = parseGroupActivities(futureActs)?.sort(
         compareDatesForSortActivities
       );
       return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
 
   getAllPublicActivities(showPast = false, hostPredefined) {
     const host = hostPredefined || getHost(this);
-
     const user = Meteor.user();
-    const dateNow = new Date().toISOString().substring(0, 10);
+    const today = dayjs().format('YYYY-MM-DD');
 
     try {
       if (showPast) {
         const pastActs = Activities.find({
           host,
           $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-          'datesAndTimes.startDate': { $lte: dateNow },
+          'datesAndTimes.endDate': { $lte: today },
         }).fetch();
         const pastActsSorted = parseGroupActivities(pastActs)?.sort(
           compareDatesForSortActivitiesReverse
@@ -81,14 +80,13 @@ Meteor.methods({
       const futureActs = Activities.find({
         host,
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-        'datesAndTimes.startDate': { $gte: dateNow },
+        'datesAndTimes.endDate': { $gte: today },
       }).fetch();
       const futureActsSorted = parseGroupActivities(futureActs)?.sort(
         compareDatesForSortActivities
       );
       return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
@@ -115,7 +113,6 @@ Meteor.methods({
       const allActsParsed = parseGroupActivities(allActs);
       return filterPrivateGroups(allActsParsed, user);
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
@@ -201,14 +198,34 @@ Meteor.methods({
           {
             $or: [
               {
-                'datesAndTimes.startDate': { $gte: startDate, $lte: endDate },
+                datesAndTimes: {
+                  $elemMatch: {
+                    startDate: {
+                      $lt: endDate,
+                    },
+                    endDate: {
+                      $gt: startDate,
+                    },
+                  },
+                },
               },
               {
-                'datesAndTimes.endDate': { $gte: startDate, $lte: endDate },
+                datesAndTimes: {
+                  $elemMatch: {
+                    startDate: endDate,
+                    startTime: { $lt: endTime },
+                    endTime: { $gt: startTime },
+                  },
+                },
               },
               {
-                'datesAndTimes.startDate': { $lte: startDate },
-                'datesAndTimes.endDate': { $gte: endDate },
+                datesAndTimes: {
+                  $elemMatch: {
+                    endDate: startDate,
+                    startTime: { $lt: endTime },
+                    endTime: { $gt: startTime },
+                  },
+                },
               },
             ],
           },
@@ -228,29 +245,7 @@ Meteor.methods({
       return null;
     }
 
-    const conflictingOccurrenceInSameDay = activityWithConflict?.datesAndTimes?.find(
-      (occurrence) => occurrence.startDate === endDate || occurrence.endDate === startDate
-    );
-
-    if (!conflictingOccurrenceInSameDay) {
-      return activityWithConflict;
-    }
-
-    if (
-      endDate === conflictingOccurrenceInSameDay.startDate &&
-      endTime > conflictingOccurrenceInSameDay.startTime
-    ) {
-      return activityWithConflict;
-    }
-
-    if (
-      startDate === conflictingOccurrenceInSameDay.endDate &&
-      startTime < conflictingOccurrenceInSameDay.endTime
-    ) {
-      return activityWithConflict;
-    }
-
-    return null;
+    return activityWithConflict;
   },
 
   async createActivity(values) {

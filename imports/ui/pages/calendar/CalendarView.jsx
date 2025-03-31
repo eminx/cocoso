@@ -1,19 +1,30 @@
 import React, { useMemo } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
+import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-
+import dayjs from 'dayjs';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 import '../../utils/styles/bigcalendar-custom.css';
 import NewEntryHandler from '../../listing/NewEntryHandler';
 import NewCalendarActivity from './NewCalendarActivity';
+
+const weekday = require('dayjs/plugin/weekday');
+
+dayjs.extend(weekday);
+dayjs().weekday(1);
 
 export default function CalendarView(props) {
   const { activities, resources } = props;
   const [t] = useTranslation('calendar');
 
-  const localizer = useMemo(() => momentLocalizer(moment), []);
+  const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
+
+  let culture = 'en-GB';
+  if (i18n.language !== 'en') {
+    culture = i18n.language;
+  }
+  dayjs.locale(culture);
 
   const messages = {
     allDay: t('bigCal.allDay'),
@@ -35,9 +46,9 @@ export default function CalendarView(props) {
     <>
       <Calendar
         allDayAccessor="isMultipleDay"
-        culture={i18n.language}
+        culture={culture}
+        defaultDate={dayjs().toDate()}
         defaultView="month"
-        defaultDate={moment().toDate()}
         events={activities}
         localizer={localizer}
         messages={messages}

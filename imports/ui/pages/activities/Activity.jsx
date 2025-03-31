@@ -38,7 +38,7 @@ export default function Activity() {
 
   useEffect(() => {
     getActivityById();
-  }, []);
+  }, [activityId]);
 
   if (!activity) {
     return <Loader />;

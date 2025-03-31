@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Center } from '@chakra-ui/react';
@@ -8,6 +8,7 @@ import UserHybrid from '../../entry/UserHybrid';
 import Loader from '../../generic/Loader';
 import { Alert, message } from '../../generic/message';
 import { StateContext } from '../../LayoutContainer';
+import UserInteractionHandler from './components/UserInteractionHandler';
 
 export default function UserProfile() {
   const initialUser = window?.__PRELOADED_STATE__?.user || null;
@@ -15,15 +16,22 @@ export default function UserProfile() {
 
   const [user, setUser] = useState(initialUser);
   const [loading, setLoading] = useState(true);
+  const [rendered, setRendered] = useState(false);
   const [ta] = useTranslation('accounts');
   const { usernameSlug } = useParams();
-  const [, username] = usernameSlug.split('@');
+  const [, username] = usernameSlug?.split('@');
 
   let { currentHost } = useContext(StateContext);
 
   if (!currentHost) {
     currentHost = Host;
   }
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
+  }, []);
 
   const getUserInfo = async () => {
     if (!username) {
@@ -41,14 +49,15 @@ export default function UserProfile() {
 
   useEffect(() => {
     getUserInfo();
+    window.scrollTo(0, 0);
   }, [username]);
-
-  if (usernameSlug[0] !== '@' || !username) {
-    return null;
-  }
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (usernameSlug[0] !== '@' || !username) {
+    return null;
   }
 
   if (!user) {
@@ -61,5 +70,31 @@ export default function UserProfile() {
 
   const role = currentHost.members?.find((m) => m.username === username)?.role;
 
-  return <UserHybrid role={role} user={user} Host={currentHost} />;
+  // const setAsParticipant = async (user) => {
+  //   try {
+  //     await call('setAsParticipant', user.id);
+  //     message.success(`${user.username} is now set back as a participant`);
+  //   } catch (error) {
+  //     console.log(error);
+  //     message.error(error.reason || error.error);
+  //   }
+  // };
+
+  // const setAsContributor = async (user) => {
+  //   try {
+  //     await call('setAsContributor', user.id);
+  //     message.success(`${user.username} is now set as a cocreator`);
+  //   } catch (error) {
+  //     console.log(error);
+  //     message.error(error.reason || error.error);
+  //   }
+  // };
+
+  return (
+    <>
+      <UserHybrid role={role} user={user} Host={currentHost} />
+
+      {rendered && <UserInteractionHandler user={user} slideStart={rendered} />}
+    </>
+  );
 }

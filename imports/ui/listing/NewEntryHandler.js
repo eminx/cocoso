@@ -65,9 +65,9 @@ export default function NewEntryHandler({ children }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [tc] = useTranslation('common');
 
-  const onClose = () => {
-    setConfirmOpen(false);
+  const handleCancelAndClose = () => {
     setLoaders(initialLoaderValues);
+    setConfirmOpen(false);
     if (forEdit) {
       setSearchParams((params) => ({ ...params, edit: 'false' }));
       return;
@@ -80,7 +80,10 @@ export default function NewEntryHandler({ children }) {
   renderToasts(loaders, tc, justUpdated);
 
   const href = useHref();
-  const context = href.split('/')[1] || currentHost?.settings?.menu[0]?.name;
+  let context = href.split('/')[1] || currentHost?.settings?.menu[0]?.name;
+  if (context[0] === '@') {
+    context = 'works';
+  }
   const string = `common:labels.${forEdit ? 'update' : 'create'}.${context}`;
 
   const entryHeader = (
@@ -107,7 +110,7 @@ export default function NewEntryHandler({ children }) {
       <Modal
         closeOnEsc={false}
         contentProps={{
-          bg: 'blueGray.50',
+          bg: 'gray.50',
           h: 'auto',
           mt: '12',
         }}
@@ -129,7 +132,7 @@ export default function NewEntryHandler({ children }) {
         cancelText={tc('modals.confirm.newentry.cancel')}
         title={tc('modals.confirm.newentry.title')}
         visible={confirmOpen}
-        onConfirm={onClose}
+        onConfirm={handleCancelAndClose}
         onCancel={() => setConfirmOpen(false)}
       >
         {tc('modals.confirm.newentry.body')}

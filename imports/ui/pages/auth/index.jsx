@@ -15,6 +15,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { z } from 'zod';
+import i18next from 'i18next';
 
 import FormField from '../../forms/FormField';
 import ConfirmModal from '../../generic/ConfirmModal';
@@ -26,7 +27,6 @@ import {
   forgotPasswordModel,
   resetPasswordModel,
   usernameSchema,
-  usernameOrEmailSchema,
   emailSchema,
   passwordSchema,
 } from './account.helpers';
@@ -34,16 +34,10 @@ import {
 const Login = ({ isSubmitted, onSubmit }) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
-  const schema = z.object({
-    ...usernameOrEmailSchema,
-    ...passwordSchema,
-  });
+
   const { handleSubmit, register } = useForm({
     defaultValues: loginModel,
-    resolver: zodResolver(schema),
   });
-
-  // const { errors, isDirty, isSubmitting } = formState;
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -71,10 +65,13 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
+
+  const tr = i18next.t;
+
   const schema = z.object({
-    ...usernameSchema,
-    ...emailSchema,
-    ...passwordSchema,
+    ...usernameSchema(tr),
+    ...emailSchema(tr),
+    ...passwordSchema(tr),
   });
 
   const passwordHelperText = t('signup.form.password.helper');
@@ -162,12 +159,12 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
       </form>
 
       <ConfirmModal
-        title="Terms of Service & Privacy Policy"
-        visible={modalOpen}
         confirmText={tc('actions.confirmRead')}
         cancelText={tc('actions.close')}
         scrollBehavior="inside"
         size="full"
+        title="Terms of Service & Privacy Policy"
+        visible={modalOpen}
         onConfirm={confirmModal}
         onCancel={() => setModalOpen(false)}
         onClickOutside={() => setModalOpen(false)}

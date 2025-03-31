@@ -9,7 +9,7 @@
 }
 
 html {
-  background-color: rgb(48, 40, 32);
+  background-color: rgb(68, 60, 52);
 }
 
 body {
@@ -29,6 +29,17 @@ body {
   #main-viewport {
     width: 100%;
   }
+}
+
+.wrapper {
+  background-color: var(--chakra-colors-gray-100);
+  min-height: 100vh;
+  padding-top: 0;
+  transition: all 0.5s ease;
+}
+
+.wrapper.mobile-wrapper {
+  padding-top: 48px;
 }
 
 .logo {
@@ -113,7 +124,8 @@ a,
 }
 
 .platform-footer a,
-.platform-footer .text-content a {
+.platform-footer .text-content a,
+.text-content.dark a {
   color: var(--chakra-colors-brand-100);
 }
 
@@ -202,7 +214,7 @@ input::placeholder {
 .thumb-title {
   color: #fff;
   font-size: 24px;
-  margin-bottom: 6px;
+  /* margin-bottom: 6px; */
   line-height: 32px;
   overflow-wrap: anywhere;
   font-family: 'Raleway', sans-serif;

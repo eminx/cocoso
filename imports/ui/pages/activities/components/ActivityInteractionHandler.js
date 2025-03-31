@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
+import { Trans } from 'react-i18next';
 
 import { StateContext } from '../../../LayoutContainer';
 import { ActivityContext } from '../Activity';
@@ -19,6 +20,23 @@ export default function ActivityInteractionHandler({ slideStart }) {
 
   const { isPublicActivity } = activity;
 
+  const title = (
+    <Flex align="center">
+      <Trans i18nKey="common:labels.discussion" />
+      <Text fontSize="sm" fontWeight="normal" ml="2" mt="1">
+        <Trans i18nKey="common:labels.chat.onlyverified" />
+      </Text>
+    </Flex>
+  );
+
+  const chatProps = {
+    context: 'activities',
+    currentUser,
+    item: activity,
+    title,
+    withInput: true,
+  };
+
   if (currentUser && (role === 'admin' || activity.authorId === currentUser._id)) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
@@ -26,7 +44,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
         {isPublicActivity ? (
           <>
             <RsvpHandler activity={activity} />
-            <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
+            <ChatButton {...chatProps} />
           </>
         ) : (
           <Box />
@@ -40,7 +58,7 @@ export default function ActivityInteractionHandler({ slideStart }) {
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <Box />
         <RsvpHandler activity={activity} />
-        <ChatButton context="activities" currentUser={currentUser} item={activity} withInput />
+        <ChatButton {...chatProps} />
       </SlideWidget>
     );
   }

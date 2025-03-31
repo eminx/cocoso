@@ -1,13 +1,8 @@
 import { z } from 'zod';
 
-const passwordErrorMessage =
-  'Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters';
-const usernameErrorMessage =
-  'Username must be composed of lowercase letters, numbers of a combination of both';
-
 // REGEX
-const regexUsername = new RegExp(/^[a-z0-9]+$/i);
-const regexPassword = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/);
+const regexUsername = /^[a-z0-9]+$/;
+const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
 
 // DEFAULT VALUES
 const loginModel = {
@@ -30,38 +25,37 @@ const resetPasswordModel = {
 };
 
 // SCHEMAS
-
-// const alphaNumericSchema = z.custom((val) => {
-//   return typeof val === 'string' ? /^[a-z0-9]+$/i.test(val) : false;
-// });
-
-const usernameSchema = {
+const usernameSchema = (t) => ({
   username: z
-    .string({
-      required_error: usernameErrorMessage,
-      invalid_type_error: usernameErrorMessage,
+    .string()
+    .min(4, t('common:auth.errors.username'))
+    .regex(regexUsername, t('common:auth.errors.username')),
+});
+
+const emailSchema = (t) => ({
+  email: z.string().email(t('common:auth.errors.email')),
+});
+
+const usernameOrEmailSchema = (t) =>
+  z
+    .object({
+      username: z
+        .string()
+        .min(4, t('common:auth.errors.username'))
+        .regex(regexUsername, t('common:auth.errors.username'))
+        .optional(),
+      email: z.string().email(t('common:auth.errors.email')).optional(),
     })
-    .regex(regexUsername),
-  // .refine((value) => regexUsername.test(value)),
-};
+    .refine((data) => data.username || data.email, {
+      message: t('common:auth.errors.usernameOrEmail'),
+    });
 
-const emailSchema = {
-  email: z.string().email('This is not a valid email'),
-};
-
-const usernameOrEmailSchema = {
-  username: z.union([usernameSchema.username, emailSchema.email]),
-};
-
-const passwordSchema = {
+const passwordSchema = (t) => ({
   password: z
-    .string({
-      required_error: passwordErrorMessage,
-      invalid_type_error: passwordErrorMessage,
-    })
-    .regex(regexPassword),
-  // .refine((value) => regexPassword.test(value)),
-};
+    .string()
+    .min(8, t('common:auth.errors.passwordMin'))
+    .regex(regexPassword, t('common:auth.errors.passwordRegex')),
+});
 
 export {
   regexPassword,

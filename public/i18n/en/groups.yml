@@ -56,7 +56,8 @@ actions:
   leave: Leave
   archive: Archive
   unarchive: Unarchive
-  register: See dates & RSVP
+  register: See dates & Book
+  invite: Invite to Group
 
 meeting:
   attends:

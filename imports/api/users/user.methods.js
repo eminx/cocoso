@@ -20,29 +20,27 @@ Meteor.methods({
 
     if (currentHost.isPortalHost) {
       if (!user.isPublic) {
-        throw new Meteor.Error('User not found');
+        return null;
+        // throw new Meteor.Error('User not found');
       }
     } else if (
       (!user.isPublic && user._id !== Meteor.userId()) ||
       !user.memberships.find((m) => m.host === host).isPublic
     ) {
-      throw new Meteor.Error('User not found');
+      return null;
+      // throw new Meteor.Error('User not found');
     }
 
-    try {
-      return {
-        avatar: user.avatar,
-        bio: user.bio,
-        contactInfo: user.contactInfo,
-        firstName: user.firstName,
-        keywords: user.keywords,
-        lastName: user.lastName,
-        username: user.username,
-        memberships: user.memberships,
-      };
-    } catch (error) {
-      throw new Meteor.Error(error);
-    }
+    return {
+      avatar: user.avatar,
+      bio: user.bio,
+      contactInfo: user.contactInfo,
+      firstName: user.firstName,
+      keywords: user.keywords,
+      lastName: user.lastName,
+      username: user.username,
+      memberships: user.memberships,
+    };
   },
 
   createAccount(values) {
@@ -272,7 +270,7 @@ Meteor.methods({
   getUserContactInfo(username) {
     try {
       const user = Meteor.users.findOne({ username });
-      return user.contactInfo;
+      return user?.contactInfo;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't retrieve the contact info");
     }

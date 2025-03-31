@@ -73,10 +73,12 @@ menu:
     people: Den här funktionen listar alla som gått med i er community. Om ni klickar bort funktionen blir listan inte synlig. Det går då heller inte att nå era medlemmars profilsidor
     resources: Den här funktionen listar resurserna i er community. Om ni klickar bort funktionen blir listan inte synlig, och ni kan inte lägga till nya resurser. Befintliga resurser fortfarande kan ses och bokas i er kalender
     works: Den här funktionen kan användas för att skapa ett arkiv eller en portfolio, eller för att skapa poster för försäljning
-  headerMenu:
-    title: Huvudmeny
-    label: Huvudmeny aktiv på skrivbordet
-    text: Aktivera att menyn visas överst på sidan i desktop format, istället för att menyn öppnas genom att klicka på meny-ikonen i vänstermarginalen. I mobilformat visas menyn alltid via menyknappen längst upp till höger.
+  burgermenu:
+    title: Burgermeny
+    label: Burgermeny aktiverad
+    mobile: Burgermeny aktiverad på mobilview
+    desktop: Burgermeny aktiverad på desktop
+    text: Aktivera eventuellt burgermenyn. Burgermeny är en meny som visas när man klickar på "burger"-ikonen i det övre högra hörnet av skärmen.
   options:
     label: Alternativ
 

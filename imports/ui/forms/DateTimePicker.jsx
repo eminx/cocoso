@@ -31,7 +31,6 @@ function DatePicker({ disabledDate, label, value, onChange }) {
         disabledDate={disabledDate ? (date) => date && date < dayjs(disabledDate) : null}
         size="large"
         value={dayjs(value, 'YYYY-MM-DD')}
-        // style={{ zIndex: 1500 }}
         onChange={onChange}
       />
     </Box>
@@ -45,9 +44,9 @@ function TimePicker({ label, value, onChange }) {
       <AntTimePicker
         format="HH:mm"
         minuteStep={5}
+        needConfirm={false}
         size="large"
         value={dayjs(value, 'HH:mm')}
-        // style={{ zIndex: 1500 }}
         onChange={onChange}
       />
     </Box>
@@ -58,7 +57,7 @@ export default function DateTimePicker({ value, onChange }) {
   const [t] = useTranslation('activities');
   const { i18n } = useTranslation();
 
-  const isRange = value?.isRange;
+  const isRange = value?.isRange || value.startDate !== value.endDate;
   let locale = en;
   if (i18n.language === 'sv') {
     locale = sv;

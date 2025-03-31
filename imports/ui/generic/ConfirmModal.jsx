@@ -47,20 +47,16 @@ function ConfirmModal({
 
           <AlertDialogCloseButton onClick={onOverlayClick || onCancel} />
 
-          <AlertDialogBody>{children}</AlertDialogBody>
+          <AlertDialogBody mt="4" mb="12">
+            {children}
+          </AlertDialogBody>
 
           {!hideFooter && (
             <AlertDialogFooter>
               <Button ref={cancelRef} size="sm" variant="outline" onClick={onCancel}>
                 {cancelText || tc('actions.cancel')}
               </Button>
-              <Button
-                colorScheme="red"
-                ml={3}
-                size="sm"
-                onClick={onConfirm}
-                {...confirmButtonProps}
-              >
+              <Button ml={3} size="sm" onClick={onConfirm} {...confirmButtonProps}>
                 {confirmText || tc('actions.submit')}
               </Button>
             </AlertDialogFooter>

@@ -11,11 +11,20 @@ import ResourceHybrid from '../../ui/entry/ResourceHybrid';
 import WorksHybrid from '../../ui/listing/WorksHybrid';
 import WorkHybrid from '../../ui/entry/WorkHybrid';
 import UsersHybrid from '../../ui/listing/UsersHybrid';
+import UserHybrid from '../../ui/entry/UserHybrid';
 import PageHybrid from '../../ui/entry/PageHybrid';
 import ActivitiesHybrid from '../../ui/listing/ActivitiesHybrid';
 import CommunitiesHybrid from '../../ui/pages/hosts/CommunitiesHybrid';
 
-export function ActivitiesList({ host, sink }) {
+function parsePreloadedState(item) {
+  return `
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify(item).replace(/</g, '\\u003c')};
+    </script>
+  `;
+}
+
+export function ActivityList({ host, sink }) {
   const [searchParams] = useSearchParams();
   const showPast = Boolean(searchParams.get('showPast') === 'true');
 
@@ -24,11 +33,7 @@ export function ActivitiesList({ host, sink }) {
     ? Meteor.call('getAllPublicActivitiesFromAllHosts', Boolean(showPast))
     : Meteor.call('getAllPublicActivities', Boolean(showPast), host);
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ activities, Host }).replace(/</g, '\\u003c')};
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ activities, Host }));
 
   if (!Host) {
     return null;
@@ -46,11 +51,7 @@ export function Activity({ host, sink }) {
   const activity = Meteor.call('getActivityById', activityId);
   const Host = Meteor.call('getHost', host);
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ activity, Host }).replace(/</g, '\\u003c')}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ activity, Host }));
 
   if (!activity) {
     return null;
@@ -63,15 +64,23 @@ export function Activity({ host, sink }) {
   );
 }
 
-export function GroupsList({ host, sink }) {
+export function Calendar({ host, sink }) {
+  const Host = Meteor.call('getHost', host);
+
+  sink.appendToBody(parsePreloadedState({ Host }));
+
+  if (!Host) {
+    return null;
+  }
+
+  return <WrapperSSR Host={Host} sink={sink} />;
+}
+
+export function GroupList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const groups = Meteor.call('getGroupsWithMeetings', Host?.isPortalHost, host);
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ groups, Host }).replace(/</g, '\\u003c')}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ groups, Host }));
 
   return (
     <WrapperSSR Host={Host}>
@@ -85,11 +94,7 @@ export function Group({ host, sink }) {
   const group = Meteor.call('getGroupWithMeetings', groupId);
   const Host = Meteor.call('getHost', host);
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ group, Host }).replace(/</g, '\\u003c')}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ group, Host }));
 
   if (!group) {
     return null;
@@ -102,17 +107,13 @@ export function Group({ host, sink }) {
   );
 }
 
-export function ResourcesList({ host, sink }) {
+export function ResourceList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const resources = Host.isPortalHost
     ? Meteor.call('getResourcesFromAllHosts')
     : Meteor.call('getResources', host);
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ resources, Host }).replace(/</g, '\\u003c')}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ resources, Host }));
 
   return (
     <WrapperSSR Host={Host}>
@@ -127,14 +128,7 @@ export function Resource({ host, sink }) {
   const documents = Meteor.call('getDocumentsByAttachments', resourceId);
   const Host = Meteor.call('getHost', host);
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ documents, resource, Host }).replace(
-        /</g,
-        '\\u003c'
-      )}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ documents, resource, Host }));
 
   if (!resource) {
     return null;
@@ -147,17 +141,13 @@ export function Resource({ host, sink }) {
   );
 }
 
-export function WorksList({ host, sink }) {
+export function WorkList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const works = Host.isPortalHost
     ? Meteor.call('getAllWorksFromAllHosts')
     : Meteor.call('getAllWorks', host);
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ works, Host }).replace(/</g, '\\u003c')}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ works, Host }));
 
   return (
     <WrapperSSR Host={Host}>
@@ -177,11 +167,7 @@ export function Work({ host, sink }) {
     return null;
   }
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ work, Host }).replace(/</g, '\\u003c')}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ documents, work, Host }));
 
   return (
     <WrapperSSR isEntryPage Host={Host}>
@@ -198,11 +184,7 @@ export function Page({ host, sink }) {
     return null;
   }
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ pages, Host }).replace(/</g, '\\u003c')}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ pages, Host }));
 
   return (
     <WrapperSSR isEntryPage Host={Host}>
@@ -211,7 +193,7 @@ export function Page({ host, sink }) {
   );
 }
 
-export function UsersList({ host, sink }) {
+export function UserList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const users = Host.isPortalHost
     ? Meteor.call('getAllMembersFromAllHosts')
@@ -219,14 +201,7 @@ export function UsersList({ host, sink }) {
 
   const keywords = Meteor.call('getKeywords');
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ keywords, users, Host }).replace(
-        /</g,
-        '\\u003c'
-      )}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ keywords, users, Host }));
 
   return (
     <WrapperSSR Host={Host}>
@@ -244,15 +219,15 @@ export function User({ host, sink }) {
   const [, username] = usernameSlug.split('@');
   const user = Meteor.call('getUserInfo', username, host);
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ user, Host }).replace(/</g, '\\u003c')}
-    </script>
-  `);
+  if (!user) {
+    return null;
+  }
+
+  sink.appendToBody(parsePreloadedState({ user, Host }));
 
   return (
     <WrapperSSR isEntryPage Host={Host}>
-      <UsersHybrid Host={Host} user={user} />
+      <UserHybrid Host={Host} user={user} />
     </WrapperSSR>
   );
 }
@@ -261,11 +236,7 @@ export function Communities({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const hosts = Meteor.call('getAllHosts');
 
-  sink.appendToBody(`
-    <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ hosts, Host }).replace(/</g, '\\u003c')}
-    </script>
-  `);
+  sink.appendToBody(parsePreloadedState({ hosts, Host }));
 
   return (
     <WrapperSSR Host={Host}>
@@ -289,17 +260,19 @@ export function Home(props) {
 
     switch (firstRoute) {
       case 'activities':
-        return <ActivitiesList {...props} />;
+        return <ActivityList {...props} />;
       case 'groups':
-        return <GroupsList {...props} />;
+        return <GroupList {...props} />;
       case 'works':
-        return <WorksList {...props} />;
+        return <WorkList {...props} />;
       case 'resources':
-        return <ResourcesList {...props} />;
+        return <ResourceList {...props} />;
       case 'info':
         return <Page {...props} />;
+      case 'calendar':
+        return <Calendar {...props} />;
       default:
-        return <UsersList {...props} />;
+        return <UserList {...props} />;
     }
   };
 

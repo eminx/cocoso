@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -7,7 +7,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Button,
   Center,
   Flex,
   Text,
@@ -19,7 +18,7 @@ import FancyDate from '../../../entry/FancyDate';
 import Modal from '../../../generic/Modal';
 import OccurrenceRsvpContent from './OccurrenceRsvpContent';
 import { accordionProps } from '../../../utils/constants/general';
-import { StateContext } from '../../../LayoutContainer';
+import ActionButton from '../../../generic/ActionButton';
 
 if (Meteor.isClient) {
   import 'react-table/react-table.css';
@@ -38,11 +37,12 @@ function AccordionDates({ activity, onCloseModal }) {
     return null;
   }
 
-  const isRsvpEnabled = !activity.isRegistrationDisabled || activity.isRegistrationEnabled;
+  const isRegistrationEnabled =
+    activity.isRegistrationEnabled || activity.isRegistrationDisabled === false;
 
-  const items = activity.datesAndTimes;
+  const items = [...activity.datesAndTimes];
 
-  if (!isRsvpEnabled) {
+  if (!isRegistrationEnabled) {
     return (
       <Box>
         <Text mb="2" mt="4" size="sm" textAlign="center">
@@ -51,7 +51,7 @@ function AccordionDates({ activity, onCloseModal }) {
 
         <Box>
           {items.map((occurrence) => (
-            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2">
+            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2" mb="4">
               <FancyDate occurrence={occurrence} />
             </Box>
           ))}
@@ -122,13 +122,13 @@ function SubInfo({ occurrence }) {
 export default function RsvpHandler({ activity }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('activities');
-  const { isDesktop } = useContext(StateContext);
 
   if (!activity) {
     return null;
   }
 
-  const isRsvpEnabled = !activity.isRegistrationDisabled || activity.isRegistrationEnabled;
+  const isRegistrationEnabled =
+    activity.isRegistrationEnabled || activity.isRegistrationDisabled === false;
 
   const today = new Date().toISOString().substring(0, 10);
   const nextEvent = activity.datesAndTimes?.find((d) => d.startDate > today);
@@ -137,17 +137,14 @@ export default function RsvpHandler({ activity }) {
     <>
       <Box>
         <Center>
-          <Button
-            borderColor="green.200"
-            borderWidth="2px"
-            colorScheme="green"
-            height="48px"
-            size={isDesktop ? 'lg' : 'md'}
-            width={isDesktop ? '240px' : '180px'}
+          <ActionButton
+            label={
+              isRegistrationEnabled
+                ? t('public.labels.datesAndRegistration')
+                : t('public.labels.dates')
+            }
             onClick={() => setModalOpen(true)}
-          >
-            {isRsvpEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')}
-          </Button>
+          />
         </Center>
 
         <SubInfo occurrence={nextEvent} />
@@ -156,7 +153,9 @@ export default function RsvpHandler({ activity }) {
       <Modal
         isOpen={modalOpen}
         size="lg"
-        title={isRsvpEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')}
+        title={
+          isRegistrationEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')
+        }
         onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >

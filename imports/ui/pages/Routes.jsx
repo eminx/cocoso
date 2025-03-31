@@ -104,6 +104,7 @@ export default function AppRoutes() {
           {/* Activities */}
           <Route exact path="/activities" element={<Activities />} />
           <Route path="/activities/:activityId/*" element={<Activity />} />
+          <Route path="/calendar/:activityId/*" element={<Activity />} />
           <Route exact path="/my-activities" element={<MyActivities />} />
 
           {/* Groups */}

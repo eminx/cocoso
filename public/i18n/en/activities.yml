@@ -2,8 +2,8 @@ label:
   new: Create a New Booking
   newevent: Create a New Event
   edit: Edit Booking
-  rsvp: See dates & RSVP
-  next: Next Activity
+  rsvp: See Dates & Book
+  next: Next Event
 
 form:
   title:
@@ -75,8 +75,8 @@ members:
 public:
   labels:
     address: Address
-    dates: See dates
-    datesAndRegistration: See Dates & RSVP
+    dates: See Dates
+    datesAndRegistration: See Dates & Book
     info: Info
     location: Location
     resource: Resource
