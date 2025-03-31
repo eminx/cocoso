@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import { Box, Button, Center, Code, Flex, Heading, Text } from '@chakra-ui/react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import 'react-table/react-table.css';
 import Select from 'react-select';
 import { CSVLink } from 'react-csv';
@@ -26,7 +26,7 @@ function Title({ username, resources, onChange, value }) {
       <Heading size="md" mr="4" mb="2">
         {t('report.title', { username })}
       </Heading>
-      <Text w="240px" size="md">
+      <Text as="div" w="240px" size="md">
         <Select
           isClearable
           isSearchable
@@ -50,40 +50,19 @@ export default function UsageReport({ user, onClose }) {
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
 
-  const getActivitiesbyUserId = async () => {
-    if (!user) {
-      return;
-    }
-    try {
-      const response = await call('getActivitiesbyUserId', user.id);
-      if (response && response.length === 0) {
-        message.error(t('message.usage.noUsage'));
-        return;
-      }
-      parseActivities(response);
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason || error.error);
-    }
-  };
-
-  useEffect(() => {
-    getActivitiesbyUserId();
-  }, [user, selectedResource]);
-
   const parseActivities = (response) => {
     const allParsedActivities = [];
     const usedResources = [];
-    response.forEach((a, index) => {
+    response.forEach((a) => {
       if (!usedResources.find((r) => r.value === a.resourceId)) {
         usedResources.push({
           label: a.resource,
           value: a.resourceId,
         });
       }
-      a.datesAndTimes.forEach((d, i) => {
-        let consumption = moment(d.endDate + ' ' + d.endTime).diff(
-          moment(d.startDate + ' ' + d.startTime),
+      a.datesAndTimes.forEach((d) => {
+        let consumption = dayjs(`${d.endDate} ${d.endTime}`).diff(
+          dayjs(`${d.startDate} ${d.startTime}`),
           'hours',
           true
         );
@@ -99,8 +78,8 @@ export default function UsageReport({ user, onClose }) {
               </Button>
             </Link>
           ),
-          start: d.startDate + ' ' + d.startTime,
-          end: d.endDate + ' ' + d.endTime,
+          start: `${d.startDate} ${d.startTime}`,
+          end: `${d.endDate} ${d.endTime}`,
           resource: a.resource,
           resourceId: a.resourceId,
           consumption,
@@ -135,8 +114,28 @@ export default function UsageReport({ user, onClose }) {
     setTotalHours(hours);
   };
 
-  const handleSelectResource = (selectedResource) => {
-    setSelectedResource(selectedResource);
+  const getActivitiesbyUserId = async () => {
+    if (!user) {
+      return;
+    }
+    try {
+      const response = await call('getActivitiesbyUserId', user.id);
+      if (response && response.length === 0) {
+        message.error(t('message.usage.noUsage'));
+        return;
+      }
+      parseActivities(response);
+    } catch (error) {
+      message.error(error.reason || error.error);
+    }
+  };
+
+  useEffect(() => {
+    getActivitiesbyUserId();
+  }, [user, selectedResource]);
+
+  const handleSelectResource = (selectedR) => {
+    setSelectedResource(selectedR);
   };
 
   const onCloseDrawer = () => {
@@ -167,16 +166,17 @@ export default function UsageReport({ user, onClose }) {
     >
       {activities.map((activitiesPerMonth, index) => {
         const firstAct = activitiesPerMonth[0];
-        const key = firstAct?.startDate + firstAct?.startTime + firstAct?.resourceId;
+        const key =
+          firstAct?.startDate +
+          firstAct?.startTime +
+          firstAct?.endDate +
+          firstAct?.endTime +
+          firstAct?.resourceId +
+          index;
         return (
-          <Box
-            key={key}
-            mt="8"
-            pb="8"
-            // ref={(element) => (this.printableElement = element)}
-          >
+          <Box key={key} mt="8" pb="8">
             <Heading size="md" mb="2">
-              {moment(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}:{' '}
+              {dayjs(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}:{' '}
               <Code fontSize="xl" fontWeight="bold">{`${totalHours && totalHours[index]} `}</Code>{' '}
               {t('report.table.total')}
             </Heading>

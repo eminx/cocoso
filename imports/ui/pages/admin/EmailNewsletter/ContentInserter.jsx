@@ -18,9 +18,9 @@ import {
 } from '@chakra-ui/react';
 import CloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
-import { call } from '/imports/ui/utils/shared.js';
+import { call } from '/imports/ui/utils/shared';
 import {
   compareDatesForSortActivities,
   parseGroupActivities,
@@ -31,7 +31,7 @@ import { message } from '../../../generic/message';
 import { ActivityDates } from './EmailPreview';
 import FormField from '../../../forms/FormField';
 
-const yesterday = moment(new Date()).add(-1, 'days');
+const yesterday = dayjs(new Date()).add(-1, 'days');
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -48,11 +48,6 @@ export default function ContentInserter({ currentHost, onSelect }) {
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  useEffect(() => {
-    getActivities();
-    getWorks();
-  }, []);
-
   const isPortalHost = currentHost?.isPortalHost;
   const menu = currentHost?.settings?.menu;
   const activitiesInMenu = menu?.find((item) => item.name === 'activities');
@@ -61,15 +56,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
   const getActivities = async () => {
     setActivitiesLoading(true);
     try {
-      if (isPortalHost) {
-        const allActivities = await call('getAllPublicActivitiesFromAllHosts');
-        const allActivitiesParsed = parseGroupActivities(allActivities);
-        allActivitiesParsed && setActivities(allActivitiesParsed);
-      } else {
-        const allActivities = await call('getAllPublicActivities');
-        const allActivitiesParsed = parseGroupActivities(allActivities);
-        allActivitiesParsed && setActivities(allActivitiesParsed);
-      }
+      const allActivities = isPortalHost
+        ? await call('getAllPublicActivitiesFromAllHosts')
+        : await call('getAllPublicActivities');
+      const allActivitiesParsed = parseGroupActivities(allActivities);
+      setActivities(allActivitiesParsed);
     } catch (error) {
       message.error(error.error || error.reason);
     } finally {
@@ -80,19 +71,21 @@ export default function ContentInserter({ currentHost, onSelect }) {
   const getWorks = async () => {
     setWorksLoading(true);
     try {
-      if (isPortalHost) {
-        const respond = await call('getAllWorksFromAllHosts');
-        respond && setWorks(respond.sort(compareByDate));
-      } else {
-        const respond = await call('getAllWorks');
-        respond && setWorks(respond.sort(compareByDate));
-      }
+      const respond = isPortalHost
+        ? await call('getAllWorksFromAllHosts')
+        : await call('getAllWorks');
+      setWorks(respond.sort(compareByDate));
     } catch (error) {
       message.error(error.error || error.reason);
     } finally {
       setWorksLoading(false);
     }
   };
+
+  useEffect(() => {
+    getActivities();
+    getWorks();
+  }, []);
 
   const getActivitiesFiltered = () => {
     if (!activities) {
@@ -105,14 +98,14 @@ export default function ContentInserter({ currentHost, onSelect }) {
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
 
       return (
-        activity.datesAndTimes.some((date) => moment(date.endDate).isAfter(yesterday)) &&
+        activity.datesAndTimes.some((date) => dayjs(date.endDate).isAfter(yesterday)) &&
         activityWordFiltered
       );
     });
 
     const pastDatesRemoved = filtered.map((activity) => {
       const datesAndTimes = activity.datesAndTimes.filter((date) =>
-        moment(date.endDate).isAfter(yesterday)
+        dayjs(date.endDate).isAfter(yesterday)
       );
       return {
         ...activity,
@@ -140,10 +133,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
   const handleSelectItem = (item, type) => {
     if (type === 'activities') {
       const newActivities = activities.map((activity) => {
+        const newActivity = { ...activity };
         if (activity._id === item._id) {
-          activity.isSelected = !Boolean(activity.isSelected);
+          newActivity.isSelected = !activity.isSelected;
         }
-        return activity;
+        return newActivity;
       });
       setActivities(newActivities);
       onSelect({
@@ -152,10 +146,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
       });
     } else {
       const newWorks = works.map((work) => {
+        const newWork = { ...work };
         if (work._id === item._id) {
-          work.isSelected = !Boolean(work.isSelected);
+          newWork.isSelected = !work.isSelected;
         }
-        return work;
+        return newWork;
       });
       setWorks(newWorks);
       onSelect({

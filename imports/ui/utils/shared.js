@@ -181,8 +181,8 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
   return {
     activityId: activity._id,
     title: activity.title,
-    start: dayjs(startDate + startTime, 'YYYY-MM-DD HH:mm').toDate(),
-    end: dayjs(endDate + endTime, 'YYYY-MM-DD HH:mm').toDate(),
+    start: dayjs(startDate + startTime, 'YYYY-MM-DDHH:mm').toDate(),
+    end: dayjs(endDate + endTime, 'YYYY-MM-DDHH:mm').toDate(),
     startDate,
     startTime,
     endDate,
