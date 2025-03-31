@@ -13,7 +13,9 @@ if (isClient) {
   import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 }
 
-const today = dayjs(new Date());
+const today = dayjs().format('YYYY-MM-DD');
+const yesterday = dayjs(new Date()).add(-1, 'days').format('YYYY-MM-DD');
+const tomorrow = dayjs(new Date()).add(1, 'days').format('YYYY-MM-DD');
 
 const remainingStyle = {
   fontSize: '27px',
@@ -28,22 +30,22 @@ const imageStyle = {
   borderRadius: '8px',
 };
 
-function ThumbDate({ date }) {
-  if (!date) {
+function ThumbDate({ occurrence }) {
+  if (!occurrence) {
     return null;
   }
 
-  const isPast = dayjs(date.endDate)?.isBefore(today);
+  const isPast = dayjs(occurrence.endDate)?.isBefore(today);
 
   return (
     <Flex
-      key={date.startDate + date.startTime}
+      key={occurrence.startDate + occurrence.startTime}
       align="center"
       color={isPast ? 'gray.400' : 'white'}
     >
-      <DateJust>{date.startDate}</DateJust>
-      {date.startDate !== date.endDate && <span style={{ margin: '0 2px' }}>–</span>}
-      {date.startDate !== date.endDate && <DateJust>{date.endDate}</DateJust>}
+      <DateJust>{occurrence.startDate}</DateJust>
+      {occurrence.startDate !== occurrence.endDate && <span style={{ margin: '0 2px' }}>–</span>}
+      {occurrence.startDate !== occurrence.endDate && <DateJust>{occurrence.endDate}</DateJust>}
     </Flex>
   );
 }
@@ -59,10 +61,8 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
   const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
 
   const dates = datesAndTimes;
-
-  const futureDates = dates.filter((date) => dayjs(`${date.endDate}`, 'YYYY-MM-DD').isAfter(today));
-  const pastDates = dates.filter((date) => dayjs(`${date.endDate}`, 'YYYY-MM-DD').isBefore(today));
-
+  const futureDates = dates.filter((date) => dayjs(date.endDate, 'YYYY-MM-DD').isAfter(yesterday));
+  const pastDates = dates.filter((date) => dayjs(date.endDate, 'YYYY-MM-DD').isBefore(tomorrow));
   const remainingFuture = futureDates && futureDates.length - 3;
   const remainingPast = futureDates && pastDates.length - 1;
 
@@ -124,8 +124,11 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
             >
               {!showPast && futureDates && (
                 <HStack align="center" color="brand.50" mb="4" spacing="4">
-                  {futureDates.slice(0, 3).map((date) => (
-                    <ThumbDate key={date?.startDate + date?.startTime} date={date} />
+                  {futureDates.slice(0, 3).map((occurrence) => (
+                    <ThumbDate
+                      key={occurrence?.startDate + occurrence?.startTime}
+                      occurrence={occurrence}
+                    />
                   ))}
                   {remainingFuture > 0 && (
                     <span style={remainingStyle}>
@@ -137,8 +140,11 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
               )}
               {showPast && (
                 <HStack color="gray.400" spacing="4" mb="4">
-                  {pastDates.slice(0, 1).map((date) => (
-                    <ThumbDate key={date?.startDate + date?.startTime} date={date} />
+                  {pastDates.slice(0, 1).map((occurrence) => (
+                    <ThumbDate
+                      key={occurrence?.startDate + occurrence?.startTime}
+                      occurrence={occurrence}
+                    />
                   ))}
                   {remainingPast > 0 && (
                     <span style={remainingStyle}>
