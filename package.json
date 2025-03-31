@@ -67,7 +67,6 @@
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.473.0",
     "meteor-node-stubs": "^1.2.1",
-    "moment": "^2.30.1",
     "query-string": "^7.1.1",
     "react": "^18.2.0",
     "react-big-calendar": "^1.18.0",

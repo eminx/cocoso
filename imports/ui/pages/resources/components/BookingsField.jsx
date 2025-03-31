@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useCounter } from 'rooks';
 import {
@@ -250,11 +250,11 @@ export default function BookingsField({ currentUser, selectedResource }) {
               {(booking) => (
                 <Box p="2">
                   <Text fontSize="sm">
-                    {`From ${moment(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
+                    {`From ${dayjs(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
                     to ${
                       booking.startDate === booking.endDate
                         ? ''
-                        : moment(booking.endDate).format('ddd, D MMM')
+                        : dayjs(booking.endDate).format('ddd, D MMM')
                     } ${booking.endTime} `}
                   </Text>
                 </Box>
