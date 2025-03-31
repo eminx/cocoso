@@ -33,7 +33,7 @@ function ThumbDate({ date }) {
     return null;
   }
 
-  const isPast = dayjs(date.endDate)?.isBefore(now);
+  const isPast = dayjs(date.endDate)?.isBefore(today);
 
   return (
     <Flex
