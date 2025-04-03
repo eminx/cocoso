@@ -178,8 +178,10 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
 const ForgotPassword = ({ onForgotPassword }) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
+
+  const tr = i18next.t;
   const schema = z.object({
-    ...emailSchema,
+    ...emailSchema(tr),
   });
 
   const { formState, handleSubmit, register } = useForm({
