@@ -6,7 +6,8 @@ import { Center } from '@chakra-ui/react';
 import { call } from '../../utils/shared';
 import UserHybrid from '../../entry/UserHybrid';
 import Loader from '../../generic/Loader';
-import { Alert, message } from '../../generic/message';
+import { message } from '../../generic/message';
+import Alert from '/imports/ui/generic/Alert';
 import { StateContext } from '../../LayoutContainer';
 import UserInteractionHandler from './components/UserInteractionHandler';
 
@@ -43,7 +44,7 @@ export default function UserProfile() {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      message.error(error.reason || error.error);
+      message.error(error);
     }
   };
 
