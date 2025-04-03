@@ -19,7 +19,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   if (currentUser && ['participant', 'contributor', 'admin'].includes(role)) {
-    return <Navigate to={`/@${currentUser.username}/profile`} />;
+    return <Navigate to="/admin/my-profile/general" />;
   }
 
   const handleSubmit = (values) => {
