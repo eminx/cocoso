@@ -214,8 +214,10 @@ const ForgotPassword = ({ onForgotPassword }) => {
 const ResetPassword = ({ onResetPassword }) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
+
+  const tr = i18next.t;
   const schema = z.object({
-    ...passwordSchema,
+    ...passwordSchema(tr),
   });
 
   const { formState, handleSubmit, register } = useForm({
