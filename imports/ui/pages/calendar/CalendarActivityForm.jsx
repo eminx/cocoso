@@ -71,7 +71,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   const isFormValid = () => {
     const { datesAndTimes } = state;
     const isConflictHard = datesAndTimes.some(
-      (occurence) => Boolean(occurence.conflict) && !occurence.isConflictHard
+      (occurrence) => Boolean(occurrence.conflict) && occurrence.isConflictHard
     );
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
