@@ -7,7 +7,7 @@ import Hosts from '../hosts/host';
 import Works from '../works/work';
 import Groups from '../groups/group';
 
-const userModel = () => ({
+const userModel = (user) => ({
   avatar: user.avatar,
   bio: user.bio,
   contactInfo: user.contactInfo,
@@ -31,12 +31,16 @@ Meteor.methods({
       // throw new Meteor.Error('User not found');
     }
 
+    if (user._id === Meteor.userId()) {
+      return userModel(user);
+    }
+
     if (currentHost.isPortalHost && !user.isPublic) {
       return null;
       // throw new Meteor.Error('User not found');
     }
 
-    if (!user.memberships.find((m) => m.host === host).isPublic || user._id !== Meteor.userId()) {
+    if (!user.memberships.find((m) => m.host === host).isPublic) {
       return null;
       // throw new Meteor.Error('User not found');
     }
