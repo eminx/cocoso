@@ -10,7 +10,7 @@ import MemberGroups from '../pages/groups/MemberGroups';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
 
-function Bio({ user }) {
+export function Bio({ user }) {
   if (!user || !user.bio) {
     return null;
   }
