@@ -6,7 +6,7 @@ import ConfigProvider from 'antd/lib/config-provider';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import en from 'antd/locale/en_US';
+import en from 'antd/locale/en_GB';
 import sv from 'antd/locale/sv_SE';
 import tr from 'antd/locale/tr_TR';
 
@@ -61,7 +61,7 @@ export default function DateTimePicker({ value, onChange }) {
   let locale = en;
   if (i18n.language === 'sv') {
     locale = sv;
-  } else if (i18n.language === 'sv') {
+  } else if (i18n.language === 'tr') {
     locale = tr;
   }
 
