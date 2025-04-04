@@ -9,6 +9,7 @@ import { parse } from 'query-string';
 import PageHeading from './PageHeading';
 import InfiniteScroller from './InfiniteScroller';
 import MemberAvatarEtc from '../generic/MemberAvatarEtc';
+import { Bio } from '../entry/UserHybrid';
 import Tabs from '../entry/Tabs';
 import Modal from '../generic/Modal';
 
@@ -186,6 +187,9 @@ export default function UsersHybrid({ users, keywords, Host }) {
         <Box pt="8">
           <MemberAvatarEtc isThumb={false} user={modalItem} />
         </Box>
+        <Center>
+          <Bio user={modalItem} />
+        </Center>
       </Modal>
     </>
   );
