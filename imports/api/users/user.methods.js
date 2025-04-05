@@ -7,6 +7,17 @@ import Hosts from '../hosts/host';
 import Works from '../works/work';
 import Groups from '../groups/group';
 
+const userModel = (user) => ({
+  avatar: user.avatar,
+  bio: user.bio,
+  contactInfo: user.contactInfo,
+  firstName: user.firstName,
+  keywords: user.keywords,
+  lastName: user.lastName,
+  username: user.username,
+  memberships: user.memberships,
+});
+
 Meteor.methods({
   getUserInfo(username, hostPredefined) {
     check(username, String);
@@ -14,33 +25,27 @@ Meteor.methods({
 
     const currentHost = Hosts.findOne({ host });
     const user = Meteor.users.findOne({ username });
-    if (!user) {
-      throw new Meteor.Error('User not found');
-    }
 
-    if (currentHost.isPortalHost) {
-      if (!user.isPublic) {
-        return null;
-        // throw new Meteor.Error('User not found');
-      }
-    } else if (
-      (!user.isPublic && user._id !== Meteor.userId()) ||
-      !user.memberships.find((m) => m.host === host).isPublic
-    ) {
+    if (!user) {
       return null;
       // throw new Meteor.Error('User not found');
     }
 
-    return {
-      avatar: user.avatar,
-      bio: user.bio,
-      contactInfo: user.contactInfo,
-      firstName: user.firstName,
-      keywords: user.keywords,
-      lastName: user.lastName,
-      username: user.username,
-      memberships: user.memberships,
-    };
+    if (user._id === Meteor.userId()) {
+      return userModel(user);
+    }
+
+    if (currentHost.isPortalHost && !user.isPublic) {
+      return null;
+      // throw new Meteor.Error('User not found');
+    }
+
+    if (!user.memberships.find((m) => m.host === host).isPublic) {
+      return null;
+      // throw new Meteor.Error('User not found');
+    }
+
+    return userModel(user);
   },
 
   createAccount(values) {

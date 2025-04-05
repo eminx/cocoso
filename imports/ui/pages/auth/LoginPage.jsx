@@ -19,14 +19,13 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   if (currentUser && ['participant', 'contributor', 'admin'].includes(role)) {
-    return <Navigate to={`/@${currentUser.username}/profile`} />;
+    return <Navigate to="/admin/my-profile/general" />;
   }
 
   const handleSubmit = (values) => {
     if (values?.username?.length < 4 || values?.password?.length < 8) {
       return;
     }
-
     setIsSubmitted(true);
     Meteor.loginWithPassword(values.username, values.password, (error) => {
       if (error) {
