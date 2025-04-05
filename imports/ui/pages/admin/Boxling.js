@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+
+import { Box } from '/imports/ui/core';
 
 export default function Boxling({ children, ...otherProps }) {
   return (

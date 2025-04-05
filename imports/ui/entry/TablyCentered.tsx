@@ -20,7 +20,7 @@ import {
   MenuButton,
   VStack,
   Wrap,
-} from '/imports/ui/generic';
+} from '../core';
 
 import NiceSlider from '../generic/NiceSlider';
 import Tabs from './Tabs';
