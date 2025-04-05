@@ -1,58 +1,59 @@
-import React, { lazy, Suspense, useContext } from 'react';
+import React, { Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import loadable from '@loadable/component';
 
 import LayoutContainer, { StateContext } from '../LayoutContainer';
 import Terms from '../entry/Terms';
 import Loader from '../generic/Loader';
 
-const Communities = lazy(() => import('../pages/hosts/Communities'));
+const Communities = loadable(() => import('../pages/hosts/Communities'));
 
 // Activities
-const Activities = lazy(() => import('./activities/Activities'));
-const Activity = lazy(() => import('./activities/Activity'));
+const Activities = loadable(() => import('./activities/Activities'));
+const Activity = loadable(() => import('./activities/Activity'));
 
 // Groups
-const Groups = lazy(() => import('./groups/Groups'));
-const Group = lazy(() => import('./groups/Group'));
+const Groups = loadable(() => import('./groups/Groups'));
+const Group = loadable(() => import('./groups/Group'));
 
 // Resources
-const Resources = lazy(() => import('./resources/Resources'));
-const Resource = lazy(() => import('./resources/Resource'));
+const Resources = loadable(() => import('./resources/Resources'));
+const Resource = loadable(() => import('./resources/Resource'));
 
 // Calendar
-const Calendar = lazy(() => import('./calendar/Calendar'));
+const Calendar = loadable(() => import('./calendar/Calendar'));
 
 // Works
-const Works = lazy(() => import('./works/Works'));
-const Work = lazy(() => import('./works/Work'));
+const Works = loadable(() => import('./works/Works'));
+const Work = loadable(() => import('./works/Work'));
 
 // Users
-const Users = lazy(() => import('./profile/Users'));
-const UserProfile = lazy(() => import('./profile/UserProfile'));
+const Users = loadable(() => import('./profile/Users'));
+const UserProfile = loadable(() => import('./profile/UserProfile'));
 
 // Pages
-const Page = lazy(() => import('./pages/Page'));
+const Page = loadable(() => import('./pages/Page'));
 
 // Auth
-const SignupPage = lazy(() => import('./auth/SignupPage'));
-const LoginPage = lazy(() => import('./auth/LoginPage'));
-const ForgotPasswordPage = lazy(() => import('./auth/ForgotPasswordPage'));
-const ResetPasswordPage = lazy(() => import('./auth/ResetPasswordPage'));
-const RegistrationIntro = lazy(() => import('./auth/RegistrationIntro'));
+const SignupPage = loadable(() => import('./auth/SignupPage'));
+const LoginPage = loadable(() => import('./auth/LoginPage'));
+const ForgotPasswordPage = loadable(() => import('./auth/ForgotPasswordPage'));
+const ResetPasswordPage = loadable(() => import('./auth/ResetPasswordPage'));
+const RegistrationIntro = loadable(() => import('./auth/RegistrationIntro'));
 
 // Admin
-const AdminContainer = lazy(() => import('./admin/AdminContainer'));
-const PreviousNewsletters = lazy(() => import('./admin/EmailNewsletter/PreviousNewsletters'));
+const AdminContainer = loadable(() => import('./admin/AdminContainer'));
+const PreviousNewsletters = loadable(() => import('./admin/EmailNewsletter/PreviousNewsletters'));
 
 // Super admin
-const PlatformSettings = lazy(() => import('./admin/PlatformSettings'));
-const PlatformRegistrationIntro = lazy(() => import('./admin/PlatformRegistrationIntro'));
+const PlatformSettings = loadable(() => import('./admin/PlatformSettings'));
+const PlatformRegistrationIntro = loadable(() => import('./admin/PlatformRegistrationIntro'));
 // SuperAdmin
-const NewHost = lazy(() => import('./hosts/NewHost'));
+const NewHost = loadable(() => import('./hosts/NewHost'));
 
 // NotFound
-const NotFoundPage = lazy(() => import('./NotFoundPage'));
-const MyActivities = lazy(() => import('./activities/MyActivities'));
+const NotFoundPage = loadable(() => import('./NotFoundPage'));
+const MyActivities = loadable(() => import('./activities/MyActivities'));
 
 function getComponentBasedOnFirstRoute(menuItems) {
   const visibleMenu = menuItems.filter((item) => item.isVisible);

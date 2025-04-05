@@ -39,6 +39,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^2.8.5",
+    "@loadable/component": "^5.16.4",
     "@react-email/body": "0.0.8",
     "@react-email/button": "0.0.15",
     "@react-email/column": "0.0.10",
