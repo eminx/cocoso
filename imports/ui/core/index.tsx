@@ -1,25 +1,8 @@
 import { styled } from 'restyle';
 
-type SpaceScale = {
-  [key: number]: string;
-};
-
+// Shorthands
 type ShorthandProps = {
   [key: string]: string;
-};
-
-const spaceScale: SpaceScale = {
-  0: '0',
-  1: '0.25rem',
-  2: '0.5rem',
-  3: '0.75rem',
-  4: '1rem',
-  5: '1.25rem',
-  6: '1.5rem',
-  8: '2rem',
-  10: '2.5rem',
-  12: '3rem',
-  16: '4rem',
 };
 
 const shorthandProps: ShorthandProps = {
@@ -51,11 +34,30 @@ const shorthandProps: ShorthandProps = {
   z: 'zIndex',
 };
 
-const getSpacing = (value: string | number) => {
+// Spacing
+type SpaceScale = {
+  [key: number]: string;
+};
+
+const spaceScale: SpaceScale = {
+  0: '0',
+  1: '0.25rem',
+  2: '0.5rem',
+  3: '0.75rem',
+  4: '1rem',
+  5: '1.25rem',
+  6: '1.5rem',
+  8: '2rem',
+  10: '2.5rem',
+  12: '3rem',
+  16: '4rem',
+};
+
+const getSpacing = (value: string | number): string => {
   if (Number(value)) {
-    return spaceScale[value as keyof typeof spaceScale] || value;
+    return spaceScale[value as keyof typeof spaceScale];
   }
-  return value;
+  return spaceScale[0];
 };
 
 const transformProps = (props: any) => {
@@ -130,7 +132,7 @@ export const Avatar = styled('div', (props: AvatarProps) => ({
 export const Box = styled('div', (props: any) => ({
   display: 'flex',
   flexDirection: 'column',
-  ...transformProps(props),
+  // ...transformProps(props),
 }));
 
 // Badge

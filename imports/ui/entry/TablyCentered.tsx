@@ -20,7 +20,7 @@ import {
   MenuButton,
   VStack,
   Wrap,
-} from '../core';
+} from '@chakra-ui/react';
 
 import NiceSlider from '../generic/NiceSlider';
 import Tabs from './Tabs';
