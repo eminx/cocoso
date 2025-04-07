@@ -19,6 +19,7 @@ import {
 import CloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import CheckIcon from 'lucide-react/dist/esm/icons/check';
 
 import { call } from '/imports/ui/utils/shared';
 
@@ -49,7 +50,7 @@ function ListItemCheckbox({ item, children, onSelect }) {
     <ListItem
       key={item._id}
       _hover={{
-        bg: item.isSelected ? 'red.100' : 'green.50',
+        bg: item.isSelected ? 'green.100' : 'green.50',
         cursor: 'pointer',
       }}
       bg={selectedBgContainer}
@@ -59,7 +60,16 @@ function ListItemCheckbox({ item, children, onSelect }) {
       onClick={() => onSelect(item)}
     >
       <HStack alignItems="center">
-        <Box bg={selectedBgCheck} border="white 2px solid" borderRadius="md" h="24px" w="24px" />
+        <Box
+          bg={selectedBgCheck}
+          border="white 2px solid"
+          borderRadius="md"
+          flexShrink={0}
+          h="24px"
+          w="24px"
+        >
+          <CheckIcon color="white" size="20px" />
+        </Box>
         <Image
           bg="brand.100"
           fit="cover"
@@ -67,7 +77,7 @@ function ListItemCheckbox({ item, children, onSelect }) {
           src={(item.images && item.images[0]) || item.imageUrl}
           w="80px"
         />
-        <Box ml="2">
+        <Box ml="2" flexShrink={1}>
           <Text fontSize="md" fontWeight="bold">
             {item.title}
           </Text>
@@ -135,10 +145,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
         activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
 
-      return (
-        activity.datesAndTimes.some((date) => dayjs(date.endDate).isAfter(yesterday)) &&
-        activityWordFiltered
-      );
+      return activityWordFiltered;
     });
   };
 
