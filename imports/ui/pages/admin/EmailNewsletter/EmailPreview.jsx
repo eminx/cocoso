@@ -19,7 +19,7 @@ import dayjs from 'dayjs';
 
 function shorten(str) {
   const strArray = str.split(/\s+/);
-  return [...strArray.slice(0, 30)].join(' ') + '...';
+  return [...strArray.slice(0, 100)].join(' ') + '...';
 }
 
 function stripAndShorten(html) {
@@ -27,6 +27,64 @@ function stripAndShorten(html) {
   tmp.innerHTML = html;
   const stripped = tmp.textContent || tmp.innerText || '';
   return shorten(stripped);
+}
+
+const yesterday = dayjs(new Date()).add(-1, 'days');
+
+export function ActivityDate({ date }) {
+  return (
+    <Column style={{ paddingRight: 8 }}>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', margin: 0 }}>
+        {dayjs(date.startDate).format('DD')}
+      </Text>
+      <Text style={{ fontSize: 18, margin: 0, marginTop: -4 }}>
+        {dayjs(date.startDate).format('MMM')}
+      </Text>
+    </Column>
+  );
+}
+
+export function ActivityDates({ activity, currentHost, centered = false }) {
+  if (!activity) {
+    return null;
+  }
+
+  const futureDates = activity.datesAndTimes.filter((date) =>
+    dayjs(date.endDate).isAfter(yesterday)
+  );
+
+  if (!futureDates || futureDates.length === 0) {
+    return null;
+  }
+
+  const length = futureDates?.length;
+
+  return (
+    <Row
+      style={{
+        margin: centered ? '0 auto' : 0,
+        width: 'auto',
+        textAlign: centered ? 'center' : 'left',
+      }}
+    >
+      {length < 4
+        ? futureDates.map((date) => (
+            <ActivityDate key={date.startDate + date.endTime} date={date} />
+          ))
+        : futureDates
+            .filter((d, i) => i < 3)
+            .map((date) => (
+              <ActivityDate
+                key={date.startDate + date.endTime}
+                currentHost={currentHost}
+                date={date}
+              />
+            ))}
+      <Column>
+        <Text>{length > 3 && '+' + (length - 3).toString()}</Text>
+      </Column>
+    </Row>
+  );
 }
 
 export default function EmailPreview({ currentHost, email, imageUrl }) {
@@ -50,25 +108,24 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
   const address = `${settings.address}, ${settings.city}, ${settings.country}`;
 
   return (
-    <Html style={{ backgroundColor: 'transparent', maxWidth: '480px', padding: 12 }}>
+    <Html style={{ backgroundColor: 'transparent' }}>
       <Head />
-      <Body style={{ backgroundColor: 'transparent', margin: '0 auto' }}>
-        <Link href={`https://${host}/newsletters/[newsletter-id]`}>
-          <Text
-            style={{ color: '#0f64c0', fontSize: '12px', margin: '0 0 8px', textAlign: 'center' }}
-          >
-            {t('newsletter.labels.browserlink')}
-            {/* Browser */}
-          </Text>
-        </Link>
-        <Container>
+      <Body style={{ backgroundColor: 'transparent' }}>
+        <Container style={{ margin: '0 auto', padding: '20px 0 48px' }}>
+          <Link href={`https://${host}/newsletters/[newsletter-id]`}>
+            <Text
+              style={{ color: '#0f64c0', fontSize: '12px', margin: '0 0 8px', textAlign: 'center' }}
+            >
+              {t('newsletter.labels.browserlink')}
+              {/* Browser */}
+            </Text>
+          </Link>
           {logo ? (
             <Img
               alt={settings?.name}
               height="50px"
               src={logo}
-              style={{ height: '50px', margin: '8px auto 24px', width: 'auto' }}
-              width="auto"
+              style={{ height: '50px', margin: '0 auto' }}
             />
           ) : (
             <Heading
@@ -77,220 +134,179 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 fontSize: '28px',
                 fontWeight: 'bold',
                 marginBottom: '24px',
+                textAlign: 'center',
               }}
             >
               {settings?.name}
             </Heading>
           )}
-        </Container>
 
-        <Section style={{ marginBottom: 12 }}>
-          {(imageUrl || uploadableImageLocal) && (
-            <Img
-              style={{ marginBottom: 24, maxWidth: '456px' }}
-              src={imageUrl || uploadableImageLocal}
-              alt={subject}
-              height="auto"
-            />
-          )}
-
-          {body && <Text style={{ fontSize: 16 }}>{`${appeal} [username],`}</Text>}
-
-          {body && <Text style={{ fontSize: 16 }}>{parseHtml(body)}</Text>}
-
-          <Hr />
-        </Section>
-
-        {items && activities && (
-          <>
-            {activities && activities.length > 0 && (
-              <Heading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 8 }}>
-                {activitiesLabel}
-              </Heading>
+          <Section style={{ marginBottom: 12 }}>
+            {(imageUrl || uploadableImageLocal) && (
+              <Img
+                style={{ margin: '24px auto', maxWidth: '456px' }}
+                src={imageUrl || uploadableImageLocal}
+                alt={subject}
+                height="auto"
+              />
             )}
 
-            {activities?.map((activity) => (
-              <Section key={activity._id} style={{ marginBottom: 24 }}>
-                <Link
-                  href={`https://${activity.host}/activities/${activity._id}`}
-                  style={{ color: '#0f64c0' }}
-                >
-                  <Heading
-                    as="h3"
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                      lineHeight: 1.2,
-                      marginBottom: 8,
-                    }}
-                  >
-                    {activity?.title}
-                  </Heading>
-                </Link>
-                <Text style={{ fontSize: 16, marginTop: 0, marginBottom: 32 }}>
-                  {activity?.subTitle}
-                </Text>
+            {body && <Text style={{ fontSize: 16 }}>{`${appeal} [username],`}</Text>}
 
-                {(activity.images || activity.imageUrl) && (
-                  <Link href={`https://${activity.host}/activities/${activity._id}`}>
-                    <Img
-                      src={(activity.images && activity.images[0]) || activity.imageUrl}
-                      width="320px"
-                      height="auto"
-                      style={{ marginBottom: 12 }}
-                    />
-                  </Link>
-                )}
-                <ActivityDates activity={activity} currentHost={currentHost} />
-                <Text>
-                  {activity?.longDescription && stripAndShorten(activity.longDescription)}
-                </Text>
-                <Text style={{ marginBottom: 12, textAlign: 'right' }}>
-                  <Button
+            {body && <Text style={{ fontSize: 16 }}>{parseHtml(body)}</Text>}
+
+            <Hr />
+          </Section>
+
+          {items && activities && (
+            <>
+              {activities && activities.length > 0 && (
+                <Heading as="h2" style={{ fontSize: 32, fontWeight: 'bold', marginBottom: 8 }}>
+                  {activitiesLabel}
+                </Heading>
+              )}
+
+              {activities?.map((activity) => (
+                <Section key={activity._id} style={{ marginBottom: 24 }}>
+                  <Link
                     href={`https://${activity.host}/activities/${activity._id}`}
-                    style={{
-                      color: '#0f64c0',
-                      fontWeight: 'bold',
-                    }}
+                    style={{ color: '#0f64c0' }}
                   >
-                    {tc('actions.entryPage')}
-                    {/* Visit */}
-                  </Button>
-                </Text>
-                <Hr />
-              </Section>
-            ))}
-          </>
-        )}
-
-        {items && works && (
-          <>
-            {works && works.length > 0 && (
-              <Heading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 8 }}>
-                {worksLabel}
-              </Heading>
-            )}
-            {works?.map((work) => (
-              <Section key={work._id} style={{ marginBottom: 24 }}>
-                <Link
-                  href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
-                  style={{ color: '#0f64c0' }}
-                >
-                  <Heading
-                    as="h3"
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                      lineHeight: 1.2,
-                      marginBottom: 8,
-                    }}
-                  >
-                    {work?.title}
-                  </Heading>
-                </Link>
-                <Text style={{ fontSize: 16, marginTop: 0, marginBottom: 32 }}>
-                  {work?.shortDescription}
-                </Text>
-                {work.images && (
-                  <Link href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}>
-                    <Img
-                      src={work.images && work.images[0]}
-                      width="320px"
-                      height="auto"
-                      style={{ marginBottom: 12 }}
-                    />
+                    <Heading
+                      as="h3"
+                      style={{
+                        fontSize: 24,
+                        fontWeight: 'bold',
+                        lineHeight: 1.2,
+                        marginBottom: 8,
+                        textAlign: 'center',
+                      }}
+                    >
+                      {activity?.title}
+                    </Heading>
                   </Link>
-                )}
-                <Text>{work?.longDescription && stripAndShorten(work.longDescription)} </Text>
-                <Text style={{ marginBottom: 12, textAlign: 'right' }}>
-                  <Button
-                    href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
-                    style={{
-                      color: '#0f64c0',
-                      fontWeight: 'bold',
-                    }}
+                  <Text
+                    style={{ fontSize: 20, marginTop: 0, marginBottom: 32, textAlign: 'center' }}
                   >
-                    {tc('actions.entryPage')}
-                    {/* Visit */}
-                  </Button>
-                </Text>
-                <Hr />
-              </Section>
-            ))}
-          </>
-        )}
+                    {activity?.subTitle}
+                  </Text>
 
-        <Section style={{ maxWidth: '456px', textAlign: 'center' }}>
-          <Heading as="h1" style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}>
-            {settings?.name}
-          </Heading>
-          {footer && footer.length > 0 && (
-            <Container style={{ color: '#424242' }}>
-              <Text style={{ textAlign: 'center' }}>{parseHtml(footer)}</Text>
-            </Container>
+                  {(activity.images || activity.imageUrl) && (
+                    <Link href={`https://${activity.host}/activities/${activity._id}`}>
+                      <Img
+                        src={(activity.images && activity.images[0]) || activity.imageUrl}
+                        width="100%"
+                        height="auto"
+                        style={{ marginBottom: 12 }}
+                      />
+                    </Link>
+                  )}
+                  <ActivityDates activity={activity} centered currentHost={currentHost} />
+                  <Text style={{ fontSize: 16 }}>
+                    {activity?.longDescription && stripAndShorten(activity.longDescription)}
+                  </Text>
+                  <Text style={{ marginBottom: 12, textAlign: 'right' }}>
+                    <Button
+                      href={`https://${activity.host}/activities/${activity._id}`}
+                      style={{
+                        color: '#0f64c0',
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                      }}
+                    >
+                      {tc('actions.entryPage')}
+                      {/* Visit */}
+                    </Button>
+                  </Text>
+                  <Hr />
+                </Section>
+              ))}
+            </>
           )}
 
-          <Container style={{ color: '#6b6b6b' }}>
-            <Text style={{ margin: 0 }}>{address}</Text>
-            <Text style={{ margin: 0 }}>{settings.email}</Text>
-            <Link href={`https://${host}`} style={{ color: '#0f64c0', textAlign: 'center' }}>
-              <Text>{host}</Text>
-            </Link>
-          </Container>
-        </Section>
+          {items && works && (
+            <>
+              {works && works.length > 0 && (
+                <Heading as="h2" style={{ fontSize: 32, fontWeight: 'bold', marginBottom: 8 }}>
+                  {worksLabel}
+                </Heading>
+              )}
+              {works?.map((work) => (
+                <Section key={work._id} style={{ marginBottom: 24 }}>
+                  <Link
+                    href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
+                    style={{ color: '#0f64c0' }}
+                  >
+                    <Heading
+                      as="h3"
+                      style={{
+                        fontSize: 28,
+                        fontWeight: 'bold',
+                        lineHeight: 1.2,
+                        marginBottom: 8,
+                        textAlign: 'center',
+                      }}
+                    >
+                      {work?.title}
+                    </Heading>
+                  </Link>
+                  <Text
+                    style={{ fontSize: 20, marginTop: 0, marginBottom: 32, textAlign: 'center' }}
+                  >
+                    {work?.shortDescription}
+                  </Text>
+                  {work.images && (
+                    <Link href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}>
+                      <Img
+                        src={work.images && work.images[0]}
+                        width="100%"
+                        height="auto"
+                        style={{ marginBottom: 12 }}
+                      />
+                    </Link>
+                  )}
+                  <Text style={{ fontSize: 16 }}>
+                    {work?.longDescription && stripAndShorten(work.longDescription)}{' '}
+                  </Text>
+                  <Text style={{ marginBottom: 12, textAlign: 'right' }}>
+                    <Button
+                      href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
+                      style={{
+                        color: '#0f64c0',
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                      }}
+                    >
+                      {tc('actions.entryPage')}
+                      {/* Visit */}
+                    </Button>
+                  </Text>
+                  <Hr />
+                </Section>
+              ))}
+            </>
+          )}
+
+          <Section style={{ maxWidth: '456px', textAlign: 'center' }}>
+            <Heading as="h1" style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}>
+              {settings?.name}
+            </Heading>
+            {footer && footer.length > 0 && (
+              <Container style={{ color: '#424242' }}>
+                <Text style={{ textAlign: 'center' }}>{parseHtml(footer)}</Text>
+              </Container>
+            )}
+
+            <Container style={{ color: '#6b6b6b' }}>
+              <Text style={{ margin: 0 }}>{address}</Text>
+              <Text style={{ margin: 0 }}>{settings.email}</Text>
+              <Link href={`https://${host}`} style={{ color: '#0f64c0', textAlign: 'center' }}>
+                <Text>{host}</Text>
+              </Link>
+            </Container>
+          </Section>
+        </Container>
       </Body>
     </Html>
-  );
-}
-
-const yesterday = dayjs(new Date()).add(-1, 'days');
-
-export function ActivityDates({ activity, currentHost }) {
-  if (!activity) {
-    return null;
-  }
-
-  const futureDates = activity.datesAndTimes.filter((date) =>
-    dayjs(date.endDate).isAfter(yesterday)
-  );
-
-  if (!futureDates || futureDates.length === 0) {
-    return null;
-  }
-
-  const length = futureDates?.length;
-
-  return (
-    <Row style={{ marginLeft: 0, marginTop: 4, width: 'auto' }}>
-      {length < 4
-        ? futureDates.map((date) => (
-            <ActivityDate key={date.startDate + date.endTime} date={date} />
-          ))
-        : futureDates
-            .filter((d, i) => i < 3)
-            .map((date) => (
-              <ActivityDate
-                key={date.startDate + date.endTime}
-                currentHost={currentHost}
-                date={date}
-              />
-            ))}
-      <Column>
-        <Text>{length > 3 && '+' + (length - 3).toString()}</Text>
-      </Column>
-    </Row>
-  );
-}
-
-export function ActivityDate({ date }) {
-  return (
-    <Column style={{ paddingRight: 8 }}>
-      <Text style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>
-        {dayjs(date.startDate).format('DD')}
-      </Text>
-      <Text style={{ fontSize: '14px', margin: 0, marginTop: -4 }}>
-        {dayjs(date.startDate).format('MMM')}
-      </Text>
-    </Column>
   );
 }

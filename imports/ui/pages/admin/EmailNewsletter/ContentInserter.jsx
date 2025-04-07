@@ -78,7 +78,7 @@ function ListItemCheckbox({ item, children, onSelect }) {
           w="80px"
         />
         <Box ml="2" flexShrink={1}>
-          <Text fontSize="md" fontWeight="bold">
+          <Text fontSize="lg" fontWeight="bold">
             {item.title}
           </Text>
           {children}
