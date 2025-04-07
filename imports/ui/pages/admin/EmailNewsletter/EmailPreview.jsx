@@ -50,9 +50,9 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
   const address = `${settings.address}, ${settings.city}, ${settings.country}`;
 
   return (
-    <Html>
+    <Html style={{ backgroundColor: 'transparent', maxWidth: '480px', padding: 12 }}>
       <Head />
-      <Body style={{ maxWidth: '480px', padding: 12 }}>
+      <Body style={{ backgroundColor: 'transparent', margin: '0 auto' }}>
         <Link href={`https://${host}/newsletters/[newsletter-id]`}>
           <Text
             style={{ color: '#0f64c0', fontSize: '12px', margin: '0 0 8px', textAlign: 'center' }}
@@ -87,7 +87,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         <Section style={{ marginBottom: 12 }}>
           {(imageUrl || uploadableImageLocal) && (
             <Img
-              style={{ marginBottom: 24, maxWidth: '480px' }}
+              style={{ marginBottom: 24, maxWidth: '456px' }}
               src={imageUrl || uploadableImageLocal}
               alt={subject}
               height="auto"
@@ -121,12 +121,13 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                       fontSize: 20,
                       fontWeight: 'bold',
                       lineHeight: 1.2,
+                      marginBottom: 8,
                     }}
                   >
                     {activity?.title}
                   </Heading>
                 </Link>
-                <Text style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>
+                <Text style={{ fontSize: 16, marginTop: 0, marginBottom: 32 }}>
                   {activity?.subTitle}
                 </Text>
 
@@ -181,12 +182,13 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                       fontSize: 20,
                       fontWeight: 'bold',
                       lineHeight: 1.2,
+                      marginBottom: 8,
                     }}
                   >
                     {work?.title}
                   </Heading>
                 </Link>
-                <Text style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>
+                <Text style={{ fontSize: 16, marginTop: 0, marginBottom: 32 }}>
                   {work?.shortDescription}
                 </Text>
                 {work.images && (
@@ -218,7 +220,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
           </>
         )}
 
-        <Section style={{ maxWidth: '480px', textAlign: 'center' }}>
+        <Section style={{ maxWidth: '456px', textAlign: 'center' }}>
           <Heading as="h1" style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}>
             {settings?.name}
           </Heading>
