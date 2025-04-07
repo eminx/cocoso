@@ -1,10 +1,11 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
+import loadable from '@loadable/component';
 
-const EditProfile = lazy(() => import('./EditProfile'));
-const Work = lazy(() => import('../works/Work'));
-const EditWork = lazy(() => import('../works/EditWork'));
-const Profile = lazy(() => import('../../entry/UserHybrid'));
+const EditProfile = loadable(() => import('./EditProfile'));
+const Work = loadable(() => import('../works/Work'));
+const EditWork = loadable(() => import('../works/EditWork'));
+const Profile = loadable(() => import('../../entry/UserHybrid'));
 
 export default function PageRoutes({ path, history }) {
   return (
