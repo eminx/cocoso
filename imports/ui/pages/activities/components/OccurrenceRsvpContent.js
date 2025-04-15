@@ -42,16 +42,6 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
 
   const { capacity } = activity;
 
-  const eventPast = dayjs(occurrence.endDate).isBefore(yesterday);
-
-  if (eventPast) {
-    return (
-      <Box py="2">
-        <Text color="gray.800">{t('public.past')}</Text>
-      </Box>
-    );
-  }
-
   const getTotalNumber = () => {
     let counter = 0;
     occurrence.attendees.forEach((attendee) => {
@@ -242,21 +232,29 @@ export default function RsvpContent({ activity, occurrence, occurrenceIndex, onC
     numberOfPeople: 1,
   };
 
+  const eventPast = dayjs(occurrence.endDate).isBefore(yesterday);
+
   return (
     <Box>
       <Box>
-        <Center m="2">
-          <Button
-            colorScheme="red"
-            size="sm"
-            variant="ghost"
-            onClick={() => openCancelRsvpModal(occurrenceIndex)}
-          >
-            {t('public.cancel.label')}
-          </Button>
-        </Center>
+        {!eventPast && (
+          <Center m="2">
+            <Button
+              colorScheme="red"
+              size="sm"
+              variant="ghost"
+              onClick={() => openCancelRsvpModal(occurrenceIndex)}
+            >
+              {t('public.cancel.label')}
+            </Button>
+          </Center>
+        )}
 
-        {capacity && occurrence.attendees && getTotalNumber() >= capacity ? (
+        {eventPast ? (
+          <Box py="2">
+            <Text color="gray.800">{t('public.past')}</Text>
+          </Box>
+        ) : capacity && occurrence.attendees && getTotalNumber() >= capacity ? (
           <p>
             {capacityGotFullByYou && t('public.capacity.fullByYou')}
             {t('public.capacity.full')}
