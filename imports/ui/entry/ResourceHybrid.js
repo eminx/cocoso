@@ -84,6 +84,8 @@ export default function ResourceHybrid({ documents, resource, Host }) {
     label: resourcesInMenu?.label,
   };
 
+  const url = `https://${resource.host}/resources/${resource._id}`;
+
   return (
     <TablyCentered
       action={null}
@@ -93,6 +95,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
       tabs={tabs}
       tags={tags}
       title={resource.label}
+      url={url}
     />
   );
 }
