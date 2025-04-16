@@ -7,7 +7,7 @@ import NiceSlider from '../generic/NiceSlider';
 
 import { parseTitle } from '../utils/shared';
 
-function SimplePage({ description, images, title }) {
+function SimplePage({ description, images, imageUrl, title, url }) {
   return (
     <>
       <Helmet>
@@ -15,9 +15,11 @@ function SimplePage({ description, images, title }) {
         <title>{title}</title>
         <meta name="title" content={title} />
         <meta name="description" content={description} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
+        <meta property="og:title" content={title?.substring(0, 40)} />
         <meta property="og:image" content={images && images[0]} />
+        <meta property="og:url" content={url} />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:description" content={description?.substring(0, 150)} />
         <meta property="og:type" content="article" />
       </Helmet>
 
@@ -53,16 +55,22 @@ export default function PageHybrid({ pages }) {
     return null;
   }
 
+  const firstPage = `/info/${parseTitle(pages[0]?.title)}`;
+
   if (!currentPage) {
-    navigate(`/info/${parseTitle(pages[0].title)}`);
+    navigate(firstPage);
     return null;
   }
+
+  const url = `${currentPage.host}/${parseTitle(currentPage.title)}`;
 
   return (
     <SimplePage
       description={currentPage.longDescription}
       images={currentPage.images}
       title={currentPage.title}
+      url={url}
+      imageUrl={currentPage.images?.[0]}
     />
   );
 }
