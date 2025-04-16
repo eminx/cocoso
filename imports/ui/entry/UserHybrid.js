@@ -10,7 +10,7 @@ import MemberActivities from '../pages/activities/MemberActivities';
 import MemberGroups from '../pages/groups/MemberGroups';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
-import { stripHtml } from '/imports/ui/utils/shared';
+import { stripHtml, getFullName } from '/imports/ui/utils/shared';
 
 export function Bio({ user }) {
   if (!user || !user.bio) {
@@ -63,9 +63,7 @@ export default function UserHybrid({ user, Host }) {
   const tabIndex = tabs.findIndex((tab) => tab.path === pathnameLastPart);
   const isPortalHost = Host?.isPortalHost;
   const members = menu?.find((item) => item.name === 'people');
-  const title = `${user.firstName || '' + user.lastName || ''} | ${user.username} | ${
-    Host?.settings?.name
-  }`;
+  const title = `${getFullName(user)} | ${user.username} | ${Host?.settings?.name}`;
   const url = `https://${Host.host}/@${user.username}`;
   const imageUrl = user?.avatar?.src || user?.avatar || Host.logo;
   const tags = user.keywords?.map((k) => k.keywordLabel);
