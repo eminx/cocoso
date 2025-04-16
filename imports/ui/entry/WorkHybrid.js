@@ -62,6 +62,8 @@ export default function WorkHybrid({ documents, work, Host }) {
   const tags = work && [work.category?.label];
   const worksInMenu = Host?.settings?.menu.find((item) => item.name === 'works');
 
+  const url = `https://${work.host}/@${work.authorUsername}/works/${work._id}`;
+
   return (
     <TablyCentered
       action={null}
@@ -78,6 +80,7 @@ export default function WorkHybrid({ documents, work, Host }) {
       tabs={tabs}
       tags={tags}
       title={work.title}
+      url={url}
     />
   );
 }

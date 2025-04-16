@@ -80,6 +80,8 @@ export default function ActivityHybrid({ activity, Host }) {
     label: isPublicActivity ? activitiesInMenu?.label : calendarInMenu?.label,
   };
 
+  const url = `https://${activity.host}/activities/${activity._id}`;
+
   return (
     <TablyCentered
       action={
@@ -92,6 +94,7 @@ export default function ActivityHybrid({ activity, Host }) {
       subTitle={activity?.subTitle}
       tabs={tabs}
       title={activity?.title}
+      url={url}
     />
   );
 }
