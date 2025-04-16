@@ -12,10 +12,11 @@ export default function ResourcesHybrid({ resources, Host }) {
   const resourcesInMenu = Host?.settings?.menu?.find((item) => item.name === 'resources');
   const description = resourcesInMenu?.description;
   const heading = resourcesInMenu?.label;
+  const url = `${Host?.host}/${resourcesInMenu?.name}`;
 
   return (
     <>
-      <PageHeading description={description} heading={heading} />
+      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
 
       <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={resources}>

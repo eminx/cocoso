@@ -203,10 +203,16 @@ export default function Calendar() {
   const calendarInMenu = settings?.menu.find((item) => item.name === 'calendar');
   const heading = calendarInMenu?.label;
   const description = calendarInMenu?.description;
+  const url = `${currentHost?.host}/${calendarInMenu?.name}`;
 
   return (
     <Box>
-      <PageHeading description={description} heading={heading} />
+      <PageHeading
+        description={description}
+        heading={heading}
+        imageUrl={currentHost.logo}
+        url={url}
+      />
 
       <Box>
         <Center mb="2">

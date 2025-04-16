@@ -44,10 +44,11 @@ export default function WorksHybrid({ works, Host }) {
   const worksInMenu = Host?.settings?.menu?.find((item) => item.name === 'works');
   const description = worksInMenu?.description;
   const heading = worksInMenu?.label;
+  const url = `${Host?.host}/${worksInMenu?.name}`;
 
   return (
     <>
-      <PageHeading description={description} heading={heading} />
+      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
 
       <Center px="4">
         <Flex justify="center" wrap="wrap">
