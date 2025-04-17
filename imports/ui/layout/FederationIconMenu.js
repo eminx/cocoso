@@ -43,10 +43,6 @@ export default function FederationIconMenu() {
   const [t] = useTranslation('members');
   const navigate = useNavigate();
 
-  if (!platform || !platform.isFederationLayout) {
-    return null;
-  }
-
   const handleSetHostInfo = async () => {
     try {
       const info = await call('getPortalHostInfoPage');
@@ -56,6 +52,10 @@ export default function FederationIconMenu() {
       console.log(error);
     }
   };
+
+  if (!platform || !platform.isFederationLayout) {
+    return null;
+  }
 
   const isPortalHost = currentHost?.isPortalHost;
 
@@ -80,6 +80,7 @@ export default function FederationIconMenu() {
           h={isDesktop ? '44px' : '28px'}
           onClick={() => handleSetHostInfo()}
         />
+
         {currentUser ? (
           <Menu
             infoOpen={menuOpen}
@@ -87,21 +88,15 @@ export default function FederationIconMenu() {
             onClose={() => setMenuOpen(false)}
           >
             <MenuButton {...buttonProps} as={Button} rightIcon={<ChevronDownIcon size="16px" />}>
-              {currentUser ? t('profile.myCommunities') : tc('labels.allCommunities')}
+              {t('profile.myCommunities')}
             </MenuButton>
 
             <MenuList>
-              {currentUser
-                ? currentUser.memberships?.map((m) => (
-                    <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
-                      {m.hostname}
-                    </MenuItem>
-                  ))
-                : allHosts.map((h) => (
-                    <MenuItem key={h.host} onClick={() => (location.href = `https://${h.host}`)}>
-                      {h.name}
-                    </MenuItem>
-                  ))}
+              {currentUser.memberships?.map((m) => (
+                <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
+                  {m.hostname}
+                </MenuItem>
+              ))}
               <Divider colorScheme="gray.700" mt="2" />
               <MenuItem
                 key="all-communities"
