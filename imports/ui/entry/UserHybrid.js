@@ -67,7 +67,7 @@ export default function UserHybrid({ user, Host }) {
   const url = `https://${Host.host}/@${user.username}`;
   const imageUrl = user?.avatar?.src || user?.avatar || Host.logo;
   const tags = user.keywords?.map((k) => k.keywordLabel);
-  const description = stripHtml(user.bio)?.substring(0, 150);
+  const description = user.bio && stripHtml(user.bio)?.substring(0, 150);
 
   return (
     <>
