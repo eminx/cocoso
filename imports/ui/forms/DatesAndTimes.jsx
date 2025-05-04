@@ -29,7 +29,7 @@ export const emptyDateAndTime = {
   conflict: null,
 };
 
-function ConflictMarker({ occurrence, t }) {
+export function ConflictMarker({ occurrence, t }) {
   if (!occurrence) {
     return null;
   }

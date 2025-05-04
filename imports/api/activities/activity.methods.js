@@ -11,7 +11,6 @@ import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity
 import {
   compareDatesForSortActivities,
   compareDatesForSortActivitiesReverse,
-  parseGroupActivities,
 } from './activity.helpers';
 
 const filterPrivateGroups = (activities, user) =>
@@ -42,18 +41,14 @@ Meteor.methods({
           $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
           'datesAndTimes.endDate': { $lte: today },
         }).fetch();
-        const pastActsSorted = parseGroupActivities(pastActs)?.sort(
-          compareDatesForSortActivitiesReverse
-        );
+        const pastActsSorted = pastActs?.sort(compareDatesForSortActivitiesReverse);
         return filterPrivateGroups(pastActsSorted, user);
       }
       const futureActs = Activities.find({
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
         'datesAndTimes.endDate': { $gte: today },
       }).fetch();
-      const futureActsSorted = parseGroupActivities(futureActs)?.sort(
-        compareDatesForSortActivities
-      );
+      const futureActsSorted = futureActs?.sort(compareDatesForSortActivities);
       return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
@@ -72,9 +67,7 @@ Meteor.methods({
           $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
           'datesAndTimes.endDate': { $lte: today },
         }).fetch();
-        const pastActsSorted = parseGroupActivities(pastActs)?.sort(
-          compareDatesForSortActivitiesReverse
-        );
+        const pastActsSorted = pastActs?.sort(compareDatesForSortActivitiesReverse);
         return filterPrivateGroups(pastActsSorted, user);
       }
       const futureActs = Activities.find({
@@ -82,9 +75,7 @@ Meteor.methods({
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
         'datesAndTimes.endDate': { $gte: today },
       }).fetch();
-      const futureActsSorted = parseGroupActivities(futureActs)?.sort(
-        compareDatesForSortActivities
-      );
+      const futureActsSorted = futureActs?.sort(compareDatesForSortActivities);
       return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
@@ -95,8 +86,7 @@ Meteor.methods({
     const user = Meteor.user();
     try {
       const allActs = Activities.find().fetch();
-      const allActsParsed = parseGroupActivities(allActs);
-      return filterPrivateGroups(allActsParsed, user);
+      return filterPrivateGroups(allActs, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -110,8 +100,7 @@ Meteor.methods({
       const allActs = Activities.find({
         host,
       }).fetch();
-      const allActsParsed = parseGroupActivities(allActs);
-      return filterPrivateGroups(allActsParsed, user);
+      return filterPrivateGroups(allActs, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -173,7 +162,7 @@ Meteor.methods({
 
   async checkDatesForConflict(
     { startDate, endDate, startTime, endTime, resourceId },
-    currentActivityId
+    currentActivityId = null
   ) {
     const host = getHost(this);
     if (!resourceId) {
@@ -252,6 +241,8 @@ Meteor.methods({
     if (!values) {
       return null;
     }
+
+    console.log(values);
 
     const user = Meteor.user();
     const host = getHost(this);

@@ -30,27 +30,3 @@ export function compareDatesForSortActivitiesReverse(a, b) {
   const dateB = new Date(`${firstOccurenceB?.startDate}T${firstOccurenceB?.startTime}:00Z`);
   return dateB - dateA;
 }
-
-export function parseGroupActivities(activities) {
-  const activitiesParsed = [];
-
-  activities?.forEach((act) => {
-    if (!act.isGroupMeeting) {
-      activitiesParsed.push(act);
-    } else {
-      const indexParsed = activitiesParsed.findIndex((actP) => {
-        return actP.groupId === act.groupId;
-      });
-      if (indexParsed === -1) {
-        activitiesParsed.push(act);
-      } else {
-        activitiesParsed[indexParsed].datesAndTimes.push(act.datesAndTimes[0]);
-      }
-    }
-  });
-
-  return activitiesParsed.map((act) => ({
-    ...act,
-    datesAndTimes: act.datesAndTimes.sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate)),
-  }));
-}
