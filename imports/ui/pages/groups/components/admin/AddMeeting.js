@@ -226,7 +226,6 @@ export default function AddMeeting({ onClose }) {
 
     try {
       const response = await call('createActivity', activityValues);
-      console.log(response);
       getGroupById();
       setState((prevState) => ({
         ...prevState,
