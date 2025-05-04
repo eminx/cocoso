@@ -6,6 +6,7 @@ import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Activities from './activity';
 import Groups from '../groups/group';
+import Resources from '../resources/resource';
 import Platform from '../platform/platform';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 import {
@@ -169,6 +170,27 @@ Meteor.methods({
       return null;
     }
 
+    const resourcesInQuestion = await Resources.find(
+      {
+        host,
+        $or: [
+          {
+            _id: resourceId,
+          },
+          {
+            'resourcesForCombo._id': resourceId,
+          },
+        ],
+      },
+      {
+        fields: {
+          _id: 1,
+        },
+      }
+    ).fetchAsync();
+
+    const resourcesIds = resourcesInQuestion.map((resource) => resource._id);
+
     const activityWithConflict = await Activities.findOneAsync(
       {
         _id: { $ne: currentActivityId },
@@ -177,10 +199,9 @@ Meteor.methods({
           {
             $or: [
               {
-                resourceId,
-              },
-              {
-                'resourcesForCombo._id': resourceId,
+                resourceId: {
+                  $in: resourcesIds,
+                },
               },
             ],
           },
