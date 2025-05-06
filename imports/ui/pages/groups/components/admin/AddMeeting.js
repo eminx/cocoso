@@ -134,6 +134,14 @@ export default function AddMeeting({ onClose }) {
   const checkDatesForConflict = async () => {
     const { resourceId, resource, startDate, startTime, endDate, endTime } = state.newMeeting;
     if (!resourceId || !startDate || !startTime || !endTime) {
+      if (resource) {
+        setState((prevState) => ({
+          ...prevState,
+          conflictingBooking: null,
+          isFormValid: true,
+        }));
+        return;
+      }
       return;
     }
 
