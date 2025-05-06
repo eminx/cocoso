@@ -15,6 +15,28 @@ const getFirstFutureOccurence = (occurrence) =>
 const getLastPastOccurence = (occurrence) =>
   createDateTime(occurrence.startDate, occurrence.startTime)?.isBefore(now);
 
+export function parseGroupActivities(activities) {
+  const activitiesParsed = [];
+  activities?.forEach((act) => {
+    if (!act.isGroupMeeting) {
+      activitiesParsed.push(act);
+    } else {
+      const indexParsed = activitiesParsed.findIndex((actP) => {
+        return actP.groupId === act.groupId;
+      });
+      if (indexParsed === -1) {
+        activitiesParsed.push(act);
+      } else {
+        activitiesParsed[indexParsed].datesAndTimes.push(act.datesAndTimes[0]);
+      }
+    }
+  });
+  return activitiesParsed.map((act) => ({
+    ...act,
+    datesAndTimes: act.datesAndTimes.sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate)),
+  }));
+}
+
 export function compareDatesForSortActivities(a, b) {
   const firstOccurenceA = a?.datesAndTimes?.find(getFirstFutureOccurence);
   const firstOccurenceB = b?.datesAndTimes?.find(getFirstFutureOccurence);
