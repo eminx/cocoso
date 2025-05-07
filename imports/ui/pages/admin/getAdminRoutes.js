@@ -9,6 +9,7 @@ import Members from './Members';
 import Emails from './Emails';
 import EmailNewsletter from './EmailNewsletter';
 import AdminHome from './AdminHome';
+import SpecialPages from './SpecialPages';
 import {
   ActivitiesAdmin,
   CalendarAdmin,
@@ -56,6 +57,12 @@ const getAdminRoutes = (menuItems) => [
         content: <ColorPicker />,
       },
     ],
+  },
+  {
+    label: 'Landing Pages',
+    value: 'landing-pages',
+    isMulti: false,
+    content: <SpecialPages />,
   },
   {
     label: <Trans i18nKey="admin:features.title" />,
