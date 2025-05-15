@@ -59,8 +59,8 @@ const getAdminRoutes = (menuItems) => [
     ],
   },
   {
-    label: 'Landing Pages',
-    value: 'landing-pages',
+    label: 'Special Pages',
+    value: 'special-pages',
     isMulti: false,
     content: <SpecialPages />,
   },

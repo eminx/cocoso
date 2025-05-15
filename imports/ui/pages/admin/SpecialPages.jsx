@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import ReactSelect from 'react-select';
+import { Heading } from '@chakra-ui/react';
 
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
+import NewSpecialPage from '/imports/ui/pages/admin/NewSpecialPage';
 
 const emtptySpecialPage = {
   title: '',
@@ -37,14 +40,40 @@ export default function SpecialPages() {
     getSpecialPages();
   }, []);
 
+  const onSelect = async (selectedOption) => {
+    console.log(selectedOption);
+  };
+
   return (
     <div>
-      <h1>Landing Pages</h1>
-      <ul>
+      <Heading fontWeight="light" mb="6" size="md">
+        Create a landing page, or a special page for your website.
+      </Heading>
+
+      <ReactSelect
+        options={specialPages}
+        // placeholder={t('portalHost.selectHost')}
+        // value={hostFilterValue}
+        styles={{
+          option: (styles, { data }) => ({
+            ...styles,
+            borderLeft: `8px solid ${data.color}`,
+            paddingLeft: 6,
+            fontSize: 14,
+          }),
+        }}
+        onChange={onSelect}
+        getOptionValue={(option) => option._id}
+        getOptionLabel={(option) => option.title}
+      />
+
+      {/* <ul>
         {specialPages?.map((page) => (
           <li key={page.title} path={`${page.title}/*`} element={<div>{page.title}</div>} />
         ))}
-      </ul>
+      </ul> */}
+
+      <NewSpecialPage />
     </div>
   );
 }

@@ -12,13 +12,21 @@ SpecialPages.schema = new SimpleSchema({
   authorId: Schemas.Id,
   authorName: { type: String },
 
-  contentRows: { type: Array },
+  contentRows: { type: Array, maxCount: 21 },
   'contentRows.$': { type: Object },
-  'contentRows.$.gridType': { type: String }, // 1+1+1 or 1+2 or 2+1 or 3
-  'contentRows.$.columns': { type: Array },
-  'contentRows.$.columns.$': { type: Object },
-  'contentRows.$.columns.$.type': { type: String },
-  'contentRows.$.columns.$.content': { type: Object },
+  'contentRows.$.gridType': {
+    type: String,
+    allowedValues: ['full', '1+1', '1+1+1', '1+2', '2+1'],
+    defaultValue: 'full',
+  },
+  'contentRows.$.columns': { type: Array, maxCount: 3 },
+  'contentRows.$.columns.$': { type: Array },
+  'contentRows.$.columns.$.$': { type: Object },
+  'contentRows.$.columns.$.$.type': {
+    type: String,
+    allowedValues: ['image', 'text', 'image-slider', 'image-banner', 'video-clip'],
+  },
+  'contentRows.$.columns.$.$.content': { type: Object, blackbox: true },
 
   isPublished: {
     type: Boolean,

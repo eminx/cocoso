@@ -52,3 +52,6 @@ import '../../api/keywords/keyword';
 import '../../api/keywords/keywords.methods';
 
 import '../../api/newsletters/newsletter';
+
+import '../../api/specialpages/specialpage';
+import '../../api/specialpages/specialpage.methods';
