@@ -6,6 +6,7 @@
     "baseUrl": ".",
     "paths": {
       "/*": ["./*"],
+      "~/*": ["/imports/*"],
       "meteor/mongo": [
         "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/local_collection_driver.js",
         "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/collection.js",

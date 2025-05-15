@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import LinkIcon from 'lucide-react/dist/esm/icons/link';
+import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
+import { Trans } from 'react-i18next';
+import { Helmet } from 'react-helmet';
+
 import {
   Avatar,
   Badge,
@@ -16,10 +21,6 @@ import {
   VStack,
   Wrap,
 } from '@chakra-ui/react';
-import LinkIcon from 'lucide-react/dist/esm/icons/link';
-import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
-import { Trans } from 'react-i18next';
-import { Helmet } from 'react-helmet';
 
 import NiceSlider from '../generic/NiceSlider';
 import Tabs from './Tabs';
@@ -270,7 +271,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
             {action && <Box>{action}</Box>}
           </Box>
 
-          <Center>
+          <Center mb="8">
             <Box maxW="540px" w="100%">
               <Box w="100%">
                 {tabs && (
