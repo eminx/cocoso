@@ -6,6 +6,8 @@ import { Routes, Route } from 'react-router-dom';
 import { StaticRouter } from 'react-router-dom/server';
 import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
+import { I18nextProvider, useSSR } from 'react-i18next';
+import i18n from '/imports/startup/i18n';
 
 import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
@@ -35,19 +37,21 @@ Meteor.startup(() => {
     const context = {};
 
     const App = (props) => (
-      <StaticRouter location={sink.request.url} context={context}>
-        <Routes>
-          {AppRoutesSSR(host, sink).map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={route.element}
-              url={sink.request.url}
-              sink={sink}
-            />
-          ))}
-        </Routes>
-      </StaticRouter>
+      <I18nextProvider i18n={i18n}>
+        <StaticRouter location={sink.request.url} context={context}>
+          <Routes>
+            {AppRoutesSSR(host, sink).map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+                url={sink.request.url}
+                sink={sink}
+              />
+            ))}
+          </Routes>
+        </StaticRouter>
+      </I18nextProvider>
     );
 
     sink.renderIntoElementById('root', renderToString(<App location={sink.request.url} />));

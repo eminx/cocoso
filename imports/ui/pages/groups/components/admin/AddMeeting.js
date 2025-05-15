@@ -29,14 +29,12 @@ import { message } from '../../../../generic/message';
 const today = dayjs();
 
 const emptyDateAndTime = {
-  startDate: today,
   endDate: today,
-  startTime: '00:00',
   endTime: '23:59',
-  attendees: [],
-  capacity: 40,
-  isRange: false,
-  conflict: null,
+  resource: null,
+  resourceId: null,
+  startDate: today,
+  startTime: '00:00',
 };
 
 function AddMeetingForm({
@@ -51,6 +49,7 @@ function AddMeetingForm({
 }) {
   const [isLocal, setIsLocal] = useState(true);
   const [t] = useTranslation('groups');
+  const [ta] = useTranslation('activities');
 
   return (
     <>
@@ -88,13 +87,13 @@ function AddMeetingForm({
         )}
       </Box>
 
+      {conflictingBooking && <ConflictMarker occurrence={conflictingBooking} t={ta} />}
+
       <Flex justify="flex-end" pt="4">
         <Button isDisabled={buttonDisabled} onClick={handleSubmit}>
           {t('meeting.form.submit')}
         </Button>
       </Flex>
-
-      {conflictingBooking && <ConflictMarker recurrence={conflictingBooking} t={t} />}
     </>
   );
 }
@@ -132,91 +131,72 @@ export default function AddMeeting({ onClose }) {
     getData();
   }, []);
 
-  useEffect(() => {
-    validateBookings();
-  }, [newMeeting]);
+  const checkDatesForConflict = async () => {
+    const { resourceId, resource, startDate, startTime, endDate, endTime } = state.newMeeting;
+    if (!resourceId || !startDate || !startTime || !endTime) {
+      if (resource) {
+        setState((prevState) => ({
+          ...prevState,
+          conflictingBooking: null,
+          isFormValid: true,
+        }));
+      } else {
+        setState((prevState) => ({
+          ...prevState,
+          isFormValid: false,
+        }));
+      }
+      return;
+    }
 
-  const handleDateAndTimeChange = (date) => {
-    setState({
-      ...state,
-      newMeeting: date,
-    });
+    const params = {
+      startDate,
+      startTime,
+      endDate: startDate,
+      endTime,
+      resourceId,
+      resource,
+    };
+
+    const conflictingBooking = await call('checkDatesForConflict', params);
+
+    setState((prevState) => ({
+      ...prevState,
+      conflictingBooking: conflictingBooking
+        ? { ...conflictingBooking, isConflictHard: true }
+        : null,
+      isFormValid: Boolean(!conflictingBooking),
+    }));
   };
 
-  const validateBookings = () => {
-    if (!activities || !resources) {
-      return null;
-    }
+  useEffect(() => {
+    checkDatesForConflict();
+  }, [newMeeting]);
 
-    const selectedResource = resources.find((r) => r._id === newMeeting.resourceId);
-
-    if (!newMeeting || !newMeeting.startDate || !newMeeting.startTime || !newMeeting.endTime) {
-      setState({
-        ...state,
-        conflictingBooking: null,
-        isFormValid: false,
-      });
-      return;
-    }
-
-    if (!newMeeting.resourceId) {
-      setState({
-        ...state,
-        conflictingBooking: null,
-        isFormValid: true,
-      });
-      return;
-    }
-
-    const allBookingsParsed = parseAllBookingsWithResources(activities, resources);
-
-    const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
-      selectedResource,
-      allBookingsParsed
-    );
-
-    const selectedBookingsWithConflict = checkAndSetBookingsWithConflict(
-      [
-        {
-          startDate: newMeeting.startDate,
-          endDate: newMeeting.startDate,
-          startTime: newMeeting.startTime,
-          endTime: newMeeting.endTime,
-        },
-      ],
-      allBookingsWithSelectedResource
-    );
-
-    if (
-      selectedBookingsWithConflict &&
-      selectedBookingsWithConflict[0] &&
-      selectedBookingsWithConflict[0].conflict
-    ) {
-      setState({
-        ...state,
-        conflictingBooking: selectedBookingsWithConflict && selectedBookingsWithConflict[0],
-        isFormValid: false,
-      });
-    } else {
-      setState({
-        ...state,
-        conflictingBooking: null,
-        isFormValid: true,
-      });
-    }
+  const handleDateAndTimeChange = (selectedDates) => {
+    setState((prevState) => ({
+      ...prevState,
+      newMeeting: {
+        ...prevState.newMeeting,
+        startDate: selectedDates.startDate,
+        endDate: selectedDates.endDate,
+        startTime: selectedDates.startTime,
+        endTime: selectedDates.endTime,
+      },
+    }));
   };
 
   const handleResourceChange = (resourceLabel) => {
-    const selectedResource = resources.find((r) => r.label === resourceLabel);
+    const selectedResource = resources.find((r) => r?.label === resourceLabel);
 
-    setState({
-      ...state,
+    setState((prevState) => ({
+      ...prevState,
       newMeeting: {
-        ...newMeeting,
+        ...prevState.newMeeting,
         resource: resourceLabel,
         resourceId: selectedResource ? selectedResource._id : null,
       },
-    });
+    }));
   };
 
   const createActivity = async () => {
@@ -224,15 +204,10 @@ export default function AddMeeting({ onClose }) {
       return;
     }
 
-    if (!newMeeting.resource || newMeeting.resource.length < 4) {
-      message.error(t('errors.noresource'));
-      return;
-    }
-
-    setState({
-      ...state,
+    setState((prevState) => ({
+      ...prevState,
       isSubmitted: true,
-    });
+    }));
 
     const activityValues = {
       title: group.title,
@@ -259,12 +234,12 @@ export default function AddMeeting({ onClose }) {
     };
 
     try {
-      await call('createActivity', activityValues);
+      const response = await call('createActivity', activityValues);
       getGroupById();
-      setState({
-        ...state,
+      setState((prevState) => ({
+        ...prevState,
         isSubmitted: false,
-      });
+      }));
       onClose();
       message.success(tc('message.success.create'));
     } catch (error) {

@@ -394,6 +394,10 @@ const getCategoriesAssignedToWorks = (works) => {
     .sort((a, b) => a.label?.localeCompare(b.label));
 };
 
+const stripHtml = (html) => {
+  return html.replace(/<[^>]*>?/gm, '');
+};
+
 export {
   localeSort,
   getInitials,
@@ -418,4 +422,5 @@ export {
   parseHtmlEntities,
   parseGroupsWithMeetings,
   getCategoriesAssignedToWorks,
+  stripHtml,
 };

@@ -38,11 +38,12 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
     },
   ];
 
-  const groupsInMenu = Host?.settings?.menu?.find((item) => item.name === 'groups')?.label;
+  const groupsInMenu = Host?.settings?.menu?.find((item) => item.name === 'groups');
+  const url = `${Host?.host}/${activitiesInMenu?.name}`;
 
   return (
     <>
-      <PageHeading description={description} heading={heading} />
+      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
       <Center pb="4">
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
       </Center>
@@ -56,7 +57,7 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
                 host={Host?.isPortalHost ? item.host : null}
                 index={index}
                 showPast={showPast}
-                tags={item.isGroupMeeting ? [groupsInMenu] : null}
+                tags={item.isGroupMeeting ? [groupsInMenu?.label] : null}
               />
             </Center>
           )}

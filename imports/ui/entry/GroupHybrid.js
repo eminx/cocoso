@@ -40,6 +40,8 @@ export default function GroupHybrid({ group, Host }) {
     tags.push(<Trans i18nKey="common:labels.private">Private</Trans>);
   }
 
+  const url = `https://${group.host}/groups/${group._id}`;
+
   return (
     <TablyCentered
       action={
@@ -54,6 +56,7 @@ export default function GroupHybrid({ group, Host }) {
       tabs={tabs}
       tags={tags}
       title={group.title}
+      url={url}
     />
   );
 }

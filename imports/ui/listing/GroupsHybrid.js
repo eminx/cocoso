@@ -14,10 +14,11 @@ export default function GroupsHybrid({ groups, Host }) {
   const groupsInMenu = Host?.settings?.menu?.find((item) => item.name === 'groups');
   const description = groupsInMenu?.description;
   const heading = groupsInMenu?.label;
+  const url = `${Host?.host}/${groupsInMenu?.name}`;
 
   return (
     <>
-      <PageHeading description={description} heading={heading} />
+      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
 
       <Box px="2" pb="8">
         <InfiniteScroller items={groups}>

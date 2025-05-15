@@ -74,8 +74,9 @@ interface TablyCenteredProps {
   images?: string[];
   subTitle?: string;
   tabs?: Tab[];
-  title: string;
   tags?: string[];
+  title: string;
+  url?: string;
 }
 
 const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
@@ -223,8 +224,9 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
   images,
   subTitle,
   tabs,
-  title,
   tags,
+  title,
+  url,
 }) => {
   const location = useLocation();
 
@@ -240,10 +242,12 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
         <meta charSet="utf-8" />
         <title>{title}</title>
         <meta name="title" content={title} />
-        <meta name="description" content={description?.substring(0, 150)} />
-        <meta property="og:title" content={title?.substring(0, 30)} />
-        <meta property="og:description" content={description?.substring(0, 60)} />
+        <meta name="description" content={description} />
+        <meta name="tags" content={tags?.join(',')} />
+        <meta property="og:title" content={title?.substring(0, 40)} />
+        <meta property="og:url" content={url} />
         <meta property="og:image" content={imageUrl} />
+        <meta property="og:description" content={description?.substring(0, 150)} />
         <meta property="og:type" content="article" />
       </Helmet>
 

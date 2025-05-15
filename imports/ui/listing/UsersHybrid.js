@@ -51,6 +51,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
   const usersInMenu = Host?.settings?.menu?.find((item) => item.name === 'people');
   const description = usersInMenu?.description;
   const heading = usersInMenu?.label;
+  const url = `${Host?.host}/${usersInMenu?.name}`;
 
   const tabs = [
     {
@@ -129,7 +130,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
 
   return (
     <>
-      <PageHeading description={description} heading={heading} />
+      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
 
       <Center>
         <Tabs index={showKeywordSearch ? 1 : 0} mb="4" tabs={tabs} />

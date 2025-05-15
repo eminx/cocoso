@@ -19,12 +19,9 @@ import {
 import CloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import CheckIcon from 'lucide-react/dist/esm/icons/check';
 
 import { call } from '/imports/ui/utils/shared';
-import {
-  compareDatesForSortActivities,
-  parseGroupActivities,
-} from '/imports/api/activities/activity.helpers';
 
 import Loader from '../../../generic/Loader';
 import { message } from '../../../generic/message';
@@ -38,6 +35,58 @@ const compareByDate = (a, b) => {
   const dateB = new Date(b.creationDate);
   return dateB - dateA;
 };
+
+function ListItemCheckbox({ item, children, onSelect }) {
+  if (!item) {
+    return null;
+  }
+
+  const { isSelected } = item;
+
+  const selectedBgContainer = item.isSelected ? 'green.100' : 'white';
+  const selectedBgCheck = item.isSelected ? 'green.500' : 'white';
+
+  return (
+    <ListItem
+      key={item._id}
+      _hover={{
+        bg: item.isSelected ? 'green.100' : 'green.50',
+        cursor: 'pointer',
+      }}
+      bg={selectedBgContainer}
+      borderBottom="1px solid #eee"
+      px="2"
+      py="4"
+      onClick={() => onSelect(item)}
+    >
+      <HStack alignItems="center">
+        <Box
+          bg={selectedBgCheck}
+          border="white 2px solid"
+          borderRadius="md"
+          flexShrink={0}
+          h="24px"
+          w="24px"
+        >
+          <CheckIcon color="white" size="20px" />
+        </Box>
+        <Image
+          bg="brand.100"
+          fit="cover"
+          h="80px"
+          src={(item.images && item.images[0]) || item.imageUrl}
+          w="80px"
+        />
+        <Box ml="2" flexShrink={1}>
+          <Text fontSize="lg" fontWeight="bold">
+            {item.title}
+          </Text>
+          {children}
+        </Box>
+      </HStack>
+    </ListItem>
+  );
+}
 
 export default function ContentInserter({ currentHost, onSelect }) {
   const [activities, setActivities] = useState([]);
@@ -59,8 +108,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
       const allActivities = isPortalHost
         ? await call('getAllPublicActivitiesFromAllHosts')
         : await call('getAllPublicActivities');
-      const allActivitiesParsed = parseGroupActivities(allActivities);
-      setActivities(allActivitiesParsed);
+      setActivities(allActivities);
     } catch (error) {
       message.error(error.error || error.reason);
     } finally {
@@ -92,28 +140,13 @@ export default function ContentInserter({ currentHost, onSelect }) {
       return null;
     }
     const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
-    const filtered = activities.filter((activity) => {
+    return activities.filter((activity) => {
       const activityWordFiltered =
         activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
 
-      return (
-        activity.datesAndTimes.some((date) => dayjs(date.endDate).isAfter(yesterday)) &&
-        activityWordFiltered
-      );
+      return activityWordFiltered;
     });
-
-    const pastDatesRemoved = filtered.map((activity) => {
-      const datesAndTimes = activity.datesAndTimes.filter((date) =>
-        dayjs(date.endDate).isAfter(yesterday)
-      );
-      return {
-        ...activity,
-        datesAndTimes,
-      };
-    });
-
-    return pastDatesRemoved.sort(compareDatesForSortActivities);
   };
 
   const getWorksFiltered = () => {
@@ -141,10 +174,12 @@ export default function ContentInserter({ currentHost, onSelect }) {
       });
       setActivities(newActivities);
       onSelect({
-        activities: newActivities.filter((a) => a.isSelected).sort(compareDatesForSortActivities),
+        activities: newActivities.filter((a) => a.isSelected),
         works: works.filter((w) => w.isSelected),
       });
-    } else {
+      return;
+    }
+    if (type === 'works') {
       const newWorks = works.map((work) => {
         const newWork = { ...work };
         if (work._id === item._id) {
@@ -157,6 +192,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
         activities: activities.filter((a) => a.isSelected),
         works: newWorks.filter((w) => w.isSelected),
       });
+      return;
     }
   };
 
@@ -207,41 +243,12 @@ export default function ContentInserter({ currentHost, onSelect }) {
                   {!activitiesLoading ? (
                     <List bg="white">
                       {activitiesFiltered?.map((activity) => (
-                        <ListItem
-                          key={activity._id}
-                          _hover={{
-                            bg: activity.isSelected ? 'green.200' : 'green.50',
-                            cursor: 'pointer',
-                          }}
-                          bg={activity.isSelected ? 'green.200' : 'transparent'}
-                          borderBottom="1px solid #eee"
-                          px="2"
-                          py="4"
-                          onClick={() => handleSelectItem(activity, 'activities')}
+                        <ListItemCheckbox
+                          item={activity}
+                          onSelect={(item) => handleSelectItem(item, 'activities')}
                         >
-                          <Checkbox
-                            colorScheme="green"
-                            isChecked={Boolean(activity.isSelected)}
-                            size="lg"
-                            onChange={() => handleSelectItem(activity, 'activities')}
-                          >
-                            <HStack alignItems="flex-start">
-                              <Image
-                                bg="brand.100"
-                                fit="cover"
-                                h="80px"
-                                src={(activity.images && activity.images[0]) || activity.imageUrl}
-                                w="80px"
-                              />
-                              <Box ml="2">
-                                <Text fontSize="md" fontWeight="bold">
-                                  {activity.title}
-                                </Text>
-                                <ActivityDates activity={activity} />
-                              </Box>
-                            </HStack>
-                          </Checkbox>
-                        </ListItem>
+                          <ActivityDates activity={activity} />
+                        </ListItemCheckbox>
                       ))}
                     </List>
                   ) : (
@@ -255,41 +262,12 @@ export default function ContentInserter({ currentHost, onSelect }) {
                   {!worksLoading ? (
                     <List bg="white">
                       {worksFiltered?.map((work) => (
-                        <ListItem
-                          key={work._id}
-                          _hover={{
-                            bg: work.isSelected ? 'green.200' : 'green.50',
-                            cursor: 'pointer',
-                          }}
-                          bg={work.isSelected ? 'green.200' : 'transparent'}
-                          borderBottom="1px solid #eee"
-                          px="2"
-                          py="4"
-                          onClick={() => handleSelectItem(work, 'works')}
+                        <ListItemCheckbox
+                          item={work}
+                          onSelect={(item) => handleSelectItem(item, 'works')}
                         >
-                          <Checkbox
-                            colorScheme="green"
-                            isChecked={Boolean(work.isSelected)}
-                            size="lg"
-                            onChange={() => handleSelectItem(work, 'works')}
-                          >
-                            <HStack alignItems="flex-start">
-                              <Image
-                                bg="brand.100"
-                                fit="cover"
-                                h="80px"
-                                src={work.images && work.images[0]}
-                                w="80px"
-                              />
-                              <Box ml="2">
-                                <Text fontSize="md" fontWeight="bold">
-                                  {work.title}
-                                </Text>
-                                <Text fontSize="sm">{work.shortDescription}</Text>
-                              </Box>
-                            </HStack>
-                          </Checkbox>
-                        </ListItem>
+                          {work.shortDescription}
+                        </ListItemCheckbox>
                       ))}
                     </List>
                   ) : (

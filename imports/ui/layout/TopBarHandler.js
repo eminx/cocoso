@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Box, Fade, Flex, Slide } from '@chakra-ui/react';
 
 import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
 import MenuDrawer from './MenuDrawer';
+import Loader from '/imports/ui/generic/Loader';
 
 export default function TopBarHandler({ slideStart }) {
   const [scrollTop, setScrollTop] = useState(0);
@@ -38,7 +39,9 @@ export default function TopBarHandler({ slideStart }) {
         <Fade in={scrollTop < 120}>
           <Flex justify="space-between" w="100%">
             <Box p="1" pointerEvents="all">
-              <FederationIconMenu />
+              <Suspense fallback={<Loader />}>
+                <FederationIconMenu />
+              </Suspense>
             </Box>
             <Flex p="1" pointerEvents="all">
               <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
