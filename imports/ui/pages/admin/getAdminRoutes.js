@@ -9,7 +9,7 @@ import Members from './Members';
 import Emails from './Emails';
 import EmailNewsletter from './EmailNewsletter';
 import AdminHome from './AdminHome';
-import SpecialPages from './SpecialPages';
+import SpecialPages from '../specialpages/SpecialPages';
 import {
   ActivitiesAdmin,
   CalendarAdmin,

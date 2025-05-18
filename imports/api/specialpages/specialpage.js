@@ -21,7 +21,7 @@ SpecialPages.schema = new SimpleSchema({
   },
   'contentRows.$.columns': { type: Array, maxCount: 3 },
   'contentRows.$.columns.$': { type: Array },
-  'contentRows.$.columns.$.$': { type: Object },
+  'contentRows.$.columns.$.$': { type: Object, optional: true },
   'contentRows.$.columns.$.$.type': {
     type: String,
     allowedValues: ['image', 'text', 'image-slider', 'image-banner', 'video-clip'],
@@ -30,7 +30,7 @@ SpecialPages.schema = new SimpleSchema({
 
   isPublished: {
     type: Boolean,
-    defaultValue: true,
+    defaultValue: false,
   },
 
   creationDate: { type: Date },

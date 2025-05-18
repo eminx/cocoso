@@ -1,3 +1,4 @@
+import React, { ReactNode } from 'react';
 import { styled } from 'restyle';
 
 // Shorthands
@@ -173,8 +174,8 @@ interface ButtonProps {
   color?: string;
   variant?: string;
   size?: string;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
   onClick?: () => void;
 }
 
@@ -182,7 +183,7 @@ export const Button = styled('button', (props: ButtonProps) => ({
   cursor: 'pointer',
   padding: '0.5rem 1rem',
   borderRadius: '0.25rem',
-  ...transformProps(props),
+  // ...transformProps(props),
 }));
 
 // Container
@@ -248,7 +249,7 @@ export const Heading = styled('h2', (props: HeadingProps) => ({
   fontWeight: 700,
   lineHeight: 1.2,
   fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
-  ...transformProps(props),
+  // ...transformProps(props),
 }));
 
 // Image
@@ -264,7 +265,7 @@ export const Input = styled('input', (props: any) => ({
   padding: '0.5rem',
   border: '1px solid #ccc',
   borderRadius: '0.25rem',
-  ...transformProps(props),
+  // ...transformProps(props),
 }));
 
 // Link
@@ -272,7 +273,7 @@ export const Link = styled('a', (props: any) => ({
   color: 'inherit',
   cursor: 'pointer',
   textDecoration: 'none',
-  ...transformProps(props),
+  // ...transformProps(props),
 }));
 
 // Menu
@@ -361,7 +362,7 @@ const fontSizes = {
 
 export const Text = styled('p', (props: TextProps) => ({
   fontSize: props.size ? fontSizes[props.size as keyof typeof fontSizes] : fontSizes.md,
-  ...transformProps(props),
+  // ...transformProps(props),
 }));
 
 // export const Modal = styled.div`
