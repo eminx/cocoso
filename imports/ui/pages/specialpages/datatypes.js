@@ -1,23 +1,23 @@
 export const contentTypes = [
   {
-    value: 'text',
-    label: 'Text',
+    type: 'text',
+    content: 'Text',
   },
   {
-    value: 'image',
-    label: 'Image',
+    type: 'image',
+    content: 'Image',
   },
   {
-    value: 'imageSlider',
-    label: 'Image Slider',
+    type: 'image-slider',
+    content: 'Image Slider',
   },
   {
-    value: 'imageBanner',
-    label: 'Image Banner',
+    type: 'image-banner',
+    content: 'Image Banner',
   },
   {
-    value: 'videoClip',
-    label: 'Video Clip',
+    type: 'video-clip',
+    content: 'Video Clip',
   },
 ];
 
@@ -25,7 +25,7 @@ export const emtptySpecialPage = {
   title: '',
   contentRows: [
     {
-      gridType: '3',
+      gridType: 'full',
       columns: [
         {
           type: 'text',

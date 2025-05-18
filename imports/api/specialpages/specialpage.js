@@ -26,7 +26,7 @@ SpecialPages.schema = new SimpleSchema({
     type: String,
     allowedValues: ['image', 'text', 'image-slider', 'image-banner', 'video-clip'],
   },
-  'contentRows.$.columns.$.$.content': { type: Object, blackbox: true },
+  'contentRows.$.columns.$.$.content': { type: String, blackbox: true },
 
   isPublished: {
     type: Boolean,
@@ -38,6 +38,7 @@ SpecialPages.schema = new SimpleSchema({
     type: Date,
     optional: true,
   },
+  latestUpdateAuthorId: { type: String, optional: true },
 });
 
 SpecialPages.attachSchema(SpecialPages.schema);

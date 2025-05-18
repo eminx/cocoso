@@ -9,7 +9,7 @@ import Members from './Members';
 import Emails from './Emails';
 import EmailNewsletter from './EmailNewsletter';
 import AdminHome from './AdminHome';
-import SpecialPages from '../specialpages/SpecialPages';
+import SpecialPageContainer from '../specialpages/SpecialPageContainer';
 import {
   ActivitiesAdmin,
   CalendarAdmin,
@@ -60,9 +60,9 @@ const getAdminRoutes = (menuItems) => [
   },
   {
     label: 'Special Pages',
-    value: 'special-pages',
+    value: 'special-pages/*',
     isMulti: false,
-    content: <SpecialPages />,
+    content: <SpecialPageContainer />,
   },
   {
     label: <Trans i18nKey="admin:features.title" />,

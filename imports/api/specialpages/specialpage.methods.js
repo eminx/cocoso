@@ -7,6 +7,19 @@ import { getHost } from '../_utils/shared';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
+  async getSpecialPageById(specialPageId, hostPredefined) {
+    const host = hostPredefined || getHost(this);
+
+    try {
+      return await SpecialPages.findOneAsync({
+        _id: specialPageId,
+        host,
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
   async getSpecialPages(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
@@ -15,7 +28,7 @@ Meteor.methods({
         host,
       }).fetchAsync();
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't get pages");
+      throw new Meteor.Error(error);
     }
   },
 
@@ -35,7 +48,7 @@ Meteor.methods({
         }
       ).fetchAsync();
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't get pages");
+      throw new Meteor.Error(error);
     }
   },
 
@@ -50,17 +63,17 @@ Meteor.methods({
     }
 
     try {
-      await SpecialPages.insertAsync({
+      const newId = await SpecialPages.insertAsync({
         ...formValues,
         host,
         authorId: user._id,
         authorName: user.username,
-        isPublished: true,
+        isPublished: false,
         creationDate: new Date(),
       });
-      return formValues.title;
+      return newId;
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't add to Collection");
+      throw new Meteor.Error(error);
     }
   },
 
@@ -74,20 +87,18 @@ Meteor.methods({
     }
 
     const thePage = await SpecialPages.findOneAsync(specialPageId);
-    if (thePage.isTermsPage) {
-      throw new Meteor.Error('You cannot update terms page.');
-    }
 
     try {
       await SpecialPages.updateAsync(specialPageId, {
         $set: {
           ...formValues,
           latestUpdate: new Date(),
+          latestUpdateAuthorId: user._id,
         },
       });
       return formValues.title;
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't add to Collection");
+      throw new Meteor.Error(error);
     }
   },
 
@@ -109,7 +120,7 @@ Meteor.methods({
     try {
       await SpecialPages.removeAsync(specialPageId);
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't remove from collection");
+      throw new Meteor.Error(error);
     }
   },
 });

@@ -8,7 +8,7 @@ import SortableList, { SortableItem } from 'react-easy-sort';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { call } from '/imports/ui/utils/shared';
 import { contentTypes } from '../datatypes';
-import { SpecialPageContext } from '../NewSpecialPage';
+import { SpecialPageContext } from '../SpecialPageForm';
 
 const boxStyle = {
   backgroundColor: 'white',
@@ -18,19 +18,17 @@ const boxStyle = {
   marginBottom: '12px',
 };
 
-export function Column({ column, onContentSelect }) {
+export function Column({ column, onContentSelect, onColumnSort }) {
+  const { currentPage, setCurrentPage } = useContext(SpecialPageContext);
+
   return (
     <Boxling bg="white" m="2" p="2" minH="120px">
       <Center>
-        <SortableList
-          onSortEnd={(oldIndex, newIndex) => {
-            console.log(oldIndex, newIndex);
-          }}
-        >
+        <SortableList onSortEnd={onColumnSort}>
           {column.map((content, contentIndex) => (
-            <SortableItem key={content.value + contentIndex}>
+            <SortableItem key={content.type + contentIndex}>
               <Box key={content.value} bg="blueGray.300" mb="2" p="4" textAlign="center">
-                <Text fontWeight="bold">{content.label}</Text>
+                <Text fontWeight="bold">{content.content}</Text>
               </Box>
             </SortableItem>
           ))}
@@ -49,10 +47,10 @@ export function Column({ column, onContentSelect }) {
         >
           {contentTypes.map((contentType) => (
             <MenuItem
-              key={contentType.value}
+              key={contentType.type}
               onClick={() => onContentSelect(contentType, column.length)}
             >
-              {contentType.label}
+              {contentType.content}
             </MenuItem>
           ))}
         </Menu>
@@ -78,7 +76,7 @@ const getGridTemplateColumns = (gridType) => {
   }
 };
 
-export function Row({ row, onContentSelect }) {
+export function Row({ row, onContentSelect, onColumnSort }) {
   const { columns, gridType } = row;
 
   if (!columns || !columns.length || !gridType) {
@@ -94,6 +92,10 @@ export function Row({ row, onContentSelect }) {
           <Column
             column={column}
             onContentSelect={(contentType) => onContentSelect(contentType, columnIndex)}
+            onColumnSort={(oldIndex, newIndex) => {
+              console.log(oldIndex, newIndex);
+              onColumnSort(oldIndex, newIndex, columnIndex);
+            }}
           />
         </Box>
       ))}
