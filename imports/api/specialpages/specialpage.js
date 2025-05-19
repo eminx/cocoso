@@ -26,7 +26,7 @@ SpecialPages.schema = new SimpleSchema({
     type: String,
     allowedValues: ['image', 'text', 'image-slider', 'image-banner', 'video-clip'],
   },
-  'contentRows.$.columns.$.$.content': { type: String, blackbox: true },
+  'contentRows.$.columns.$.$.content': { type: Object, blackbox: true },
 
   isPublished: {
     type: Boolean,
