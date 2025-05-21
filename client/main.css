@@ -320,3 +320,15 @@ ul.ant-cascader-menu::-webkit-scrollbar-thumb,
     top: 0;
   }
 }
+
+.bottom-toolbar {
+  color: #aaa;
+}
+
+.bottom-toolbar:not(.updated) {
+  transition: all 0.5s ease-out;
+}
+
+.bottom-toolbar.updated {
+  color: var(--chakra-colors-green-200);
+}

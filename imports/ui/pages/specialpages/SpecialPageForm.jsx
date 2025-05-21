@@ -15,6 +15,7 @@ import Row from './components/Row';
 import { rowTypes } from './constants';
 import ConfirmModal from '/imports/ui/generic/ConfirmModal';
 import ContentHandler from './components/ContentHandler';
+import BottomToolbar from './components/BottomToolbar';
 
 const getNewRow = (rowType) => {
   const selectedRowType = rowTypes.find((type) => type.value === rowType);
@@ -44,6 +45,10 @@ export default function SpecialPageForm() {
   const { specialPageId } = useParams();
 
   const getSpecialPageById = async (id) => {
+    if (!id || id === '*') {
+      return;
+    }
+
     try {
       const response = await call('getSpecialPageById', id);
       setCurrentPage(response);
@@ -182,13 +187,13 @@ export default function SpecialPageForm() {
     try {
       await call('updateSpecialPage', newPage);
       setCurrentPage({ ...newPage, ping: false });
-      message.success('Special page updated successfully');
+      // message.success('Special page updated successfully');
     } catch (error) {
       message.error(error.reason || error.error);
     }
   };
 
-  if (!currentPage) {
+  if (!currentPage || !specialPageId) {
     return null;
   }
 
@@ -270,23 +275,7 @@ export default function SpecialPageForm() {
         </Flex>
 
         <Center>
-          <Flex bg="gray.900" bottom="12px" justify="space-between" position="fixed" p="2">
-            <Text color="gray.50" mx="4" size="sm">
-              Saved...
-            </Text>
-            <Button
-              _active={{ color: 'gray.100' }}
-              color="gray.50"
-              mx="4"
-              size="sm"
-              variant="ghost"
-            >
-              Preview
-            </Button>
-            <Button colorScheme="blue" mx="4" size="sm" variant="solid">
-              Publish
-            </Button>
-          </Flex>
+          <BottomToolbar />
         </Center>
 
         <ConfirmModal
