@@ -1,6 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+
 import { Schemas } from '../_utils/schemas';
+import { contentTypes } from '/imports/ui/pages/specialpages/constants';
 
 const SpecialPages = new Mongo.Collection('specialpages');
 
@@ -24,9 +26,9 @@ SpecialPages.schema = new SimpleSchema({
   'contentRows.$.columns.$.$': { type: Object, optional: true },
   'contentRows.$.columns.$.$.type': {
     type: String,
-    allowedValues: ['image', 'text', 'image-slider', 'image-banner', 'video-clip'],
+    allowedValues: contentTypes.map((content) => content.type),
   },
-  'contentRows.$.columns.$.$.content': { type: Object, blackbox: true },
+  'contentRows.$.columns.$.$.value': { type: Object, blackbox: true },
 
   isPublished: {
     type: Boolean,

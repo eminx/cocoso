@@ -8,7 +8,7 @@ import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import SpecialPageForm from './SpecialPageForm';
-import { emtptySpecialPage } from './datatypes';
+import { emtptySpecialPage } from './constants';
 import ConfirmModal from '/imports/ui/generic/ConfirmModal';
 import FormField from '/imports/ui/forms/FormField';
 

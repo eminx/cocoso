@@ -11,10 +11,20 @@ Meteor.methods({
     const host = hostPredefined || getHost(this);
 
     try {
-      return await SpecialPages.findOneAsync({
-        _id: specialPageId,
-        host,
-      });
+      return await SpecialPages.findOneAsync(
+        {
+          _id: specialPageId,
+          host,
+        },
+        {
+          fields: {
+            _id: 1,
+            title: 1,
+            contentRows: 1,
+            isPublished: 1,
+          },
+        }
+      );
     } catch (error) {
       throw new Meteor.Error(error);
     }
@@ -77,7 +87,7 @@ Meteor.methods({
     }
   },
 
-  async updateSpecialPage(specialPageId, formValues, hostPredefined) {
+  async updateSpecialPage(formValues, hostPredefined) {
     const user = Meteor.user();
     const host = hostPredefined || getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
@@ -86,7 +96,12 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
+    const specialPageId = formValues._id;
     const thePage = await SpecialPages.findOneAsync(specialPageId);
+
+    if (!thePage) {
+      throw new Meteor.Error('Page not found');
+    }
 
     try {
       await SpecialPages.updateAsync(specialPageId, {
