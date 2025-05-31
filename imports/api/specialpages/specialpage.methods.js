@@ -19,9 +19,10 @@ Meteor.methods({
         {
           fields: {
             _id: 1,
-            title: 1,
             contentRows: 1,
+            host: 1,
             isPublished: 1,
+            title: 1,
           },
         }
       );
@@ -53,6 +54,7 @@ Meteor.methods({
         {
           fields: {
             _id: 1,
+            host: 1,
             title: 1,
           },
         }

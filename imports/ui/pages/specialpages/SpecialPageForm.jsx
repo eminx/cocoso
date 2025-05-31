@@ -297,10 +297,8 @@ export default function SpecialPageForm() {
           onConfirm={() => handleDeleteModule()}
           onCancel={() => setDeleteModuleModal(emptyModuleModal)}
         >
-          <Text fontSize="lg">Are you sure you want to delete this module?</Text>
-          <Text fontSize="lg">
-            If you confirm, the selected module will be deleted and cannot be reverted?
-          </Text>
+          <Text mb="2">Are you sure you want to delete this module?</Text>
+          <Text>If you confirm, the selected module will be deleted and cannot be reverted.</Text>
         </ConfirmModal>
       </SpecialPageContext.Provider>
     </div>

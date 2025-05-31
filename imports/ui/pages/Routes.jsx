@@ -5,6 +5,7 @@ import loadable from '@loadable/component';
 import LayoutContainer, { StateContext } from '../LayoutContainer';
 import Terms from '../entry/Terms';
 import Loader from '../generic/Loader';
+import SpecialPageView from '/imports/ui/pages/specialpages/SpecialPageView';
 
 const Communities = loadable(() => import('../pages/hosts/Communities'));
 
@@ -120,6 +121,7 @@ export default function AppRoutes() {
           <Route exact path="/info" element={<Page />} />
           <Route path="/info/:pageTitle/*" element={<Page />} />
           <Route path="/pages/:pageTitle/*" element={<Page />} />
+          <Route path="/sp/:specialPageId" element={<SpecialPageView />} />
 
           {/* Works */}
           <Route exact path="/works" element={<Works />} />

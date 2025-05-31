@@ -18,7 +18,7 @@ const emptyPageModal = {
   visible: false,
 };
 
-export default function SpecialPageContainer() {
+export default function SpecialPageFormContainer() {
   const { currentHost } = useContext(StateContext);
   const [specialPageTitles, setSpecialPageTitles] = useState([]);
   const [createPageModal, setCreatePageModal] = useState(emptyPageModal);

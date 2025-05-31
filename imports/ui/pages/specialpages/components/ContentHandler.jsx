@@ -64,6 +64,10 @@ export default function ContentHandler() {
     onChange: handleChange,
   };
 
+  if (!value) {
+    return null;
+  }
+
   if (type === 'text') {
     return <TextContent {...genericProps} />;
   }
