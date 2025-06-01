@@ -18,12 +18,7 @@ export default function Quill(props) {
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
     >
-      <ReactQuill
-        formats={editorFormats}
-        modules={editorModules}
-        style={{ borderColor: 'magenta' }}
-        {...props}
-      />
+      <ReactQuill modules={editorModules} {...props} />
     </div>
   );
 }

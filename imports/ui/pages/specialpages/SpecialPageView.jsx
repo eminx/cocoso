@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import { message } from '/imports/ui/generic/message';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
-import { Heading } from '/imports/ui/core';
+import { Heading, Text, Image } from '/imports/ui/core';
+import SpecialPageHybrid from '/imports/ui/entry/SpecialPageHybrid';
 
 export default function SpecialPageView() {
   const initialSpecialPage = window?.__PRELOADED_STATE__?.specialPage || null;
@@ -44,5 +45,12 @@ export default function SpecialPageView() {
     return null;
   }
 
-  return <Heading size="lg">{specialPage.title}</Heading>;
+  return (
+    <>
+      <Heading size="xl" css={{ textAlign: 'center' }}>
+        {specialPage.title}
+      </Heading>
+      <SpecialPageHybrid specialPage={specialPage} Host={currentHost} />
+    </>
+  );
 }

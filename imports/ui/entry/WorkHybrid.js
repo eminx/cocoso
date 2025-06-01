@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
-import parseHtml from 'html-react-parser';
+import HTMLReactParser from 'html-react-parser';
 
 import TablyCentered from './TablyCentered';
 import DocumentsField from '../pages/resources/components/DocumentsField';
@@ -16,7 +16,7 @@ export default function WorkHybrid({ documents, work, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {work?.longDescription && parseHtml(work?.longDescription)}
+          {work?.longDescription && HTMLReactParser(work?.longDescription)}
         </Box>
       ),
       path: 'info',
@@ -52,7 +52,7 @@ export default function WorkHybrid({ documents, work, Host }) {
       title: <Trans i18nKey="common:labels.contact">Contact</Trans>,
       content: (
         <Box bg="white" className="text-content" p="4" textAlign="center">
-          {work?.contactInfo && parseHtml(work.contactInfo)}
+          {work?.contactInfo && HTMLReactParser(work.contactInfo)}
         </Box>
       ),
       path: 'contact',

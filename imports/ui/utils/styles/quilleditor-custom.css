@@ -2,11 +2,15 @@
   min-height: 18em;
 }
 
-.ql-container .ql-editor p {
-  line-height: 1.5;
-  margin-bottom: 1em;
-  font-size: 16px;
-  font-family: 'Sarabun', sans-serif;
+.ql-container .ql-editor {
+  p,
+  li,
+  blockquote {
+    line-height: 1.5;
+    margin-bottom: 1em;
+    font-size: 16px;
+    font-family: 'Sarabun', sans-serif;
+  }
 }
 
 .quill > .ql-toolbar.ql-snow {

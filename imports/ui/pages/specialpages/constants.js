@@ -25,8 +25,9 @@ export const contentTypes = [
     type: 'link',
     value: {
       kind: 'button', // link, button
-      isExternal: false,
       href: '',
+      isExternal: false,
+      label: 'Click me',
     },
   },
   {
@@ -38,8 +39,7 @@ export const contentTypes = [
   {
     type: 'video',
     value: {
-      videoSrc: '',
-      altText: '',
+      src: 'https://www.youtube.com/watch?v=oUFJJNQGwhk',
     },
   },
 ];
@@ -88,3 +88,18 @@ export const rowTypes = [
     columns: [[], []],
   },
 ];
+
+export const getGridTemplateColumns = (gridType) => {
+  switch (gridType) {
+    case '1+1':
+      return 'repeat(2, 1fr)';
+    case '1+1+1':
+      return 'repeat(3, 1fr)';
+    case '1+2':
+      return '1fr 2fr';
+    case '2+1':
+      return '2fr 1fr';
+    default:
+      return '1fr';
+  }
+};

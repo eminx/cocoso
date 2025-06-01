@@ -56,7 +56,7 @@ export default function SpecialPageFormContainer() {
   };
 
   return (
-    <div>
+    <>
       <Heading fontWeight="light" mb="6" size="md">
         Create a landing page, or a special page for your website.
       </Heading>
@@ -117,6 +117,6 @@ export default function SpecialPageFormContainer() {
           />
         </FormField>
       </ConfirmModal>
-    </div>
+    </>
   );
 }

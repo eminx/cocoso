@@ -186,8 +186,8 @@ export default function SpecialPageForm() {
 
     try {
       await call('updateSpecialPage', newPage);
-      setCurrentPage({ ...newPage, ping: false });
-      // message.success('Special page updated successfully');
+      setCurrentPage((prevPage) => ({ ...prevPage, ping: false }));
+      message.success('Special page updated successfully');
     } catch (error) {
       message.error(error.reason || error.error);
     }

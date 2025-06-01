@@ -12,7 +12,7 @@ import { arrayMoveImmutable } from 'array-move';
 
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { call } from '/imports/ui/utils/shared';
-import { contentTypes } from '../constants';
+import { contentTypes, getGridTemplateColumns } from '../constants';
 import { SpecialPageContext } from '../SpecialPageForm';
 
 export function Column({ column, columnIndex, rowIndex }) {
@@ -169,21 +169,6 @@ export function Column({ column, columnIndex, rowIndex }) {
 }
 
 const flexBasis = '300px';
-
-const getGridTemplateColumns = (gridType) => {
-  switch (gridType) {
-    case '1+1':
-      return 'repeat(2, 1fr)';
-    case '1+1+1':
-      return 'repeat(3, 1fr)';
-    case '1+2':
-      return '1fr 2fr';
-    case '2+1':
-      return '2fr 1fr';
-    default:
-      return '1fr';
-  }
-};
 
 export default function Row({ row, rowIndex }) {
   const { columns, gridType } = row;
