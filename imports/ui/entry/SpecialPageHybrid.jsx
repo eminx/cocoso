@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Flex, Link, Img } from '@chakra-ui/react';
+import { Box, Button, Flex } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ReactPlayer from 'react-player';
 
@@ -21,13 +21,28 @@ function renderModule(module) {
     case 'image-slider':
       return <NiceSlider images={value.images} />;
     case 'image-with-button':
-      return <Img src={value.imageSrc} alt={value.altText} />;
-    case 'link':
-      return <Link href={value.href}>{value.label}</Link>;
+      return <Image src={value.imageSrc} alt={value.altText} />;
+    case 'button':
+      return <Button>{value.label}</Button>;
     case 'text':
-      return <Box className="text-content">{value.html ? HTMLReactParser(value.html) : null}</Box>;
+      return (
+        <Box className="text-content" p="4">
+          {value.html ? HTMLReactParser(value.html) : null}
+        </Box>
+      );
     case 'video':
-      return <ReactPlayer controls src={value.src} />;
+      return (
+        <Box p="4">
+          <ReactPlayer
+            controls
+            height="auto"
+            muted
+            style={{ width: '100%', height: 'auto', aspectRatio: '16/9' }}
+            url={value.src}
+            width="100%"
+          />
+        </Box>
+      );
     default:
       return null;
   }

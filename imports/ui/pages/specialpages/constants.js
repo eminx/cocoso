@@ -39,7 +39,7 @@ export const contentTypes = [
   {
     type: 'video',
     value: {
-      src: 'https://www.youtube.com/watch?v=oUFJJNQGwhk',
+      src: '',
     },
   },
 ];

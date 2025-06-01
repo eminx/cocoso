@@ -9,6 +9,7 @@ const editorModules = {
     [{ color: [] }, { background: [] }],
     [{ font: [] }],
     [{ align: [] }],
+    ['video'],
     ['clean'],
   ],
   clipboard: {
