@@ -95,8 +95,6 @@ export default function SpecialPageFormContainer() {
         </Button>
       </Flex>
 
-      <SpecialPageForm />
-
       <Routes>
         <Route path="/:specialPageId" element={<SpecialPageForm />} />
       </Routes>

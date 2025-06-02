@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Button, Center, Flex, Heading, IconButton, Text } from '@chakra-ui/react';
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
@@ -65,10 +65,38 @@ export default function SpecialPageForm() {
   }, [specialPageId]);
 
   useEffect(() => {
-    if (currentPage?.ping) {
-      updateSpecialPage();
+    if (!currentPage || !currentPage.ping) {
+      return;
     }
+
+    if (
+      contentModal.open &&
+      ['image', 'image-slider'].includes(contentModal.content?.type) &&
+      !contentModal.uploading
+    ) {
+      setContentModal((prevModal) => ({
+        ...prevModal,
+        uploading: true,
+        uploaded: false,
+      }));
+      setCurrentPage((prevPage) => ({
+        ...prevPage,
+        ping: false,
+      }));
+      return;
+    }
+    updateSpecialPage();
   }, [currentPage?.contentRows]);
+
+  useEffect(() => {
+    if (
+      contentModal.open &&
+      ['image', 'image-slider'].includes(contentModal.content?.type) &&
+      contentModal.uploaded
+    ) {
+      handleSaveContentModal();
+    }
+  }, [contentModal.uploaded]);
 
   const handleAddRow = (rowType) => {
     const newRow = getNewRow(rowType);
@@ -145,7 +173,11 @@ export default function SpecialPageForm() {
     }
   };
 
-  const handleSaveContentModal = () => {
+  const handleSaveContentModal = async () => {
+    if (!contentModal) {
+      return;
+    }
+
     const { content, contentIndex, columnIndex, rowIndex } = contentModal;
 
     setCurrentPage((prevPage) => ({
@@ -171,10 +203,6 @@ export default function SpecialPageForm() {
       }),
       ping: true,
     }));
-    setContentModal({
-      content: null,
-      open: false,
-    });
   };
 
   const updateSpecialPage = async () => {
@@ -187,6 +215,7 @@ export default function SpecialPageForm() {
     try {
       await call('updateSpecialPage', newPage);
       setCurrentPage((prevPage) => ({ ...prevPage, ping: false }));
+      setContentModal({ open: false, content: null });
       message.success('Special page updated successfully');
     } catch (error) {
       message.error(error.reason || error.error);
@@ -201,6 +230,7 @@ export default function SpecialPageForm() {
     contentModal,
     currentPage,
     deleteModuleModal,
+    handleSaveContentModal,
     setContentModal,
     setCurrentPage,
     setDeleteModuleModal,
@@ -209,7 +239,7 @@ export default function SpecialPageForm() {
   return (
     <div>
       <SpecialPageContext.Provider value={contextValue}>
-        <Heading size="lg" css={{ margin: '24px 0' }}>
+        <Heading size="lg" my="6" textAlign="center">
           {currentPage.title}
         </Heading>
 
@@ -279,6 +309,7 @@ export default function SpecialPageForm() {
         </Center>
 
         <ConfirmModal
+          confirmButtonProps={{ isLoading: contentModal?.uploading }}
           size="xl"
           title="Add Content"
           visible={contentModal?.open}

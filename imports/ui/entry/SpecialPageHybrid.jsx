@@ -1,14 +1,14 @@
 import React from 'react';
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Image } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ReactPlayer from 'react-player';
+import HTMLReactParser from 'html-react-parser';
 
 import NiceSlider from '/imports/ui/generic/NiceSlider';
-import HTMLReactParser from 'html-react-parser';
-import { getGridTemplateColumns } from '/imports/ui/pages/specialpages/constants';
-import { Heading, Image } from '/imports/ui/core';
+import { getResponsiveGridColumns } from '/imports/ui/pages/specialpages/constants';
+import { Heading } from '/imports/ui/core';
 
-function renderModule(module) {
+function ContentModule({ module }) {
   if (!module || !module.value || !module.type) {
     return null;
   }
@@ -17,22 +17,33 @@ function renderModule(module) {
 
   switch (type) {
     case 'image':
-      return <Image src={value.src} alt={value.alt} />;
+      return (
+        <Box py="2">
+          <Image src={value.src} />
+        </Box>
+      );
     case 'image-slider':
-      return <NiceSlider images={value.images} />;
-    case 'image-with-button':
-      return <Image src={value.imageSrc} alt={value.altText} />;
+      return null;
+      return (
+        <Center py="2">
+          <NiceSlider images={value.images} />
+        </Center>
+      );
     case 'button':
-      return <Button>{value.label}</Button>;
+      return (
+        <Box py="2">
+          <Button>{value.label}</Button>
+        </Box>
+      );
     case 'text':
       return (
-        <Box className="text-content" p="4">
+        <Box className="text-content" py="2">
           {value.html ? HTMLReactParser(value.html) : null}
         </Box>
       );
     case 'video':
       return (
-        <Box p="4">
+        <Box py="2">
           <ReactPlayer
             controls
             height="auto"
@@ -65,13 +76,15 @@ export default function SpecialPageHybrid({ specialPage, Host }) {
         <Box
           key={rowIndex}
           display="grid"
-          gridTemplateColumns={getGridTemplateColumns(row.gridType)}
+          gridTemplateColumns={getResponsiveGridColumns(row.gridType)}
+          gap={{ base: 2, md: 4 }}
+          p="4"
         >
           {row.columns.map((column, columnIndex) => (
             <Box key={columnIndex}>
               {column.map((module, moduleIndex) => (
-                <Box key={module.type + moduleIndex} p="6">
-                  {renderModule(module)}
+                <Box key={module.type + moduleIndex}>
+                  <ContentModule module={module} />
                 </Box>
               ))}
             </Box>

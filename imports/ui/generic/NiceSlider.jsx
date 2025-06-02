@@ -88,6 +88,7 @@ function ImageHandler({ height, width, images, children }) {
       </Box>
     );
   }
+
   return (
     <Box className="slide-container" h={height} w={width}>
       <Slide

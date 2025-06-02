@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Input, Text } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 
@@ -21,24 +21,24 @@ function TextContent({ value, onChange }) {
   );
 }
 
-function ImageContent({ value, isMultiple, onChange }) {
+function ImageContent({ value, isMultiple, ping, onChange }) {
   const handleUploadedImages = (images) => {
     if (!isMultiple) {
       onChange({
         src: images[0],
-        alt: 'image',
+      });
+    } else {
+      onChange({
+        images,
       });
     }
-    onChange({
-      images,
-    });
   };
 
   return (
     <ImageUploader
       isMultiple={isMultiple}
-      // ping={loaders?.isUploadingImages}
-      preExistingImages={isMultiple ? [value.images] : [value.src] || []}
+      ping={ping}
+      preExistingImages={isMultiple ? value.images : [value.src] || []}
       onUploadedImages={handleUploadedImages}
     />
   );
@@ -80,9 +80,14 @@ function VideoContent({ value, onChange }) {
 export default function ContentHandler() {
   const { contentModal, setContentModal } = useContext(SpecialPageContext);
 
+  if (!contentModal) {
+    return null;
+  }
+
   const handleChange = (newValue) => {
     setContentModal((prevState) => ({
       ...prevState,
+      uploaded: true,
       content: {
         ...prevState.content,
         value: newValue,
@@ -108,11 +113,11 @@ export default function ContentHandler() {
   }
 
   if (type === 'image') {
-    return <ImageContent {...genericProps} isMultiple={false} />;
+    return <ImageContent {...genericProps} isMultiple={false} ping={contentModal?.uploading} />;
   }
 
   if (type === 'image-slider') {
-    return <ImageContent {...genericProps} isMultiple />;
+    return <ImageContent {...genericProps} isMultiple ping={contentModal?.uploading} />;
   }
 
   if (type === 'video') {

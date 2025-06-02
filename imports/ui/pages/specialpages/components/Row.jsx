@@ -38,10 +38,17 @@ export function Column({ column, columnIndex, rowIndex }) {
       }),
     ];
 
+    setContentModal({
+      open: true,
+      content: content,
+      contentIndex: column.length,
+      columnIndex,
+      rowIndex,
+    });
+
     setCurrentPage((prevPage) => ({
       ...prevPage,
       contentRows: newRows,
-      ping: true,
     }));
   };
 

@@ -1,33 +1,22 @@
 export const contentTypes = [
   {
+    type: 'button',
+    value: {
+      to: '',
+      isExternal: false,
+      label: 'Click me',
+    },
+  },
+  {
     type: 'image',
     value: {
       src: '',
-      alt: '',
     },
   },
   {
     type: 'image-slider',
     value: {
       images: [],
-    },
-  },
-  {
-    type: 'image-with-button',
-    value: {
-      imageSrc: '',
-      altText: '',
-      buttonLabel: '',
-      buttonLink: '',
-    },
-  },
-  {
-    type: 'link',
-    value: {
-      kind: 'button', // link, button
-      href: '',
-      isExternal: false,
-      label: 'Click me',
     },
   },
   {
@@ -103,3 +92,9 @@ export const getGridTemplateColumns = (gridType) => {
       return '1fr';
   }
 };
+
+export const getResponsiveGridColumns = (gridType) => ({
+  base: '1fr',
+  md: ['1+1', '1+2', '2+1', '1+1+1'].includes(gridType) ? 'repeat(2, 1fr)' : '1fr',
+  lg: getGridTemplateColumns(gridType),
+});

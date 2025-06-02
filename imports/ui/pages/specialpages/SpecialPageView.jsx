@@ -47,7 +47,7 @@ export default function SpecialPageView() {
 
   return (
     <>
-      <Heading size="xl" css={{ textAlign: 'center' }}>
+      <Heading size="xl" css={{ textAlign: 'center', margin: '1rem 0' }}>
         {specialPage.title}
       </Heading>
       <SpecialPageHybrid specialPage={specialPage} Host={currentHost} />
