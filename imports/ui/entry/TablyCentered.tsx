@@ -297,14 +297,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
 
             {images && (
               <Center py="2">
-                <EmblaSlider>
-                  {images.map((image, i) => (
-                    <div className="embla__slide">
-                      <Image src={image} />
-                    </div>
-                  ))}
-                </EmblaSlider>
-                {/* <NiceSlider alt={title} images={images} /> */}
+                <NiceSlider alt={title} images={images} />
               </Center>
             )}
 

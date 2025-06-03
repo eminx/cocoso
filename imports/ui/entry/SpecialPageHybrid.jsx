@@ -26,6 +26,7 @@ function ContentModule({ module }) {
     case 'image-slider':
       return (
         <Center py="2">
+          {/* <span>Slider</span> */}
           <EmblaSlider images={value.images} />
         </Center>
       );
@@ -54,7 +55,11 @@ function ContentModule({ module }) {
             controls
             height="auto"
             muted
-            style={{ width: '100%', height: 'auto', aspectRatio: '16/9' }}
+            style={{
+              width: '100%',
+              height: 'auto',
+              aspectRatio: '16/9',
+            }}
             url={value.src}
             width="100%"
           />
