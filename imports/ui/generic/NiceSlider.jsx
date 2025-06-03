@@ -19,7 +19,13 @@ const imageStyle = {
 
 function EmptyCircle() {
   return (
-    <svg width="8" height="8" viewBox="-2 -2 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="8"
+      height="8"
+      viewBox="-2 -2 8 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <circle
         cx="2"
         cy="2"
@@ -35,7 +41,13 @@ function EmptyCircle() {
 
 function FilledCircle() {
   return (
-    <svg width="8" height="8" viewBox="-2 -2 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="8"
+      height="8"
+      viewBox="-2 -2 8 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <circle
         cx="2"
         cy="2"
@@ -55,7 +67,11 @@ function Dots({ images, currentSlideIndex }) {
       {images.length > 1 && (
         <HStack p="2">
           {images.map((image, index) =>
-            index === currentSlideIndex ? <FilledCircle key={image} /> : <EmptyCircle key={image} />
+            index === currentSlideIndex ? (
+              <FilledCircle key={image} />
+            ) : (
+              <EmptyCircle key={image} />
+            )
           )}
         </HStack>
       )}
@@ -88,7 +104,6 @@ function ImageHandler({ height, width, images, children }) {
       </Box>
     );
   }
-
   return (
     <Box className="slide-container" h={height} w={width}>
       <Slide
@@ -104,7 +119,12 @@ function ImageHandler({ height, width, images, children }) {
   );
 }
 
-export default function NiceSlider({ alt, images, height = 'auto', width = '100%' }) {
+export default function NiceSlider({
+  alt,
+  images,
+  height = 'auto',
+  width = '100%',
+}) {
   const [toggler, setToggler] = useState(false);
 
   if (!images || images.length === 0) {
@@ -116,7 +136,11 @@ export default function NiceSlider({ alt, images, height = 'auto', width = '100%
       <>
         <Flex h={height} justify="center">
           <Center>
-            <Img src={images[0]} style={imageStyle} onClick={() => setToggler(!toggler)} />
+            <Img
+              src={images[0]}
+              style={imageStyle}
+              onClick={() => setToggler(!toggler)}
+            />
           </Center>
         </Flex>
 

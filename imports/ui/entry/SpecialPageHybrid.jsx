@@ -7,6 +7,7 @@ import HTMLReactParser from 'html-react-parser';
 import NiceSlider from '/imports/ui/generic/NiceSlider';
 import { getResponsiveGridColumns } from '/imports/ui/pages/specialpages/constants';
 import { Heading } from '/imports/ui/core';
+import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 function ContentModule({ module }) {
   if (!module || !module.value || !module.type) {
@@ -23,6 +24,11 @@ function ContentModule({ module }) {
         </Box>
       );
     case 'image-slider':
+      return (
+        <Center py="2">
+          <EmblaSlider images={value.images} />
+        </Center>
+      );
       return null;
       return (
         <Center py="2">
