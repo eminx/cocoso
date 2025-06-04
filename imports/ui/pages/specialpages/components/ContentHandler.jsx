@@ -7,21 +7,50 @@ import ImageUploader from '/imports/ui/forms/ImageUploader';
 import { SpecialPageContext } from '../SpecialPageForm';
 import FormField from '/imports/ui/forms/FormField';
 
-function TextContent({ value, onChange }) {
-  const handleChange = (newHtml) => {
+function ButtonContent({ value, onChange }) {
+  const handleLinkValueChange = (linkValue) => {
     onChange({
-      html: newHtml,
+      ...value,
+      linkValue,
+    });
+  };
+
+  const handleLabelChange = (label) => {
+    onChange({
+      ...value,
+      label,
     });
   };
 
   return (
     <Box>
-      <Quill value={value.html} onChange={handleChange} />
+      <FormField
+        helperText="Enter the label for the button. It's the text on the button"
+        label="Label"
+        mb="8"
+        required
+      >
+        <Input
+          value={value.label}
+          onChange={(e) => handleLabelChange(e.target.value)}
+        />
+      </FormField>
+
+      <FormField
+        helperText="Enter the link address. It will be opened when the button is clicked."
+        label="Link"
+        required
+      >
+        <Input
+          value={value.linkValue}
+          onChange={(e) => handleLinkValueChange(e.target.value)}
+        />
+      </FormField>
     </Box>
   );
 }
 
-function ImageContent({ value, isMultiple, ping, onChange }) {
+function ImageContent({ value, isMultiple = true, ping, onChange }) {
   const handleUploadedImages = (images) => {
     if (!isMultiple) {
       onChange({
@@ -41,6 +70,20 @@ function ImageContent({ value, isMultiple, ping, onChange }) {
       preExistingImages={isMultiple ? value.images : [value.src] || []}
       onUploadedImages={handleUploadedImages}
     />
+  );
+}
+
+function TextContent({ value, onChange }) {
+  const handleChange = (newHtml) => {
+    onChange({
+      html: newHtml,
+    });
+  };
+
+  return (
+    <Box>
+      <Quill value={value.html} onChange={handleChange} />
+    </Box>
   );
 }
 
@@ -67,7 +110,11 @@ function VideoContent({ value, onChange }) {
             controls
             height="auto"
             muted
-            style={{ width: '100%', height: 'auto', aspectRatio: '16/9' }}
+            style={{
+              width: '100%',
+              height: 'auto',
+              aspectRatio: '16/9',
+            }}
             url={value.src}
             width="100%"
           />
@@ -78,7 +125,8 @@ function VideoContent({ value, onChange }) {
 }
 
 export default function ContentHandler() {
-  const { contentModal, setContentModal } = useContext(SpecialPageContext);
+  const { contentModal, setContentModal } =
+    useContext(SpecialPageContext);
 
   if (!contentModal) {
     return null;
@@ -108,16 +156,28 @@ export default function ContentHandler() {
     return null;
   }
 
-  if (type === 'text') {
-    return <TextContent {...genericProps} />;
+  if (type === 'button') {
+    return <ButtonContent {...genericProps} />;
   }
 
   if (type === 'image') {
-    return <ImageContent {...genericProps} isMultiple={false} ping={contentModal?.uploading} />;
+    return (
+      <ImageContent
+        {...genericProps}
+        isMultiple={false}
+        ping={contentModal?.uploading}
+      />
+    );
   }
 
   if (type === 'image-slider') {
-    return <ImageContent {...genericProps} isMultiple ping={contentModal?.uploading} />;
+    return (
+      <ImageContent {...genericProps} ping={contentModal?.uploading} />
+    );
+  }
+
+  if (type === 'text') {
+    return <TextContent {...genericProps} />;
   }
 
   if (type === 'video') {

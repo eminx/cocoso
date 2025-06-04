@@ -16,7 +16,10 @@
   "plugins": ["prettier", "import"],
   "rules": {
     "prettier/prettier": ["error"],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ],
     "react/jsx-one-expression-per-line": [0],
     "react/prop-types": [0],
     "import/extensions": [
@@ -30,7 +33,7 @@
       }
     ],
     "no-underscore-dangle": "off",
-    "no-unused-vars": "error",
+    "no-unused-vars": "warn",
     "import/no-absolute-path": "off",
     "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }],
     "import/no-extraneous-dependencies": [

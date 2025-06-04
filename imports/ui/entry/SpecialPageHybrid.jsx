@@ -1,22 +1,52 @@
-import React from 'react';
-import { Box, Button, Center, Flex, Image } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Image,
+  Link,
+} from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
 
-import NiceSlider from '/imports/ui/generic/NiceSlider';
 import { getResponsiveGridColumns } from '/imports/ui/pages/specialpages/constants';
 import { Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
+import { StateContext } from '/imports/ui/LayoutContainer';
 
 function ContentModule({ module }) {
+  const { currentHost } = useContext(StateContext);
   if (!module || !module.value || !module.type) {
     return null;
   }
 
+  const navigate = useNavigate();
+
   const { type, value } = module;
+  const host = currentHost?.host;
+
+  handleButtonClick = () => {
+    if (!value.linkValue) {
+      return;
+    }
+    if (value.linkValue.includes(host)) {
+      const valueLink = value.linkValue.split(host)[1];
+      navigate(valueLink);
+    } else {
+      window.open(value.linkValue, '_blank');
+    }
+  };
 
   switch (type) {
+    case 'button':
+      return (
+        <Box py="2">
+          <Button onClick={handleButtonClick}>{value.label}</Button>
+        </Box>
+      );
     case 'image':
       return (
         <Box py="2">
@@ -26,21 +56,8 @@ function ContentModule({ module }) {
     case 'image-slider':
       return (
         <Center py="2">
-          {/* <span>Slider</span> */}
           <EmblaSlider images={value.images} />
         </Center>
-      );
-      return null;
-      return (
-        <Center py="2">
-          <NiceSlider images={value.images} />
-        </Center>
-      );
-    case 'button':
-      return (
-        <Box py="2">
-          <Button>{value.label}</Button>
-        </Box>
       );
     case 'text':
       return (

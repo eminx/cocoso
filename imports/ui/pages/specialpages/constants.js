@@ -2,7 +2,7 @@ export const contentTypes = [
   {
     type: 'button',
     value: {
-      to: '',
+      linkValue: '',
       isExternal: false,
       label: 'Click me',
     },
@@ -95,6 +95,8 @@ export const getGridTemplateColumns = (gridType) => {
 
 export const getResponsiveGridColumns = (gridType) => ({
   base: '1fr',
-  md: ['1+1', '1+2', '2+1', '1+1+1'].includes(gridType) ? 'repeat(2, 1fr)' : '1fr',
+  md: ['1+1', '1+2', '2+1', '1+1+1'].includes(gridType)
+    ? 'repeat(2, 1fr)'
+    : '1fr',
   lg: getGridTemplateColumns(gridType),
 });

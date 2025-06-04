@@ -29,7 +29,7 @@ function EmptyCircle() {
         r="2.5"
         transform="matrix(1 0 0 -1 1.10059 2.81995)"
         fill="white"
-        stroke="black"
+        stroke="#212121"
         strokeWidth="1"
       />
     </svg>
@@ -51,7 +51,7 @@ function FilledCircle() {
         r="2.5"
         transform="matrix(1 0 0 -1 0.940552 2.81995)"
         fill="#212121"
-        stroke="black"
+        stroke="#212121"
         strokeWidth="1"
       />
     </svg>
@@ -60,7 +60,14 @@ function FilledCircle() {
 
 function Dots({ images, currentSlideIndex }) {
   return (
-    <Flex css={{ align: 'center', flexDirection: 'column' }}>
+    <Flex
+      css={{
+        align: 'center',
+        flexDirection: 'column',
+        margin: '4px 16px',
+        paddingTop: '4px',
+      }}
+    >
       <Center>
         {images.length > 1 && (
           <Flex>
@@ -167,11 +174,12 @@ export default function EmblaSlider({
     alt: image,
     src: image,
     style: { ...imageStyle, height },
-    onClick: () =>
+    onClick: () => {
       setState((prevState) => ({
         ...prevState,
-        lightboxToggle: true,
-      })),
+        lightboxToggle: !state.lightboxToggle,
+      }));
+    },
   });
 
   const lightBoxProps = {
@@ -208,8 +216,8 @@ export default function EmblaSlider({
 
       <Flex
         align="center"
-        justify="space-between"
-        css={{ alignItems: 'center', padding: '4px' }}
+        justify="center"
+        css={{ alignItems: 'center', padding: '8px' }}
       >
         <button
           className="embla__prev embla__button"
@@ -222,10 +230,12 @@ export default function EmblaSlider({
             />
           </svg>
         </button>
+
         <Dots
           currentSlideIndex={state.currentSlideIndex}
           images={images}
         />
+
         <button
           className="embla__next embla__button"
           onClick={scrollNext}
