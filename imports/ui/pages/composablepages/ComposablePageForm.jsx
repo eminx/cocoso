@@ -27,6 +27,7 @@ import { rowTypes } from './constants';
 import ConfirmModal from '/imports/ui/generic/ConfirmModal';
 import ContentHandler from './components/ContentHandler';
 import BottomToolbar from './components/BottomToolbar';
+import TopToolBar from '/imports/ui/pages/composablepages/components/TopToolbar';
 
 const getNewRow = (rowType) => {
   const selectedRowType = rowTypes.find(
@@ -48,7 +49,7 @@ const emptyModuleModal = {
   moduleType: null,
 };
 
-export default function ComposablePageForm() {
+export default function ComposablePageForm({ composablePageTitles }) {
   const [currentPage, setCurrentPage] = useState(null);
   const [contentModal, setContentModal] = useState({
     open: false,
@@ -263,6 +264,8 @@ export default function ComposablePageForm() {
   return (
     <div>
       <ComposablePageContext.Provider value={contextValue}>
+        <TopToolBar composablePageTitles={composablePageTitles} />
+
         <Heading size="lg" my="6" textAlign="center">
           {currentPage.title}
         </Heading>

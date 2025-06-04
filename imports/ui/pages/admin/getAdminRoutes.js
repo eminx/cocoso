@@ -9,7 +9,6 @@ import Members from './Members';
 import Emails from './Emails';
 import EmailNewsletter from './EmailNewsletter';
 import AdminHome from './AdminHome';
-import ComposablePageFormContainer from '../composablepages/ComposablePageFormContainer';
 import {
   ActivitiesAdmin,
   CalendarAdmin,

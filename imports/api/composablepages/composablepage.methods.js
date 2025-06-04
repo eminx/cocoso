@@ -52,6 +52,9 @@ Meteor.methods({
           host,
         },
         {
+          sort: {
+            latestUpdate: -1,
+          },
           fields: {
             _id: 1,
             host: 1,
@@ -82,6 +85,7 @@ Meteor.methods({
         authorName: user.username,
         isPublished: false,
         creationDate: new Date(),
+        latestUpdate: new Date(),
       });
       return newId;
     } catch (error) {
