@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Center, Input } from '@chakra-ui/react';
-import PlusIcon from 'lucide-react/dist/esm/icons/plus';
+import FilePlusIcon from 'lucide-react/dist/esm/icons/file-plus';
 
 import ConfirmModal from '/imports/ui/generic/ConfirmModal';
 import { call } from '/imports/ui/utils/shared';
@@ -41,8 +41,9 @@ export default function ComposablePageCreator({
     <>
       <Center pt="8" pb="4">
         <Button
-          leftIcon={<PlusIcon size="24px" />}
+          leftIcon={<FilePlusIcon size="24px" />}
           mb="4"
+          // pl="2"
           size="lg"
           variant="outline"
           onClick={() =>
@@ -52,7 +53,7 @@ export default function ComposablePageCreator({
             }))
           }
         >
-          CREATE
+          Create a Composable Page
         </Button>
       </Center>
 

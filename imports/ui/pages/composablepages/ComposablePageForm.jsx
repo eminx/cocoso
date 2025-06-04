@@ -246,7 +246,7 @@ export default function ComposablePageForm({
       await call('updateComposablePage', newPage);
       setCurrentPage((prevPage) => ({ ...prevPage, ping: false }));
       setContentModal({ open: false, content: null });
-      message.success('Special page updated successfully');
+      message.success('Page updated successfully');
     } catch (error) {
       message.error(error.reason || error.error);
     }

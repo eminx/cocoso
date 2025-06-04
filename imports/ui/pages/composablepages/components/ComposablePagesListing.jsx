@@ -16,6 +16,10 @@ export default function ComposablePagesListing({
 }) {
   return (
     <Box flexGrow={1}>
+      <Heading as="h2" mb="6" size="lg">
+        Existing Composable Pages
+      </Heading>
+
       {composablePageTitles.map((composablePage) => (
         <Link
           key={composablePage._id}
