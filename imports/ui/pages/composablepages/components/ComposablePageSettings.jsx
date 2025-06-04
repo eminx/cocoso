@@ -45,7 +45,7 @@ export default function ComposablePageSettings() {
           }))
         }
       >
-        SettingsForm here.
+        Settings Form will show up here
       </ConfirmModal>
     </div>
   );

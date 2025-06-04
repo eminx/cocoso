@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
@@ -12,8 +12,6 @@ import { Heading } from '/imports/ui/core';
 export default function ComposablePages() {
   const { currentHost } = useContext(StateContext);
   const [composablePageTitles, setComposablePageTitles] = useState([]);
-
-  const location = useLocation();
 
   const getComposablePageTitles = async () => {
     try {
@@ -28,10 +26,6 @@ export default function ComposablePages() {
     getComposablePageTitles();
   }, []);
 
-  const isPageSelected = composablePageTitles.some((composablePage) =>
-    location.pathname.includes(composablePage._id)
-  );
-
   return (
     <>
       <Heading css={{ fontWeight: 'light' }} mb="6" size="sm">
@@ -39,21 +33,13 @@ export default function ComposablePages() {
         or just any page you like
       </Heading>
 
-      {!isPageSelected ? (
-        <>
-          <ComposablePageCreator />
-          <ComposablePagesListing
-            composablePageTitles={composablePageTitles}
-          />
-        </>
-      ) : null}
-
       <Routes>
         <Route
           path=":composablePageId"
           element={
             <ComposablePageForm
               composablePageTitles={composablePageTitles}
+              getComposablePageTitles={getComposablePageTitles}
             />
           }
         />

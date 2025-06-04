@@ -14,7 +14,9 @@ const emptyPageModal = {
   visible: false,
 };
 
-export default function ComposablePageCreator() {
+export default function ComposablePageCreator({
+  getComposablePageTitles,
+}) {
   const [createPageModal, setCreatePageModal] =
     useState(emptyPageModal);
   const navigate = useNavigate();
@@ -25,8 +27,9 @@ export default function ComposablePageCreator() {
         title: createPageModal.title,
         contentRows: [],
       });
-      message.success('Special Page created successfully');
+      await getComposablePageTitles();
       setCreatePageModal(emptyPageModal);
+      message.success('Special Page created successfully');
       navigate(`/admin/composable-pages/${response}`);
     } catch (error) {
       console.log(error);
@@ -38,8 +41,8 @@ export default function ComposablePageCreator() {
     <>
       <Center pt="8" pb="4">
         <Button
-          leftIcon={<PlusIcon />}
-          mb="8"
+          leftIcon={<PlusIcon size="24px" />}
+          mb="4"
           size="lg"
           variant="outline"
           onClick={() =>

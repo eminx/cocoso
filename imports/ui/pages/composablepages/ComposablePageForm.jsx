@@ -28,6 +28,8 @@ import ConfirmModal from '/imports/ui/generic/ConfirmModal';
 import ContentHandler from './components/ContentHandler';
 import BottomToolbar from './components/BottomToolbar';
 import TopToolBar from '/imports/ui/pages/composablepages/components/TopToolbar';
+import ComposablePageCreator from './components/ComposablePageCreator';
+import ComposablePagesListing from './components/ComposablePagesListing';
 
 const getNewRow = (rowType) => {
   const selectedRowType = rowTypes.find(
@@ -49,7 +51,10 @@ const emptyModuleModal = {
   moduleType: null,
 };
 
-export default function ComposablePageForm({ composablePageTitles }) {
+export default function ComposablePageForm({
+  composablePageTitles,
+  getComposablePageTitles,
+}) {
   const [currentPage, setCurrentPage] = useState(null);
   const [contentModal, setContentModal] = useState({
     open: false,
@@ -247,7 +252,24 @@ export default function ComposablePageForm({ composablePageTitles }) {
     }
   };
 
-  if (!currentPage || !composablePageId) {
+  if (!currentPage && !composablePageId) {
+    return null;
+  }
+
+  if (!composablePageId || composablePageId === '*') {
+    return (
+      <>
+        <ComposablePageCreator
+          getComposablePageTitles={getComposablePageTitles}
+        />
+        <ComposablePagesListing
+          composablePageTitles={composablePageTitles}
+        />
+      </>
+    );
+  }
+
+  if (!currentPage) {
     return null;
   }
 
