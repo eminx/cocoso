@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Flex, Link, Text } from '@chakra-ui/react';
 
-import { SpecialPageContext } from '../SpecialPageForm';
+import { ComposablePageContext } from '../ComposablePageForm';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { CheckIcon } from 'lucide-react';
 
 export default function BottomToolbar() {
   const [updated, setUpdated] = useState(false);
-  const { currentPage, setCurrentPage } = useContext(SpecialPageContext);
+  const { currentPage, setCurrentPage } = useContext(
+    ComposablePageContext
+  );
 
   useEffect(() => {
     if (currentPage.ping === false) {
@@ -39,7 +41,12 @@ export default function BottomToolbar() {
     >
       <Flex align="center" color="green.200" mx="4">
         {updated ? <CheckIcon size="16" /> : null}
-        <Text className={updatedClassName} fontSize="sm" fontWeight="bold" ml="1">
+        <Text
+          className={updatedClassName}
+          fontSize="sm"
+          fontWeight="bold"
+          ml="1"
+        >
           Saved
         </Text>
       </Flex>
@@ -48,7 +55,7 @@ export default function BottomToolbar() {
           color="blue.200"
           fontSize="sm"
           fontWeight="bold"
-          href={`http://${currentPage.host}/sp/${currentPage._id}`}
+          href={`http://${currentPage.host}/cp/${currentPage._id}`}
           mr="1"
           target="_blank"
         >

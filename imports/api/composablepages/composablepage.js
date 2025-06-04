@@ -2,11 +2,11 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
 import { Schemas } from '../_utils/schemas';
-import { contentTypes } from '/imports/ui/pages/specialpages/constants';
+import { contentTypes } from '/imports/ui/pages/composablepages/constants';
 
-const SpecialPages = new Mongo.Collection('specialpages');
+const ComposablePages = new Mongo.Collection('composablepages');
 
-SpecialPages.schema = new SimpleSchema({
+ComposablePages.schema = new SimpleSchema({
   _id: Schemas.Id,
   title: { type: String },
   host: Schemas.Hostname,
@@ -43,6 +43,6 @@ SpecialPages.schema = new SimpleSchema({
   latestUpdateAuthorId: { type: String, optional: true },
 });
 
-SpecialPages.attachSchema(SpecialPages.schema);
+ComposablePages.attachSchema(ComposablePages.schema);
 
-export default SpecialPages;
+export default ComposablePages;

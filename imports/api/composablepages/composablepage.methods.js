@@ -1,19 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import SpecialPages from './specialpage';
+import ComposablePages from './composablepage';
 import Hosts from '../hosts/host';
 import { getHost } from '../_utils/shared';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
-  async getSpecialPageById(specialPageId, hostPredefined) {
+  async getComposablePageById(composablePageId, hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     try {
-      return await SpecialPages.findOneAsync(
+      return await ComposablePages.findOneAsync(
         {
-          _id: specialPageId,
+          _id: composablePageId,
           host,
         },
         {
@@ -31,11 +31,11 @@ Meteor.methods({
     }
   },
 
-  async getSpecialPages(hostPredefined) {
+  async getComposablePages(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     try {
-      return await SpecialPages.find({
+      return await ComposablePages.find({
         host,
       }).fetchAsync();
     } catch (error) {
@@ -43,11 +43,11 @@ Meteor.methods({
     }
   },
 
-  async getSpecialPageTitles(hostPredefined) {
+  async getComposablePageTitles(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     try {
-      return await SpecialPages.find(
+      return await ComposablePages.find(
         {
           host,
         },
@@ -64,7 +64,7 @@ Meteor.methods({
     }
   },
 
-  async createSpecialPage(formValues, hostPredefined) {
+  async createComposablePage(formValues, hostPredefined) {
     const user = Meteor.user();
     const host = hostPredefined || getHost(this);
 
@@ -75,7 +75,7 @@ Meteor.methods({
     }
 
     try {
-      const newId = await SpecialPages.insertAsync({
+      const newId = await ComposablePages.insertAsync({
         ...formValues,
         host,
         authorId: user._id,
@@ -89,7 +89,7 @@ Meteor.methods({
     }
   },
 
-  async updateSpecialPage(formValues, hostPredefined) {
+  async updateComposablePage(formValues, hostPredefined) {
     const user = Meteor.user();
     const host = hostPredefined || getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
@@ -98,15 +98,17 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    const specialPageId = formValues._id;
-    const thePage = await SpecialPages.findOneAsync(specialPageId);
+    const composablePageId = formValues._id;
+    const thePage = await ComposablePages.findOneAsync(
+      composablePageId
+    );
 
     if (!thePage) {
       throw new Meteor.Error('Page not found');
     }
 
     try {
-      await SpecialPages.updateAsync(specialPageId, {
+      await ComposablePages.updateAsync(composablePageId, {
         $set: {
           ...formValues,
           latestUpdate: new Date(),
@@ -119,7 +121,7 @@ Meteor.methods({
     }
   },
 
-  async deleteSpecialPage(specialPageId) {
+  async deleteComposablePage(composablePageId) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
@@ -128,14 +130,16 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    const thePage = await SpecialPages.findOneAsync(specialPageId);
+    const thePage = await ComposablePages.findOneAsync(
+      composablePageId
+    );
 
     if (!thePage) {
       throw new Meteor.Error('Page not found');
     }
 
     try {
-      await SpecialPages.removeAsync(specialPageId);
+      await ComposablePages.removeAsync(composablePageId);
     } catch (error) {
       throw new Meteor.Error(error);
     }

@@ -9,7 +9,7 @@ import Members from './Members';
 import Emails from './Emails';
 import EmailNewsletter from './EmailNewsletter';
 import AdminHome from './AdminHome';
-import SpecialPageFormContainer from '../specialpages/SpecialPageFormContainer';
+import ComposablePageFormContainer from '../composablepages/ComposablePageFormContainer';
 import {
   ActivitiesAdmin,
   CalendarAdmin,
@@ -20,6 +20,7 @@ import {
   ResourcesAdmin,
   WorksAdmin,
 } from './features';
+import ComposablePages from '/imports/ui/pages/composablepages';
 
 const getMenuLabel = (menuItems, key) => (
   <Text as="span">
@@ -59,10 +60,10 @@ const getAdminRoutes = (menuItems) => [
     ],
   },
   {
-    label: 'Special Pages',
-    value: 'special-pages/*',
+    label: 'Composable Pages',
+    value: 'composable-pages/*',
     isMulti: false,
-    content: <SpecialPageFormContainer />,
+    content: <ComposablePages />,
   },
   {
     label: <Trans i18nKey="admin:features.title" />,

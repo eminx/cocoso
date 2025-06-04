@@ -1,9 +1,20 @@
 import React, { useContext } from 'react';
-import { Box, Button, Center, Flex, Heading, IconButton, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+} from '@chakra-ui/react';
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/zoom.css';
-import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
+import SortableList, {
+  SortableItem,
+  SortableKnob,
+} from 'react-easy-sort';
 import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-vertical';
 import TrashIcon from 'lucide-react/dist/esm/icons/trash';
 import EditIcon from 'lucide-react/dist/esm/icons/edit';
@@ -13,11 +24,15 @@ import { arrayMoveImmutable } from 'array-move';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { call } from '/imports/ui/utils/shared';
 import { contentTypes, getGridTemplateColumns } from '../constants';
-import { SpecialPageContext } from '../SpecialPageForm';
+import { ComposablePageContext } from '../ComposablePageForm';
 
 export function Column({ column, columnIndex, rowIndex }) {
-  const { currentPage, setCurrentPage, setContentModal, setDeleteModuleModal } =
-    useContext(SpecialPageContext);
+  const {
+    currentPage,
+    setCurrentPage,
+    setContentModal,
+    setDeleteModuleModal,
+  } = useContext(ComposablePageContext);
 
   const handleSelectContent = (content) => {
     const { contentRows } = currentPage;
@@ -123,7 +138,9 @@ export function Column({ column, columnIndex, rowIndex }) {
                   rightIcon={<EditIcon size="16px" />}
                   size="sm"
                   variant="ghost"
-                  onClick={() => handleOpenContentModal(content, contentIndex)}
+                  onClick={() =>
+                    handleOpenContentModal(content, contentIndex)
+                  }
                 >
                   {content.type}
                 </Button>
@@ -165,7 +182,10 @@ export function Column({ column, columnIndex, rowIndex }) {
           }
         >
           {contentTypes.map((content) => (
-            <MenuItem key={content.type} onClick={() => handleSelectContent(content)}>
+            <MenuItem
+              key={content.type}
+              onClick={() => handleSelectContent(content)}
+            >
               {content.type}
             </MenuItem>
           ))}
@@ -189,8 +209,15 @@ export default function Row({ row, rowIndex }) {
   return (
     <Box display="grid" gridTemplateColumns={gridTemplalateColumns}>
       {columns.map((column, columnIndex) => (
-        <Box key={gridType + columnIndex} gridTemplateColumns={gridTemplalateColumns}>
-          <Column column={column} columnIndex={columnIndex} rowIndex={rowIndex} />
+        <Box
+          key={gridType + columnIndex}
+          gridTemplateColumns={gridTemplalateColumns}
+        >
+          <Column
+            column={column}
+            columnIndex={columnIndex}
+            rowIndex={rowIndex}
+          />
         </Box>
       ))}
     </Box>

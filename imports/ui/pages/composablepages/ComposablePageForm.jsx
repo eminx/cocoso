@@ -1,11 +1,22 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Center, Flex, Heading, IconButton, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+} from '@chakra-ui/react';
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/zoom.css';
 import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-vertical';
-import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
+import SortableList, {
+  SortableItem,
+  SortableKnob,
+} from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
 
 import { call } from '/imports/ui/utils/shared';
@@ -18,14 +29,16 @@ import ContentHandler from './components/ContentHandler';
 import BottomToolbar from './components/BottomToolbar';
 
 const getNewRow = (rowType) => {
-  const selectedRowType = rowTypes.find((type) => type.value === rowType);
+  const selectedRowType = rowTypes.find(
+    (type) => type.value === rowType
+  );
   return {
     gridType: selectedRowType.value,
     columns: selectedRowType.columns,
   };
 };
 
-export const SpecialPageContext = createContext(null);
+export const ComposablePageContext = createContext(null);
 
 const emptyModuleModal = {
   visible: false,
@@ -35,22 +48,23 @@ const emptyModuleModal = {
   moduleType: null,
 };
 
-export default function SpecialPageForm() {
+export default function ComposablePageForm() {
   const [currentPage, setCurrentPage] = useState(null);
   const [contentModal, setContentModal] = useState({
     open: false,
     content: null,
   });
-  const [deleteModuleModal, setDeleteModuleModal] = useState(emptyModuleModal);
-  const { specialPageId } = useParams();
+  const [deleteModuleModal, setDeleteModuleModal] =
+    useState(emptyModuleModal);
+  const { composablePageId } = useParams();
 
-  const getSpecialPageById = async (id) => {
+  const getComposablePageById = async (id) => {
     if (!id || id === '*') {
       return;
     }
 
     try {
-      const response = await call('getSpecialPageById', id);
+      const response = await call('getComposablePageById', id);
       setCurrentPage(response);
     } catch (error) {
       message.error(error.reason || error.error);
@@ -58,11 +72,11 @@ export default function SpecialPageForm() {
   };
 
   useEffect(() => {
-    if (!specialPageId) {
+    if (!composablePageId) {
       return;
     }
-    getSpecialPageById(specialPageId);
-  }, [specialPageId]);
+    getComposablePageById(composablePageId);
+  }, [composablePageId]);
 
   useEffect(() => {
     if (!currentPage || !currentPage.ping) {
@@ -85,7 +99,7 @@ export default function SpecialPageForm() {
       }));
       return;
     }
-    updateSpecialPage();
+    updateComposablePage();
   }, [currentPage?.contentRows]);
 
   useEffect(() => {
@@ -110,7 +124,11 @@ export default function SpecialPageForm() {
   const handleSortRows = (oldIndex, newIndex) => {
     setCurrentPage((prevPage) => ({
       ...prevPage,
-      contentRows: arrayMoveImmutable(prevPage.contentRows, oldIndex, newIndex),
+      contentRows: arrayMoveImmutable(
+        prevPage.contentRows,
+        oldIndex,
+        newIndex
+      ),
       ping: true,
     }));
   };
@@ -122,7 +140,9 @@ export default function SpecialPageForm() {
     const rowIndex = deleteModuleModal.rowIndex;
     setCurrentPage((prevPage) => ({
       ...prevPage,
-      contentRows: prevPage.contentRows.filter((_, index) => index !== rowIndex),
+      contentRows: prevPage.contentRows.filter(
+        (_, index) => index !== rowIndex
+      ),
       ping: true,
     }));
     setDeleteModuleModal(emptyModuleModal);
@@ -142,7 +162,9 @@ export default function SpecialPageForm() {
             ...row,
             columns: row.columns.map((column, colIndex) => {
               if (colIndex === columnIndex) {
-                return column.filter((_, index) => index !== contentIndex);
+                return column.filter(
+                  (_, index) => index !== contentIndex
+                );
               }
               return column;
             }),
@@ -160,7 +182,8 @@ export default function SpecialPageForm() {
   };
 
   const handleDeleteModule = () => {
-    const { contentIndex, columnIndex, rowIndex, moduleType } = deleteModuleModal;
+    const { contentIndex, columnIndex, rowIndex, moduleType } =
+      deleteModuleModal;
     switch (moduleType) {
       case 'row':
         handleDeleteRow();
@@ -178,7 +201,8 @@ export default function SpecialPageForm() {
       return;
     }
 
-    const { content, contentIndex, columnIndex, rowIndex } = contentModal;
+    const { content, contentIndex, columnIndex, rowIndex } =
+      contentModal;
 
     setCurrentPage((prevPage) => ({
       ...prevPage,
@@ -205,7 +229,7 @@ export default function SpecialPageForm() {
     }));
   };
 
-  const updateSpecialPage = async () => {
+  const updateComposablePage = async () => {
     const newPage = {
       _id: currentPage._id,
       title: currentPage.title,
@@ -213,7 +237,7 @@ export default function SpecialPageForm() {
     };
 
     try {
-      await call('updateSpecialPage', newPage);
+      await call('updateComposablePage', newPage);
       setCurrentPage((prevPage) => ({ ...prevPage, ping: false }));
       setContentModal({ open: false, content: null });
       message.success('Special page updated successfully');
@@ -222,7 +246,7 @@ export default function SpecialPageForm() {
     }
   };
 
-  if (!currentPage || !specialPageId) {
+  if (!currentPage || !composablePageId) {
     return null;
   }
 
@@ -238,7 +262,7 @@ export default function SpecialPageForm() {
 
   return (
     <div>
-      <SpecialPageContext.Provider value={contextValue}>
+      <ComposablePageContext.Provider value={contextValue}>
         <Heading size="lg" my="6" textAlign="center">
           {currentPage.title}
         </Heading>
@@ -268,7 +292,11 @@ export default function SpecialPageForm() {
                       size="xs"
                       variant="link"
                       onClick={() =>
-                        setDeleteModuleModal({ moduleType: 'row', rowIndex, visible: true })
+                        setDeleteModuleModal({
+                          moduleType: 'row',
+                          rowIndex,
+                          visible: true,
+                        })
                       }
                     >
                       Remove Row
@@ -314,8 +342,12 @@ export default function SpecialPageForm() {
           title="Add Content"
           visible={contentModal?.open}
           onConfirm={handleSaveContentModal}
-          onCancel={(prevState) => setContentModal({ open: false, content: null })}
-          onOverlayClick={(prevState) => setContentModal({ open: false, content: null })}
+          onCancel={(prevState) =>
+            setContentModal({ open: false, content: null })
+          }
+          onOverlayClick={(prevState) =>
+            setContentModal({ open: false, content: null })
+          }
         >
           <ContentHandler />
         </ConfirmModal>
@@ -328,10 +360,15 @@ export default function SpecialPageForm() {
           onConfirm={() => handleDeleteModule()}
           onCancel={() => setDeleteModuleModal(emptyModuleModal)}
         >
-          <Text mb="2">Are you sure you want to delete this module?</Text>
-          <Text>If you confirm, the selected module will be deleted and cannot be reverted.</Text>
+          <Text mb="2">
+            Are you sure you want to delete this module?
+          </Text>
+          <Text>
+            If you confirm, the selected module will be deleted and
+            cannot be reverted.
+          </Text>
         </ConfirmModal>
-      </SpecialPageContext.Provider>
+      </ComposablePageContext.Provider>
     </div>
   );
 }

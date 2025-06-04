@@ -33,7 +33,7 @@ export const contentTypes = [
   },
 ];
 
-export const emtptySpecialPage = {
+export const emtptyComposablePage = {
   title: '',
   contentRows: [
     {

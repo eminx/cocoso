@@ -12,7 +12,7 @@ import { Trans } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
 
-import { getResponsiveGridColumns } from '/imports/ui/pages/specialpages/constants';
+import { getResponsiveGridColumns } from '/imports/ui/pages/composablepages/constants';
 import { Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -43,31 +43,33 @@ function ContentModule({ module }) {
   switch (type) {
     case 'button':
       return (
-        <Box py="2">
+        <Center py="4">
           <Button onClick={handleButtonClick}>{value.label}</Button>
-        </Box>
+        </Center>
       );
     case 'image':
       return (
-        <Box py="2">
+        <Center py="4">
           <Image src={value.src} />
-        </Box>
+        </Center>
       );
     case 'image-slider':
       return (
-        <Center py="2">
+        <Center py="4">
           <EmblaSlider images={value.images} />
         </Center>
       );
     case 'text':
       return (
-        <Box className="text-content" py="2">
-          {value.html ? HTMLReactParser(value.html) : null}
-        </Box>
+        <Center>
+          <Box className="text-content" maxW="480px" py="4">
+            {value.html ? HTMLReactParser(value.html) : null}
+          </Box>
+        </Center>
       );
     case 'video':
       return (
-        <Box py="2">
+        <Box py="4">
           <ReactPlayer
             controls
             height="auto"
@@ -87,20 +89,20 @@ function ContentModule({ module }) {
   }
 }
 
-export default function SpecialPageHybrid({ specialPage, Host }) {
-  if (!specialPage) {
+export default function ComposablePageHybrid({ composablePage, Host }) {
+  if (!composablePage) {
     return null;
   }
 
-  const thisSpecialPageInMenu = Host?.settings?.menu.find(
-    (item) => item.name === specialPage.title
+  const thisComposablePageInMenu = Host?.settings?.menu.find(
+    (item) => item.name === composablePage.title
   );
 
-  const url = `https://${specialPage.host}/sp/${specialPage.id}`;
+  const url = `https://${composablePage.host}/sp/${composablePage.id}`;
 
   return (
     <Flex flexDirection="column">
-      {specialPage.contentRows.map((row, rowIndex) => (
+      {composablePage.contentRows.map((row, rowIndex) => (
         <Box
           key={rowIndex}
           display="grid"

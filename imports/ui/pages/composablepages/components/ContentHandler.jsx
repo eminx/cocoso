@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player';
 
 import Quill from '/imports/ui/forms/Quill';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
-import { SpecialPageContext } from '../SpecialPageForm';
+import { ComposablePageContext } from '../ComposablePageForm';
 import FormField from '/imports/ui/forms/FormField';
 
 function ButtonContent({ value, onChange }) {
@@ -125,8 +125,9 @@ function VideoContent({ value, onChange }) {
 }
 
 export default function ContentHandler() {
-  const { contentModal, setContentModal } =
-    useContext(SpecialPageContext);
+  const { contentModal, setContentModal } = useContext(
+    ComposablePageContext
+  );
 
   if (!contentModal) {
     return null;

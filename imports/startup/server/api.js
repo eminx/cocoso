@@ -53,5 +53,5 @@ import '../../api/keywords/keywords.methods';
 
 import '../../api/newsletters/newsletter';
 
-import '../../api/specialpages/specialpage';
-import '../../api/specialpages/specialpage.methods';
+import '../../api/composablepages/composablepage';
+import '../../api/composablepages/composablepage.methods';
