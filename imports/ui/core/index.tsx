@@ -88,7 +88,9 @@ const alertColors = {
 export const Alert = styled('div', (props: AlertProps) => ({
   padding: '1rem',
   borderRadius: '0.375rem',
-  backgroundColor: props.status ? `${alertColors[props.status]}20` : '#3182CE20',
+  backgroundColor: props.status
+    ? `${alertColors[props.status]}20`
+    : '#3182CE20',
   border: '1px solid',
   borderColor: props.status ? alertColors[props.status] : '#3182CE',
   color: props.status ? alertColors[props.status] : '#3182CE',
@@ -232,6 +234,7 @@ export const Grid = styled('div', (props: GridProps) => ({
 
 // Heading
 interface HeadingProps {
+  color?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
@@ -245,12 +248,18 @@ const headingSizes = {
   '2xl': '3rem',
 };
 
-export const Heading = styled('h2', (props: HeadingProps) => ({
-  fontWeight: 700,
-  lineHeight: 1.2,
-  fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
-  // ...transformProps(props),
-}));
+export const Heading = styled('h2', (props: HeadingProps) => {
+  const color = props.color?.split('.');
+  return {
+    color: color
+      ? `var(--chakra-colors-${color[0]}-${color[1]})`
+      : 'inherit',
+    fontWeight: 700,
+    fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
+    lineHeight: 1.2,
+    // ...transformProps(props),
+  };
+});
 
 // Image
 export const Image = styled('img', (props: any) => ({
@@ -293,7 +302,8 @@ export const MenuButton = styled(Button, {
 export const MenuList = styled('div', (props: MenuProps) => ({
   backgroundColor: 'white',
   borderRadius: '0.375rem',
-  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+  boxShadow:
+    '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
   display: props.isOpen ? 'block' : 'none',
   marginTop: '0.25rem',
   minWidth: '200px',
@@ -360,10 +370,18 @@ const fontSizes = {
   '9xl': '8rem',
 };
 
-export const Text = styled('p', (props: TextProps) => ({
-  fontSize: props.size ? fontSizes[props.size as keyof typeof fontSizes] : fontSizes.md,
-  // ...transformProps(props),
-}));
+export const Text = styled('p', (props: TextProps) => {
+  const color = props.color?.split('.');
+  return {
+    color: color
+      ? `var(--chakra-colors-${color[0]}-${color[1]})`
+      : 'gray.800',
+    fontSize: props.size
+      ? fontSizes[props.size as keyof typeof fontSizes]
+      : fontSizes.md,
+    // ...transformProps(props),
+  };
+});
 
 // export const Modal = styled.div`
 //   position: fixed;

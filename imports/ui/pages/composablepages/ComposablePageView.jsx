@@ -9,7 +9,6 @@ import { useParams } from 'react-router-dom';
 import { message } from '/imports/ui/generic/message';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
-import { Heading, Text, Image } from '/imports/ui/core';
 import ComposablePageHybrid from '../../entry/ComposablePageHybrid';
 
 export default function ComposablePageView() {
@@ -57,17 +56,9 @@ export default function ComposablePageView() {
   }
 
   return (
-    <>
-      <Heading
-        size="xl"
-        css={{ textAlign: 'center', margin: '1rem 0' }}
-      >
-        {composablePage.title}
-      </Heading>
-      <ComposablePageHybrid
-        composablePage={composablePage}
-        Host={currentHost}
-      />
-    </>
+    <ComposablePageHybrid
+      composablePage={composablePage}
+      Host={currentHost}
+    />
   );
 }

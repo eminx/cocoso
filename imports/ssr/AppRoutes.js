@@ -7,6 +7,7 @@ import {
   ActivityList,
   Activity,
   Communities,
+  ComposablePage,
   Home,
   GroupList,
   Group,
@@ -45,56 +46,61 @@ const AppRoutesSSR = (host, sink) => {
       element: <ActivityList {...props} />,
     },
     {
-      path: '/groups',
-      element: <GroupList {...props} />,
-    },
-    {
-      path: '/resources',
-      element: <ResourceList {...props} />,
-    },
-    {
-      path: '/works',
-      element: <WorkList {...props} />,
-    },
-    {
-      path: '/people',
-      element: <UserList {...props} />,
-    },
-    {
-      path: '/communities',
-      element: <Communities {...props} />,
+      path: '/activities/:activityId/*',
+      element: <Activity {...props} />,
     },
     {
       path: '/calendar',
       element: <LoaderSSR />,
     },
     {
-      path: '/activities/:activityId/*',
-      element: <Activity {...props} />,
+      path: '/communities',
+      element: <Communities {...props} />,
+    },
+    {
+      path: '/cp/:composablePageId/*',
+      element: <ComposablePage {...props} />,
+    },
+
+    {
+      path: '/groups',
+      element: <GroupList {...props} />,
     },
     {
       path: '/groups/:groupId/*',
       element: <Group {...props} />,
     },
     {
+      path: '/info/:pageTitle',
+      element: <Page {...props} />,
+    },
+    {
       path: '/pages/:pageTitle',
       element: <Page {...props} />,
     },
     {
-      path: '/info/:pageTitle',
-      element: <Page {...props} />,
+      path: '/people',
+      element: <UserList {...props} />,
+    },
+    {
+      path: '/resources',
+      element: <ResourceList {...props} />,
     },
     {
       path: '/resources/:resourceId/*',
       element: <Resource {...props} />,
     },
     {
-      path: '/:usernameSlug/works/:workId/*',
-      element: <Work {...props} />,
+      path: '/works',
+      element: <WorkList {...props} />,
     },
     {
       path: '/:usernameSlug/*',
       element: <User {...props} />,
+    },
+    {
+      path: '/:usernameSlug/works/:workId/*',
+      element: <Work {...props} />,
     },
     {
       path: '/*',

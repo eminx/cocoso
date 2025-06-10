@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 
 import WrapperSSR from '../../ui/layout/WrapperSSR';
 import ActivityHybrid from '../../ui/entry/ActivityHybrid';
+import ComposablePageHybrid from '/imports/ui/entry/ComposablePageHybrid';
 import GroupsHybrid from '../../ui/listing/GroupsHybrid';
 import GroupHybrid from '../../ui/entry/GroupHybrid';
 import ResourcesHybrid from '../../ui/listing/ResourcesHybrid';
@@ -19,7 +20,10 @@ import CommunitiesHybrid from '../../ui/pages/hosts/CommunitiesHybrid';
 function parsePreloadedState(item) {
   return `
     <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify(item).replace(/</g, '\\u003c')};
+      window.__PRELOADED_STATE__ = ${JSON.stringify(item).replace(
+        /</g,
+        '\\u003c'
+      )};
     </script>
   `;
 }
@@ -30,7 +34,10 @@ export function ActivityList({ host, sink }) {
 
   const Host = Meteor.call('getHost', host);
   const activities = Host.isPortalHost
-    ? Meteor.call('getAllPublicActivitiesFromAllHosts', Boolean(showPast))
+    ? Meteor.call(
+        'getAllPublicActivitiesFromAllHosts',
+        Boolean(showPast)
+      )
     : Meteor.call('getAllPublicActivities', Boolean(showPast), host);
 
   sink.appendToBody(parsePreloadedState({ activities, Host }));
@@ -41,7 +48,11 @@ export function ActivityList({ host, sink }) {
 
   return (
     <WrapperSSR Host={Host} sink={sink}>
-      <ActivitiesHybrid activities={activities} Host={Host} showPast={showPast} />
+      <ActivitiesHybrid
+        activities={activities}
+        Host={Host}
+        showPast={showPast}
+      />
     </WrapperSSR>
   );
 }
@@ -76,9 +87,37 @@ export function Calendar({ host, sink }) {
   return <WrapperSSR Host={Host} sink={sink} />;
 }
 
+export function ComposablePage({ host, sink }) {
+  const { composablePageId } = useParams();
+  const composablePage = Meteor.call(
+    'getComposablePageById',
+    composablePageId
+  );
+  const Host = Meteor.call('getHost', host);
+
+  sink.appendToBody(parsePreloadedState({ Host }));
+
+  if (!Host) {
+    return null;
+  }
+
+  return (
+    <WrapperSSR Host={Host} sink={sink}>
+      <ComposablePageHybrid
+        composablePage={composablePage}
+        Host={Host}
+      />
+    </WrapperSSR>
+  );
+}
+
 export function GroupList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
-  const groups = Meteor.call('getGroupsWithMeetings', Host?.isPortalHost, host);
+  const groups = Meteor.call(
+    'getGroupsWithMeetings',
+    Host?.isPortalHost,
+    host
+  );
 
   sink.appendToBody(parsePreloadedState({ groups, Host }));
 
@@ -125,7 +164,10 @@ export function ResourceList({ host, sink }) {
 export function Resource({ host, sink }) {
   const { resourceId } = useParams();
   const resource = Meteor.call('getResourceById', resourceId);
-  const documents = Meteor.call('getDocumentsByAttachments', resourceId);
+  const documents = Meteor.call(
+    'getDocumentsByAttachments',
+    resourceId
+  );
   const Host = Meteor.call('getHost', host);
 
   sink.appendToBody(parsePreloadedState({ documents, resource, Host }));
@@ -136,7 +178,11 @@ export function Resource({ host, sink }) {
 
   return (
     <WrapperSSR isEntryPage Host={Host}>
-      <ResourceHybrid documents={documents} resource={resource} Host={Host} />
+      <ResourceHybrid
+        documents={documents}
+        resource={resource}
+        Host={Host}
+      />
     </WrapperSSR>
   );
 }

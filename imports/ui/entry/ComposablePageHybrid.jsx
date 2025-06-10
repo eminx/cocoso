@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -17,8 +17,8 @@ import { Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
 
-function ContentModule({ module }) {
-  const { currentHost } = useContext(StateContext);
+function ContentModule({ module, Host }) {
+  const currentHost = Host;
   if (!module || !module.value || !module.type) {
     return null;
   }
@@ -101,26 +101,34 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
   const url = `https://${composablePage.host}/sp/${composablePage.id}`;
 
   return (
-    <Flex flexDirection="column">
-      {composablePage.contentRows.map((row, rowIndex) => (
-        <Box
-          key={rowIndex}
-          display="grid"
-          gridTemplateColumns={getResponsiveGridColumns(row.gridType)}
-          gap={{ base: 2, md: 4 }}
-          p="4"
-        >
-          {row.columns.map((column, columnIndex) => (
-            <Box key={columnIndex}>
-              {column.map((module, moduleIndex) => (
-                <Box key={module.type + moduleIndex}>
-                  <ContentModule module={module} />
-                </Box>
-              ))}
-            </Box>
-          ))}
-        </Box>
-      ))}
-    </Flex>
+    <>
+      <Heading
+        size="xl"
+        css={{ textAlign: 'center', margin: '1rem 0' }}
+      >
+        {composablePage.title}
+      </Heading>
+      <Flex flexDirection="column">
+        {composablePage.contentRows.map((row, rowIndex) => (
+          <Box
+            key={rowIndex}
+            display="grid"
+            gridTemplateColumns={getResponsiveGridColumns(row.gridType)}
+            gap={{ base: 2, md: 4 }}
+            p="4"
+          >
+            {row.columns.map((column, columnIndex) => (
+              <Box key={columnIndex}>
+                {column.map((module, moduleIndex) => (
+                  <Box key={module.type + moduleIndex}>
+                    <ContentModule module={module} Host={Host} />
+                  </Box>
+                ))}
+              </Box>
+            ))}
+          </Box>
+        ))}
+      </Flex>
+    </>
   );
 }

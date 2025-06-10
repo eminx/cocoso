@@ -2,7 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, ChakraProvider, ColorModeProvider, useMediaQuery } from '@chakra-ui/react';
+import {
+  Box,
+  ChakraProvider,
+  ColorModeProvider,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -33,7 +38,10 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [hue, setHue] = useState('233');
   const [rendered, setRendered] = useState(false);
   const [, i18n] = useTranslation();
-  const [isDesktop, isMobile] = useMediaQuery(['(min-width: 960px)', '(max-width: 480px)']);
+  const [isDesktop, isMobile] = useMediaQuery([
+    '(min-width: 960px)',
+    '(max-width: 480px)',
+  ]);
   const location = useLocation();
   const { pathname } = location;
   const [tc] = useTranslation('common');
@@ -125,13 +133,19 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const hostWithinUser =
     currentUser &&
     currentUser.memberships &&
-    currentUser.memberships.find((membership) => membership.host === window.location.host);
+    currentUser.memberships.find(
+      (membership) => membership.host === window.location.host
+    );
 
   const role = hostWithinUser && hostWithinUser.role;
-  const canCreateContent = role && ['admin', 'contributor'].includes(role);
+  const canCreateContent =
+    role && ['admin', 'contributor'].includes(role);
 
-  const isFederationFooter = platform?.isFederationLayout && platform.footer;
-  const isEntryPage = pathnameSplitted[1] !== 'pages' && Boolean(pathnameSplitted[2]);
+  const isFederationFooter =
+    platform?.isFederationLayout && platform.footer;
+  const isLogoSmall =
+    !['pages', 'cp'].includes(pathnameSplitted[1]) &&
+    Boolean(pathnameSplitted[2]);
 
   const adminPage = pathnameSplitted[1] === 'admin';
 
@@ -162,18 +176,30 @@ function LayoutPage({ currentUser, userLoading, children }) {
           >
             <DummyWrapper animate={rendered && !isDesktop}>
               {rendered && !adminPage && (
-                <TopBarHandler currentUser={currentUser} slideStart={rendered} />
+                <TopBarHandler
+                  currentUser={currentUser}
+                  slideStart={rendered}
+                />
               )}
               {!adminPage && (
-                <Header Host={currentHost} isLogoSmall={isEntryPage} pageTitles={pageTitles} />
+                <Header
+                  Host={currentHost}
+                  isLogoSmall={isLogoSmall}
+                  pageTitles={pageTitles}
+                />
               )}
               {children}
             </DummyWrapper>
 
             {rendered && !adminPage && (
               <Box>
-                <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} />
-                {isFederationFooter && <PlatformFooter platform={platform} />}
+                <Footer
+                  currentHost={currentHost}
+                  isFederationFooter={isFederationFooter}
+                />
+                {isFederationFooter && (
+                  <PlatformFooter platform={platform} />
+                )}
               </Box>
             )}
           </StateContext.Provider>
