@@ -203,8 +203,9 @@ composable:
     removeRow: Remove row
     title: Title
   confirmDelete:
-    text: If you confirm, the selected module will be deleted and cannot be reverted.
-    title: Are you sure you want to delete this module?
+    title: Confirm Deletion
+    text1: Are you sure you want to delete this module?
+    text2: If you confirm, the selected module will be deleted and cannot be reverted.
   settings:
     title: Settings
   toolbar:

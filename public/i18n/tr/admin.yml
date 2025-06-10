@@ -57,7 +57,7 @@ organization:
 
 users:
   title: Kullanıcılar
-  shortcutHelper: Kullanıcılarınızı yönet. Onları doğrula veya onayla veya yönetici olarak tayin et.
+  shortcutHelper: Kullanıcılarınızı yönet, onları doğrula/onayla veya yönetici olarak tayin et
 
 menu:
   title: Menü
@@ -101,7 +101,7 @@ color:
 
 # ADMIN EMAILS PAGE
 emails:
-  title: Otomatik Epostalar
+  title: Otomatik E-postalar
   shortcutHelper: Kullanıcıların kaydolduklarında veya doğrulandıklarında veya yönetici olduklarında aldıkları otomatik e-postaları ayarla
   form:
     subject:
@@ -127,7 +127,7 @@ emails:
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
-  title: Eposta Bülteni Yolla
+  title: E-posta Bülteni Yolla
   shortcutHelper: Tüm kullanıcılarınıza aynı anda bir e-posta bülteni gönder
   subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsin.
   subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik ögeleri.'
@@ -203,8 +203,9 @@ composable:
     removeRow: Satırı kaldır
     title: Başlık
   confirmedDelete:
-    text: Onaylarsan, seçili modül silinecek ve geri alınamayacaktır.
-    title: Bu modülü silmek istediğinden emin misin?
+    title: Silmeyi onayla
+    text1: Bu modülü silmek istediğinden emin misin?
+    text2: Onaylarsan, seçili modül silinecek ve geri alınamayacaktır.
   settings:
     title: Ayarlar
   toolbar:

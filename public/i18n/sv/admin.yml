@@ -203,8 +203,9 @@ composable:
     removeRow: Ta bort rad
     title: Titel
   confirmDelete:
-    text: Om du bekräftar kommer den valda modulen att tas bort och kan inte återställas.
-    title: Är du säker på att du vill ta bort den här modulen?
+    title: Bekräfta borttagning
+    text1: Är du säker på att du vill ta bort den här modulen?
+    text2: Om du bekräftar kommer den valda modulen att tas bort och kan inte återställas.
   settings:
     title: Inställningar
   toolbar:

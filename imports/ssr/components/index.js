@@ -262,7 +262,7 @@ export function User({ host, sink }) {
   if (usernameSlug && usernameSlug[0] !== '@') {
     return null;
   }
-  const [, username] = usernameSlug.split('@');
+  const [, username] = usernameSlug?.split('@');
   const user = Meteor.call('getUserInfo', username, host);
 
   if (!user) {

@@ -9,16 +9,18 @@ import {
   IconButton,
   Text,
 } from '@chakra-ui/react';
+import { Trans } from 'react-i18next';
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/zoom.css';
-import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-vertical';
+import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
 import SortableList, {
   SortableItem,
   SortableKnob,
 } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
-import { Trans } from 'react-i18next';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { call } from '/imports/ui/utils/shared';
 import Boxling from '/imports/ui/pages/admin/Boxling';
@@ -286,114 +288,117 @@ export default function ComposablePageForm({
 
   return (
     <div>
-      <ComposablePageContext.Provider value={contextValue}>
-        <TopToolBar composablePageTitles={composablePageTitles} />
+      <DndProvider backend={HTML5Backend}>
+        <ComposablePageContext.Provider value={contextValue}>
+          <TopToolBar composablePageTitles={composablePageTitles} />
 
-        <Heading size="lg" my="6" textAlign="center">
-          {currentPage.title}
-        </Heading>
+          <Heading size="lg" my="6" textAlign="center">
+            {currentPage.title}
+          </Heading>
 
-        <SortableList onSortEnd={handleSortRows}>
-          {currentPage.contentRows?.map((row, rowIndex) => (
-            <SortableItem key={row.gridType + rowIndex}>
-              <Flex>
-                <Box style={{ flexGrow: 0, flexShrink: 0 }}>
-                  <SortableKnob>
-                    <IconButton
-                      colorScheme="gray"
-                      cursor="move"
-                      icon={<DragHandleIcon />}
-                      p="2"
-                      size="sm"
-                      variant="ghost"
-                    />
-                  </SortableKnob>
-                </Box>
-                <Boxling bg="blueGray.300" flexGrow={1} mb="4" p="2">
-                  <Row row={row} rowIndex={rowIndex} />
-                  <Center>
-                    <Button
-                      colorScheme="red"
-                      my="2"
-                      size="xs"
-                      variant="link"
-                      onClick={() =>
-                        setDeleteModuleModal({
-                          moduleType: 'row',
-                          rowIndex,
-                          visible: true,
-                        })
-                      }
-                    >
-                      <Trans i18nKey="admin:composable.form.removeRow" />
-                    </Button>
-                  </Center>
-                </Boxling>
-              </Flex>
-            </SortableItem>
-          ))}
-        </SortableList>
+          <SortableList onSortEnd={handleSortRows}>
+            {currentPage.contentRows?.map((row, rowIndex) => (
+              <SortableItem key={row.gridType + rowIndex}>
+                <Flex>
+                  <Box style={{ flexGrow: 0, flexShrink: 0 }}>
+                    <SortableKnob>
+                      <IconButton
+                        colorScheme="gray"
+                        cursor="move"
+                        icon={<ArrowUpDownIcon />}
+                        p="2"
+                        size="sm"
+                        variant="ghost"
+                      />
+                    </SortableKnob>
+                  </Box>
+                  <Boxling bg="blueGray.300" flexGrow={1} mb="4" p="2">
+                    <Row row={row} rowIndex={rowIndex} />
+                    <Center>
+                      <Button
+                        colorScheme="red"
+                        my="2"
+                        size="xs"
+                        variant="link"
+                        onClick={() =>
+                          setDeleteModuleModal({
+                            moduleType: 'row',
+                            rowIndex,
+                            visible: true,
+                          })
+                        }
+                      >
+                        <Trans i18nKey="admin:composable.form.removeRow" />
+                      </Button>
+                    </Center>
+                  </Boxling>
+                </Flex>
+              </SortableItem>
+            ))}
+          </SortableList>
 
-        <Flex>
-          <Box w="40px" style={{ flexGrow: 0, flexShrink: 0 }} />
-          <Center mt="4" mb="12" flexGrow={1}>
-            <Menu
-              placement="bottom"
-              menuButton={
-                <Button size="sm" variant="outline">
-                  <Trans i18nKey="admin:composable.form.addRow" />
-                </Button>
-              }
-              transition
-              onItemClick={(event) => {
-                handleAddRow(event.value);
-              }}
-            >
-              {rowTypes.map((rowType) => (
-                <MenuItem key={rowType.value} value={rowType.value}>
-                  {rowType.label}
-                </MenuItem>
-              ))}
-            </Menu>
+          <Flex>
+            <Box w="40px" style={{ flexGrow: 0, flexShrink: 0 }} />
+            <Center mt="4" mb="12" flexGrow={1}>
+              <Menu
+                placement="bottom"
+                menuButton={
+                  <Button size="sm" variant="outline">
+                    <Trans i18nKey="admin:composable.form.addRow" />
+                  </Button>
+                }
+                transition
+                onItemClick={(event) => {
+                  handleAddRow(event.value);
+                }}
+              >
+                {rowTypes.map((rowType) => (
+                  <MenuItem key={rowType.value} value={rowType.value}>
+                    {rowType.label}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Center>
+          </Flex>
+
+          <Center>
+            <BottomToolbar />
           </Center>
-        </Flex>
 
-        <Center>
-          <BottomToolbar />
-        </Center>
+          <ConfirmModal
+            confirmButtonProps={{ isLoading: contentModal?.uploading }}
+            size="xl"
+            title={<Trans i18nKey="admin:composable.form.addContent" />}
+            visible={contentModal?.open}
+            onConfirm={handleSaveContentModal}
+            onCancel={(prevState) =>
+              setContentModal({ open: false, content: null })
+            }
+            onOverlayClick={(prevState) =>
+              setContentModal({ open: false, content: null })
+            }
+          >
+            <ContentHandler />
+          </ConfirmModal>
 
-        <ConfirmModal
-          confirmButtonProps={{ isLoading: contentModal?.uploading }}
-          size="xl"
-          title={<Trans i18nKey="admin:composable.form.addContent" />}
-          visible={contentModal?.open}
-          onConfirm={handleSaveContentModal}
-          onCancel={(prevState) =>
-            setContentModal({ open: false, content: null })
-          }
-          onOverlayClick={(prevState) =>
-            setContentModal({ open: false, content: null })
-          }
-        >
-          <ContentHandler />
-        </ConfirmModal>
-
-        <ConfirmModal
-          confirmButtonProps={{ colorScheme: 'red' }}
-          confirmText="Delete"
-          title="Are you sure?"
-          visible={deleteModuleModal.visible}
-          onConfirm={() => handleDeleteModule()}
-          onCancel={() => setDeleteModuleModal(emptyModuleModal)}
-        >
-          <Text mb="2">
-            <Trans i18nKey="admin:composable.form.confirmDelete.title" />
-          </Text>
-          <Text>
-            <Trans i18nKey="admin:composable.form.confirmDelete.text" />
-          </Text>
-        </ConfirmModal>
-      </ComposablePageContext.Provider>
+          <ConfirmModal
+            confirmButtonProps={{ colorScheme: 'red' }}
+            title={
+              <Trans i18nKey="admin:composable.confirmDelete.title" />
+            }
+            visible={deleteModuleModal.visible}
+            onConfirm={() => handleDeleteModule()}
+            onCancel={() => setDeleteModuleModal(emptyModuleModal)}
+          >
+            <Text fontWeight="bold" mb="2">
+              <Trans i18nKey="admin:composable.confirmDelete.text1" />
+            </Text>
+            <Text>
+              <Trans i18nKey="admin:composable.confirmDelete.text2" />
+            </Text>
+          </ConfirmModal>
+        </ComposablePageContext.Provider>
+      </DndProvider>
     </div>
   );
 }
