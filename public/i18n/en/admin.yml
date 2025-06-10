@@ -10,15 +10,19 @@ settings:
   tabs:
     general: General
     logo: Logo
+    logoHelper: Upload your logo for your the website
     info: Info
+    infoHelper: Add info about your organization
     categories: Categories
     menu: Menu
+    menuHelper: Build and configure the main menu
     cats: Categories
     menuVisibility: Visibility
     menuOrder: Order
     options: Options
     color: Color
     footer: Footer
+    footerHelper: Compose the footer for your website
     topbar: Topbar
 
 logo:
@@ -53,6 +57,7 @@ organization:
 
 users:
   title: Users
+  shortcutHelper: Manege your users. Verify or unverify them, or set them as admin
 
 menu:
   title: Menu
@@ -97,6 +102,7 @@ color:
 # ADMIN EMAILS PAGE
 emails:
   title: Automated Emails
+  shortcutHelper: Setup automated emails that users receive when they signup, or become verified or admin
   form:
     subject:
       label: Subject
@@ -122,6 +128,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Send a Newsletter
+  shortcutHelper: Send an email newsletter to all your users at once.
   subtitle: Here you can compose an email and easily attach published content from the website, and then send out to all members of your community.
   subtitle2: 'To compose the email below, you have to enter at least one of: body text, an image and/or selected content items listed in the community app.'
   contenthelper: You may insert existing content from the listing pages by selecting the entries you want to attach within the email below.
@@ -150,8 +157,9 @@ newsletter:
   portalHost:
     info: Since this is the portal app of the federation, your email will be sent to all {{ platform }} platform members
 
-features:
-  title: Main Features
+listings:
+  title: Listing pages
+  shortcutHelper: For each different listing page feature, you can set a title, and a description
 
 # ADMIN STATIC PAGES
 pages:
@@ -179,6 +187,9 @@ composable:
   title: Composable Pages
   existing: Existing ones
   new: Create new
+  create: Create
+  newTitleInputLabel: Title
+  newTitleInputHelper: Please enter the title for the new composable page
   description: Compose a page and assign it as a landing page, campaign page, or just any page you like
   form:
     addContent: Add Content

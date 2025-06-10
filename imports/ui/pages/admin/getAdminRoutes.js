@@ -65,7 +65,7 @@ const getAdminRoutes = (menuItems) => [
     content: <ComposablePages />,
   },
   {
-    label: <Trans i18nKey="admin:features.title" />,
+    label: <Trans i18nKey="admin:listings.title" />,
     value: 'features',
     isMulti: true,
     content: [

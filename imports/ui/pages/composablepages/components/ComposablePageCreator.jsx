@@ -58,14 +58,19 @@ export default function ComposablePageCreator({
       </Center>
 
       <ConfirmModal
-        confirmText="Create"
-        title="Please enter a title for your special page"
+        confirmText={<Trans i18nKey="admin:composable.create" />}
+        title={<Trans i18nKey="admin:composable.title" />}
         visible={createPageModal.visible}
         onConfirm={createComposablePage}
         onCancel={() => setCreatePageModal(emptyPageModal)}
       >
         <FormField
-          label={<Trans i18nKey="admin:composable.title" />}
+          label={
+            <Trans i18nKey="admin:composable.newTitleInputLabel" />
+          }
+          helperText={
+            <Trans i18nKey="admin:composable.newTitleInputHelper" />
+          }
           required
         >
           <Input

@@ -10,15 +10,19 @@ settings:
   tabs:
     general: Allmänt
     logo: Logotyp
+    logoHelper: Ladda upp din logotyp för din communities webbplats
     info: Info
+    infoHelper: Lägg till information om din community
     categories: Kategorier
     menu: Meny
+    menuHelper: Bygg din meny och konfigurera den
     cats: Kategorier
     menuVisibility: Synlighet
     menuOrder: Ordning
     options: Alternativ
     color: Färg
     footer: Sidfot
+    footerHelper: Skriv in din sidfot här
     topbar: Topbar
 
 logo:
@@ -53,6 +57,7 @@ organization:
 
 users:
   title: Användare
+  shortcutHelper: Hantera dina användare. Verifiera eller verifiera dem, eller ställ in dem som administratörer.
 
 menu:
   title: Meny
@@ -97,6 +102,7 @@ color:
 # ADMIN EMAILS PAGE
 emails:
   title: Automatiserade e-postmeddelanden
+  shortcutHelper: Konfigurera automatiserade e-postmeddelanden som användare får när de registrerar sig, verifieras eller blir administratörer
   form:
     subject:
       label: Ämne
@@ -122,6 +128,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Skicka ett nyhetsbrev
+  shortcutHelper: Skicka ett e-postnyhetsbrev till alla dina användare samtidigt
   subtitle: Här kan du skapa ett nyhetsbrev som går ut till alla medlemmar i er community. Du kan enkelt komponera brevet med egen text och bifoga material som är publicerade på er sida.
   subtitle2: 'För att skriva e-postmeddelandet nedan måste du ange minst en av: brödtext, en bild och/eller valda innehållsobjekt som listas i community-appen.'
   contenthelper: Du kan infoga befintligt innehåll från din sida genom att välja poster i listan här nedanför. Text och bild samt länk till posterna läggs automatiskt in i nyhetsbrevet.
@@ -150,8 +157,9 @@ newsletter:
   portalHost:
     info: Eftersom detta är federationens portalapp kommer din e-post att skickas till alla {{ platform }} plattformsmedlemmar
 
-features:
-  title: Huvudfunktioner
+listings:
+  title: Listningssidor
+  shortcutHelper: För varje listsida kan du ange en titel och en beskrivning
 
 # ADMIN STATIC PAGES
 pages:
@@ -179,6 +187,9 @@ composable:
   title: Composable sidor
   existing: Befintliga
   new: Skapa ny
+  create: Skapa
+  newTitleInputLabel: Titel
+  newTitleInputHelper: Ange en titel för composable-sidan du skapar
   description: Skapa en anpassad sida och tilldela den som en landningssida, kampanjsida eller bara vilken sida du vill
   form:
     addContent: Lägg till innehåll

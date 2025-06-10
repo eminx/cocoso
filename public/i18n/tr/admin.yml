@@ -10,16 +10,20 @@ settings:
   tabs:
     general: Genel
     logo: Logo
+    logoHelper: Topluluğunuzun web sitesi için logo yükle
     info: Bilgi
+    infoHelper: Topluluğunuz hakkında bilgi gir
     categories: Kategoriler
     menu: Menü
+    menuHelper: Menüyü oluştur ve ayarla
     cats: Kategoriler
     menuVisibility: Görünürlük
     menuOrder: Sıra
     options: Seçenekler
     color: Renk
-    footer: Alt bilgi
-    topbar: Tepe sekmesş
+    footer: Alt bilgi (Footer)
+    footerHelper: Web sitesinin altbilgisini buraya gir
+    topbar: Tepe sekmesi
 
 logo:
   label: Logo
@@ -53,6 +57,7 @@ organization:
 
 users:
   title: Kullanıcılar
+  shortcutHelper: Kullanıcılarınızı yönet. Onları doğrula veya onayla veya yönetici olarak tayin et.
 
 menu:
   title: Menü
@@ -66,7 +71,7 @@ menu:
   itemActive: Aktif
   itemLabel: İsim
   info:
-    activities: Etkinlikler ve grup toplantılarını içeren listeleme sayfası
+    activities: Etkinlikler ve grup/süreç buluşmalarını içeren listeleme sayfası
     calendar: Takvim sayfası
     groups: Gruplar ve süreçleri içeren listeleme sayfası
     info: Statik bilgi sayfaları için listeleme sayfası
@@ -97,6 +102,7 @@ color:
 # ADMIN EMAILS PAGE
 emails:
   title: Otomatik Epostalar
+  shortcutHelper: Kullanıcıların kaydolduklarında veya doğrulandıklarında veya yönetici olduklarında aldıkları otomatik e-postaları ayarla
   form:
     subject:
       label: Konu
@@ -122,6 +128,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Eposta Bülteni Yolla
+  shortcutHelper: Tüm kullanıcılarınıza aynı anda bir e-posta bülteni gönder
   subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsin.
   subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik ögeleri.'
   contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsin.
@@ -150,8 +157,9 @@ newsletter:
   portalHost:
     info: Bu federasyonun portal uygulaması olduğu için, e-posta tüm {{ platform }} platformu üyelerine gönderilecektir
 
-features:
-  title: Ana Özellikler
+listings:
+  title: Listeleme Sayfaları
+  shortcutHelper: Her farklı listeleme sayfası için bir başlık ve bir açıklama belirleyebilirsiniz
 
 # ADMIN STATIC PAGES
 pages:
@@ -179,6 +187,9 @@ composable:
   title: Özelleştirilebilir sayfalar
   existing: Mevcut olanlar
   new: Yeni oluştur
+  create: Oluştur
+  newTitleInputLabel: Başlık
+  newTitleInputHelper: Lütfen yeni oluşturulacak özelleştirilebilir sayfanın başlığını gir
   description: Özel bir sayfa oluştur ve bunu açılış sayfası, kampanya sayfası veya istediğin herhangi bir sayfa olarak ata
   form:
     addContent: İçerik ekle
