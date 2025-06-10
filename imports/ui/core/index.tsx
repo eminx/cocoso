@@ -375,7 +375,7 @@ export const Text = styled('p', (props: TextProps) => {
   return {
     color: color
       ? `var(--chakra-colors-${color[0]}-${color[1]})`
-      : 'gray.800',
+      : 'gray.900',
     fontSize: props.size
       ? fontSizes[props.size as keyof typeof fontSizes]
       : fontSizes.md,

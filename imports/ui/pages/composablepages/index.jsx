@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Trans } from 'react-i18next';
 
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
@@ -29,8 +30,7 @@ export default function ComposablePages() {
   return (
     <>
       <Heading css={{ fontWeight: 'light' }} mb="6" size="sm">
-        Compose a page and assign it as a landing page, campaign page,
-        or just any page you like
+        <Trans i18nKey="admin:composable.description" />
       </Heading>
 
       <Routes>

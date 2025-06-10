@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Center, Input } from '@chakra-ui/react';
 import FilePlusIcon from 'lucide-react/dist/esm/icons/file-plus';
+import { Trans } from 'react-i18next';
 
 import ConfirmModal from '/imports/ui/generic/ConfirmModal';
 import { call } from '/imports/ui/utils/shared';
@@ -43,7 +44,6 @@ export default function ComposablePageCreator({
         <Button
           leftIcon={<FilePlusIcon size="24px" />}
           mb="4"
-          // pl="2"
           size="lg"
           variant="outline"
           onClick={() =>
@@ -53,7 +53,7 @@ export default function ComposablePageCreator({
             }))
           }
         >
-          Create a Composable Page
+          <Trans i18nKey="admin:composable.new" />
         </Button>
       </Center>
 
@@ -64,7 +64,10 @@ export default function ComposablePageCreator({
         onConfirm={createComposablePage}
         onCancel={() => setCreatePageModal(emptyPageModal)}
       >
-        <FormField label="Title" required>
+        <FormField
+          label={<Trans i18nKey="admin:composable.title" />}
+          required
+        >
           <Input
             size="lg"
             value={createPageModal.title}

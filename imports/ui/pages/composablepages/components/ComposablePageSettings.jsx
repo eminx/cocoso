@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@chakra-ui/react';
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
+import { Trans } from 'react-i18next';
 
 import ConfirmModal from '/imports/ui/generic/ConfirmModal';
 import { call } from '/imports/ui/utils/shared';
@@ -32,7 +33,7 @@ export default function ComposablePageSettings() {
           }))
         }
       >
-        Settings
+        <Trans i18nKey="admin:composable.settings.title" />
       </Button>
       <ConfirmModal
         title="Settings"

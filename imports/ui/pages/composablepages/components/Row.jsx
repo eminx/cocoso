@@ -20,6 +20,7 @@ import TrashIcon from 'lucide-react/dist/esm/icons/trash';
 import EditIcon from 'lucide-react/dist/esm/icons/edit';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import { arrayMoveImmutable } from 'array-move';
+import { Trans } from 'react-i18next';
 
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { call } from '/imports/ui/utils/shared';
@@ -176,7 +177,7 @@ export function Column({ column, columnIndex, rowIndex }) {
                 size="xs"
                 variant="ghost"
               >
-                Add Content
+                <Trans i18nKey="admin:composable.form.addContent" />
               </Button>
             </MenuButton>
           }

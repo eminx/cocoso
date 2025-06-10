@@ -59,7 +59,7 @@ const getAdminRoutes = (menuItems) => [
     ],
   },
   {
-    label: 'Composable Pages',
+    label: <Trans i18nKey="admin:composable.title" />,
     value: 'composable-pages/*',
     isMulti: false,
     content: <ComposablePages />,

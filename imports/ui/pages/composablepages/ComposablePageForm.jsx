@@ -18,6 +18,7 @@ import SortableList, {
   SortableKnob,
 } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
+import { Trans } from 'react-i18next';
 
 import { call } from '/imports/ui/utils/shared';
 import Boxling from '/imports/ui/pages/admin/Boxling';
@@ -324,7 +325,7 @@ export default function ComposablePageForm({
                         })
                       }
                     >
-                      Remove Row
+                      <Trans i18nKey="admin:composable.form.removeRow" />
                     </Button>
                   </Center>
                 </Boxling>
@@ -340,7 +341,7 @@ export default function ComposablePageForm({
               placement="bottom"
               menuButton={
                 <Button size="sm" variant="outline">
-                  Add Row
+                  <Trans i18nKey="admin:composable.form.addRow" />
                 </Button>
               }
               transition
@@ -364,7 +365,7 @@ export default function ComposablePageForm({
         <ConfirmModal
           confirmButtonProps={{ isLoading: contentModal?.uploading }}
           size="xl"
-          title="Add Content"
+          title={<Trans i18nKey="admin:composable.form.addContent" />}
           visible={contentModal?.open}
           onConfirm={handleSaveContentModal}
           onCancel={(prevState) =>
@@ -386,11 +387,10 @@ export default function ComposablePageForm({
           onCancel={() => setDeleteModuleModal(emptyModuleModal)}
         >
           <Text mb="2">
-            Are you sure you want to delete this module?
+            <Trans i18nKey="admin:composable.form.confirmDelete.title" />
           </Text>
           <Text>
-            If you confirm, the selected module will be deleted and
-            cannot be reverted.
+            <Trans i18nKey="admin:composable.form.confirmDelete.text" />
           </Text>
         </ConfirmModal>
       </ComposablePageContext.Provider>

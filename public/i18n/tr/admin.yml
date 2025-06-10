@@ -174,3 +174,29 @@ pages:
     title: Sıra
     label: Sayfaların sırasını düzenle
     info: Sayfaları yukarı ve aşağı sürükleyerek yeniden sıralayabilirsin. Navigasyon menüsündeki görüntülenme sırasını etkiler
+
+composable:
+  title: Özelleştirilebilir sayfalar
+  existing: Mevcut olanlar
+  new: Yeni oluştur
+  description: Özel bir sayfa oluştur ve bunu açılış sayfası, kampanya sayfası veya istediğin herhangi bir sayfa olarak ata
+  form:
+    addContent: İçerik ekle
+    addRow: Satır ekle
+    label: Etiket
+    labelHelper: Lütfen buton için etiketi gir. Bu etiket buton üzerinde görünecek
+    link: Bağlantı adresi
+    linkHelper: Lütfen bağlantı adresini gir. Bu bağlantı, butona tıklandığında açılır
+    video: Video-URL
+    videoHelper: Lütfen bir video URL'si gir, genellikle bir YouTube veya Vimeo video sayfasının bağlantı adresi olur..
+    removeRow: Satırı kaldır
+    title: Başlık
+  confirmedDelete:
+    text: Onaylarsan, seçili modül silinecek ve geri alınamayacaktır.
+    title: Bu modülü silmek istediğinden emin misin?
+  settings:
+    title: Ayarlar
+  toolbar:
+    preview: Önizleme
+    publish: Yayınla
+    updated: Kaydedildi

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Flex, Link, Text } from '@chakra-ui/react';
+import { Trans } from 'react-i18next';
 
 import { ComposablePageContext } from '../ComposablePageForm';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
@@ -47,7 +48,7 @@ export default function BottomToolbar() {
           fontWeight="bold"
           ml="1"
         >
-          Saved
+          <Trans i18nKey="admin:composable.toolbar.updated" />
         </Text>
       </Flex>
       <Flex align="center" color="blue.200" mx="2">
@@ -59,12 +60,12 @@ export default function BottomToolbar() {
           mr="1"
           target="_blank"
         >
-          Preview
+          <Trans i18nKey="admin:composable.toolbar.preview" />
         </Link>
         <ExternalLinkIcon size="16" />
       </Flex>
       <Button colorScheme="blue" mx="4" size="sm" variant="solid">
-        Publish
+        <Trans i18nKey="admin:composable.toolbar.publish" />
       </Button>
     </Flex>
   );

@@ -174,3 +174,29 @@ pages:
     title: Ordning
     label: Ändra sidordning
     info: Du kan ändra ordningen på sidorna genom att dra dem uppåt och nedåt. Det påverkar deras visningsordning i navigeringsmenyn
+
+composable:
+  title: Composable sidor
+  existing: Befintliga
+  new: Skapa ny
+  description: Skapa en anpassad sida och tilldela den som en landningssida, kampanjsida eller bara vilken sida du vill
+  form:
+    addContent: Lägg till innehåll
+    addRow: Lägg till en rad
+    label: Etikett
+    labelHelper: Ange etiketten för knappen. Denna etikett kommer att visas på knappen
+    link: Länkadressen
+    linkHelper: Ange länkadressen. Denna länk öppnas när knappen klickas
+    video: Video-URL
+    videoHelper: Ange en video-URL, vanligtvis länkadressen till en YouTube- eller Vimeo-videosida..
+    removeRow: Ta bort rad
+    title: Titel
+  confirmDelete:
+    text: Om du bekräftar kommer den valda modulen att tas bort och kan inte återställas.
+    title: Är du säker på att du vill ta bort den här modulen?
+  settings:
+    title: Inställningar
+  toolbar:
+    preview: Förhandsgranska
+    publish: Publicera
+    updated: Sparad

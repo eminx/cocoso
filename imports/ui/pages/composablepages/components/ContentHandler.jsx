@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Input, Text } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
+import { Trans } from 'react-i18next';
 
 import Quill from '/imports/ui/forms/Quill';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
@@ -25,8 +26,10 @@ function ButtonContent({ value, onChange }) {
   return (
     <Box>
       <FormField
-        helperText="Enter the label for the button. It's the text on the button"
-        label="Label"
+        helperText={
+          <Trans i18nKey="admin:composable.form.labelHelper" />
+        }
+        label={<Trans i18nKey="admin:composable.form.label" />}
         mb="8"
         required
       >
@@ -37,8 +40,10 @@ function ButtonContent({ value, onChange }) {
       </FormField>
 
       <FormField
-        helperText="Enter the link address. It will be opened when the button is clicked."
-        label="Link"
+        helperText={
+          <Trans i18nKey="admin:composable.form.linkHelper" />
+        }
+        label={<Trans i18nKey="admin:composable.form.link" />}
         required
       >
         <Input
@@ -96,7 +101,13 @@ function VideoContent({ value, onChange }) {
 
   return (
     <Box>
-      <FormField label="Please enter a video URL" required>
+      <FormField
+        label={<Trans i18nKey="admin:composable.form.video" />}
+        helperText={
+          <Trans i18nKey="admin:composable.form.videoHelper" />
+        }
+        required
+      >
         <Input
           placeholder="https://vimeo.com/..."
           value={value.src}
