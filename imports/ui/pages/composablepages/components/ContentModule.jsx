@@ -1,13 +1,65 @@
 import React, { useContext } from 'react';
 import { Trans } from 'react-i18next';
-import { Box, Button, Flex, IconButton } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Code,
+  Flex,
+  IconButton,
+} from '@chakra-ui/react';
 import { SortableKnob } from 'react-easy-sort';
 import GripHorizontal from 'lucide-react/dist/esm/icons/grip-horizontal';
 import EditIcon from 'lucide-react/dist/esm/icons/edit';
 import TrashIcon from 'lucide-react/dist/esm/icons/trash';
 import { useDrag } from 'react-dnd';
+import ReactPlayer from 'react-player';
 
 import { ComposablePageContext } from '../ComposablePageForm';
+import { Divider } from '/imports/ui/core';
+
+function ModulePreview({ content }) {
+  const renderContent = () => {
+    switch (content.type) {
+      case 'button':
+        return <Button size="xs">{content.value?.label}</Button>;
+      case 'divider':
+        return <Divider />;
+      case 'image':
+        return <img src={content.value?.src} />;
+      case 'image-slider':
+        return <img src={content.value?.images[0]} />;
+      case 'text':
+        return (
+          <Box
+            dangerouslySetInnerHTML={{
+              __html: content.value?.html?.substring(0, 50),
+            }}
+            fontSize="xs"
+          />
+        );
+      case 'video':
+        return <Code>{content.value?.src}</Code>;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Box w="100%">
+      <Center
+        bg="gray.50"
+        borderRadius="md"
+        my="2"
+        p="1"
+        w="100%"
+        style={{ transform: 'translateX(-14px)' }}
+      >
+        {renderContent()}
+      </Center>
+    </Box>
+  );
+}
 
 export default function ContentModule(props) {
   const { setContentModal, setDeleteModuleModal } = useContext(
@@ -83,6 +135,9 @@ export default function ContentModule(props) {
           }
         />
       </Flex>
+
+      <ModulePreview content={content} />
+
       <GripHorizontal
         size="20px"
         style={{ transform: 'translateX(-14px)' }}
