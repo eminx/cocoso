@@ -21,36 +21,42 @@ function ContentModule({ module, Host }) {
   const { type, value } = module;
   const host = currentHost?.host;
 
-  const handleButtonClick = () => {
-    if (!value.linkValue) {
-      return;
-    }
-    if (value.linkValue.includes(host)) {
-      const valueLink = value.linkValue.split(host)[1];
-      navigate(valueLink);
-    } else {
-      window.open(value.linkValue, '_blank');
-    }
-  };
+  let buttonLink = type === 'button' ? value.linkValue : null,
+    isButtonLinkExternal = true;
+  if (buttonLink && buttonLink.includes(host)) {
+    buttonLink = value.linkValue.split(host)[1];
+    isButtonLinkExternal = false;
+  }
 
-  let imageLink = type === 'image' && value.linkValue,
-    isExternal = true;
-  if (imageLink && !imageLink.includes(host)) {
-    imageLink = `${host}${imageLink}`;
-    isExternal = false;
+  let imageLink = type === 'image' ? value.linkValue : null,
+    isImageLinkExternal = true;
+  if (imageLink && imageLink.includes(host)) {
+    imageLink = value.linkValue.split(host)[1];
+    isImageLinkExternal = false;
   }
 
   switch (type) {
     case 'button':
       return (
         <Center py="4">
-          <Button onClick={handleButtonClick}>{value.label}</Button>
+          {isButtonLinkExternal ? (
+            <a href={buttonLink}>
+              <Button>{value.label}</Button>
+            </a>
+          ) : (
+            <Link to={buttonLink}>
+              https://xyrden.s3-eu-central-1.amazonaws.com/emin/dup3.jpeg
+              <Button as="span">{value.label}</Button>
+            </Link>
+          )}
         </Center>
       );
     case 'image':
       return (
         <Center py="4">
-          {isExternal ? (
+          {!value.isLink ? (
+            <Image src={value.src} />
+          ) : isImageLinkExternal ? (
             <a href={imageLink}>
               <Image src={value.src} />
             </a>
