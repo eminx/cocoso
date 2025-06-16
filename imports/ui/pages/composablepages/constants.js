@@ -1,9 +1,7 @@
-import React from 'react';
 import { Trans } from 'react-i18next';
 
 export const contentTypes = [
   {
-    label: <Trans i18nKey="admin:composable.form.types.button" />,
     type: 'button',
     value: {
       linkValue: '',
@@ -12,7 +10,6 @@ export const contentTypes = [
     },
   },
   {
-    label: <Trans i18nKey="admin:composable.form.types.divider" />,
     type: 'divider',
     value: {
       kind: 'line', // or empty-space
@@ -20,7 +17,6 @@ export const contentTypes = [
     },
   },
   {
-    label: <Trans i18nKey="admin:composable.form.types.image" />,
     type: 'image',
     value: {
       src: '',
@@ -29,21 +25,18 @@ export const contentTypes = [
     },
   },
   {
-    label: <Trans i18nKey="admin:composable.form.types.slider" />,
     type: 'image-slider',
     value: {
       images: [],
     },
   },
   {
-    label: <Trans i18nKey="admin:composable.form.types.text" />,
     type: 'text',
     value: {
       html: '<p>Text</p>',
     },
   },
   {
-    label: <Trans i18nKey="admin:composable.form.types.video" />,
     type: 'video',
     value: {
       src: '',

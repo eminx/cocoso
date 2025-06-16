@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Trans } from 'react-i18next';
 import { Box, Button, Flex, IconButton } from '@chakra-ui/react';
 import { SortableKnob } from 'react-easy-sort';
 import GripHorizontal from 'lucide-react/dist/esm/icons/grip-horizontal';
@@ -60,7 +61,9 @@ export default function ContentModule(props) {
           variant="ghost"
           onClick={() => handleOpenContentModal(content, contentIndex)}
         >
-          {content?.type}
+          <Trans
+            i18nKey={`admin:composable.form.types.${content.type}`}
+          />
         </Button>
         <IconButton
           colorScheme="red"

@@ -208,7 +208,7 @@ composable:
       button: Button
       divider: Divider
       image: Image
-      slider: Image Slider
+      image-slider: Image Slider
       text: Text
       video: Video
   confirmDelete:

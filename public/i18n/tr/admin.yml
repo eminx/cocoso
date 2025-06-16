@@ -208,7 +208,7 @@ composable:
       button: Buton
       divider: Ayraç
       image: İmaj
-      slider: Slayt
+      image-slider: Slayt
       text: Metin
       video: Video
   confirmedDelete:

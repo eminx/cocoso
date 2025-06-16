@@ -141,7 +141,11 @@ export function Column({ column, columnIndex, rowIndex }) {
           }))}
           onSelect={handleSelectContent}
         >
-          {(item) => item.label}
+          {(item) => (
+            <Trans
+              i18nKey={`admin:composable.form.types.${item.type}`}
+            />
+          )}
         </Menu>
       </Center>
     </Boxling>

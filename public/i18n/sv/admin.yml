@@ -208,7 +208,7 @@ composable:
       button: Knapp
       divider: Delare
       image: Bild
-      slider: Bildspel
+      image-slider: Bildspel
       text: Text
       video: Video
   confirmDelete:
