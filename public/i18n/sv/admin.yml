@@ -194,6 +194,8 @@ composable:
   form:
     addContent: Lägg till innehåll
     addRow: Lägg till en rad
+    emptySpace: Tomt utrymme
+    emptySpaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
     label: Etikett
     labelHelper: Ange etiketten för knappen. Denna etikett kommer att visas på knappen
     link: Länkadressen
@@ -202,6 +204,13 @@ composable:
     videoHelper: Ange en video-URL, vanligtvis länkadressen till en YouTube- eller Vimeo-videosida..
     removeRow: Ta bort rad
     title: Titel
+    types:
+      button: Knapp
+      divider: Delare
+      image: Bild
+      slider: Bildspel
+      text: Text
+      video: Video
   confirmDelete:
     title: Bekräfta borttagning
     text1: Är du säker på att du vill ta bort den här modulen?

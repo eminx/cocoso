@@ -194,6 +194,8 @@ composable:
   form:
     addContent: Add Content
     addRow: Add a row
+    emptySpace: Empty Space
+    emptySpaceHelper: Please enter the height of the empty space in pixels
     label: Label
     labelHelper: Pleae enter the label for the button. This label will be displayed on the button
     link: Link address
@@ -202,6 +204,13 @@ composable:
     videoHelper: Please enter a video URL, typically the link address for a YouTube or Vimeo video page..
     removeRow: Remove row
     title: Title
+    types:
+      button: Button
+      divider: Divider
+      image: Image
+      slider: Image Slider
+      text: Text
+      video: Video
   confirmDelete:
     title: Confirm Deletion
     text1: Are you sure you want to delete this module?

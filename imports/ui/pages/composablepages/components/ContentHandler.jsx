@@ -2,8 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Checkbox,
+  Flex,
   FormLabel,
   Input,
+  NumberInput,
+  NumberInputField,
   Text,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
@@ -14,6 +17,8 @@ import ImageUploader from '/imports/ui/forms/ImageUploader';
 import { ComposablePageContext } from '../ComposablePageForm';
 import FormField from '/imports/ui/forms/FormField';
 import { message } from '/imports/ui/generic/message';
+import Menu from '/imports/ui/generic/Menu';
+import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 function ButtonContent({ value, onChange }) {
   const handleLinkValueChange = (linkValue) => {
@@ -59,6 +64,76 @@ function ButtonContent({ value, onChange }) {
         />
       </FormField>
     </Box>
+  );
+}
+
+function Divider({ value, onChange }) {
+  const options = [
+    {
+      key: 'line',
+      label: 'Line',
+      kind: 'line',
+    },
+    {
+      key: 'empty-space',
+      label: 'Empty Space',
+      kind: 'empty-space',
+    },
+  ];
+
+  const handleSelect = (item) => {
+    onChange({
+      ...value,
+      kind: item.kind,
+    });
+  };
+
+  const handleEmptySpaceHeightChange = (height) => {
+    onChange({
+      ...value,
+      height,
+    });
+  };
+
+  return (
+    <>
+      <Flex align="center" mb="2">
+        <Text>
+          <Trans i18nKey="common:labels.select" />
+        </Text>
+        <Menu
+          buttonLabel={value?.label || 'Select'}
+          options={options}
+          rightIcon={<ChevronDownIcon size="18px" />}
+          onSelect={onChange}
+        >
+          {(item) => item.label}
+        </Menu>
+      </Flex>
+
+      {value.kind === 'empty-space' && (
+        <Box>
+          <FormField
+            helperText={
+              <Trans i18nKey="admin:composable.form.emptySpaceHelper" />
+            }
+            label={<Trans i18nKey="admin:composable.form.emptySpace" />}
+            required
+          >
+            <NumberInput
+              min={1}
+              max={100}
+              maxWidth="100px"
+              step={1}
+              value={value.height}
+              onChange={handleEmptySpaceHeightChange}
+            >
+              <NumberInputField />
+            </NumberInput>
+          </FormField>
+        </Box>
+      )}
+    </>
   );
 }
 
@@ -262,6 +337,10 @@ export default function ContentHandler() {
 
   if (type === 'button') {
     return <ButtonContent {...genericProps} />;
+  }
+
+  if (type === 'divider') {
+    return <Divider {...genericProps} />;
   }
 
   if (type === 'image') {

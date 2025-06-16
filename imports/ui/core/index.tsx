@@ -185,6 +185,9 @@ export const Button = styled('button', (props: ButtonProps) => ({
   cursor: 'pointer',
   padding: '0.5rem 1rem',
   borderRadius: '0.25rem',
+  border: '1px solid',
+  borderColor: props.color || '#3182CE',
+  fontWeight: 500,
   // ...transformProps(props),
 }));
 
@@ -202,6 +205,16 @@ export const Container = styled(Box, (props: ContainerProps) => ({
   paddingRight: props.px ? getSpacing(props.px) : '1rem',
   width: '100%',
 }));
+
+// Divider
+export const Divider = styled('hr', {
+  border: 'none',
+  borderTop: '1px solid #b3b3b3',
+  margin: '1rem auto',
+  maxWidth: '980px',
+  padding: '0 1rem',
+  width: '100%',
+});
 
 // Flex
 export const Flex = styled(Box, (props: any) => ({
@@ -257,6 +270,7 @@ export const Heading = styled('h2', (props: HeadingProps) => {
     fontWeight: 700,
     fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
     lineHeight: 1.2,
+    fontFamily: 'Raleway, sans-serif',
     // ...transformProps(props),
   };
 });

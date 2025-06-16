@@ -6,7 +6,7 @@ import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
 
 import { getResponsiveGridColumns } from '/imports/ui/pages/composablepages/constants';
-import { Heading } from '/imports/ui/core';
+import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
 
@@ -51,6 +51,11 @@ function ContentModule({ module, Host }) {
           )}
         </Center>
       );
+    case 'divider':
+      if (value.kind === 'empty-space') {
+        return <Box w="100%" h={`${value.height}px`} />;
+      }
+      return <Divider />;
     case 'image':
       return (
         <Center py="4">

@@ -249,6 +249,7 @@ export default function ComposablePageForm({
       setContentModal({ open: false, content: null });
       message.success('Page updated successfully');
     } catch (error) {
+      console.log(error);
       message.error(error.reason || error.error);
     }
   };

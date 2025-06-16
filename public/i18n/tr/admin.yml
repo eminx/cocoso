@@ -194,6 +194,8 @@ composable:
   form:
     addContent: İçerik ekle
     addRow: Satır ekle
+    emptySpace: Boşluk
+    emptySpaceHelper: Lütfen boşluk için piksel bazlı bir yükseklik gir
     label: Etiket
     labelHelper: Lütfen buton için etiketi gir. Bu etiket buton üzerinde görünecek
     link: Bağlantı adresi
@@ -202,6 +204,13 @@ composable:
     videoHelper: Lütfen bir video URL'si gir, genellikle bir YouTube veya Vimeo video sayfasının bağlantı adresi olur..
     removeRow: Satırı kaldır
     title: Başlık
+    types:
+      button: Buton
+      divider: Ayraç
+      image: İmaj
+      slider: Slayt
+      text: Metin
+      video: Video
   confirmedDelete:
     title: Silmeyi onayla
     text1: Bu modülü silmek istediğinden emin misin?

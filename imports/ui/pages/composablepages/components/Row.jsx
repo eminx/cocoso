@@ -9,9 +9,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
-import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
-import '@szhsin/react-menu/dist/index.css';
-import '@szhsin/react-menu/dist/transitions/zoom.css';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
@@ -23,6 +20,7 @@ import { contentTypes, getGridTemplateColumns } from '../constants';
 import { ComposablePageContext } from '../ComposablePageForm';
 import ContentModule from './ContentModule';
 import DropTarget from './DropTarget';
+import Menu from '/imports/ui/generic/Menu';
 
 export function Column({ column, columnIndex, rowIndex }) {
   const { setCurrentPage, setContentModal } = useContext(
@@ -30,6 +28,7 @@ export function Column({ column, columnIndex, rowIndex }) {
   );
 
   const handleSelectContent = (content) => {
+    console.log(content);
     setContentModal({
       open: true,
       content: content,
@@ -132,27 +131,17 @@ export function Column({ column, columnIndex, rowIndex }) {
 
       <Center>
         <Menu
-          menuButton={
-            <MenuButton>
-              <Button
-                colorScheme="blue"
-                leftIcon={<AddIcon size="18px" />}
-                size="xs"
-                variant="ghost"
-              >
-                <Trans i18nKey="admin:composable.form.addContent" />
-              </Button>
-            </MenuButton>
+          buttonLabel={
+            <Trans i18nKey="admin:composable.form.addContent" />
           }
+          leftIcon={<AddIcon size="18px" />}
+          options={contentTypes.map((content) => ({
+            ...content,
+            key: content.type,
+          }))}
+          onSelect={handleSelectContent}
         >
-          {contentTypes.map((content) => (
-            <MenuItem
-              key={content.type}
-              onClick={() => handleSelectContent(content)}
-            >
-              {content.type}
-            </MenuItem>
-          ))}
+          {(item) => item.label}
         </Menu>
       </Center>
     </Boxling>
