@@ -1,13 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Image,
-  Link,
-} from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Box, Button, Center, Flex, Image } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
@@ -28,7 +21,7 @@ function ContentModule({ module, Host }) {
   const { type, value } = module;
   const host = currentHost?.host;
 
-  handleButtonClick = () => {
+  const handleButtonClick = () => {
     if (!value.linkValue) {
       return;
     }
@@ -40,6 +33,13 @@ function ContentModule({ module, Host }) {
     }
   };
 
+  let imageLink = type === 'image' && value.linkValue,
+    isExternal = true;
+  if (imageLink && !imageLink.includes(host)) {
+    imageLink = `${host}${imageLink}`;
+    isExternal = false;
+  }
+
   switch (type) {
     case 'button':
       return (
@@ -50,7 +50,15 @@ function ContentModule({ module, Host }) {
     case 'image':
       return (
         <Center py="4">
-          <Image src={value.src} />
+          {isExternal ? (
+            <a href={imageLink}>
+              <Image src={value.src} />
+            </a>
+          ) : (
+            <Link to={imageLink}>
+              <Image src={value.src} />
+            </Link>
+          )}
         </Center>
       );
     case 'image-slider':

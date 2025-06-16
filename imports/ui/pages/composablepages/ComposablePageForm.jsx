@@ -117,7 +117,7 @@ export default function ComposablePageForm({
       ['image', 'image-slider'].includes(contentModal.content?.type) &&
       contentModal.uploaded
     ) {
-      handleSaveContentModal();
+      saveContentModal();
     }
   }, [contentModal.uploaded]);
 
@@ -205,7 +205,7 @@ export default function ComposablePageForm({
     }
   };
 
-  const handleSaveContentModal = async () => {
+  const saveContentModal = async () => {
     if (!contentModal) {
       return;
     }
@@ -280,7 +280,7 @@ export default function ComposablePageForm({
     contentModal,
     currentPage,
     deleteModuleModal,
-    handleSaveContentModal,
+    saveContentModal,
     setContentModal,
     setCurrentPage,
     setDeleteModuleModal,
@@ -370,7 +370,7 @@ export default function ComposablePageForm({
             size="xl"
             title={<Trans i18nKey="admin:composable.form.addContent" />}
             visible={contentModal?.open}
-            onConfirm={handleSaveContentModal}
+            onConfirm={saveContentModal}
             onCancel={(prevState) =>
               setContentModal({ open: false, content: null })
             }

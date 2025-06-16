@@ -45,6 +45,7 @@ export default function ContentModule(props) {
       style={{
         opacity: isDragging ? 0.5 : 1,
       }}
+      w="100%"
     >
       <Flex justify="space-between" w="100%">
         <Button
@@ -63,6 +64,7 @@ export default function ContentModule(props) {
         </Button>
         <IconButton
           colorScheme="red"
+          flexGrow="0"
           icon={<TrashIcon size="16px" />}
           p="2"
           size="sm"

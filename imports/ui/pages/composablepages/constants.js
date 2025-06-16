@@ -11,6 +11,8 @@ export const contentTypes = [
     type: 'image',
     value: {
       src: '',
+      isLink: false,
+      linkValue: '',
     },
   },
   {

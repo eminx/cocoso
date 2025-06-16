@@ -206,7 +206,11 @@ function LayoutPage({ currentUser, userLoading, children }) {
         </ColorModeProvider>
       </ChakraProvider>
 
-      {rendered && <Toaster containerStyle={{ minWidth: '120px' }} />}
+      {rendered && (
+        <Toaster
+          containerStyle={{ minWidth: '120px', zIndex: 999999 }}
+        />
+      )}
     </>
   );
 }

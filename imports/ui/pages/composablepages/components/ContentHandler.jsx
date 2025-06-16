@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Input, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Checkbox,
+  FormLabel,
+  Input,
+  Text,
+} from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { Trans } from 'react-i18next';
 
@@ -7,6 +13,7 @@ import Quill from '/imports/ui/forms/Quill';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
 import { ComposablePageContext } from '../ComposablePageForm';
 import FormField from '/imports/ui/forms/FormField';
+import { message } from '/imports/ui/generic/message';
 
 function ButtonContent({ value, onChange }) {
   const handleLinkValueChange = (linkValue) => {
@@ -55,24 +62,103 @@ function ButtonContent({ value, onChange }) {
   );
 }
 
-function ImageContent({ value, isMultiple = true, ping, onChange }) {
-  const handleUploadedImages = (images) => {
-    if (!isMultiple) {
-      onChange({
-        src: images[0],
-      });
+function ImageContent({ value, ping, onChange }) {
+  const [linkInvalid, setLinkInvalid] = useState(false);
+
+  const handleUploadedImage = (images) => {
+    onChange({
+      ...value,
+      src: images[0],
+    });
+  };
+
+  const handleCheckboxChange = (event) => {
+    event.preventDefault();
+    onChange({
+      ...value,
+      isLink: event.target.checked,
+    });
+  };
+
+  const handleInputChange = (event) => {
+    event.preventDefault();
+    const linkValue = event.target.value;
+    if (
+      linkValue.substr(0, 7) !== 'http://' &&
+      linkValue.substr(0, 8) !== 'https://'
+    ) {
+      setLinkInvalid(true);
     } else {
-      onChange({
-        images,
-      });
+      setLinkInvalid(false);
     }
+    onChange({
+      ...value,
+      linkValue,
+    });
+  };
+
+  const borderColor = linkInvalid ? 'red.300' : 'gray.600';
+
+  return (
+    <>
+      <FormField label="Image">
+        <ImageUploader
+          isMultiple={false}
+          ping={ping}
+          preExistingImages={value.src ? [value.src] : []}
+          onUploadedImages={handleUploadedImage}
+        />
+      </FormField>
+
+      <Box bg="gray.50" borderRadius="md" p="4" pt="0">
+        <Checkbox
+          isChecked={value.isLink}
+          mt="4"
+          size="lg"
+          onChange={handleCheckboxChange}
+        >
+          <FormLabel mb="0">Image as link?</FormLabel>
+        </Checkbox>
+
+        {value.isLink ? (
+          <FormField
+            helperText={
+              <Text>
+                Should start with <code>http://</code> or{' '}
+                <code>https://</code>
+              </Text>
+            }
+            label="Link Value"
+            my="4"
+          >
+            <Input
+              _hover={{ borderColor }}
+              _focus={{ borderColor }}
+              borderColor={borderColor}
+              size="sm"
+              value={value.linkValue}
+              onChange={handleInputChange}
+            />
+          </FormField>
+        ) : null}
+      </Box>
+    </>
+  );
+}
+
+function SliderContent({ value, ping, onChange }) {
+  const handleUploadedImages = (event) => {
+    onChange({
+      ...value,
+      images,
+    });
   };
 
   return (
     <ImageUploader
-      isMultiple={isMultiple}
+      isMultiple
       ping={ping}
-      preExistingImages={isMultiple ? value.images : [value.src] || []}
+      preExistingImages={value.images}
       onUploadedImages={handleUploadedImages}
     />
   );
@@ -147,7 +233,7 @@ export default function ContentHandler() {
   const handleChange = (newValue) => {
     setContentModal((prevState) => ({
       ...prevState,
-      uploaded: true,
+      // uploaded: true,
       content: {
         ...prevState.content,
         value: newValue,
@@ -174,17 +260,13 @@ export default function ContentHandler() {
 
   if (type === 'image') {
     return (
-      <ImageContent
-        {...genericProps}
-        isMultiple={false}
-        ping={contentModal?.uploading}
-      />
+      <ImageContent {...genericProps} ping={contentModal?.uploading} />
     );
   }
 
   if (type === 'image-slider') {
     return (
-      <ImageContent {...genericProps} ping={contentModal?.uploading} />
+      <SliderContent {...genericProps} ping={contentModal?.uploading} />
     );
   }
 
