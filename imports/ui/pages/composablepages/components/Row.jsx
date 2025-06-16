@@ -88,7 +88,7 @@ export function Column({ column, columnIndex, rowIndex }) {
       return {
         ...prevPage,
         contentRows: newRows,
-        ping: true,
+        pingSave: true,
       };
     });
   };

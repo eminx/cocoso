@@ -66,10 +66,13 @@ function ImageContent({ value, ping, onChange }) {
   const [linkInvalid, setLinkInvalid] = useState(false);
 
   const handleUploadedImage = (images) => {
-    onChange({
-      ...value,
-      src: images[0],
-    });
+    onChange(
+      {
+        ...value,
+        src: images[0],
+      },
+      true
+    );
   };
 
   const handleCheckboxChange = (event) => {
@@ -148,10 +151,13 @@ function ImageContent({ value, ping, onChange }) {
 
 function SliderContent({ value, ping, onChange }) {
   const handleUploadedImages = (event) => {
-    onChange({
-      ...value,
-      images,
-    });
+    onChange(
+      {
+        ...value,
+        images,
+      },
+      true
+    );
   };
 
   return (
@@ -230,14 +236,14 @@ export default function ContentHandler() {
     return null;
   }
 
-  const handleChange = (newValue) => {
+  const handleChange = (newValue, isImageUploaded = false) => {
     setContentModal((prevState) => ({
       ...prevState,
-      // uploaded: true,
       content: {
         ...prevState.content,
         value: newValue,
       },
+      uploaded: isImageUploaded,
     }));
   };
 

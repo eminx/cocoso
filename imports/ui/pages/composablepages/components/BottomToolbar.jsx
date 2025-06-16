@@ -13,13 +13,13 @@ export default function BottomToolbar() {
   );
 
   useEffect(() => {
-    if (currentPage.ping === false) {
+    if (currentPage.pingSave === false) {
       setUpdated(true);
     }
     setTimeout(() => {
       setUpdated(false);
     }, 3000);
-  }, [currentPage?.ping]);
+  }, [currentPage?.pingSave]);
 
   let updatedClassName = 'bottom-toolbar ';
   if (updated) {

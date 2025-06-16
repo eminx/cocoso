@@ -88,24 +88,7 @@ export default function ComposablePageForm({
   }, [composablePageId]);
 
   useEffect(() => {
-    if (!currentPage || !currentPage.ping) {
-      return;
-    }
-
-    if (
-      contentModal.open &&
-      ['image', 'image-slider'].includes(contentModal.content?.type) &&
-      !contentModal.uploading
-    ) {
-      setContentModal((prevModal) => ({
-        ...prevModal,
-        uploading: true,
-        uploaded: false,
-      }));
-      setCurrentPage((prevPage) => ({
-        ...prevPage,
-        ping: false,
-      }));
+    if (!currentPage || !currentPage.pingSave) {
       return;
     }
     updateComposablePage();
@@ -126,7 +109,7 @@ export default function ComposablePageForm({
     setCurrentPage((prevPage) => ({
       ...prevPage,
       contentRows: [...currentPage.contentRows, newRow],
-      ping: true,
+      pingSave: true,
     }));
   };
 
@@ -138,7 +121,7 @@ export default function ComposablePageForm({
         oldIndex,
         newIndex
       ),
-      ping: true,
+      pingSave: true,
     }));
   };
 
@@ -152,7 +135,7 @@ export default function ComposablePageForm({
       contentRows: prevPage.contentRows.filter(
         (_, index) => index !== rowIndex
       ),
-      ping: true,
+      pingSave: true,
     }));
     setDeleteModuleModal(emptyModuleModal);
   };
@@ -185,7 +168,7 @@ export default function ComposablePageForm({
     setCurrentPage((prevPage) => ({
       ...prevPage,
       contentRows: newRows,
-      ping: true,
+      pingSave: true,
     }));
     setDeleteModuleModal(emptyModuleModal);
   };
@@ -234,8 +217,23 @@ export default function ComposablePageForm({
         }
         return row;
       }),
-      ping: true,
+      pingSave: true,
     }));
+  };
+
+  const confirmContentModal = () => {
+    if (
+      contentModal.open &&
+      ['image', 'image-slider'].includes(contentModal.content?.type)
+    ) {
+      setContentModal((prevModal) => ({
+        ...prevModal,
+        uploading: true,
+        uploaded: false,
+      }));
+      return;
+    }
+    saveContentModal();
   };
 
   const updateComposablePage = async () => {
@@ -247,7 +245,7 @@ export default function ComposablePageForm({
 
     try {
       await call('updateComposablePage', newPage);
-      setCurrentPage((prevPage) => ({ ...prevPage, ping: false }));
+      setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
       setContentModal({ open: false, content: null });
       message.success('Page updated successfully');
     } catch (error) {
@@ -370,7 +368,7 @@ export default function ComposablePageForm({
             size="xl"
             title={<Trans i18nKey="admin:composable.form.addContent" />}
             visible={contentModal?.open}
-            onConfirm={saveContentModal}
+            onConfirm={confirmContentModal}
             onCancel={(prevState) =>
               setContentModal({ open: false, content: null })
             }

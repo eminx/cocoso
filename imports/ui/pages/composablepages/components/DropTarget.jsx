@@ -62,7 +62,7 @@ export default function DropTarget({ columnIndex, rowIndex }) {
       return {
         ...prevPage,
         contentRows: newRowsContentAdded,
-        ping: true,
+        pingSave: true,
       };
     });
   };
