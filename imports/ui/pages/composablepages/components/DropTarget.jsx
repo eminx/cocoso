@@ -7,20 +7,21 @@ import { ComposablePageContext } from '../ComposablePageForm';
 export default function DropTarget({ columnIndex, rowIndex }) {
   const { setCurrentPage } = useContext(ComposablePageContext);
 
-  const handleMoveContent = ({ item, newColumnIndex, newRowIndex }) => {
+  const handleMoveContent = ({ item }) => {
     const oldContentIndex = item.contentIndex,
       oldColumnIndex = item.columnIndex,
       oldRowIndex = item.rowIndex;
 
-    if (
-      oldColumnIndex === newColumnIndex &&
-      oldRowIndex === newRowIndex
-    ) {
+    if (oldColumnIndex === columnIndex && oldRowIndex === rowIndex) {
       return;
     }
 
     setCurrentPage((prevPage) => {
       const { contentRows } = prevPage;
+      const itemContent =
+        contentRows[oldRowIndex].columns[oldColumnIndex][
+          oldContentIndex
+        ];
 
       const newRowsContentRemoved = [
         ...contentRows.map((row, rIndex) => {
@@ -44,12 +45,12 @@ export default function DropTarget({ columnIndex, rowIndex }) {
 
       const newRowsContentAdded = [
         ...newRowsContentRemoved.map((row, rIndex) => {
-          if (rIndex === newRowIndex) {
+          if (rIndex === rowIndex) {
             return {
               ...row,
               columns: row.columns.map((column, colIndex) => {
-                if (colIndex === newColumnIndex) {
-                  return [...column, { ...item.content }];
+                if (colIndex === columnIndex) {
+                  return [...column, { ...itemContent }];
                 }
                 return column;
               }),
@@ -67,23 +68,23 @@ export default function DropTarget({ columnIndex, rowIndex }) {
     });
   };
 
-  const [{ canDrop, isOver, itemDroppable }, dropRef] = useDrop(() => ({
-    accept: 'content',
-    drop: (item, monitor) => {
-      handleMoveContent({
-        item,
-        newColumnIndex: columnIndex,
-        newRowIndex: rowIndex,
-      });
-    },
-    collect: (monitor, props) => {
-      return {
-        isOver: !!monitor.isOver(),
-        canDrop: !!monitor.canDrop(),
-        itemDroppable: monitor.getItem(),
-      };
-    },
-  }));
+  const [{ canDrop, isOver, itemDroppable }, dropRef] = useDrop(() => {
+    return {
+      accept: 'content',
+      drop: (item, monitor) => {
+        handleMoveContent({
+          item,
+        });
+      },
+      collect: (monitor, props) => {
+        return {
+          isOver: !!monitor.isOver(),
+          canDrop: !!monitor.canDrop(),
+          itemDroppable: monitor.getItem(),
+        };
+      },
+    };
+  });
 
   const isSameColumn =
     itemDroppable &&

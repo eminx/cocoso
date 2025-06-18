@@ -190,7 +190,7 @@ composable:
   create: Create
   newTitleInputLabel: Title
   newTitleInputHelper: Please enter the title for the new composable page
-  description: Compose a page and assign it as a landing page, campaign page, or just any page you like
+  description: Compose a page and assign it as a landing page, campaign page, or just about any page you like
   form:
     addContent: Add Content
     addRow: Add a row

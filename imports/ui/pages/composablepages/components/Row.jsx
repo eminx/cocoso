@@ -28,14 +28,10 @@ export function Column({ column, columnIndex, rowIndex }) {
   );
 
   const handleSelectContent = (content) => {
-    console.log(content);
-    setContentModal({
-      open: true,
-      content: content,
-      contentIndex: column.length,
-      columnIndex,
-      rowIndex,
-    });
+    const newContent = {
+      ...content,
+      id: Date.now().toString(),
+    };
 
     setCurrentPage((prevPage) => {
       const { contentRows } = prevPage;
@@ -46,7 +42,7 @@ export function Column({ column, columnIndex, rowIndex }) {
               ...row,
               columns: row.columns.map((column, colIndex) => {
                 if (colIndex === columnIndex) {
-                  return [...column, content];
+                  return [...column, newContent];
                 }
                 return column;
               }),
@@ -60,6 +56,14 @@ export function Column({ column, columnIndex, rowIndex }) {
         ...prevPage,
         contentRows: newRows,
       };
+    });
+
+    setContentModal({
+      open: true,
+      content: newContent,
+      contentIndex: column.length,
+      columnIndex,
+      rowIndex,
     });
   };
 
@@ -96,34 +100,38 @@ export function Column({ column, columnIndex, rowIndex }) {
     <Boxling bg="white" m="2" p="2" minH="120px">
       <Center>
         <SortableList onSortEnd={handleSortColumn}>
-          {column.map((content, contentIndex) => (
-            <SortableItem key={content.type + contentIndex}>
-              <Flex
-                _hover={{ bg: 'blueGray.50' }}
-                bg="blueGray.200"
-                borderRadius="md"
-                mb="2"
-                p="1"
+          {column.map((content, contentIndex) => {
+            return (
+              <SortableItem
+                key={content.id || content.type + contentIndex}
               >
-                <SortableKnob>
-                  <IconButton
-                    colorScheme="gray"
-                    cursor="ns-resize"
-                    icon={<ArrowUpDownIcon size="16px" />}
-                    p="2"
-                    size="sm"
-                    variant="unstyled"
+                <Flex
+                  _hover={{ bg: 'blueGray.50' }}
+                  bg="blueGray.200"
+                  borderRadius="md"
+                  mb="2"
+                  p="1"
+                >
+                  <SortableKnob>
+                    <IconButton
+                      colorScheme="gray"
+                      cursor="ns-resize"
+                      icon={<ArrowUpDownIcon size="16px" />}
+                      p="2"
+                      size="sm"
+                      variant="unstyled"
+                    />
+                  </SortableKnob>
+                  <ContentModule
+                    content={content}
+                    contentIndex={contentIndex}
+                    columnIndex={columnIndex}
+                    rowIndex={rowIndex}
                   />
-                </SortableKnob>
-                <ContentModule
-                  content={content}
-                  contentIndex={contentIndex}
-                  columnIndex={columnIndex}
-                  rowIndex={rowIndex}
-                />
-              </Flex>
-            </SortableItem>
-          ))}
+                </Flex>
+              </SortableItem>
+            );
+          })}
         </SortableList>
       </Center>
 
@@ -161,14 +169,14 @@ export default function Row({ row, rowIndex }) {
     return null;
   }
 
-  const gridTemplalateColumns = getGridTemplateColumns(gridType);
+  const gridTemplateColumns = getGridTemplateColumns(gridType);
 
   return (
-    <Box display="grid" gridTemplateColumns={gridTemplalateColumns}>
+    <Box display="grid" gridTemplateColumns={gridTemplateColumns}>
       {columns.map((column, columnIndex) => (
         <Box
           key={gridType + columnIndex}
-          gridTemplateColumns={gridTemplalateColumns}
+          gridTemplateColumns={gridTemplateColumns}
         >
           <Column
             column={column}

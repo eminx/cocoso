@@ -67,13 +67,16 @@ export default function ComposablePageForm({
     useState(emptyModuleModal);
   const { composablePageId } = useParams();
 
-  const getComposablePageById = async (id) => {
-    if (!id || id === '*') {
+  const getComposablePageById = async () => {
+    if (!composablePageId || composablePageId === '*') {
       return;
     }
 
     try {
-      const response = await call('getComposablePageById', id);
+      const response = await call(
+        'getComposablePageById',
+        composablePageId
+      );
       setCurrentPage(response);
     } catch (error) {
       message.error(error.reason || error.error);
@@ -84,7 +87,7 @@ export default function ComposablePageForm({
     if (!composablePageId) {
       return;
     }
-    getComposablePageById(composablePageId);
+    getComposablePageById();
   }, [composablePageId]);
 
   useEffect(() => {
@@ -108,7 +111,10 @@ export default function ComposablePageForm({
     const newRow = getNewRow(rowType);
     setCurrentPage((prevPage) => ({
       ...prevPage,
-      contentRows: [...currentPage.contentRows, newRow],
+      contentRows: [
+        ...currentPage.contentRows,
+        { ...newRow, id: Date.now().toString() },
+      ],
       pingSave: true,
     }));
   };
@@ -188,7 +194,7 @@ export default function ComposablePageForm({
     }
   };
 
-  const saveContentModal = async () => {
+  const saveContentModal = () => {
     if (!contentModal) {
       return;
     }
@@ -297,7 +303,7 @@ export default function ComposablePageForm({
 
           <SortableList onSortEnd={handleSortRows}>
             {currentPage.contentRows?.map((row, rowIndex) => (
-              <SortableItem key={row.gridType + rowIndex}>
+              <SortableItem key={row.id || row.gridType + rowIndex}>
                 <Flex>
                   <Box style={{ flexGrow: 0, flexShrink: 0 }}>
                     <SortableKnob>
@@ -366,7 +372,7 @@ export default function ComposablePageForm({
 
           <ConfirmModal
             confirmButtonProps={{ isLoading: contentModal?.uploading }}
-            size="xl"
+            size="3xl"
             title={<Trans i18nKey="admin:composable.form.addContent" />}
             visible={contentModal?.open}
             onConfirm={confirmContentModal}

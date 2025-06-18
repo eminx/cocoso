@@ -16,6 +16,9 @@ ComposablePages.schema = new SimpleSchema({
 
   contentRows: { type: Array, maxCount: 21 },
   'contentRows.$': { type: Object },
+  'contentRows.$.id': {
+    type: String,
+  },
   'contentRows.$.gridType': {
     type: String,
     allowedValues: ['full', '1+1', '1+1+1', '1+2', '2+1'],
@@ -24,6 +27,9 @@ ComposablePages.schema = new SimpleSchema({
   'contentRows.$.columns': { type: Array, maxCount: 3 },
   'contentRows.$.columns.$': { type: Array },
   'contentRows.$.columns.$.$': { type: Object, optional: true },
+  'contentRows.$.columns.$.$.id': {
+    type: String,
+  },
   'contentRows.$.columns.$.$.type': {
     type: String,
     allowedValues: contentTypes.map((content) => content.type),

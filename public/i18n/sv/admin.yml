@@ -184,13 +184,13 @@ pages:
     info: Du kan ändra ordningen på sidorna genom att dra dem uppåt och nedåt. Det påverkar deras visningsordning i navigeringsmenyn
 
 composable:
-  title: Composable sidor
+  title: Komponerbara sidor
   existing: Befintliga
   new: Skapa ny
   create: Skapa
   newTitleInputLabel: Titel
-  newTitleInputHelper: Ange en titel för composable-sidan du skapar
-  description: Skapa en anpassad sida och tilldela den som en landningssida, kampanjsida eller bara vilken sida du vill
+  newTitleInputHelper: Ange en titel för komponerbara-sidan du skapar
+  description: Komponera en sida och gör den till startsida, kampanjsida eller till vad du behöver
   form:
     addContent: Lägg till innehåll
     addRow: Lägg till en rad

@@ -130,7 +130,7 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
       <Flex flexDirection="column">
         {composablePage.contentRows.map((row, rowIndex) => (
           <Box
-            key={rowIndex}
+            key={row.id || row.gridType + rowIndex}
             display="grid"
             gridTemplateColumns={getResponsiveGridColumns(row.gridType)}
             gap={{ base: 2, md: 4 }}
@@ -139,7 +139,7 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
             {row.columns.map((column, columnIndex) => (
               <Box key={columnIndex}>
                 {column.map((module, moduleIndex) => (
-                  <Box key={module.type + moduleIndex}>
+                  <Box key={module.id || module.type + moduleIndex}>
                     <ContentModule module={module} Host={Host} />
                   </Box>
                 ))}

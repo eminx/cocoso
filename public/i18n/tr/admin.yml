@@ -190,7 +190,7 @@ composable:
   create: Oluştur
   newTitleInputLabel: Başlık
   newTitleInputHelper: Lütfen yeni oluşturulacak özelleştirilebilir sayfanın başlığını gir
-  description: Özel bir sayfa oluştur ve bunu açılış sayfası, kampanya sayfası veya istediğin herhangi bir sayfa olarak ata
+  description: Özel bir sayfa oluştur ve bunu açılış sayfası, kampanya sayfası veya istediğin herhangi bir sayfa olarak düzenle
   form:
     addContent: İçerik ekle
     addRow: Satır ekle

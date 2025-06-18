@@ -17,6 +17,7 @@ import ReactPlayer from 'react-player';
 
 import { ComposablePageContext } from '../ComposablePageForm';
 import { Divider } from '/imports/ui/core';
+import HTMLReactParser from 'html-react-parser';
 
 function ModulePreview({ content }) {
   const renderContent = () => {
@@ -31,12 +32,11 @@ function ModulePreview({ content }) {
         return <img src={content.value?.images[0]} />;
       case 'text':
         return (
-          <Box
-            dangerouslySetInnerHTML={{
-              __html: content.value?.html?.substring(0, 50),
-            }}
-            fontSize="xs"
-          />
+          <Box fontSize="xs">
+            {content.value?.html
+              ? HTMLReactParser(content.value.html.substring(0, 50))
+              : null}
+          </Box>
         );
       case 'video':
         return <Code>{content.value?.src}</Code>;
@@ -52,8 +52,8 @@ function ModulePreview({ content }) {
         borderRadius="md"
         my="2"
         p="1"
-        w="100%"
         style={{ transform: 'translateX(-14px)' }}
+        w="100%"
       >
         {renderContent()}
       </Center>
