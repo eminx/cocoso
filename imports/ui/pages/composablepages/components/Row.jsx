@@ -135,27 +135,27 @@ export function Column({ column, columnIndex, rowIndex }) {
         </SortableList>
       </Center>
 
-      <DropTarget columnIndex={columnIndex} rowIndex={rowIndex} />
-
-      <Center>
-        <Menu
-          buttonLabel={
-            <Trans i18nKey="admin:composable.form.addContent" />
-          }
-          leftIcon={<AddIcon size="18px" />}
-          options={contentTypes.map((content) => ({
-            ...content,
-            key: content.type,
-          }))}
-          onSelect={handleSelectContent}
-        >
-          {(item) => (
-            <Trans
-              i18nKey={`admin:composable.form.types.${item.type}`}
-            />
-          )}
-        </Menu>
-      </Center>
+      <DropTarget columnIndex={columnIndex} rowIndex={rowIndex}>
+        <Center>
+          <Menu
+            buttonLabel={
+              <Trans i18nKey="admin:composable.form.addContent" />
+            }
+            leftIcon={<AddIcon size="18px" />}
+            options={contentTypes.map((content) => ({
+              ...content,
+              key: content.type,
+            }))}
+            onSelect={handleSelectContent}
+          >
+            {(item) => (
+              <Trans
+                i18nKey={`admin:composable.form.types.${item.type}`}
+              />
+            )}
+          </Menu>
+        </Center>
+      </DropTarget>
     </Boxling>
   );
 }

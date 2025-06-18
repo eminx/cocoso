@@ -4,7 +4,11 @@ import { useDrop } from 'react-dnd';
 
 import { ComposablePageContext } from '../ComposablePageForm';
 
-export default function DropTarget({ columnIndex, rowIndex }) {
+export default function DropTarget({
+  columnIndex,
+  rowIndex,
+  children,
+}) {
   const { setCurrentPage } = useContext(ComposablePageContext);
 
   const handleMoveContent = ({ item }) => {
@@ -93,7 +97,7 @@ export default function DropTarget({ columnIndex, rowIndex }) {
 
   const bg =
     !canDrop || isSameColumn
-      ? 'none'
+      ? 'green.50'
       : isOver
       ? 'green.300'
       : 'green.100';
@@ -104,11 +108,15 @@ export default function DropTarget({ columnIndex, rowIndex }) {
       borderRadius="md"
       border={canDrop && !isSameColumn ? '1px dashed' : 'none'}
       borderColor={canDrop && !isSameColumn ? 'green.500' : 'none'}
-      p="4"
+      borderWidth="2px"
+      minH="102px"
+      my="2"
+      p="0"
       ref={dropRef}
-      w="100%"
-      h="42px"
       transition="all 0.2s ease-in-out"
-    />
+      w="100%"
+    >
+      {canDrop ? null : children}
+    </Center>
   );
 }

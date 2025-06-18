@@ -49,7 +49,7 @@ const generateTheme = (hue) => {
       },
       blueGray: {
         50: '#f4f7ff',
-        100: '#E0E5F2',
+        100: '#EEF4FD',
         200: '#E1E9F8',
         300: '#CDD5EA',
         400: '#BEC9E4',

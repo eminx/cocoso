@@ -24,7 +24,7 @@ export default function GenericMenu({
             colorScheme="blue"
             leftIcon={leftIcon}
             rightIcon={rightIcon}
-            // size="xs"
+            size="sm"
             variant="ghost"
           >
             {buttonLabel}

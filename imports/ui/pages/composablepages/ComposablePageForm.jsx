@@ -372,7 +372,7 @@ export default function ComposablePageForm({
 
           <ConfirmModal
             confirmButtonProps={{ isLoading: contentModal?.uploading }}
-            size="3xl"
+            size="4xl"
             title={<Trans i18nKey="admin:composable.form.addContent" />}
             visible={contentModal?.open}
             onConfirm={confirmContentModal}
