@@ -104,6 +104,7 @@ export function Column({ column, columnIndex, rowIndex }) {
             return (
               <SortableItem
                 key={content.id || content.type + contentIndex}
+                style={{ width: '100%' }}
               >
                 <Flex
                   _hover={{ bg: 'blueGray.50' }}
@@ -111,6 +112,7 @@ export function Column({ column, columnIndex, rowIndex }) {
                   borderRadius="md"
                   mb="2"
                   p="1"
+                  w="100%"
                 >
                   <SortableKnob>
                     <IconButton

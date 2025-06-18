@@ -110,7 +110,7 @@ export default function DropTarget({
       borderColor={canDrop && !isSameColumn ? 'green.500' : 'none'}
       borderWidth="2px"
       minH="102px"
-      my="2"
+      mb="2"
       p="0"
       ref={dropRef}
       transition="all 0.2s ease-in-out"

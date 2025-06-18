@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { Schemas } from '../_utils/schemas';
 import { contentTypes } from '/imports/ui/pages/composablepages/constants';
+import { optional } from 'zod';
 
 const ComposablePages = new Mongo.Collection('composablepages');
 
@@ -19,6 +20,10 @@ ComposablePages.schema = new SimpleSchema({
   'contentRows.$.id': {
     type: String,
   },
+  'contentRows.$.key': {
+    type: String,
+    optional: true,
+  },
   'contentRows.$.gridType': {
     type: String,
     allowedValues: ['full', '1+1', '1+1+1', '1+2', '2+1'],
@@ -27,6 +32,10 @@ ComposablePages.schema = new SimpleSchema({
   'contentRows.$.columns': { type: Array, maxCount: 3 },
   'contentRows.$.columns.$': { type: Array },
   'contentRows.$.columns.$.$': { type: Object, optional: true },
+  'contentRows.$.columns.$.$.key': {
+    type: String,
+    optional: true,
+  },
   'contentRows.$.columns.$.$.id': {
     type: String,
   },

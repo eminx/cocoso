@@ -14,10 +14,10 @@ import EditIcon from 'lucide-react/dist/esm/icons/edit';
 import TrashIcon from 'lucide-react/dist/esm/icons/trash';
 import { useDrag } from 'react-dnd';
 import ReactPlayer from 'react-player';
+import HTMLReactParser from 'html-react-parser';
 
 import { ComposablePageContext } from '../ComposablePageForm';
 import { Divider } from '/imports/ui/core';
-import HTMLReactParser from 'html-react-parser';
 
 function ModulePreview({ content }) {
   const renderContent = () => {
@@ -27,14 +27,24 @@ function ModulePreview({ content }) {
       case 'divider':
         return <Divider />;
       case 'image':
-        return <img src={content.value?.src} />;
+        return (
+          <img
+            src={content.value?.src}
+            style={{ borderRadius: '6px' }}
+          />
+        );
       case 'image-slider':
-        return <img src={content.value?.images[0]} />;
+        return (
+          <img
+            src={content.value?.images[0]}
+            style={{ borderRadius: '6px' }}
+          />
+        );
       case 'text':
         return (
-          <Box fontSize="xs">
+          <Box fontSize="12px" px="2">
             {content.value?.html
-              ? HTMLReactParser(content.value.html.substring(0, 50))
+              ? HTMLReactParser(content.value.html.substring(0, 100))
               : null}
           </Box>
         );
@@ -102,7 +112,7 @@ export default function ContentModule(props) {
     >
       <Flex justify="space-between" w="100%">
         <Button
-          _hover={{ bg: 'blueGray.50' }}
+          _hover={{ bg: 'blueGray.200' }}
           colorScheme="blue"
           cursor="pointer"
           flexGrow="1"
