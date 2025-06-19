@@ -217,6 +217,11 @@ composable:
     text2: If you confirm, the selected module will be deleted and cannot be reverted.
   settings:
     title: Settings
+    hideTitle: Hide Title
+    hideMenu: Hide Main Menu
+  messages:
+    titleEmpty: Please enter a title
+    titleTooLong: Title must be less than 50 characters
   toolbar:
     preview: Preview
     publish: Publish

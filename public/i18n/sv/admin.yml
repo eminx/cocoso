@@ -217,6 +217,11 @@ composable:
     text2: Om du bekräftar kommer den valda modulen att tas bort och kan inte återställas.
   settings:
     title: Inställningar
+    hideTitle: Dölj titel
+    hideMenu: Dölj huvudmeny
+  messages:
+    titleEmpty: Ange en titel
+    titleTooLong: Titeln måste vara kortare än 50 tecken
   toolbar:
     preview: Förhandsgranska
     publish: Publicera

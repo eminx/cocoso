@@ -43,11 +43,15 @@ export default function ComposablePageSettings() {
 
   const confirmChange = () => {
     if (currentPage.title === '') {
-      message.error('Please enter a title');
+      message.error(
+        <Trans i18nKey="admin:composable.messages.titleEmpty" />
+      );
       return;
     }
     if (currentPage.title.length > 50) {
-      message.error('Title must be less than 50 characters');
+      message.error(
+        <Trans i18nKey="admin:composable.messages.titleTooLong" />
+      );
       return;
     }
     updateComposablePage(true);
@@ -77,7 +81,7 @@ export default function ComposablePageSettings() {
       </Button>
 
       <ConfirmModal
-        title="Settings"
+        title={<Trans i18nKey="admin:composable.settings.title" />}
         visible={state.settingsModalOpen}
         onConfirm={confirmChange}
         onCancel={() =>
@@ -89,7 +93,9 @@ export default function ComposablePageSettings() {
       >
         <Box bg="gray.50" borderRadius="md" p="4">
           <Box py="2">
-            <FormField label="Title">
+            <FormField
+              label={<Trans i18nKey="admin:composable.form.title" />}
+            >
               <Input
                 type="text"
                 value={currentPage?.title}
@@ -105,7 +111,11 @@ export default function ComposablePageSettings() {
                 updateSettings({ hideTitle: e.target.checked })
               }
             >
-              <FormField label="Hide Title" />
+              <FormField
+                label={
+                  <Trans i18nKey="admin:composable.settings.hideTitle" />
+                }
+              />
             </Checkbox>
           </Box>
 
@@ -116,7 +126,11 @@ export default function ComposablePageSettings() {
                 updateSettings({ hideMenu: e.target.checked })
               }
             >
-              <FormField label="Hide Menu" />
+              <FormField
+                label={
+                  <Trans i18nKey="admin:composable.settings.hideMenu" />
+                }
+              />
             </Checkbox>
           </Box>
         </Box>

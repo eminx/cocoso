@@ -217,6 +217,11 @@ composable:
     text2: Onaylarsan, seçili modül silinecek ve geri alınamayacaktır.
   settings:
     title: Ayarlar
+    hideTitle: Başlığı gizle
+    hideMenu: Ana menüyü gizle
+  messages:
+    titleEmpty: Lütfen bir başlık gir
+    titleTooLong: Başlık 50 karakterden fazla olamaz
   toolbar:
     preview: Önizleme
     publish: Yayınla
