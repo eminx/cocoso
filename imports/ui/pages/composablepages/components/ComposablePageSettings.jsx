@@ -1,23 +1,63 @@
-import React, { useState } from 'react';
-import { Button } from '@chakra-ui/react';
+import React, { useContext, useState } from 'react';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  Input,
+  VStack,
+} from '@chakra-ui/react';
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
 
 import ConfirmModal from '/imports/ui/generic/ConfirmModal';
+import FormField from '/imports/ui/forms/FormField';
 import { call } from '/imports/ui/utils/shared';
+import { ComposablePageContext } from '../ComposablePageForm';
+import { message } from '/imports/ui/generic/message';
 
 export default function ComposablePageSettings() {
+  const { currentPage, setCurrentPage, updateComposablePage } =
+    useContext(ComposablePageContext);
+
   const [state, setState] = useState({
     settingsModalOpen: false,
   });
 
-  const saveComposablePageSettings = async (settings) => {
-    await call('composablePage.update', {
-      _id: selectedPage._id,
-      settings,
-    });
-    message.success('Settings saved');
+  const updateSettings = (field) => {
+    setCurrentPage((prevPage) => ({
+      ...prevPage,
+      settings: {
+        ...prevPage.settings,
+        ...field,
+      },
+    }));
   };
+
+  const renameTitle = (e) => {
+    setCurrentPage((prevPage) => ({
+      ...prevPage,
+      title: e.target.value,
+    }));
+  };
+
+  const confirmChange = () => {
+    if (currentPage.title === '') {
+      message.error('Please enter a title');
+      return;
+    }
+    if (currentPage.title.length > 50) {
+      message.error('Title must be less than 50 characters');
+      return;
+    }
+    updateComposablePage(true);
+    setState((prevState) => ({
+      ...prevState,
+      settingsModalOpen: false,
+    }));
+  };
+
+  const settings = currentPage?.settings || {};
 
   return (
     <div>
@@ -35,10 +75,11 @@ export default function ComposablePageSettings() {
       >
         <Trans i18nKey="admin:composable.settings.title" />
       </Button>
+
       <ConfirmModal
         title="Settings"
         visible={state.settingsModalOpen}
-        onConfirm={() => saveComposablePageSettings()}
+        onConfirm={confirmChange}
         onCancel={() =>
           setState((prevState) => ({
             ...prevState,
@@ -46,7 +87,39 @@ export default function ComposablePageSettings() {
           }))
         }
       >
-        Settings Form will show up here
+        <Box bg="gray.50" borderRadius="md" p="4">
+          <Box py="2">
+            <FormField label="Title">
+              <Input
+                type="text"
+                value={currentPage?.title}
+                onChange={renameTitle}
+              />
+            </FormField>
+          </Box>
+
+          <Box py="2">
+            <Checkbox
+              isChecked={settings?.hideTitle}
+              onChange={(e) =>
+                updateSettings({ hideTitle: e.target.checked })
+              }
+            >
+              <FormField label="Hide Title" />
+            </Checkbox>
+          </Box>
+
+          <Box py="2">
+            <Checkbox
+              isChecked={settings?.hideMenu}
+              onChange={(e) =>
+                updateSettings({ hideMenu: e.target.checked })
+              }
+            >
+              <FormField label="Hide Menu" />
+            </Checkbox>
+          </Box>
+        </Box>
       </ConfirmModal>
     </div>
   );

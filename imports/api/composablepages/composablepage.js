@@ -50,6 +50,10 @@ ComposablePages.schema = new SimpleSchema({
     defaultValue: false,
   },
 
+  settings: { type: Object },
+  'settings.hideTitle': { type: Boolean, defaultValue: false },
+  'settings.hideMenu': { type: Boolean, defaultValue: false },
+
   creationDate: { type: Date },
   latestUpdate: {
     type: Date,

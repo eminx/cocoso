@@ -22,6 +22,7 @@ Meteor.methods({
             contentRows: 1,
             host: 1,
             isPublished: 1,
+            settings: 1,
             title: 1,
           },
         }

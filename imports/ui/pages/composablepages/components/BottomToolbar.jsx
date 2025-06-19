@@ -8,9 +8,7 @@ import { CheckIcon } from 'lucide-react';
 
 export default function BottomToolbar() {
   const [updated, setUpdated] = useState(false);
-  const { currentPage, setCurrentPage } = useContext(
-    ComposablePageContext
-  );
+  const { currentPage } = useContext(ComposablePageContext);
 
   useEffect(() => {
     if (currentPage.pingSave === false) {
@@ -35,7 +33,7 @@ export default function BottomToolbar() {
       bg="gray.900"
       borderRadius="md"
       bottom="12px"
-      boxShadow="md"
+      boxShadow="lg"
       justify="space-between"
       position="fixed"
       p="2"

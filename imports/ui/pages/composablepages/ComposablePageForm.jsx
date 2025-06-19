@@ -242,15 +242,19 @@ export default function ComposablePageForm({
     saveContentModal();
   };
 
-  const updateComposablePage = async () => {
+  const updateComposablePage = async (updateTitles = false) => {
     const newPage = {
       _id: currentPage._id,
       title: currentPage.title,
       contentRows: currentPage.contentRows,
+      settings: currentPage.settings,
     };
 
     try {
       await call('updateComposablePage', newPage);
+      if (updateTitles) {
+        await getComposablePageTitles();
+      }
       setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
       setContentModal({ open: false, content: null });
       message.success('Page updated successfully');
@@ -289,6 +293,7 @@ export default function ComposablePageForm({
     setContentModal,
     setCurrentPage,
     setDeleteModuleModal,
+    updateComposablePage,
   };
 
   return (

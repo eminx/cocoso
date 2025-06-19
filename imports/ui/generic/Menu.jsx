@@ -21,6 +21,7 @@ export default function GenericMenu({
       menuButton={
         <MenuButton>
           <Button
+            as="a"
             colorScheme="blue"
             leftIcon={leftIcon}
             rightIcon={rightIcon}
