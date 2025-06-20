@@ -19,6 +19,7 @@ ComposablePages.schema = new SimpleSchema({
   'contentRows.$': { type: Object },
   'contentRows.$.id': {
     type: String,
+    optional: true,
   },
   'contentRows.$.key': {
     type: String,
@@ -32,12 +33,9 @@ ComposablePages.schema = new SimpleSchema({
   'contentRows.$.columns': { type: Array, maxCount: 3 },
   'contentRows.$.columns.$': { type: Array },
   'contentRows.$.columns.$.$': { type: Object, optional: true },
-  'contentRows.$.columns.$.$.key': {
-    type: String,
-    optional: true,
-  },
   'contentRows.$.columns.$.$.id': {
     type: String,
+    optional: true,
   },
   'contentRows.$.columns.$.$.type': {
     type: String,
