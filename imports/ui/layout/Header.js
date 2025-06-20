@@ -123,7 +123,7 @@ function HeaderMenu({ Host, pageTitles }) {
   };
 
   return (
-    <Center mb="4" px="4">
+    <Center className="main-menu" mb="4" px="4">
       <HStack
         alignItems="center"
         bg="gray.50"

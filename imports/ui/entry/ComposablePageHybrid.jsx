@@ -9,6 +9,7 @@ import { getResponsiveGridColumns } from '/imports/ui/pages/composablepages/cons
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
+import { GlobalStyles } from 'restyle';
 
 function ContentModule({ module, Host }) {
   const currentHost = Host;
@@ -113,14 +114,28 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
     return null;
   }
 
+  const hideMenu = composablePage.settings?.hideMenu;
+  const hideTitle = composablePage.settings?.hideTitle;
+
   return (
     <>
-      <Heading
-        size="xl"
-        css={{ textAlign: 'center', margin: '1rem 0' }}
-      >
-        {composablePage.title}
-      </Heading>
+      {hideMenu ? (
+        <GlobalStyles>
+          {{
+            '.main-menu': {
+              display: 'none',
+            },
+          }}
+        </GlobalStyles>
+      ) : null}
+      {hideTitle ? null : (
+        <Heading
+          size="xl"
+          css={{ textAlign: 'center', margin: '1rem 0' }}
+        >
+          {composablePage.title}
+        </Heading>
+      )}
       <Flex flexDirection="column">
         {composablePage.contentRows.map((row, rowIndex) => (
           <Box
