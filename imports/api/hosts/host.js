@@ -9,7 +9,11 @@ const SchemasHost = {
     description: { type: String, optional: true },
     isHomePage: { type: Boolean, optional: true },
     isVisible: { type: Boolean },
-    isComposablePage: { type: Boolean, optional: true },
+    isComposablePage: {
+      type: Boolean,
+      defaultValue: false,
+      optional: true,
+    },
     label: { type: String },
     name: { type: String },
   },

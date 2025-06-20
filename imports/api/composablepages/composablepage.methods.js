@@ -122,6 +122,7 @@ Meteor.methods({
       });
       return formValues.title;
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error);
     }
   },

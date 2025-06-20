@@ -257,7 +257,7 @@ export default function ComposablePageForm({
       }
       setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
       setContentModal({ open: false, content: null });
-      message.success('Page updated successfully');
+      message.success(<Trans i18nKey="common:message.success.save" />);
     } catch (error) {
       console.log(error);
       message.error(error.reason || error.error);

@@ -41,7 +41,7 @@ export default function ComposablePageSettings() {
     }));
   };
 
-  const confirmChange = () => {
+  const confirmChange = async () => {
     if (currentPage.title === '') {
       message.error(
         <Trans i18nKey="admin:composable.messages.titleEmpty" />
@@ -54,7 +54,7 @@ export default function ComposablePageSettings() {
       );
       return;
     }
-    updateComposablePage(true);
+    await updateComposablePage(true);
     setState((prevState) => ({
       ...prevState,
       settingsModalOpen: false,
