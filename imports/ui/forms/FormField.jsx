@@ -19,7 +19,7 @@ function FormField(props) {
       <FormLabel
         color="gray.800"
         fontWeight="bold"
-        mb="0"
+        mb="1"
         requiredIndicator={'*'}
       >
         {label}
