@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useHref, useParams, useSearchParams } from 'react-router-dom';
 
 import WrapperSSR from '../../ui/layout/WrapperSSR';
 import ActivityHybrid from '../../ui/entry/ActivityHybrid';
@@ -88,12 +88,19 @@ export function Calendar({ host, sink }) {
 }
 
 export function ComposablePage({ host, sink }) {
-  const { composablePageId } = useParams();
+  let { composablePageId } = useParams();
+  const href = useHref();
+
+  const Host = Meteor.call('getHost', host);
+
+  if (href === '/' && !composablePageId) {
+    composablePageId = Host?.settings?.menu[0]?.name;
+  }
+
   const composablePage = Meteor.call(
     'getComposablePageById',
     composablePageId
   );
-  const Host = Meteor.call('getHost', host);
 
   sink.appendToBody(parsePreloadedState({ Host }));
 
@@ -317,8 +324,10 @@ export function Home(props) {
         return <Page {...props} />;
       case 'calendar':
         return <Calendar {...props} />;
-      default:
+      case 'people':
         return <UserList {...props} />;
+      default:
+        return <ComposablePage {...props} />;
     }
   };
 

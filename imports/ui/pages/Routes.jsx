@@ -89,8 +89,10 @@ function getComponentBasedOnFirstRoute(menuItems) {
       return <Calendar />;
     case 'info':
       return <Page />;
-    default:
+    case 'people':
       return <Users />;
+    default:
+      return <ComposablePageView />;
   }
 }
 
@@ -98,12 +100,12 @@ function HomePage() {
   const { currentHost } = useContext(StateContext);
   const menu =
     currentHost && currentHost.settings && currentHost.settings.menu;
+
   if (!menu || !menu[0]) {
     return null;
   }
 
   const Component = getComponentBasedOnFirstRoute(menu);
-
   return Component;
 }
 

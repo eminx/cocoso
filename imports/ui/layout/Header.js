@@ -142,7 +142,14 @@ function HeaderMenu({ Host, pageTitles }) {
               pathname={pathname}
             />
           ) : (
-            <Link key={item.name} to={`/${item.name}`}>
+            <Link
+              key={item.name}
+              to={
+                item.isComposablePage
+                  ? `/cp/${item.name}`
+                  : `/${item.name}`
+              }
+            >
               <Box as="span" px="2">
                 <Text
                   {...textProps}

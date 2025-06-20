@@ -4,7 +4,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHref, useParams } from 'react-router-dom';
 
 import { message } from '/imports/ui/generic/message';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -15,6 +15,7 @@ export default function ComposablePageView() {
   const initialComposablePage =
     window?.__PRELOADED_STATE__?.composablePage || null;
   const Host = window?.__PRELOADED_STATE__?.Host || null;
+  const href = useHref();
 
   const [composablePage, setComposablePage] = useState(
     initialComposablePage
@@ -22,10 +23,14 @@ export default function ComposablePageView() {
   const [rendered, setRendered] = useState(false);
 
   let { currentHost } = useContext(StateContext);
-  const { composablePageId } = useParams();
+  let { composablePageId } = useParams();
 
   if (!currentHost) {
     currentHost = Host;
+  }
+
+  if (href === '/' && !composablePageId) {
+    composablePageId = currentHost?.settings?.menu[0]?.name;
   }
 
   useLayoutEffect(() => {
@@ -42,7 +47,6 @@ export default function ComposablePageView() {
       );
       setComposablePage(response);
     } catch (error) {
-      console.log('error', error);
       message.error(error.reason || error.error);
     }
   };

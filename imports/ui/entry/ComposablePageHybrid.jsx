@@ -113,12 +113,6 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
     return null;
   }
 
-  const thisComposablePageInMenu = Host?.settings?.menu.find(
-    (item) => item.name === composablePage.title
-  );
-
-  const url = `https://${composablePage.host}/sp/${composablePage.id}`;
-
   return (
     <>
       <Heading
