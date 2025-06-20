@@ -54,11 +54,16 @@ export default function ComposablePageSettings() {
       );
       return;
     }
-    await updateComposablePage(true);
-    setState((prevState) => ({
-      ...prevState,
-      settingsModalOpen: false,
-    }));
+    try {
+      await updateComposablePage(true);
+      setState((prevState) => ({
+        ...prevState,
+        settingsModalOpen: false,
+      }));
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason || error.error);
+    }
   };
 
   const settings = currentPage?.settings || {};
