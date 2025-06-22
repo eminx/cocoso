@@ -46,7 +46,6 @@ function ContentModule({ module, Host }) {
             </a>
           ) : (
             <Link to={buttonLink}>
-              https://xyrden.s3-eu-central-1.amazonaws.com/emin/dup3.jpeg
               <Button as="span">{value.label}</Button>
             </Link>
           )}
