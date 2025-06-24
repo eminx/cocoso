@@ -1,18 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useTranslation } from 'react-i18next';
-import { Box, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
+import { Trans, useTranslation } from 'react-i18next';
+import {
+  Box,
+  Flex,
+  Heading,
+  Input,
+  Select,
+  Text,
+} from '@chakra-ui/react';
 
 import Loader from '../../generic/Loader';
 import NiceList from '../../generic/NiceList';
-import { message } from '../../generic/message';
 import Alert from '../../generic/Alert';
-import { StateContext } from '../../LayoutContainer';
-import { call } from '../../utils/shared';
 import UsageReport from './UsageReport';
 import Boxling from './Boxling';
 import TablyRouter from '../../generic/TablyRouter';
+import { StateContext } from '../../LayoutContainer';
+import { message } from '../../generic/message';
+import { call } from '../../utils/shared';
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -42,8 +49,15 @@ function MemberItem({ member, t }) {
 
 function MemberList({ members, t }) {
   return (
-    <NiceList actionsDisabled={false} itemBg="white" keySelector="email" list={members}>
-      {(member) => <MemberItem key={member.username} t={t} member={member} />}
+    <NiceList
+      actionsDisabled={false}
+      itemBg="white"
+      keySelector="email"
+      list={members}
+    >
+      {(member) => (
+        <MemberItem key={member.username} t={t} member={member} />
+      )}
     </NiceList>
   );
 }
@@ -78,7 +92,9 @@ export default function Members() {
     try {
       await call('setAsParticipant', user.id);
       getMembers();
-      message.success(t('message.success.participant', { username: user.username }));
+      message.success(
+        t('message.success.participant', { username: user.username })
+      );
     } catch (error) {
       console.log(error);
       message.error({
@@ -92,7 +108,9 @@ export default function Members() {
     try {
       await call('setAsContributor', user.id);
       getMembers();
-      message.success(t('message.success.contributor', { username: user.username }));
+      message.success(
+        t('message.success.contributor', { username: user.username })
+      );
     } catch (error) {
       console.log(error);
       message.error({
@@ -106,7 +124,9 @@ export default function Members() {
     try {
       await call('setAsAdmin', user.id);
       getMembers();
-      message.success(t('message.success.admin', { username: user.username }));
+      message.success(
+        t('message.success.admin', { username: user.username })
+      );
     } catch (error) {
       console.log(error);
       message.error({
@@ -142,7 +162,9 @@ export default function Members() {
       {
         content: t('actions.participant'),
         handleClick: () => setAsParticipant(member),
-        isDisabled: !['contributor'].includes(member.role) || !['admin'].includes(role),
+        isDisabled:
+          !['contributor'].includes(member.role) ||
+          !['admin'].includes(role),
       },
       {
         content: t('actions.usageReport'),
@@ -183,12 +205,15 @@ export default function Members() {
   ];
 
   const membersFilteredWithType = membersList.filter((member) => {
-    const lowerCaseFilterWord = filterWord ? filterWord.toLowerCase() : '';
+    const lowerCaseFilterWord = filterWord
+      ? filterWord.toLowerCase()
+      : '';
     if (!member.username || !member.email) {
       return false;
     }
     return (
-      member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+      member.username.toLowerCase().indexOf(lowerCaseFilterWord) !==
+        -1 ||
       member.email.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
     );
   });
@@ -196,11 +221,15 @@ export default function Members() {
   let membersSorted;
   switch (sortBy) {
     case 'username':
-      membersSorted = membersFilteredWithType.sort((a, b) => a.username.localeCompare(b.username));
+      membersSorted = membersFilteredWithType.sort((a, b) =>
+        a.username.localeCompare(b.username)
+      );
       break;
     case 'join-date':
     default:
-      membersSorted = membersFilteredWithType.sort(compareUsersByDate).reverse();
+      membersSorted = membersFilteredWithType
+        .sort(compareUsersByDate)
+        .reverse();
       break;
   }
 
@@ -222,12 +251,33 @@ export default function Members() {
     <>
       <TablyRouter tabs={tabs}>
         <Boxling mb="4" mt="8">
+          <Heading color="gray.600" mb="2" size="md">
+            <span
+              style={{
+                fontSize: '150%',
+              }}
+            >
+              {membersRendered.length}
+            </span>{' '}
+            <Trans
+              i18nKey={`admin:users.${
+                membersRendered.length > 1
+                  ? 'usersListed'
+                  : 'userListed'
+              }`}
+            />
+          </Heading>
+
           <Box mb="2">
             <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
           </Box>
 
           <Flex flexDirection={isDesktop ? 'row' : 'column'} w="100%">
-            <Box pr={isDesktop ? '4' : '0'} pb={isDesktop ? '0' : '2'} flexBasis="60%">
+            <Box
+              pr={isDesktop ? '4' : '0'}
+              pb={isDesktop ? '0' : '2'}
+              flexBasis="60%"
+            >
               <Input
                 placeholder={t('form.holder')}
                 value={filterWord}
@@ -235,7 +285,11 @@ export default function Members() {
               />
             </Box>
             <Box flexBasis="40%">
-              <Select name="sorter" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <Select
+                name="sorter"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
                 {sortOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}

@@ -8,6 +8,7 @@ home: Anasayfa
 settings:
   title: Ayarlar
   tabs:
+    design: Tasarım
     general: Genel
     logo: Logo
     logoHelper: Topluluğunuzun web sitesi için logo yükle
@@ -58,6 +59,8 @@ organization:
 users:
   title: Kullanıcılar
   shortcutHelper: Kullanıcılarınızı yönet, onları doğrula/onayla veya yönetici olarak tayin et
+  usersListed: kullanıcı
+  userListed: kullanıcı
 
 menu:
   title: Menü

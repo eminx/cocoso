@@ -48,7 +48,7 @@ const generateTheme = (hue) => {
         900: 'rgb(25, 20, 15)',
       },
       blueGray: {
-        50: '#f4f7ff',
+        50: '#F8FAFC',
         100: '#EEF4FD',
         200: '#E1E9F8',
         300: '#CDD5EA',

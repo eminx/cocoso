@@ -8,6 +8,7 @@ home: Hem
 settings:
   title: Inställningar
   tabs:
+    design: Design
     general: Allmänt
     logo: Logotyp
     logoHelper: Ladda upp din logotyp för din communities webbplats
@@ -58,6 +59,8 @@ organization:
 users:
   title: Användare
   shortcutHelper: Hantera dina användare. Verifiera eller verifiera dem, eller ställ in dem som administratörer.
+  usersListed: användare
+  userListed: användare
 
 menu:
   title: Meny

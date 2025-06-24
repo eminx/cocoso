@@ -4,7 +4,7 @@ import { Code, Text } from '@chakra-ui/react';
 
 import Settings from './Settings';
 import MenuSettings from './MenuSettings';
-import ColorPicker from './ColorPicker';
+import DesignOptions from './design';
 import Members from './Members';
 import Emails from './Emails';
 import EmailNewsletter from './EmailNewsletter';
@@ -52,9 +52,9 @@ const getAdminRoutes = (menuItems) => [
         content: <MenuSettings />,
       },
       {
-        label: <Trans i18nKey="admin:settings.tabs.color" />,
-        value: 'settings/color',
-        content: <ColorPicker />,
+        label: <Trans i18nKey="admin:settings.tabs.design" />,
+        value: 'settings/design/*',
+        content: <DesignOptions />,
       },
     ],
   },

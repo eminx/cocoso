@@ -8,6 +8,8 @@ home: Home
 settings:
   title: Settings
   tabs:
+    color: Color
+    design: Design
     general: General
     logo: Logo
     logoHelper: Upload your logo for your the website
@@ -20,7 +22,6 @@ settings:
     menuVisibility: Visibility
     menuOrder: Order
     options: Options
-    color: Color
     footer: Footer
     footerHelper: Compose the footer for your website
     topbar: Topbar
@@ -58,6 +59,8 @@ organization:
 users:
   title: Users
   shortcutHelper: Manege your users. Verify or unverify them, or set them as admin
+  usersListed: users
+  userListed: user
 
 menu:
   title: Menu
