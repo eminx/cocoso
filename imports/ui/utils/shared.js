@@ -74,12 +74,17 @@ const call = (method, ...parameters) =>
     });
   });
 
-const resizeImage = (image, desiredMaximumImageWidth) => {
+const resizeImage = (
+  image,
+  desiredMaximumImageWidth = 1200,
+  desiredMaximumImageHeight = 1200
+) => {
   if (!image) {
     return;
   }
 
-  if (image.size < 300000) {
+  if (image.size < 400000) {
+    // no need to shrink size if already less than 400kb
     return image;
   }
 
@@ -87,9 +92,9 @@ const resizeImage = (image, desiredMaximumImageWidth) => {
     Resizer.imageFileResizer(
       image,
       desiredMaximumImageWidth,
-      600,
+      desiredMaximumImageHeight,
       'JPEG|PNG',
-      90,
+      85,
       0,
       (uri) => {
         if (!uri) {
@@ -126,7 +131,9 @@ function parseAllBookingsWithResources(activities, resources) {
     if (!activity.datesAndTimes) {
       return;
     }
-    const resourceSelected = resources.find((res) => res?._id === activity?.resourceId);
+    const resourceSelected = resources.find(
+      (res) => res?._id === activity?.resourceId
+    );
     if (!resourceSelected) {
       activity.datesAndTimes.forEach((recurrence) => {
         allBookings.push({
@@ -138,23 +145,30 @@ function parseAllBookingsWithResources(activities, resources) {
     }
     activity.datesAndTimes.forEach((recurrence) => {
       if (resourceSelected.isCombo) {
-        resourceSelected.resourcesForCombo.forEach((resourceForCombo) => {
-          if (!resourceForCombo) {
-            return;
+        resourceSelected.resourcesForCombo.forEach(
+          (resourceForCombo) => {
+            if (!resourceForCombo) {
+              return;
+            }
+            const resourceForComboReal = resources.find(
+              (r) => r._id === resourceForCombo._id
+            );
+            if (!resourceForComboReal?.isBookable) {
+              return;
+            }
+            allBookings.push({
+              ...helper_parseAllBookingsWithResources(
+                activity,
+                recurrence
+              ),
+              isWithComboResource: true,
+              resource: resourceForCombo.label,
+              resourceId: resourceForCombo._id,
+              comboResource: activity.resource,
+              comboResourceId: resourceSelected._id,
+            });
           }
-          const resourceForComboReal = resources.find((r) => r._id === resourceForCombo._id);
-          if (!resourceForComboReal?.isBookable) {
-            return;
-          }
-          allBookings.push({
-            ...helper_parseAllBookingsWithResources(activity, recurrence),
-            isWithComboResource: true,
-            resource: resourceForCombo.label,
-            resourceId: resourceForCombo._id,
-            comboResource: activity.resource,
-            comboResourceId: resourceSelected._id,
-          });
-        });
+        );
       } else {
         if (!resourceSelected.isBookable) {
           return;
@@ -176,7 +190,8 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
   if (!recurrence) {
     return;
   }
-  const { startDate, startTime, endDate, endTime, isMultipleDay } = recurrence;
+  const { startDate, startTime, endDate, endTime, isMultipleDay } =
+    recurrence;
 
   return {
     activityId: activity._id,
@@ -200,21 +215,30 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
   };
 }
 
-function getAllBookingsWithSelectedResource(selectedResource, allBookings) {
+function getAllBookingsWithSelectedResource(
+  selectedResource,
+  allBookings
+) {
   return allBookings.filter((booking) => {
     if (!selectedResource) {
       return true;
     }
     if (selectedResource.isCombo) {
       return selectedResource.resourcesForCombo.some(
-        (resourceForCombo) => resourceForCombo._id === booking.resourceId
+        (resourceForCombo) =>
+          resourceForCombo._id === booking.resourceId
       );
     }
     return booking.resourceId === selectedResource._id;
   });
 }
 
-function isDatesInConflict(existingStart, existingEnd, selectedStart, selectedEnd) {
+function isDatesInConflict(
+  existingStart,
+  existingEnd,
+  selectedStart,
+  selectedEnd
+) {
   const dateTimeFormat = 'YYYY-MM-DD HH:mm';
 
   // If the same values are selected, dayjs compare returns false. That's why we do:
@@ -223,10 +247,22 @@ function isDatesInConflict(existingStart, existingEnd, selectedStart, selectedEn
   }
 
   return (
-    dayjs(selectedStart, dateTimeFormat).isBetween(existingStart, existingEnd) ||
-    dayjs(selectedEnd, dateTimeFormat).isBetween(existingStart, existingEnd) ||
-    dayjs(existingStart, dateTimeFormat).isBetween(selectedStart, selectedEnd) ||
-    dayjs(existingEnd, dateTimeFormat).isBetween(selectedStart, selectedEnd)
+    dayjs(selectedStart, dateTimeFormat).isBetween(
+      existingStart,
+      existingEnd
+    ) ||
+    dayjs(selectedEnd, dateTimeFormat).isBetween(
+      existingStart,
+      existingEnd
+    ) ||
+    dayjs(existingStart, dateTimeFormat).isBetween(
+      selectedStart,
+      selectedEnd
+    ) ||
+    dayjs(existingEnd, dateTimeFormat).isBetween(
+      selectedStart,
+      selectedEnd
+    )
   );
 }
 
@@ -237,13 +273,22 @@ function checkAndSetBookingsWithConflict(
 ) {
   return selectedBookings.map((selectedBooking) => {
     const bookingWithConflict = allBookingsWithSelectedResource
-      .filter((item) => !selfBookingIdForEdit || item.activityId !== selfBookingIdForEdit)
+      .filter(
+        (item) =>
+          !selfBookingIdForEdit ||
+          item.activityId !== selfBookingIdForEdit
+      )
       .find((occurence) => {
         const selectedStart = `${selectedBooking.startDate} ${selectedBooking.startTime}`;
         const selectedEnd = `${selectedBooking.endDate} ${selectedBooking.endTime}`;
         const existingStart = `${occurence.startDate} ${occurence.startTime}`;
         const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
-        return isDatesInConflict(existingStart, existingEnd, selectedStart, selectedEnd);
+        return isDatesInConflict(
+          existingStart,
+          existingEnd,
+          selectedStart,
+          selectedEnd
+        );
       });
 
     return {
@@ -261,9 +306,11 @@ function appendLeadingZeroes(n) {
 }
 
 function formatDate(date) {
-  const formattedDate = `${appendLeadingZeroes(date.getFullYear())}-${appendLeadingZeroes(
-    date.getMonth() + 1
-  )}-${appendLeadingZeroes(date.getDate())}`;
+  const formattedDate = `${appendLeadingZeroes(
+    date.getFullYear()
+  )}-${appendLeadingZeroes(date.getMonth() + 1)}-${appendLeadingZeroes(
+    date.getDate()
+  )}`;
   return formattedDate;
 }
 
@@ -278,7 +325,9 @@ function getHslValuesFromLength(length) {
   const colorValues = [];
   const share = Math.round(360 / length);
   for (let i = 0; i < length; i += 1) {
-    colorValues.push(`hsl(${share * (i + 1) - share / 2}, ${saturation}, ${lightness})`);
+    colorValues.push(
+      `hsl(${share * (i + 1) - share / 2}, ${saturation}, ${lightness})`
+    );
   }
 
   return colorValues;
@@ -297,11 +346,16 @@ function getNonComboResourcesWithColor(nonComboResources) {
   });
 }
 
-function getComboResourcesWithColor(comboResources, nonComboResourcesWithColor) {
+function getComboResourcesWithColor(
+  comboResources,
+  nonComboResourcesWithColor
+) {
   return comboResources.sort(localeSort).map((res) => {
     const colors = [];
     res.resourcesForCombo.forEach((resCo) => {
-      const resWithColor = nonComboResourcesWithColor.find((nRes) => resCo._id === nRes._id);
+      const resWithColor = nonComboResourcesWithColor.find(
+        (nRes) => resCo._id === nRes._id
+      );
       if (!resWithColor) {
         return;
       }
@@ -329,7 +383,9 @@ function getFullName(user) {
 }
 
 function parseHtmlEntities(input) {
-  return input.replace(/\\+u([0-9a-fA-F]{4})/g, (a, b) => String.fromCharCode(parseInt(b, 16)));
+  return input.replace(/\\+u([0-9a-fA-F]{4})/g, (a, b) =>
+    String.fromCharCode(parseInt(b, 16))
+  );
 }
 
 function compareMeetingDatesForSort(a, b) {
@@ -341,7 +397,9 @@ function compareMeetingDatesForSort(a, b) {
 function parseGroupsWithMeetings(groups, meetings) {
   const allGroups = groups.map((group) => {
     const groupId = group._id;
-    const allGroupActivities = meetings.filter((meeting) => meeting.groupId === groupId);
+    const allGroupActivities = meetings.filter(
+      (meeting) => meeting.groupId === groupId
+    );
     const groupActivitiesFuture = allGroupActivities
       .map((a) => a.datesAndTimes[0])
       .sort(compareMeetingDatesForSort);
@@ -374,16 +432,26 @@ const compareForSortFutureMeeting = (a, b) => {
     return -1;
   }
   const dateA = new Date(
-    firstOccurenceA && firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
+    firstOccurenceA &&
+      firstOccurenceA.startDate +
+        'T' +
+        firstOccurenceA.startTime +
+        ':00Z'
   );
   const dateB = new Date(
-    firstOccurenceB && firstOccurenceB.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
+    firstOccurenceB &&
+      firstOccurenceB.startDate +
+        'T' +
+        firstOccurenceB.startTime +
+        ':00Z'
   );
   return dateA - dateB;
 };
 
 const getCategoriesAssignedToWorks = (works) => {
-  const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
+  const labels = Array.from(
+    new Set(works.map((work) => work.category && work.category.label))
+  );
   const hslValues = getHslValuesFromLength(labels.length);
   return labels
     .filter((label) => label !== '' && label !== undefined)
