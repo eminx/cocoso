@@ -40,12 +40,14 @@ function ConfirmModal({
       {...otherProps}
     >
       <AlertDialogOverlay zIndex={9999}>
-        <AlertDialogContent zIndex={9999}>
+        <AlertDialogContent bg="gray.50" zIndex={9999}>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
           </AlertDialogHeader>
 
-          <AlertDialogCloseButton onClick={onOverlayClick || onCancel} />
+          <AlertDialogCloseButton
+            onClick={onOverlayClick || onCancel}
+          />
 
           <AlertDialogBody mt="4" mb="12">
             {children}
@@ -53,10 +55,20 @@ function ConfirmModal({
 
           {!hideFooter && (
             <AlertDialogFooter>
-              <Button ref={cancelRef} size="sm" variant="outline" onClick={onCancel}>
+              <Button
+                ref={cancelRef}
+                size="sm"
+                variant="outline"
+                onClick={onCancel}
+              >
                 {cancelText || tc('actions.cancel')}
               </Button>
-              <Button ml={3} size="sm" onClick={onConfirm} {...confirmButtonProps}>
+              <Button
+                ml={3}
+                size="sm"
+                onClick={onConfirm}
+                {...confirmButtonProps}
+              >
                 {confirmText || tc('actions.submit')}
               </Button>
             </AlertDialogFooter>

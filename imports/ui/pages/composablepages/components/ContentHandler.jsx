@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
+  Center,
   Checkbox,
   Flex,
   FormLabel,
@@ -36,34 +37,36 @@ function ButtonContent({ value, onChange }) {
   };
 
   return (
-    <Box>
-      <FormField
-        helperText={
-          <Trans i18nKey="admin:composable.form.labelHelper" />
-        }
-        label={<Trans i18nKey="admin:composable.form.label" />}
-        mb="8"
-        required
-      >
-        <Input
-          value={value.label}
-          onChange={(e) => handleLabelChange(e.target.value)}
-        />
-      </FormField>
+    <Center>
+      <Box maxW="md">
+        <FormField
+          helperText={
+            <Trans i18nKey="admin:composable.form.labelHelper" />
+          }
+          label={<Trans i18nKey="admin:composable.form.label" />}
+          mb="8"
+          required
+        >
+          <Input
+            value={value.label}
+            onChange={(e) => handleLabelChange(e.target.value)}
+          />
+        </FormField>
 
-      <FormField
-        helperText={
-          <Trans i18nKey="admin:composable.form.linkHelper" />
-        }
-        label={<Trans i18nKey="admin:composable.form.link" />}
-        required
-      >
-        <Input
-          value={value.linkValue}
-          onChange={(e) => handleLinkValueChange(e.target.value)}
-        />
-      </FormField>
-    </Box>
+        <FormField
+          helperText={
+            <Trans i18nKey="admin:composable.form.linkHelper" />
+          }
+          label={<Trans i18nKey="admin:composable.form.link" />}
+          required
+        >
+          <Input
+            value={value.linkValue}
+            onChange={(e) => handleLinkValueChange(e.target.value)}
+          />
+        </FormField>
+      </Box>
+    </Center>
   );
 }
 
@@ -71,12 +74,12 @@ function Divider({ value, onChange }) {
   const options = [
     {
       key: 'line',
-      label: 'Line',
+      label: <Trans i18nKey="admin:composable.form.line" />,
       kind: 'line',
     },
     {
       key: 'empty-space',
-      label: 'Empty Space',
+      label: <Trans i18nKey="admin:composable.form.emptySpace" />,
       kind: 'empty-space',
     },
   ];
@@ -98,11 +101,14 @@ function Divider({ value, onChange }) {
   return (
     <>
       <Flex align="center" mb="2">
-        <Text>
+        <Text fontSize="sm" mr="2">
           <Trans i18nKey="common:labels.select" />
         </Text>
         <Menu
-          buttonLabel={value?.label || 'Select'}
+          buttonLabel={
+            <Trans i18nKey={`admin:composable.form.${value.kind}`} /> ||
+            'Select'
+          }
           options={options}
           rightIcon={<ChevronDownIcon size="18px" />}
           onSelect={onChange}

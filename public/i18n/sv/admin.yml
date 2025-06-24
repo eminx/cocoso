@@ -198,6 +198,7 @@ composable:
     emptySpaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
     label: Etikett
     labelHelper: Ange etiketten för knappen. Denna etikett kommer att visas på knappen
+    line: Rad
     link: Länkadressen
     linkHelper: Ange länkadressen. Denna länk öppnas när knappen klickas
     video: Video-URL

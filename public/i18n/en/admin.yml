@@ -198,6 +198,7 @@ composable:
     emptySpaceHelper: Please enter the height of the empty space in pixels
     label: Label
     labelHelper: Pleae enter the label for the button. This label will be displayed on the button
+    line: Line
     link: Link address
     linkHelper: Please enter the link address. This link will be opened when the button is clicked
     video: Video URL
