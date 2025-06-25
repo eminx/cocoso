@@ -26,7 +26,6 @@ export default function ComposablePageCreator({
     try {
       const response = await call('createComposablePage', {
         title: createPageModal.title,
-        contentRows: [],
       });
       await getComposablePageTitles();
       setCreatePageModal(emptyPageModal);

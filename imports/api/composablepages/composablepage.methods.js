@@ -81,6 +81,11 @@ Meteor.methods({
     try {
       const newId = await ComposablePages.insertAsync({
         ...formValues,
+        contentRows: [],
+        settings: {
+          hideTitle: false,
+          hideMenu: false,
+        },
         host,
         authorId: user._id,
         authorName: user.username,
