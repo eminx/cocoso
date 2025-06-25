@@ -28,6 +28,9 @@ function ListItemWithActions({
       {actions && (
         <Menu placement="bottom-end">
           <MenuButton
+            _hover={{
+              bg: 'gray.100',
+            }}
             bg="gray.50"
             borderRadius="50%"
             m="2"
