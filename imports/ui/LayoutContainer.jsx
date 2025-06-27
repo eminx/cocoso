@@ -174,7 +174,10 @@ function LayoutPage({ currentUser, userLoading, children }) {
               setSelectedHue,
             }}
           >
-            <DummyWrapper animate={rendered && !isDesktop}>
+            <DummyWrapper
+              animate={rendered && !isDesktop}
+              settings={currentHost?.settings}
+            >
               {rendered && !adminPage && (
                 <TopBarHandler
                   currentUser={currentUser}

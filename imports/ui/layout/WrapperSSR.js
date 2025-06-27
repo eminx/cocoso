@@ -10,15 +10,17 @@ import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
 import { Footer } from './Footers';
 
-export default function WrapperSSR({ Host, isEntryPage = false, children }) {
+export default function WrapperSSR({
+  Host,
+  isEntryPage = false,
+  children,
+}) {
   if (!Host) {
     return null;
   }
 
   const pages = Meteor.call('getPageTitles');
-
   const pageTitles = pages.map((p) => p.title);
-
   const hue = Host?.settings?.hue;
   const chakraTheme = generateTheme(hue || '233');
 
@@ -29,8 +31,12 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
       <I18nextProvider i18n={i18n}>
         <ChakraProvider theme={chakraTheme}>
           <ColorModeProvider>
-            <DummyWrapper>
-              <Header Host={Host} isLogoSmall={isEntryPage} pageTitles={pageTitles} />
+            <DummyWrapper settings={Host.settings}>
+              <Header
+                Host={Host}
+                isLogoSmall={isEntryPage}
+                pageTitles={pageTitles}
+              />
               {children}
             </DummyWrapper>
             <Footer currentHost={Host} isFederationFooter />

@@ -3,9 +3,13 @@ import { Box } from '@chakra-ui/react';
 import { HydrationProvider } from 'react-hydration-provider';
 import { useLocation } from 'react-router-dom';
 
-export default function DummyWrapper({ children, animate = false, otherProps }) {
+export default function DummyWrapper({
+  animate = false,
+  settings,
+  children,
+  otherProps,
+}) {
   const location = useLocation();
-
   const pathname = location?.pathname;
 
   let wrapperClass = 'wrapper';
@@ -15,7 +19,14 @@ export default function DummyWrapper({ children, animate = false, otherProps }) 
 
   return (
     <HydrationProvider>
-      <Box boxShadow="md" className={wrapperClass} id="main-content-container" {...otherProps}>
+      <Box
+        backgroundColor={settings?.backgroundColor}
+        backgroundImage={settings?.backgroundImage}
+        boxShadow="md"
+        className={wrapperClass}
+        id="main-content-container"
+        {...otherProps}
+      >
         {children}
       </Box>
     </HydrationProvider>

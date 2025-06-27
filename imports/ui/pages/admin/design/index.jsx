@@ -1,9 +1,10 @@
 import React from 'react';
 import { Box, Heading } from '@chakra-ui/react';
+import { Trans } from 'react-i18next';
 
 import TablyRouter from '/imports/ui/generic/TablyRouter';
+import GeneralDesign from './GeneralDesign';
 import ColorPicker from './ColorPicker';
-import { Trans } from 'react-i18next';
 
 export default function DesignOptions() {
   const tabs = [
@@ -11,7 +12,7 @@ export default function DesignOptions() {
       // title: <Trans i18nKey="admin:settings.tabs.color" />,
       title: 'General',
       path: 'general',
-      content: <div>General</div>,
+      content: <GeneralDesign />,
     },
     {
       // title: <Trans i18nKey="admin:settings.tabs.color" />,
@@ -34,10 +35,6 @@ export default function DesignOptions() {
 
   return (
     <Box>
-      <Heading size="md" mb="4">
-        Design Options
-      </Heading>
-
       <TablyRouter tabs={tabs} />
     </Box>
   );

@@ -55,7 +55,7 @@ export default function AdminHome() {
     <Wrap spacing="4">
       {shortCuts.map((item) => (
         <Boxling
-          key={item.label}
+          key={item.link}
           _hover={{ bg: 'white' }}
           style={{ flex: '1 1 200px', cursor: 'pointer' }}
           onClick={() => navigate(item.link)}

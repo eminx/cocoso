@@ -6,14 +6,17 @@ import { isContributorOrAdmin, isContributor } from './user.roles';
 import Activities from '../activities/activity';
 
 const isUserAdmin = (members, userId) =>
-  members.some((member) => member.id === userId && member.role === 'admin');
+  members.some(
+    (member) => member.id === userId && member.role === 'admin'
+  );
 
 Meteor.methods({
   setAsAdmin(memberId) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin =
+      currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -25,7 +28,8 @@ Meteor.methods({
       !member.memberships ||
       !member.memberships.some(
         (membership) =>
-          membership.host === host && ['contributor', 'participant'].includes(membership.role)
+          membership.host === host &&
+          ['contributor', 'participant'].includes(membership.role)
       )
     ) {
       throw new Meteor.Error('User is does not have a role');
@@ -72,7 +76,10 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
 
-    if (!user.isSuperAdmin && !isContributorOrAdmin(user, currentHost)) {
+    if (
+      !user.isSuperAdmin &&
+      !isContributorOrAdmin(user, currentHost)
+    ) {
       throw new Meteor.Error('You are not allowed');
     }
 
@@ -81,10 +88,14 @@ Meteor.methods({
       !member ||
       !member.memberships ||
       !member.memberships.some(
-        (membership) => membership.host === host && membership.role === 'participant'
+        (membership) =>
+          membership.host === host && membership.role === 'participant'
       )
     ) {
-      throw new Meteor.Error(error, 'Some error occured... Sorry, your inquiry could not be done');
+      throw new Meteor.Error(
+        error,
+        'Some error occured... Sorry, your inquiry could not be done'
+      );
     }
 
     try {
@@ -128,7 +139,8 @@ Meteor.methods({
     const host = getHost(this);
 
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin =
+      currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -185,7 +197,8 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin =
+      currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -196,11 +209,12 @@ Meteor.methods({
         { host },
         {
           $set: {
-            settings: newSettings,
+            settings: { ...currentHost.settings, ...newSettings },
           },
         }
       );
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -209,7 +223,8 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin =
+      currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -233,7 +248,8 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin =
+      currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -263,7 +279,8 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin =
+      currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -280,7 +297,8 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin =
+      currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -308,13 +326,16 @@ Meteor.methods({
     const currentUser = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, currentUser._id);
+    const isAdmin =
+      currentHost && isUserAdmin(currentHost.members, currentUser._id);
 
     if (!currentUser) {
       throw new Meteor.Error('You are not allowed');
     }
     if (!isContributorOrAdmin(currentUser, currentHost)) {
-      throw new Meteor.Error('You can not create activities without being verified');
+      throw new Meteor.Error(
+        'You can not create activities without being verified'
+      );
     }
     if (userId !== currentUser._id && !isAdmin) {
       throw new Meteor.Error('You are not allowed');

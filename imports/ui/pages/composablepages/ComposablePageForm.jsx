@@ -257,9 +257,13 @@ export default function ComposablePageForm({
       }
       setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
       setContentModal({ open: false, content: null });
-      message.success(<Trans i18nKey="common:message.success.save" />);
+      message.success(
+        <Trans
+          i18nKey="common:message.success.save"
+          tOptions={{ domain: 'page' }}
+        />
+      );
     } catch (error) {
-      console.log(error);
       message.error(error.reason || error.error);
     }
   };
