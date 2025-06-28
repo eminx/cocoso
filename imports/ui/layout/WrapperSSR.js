@@ -31,7 +31,7 @@ export default function WrapperSSR({
       <I18nextProvider i18n={i18n}>
         <ChakraProvider theme={chakraTheme}>
           <ColorModeProvider>
-            <DummyWrapper settings={Host.settings}>
+            <DummyWrapper style={Host?.style}>
               <Header
                 Host={Host}
                 isLogoSmall={isEntryPage}

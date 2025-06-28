@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Text } from '@chakra-ui/react';
 import { ChromePicker } from 'react-color';
 
 import Boxling from '/imports/ui/pages/admin/Boxling';
@@ -9,85 +9,153 @@ import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 export default function GeneralDesign() {
-  const { currentHost } = useContext(StateContext);
-  const settings = currentHost?.settings;
+  const { currentHost, getCurrentHost } = useContext(StateContext);
   const [state, setState] = useState({
-    backgroundColor: settings?.backgroundColor || '#000000',
-    backgroundImage: settings?.backgroundImage || null,
+    style: currentHost?.style || {},
     uploadingBackgroundImage: false,
   });
 
   const handleBackgroundColorChange = (color) => {
+    // if (color.hsl.l < 0.7) {
+    //   // message.error('Please choose a lighter color');
+    //   return;
+    // }
     setState((prevState) => ({
       ...prevState,
-      backgroundColor: color.hex,
+      style: {
+        ...prevState.style,
+        body: {
+          ...prevState.style.body,
+          backgroundColor: color.hex,
+        },
+      },
     }));
   };
 
   const handleUploadedBackgroundImage = (images) => {
-    setState((prevState) => ({
-      ...prevState,
-      backgroundImage: images[0],
-    }));
-    saveBackground(images[0]);
+    const newStyle = {
+      ...state.style,
+      body: {
+        ...state.style.body,
+        backgroundImage: images[0],
+      },
+    };
+    updateHostStyle(newStyle);
   };
 
-  const confirmBackground = async () => {
+  const confirmBackgroundColor = () => {
+    updateHostStyle({ ...state.style });
+  };
+
+  const confirmBackgroundImage = () => {
     setState((prevState) => ({
       ...prevState,
       uploadingBackgroundImage: true,
     }));
   };
 
-  const saveBackground = async (backgroundImage) => {
-    const { backgroundColor } = state;
-
+  const updateHostStyle = async (newStyle) => {
     try {
-      await call('updateHostSettings', {
-        backgroundColor,
-        backgroundImage,
-      });
+      await call('updateHostStyle', newStyle);
+      await getCurrentHost();
+      setState((prevState) => ({
+        ...prevState,
+        uploadingBackgroundImage: false,
+      }));
       message.success('Background saved');
     } catch (error) {
-      console.log(error);
+      message.error(error.error || error.reason);
     }
   };
 
-  const { backgroundColor, backgroundImage, uploadingBackgroundImage } =
-    state;
+  const removeBackgroundImage = async () => {
+    handleUploadedBackgroundImage([null]);
+  };
+
+  const resetBackgroundColor = () => {
+    setState((prevState) => ({
+      ...prevState,
+      style: {
+        ...prevState.style,
+        body: {
+          ...prevState.style.body,
+          backgroundColor: '#f0ebe6',
+        },
+      },
+    }));
+  };
+
+  const { style, uploadingBackgroundImage } = state;
+  const backgroundImage = style?.body?.backgroundImage;
+  const backgroundColor = style?.body?.backgroundColor;
 
   return (
     <>
       <Box mb="4" mt="6">
-        <Text fontWeight="bold" mb="4" textAlign="center">
-          Background
+        <Text fontWeight="bold" mb="4">
+          Background color
         </Text>
+        <Boxling bg={backgroundColor} mb="2" w="100%">
+          <Center>
+            <ChromePicker
+              color={backgroundColor}
+              onChange={handleBackgroundColorChange}
+            />
+          </Center>
 
-        <Boxling bg={backgroundColor}>
-          <Flex justify="space-between">
-            <Box>
-              <Text mb="2">Color:</Text>
-              <ChromePicker
-                color={backgroundColor}
-                onChange={handleBackgroundColorChange}
-              />
-            </Box>
+          <Center>
+            <Button
+              bg="white"
+              size="xs"
+              variant="ghost"
+              mt="2"
+              onClick={resetBackgroundColor}
+            >
+              Reset
+            </Button>
+          </Center>
+        </Boxling>
 
-            <Box maxW="250px">
-              <Text mb="2">Image:</Text>
-              <ImageUploader
-                isMultiple={false}
-                ping={uploadingBackgroundImage}
-                preExistingImages={[backgroundImage] || []}
-                onUploadedImages={handleUploadedBackgroundImage}
-              />
-            </Box>
-          </Flex>
-
-          <Button mt="2" onClick={confirmBackground}>
+        <Flex justify="flex-end">
+          <Button mt="2" onClick={confirmBackgroundColor}>
             Confirm
           </Button>
+        </Flex>
+      </Box>
+
+      <Box mb="4" mt="6">
+        <Text fontWeight="bold" mb="4">
+          Background image
+        </Text>
+        <Boxling mb="2">
+          <ImageUploader
+            isMultiple={false}
+            ping={uploadingBackgroundImage}
+            preExistingImages={[backgroundImage] || []}
+            onUploadedImages={handleUploadedBackgroundImage}
+          />
+          <Center my="4">
+            <Button
+              bg="white"
+              colorScheme="red"
+              size="xs"
+              variant="ghost"
+              onClick={removeBackgroundImage}
+            >
+              Remove
+            </Button>
+          </Center>
         </Boxling>
+
+        <Flex justify="flex-end">
+          <Button
+            mt="2"
+            isLoading={uploadingBackgroundImage}
+            onClick={confirmBackgroundImage}
+          >
+            Confirm
+          </Button>
+        </Flex>
       </Box>
     </>
   );

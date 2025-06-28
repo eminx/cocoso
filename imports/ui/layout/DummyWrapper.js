@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 export default function DummyWrapper({
   animate = false,
-  settings,
+  style,
   children,
   otherProps,
 }) {
@@ -20,8 +20,8 @@ export default function DummyWrapper({
   return (
     <HydrationProvider>
       <Box
-        backgroundColor={settings?.backgroundColor}
-        backgroundImage={settings?.backgroundImage}
+        backgroundColor={style?.body?.backgroundColor}
+        backgroundImage={style?.body?.backgroundImage}
         boxShadow="md"
         className={wrapperClass}
         id="main-content-container"

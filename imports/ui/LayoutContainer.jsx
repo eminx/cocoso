@@ -176,7 +176,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
           >
             <DummyWrapper
               animate={rendered && !isDesktop}
-              settings={currentHost?.settings}
+              style={currentHost?.style}
             >
               {rendered && !adminPage && (
                 <TopBarHandler

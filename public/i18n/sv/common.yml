@@ -43,13 +43,13 @@ labels:
   contact: Kontakt
   content: Innehåll
   create:
-    activities: Ny aktivitet
-    calendar: Ny aktivitet
-    groups: Ny grupp/process
-    info: Ny infosida
+    activities: Nytt aktivitet
+    calendar: Nytt aktivitet
+    groups: Nytt grupp/process
+    info: Nytt infosida
     resources: Ny resurs
-    works: Ny inlägg
-    host: Ny community
+    works: Nytt inlägg
+    host: Nytt community
   update:
     activities: Uppdatera aktivitetet
     calendar: Uppdatera aktivitetet
@@ -60,9 +60,9 @@ labels:
     works: Uppdatera inlägget
   event: Arrangemang
   bookings: Bokningar
-  newBooking: Ny bokning
+  newBooking: Nytt bokning
   page: Sida
-  newPage: Ny sida
+  newPage: Nytt sida
   group: Groupen
   remove: Ta bort
   info: Info
@@ -95,7 +95,7 @@ labels:
     helper: Dra reglaget för att visa din avatar vid det här inlägget
   items: artiklar
   allCommunities: Alla communities
-  select: Välja
+  select: Välj
   form:
     title: Ange detaljer
   private: Privat

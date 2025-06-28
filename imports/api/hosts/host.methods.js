@@ -13,7 +13,9 @@ function getUsersRandomlyWithAvatarsFirst(users) {
     return null;
   }
   const usersWithImage = users.filter((u) => u.avatar && u.avatar.src);
-  const usersWithoutImage = users.filter((u) => !u.avatar || !u.avatar.src);
+  const usersWithoutImage = users.filter(
+    (u) => !u.avatar || !u.avatar.src
+  );
 
   return [
     ...usersWithImage.sort(() => Math.random() - 0.5),
@@ -119,6 +121,7 @@ Meteor.methods({
           fields: {
             host: 1,
             settings: 1,
+            style: 1,
             logo: 1,
             isPortalHost: 1,
           },
@@ -137,6 +140,7 @@ Meteor.methods({
         fields: {
           host: 1,
           settings: 1,
+          style: 1,
           logo: 1,
           isPortalHost: 1,
         },
@@ -189,7 +193,9 @@ Meteor.methods({
       )
       .fetch();
 
-    const usersFiltered = users.filter((u) => u.memberships.find((m) => m.host === host)?.isPublic);
+    const usersFiltered = users.filter(
+      (u) => u.memberships.find((m) => m.host === host)?.isPublic
+    );
 
     return getUsersRandomlyWithAvatarsFirst(usersFiltered);
   },
@@ -285,10 +291,15 @@ Meteor.methods({
       hostId: currentHost._id.toString(),
     });
 
-    const emailHtmlWithBrowserLink = emailHtml.replace('[newsletter-id]', newEmailId);
+    const emailHtmlWithBrowserLink = emailHtml.replace(
+      '[newsletter-id]',
+      newEmailId
+    );
 
     const isPortalHost = currentHost.isPortalHost;
-    const members = isPortalHost ? Meteor.users.find() : currentHost.members;
+    const members = isPortalHost
+      ? Meteor.users.find()
+      : currentHost.members;
 
     try {
       members.forEach((member) => {
@@ -297,13 +308,21 @@ Meteor.methods({
           member.username
         );
 
-        const emailAddress = isPortalHost ? member.emails[0].address : member.email;
+        const emailAddress = isPortalHost
+          ? member.emails[0].address
+          : member.email;
 
-        Meteor.call('sendEmail', emailAddress, email.subject, emailHtmlWithUsername, (error) => {
-          if (error) {
-            console.log(error);
+        Meteor.call(
+          'sendEmail',
+          emailAddress,
+          email.subject,
+          emailHtmlWithUsername,
+          (error) => {
+            if (error) {
+              console.log(error);
+            }
           }
-        });
+        );
       });
     } catch (error) {
       throw new Meteor.Error(error);
@@ -313,5 +332,26 @@ Meteor.methods({
   getHostValue() {
     const host = getHost(this);
     return host;
+  },
+
+  async updateHostStyle(style) {
+    console.log(style);
+    const host = getHost(this);
+    const currentHost = await Hosts.findOneAsync({ host });
+    const currentUser = Meteor.user();
+
+    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    try {
+      await Hosts.updateAsync(currentHost._id, {
+        $set: {
+          style,
+        },
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 });
