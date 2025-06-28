@@ -80,7 +80,7 @@ function Divider({ value, onChange }) {
     {
       key: 'empty-space',
       label: <Trans i18nKey="admin:composable.form.emptySpace" />,
-      kind: 'empty-space',
+      kind: 'emptySpace',
     },
   ];
 
@@ -100,45 +100,54 @@ function Divider({ value, onChange }) {
 
   return (
     <>
-      <Flex align="center" mb="2">
-        <Text fontSize="sm" mr="2">
-          <Trans i18nKey="common:labels.select" />
-        </Text>
-        <Menu
-          buttonLabel={
-            <Trans i18nKey={`admin:composable.form.${value.kind}`} /> ||
-            'Select'
-          }
-          options={options}
-          rightIcon={<ChevronDownIcon size="18px" />}
-          onSelect={onChange}
-        >
-          {(item) => item.label}
-        </Menu>
-      </Flex>
-
-      {value.kind === 'empty-space' && (
-        <Box>
-          <FormField
-            helperText={
-              <Trans i18nKey="admin:composable.form.emptySpaceHelper" />
-            }
-            label={<Trans i18nKey="admin:composable.form.emptySpace" />}
-            required
-          >
-            <NumberInput
-              min={1}
-              max={100}
-              maxWidth="100px"
-              step={1}
-              value={value.height}
-              onChange={handleEmptySpaceHeightChange}
+      <Center>
+        <Box maxW="md">
+          <Flex align="center" mb="2">
+            <Text fontSize="sm" mr="2">
+              <Trans i18nKey="common:labels.select" />
+            </Text>
+            <Menu
+              buttonLabel={
+                (
+                  <Trans
+                    i18nKey={`admin:composable.form.${value.kind}`}
+                  />
+                ) || 'Select'
+              }
+              options={options}
+              rightIcon={<ChevronDownIcon size="18px" />}
+              onSelect={onChange}
             >
-              <NumberInputField />
-            </NumberInput>
-          </FormField>
+              {(item) => item.label}
+            </Menu>
+          </Flex>
+
+          {value.kind === 'emptySpace' && (
+            <Box>
+              <FormField
+                helperText={
+                  <Trans i18nKey="admin:composable.form.emptySpaceHelper" />
+                }
+                label={
+                  <Trans i18nKey="admin:composable.form.emptySpace" />
+                }
+                required
+              >
+                <NumberInput
+                  min={1}
+                  max={100}
+                  maxWidth="100px"
+                  step={1}
+                  value={value.height}
+                  onChange={handleEmptySpaceHeightChange}
+                >
+                  <NumberInputField />
+                </NumberInput>
+              </FormField>
+            </Box>
+          )}
         </Box>
-      )}
+      </Center>
     </>
   );
 }
@@ -273,38 +282,40 @@ function VideoContent({ value, onChange }) {
   };
 
   return (
-    <Box>
-      <FormField
-        label={<Trans i18nKey="admin:composable.form.video" />}
-        helperText={
-          <Trans i18nKey="admin:composable.form.videoHelper" />
-        }
-        required
-      >
-        <Input
-          placeholder="https://vimeo.com/..."
-          value={value.src}
-          onChange={(e) => handleEnterUrl(e.target.value)}
-        />
-      </FormField>
-
-      {value.src && (
-        <Box py="4">
-          <ReactPlayer
-            controls
-            height="auto"
-            muted
-            style={{
-              width: '100%',
-              height: 'auto',
-              aspectRatio: '16/9',
-            }}
-            url={value.src}
-            width="100%"
+    <Center>
+      <Box maxW="md">
+        <FormField
+          label={<Trans i18nKey="admin:composable.form.video" />}
+          helperText={
+            <Trans i18nKey="admin:composable.form.videoHelper" />
+          }
+          required
+        >
+          <Input
+            placeholder="https://vimeo.com/..."
+            value={value.src}
+            onChange={(e) => handleEnterUrl(e.target.value)}
           />
-        </Box>
-      )}
-    </Box>
+        </FormField>
+
+        {value.src && (
+          <Box py="4">
+            <ReactPlayer
+              controls
+              height="auto"
+              muted
+              style={{
+                width: '100%',
+                height: 'auto',
+                aspectRatio: '16/9',
+              }}
+              url={value.src}
+              width="100%"
+            />
+          </Box>
+        )}
+      </Box>
+    </Center>
   );
 }
 
