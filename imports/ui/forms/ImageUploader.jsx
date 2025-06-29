@@ -36,8 +36,14 @@ export default function ImageUploader({
           if (uploadableImage.uploaded) {
             return uploadableImage.src;
           }
-          const resizedImage = await resizeImage(uploadableImage.resizableData, 1200);
-          const uploadedImage = await uploadImage(resizedImage, uploadParam);
+          const resizedImage = await resizeImage(
+            uploadableImage.resizableData,
+            1600
+          );
+          const uploadedImage = await uploadImage(
+            resizedImage,
+            uploadParam
+          );
           return uploadedImage;
         })
       );
@@ -62,7 +68,13 @@ export default function ImageUploader({
       reader.addEventListener(
         'load',
         () => {
-          setLocalImages([{ src: reader.result, resizableData: file, uploaded: false }]);
+          setLocalImages([
+            {
+              src: reader.result,
+              resizableData: file,
+              uploaded: false,
+            },
+          ]);
         },
         false
       );
@@ -77,7 +89,11 @@ export default function ImageUploader({
         () => {
           setLocalImages((prevLocalImages) => [
             ...prevLocalImages,
-            { src: reader.result, resizableData: uploadableImage, uploaded: false },
+            {
+              src: reader.result,
+              resizableData: uploadableImage,
+              uploaded: false,
+            },
           ]);
         },
         false
@@ -96,14 +112,19 @@ export default function ImageUploader({
       return;
     }
 
-    setLocalImages((prevLocalImages) => arrayMoveImmutable(prevLocalImages, oldIndex, newIndex));
+    setLocalImages((prevLocalImages) =>
+      arrayMoveImmutable(prevLocalImages, oldIndex, newIndex)
+    );
   };
 
   if (!localImages || localImages.length === 0) {
     return (
       <>
         <Center>
-          <FileDropper setUploadableImage={setUploadableImages} isMultiple={isMultiple} />
+          <FileDropper
+            setUploadableImage={setUploadableImages}
+            isMultiple={isMultiple}
+          />
         </Center>
         <DocumentUploadHelper />
       </>
@@ -115,7 +136,9 @@ export default function ImageUploader({
       <>
         <Center>
           <FileDropper
-            imageUrl={localImages?.length > 0 ? localImages[0].src : null}
+            imageUrl={
+              localImages?.length > 0 ? localImages[0].src : null
+            }
             setUploadableImage={setUploadableImages}
             isMultiple={false}
           />
@@ -142,13 +165,25 @@ export default function ImageUploader({
           >
             {localImages.map((image, index) => (
               <SortableItem key={image.src}>
-                <Box className="sortable-thumb" style={thumbStyle(image.src)}>
+                <Box
+                  className="sortable-thumb"
+                  style={thumbStyle(image.src)}
+                >
                   <IconButton
                     className="sortable-thumb-icon"
                     colorScheme="gray.900"
-                    icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
+                    icon={
+                      <SmallCloseIcon
+                        style={{ pointerEvents: 'none' }}
+                      />
+                    }
                     size="xs"
-                    style={{ position: 'absolute', top: 4, right: 4, zIndex: 1501 }}
+                    style={{
+                      position: 'absolute',
+                      top: 4,
+                      right: 4,
+                      zIndex: 1501,
+                    }}
                     onClick={() => handleRemoveImage(index)}
                   />
                 </Box>
@@ -157,7 +192,10 @@ export default function ImageUploader({
           </SortableList>
         </Box>
       </Center>
-      <FileDropper setUploadableImage={setUploadableImages} isMultiple />
+      <FileDropper
+        setUploadableImage={setUploadableImages}
+        isMultiple
+      />
     </Box>
   );
 }

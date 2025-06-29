@@ -8,17 +8,22 @@ home: Hem
 settings:
   title: Inställningar
   tabs:
+    design: Design
     general: Allmänt
     logo: Logotyp
+    logoHelper: Ladda upp din logotyp för din communities webbplats
     info: Info
+    infoHelper: Lägg till information om din community
     categories: Kategorier
     menu: Meny
+    menuHelper: Bygg din meny och konfigurera den
     cats: Kategorier
     menuVisibility: Synlighet
     menuOrder: Ordning
     options: Alternativ
     color: Färg
     footer: Sidfot
+    footerHelper: Skriv in din sidfot här
     topbar: Topbar
 
 logo:
@@ -53,6 +58,9 @@ organization:
 
 users:
   title: Användare
+  shortcutHelper: Hantera dina användare. Verifiera eller verifiera dem, eller ställ in dem som administratörer.
+  usersListed: användare
+  userListed: användare
 
 menu:
   title: Meny
@@ -97,6 +105,7 @@ color:
 # ADMIN EMAILS PAGE
 emails:
   title: Automatiserade e-postmeddelanden
+  shortcutHelper: Konfigurera automatiserade e-postmeddelanden som användare får när de registrerar sig, verifieras eller blir administratörer
   form:
     subject:
       label: Ämne
@@ -122,6 +131,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Skicka ett nyhetsbrev
+  shortcutHelper: Skicka ett e-postnyhetsbrev till alla dina användare samtidigt
   subtitle: Här kan du skapa ett nyhetsbrev som går ut till alla medlemmar i er community. Du kan enkelt komponera brevet med egen text och bifoga material som är publicerade på er sida.
   subtitle2: 'För att skriva e-postmeddelandet nedan måste du ange minst en av: brödtext, en bild och/eller valda innehållsobjekt som listas i community-appen.'
   contenthelper: Du kan infoga befintligt innehåll från din sida genom att välja poster i listan här nedanför. Text och bild samt länk till posterna läggs automatiskt in i nyhetsbrevet.
@@ -150,8 +160,9 @@ newsletter:
   portalHost:
     info: Eftersom detta är federationens portalapp kommer din e-post att skickas till alla {{ platform }} plattformsmedlemmar
 
-features:
-  title: Huvudfunktioner
+listings:
+  title: Listningssidor
+  shortcutHelper: För varje listsida kan du ange en titel och en beskrivning
 
 # ADMIN STATIC PAGES
 pages:
@@ -174,3 +185,59 @@ pages:
     title: Ordning
     label: Ändra sidordning
     info: Du kan ändra ordningen på sidorna genom att dra dem uppåt och nedåt. Det påverkar deras visningsordning i navigeringsmenyn
+
+composable:
+  title: Komponerbara sidor
+  existing: Befintliga
+  new: Skapa ny
+  create: Skapa
+  newTitleInputLabel: Titel
+  newTitleInputHelper: Ange en titel för komponerbara-sidan du skapar
+  description: Komponera en sida och gör den till startsida, kampanjsida eller till vad du behöver
+  form:
+    addContent: Lägg till innehåll
+    addRow: Lägg till en rad
+    emptySpace: Tomt utrymme
+    emptySpaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
+    label: Etikett
+    labelHelper: Ange etiketten för knappen. Denna etikett kommer att visas på knappen
+    line: Rad
+    link: Länkadressen
+    linkHelper: Ange länkadressen. Denna länk öppnas när knappen klickas
+    video: Video-URL
+    videoHelper: Ange en video-URL, vanligtvis länkadressen till en YouTube- eller Vimeo-videosida..
+    removeRow: Ta bort rad
+    title: Titel
+    types:
+      button: Knapp
+      divider: Delare
+      image: Bild
+      image-slider: Bildspel
+      text: Text
+      video: Video
+  confirmDelete:
+    title: Bekräfta borttagning
+    text1: Är du säker på att du vill ta bort den här modulen?
+    text2: Om du bekräftar kommer den valda modulen att tas bort och kan inte återställas.
+    textWholePage: Är du säker på att du vill ta bort den här sidan?
+    textWholePage2: Om du bekräftar kommer den hela sidan att tas bort och denna åtgärd kan INTE återställas.
+  settings:
+    title: Inställningar
+    hideTitle: Dölj titel
+    hideMenu: Dölj huvudmeny
+  messages:
+    titleEmpty: Ange en titel
+    titleTooLong: Titeln måste vara kortare än 50 tecken
+  toolbar:
+    preview: Förhandsgranska
+    publish: Publicera
+    published: Publicerad
+    unpublish: Återställ som utkast
+    unpublished: Utkast
+    updated: Sparad
+    modalTitlePublish: Bekräfta publicering
+    modalTitleUnpublish: Bekräfta återställning
+    publishText: Är du säker på att du vill publicera den här sidan?
+    unpublishText: Är du säker på att du vill avpublicera den här sidan?
+    publishSuccess: Sidan har publicerats
+    unpublishSuccess: Sidan har återställts som utkast

@@ -9,6 +9,11 @@ const SchemasHost = {
     description: { type: String, optional: true },
     isHomePage: { type: Boolean, optional: true },
     isVisible: { type: Boolean },
+    isComposablePage: {
+      type: Boolean,
+      defaultValue: false,
+      optional: true,
+    },
     label: { type: String },
     name: { type: String },
   },
@@ -39,8 +44,16 @@ Hosts.schema = new SimpleSchema({
   'settings.mainColor': { type: Object, optional: true },
   'settings.hue': { type: String, optional: true },
   'settings.footer': { type: String, optional: true },
-  'settings.isBurgerMenuOnDesktop': { type: Boolean, optional: true, defaultValue: false },
-  'settings.isBurgerMenuOnMobile': { type: Boolean, optional: true, defaultValue: false },
+  'settings.isBurgerMenuOnDesktop': {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+  },
+  'settings.isBurgerMenuOnMobile': {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+  },
 
   members: { type: Array },
   'members.$': { type: Object, optional: true },

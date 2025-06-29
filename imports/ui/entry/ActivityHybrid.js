@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Center, Tag, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
-import parseHtml from 'html-react-parser';
+import HTMLReactParser from 'html-react-parser';
 
 import TablyCentered from './TablyCentered';
 import FancyDate from './FancyDate';
@@ -20,7 +20,7 @@ export default function ActivityHybrid({ activity, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {activity?.longDescription && parseHtml(activity?.longDescription)}
+          {activity?.longDescription && HTMLReactParser(activity?.longDescription)}
         </Box>
       ),
       path: 'info',

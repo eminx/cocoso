@@ -25,7 +25,7 @@ actions:
   confirmRead: Okudum ve kabul ediyorum
   toThePage: '{{ hostName }} sayfasına git'
   entryPage: Sayfaya git
-  toHost: Uygulamaya git
+  toHost: Ziyaret et
   share: Paylaş
   copied: Link kopyalandı!
   preview: Ön izleme
@@ -132,6 +132,9 @@ message:
     email: '{{ field }} geçerli bir eposta adresi olmalı'
     min: '{{ field }} minimum {{ min }} karakterden oluşmalı'
 
+  createdBy: tarafından oluşturuldu
+  updatedBy: tarafından güncellendi
+
   newentryhelper:
     title: Yeni içerik
     description: Yeni içerik oluştur ve bu sayfada listele
@@ -196,7 +199,7 @@ menu:
     members: Üyeler
     users: Kullanıcılar
     resources: Kaynaklar
-    emails: Epostalar
+    emails: E-postalar
     categories: Kategoriler
   notifications:
     label: Bildirimler

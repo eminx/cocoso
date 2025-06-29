@@ -81,7 +81,11 @@ export function InfoPagesMenu({ label, pageTitles, pathname }) {
         suppressHydrationWarning
       >
         {pageTitles.map((item) => (
-          <Link key={item._id} to={`/info/${parseTitle(item.title)}`} suppressHydrationWarning>
+          <Link
+            key={item._id}
+            to={`/info/${parseTitle(item.title)}`}
+            suppressHydrationWarning
+          >
             <MenuItem as="span" id={item._id}>
               {item.title}
             </MenuItem>
@@ -98,7 +102,8 @@ function HeaderMenu({ Host, pageTitles }) {
   const [isDesktop] = useMediaQuery(['(min-width: 960px)']);
 
   const settings = Host?.settings;
-  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } = settings || {};
+  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } =
+    settings || {};
 
   if (isDesktop && isBurgerMenuOnDesktop) {
     return null;
@@ -118,7 +123,7 @@ function HeaderMenu({ Host, pageTitles }) {
   };
 
   return (
-    <Center mb="4" px="4">
+    <Center className="main-menu" mb="4" px="4">
       <HStack
         alignItems="center"
         bg="gray.50"
@@ -137,11 +142,20 @@ function HeaderMenu({ Host, pageTitles }) {
               pathname={pathname}
             />
           ) : (
-            <Link key={item.name} to={`/${item.name}`}>
+            <Link
+              key={item.name}
+              to={
+                item.isComposablePage
+                  ? `/cp/${item.name}`
+                  : `/${item.name}`
+              }
+            >
               <Box as="span" px="2">
                 <Text
                   {...textProps}
-                  borderBottom={isCurrentContext(item, index) ? '2px solid' : null}
+                  borderBottom={
+                    isCurrentContext(item, index) ? '2px solid' : null
+                  }
                 >
                   {item.label}
                 </Text>
@@ -152,7 +166,12 @@ function HeaderMenu({ Host, pageTitles }) {
         {Host.isPortalHost && (
           <Link to="/communities">
             <Box as="span" px="2">
-              <Text {...textProps} borderBottom={pathname === '/communities' ? '2px solid' : null}>
+              <Text
+                {...textProps}
+                borderBottom={
+                  pathname === '/communities' ? '2px solid' : null
+                }
+              >
                 <Trans i18nKey="platform.communities" ns="common">
                   Communities
                 </Trans>
@@ -165,7 +184,11 @@ function HeaderMenu({ Host, pageTitles }) {
   );
 }
 
-export default function Header({ Host, pageTitles, isLogoSmall = false }) {
+export default function Header({
+  Host,
+  pageTitles,
+  isLogoSmall = false,
+}) {
   const currentHost = Host;
 
   if (!currentHost) {
@@ -177,9 +200,9 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
       <Center mb="10">
         <Link to="/">
           {currentHost.logo ? (
-            <Box maxHeight={isLogoSmall ? '48px' : '76px'} p="2">
+            <Box maxHeight={isLogoSmall ? '48px' : '96px'} p="2">
               <Img
-                h={isLogoSmall ? '48px' : '72px'}
+                h={isLogoSmall ? '48px' : '96px'}
                 maxW={280}
                 objectFit="contain"
                 src={Host.logo}
@@ -187,7 +210,11 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
             </Box>
           ) : (
             <Box>
-              <Heading color="brand.800" fontWeight="400" fontFamily="Raleway, Sarabun, sans-serif">
+              <Heading
+                color="brand.800"
+                fontWeight="400"
+                fontFamily="Raleway, Sarabun, sans-serif"
+              >
                 {currentHost.settings?.name}
               </Heading>
             </Box>

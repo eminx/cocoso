@@ -5,8 +5,11 @@ import loadable from '@loadable/component';
 import LayoutContainer, { StateContext } from '../LayoutContainer';
 import Terms from '../entry/Terms';
 import Loader from '../generic/Loader';
+import ComposablePageView from './composablepages/ComposablePageView';
 
-const Communities = loadable(() => import('../pages/hosts/Communities'));
+const Communities = loadable(() =>
+  import('../pages/hosts/Communities')
+);
 
 // Activities
 const Activities = loadable(() => import('./activities/Activities'));
@@ -37,23 +40,37 @@ const Page = loadable(() => import('./pages/Page'));
 // Auth
 const SignupPage = loadable(() => import('./auth/SignupPage'));
 const LoginPage = loadable(() => import('./auth/LoginPage'));
-const ForgotPasswordPage = loadable(() => import('./auth/ForgotPasswordPage'));
-const ResetPasswordPage = loadable(() => import('./auth/ResetPasswordPage'));
-const RegistrationIntro = loadable(() => import('./auth/RegistrationIntro'));
+const ForgotPasswordPage = loadable(() =>
+  import('./auth/ForgotPasswordPage')
+);
+const ResetPasswordPage = loadable(() =>
+  import('./auth/ResetPasswordPage')
+);
+const RegistrationIntro = loadable(() =>
+  import('./auth/RegistrationIntro')
+);
 
 // Admin
 const AdminContainer = loadable(() => import('./admin/AdminContainer'));
-const PreviousNewsletters = loadable(() => import('./admin/EmailNewsletter/PreviousNewsletters'));
+const PreviousNewsletters = loadable(() =>
+  import('./admin/EmailNewsletter/PreviousNewsletters')
+);
 
 // Super admin
-const PlatformSettings = loadable(() => import('./admin/PlatformSettings'));
-const PlatformRegistrationIntro = loadable(() => import('./admin/PlatformRegistrationIntro'));
+const PlatformSettings = loadable(() =>
+  import('./admin/PlatformSettings')
+);
+const PlatformRegistrationIntro = loadable(() =>
+  import('./admin/PlatformRegistrationIntro')
+);
 // SuperAdmin
 const NewHost = loadable(() => import('./hosts/NewHost'));
 
 // NotFound
 const NotFoundPage = loadable(() => import('./NotFoundPage'));
-const MyActivities = loadable(() => import('./activities/MyActivities'));
+const MyActivities = loadable(() =>
+  import('./activities/MyActivities')
+);
 
 function getComponentBasedOnFirstRoute(menuItems) {
   const visibleMenu = menuItems.filter((item) => item.isVisible);
@@ -72,20 +89,23 @@ function getComponentBasedOnFirstRoute(menuItems) {
       return <Calendar />;
     case 'info':
       return <Page />;
-    default:
+    case 'people':
       return <Users />;
+    default:
+      return <ComposablePageView />;
   }
 }
 
 function HomePage() {
   const { currentHost } = useContext(StateContext);
-  const menu = currentHost && currentHost.settings && currentHost.settings.menu;
+  const menu =
+    currentHost && currentHost.settings && currentHost.settings.menu;
+
   if (!menu || !menu[0]) {
     return null;
   }
 
   const Component = getComponentBasedOnFirstRoute(menu);
-
   return Component;
 }
 
@@ -104,9 +124,19 @@ export default function AppRoutes() {
 
           {/* Activities */}
           <Route exact path="/activities" element={<Activities />} />
-          <Route path="/activities/:activityId/*" element={<Activity />} />
-          <Route path="/calendar/:activityId/*" element={<Activity />} />
-          <Route exact path="/my-activities" element={<MyActivities />} />
+          <Route
+            path="/activities/:activityId/*"
+            element={<Activity />}
+          />
+          <Route
+            path="/calendar/:activityId/*"
+            element={<Activity />}
+          />
+          <Route
+            exact
+            path="/my-activities"
+            element={<MyActivities />}
+          />
 
           {/* Groups */}
           <Route exact path="/groups" element={<Groups />} />
@@ -114,12 +144,19 @@ export default function AppRoutes() {
 
           {/* Resources */}
           <Route exact path="/resources" element={<Resources />} />
-          <Route path="/resources/:resourceId/*" element={<Resource />} />
+          <Route
+            path="/resources/:resourceId/*"
+            element={<Resource />}
+          />
 
           {/* Pages */}
           <Route exact path="/info" element={<Page />} />
           <Route path="/info/:pageTitle/*" element={<Page />} />
           <Route path="/pages/:pageTitle/*" element={<Page />} />
+          <Route
+            path="/cp/:composablePageId"
+            element={<ComposablePageView />}
+          />
 
           {/* Works */}
           <Route exact path="/works" element={<Works />} />
@@ -128,13 +165,19 @@ export default function AppRoutes() {
           <Route exact path="/communities" element={<Communities />} />
 
           {/* Newsletter Emails */}
-          <Route path="/newsletters/*" element={<PreviousNewsletters />} />
+          <Route
+            path="/newsletters/*"
+            element={<PreviousNewsletters />}
+          />
 
           {/* Admin */}
           <Route path="/admin/*" element={<AdminContainer />} />
 
           {/* Super Admin */}
-          <Route path="/superadmin/platform/settings/*" element={<PlatformSettings />} />
+          <Route
+            path="/superadmin/platform/settings/*"
+            element={<PlatformSettings />}
+          />
           <Route
             path="/superadmin/platform/registration-intro"
             element={<PlatformRegistrationIntro />}
@@ -142,19 +185,33 @@ export default function AppRoutes() {
 
           {/* Profile & Profile Related Pages */}
           <Route path="/:usernameSlug/*" element={<UserProfile />} />
-          <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
+          <Route
+            path="/:usernameSlug/works/:workId/*"
+            element={<Work />}
+          />
 
           {/* Auth */}
           <Route exact path="/register" element={<SignupPage />} />
           <Route exact path="/login" element={<LoginPage />} />
-          <Route exact path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+          <Route
+            exact
+            path="/forgot-password"
+            element={<ForgotPasswordPage />}
+          />
+          <Route
+            path="/reset-password/:token"
+            element={<ResetPasswordPage />}
+          />
 
           <Route path="/intro" element={<RegistrationIntro />} />
 
           {/* SuperAdmin */}
           <Route exact path="/new-host" element={<NewHost />} />
-          <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
+          <Route
+            exact
+            path="/terms-&-privacy-policy"
+            element={<Terms />}
+          />
 
           {/* NotFoundPage */}
           <Route exact path="/not-found" element={<NotFoundPage />} />

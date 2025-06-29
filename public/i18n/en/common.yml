@@ -114,7 +114,7 @@ message:
     create: Your entry is successfully created
     update: Your entry is successfully updated
     remove: Your entry is successfully deleted
-    save: '{{ domain }} successfully saved'
+    save: Successfully saved
     leave: Your have now left {{ host }}
 
   error:
@@ -131,6 +131,9 @@ message:
     required: '{{ field }} is not allowed to be empty'
     email: '{{ field }} must be a valid email'
     min: '{{ field }} has to be at least {{ min }} characters'
+
+  createdBy: created by
+  updatedBy: updated by
 
   newentryhelper:
     title: New Entry

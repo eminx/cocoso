@@ -7,26 +7,26 @@ import Pages from './page';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
-  getPages(hostPredefined) {
+  async getPages(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     try {
-      return Pages.find(
+      return await Pages.find(
         {
           host,
         },
         { sort: { order: 1 } }
-      ).fetch();
+      ).fetchAsync();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't get pages");
     }
   },
 
-  getPageTitles(hostPredefined) {
+  async getPageTitles(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     try {
-      return Pages.find(
+      return await Pages.find(
         {
           host,
         },
@@ -38,31 +38,31 @@ Meteor.methods({
           },
           sort: { order: 1 },
         }
-      ).fetch();
+      ).fetchAsync();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't get pages");
     }
   },
 
-  getPortalHostPages() {
-    const portalHost = Hosts.findOne({ isPortalHost: true });
-    return Pages.find({ host: portalHost.host }, { sort: { creationDate: -1 } }).fetch();
+  async getPortalHostPages() {
+    const portalHost = await Hosts.findOneAsync({ isPortalHost: true });
+    return await Pages.find({ host: portalHost.host }, { sort: { creationDate: -1 } }).fetchAsync();
   },
 
-  createPage(formValues, hostPredefined) {
+  async createPage(formValues, hostPredefined) {
     const user = Meteor.user();
     const host = hostPredefined || getHost(this);
 
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const pageCount = Pages.find({ host }).count();
+    const pageCount = Pages.find({ host }).countAsync();
 
     try {
-      Pages.insert({
+      await Pages.insertAsync({
         ...formValues,
         host,
         authorId: user._id,
@@ -77,10 +77,10 @@ Meteor.methods({
     }
   },
 
-  updatePage(pageId, formValues, hostPredefined) {
+  async updatePage(pageId, formValues, hostPredefined) {
     const user = Meteor.user();
     const host = hostPredefined || getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
@@ -89,13 +89,13 @@ Meteor.methods({
     check(formValues.title, String);
     check(formValues.longDescription, String);
 
-    const thePage = Pages.find(pageId);
+    const thePage = await Pages.findOneAsync(pageId);
     if (thePage.isTermsPage) {
       throw new Meteor.Error('You cannot update terms page.');
     }
 
     try {
-      Pages.update(pageId, {
+      await Pages.updateAsync(pageId, {
         $set: {
           ...formValues,
           latestUpdate: new Date(),
@@ -110,7 +110,7 @@ Meteor.methods({
   async savePageOrder(pages) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
@@ -141,13 +141,13 @@ Meteor.methods({
   async deletePage(pageId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const thePage = Pages.find(pageId);
+    const thePage = await Pages.findOneAsync(pageId);
     if (thePage.isTermsPage) {
       throw new Meteor.Error('You cannot delete terms page');
     }

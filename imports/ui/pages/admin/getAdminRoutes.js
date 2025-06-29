@@ -4,7 +4,7 @@ import { Code, Text } from '@chakra-ui/react';
 
 import Settings from './Settings';
 import MenuSettings from './MenuSettings';
-import ColorPicker from './ColorPicker';
+import DesignOptions from './design';
 import Members from './Members';
 import Emails from './Emails';
 import EmailNewsletter from './EmailNewsletter';
@@ -19,6 +19,7 @@ import {
   ResourcesAdmin,
   WorksAdmin,
 } from './features';
+import ComposablePages from '/imports/ui/pages/composablepages';
 
 const getMenuLabel = (menuItems, key) => (
   <Text as="span">
@@ -51,14 +52,20 @@ const getAdminRoutes = (menuItems) => [
         content: <MenuSettings />,
       },
       {
-        label: <Trans i18nKey="admin:settings.tabs.color" />,
-        value: 'settings/color',
-        content: <ColorPicker />,
+        label: <Trans i18nKey="admin:settings.tabs.design" />,
+        value: 'settings/design/*',
+        content: <DesignOptions />,
       },
     ],
   },
   {
-    label: <Trans i18nKey="admin:features.title" />,
+    label: <Trans i18nKey="admin:composable.title" />,
+    value: 'composable-pages/*',
+    isMulti: false,
+    content: <ComposablePages />,
+  },
+  {
+    label: <Trans i18nKey="admin:listings.title" />,
     value: 'features',
     isMulti: true,
     content: [

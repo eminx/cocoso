@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import LinkIcon from 'lucide-react/dist/esm/icons/link';
+import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
+import { Trans } from 'react-i18next';
+import { Helmet } from 'react-helmet';
+
 import {
   Avatar,
   Badge,
@@ -15,15 +20,13 @@ import {
   MenuButton,
   VStack,
   Wrap,
+  Image,
 } from '@chakra-ui/react';
-import LinkIcon from 'lucide-react/dist/esm/icons/link';
-import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
-import { Trans } from 'react-i18next';
-import { Helmet } from 'react-helmet';
 
 import NiceSlider from '../generic/NiceSlider';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
+import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 interface Author {
   username: string;
@@ -85,8 +88,17 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
   return (
     <Box mt="2">
       <Link to={`/@${author.username}/`}>
-        <VStack _hover={{ textDecoration: 'underline' }} justify="center" spacing="0">
-          <Avatar borderRadius="lg" name={author.username} showBorder src={author.src} />
+        <VStack
+          _hover={{ textDecoration: 'underline' }}
+          justify="center"
+          spacing="0"
+        >
+          <Avatar
+            borderRadius="lg"
+            name={author.username}
+            showBorder
+            src={author.src}
+          />
           <CLink as="span" color="brand.500">
             {author.username}
           </CLink>
@@ -96,19 +108,32 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
   );
 };
 
-const Header: React.FC<HeaderProps> = ({ author, backLink, subTitle, tags, title }) => {
+const Header: React.FC<HeaderProps> = ({
+  author,
+  backLink,
+  subTitle,
+  tags,
+  title,
+}) => {
   const [copied, setCopied] = useState<boolean>(false);
   const location = useLocation();
 
   const handleCopyLink = async (): Promise<void> => {
     const host = window?.location?.host;
-    await navigator.clipboard.writeText(`https://${host}${location.pathname}`);
+    await navigator.clipboard.writeText(
+      `https://${host}${location.pathname}`
+    );
     setCopied(true);
   };
 
   const renderTitles = () => (
     <Center>
-      <Flex p="4" justify={author ? 'space-between' : 'center'} w="100%" maxW="720px">
+      <Flex
+        p="4"
+        justify={author ? 'space-between' : 'center'}
+        w="100%"
+        maxW="720px"
+      >
         <Box px="2">
           <Heading
             as="h1"
@@ -133,7 +158,11 @@ const Header: React.FC<HeaderProps> = ({ author, backLink, subTitle, tags, title
             </Heading>
           )}
           {tags && tags.length > 0 && (
-            <Wrap flexGrow="0" justify={author ? 'flex-start' : 'center'} mt="2">
+            <Wrap
+              flexGrow="0"
+              justify={author ? 'flex-start' : 'center'}
+              mt="2"
+            >
               {tags.map((tag, i) => (
                 <Badge
                   key={tag + i}
@@ -230,9 +259,11 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
   const location = useLocation();
 
   const pathnameLastPart = location.pathname.split('/').pop();
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
+  const tabIndex =
+    tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  const description = subTitle || content?.toString() || author?.username;
+  const description =
+    subTitle || content?.toString() || author?.username;
   const imageUrl = images && images[0];
 
   return (
@@ -246,7 +277,10 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
         <meta property="og:title" content={title?.substring(0, 40)} />
         <meta property="og:url" content={url} />
         <meta property="og:image" content={imageUrl} />
-        <meta property="og:description" content={description?.substring(0, 150)} />
+        <meta
+          property="og:description"
+          content={description?.substring(0, 150)}
+        />
         <meta property="og:type" content="article" />
       </Helmet>
 
@@ -270,7 +304,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
             {action && <Box>{action}</Box>}
           </Box>
 
-          <Center>
+          <Center mb="8">
             <Box maxW="540px" w="100%">
               <Box w="100%">
                 {tabs && (
@@ -290,7 +324,11 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
                   {tabs ? (
                     <Routes>
                       {tabs.map((tab) => (
-                        <Route key={tab.title} path={tab.path} element={<Box>{tab.content}</Box>} />
+                        <Route
+                          key={tab.title}
+                          path={tab.path}
+                          element={<Box>{tab.content}</Box>}
+                        />
                       ))}
                       <Route path="*" element={tabs[0].content} />
                     </Routes>

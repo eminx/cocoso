@@ -8,18 +8,23 @@ home: Anasayfa
 settings:
   title: Ayarlar
   tabs:
+    design: Tasarım
     general: Genel
     logo: Logo
+    logoHelper: Topluluğunuzun web sitesi için logo yükle
     info: Bilgi
+    infoHelper: Topluluğunuz hakkında bilgi gir
     categories: Kategoriler
     menu: Menü
+    menuHelper: Menüyü oluştur ve ayarla
     cats: Kategoriler
     menuVisibility: Görünürlük
     menuOrder: Sıra
     options: Seçenekler
     color: Renk
-    footer: Alt bilgi
-    topbar: Tepe sekmesş
+    footer: Alt bilgi (Footer)
+    footerHelper: Web sitesinin altbilgisini buraya gir
+    topbar: Tepe sekmesi
 
 logo:
   label: Logo
@@ -53,6 +58,9 @@ organization:
 
 users:
   title: Kullanıcılar
+  shortcutHelper: Kullanıcılarınızı yönet, onları doğrula/onayla veya yönetici olarak tayin et
+  usersListed: kullanıcı
+  userListed: kullanıcı
 
 menu:
   title: Menü
@@ -66,7 +74,7 @@ menu:
   itemActive: Aktif
   itemLabel: İsim
   info:
-    activities: Etkinlikler ve grup toplantılarını içeren listeleme sayfası
+    activities: Etkinlikler ve grup/süreç buluşmalarını içeren listeleme sayfası
     calendar: Takvim sayfası
     groups: Gruplar ve süreçleri içeren listeleme sayfası
     info: Statik bilgi sayfaları için listeleme sayfası
@@ -96,7 +104,8 @@ color:
 
 # ADMIN EMAILS PAGE
 emails:
-  title: Otomatik Epostalar
+  title: Otomatik E-postalar
+  shortcutHelper: Kullanıcıların kaydolduklarında veya doğrulandıklarında veya yönetici olduklarında aldıkları otomatik e-postaları ayarla
   form:
     subject:
       label: Konu
@@ -121,7 +130,8 @@ emails:
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
-  title: Eposta Bülteni Yolla
+  title: E-posta Bülteni Yolla
+  shortcutHelper: Tüm kullanıcılarınıza aynı anda bir e-posta bülteni gönder
   subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsin.
   subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik ögeleri.'
   contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsin.
@@ -150,8 +160,9 @@ newsletter:
   portalHost:
     info: Bu federasyonun portal uygulaması olduğu için, e-posta tüm {{ platform }} platformu üyelerine gönderilecektir
 
-features:
-  title: Ana Özellikler
+listings:
+  title: Listeleme Sayfaları
+  shortcutHelper: Her farklı listeleme sayfası için bir başlık ve bir açıklama belirleyebilirsiniz
 
 # ADMIN STATIC PAGES
 pages:
@@ -174,3 +185,59 @@ pages:
     title: Sıra
     label: Sayfaların sırasını düzenle
     info: Sayfaları yukarı ve aşağı sürükleyerek yeniden sıralayabilirsin. Navigasyon menüsündeki görüntülenme sırasını etkiler
+
+composable:
+  title: Özelleştirilebilir sayfalar
+  existing: Mevcut olanlar
+  new: Yeni oluştur
+  create: Oluştur
+  newTitleInputLabel: Başlık
+  newTitleInputHelper: Lütfen yeni oluşturulacak özelleştirilebilir sayfanın başlığını gir
+  description: Özel bir sayfa oluştur ve bunu açılış sayfası, kampanya sayfası veya istediğin herhangi bir sayfa olarak düzenle
+  form:
+    addContent: İçerik ekle
+    addRow: Satır ekle
+    emptySpace: Boşluk
+    emptySpaceHelper: Lütfen boşluk için piksel bazlı bir yükseklik gir
+    label: Etiket
+    labelHelper: Lütfen buton için etiketi gir. Bu etiket buton üzerinde görünecek
+    line: Çizgi
+    link: Bağlantı adresi
+    linkHelper: Lütfen bağlantı adresini gir. Bu bağlantı, butona tıklandığında açılır
+    video: Video-URL
+    videoHelper: Lütfen bir video URL'si gir, genellikle bir YouTube veya Vimeo video sayfasının bağlantı adresi olur..
+    removeRow: Satırı kaldır
+    title: Başlık
+    types:
+      button: Buton
+      divider: Ayraç
+      image: İmaj
+      image-slider: Slayt
+      text: Metin
+      video: Video
+  confirmedDelete:
+    title: Silmeyi onayla
+    text1: Bu modülü silmek istediğinden emin misin?
+    text2: Onaylarsan, seçili modül silinecek ve geri alınamayacaktır.
+    textWholePage: Bu sayfayı silmek istediğinden emin misin?
+    textWholePage2: Onaylarsan, bu sayfa tamamen silinecek ve işlem geri alınamayacaktır.
+  settings:
+    title: Ayarlar
+    hideTitle: Başlığı gizle
+    hideMenu: Ana menüyü gizle
+  messages:
+    titleEmpty: Lütfen bir başlık gir
+    titleTooLong: Başlık 50 karakterden fazla olamaz
+  toolbar:
+    preview: Önizleme
+    publish: Yayınla
+    published: Yayınlandı
+    unpublish: Yayından kaldır
+    unpublished: Taslak
+    updated: Kaydedildi
+    modalTitlePublish: Yayınlamayı Onayla
+    modalTitleUnpublish: Yayından kaldırmayı Onayla
+    publishText: Bu sayfayı yayınlamak istediğinden emin misin?
+    unpublishText: Bu sayfayı yayından kaldırmak istediğinden emin misin?
+    publishSuccess: Sayfa yayınlandı
+    unpublishSuccess: Sayfa yayından kaldırıldı

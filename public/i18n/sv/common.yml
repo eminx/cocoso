@@ -132,6 +132,9 @@ message:
     email: '{{ field }} måste vara en giltig e-postadress'
     min: '{{ field }} måste bestå av minst {{ min }} tecken'
 
+  createdBy: skapad av
+  updatedBy: uppdaterad av
+
   newentryhelper:
     title: Nytt inlägg
     description: Skapa ditt inlägg och publicera i den här listan

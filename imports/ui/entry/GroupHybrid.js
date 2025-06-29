@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Center } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
-import parseHtml from 'html-react-parser';
+import HTMLReactParser from 'html-react-parser';
 
 import TablyCentered from './TablyCentered';
 import GroupDocuments from '../pages/groups/components/GroupDocuments';
@@ -17,7 +17,7 @@ export default function GroupHybrid({ group, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {group?.description && parseHtml(group?.description)}
+          {group?.description && HTMLReactParser(group?.description)}
         </Box>
       ),
       path: 'info',

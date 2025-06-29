@@ -1,50 +1,49 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heading, Text, Wrap } from '@chakra-ui/react';
-// import { Trans } from 'react-i18next';
+import { Trans } from 'react-i18next';
 
 import Boxling from './Boxling';
 
 const shortCuts = [
   {
-    label: 'Logo',
-    helper: 'Set your logo for your organization',
+    label: <Trans i18nKey="admin:settings.tabs.logo" />,
+    helper: <Trans i18nKey="admin:settings.tabs.logoHelper" />,
     link: '/admin/settings/organization/logo',
   },
   {
-    label: 'Info',
-    helper: 'Manage your organization settings',
+    label: <Trans i18nKey="admin:settings.tabs.info" />,
+    helper: <Trans i18nKey="admin:settings.tabs.infoHelper" />,
     link: '/admin/settings/organization/info',
   },
   {
-    label: 'Footer',
-    helper: 'Compose your footer',
+    label: <Trans i18nKey="admin:settings.tabs.footer" />,
+    helper: <Trans i18nKey="admin:settings.tabs.footerHelper" />,
     link: '/admin/settings/organization/footer',
   },
   {
-    label: 'Menu',
-    helper: 'Manage the menu of your website',
+    label: <Trans i18nKey="admin:settings.tabs.menu" />,
+    helper: <Trans i18nKey="admin:settings.tabs.menuHelper" />,
     link: '/admin/settings/menu',
   },
   {
-    label: 'Generic Page settings',
-    helper: 'For each different listing page feature, you can set a title, and a description',
+    label: <Trans i18nKey="admin:listings.title" />,
+    helper: <Trans i18nKey="admin:listings.shortcutHelper" />,
     link: '/admin/features/activities',
   },
   {
-    label: 'Automated Emails',
-    helper:
-      'Setup automated emails that users receive when they signup, or become verified or admin',
+    label: <Trans i18nKey="admin:emails.title" />,
+    helper: <Trans i18nKey="admin:emails.shortcutHelper" />,
     link: '/admin/emails',
   },
   {
-    label: 'Users',
-    helper: 'Manege your users. Verify or unverify them',
+    label: <Trans i18nKey="admin:users.title" />,
+    helper: <Trans i18nKey="admin:users.shortcutHelper" />,
     link: '/admin/users/all',
   },
   {
-    label: 'Newsletter',
-    helper: 'Send a newsletter to all your users',
+    label: <Trans i18nKey="admin:newsletter.title" />,
+    helper: <Trans i18nKey="admin:newsletter.shortcutHelper" />,
     link: '/admin/email-newsletter',
   },
 ];

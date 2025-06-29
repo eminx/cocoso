@@ -7,8 +7,8 @@ import { StaticRouter } from 'react-router-dom/server';
 import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
 import { I18nextProvider, useSSR } from 'react-i18next';
-import i18n from '/imports/startup/i18n';
 
+import i18n from '/imports/startup/i18n';
 import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
@@ -18,9 +18,9 @@ const { cdn_server } = Meteor.settings;
 Meteor.startup(() => {
   const smtp = Meteor.settings?.mailCredentials?.smtp;
 
-  process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${smtp.password}@${
-    smtp.host
-  }:${smtp.port}`;
+  process.env.MAIL_URL = `smtps://${encodeURIComponent(
+    smtp.userName
+  )}:${smtp.password}@${smtp.host}:${smtp.port}`;
   Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
   Accounts.emailTemplates.from = () => smtp.fromEmail;
   Accounts.emailTemplates.resetPassword.text = function (user, url) {
@@ -54,7 +54,10 @@ Meteor.startup(() => {
       </I18nextProvider>
     );
 
-    sink.renderIntoElementById('root', renderToString(<App location={sink.request.url} />));
+    sink.renderIntoElementById(
+      'root',
+      renderToString(<App location={sink.request.url} />)
+    );
     const helmet = Helmet.renderStatic();
     sink.appendToHead(helmet.meta.toString());
     sink.appendToHead(helmet.title.toString());

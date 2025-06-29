@@ -8,17 +8,22 @@ home: Home
 settings:
   title: Settings
   tabs:
+    color: Color
+    design: Design
     general: General
     logo: Logo
+    logoHelper: Upload your logo for your the website
     info: Info
+    infoHelper: Add info about your organization
     categories: Categories
     menu: Menu
+    menuHelper: Build and configure the main menu
     cats: Categories
     menuVisibility: Visibility
     menuOrder: Order
     options: Options
-    color: Color
     footer: Footer
+    footerHelper: Compose the footer for your website
     topbar: Topbar
 
 logo:
@@ -53,6 +58,9 @@ organization:
 
 users:
   title: Users
+  shortcutHelper: Manege your users. Verify or unverify them, or set them as admin
+  usersListed: users
+  userListed: user
 
 menu:
   title: Menu
@@ -97,6 +105,7 @@ color:
 # ADMIN EMAILS PAGE
 emails:
   title: Automated Emails
+  shortcutHelper: Setup automated emails that users receive when they signup, or become verified or admin
   form:
     subject:
       label: Subject
@@ -122,6 +131,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Send a Newsletter
+  shortcutHelper: Send an email newsletter to all your users at once.
   subtitle: Here you can compose an email and easily attach published content from the website, and then send out to all members of your community.
   subtitle2: 'To compose the email below, you have to enter at least one of: body text, an image and/or selected content items listed in the community app.'
   contenthelper: You may insert existing content from the listing pages by selecting the entries you want to attach within the email below.
@@ -150,8 +160,9 @@ newsletter:
   portalHost:
     info: Since this is the portal app of the federation, your email will be sent to all {{ platform }} platform members
 
-features:
-  title: Main Features
+listings:
+  title: Listing pages
+  shortcutHelper: For each different listing page feature, you can set a title, and a description
 
 # ADMIN STATIC PAGES
 pages:
@@ -174,3 +185,59 @@ pages:
     title: Order
     label: Reorder pages
     info: You may reorder the pages by dragging them up and down. It affects their display order in the navigation menu
+
+composable:
+  title: Composable Pages
+  existing: Existing ones
+  new: Create new
+  create: Create
+  newTitleInputLabel: Title
+  newTitleInputHelper: Please enter the title for the new composable page
+  description: Compose a page and assign it as a landing page, campaign page, or just about any page you like
+  form:
+    addContent: Add Content
+    addRow: Add a row
+    emptySpace: Empty Space
+    emptySpaceHelper: Please enter the height of the empty space in pixels
+    label: Label
+    labelHelper: Pleae enter the label for the button. This label will be displayed on the button
+    line: Line
+    link: Link address
+    linkHelper: Please enter the link address. This link will be opened when the button is clicked
+    video: Video URL
+    videoHelper: Please enter a video URL, typically the link address for a YouTube or Vimeo video page..
+    removeRow: Remove row
+    title: Title
+    types:
+      button: Button
+      divider: Divider
+      image: Image
+      image-slider: Image Slider
+      text: Text
+      video: Video
+  confirmDelete:
+    title: Confirm Deletion
+    text1: Are you sure you want to delete this module?
+    text2: If you confirm, the selected module will be deleted and cannot be reverted.
+    textWholePage: Are you sure you want to delete this page?
+    textWholePage2: If you confirm, the entire page will be deleted and this action CANNOT be reverted.
+  settings:
+    title: Settings
+    hideTitle: Hide Title
+    hideMenu: Hide Main Menu
+  messages:
+    titleEmpty: Please enter a title
+    titleTooLong: Title must be less than 50 characters
+  toolbar:
+    preview: Preview
+    publish: Publish
+    published: Published
+    unpublish: Revert as draft
+    unpublished: Draft
+    updated: Saved
+    modalTitlePublish: Confirm Publishing
+    modalTitleUnpublish: Revert as draft
+    publishText: Are you sure you want to publish this page?
+    unpublishText: Are you sure you want to revert this page as a draft?
+    publishSuccess: Page successfully published
+    unpublishSuccess: Page reverted as a draft

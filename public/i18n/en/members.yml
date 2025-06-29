@@ -1,6 +1,6 @@
 # ADMIN MEMBERS PAGE
 label: Users
-dashboard: Admin Dashboard
+dashboard: Admin Panel
 all: All
 
 joinedAt: joined {{ date }}
