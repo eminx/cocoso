@@ -57,7 +57,7 @@ export default function ComposablePagesListing({
           to={`/admin/composable-pages/${composablePage._id}`}
         >
           <Boxling mb="4">
-            <Flex>
+            <Flex justifyContent="space-between" w="100%">
               <Box>
                 <CLink as="span">
                   <Heading color="blue.600" size="md">
