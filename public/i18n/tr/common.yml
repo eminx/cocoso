@@ -132,6 +132,9 @@ message:
     email: '{{ field }} geçerli bir eposta adresi olmalı'
     min: '{{ field }} minimum {{ min }} karakterden oluşmalı'
 
+  createdBy: tarafından oluşturuldu
+  updatedBy: tarafından güncellendi
+
   newentryhelper:
     title: Yeni içerik
     description: Yeni içerik oluştur ve bu sayfada listele

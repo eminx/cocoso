@@ -219,6 +219,8 @@ composable:
     title: Silmeyi onayla
     text1: Bu modülü silmek istediğinden emin misin?
     text2: Onaylarsan, seçili modül silinecek ve geri alınamayacaktır.
+    textWholePage: Bu sayfayı silmek istediğinden emin misin?
+    textWholePage2: Onaylarsan, bu sayfa tamamen silinecek ve işlem geri alınamayacaktır.
   settings:
     title: Ayarlar
     hideTitle: Başlığı gizle
@@ -229,4 +231,13 @@ composable:
   toolbar:
     preview: Önizleme
     publish: Yayınla
+    published: Yayınlandı
+    unpublish: Yayından kaldır
+    unpublished: Taslak
     updated: Kaydedildi
+    modalTitlePublish: Yayınlamayı Onayla
+    modalTitleUnpublish: Yayından kaldırmayı Onayla
+    publishText: Bu sayfayı yayınlamak istediğinden emin misin?
+    unpublishText: Bu sayfayı yayından kaldırmak istediğinden emin misin?
+    publishSuccess: Sayfa yayınlandı
+    unpublishSuccess: Sayfa yayından kaldırıldı

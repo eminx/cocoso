@@ -13,7 +13,7 @@ ComposablePages.schema = new SimpleSchema({
   host: Schemas.Hostname,
 
   authorId: Schemas.Id,
-  authorName: { type: String },
+  authorUsername: { type: String },
 
   contentRows: { type: Array, maxCount: 21 },
   'contentRows.$': { type: Object },
@@ -58,6 +58,7 @@ ComposablePages.schema = new SimpleSchema({
     optional: true,
   },
   latestUpdateAuthorId: { type: String, optional: true },
+  latestUpdateAuthorUsername: { type: String, optional: true },
 });
 
 ComposablePages.attachSchema(ComposablePages.schema);

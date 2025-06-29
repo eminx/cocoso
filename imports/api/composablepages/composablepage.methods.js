@@ -19,6 +19,8 @@ Meteor.methods({
         {
           fields: {
             _id: 1,
+            authorUsername: 1,
+            authorName: 1,
             contentRows: 1,
             host: 1,
             isPublished: 1,
@@ -58,7 +60,13 @@ Meteor.methods({
           },
           fields: {
             _id: 1,
+            authorName: 1,
+            authorUsername: 1,
+            creationDate: 1,
             host: 1,
+            isPublished: 1,
+            latestUpdate: 1,
+            latestUpdateAuthorUsername: 1,
             title: 1,
           },
         }
@@ -88,7 +96,7 @@ Meteor.methods({
         },
         host,
         authorId: user._id,
-        authorName: user.username,
+        authorUsername: user.username,
         isPublished: false,
         creationDate: new Date(),
         latestUpdate: new Date(),
@@ -123,11 +131,53 @@ Meteor.methods({
           ...formValues,
           latestUpdate: new Date(),
           latestUpdateAuthorId: user._id,
+          latestUpdateAuthorUsername: user.username,
         },
       });
       return formValues.title;
     } catch (error) {
       console.log(error);
+      throw new Meteor.Error(error);
+    }
+  },
+
+  async publishComposablePage(composablePageId) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = await Hosts.findOneAsync({ host });
+
+    if (!user || !isAdmin(user, currentHost)) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    try {
+      await ComposablePages.updateAsync(composablePageId, {
+        $set: {
+          isPublished: true,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+    }
+  },
+
+  async UnpublishComposablePage(composablePageId) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = await Hosts.findOneAsync({ host });
+
+    if (!user || !isAdmin(user, currentHost)) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    try {
+      await ComposablePages.updateAsync(composablePageId, {
+        $set: {
+          isPublished: false,
+        },
+      });
+    } catch (error) {
       throw new Meteor.Error(error);
     }
   },

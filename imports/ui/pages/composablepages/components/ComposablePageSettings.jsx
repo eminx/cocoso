@@ -74,6 +74,7 @@ export default function ComposablePageSettings() {
         flexGrow={0}
         ml="4"
         rightIcon={<SettingsIcon size="16px" />}
+        size="sm"
         variant="ghost"
         onClick={() =>
           setState((prevState) => ({
@@ -96,8 +97,8 @@ export default function ComposablePageSettings() {
           }))
         }
       >
-        <Box bg="gray.50" borderRadius="md" p="4">
-          <Box py="2">
+        <Box bg="gray.50" borderRadius="md">
+          <Box pb="2">
             <FormField
               label={<Trans i18nKey="admin:composable.form.title" />}
             >
@@ -109,7 +110,7 @@ export default function ComposablePageSettings() {
             </FormField>
           </Box>
 
-          <Box py="2">
+          <Box>
             <Checkbox
               isChecked={settings?.hideTitle}
               onChange={(e) =>
@@ -124,7 +125,7 @@ export default function ComposablePageSettings() {
             </Checkbox>
           </Box>
 
-          <Box py="2">
+          <Box>
             <Checkbox
               isChecked={settings?.hideMenu}
               onChange={(e) =>

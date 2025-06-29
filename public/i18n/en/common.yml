@@ -132,6 +132,9 @@ message:
     email: '{{ field }} must be a valid email'
     min: '{{ field }} has to be at least {{ min }} characters'
 
+  createdBy: created by
+  updatedBy: updated by
+
   newentryhelper:
     title: New Entry
     description: Create your entry to appear here

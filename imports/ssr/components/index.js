@@ -108,6 +108,10 @@ export function ComposablePage({ host, sink }) {
     return null;
   }
 
+  if (!composablePage || !composablePage.isPublished) {
+    return null;
+  }
+
   return (
     <WrapperSSR Host={Host} sink={sink}>
       <ComposablePageHybrid

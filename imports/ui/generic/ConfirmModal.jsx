@@ -49,9 +49,7 @@ function ConfirmModal({
             onClick={onOverlayClick || onCancel}
           />
 
-          <AlertDialogBody mt="4" mb="12">
-            {children}
-          </AlertDialogBody>
+          <AlertDialogBody my="4">{children}</AlertDialogBody>
 
           {!hideFooter && (
             <AlertDialogFooter>
