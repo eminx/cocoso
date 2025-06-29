@@ -24,9 +24,10 @@ function getItemFootnote(composablePage) {
     <Text color="gray.700" size="sm">
       <Trans i18nKey="common:message.createdBy" />{' '}
       {composablePage.authorName || composablePage.authorUsername}{' '}
-      {dayjs(composablePage.creationDate).format('MMM D, YYYY')}{' '}
+      {dayjs(composablePage.creationDate).format('MMMM D, YYYY')}
       {composablePage.latestUpdateAuthorUsername ? (
         <>
+          {'; '}
           <Trans i18nKey="common:message.updatedBy" />{' '}
           {composablePage.latestUpdateAuthorUsername +
             ' ' +
