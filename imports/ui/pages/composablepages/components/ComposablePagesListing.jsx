@@ -14,7 +14,7 @@ function formatDate(date) {
 
 function getItemFootnote(composablePage) {
   return (
-    <Text color="gray.500" size="sm">
+    <Text color="gray.700" size="sm">
       <Trans i18nKey="common:message.createdBy" />{' '}
       {composablePage.authorName || composablePage.authorUsername}{' '}
       {dayjs(composablePage.creationDate).format('MMM D, YYYY')}{' '}
