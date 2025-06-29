@@ -452,7 +452,7 @@ export default function ComposablePageForm({
           <Text fontWeight="bold" mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage" />
           </Text>
-          <Text fontWeight="bold" mb="2">
+          <Text mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage2" />
           </Text>
         </ConfirmModal>

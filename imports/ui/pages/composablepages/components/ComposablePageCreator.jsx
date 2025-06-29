@@ -41,6 +41,7 @@ export default function ComposablePageCreator({
     <>
       <Center pt="8" pb="4">
         <Button
+          bg="white"
           leftIcon={<FilePlusIcon size="24px" />}
           mb="4"
           size="lg"

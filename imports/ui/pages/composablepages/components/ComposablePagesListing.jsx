@@ -1,6 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, Center, Link as CLink } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Link as CLink,
+  Tag,
+} from '@chakra-ui/react';
 import PlusIcon from 'lucide-react/dist/esm/icons/plus';
 import { Trans } from 'react-i18next';
 import dayjs from 'dayjs';
@@ -50,12 +57,34 @@ export default function ComposablePagesListing({
           to={`/admin/composable-pages/${composablePage._id}`}
         >
           <Boxling mb="4">
-            <CLink as="span">
-              <Heading color="blue.600" size="md">
-                {composablePage.title}
-              </Heading>
-            </CLink>
-            <Box pt="2">{getItemFootnote(composablePage)}</Box>
+            <Flex>
+              <Box>
+                <CLink as="span">
+                  <Heading color="blue.600" size="md">
+                    {composablePage.title}
+                  </Heading>
+                </CLink>
+                <Box pt="2">{getItemFootnote(composablePage)}</Box>
+              </Box>
+              <Box>
+                <Tag
+                  colorScheme={
+                    composablePage.isPublished ? 'green' : 'orange'
+                  }
+                  ml="4"
+                  size="sm"
+                  variant="solid"
+                >
+                  <Trans
+                    i18nKey={`admin:composable.toolbar.${
+                      composablePage.isPublished
+                        ? 'published'
+                        : 'unpublished'
+                    }`}
+                  />
+                </Tag>
+              </Box>
+            </Flex>
           </Boxling>
         </Link>
       ))}
