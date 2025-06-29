@@ -219,6 +219,8 @@ composable:
     title: Bekräfta borttagning
     text1: Är du säker på att du vill ta bort den här modulen?
     text2: Om du bekräftar kommer den valda modulen att tas bort och kan inte återställas.
+    textWholePage: Är du säker på att du vill ta bort den här sidan?
+    textWholePage2: Om du bekräftar kommer den hela sidan att tas bort och denna åtgärd kan INTE återställas.
   settings:
     title: Inställningar
     hideTitle: Dölj titel
@@ -229,4 +231,13 @@ composable:
   toolbar:
     preview: Förhandsgranska
     publish: Publicera
+    published: Publicerad
+    unpublish: Återställ som utkast
+    unpublished: Utkast
     updated: Sparad
+    modalTitlePublish: Bekräfta publicering
+    modalTitleUnpublish: Bekräfta återställning
+    publishText: Är du säker på att du vill publicera den här sidan?
+    unpublishText: Är du säker på att du vill avpublicera den här sidan?
+    publishSuccess: Sidan har publicerats
+    unpublishSuccess: Sidan har återställts som utkast

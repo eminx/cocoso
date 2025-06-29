@@ -4,7 +4,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { useHref, useParams } from 'react-router-dom';
+import { useHref, useNavigate, useParams } from 'react-router-dom';
 
 import { message } from '/imports/ui/generic/message';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -16,14 +16,13 @@ export default function ComposablePageView() {
     window?.__PRELOADED_STATE__?.composablePage || null;
   const Host = window?.__PRELOADED_STATE__?.Host || null;
   const href = useHref();
-
   const [composablePage, setComposablePage] = useState(
     initialComposablePage
   );
   const [rendered, setRendered] = useState(false);
-
-  let { currentHost } = useContext(StateContext);
+  let { currentHost, currentUser, role } = useContext(StateContext);
   let { composablePageId } = useParams();
+  const navigate = useNavigate();
 
   if (!currentHost) {
     currentHost = Host;
@@ -57,6 +56,12 @@ export default function ComposablePageView() {
 
   if (!composablePage) {
     return null;
+  }
+
+  if (!composablePage.isPublished) {
+    if (!currentUser || role !== 'admin') {
+      navigate('/404');
+    }
   }
 
   return (

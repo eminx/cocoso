@@ -110,9 +110,14 @@ export default function MenuSettings() {
   };
 
   const getComposablePageOptions = () => {
-    const localMenuIds = localSettings.menu.map((item) => item.name);
+    const existingComposableIdsInlocalMenu = localSettings.menu.map(
+      (item) => item.name
+    );
+
     const options = composablePageTitles.filter(
-      (item) => !localMenuIds.includes(item._id)
+      (item) =>
+        item.isPublished &&
+        !existingComposableIdsInlocalMenu.includes(item._id)
     );
     return options;
   };

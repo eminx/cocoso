@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -65,7 +65,10 @@ export default function ComposablePageForm({
   });
   const [deleteModuleModal, setDeleteModuleModal] =
     useState(emptyModuleModal);
+  const [deleteWholePageModal, setDeleteWholePageModal] =
+    useState(false);
   const { composablePageId } = useParams();
+  const navigate = useNavigate();
 
   const getComposablePageById = async () => {
     if (!composablePageId || composablePageId === '*') {
@@ -259,6 +262,20 @@ export default function ComposablePageForm({
       setContentModal({ open: false, content: null });
       message.success(<Trans i18nKey="common:message.success.save" />);
     } catch (error) {
+      message.error(error.reason || error.error);
+    }
+  };
+
+  const deleteComposablePage = async () => {
+    try {
+      await call('deleteComposablePage', currentPage._id);
+      await getComposablePageTitles();
+      setDeleteWholePageModal(false);
+      message.success(
+        <Trans i18nKey="common:message.success.remove" />
+      );
+      navigate('/admin/composable-pages/*');
+    } catch (error) {
       console.log(error);
       message.error(error.reason || error.error);
     }
@@ -289,6 +306,8 @@ export default function ComposablePageForm({
     contentModal,
     currentPage,
     deleteModuleModal,
+    getComposablePageById,
+    getComposablePageTitles,
     saveContentModal,
     setContentModal,
     setCurrentPage,
@@ -371,7 +390,7 @@ export default function ComposablePageForm({
             </Center>
           </Flex>
 
-          <Center>
+          <Center boxShadow="2xl">
             <BottomToolbar />
           </Center>
 
@@ -409,6 +428,35 @@ export default function ComposablePageForm({
           </ConfirmModal>
         </ComposablePageContext.Provider>
       </DndProvider>
+
+      <Center bg="red.50" p="4" mb="8">
+        <Button
+          colorScheme="red"
+          size="sm"
+          variant="outline"
+          onClick={() => setDeleteWholePageModal(true)}
+        >
+          Delete
+        </Button>
+
+        <ConfirmModal
+          confirmButtonProps={{ colorScheme: 'red' }}
+          confirmText={<Trans i18nKey="admin:pages.actions.delete" />}
+          title={
+            <Trans i18nKey="admin:composable.confirmDelete.title" />
+          }
+          visible={deleteWholePageModal}
+          onConfirm={deleteComposablePage}
+          onCancel={() => setDeleteWholePageModal(false)}
+        >
+          <Text fontWeight="bold" mb="2">
+            <Trans i18nKey="admin:composable.confirmDelete.textWholePage" />
+          </Text>
+          <Text fontWeight="bold" mb="2">
+            <Trans i18nKey="admin:composable.confirmDelete.textWholePage2" />
+          </Text>
+        </ConfirmModal>
+      </Center>
     </div>
   );
 }
