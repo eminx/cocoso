@@ -181,15 +181,46 @@ interface ButtonProps {
   onClick?: () => void;
 }
 
-export const Button = styled('button', (props: ButtonProps) => ({
-  cursor: 'pointer',
-  padding: '0.5rem 1rem',
-  borderRadius: '0.25rem',
-  border: '1px solid',
-  borderColor: props.color || '#3182CE',
-  fontWeight: 500,
-  // ...transformProps(props),
-}));
+export const Button = styled('button', (props: ButtonProps) => {
+  const variant = props.variant || 'solid';
+  return {
+    backgroundColor:
+      variant === 'ghost'
+        ? 'none'
+        : variant === 'outline'
+        ? 'white'
+        : 'var(--chakra-colors-brand-500)',
+    borderRadius: '0.375rem',
+    borderStyle: 'solid',
+    borderWidth: variant === 'outline' ? '1px' : '0',
+    borderColor: props.color || 'var(--chakra-colors-brand-200',
+    color:
+      variant === 'solid' ? 'white' : 'var(--chakra-colors-brand-500)',
+    cursor: 'pointer',
+    display: 'inline-flex',
+    fontWeight: 'bold',
+    paddingInlineStart: '1rem',
+    paddingInlineEnd: '1rem',
+    paddingTop: '0.5rem',
+    paddingBottom: '0.5rem',
+    ':hover': {
+      backgroundColor:
+        variant === 'ghost'
+          ? 'var(--chakra-colors-brand-100)'
+          : variant === 'outline'
+          ? 'var(--chakra-colors-brand-100)'
+          : 'var(--chakra-colors-brand-600)',
+    },
+    // ...transformProps(props),
+  };
+});
+
+// Center
+export const Center = styled(Box, {
+  alignItems: 'center',
+  flexDirection: 'row',
+  justifyContent: 'center',
+});
 
 // Container
 interface ContainerProps {
@@ -226,12 +257,6 @@ export const Flex = styled(Box, (props: any) => ({
   justifyContent: props.justify || props.justifyContent || 'flex-start',
   wrap: props.wrap || 'wrap',
 }));
-
-// Center
-export const Center = styled(Flex, {
-  alignItems: 'center',
-  justifyContent: 'center',
-});
 
 // Grid
 interface GridProps {

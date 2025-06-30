@@ -117,7 +117,7 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
   const hideTitle = composablePage.settings?.hideTitle;
 
   return (
-    <>
+    <Box mt="4">
       {hideMenu ? (
         <GlobalStyles>
           {{
@@ -129,8 +129,8 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
       ) : null}
       {hideTitle ? null : (
         <Heading
+          css={{ textAlign: 'center', margin: '1.5rem 0 0.5rem' }}
           size="xl"
-          css={{ textAlign: 'center', margin: '1rem 0' }}
         >
           {composablePage.title}
         </Heading>
@@ -156,6 +156,6 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
           </Box>
         ))}
       </Flex>
-    </>
+    </Box>
   );
 }

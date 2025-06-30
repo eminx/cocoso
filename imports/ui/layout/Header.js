@@ -26,15 +26,19 @@ const isClient = Meteor?.isClient;
 const textProps = {
   _hover: { borderBottom: '1px solid' },
   as: 'span',
-  borderColor: 'gray.600',
-  color: 'gray.600',
+  // borderColor: 'gray.600',
   fontFamily: 'Raleway, Sarabun, sans-serif',
   fontSize: 16,
   fontWeight: '500',
-  textShadow: '1px 1px 1px #fff',
+  // textShadow: '1px 1px 1px #fff',
 };
 
-export function InfoPagesMenu({ label, pageTitles, pathname }) {
+export function InfoPagesMenu({
+  backgroundColor,
+  label,
+  pageTitles,
+  pathname,
+}) {
   const context = pathname.split('/')[1];
   const isCurrentContext = context === 'info';
   const hydrated = useHydrated();
@@ -77,7 +81,7 @@ export function InfoPagesMenu({ label, pageTitles, pathname }) {
       <MenuList
         maxHeight="480px"
         overflowY="scroll"
-        rootProps={{ zIndex: 1051 }}
+        rootProps={{ style: { backgroundColor }, zIndex: 1051 }}
         suppressHydrationWarning
       >
         {pageTitles.map((item) => (
@@ -86,7 +90,7 @@ export function InfoPagesMenu({ label, pageTitles, pathname }) {
             to={`/info/${parseTitle(item.title)}`}
             suppressHydrationWarning
           >
-            <MenuItem as="span" id={item._id}>
+            <MenuItem as="span" color="gray.600" id={item._id}>
               {item.title}
             </MenuItem>
           </Link>
@@ -102,6 +106,8 @@ function HeaderMenu({ Host, pageTitles }) {
   const [isDesktop] = useMediaQuery(['(min-width: 960px)']);
 
   const settings = Host?.settings;
+  const style = Host?.style;
+
   const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } =
     settings || {};
 
@@ -122,12 +128,16 @@ function HeaderMenu({ Host, pageTitles }) {
     return pathname.includes(item?.name);
   };
 
+  const backgroundColor = style?.menu?.backgroundColor;
+  const color = style?.menu?.color;
+
   return (
     <Center className="main-menu" mb="4" px="4">
       <HStack
         alignItems="center"
-        bg="gray.50"
+        bg={backgroundColor || 'gray.50'}
         borderRadius={6}
+        color={color || 'gray.600'}
         justify="center"
         mb="2"
         p="2"
@@ -137,6 +147,7 @@ function HeaderMenu({ Host, pageTitles }) {
           item.name === 'info' ? (
             <InfoPagesMenu
               key="info"
+              backgroundColor={backgroundColor}
               label={item.label}
               pageTitles={pageTitles}
               pathname={pathname}

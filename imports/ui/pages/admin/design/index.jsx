@@ -5,6 +5,7 @@ import { Trans } from 'react-i18next';
 import TablyRouter from '/imports/ui/generic/TablyRouter';
 import GeneralDesign from './GeneralDesign';
 import ColorPicker from './ColorPicker';
+import MenuDesign from './MenuDesign';
 
 export default function DesignOptions() {
   const tabs = [
@@ -18,7 +19,7 @@ export default function DesignOptions() {
       // title: <Trans i18nKey="admin:settings.tabs.color" />,
       title: 'Header',
       path: 'header',
-      content: <div>Header</div>,
+      content: <MenuDesign />,
     },
     {
       // title: <Trans i18nKey="admin:settings.tabs.color" />,

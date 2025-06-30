@@ -11,15 +11,16 @@ import { message } from '/imports/ui/generic/message';
 export default function GeneralDesign() {
   const { currentHost, getCurrentHost } = useContext(StateContext);
   const [state, setState] = useState({
-    style: currentHost?.style || {},
+    style: currentHost?.style || {
+      body: {
+        backgroundColor: '#faf7f5',
+        backgroundImage: null,
+      },
+    },
     uploadingBackgroundImage: false,
   });
 
   const handleBackgroundColorChange = (color) => {
-    // if (color.hsl.l < 0.7) {
-    //   // message.error('Please choose a lighter color');
-    //   return;
-    // }
     setState((prevState) => ({
       ...prevState,
       style: {
