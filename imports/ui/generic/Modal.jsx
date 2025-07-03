@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 const defaultContentProps = {
-  bg: 'gray.100',
+  bg: 'brand.50',
   borderRadius: 'lg',
   h: '80%',
   mt: '8',
@@ -44,12 +44,19 @@ function Modal({
 
         <ModalFooter>
           {secondaryButtonLabel && (
-            <Button mr={3} variant="ghost" onClick={onSecondaryButtonClick || onClose}>
+            <Button
+              mr={3}
+              variant="ghost"
+              onClick={onSecondaryButtonClick || onClose}
+            >
               {secondaryButtonLabel}
             </Button>
           )}
           {actionButtonLabel && (
-            <Button onClick={onActionButtonClick} {...actionButtonProps}>
+            <Button
+              onClick={onActionButtonClick}
+              {...actionButtonProps}
+            >
               {actionButtonLabel}
             </Button>
           )}
