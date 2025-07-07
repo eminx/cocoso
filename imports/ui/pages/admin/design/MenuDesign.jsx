@@ -14,6 +14,7 @@ import { call } from '/imports/ui/utils/shared';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';
+import Menu from '/imports/ui/generic/Menu';
 
 const demoMenuItems = [
   {
@@ -25,6 +26,18 @@ const demoMenuItems = [
   {
     name: 'Calendar',
   },
+];
+
+const fontStyleOptions = [
+  { label: 'Normal', value: 'normal' },
+  { label: 'Italic', value: 'italic' },
+];
+
+const textTransformOptions = [
+  { label: 'None', value: 'none' },
+  { label: 'Uppercase', value: 'uppercase' },
+  { label: 'Lowercase', value: 'lowercase' },
+  { label: 'Capitalize', value: 'capitalize' },
 ];
 
 export default function MenuDesign() {
@@ -80,6 +93,32 @@ export default function MenuDesign() {
     }));
   };
 
+  const handleSelectFontStyle = (item) => {
+    setState((prevState) => ({
+      ...prevState,
+      style: {
+        ...prevState.style,
+        menu: {
+          ...prevState.style.menu,
+          fontStyle: item.value,
+        },
+      },
+    }));
+  };
+
+  const handleSelectTextTransform = (item) => {
+    setState((prevState) => ({
+      ...prevState,
+      style: {
+        ...prevState.style,
+        menu: {
+          ...prevState.style.menu,
+          textTransform: item.value,
+        },
+      },
+    }));
+  };
+
   const resetTextColor = () => {
     setState((prevState) => ({
       ...prevState,
@@ -110,6 +149,12 @@ export default function MenuDesign() {
   const { style } = state;
   const backgroundColor = style?.menu?.backgroundColor;
   const color = style?.menu?.color;
+  const fontStyle = fontStyleOptions.find(
+    (option) => option.value === style?.menu?.fontStyle
+  )?.label;
+  const textTransform = textTransformOptions.find(
+    (option) => option.value === style?.menu?.textTransform
+  )?.label;
 
   return (
     <>
@@ -195,6 +240,44 @@ export default function MenuDesign() {
               >
                 Reset
               </Button>
+            </Flex>
+          </Center>
+        </Flex>
+      </Boxling>
+
+      <Text fontWeight="bold" mb="4">
+        Text
+      </Text>
+
+      <Boxling mb="8" w="100%">
+        <Flex justify="space-around">
+          <Center>
+            <Flex alignItems="center" flexDirection="column">
+              <Text fontWeight="bold" mb="2">
+                Font Style
+              </Text>
+              <Menu
+                buttonLabel={fontStyle}
+                options={fontStyleOptions}
+                onSelect={handleSelectFontStyle}
+              >
+                {(item) => item.label}
+              </Menu>
+            </Flex>
+          </Center>
+
+          <Center>
+            <Flex alignItems="center" flexDirection="column">
+              <Text fontWeight="bold" mb="2">
+                Text Transform
+              </Text>
+              <Menu
+                buttonLabel={textTransform}
+                options={textTransformOptions}
+                onSelect={handleSelectTextTransform}
+              >
+                {(item) => item.label}
+              </Menu>
             </Flex>
           </Center>
         </Flex>

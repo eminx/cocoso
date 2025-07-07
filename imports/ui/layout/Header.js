@@ -130,6 +130,8 @@ function HeaderMenu({ Host, pageTitles }) {
 
   const backgroundColor = style?.menu?.backgroundColor;
   const color = style?.menu?.color;
+  const fontStyle = style?.menu?.fontStyle || 'normal';
+  const textTransform = style?.menu?.textTransform || 'none';
 
   return (
     <Center className="main-menu" mb="4" px="4">
@@ -138,9 +140,11 @@ function HeaderMenu({ Host, pageTitles }) {
         bg={backgroundColor || 'gray.50'}
         borderRadius={6}
         color={color || 'gray.600'}
+        fontStyle={fontStyle}
         justify="center"
         mb="2"
         p="2"
+        textTransform={textTransform}
         wrap="wrap"
       >
         {menuItems?.map((item, index) =>

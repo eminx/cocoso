@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Box, Button, Center, Flex, Text } from '@chakra-ui/react';
 import { ChromePicker } from 'react-color';
+import { Trans } from 'react-i18next';
 
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
@@ -45,11 +46,7 @@ export default function GeneralDesign() {
     updateHostStyle(newStyle);
   };
 
-  const confirmBackgroundColor = () => {
-    updateHostStyle({ ...state.style });
-  };
-
-  const confirmBackgroundImage = () => {
+  const confirmBackground = () => {
     setState((prevState) => ({
       ...prevState,
       uploadingBackgroundImage: true,
@@ -72,6 +69,9 @@ export default function GeneralDesign() {
 
   const removeBackgroundImage = async () => {
     handleUploadedBackgroundImage([null]);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1200);
   };
 
   const resetBackgroundColor = () => {
@@ -106,7 +106,7 @@ export default function GeneralDesign() {
             </Text>
           </Box>
         </Flex>
-        <Boxling bg={backgroundColor} mb="2" w="100%">
+        <Boxling backgroundColor={backgroundColor} mb="2" w="100%">
           <Flex justify="space-between">
             <Box>
               <Center>
@@ -151,22 +151,12 @@ export default function GeneralDesign() {
         </Boxling>
 
         <Flex justify="flex-end">
-          <Button mt="2" onClick={confirmBackgroundColor}>
-            Confirm
-          </Button>
-        </Flex>
-      </Box>
-
-      <Box mb="4" mt="6">
-        <Boxling mb="2"></Boxling>
-
-        <Flex justify="flex-end">
           <Button
-            mt="2"
             isLoading={uploadingBackgroundImage}
-            onClick={confirmBackgroundImage}
+            mt="2"
+            onClick={confirmBackground}
           >
-            Confirm
+            <Trans i18nKey="common:actions.submit" />
           </Button>
         </Flex>
       </Box>

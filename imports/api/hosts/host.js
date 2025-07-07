@@ -66,11 +66,12 @@ Hosts.schema = new SimpleSchema({
   'style.body.font': { type: String, optional: true },
   'style.elements': { type: Object, optional: true },
   'style.elements.borderRadius': { type: String, optional: true },
+  'style.elements.borderWidth': { type: String, optional: true },
+  'style.elements.borderColor': { type: String, optional: true },
   'style.menu': { type: Object, optional: true },
   'style.menu.backgroundColor': { type: String, optional: true },
   'style.menu.color': { type: String, optional: true },
   'style.menu.fontStyle': { type: String, optional: true },
-  'style.menu.fontWeight': { type: String, optional: true },
   'style.menu.textTransform': { type: String, optional: true },
 
   members: { type: Array },

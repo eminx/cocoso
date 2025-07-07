@@ -1,15 +1,17 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react';
+import { Trans } from 'react-i18next';
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/zoom.css';
+import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 export default function GenericMenu({
-  buttonLabel,
+  buttonLabel = <Trans i18nKey="common:labels.select" />,
   children,
   options,
   leftIcon = null,
-  rightIcon = null,
+  rightIcon = <ChevronDownIcon size="18px" />,
   onSelect,
 }) {
   if (!options || !options.length) {
