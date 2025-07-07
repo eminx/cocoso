@@ -16,21 +16,15 @@ export default function DesignOptions() {
       content: <GeneralDesign />,
     },
     {
-      // title: <Trans i18nKey="admin:settings.tabs.color" />,
-      title: 'Header',
-      path: 'header',
-      content: <MenuDesign />,
-    },
-    {
-      // title: <Trans i18nKey="admin:settings.tabs.color" />,
-      title: 'Elements',
-      path: 'elements',
-      content: <div>Elements</div>,
-    },
-    {
       title: <Trans i18nKey="admin:settings.tabs.color" />,
       path: 'color',
       content: <ColorPicker />,
+    },
+    {
+      // title: <Trans i18nKey="admin:settings.tabs.color" />,
+      title: 'Menu',
+      path: 'navigation',
+      content: <MenuDesign />,
     },
   ];
 

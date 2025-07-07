@@ -98,7 +98,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -335,7 +334,6 @@ Meteor.methods({
   },
 
   async updateHostStyle(style) {
-    console.log(style);
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
     const currentUser = Meteor.user();

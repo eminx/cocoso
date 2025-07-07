@@ -15,6 +15,7 @@ import { StateContext } from '/imports/ui/LayoutContainer';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';
 import Menu from '/imports/ui/generic/Menu';
+import { fontStyleOptions, textTransformOptions } from './styleOptions';
 
 const demoMenuItems = [
   {
@@ -26,18 +27,6 @@ const demoMenuItems = [
   {
     name: 'Calendar',
   },
-];
-
-const fontStyleOptions = [
-  { label: 'Normal', value: 'normal' },
-  { label: 'Italic', value: 'italic' },
-];
-
-const textTransformOptions = [
-  { label: 'None', value: 'none' },
-  { label: 'Uppercase', value: 'uppercase' },
-  { label: 'Lowercase', value: 'lowercase' },
-  { label: 'Capitalize', value: 'capitalize' },
 ];
 
 export default function MenuDesign() {
@@ -156,19 +145,33 @@ export default function MenuDesign() {
     (option) => option.value === style?.menu?.textTransform
   )?.label;
 
+  const menuStyles = {
+    backgroundColor: style?.menu?.backgroundColor || 'gray.50',
+    borderColor: style?.elements?.borderColor || 'gray.300',
+    borderRadius: style?.elements?.borderRadius || '6px',
+    borderStyle: style?.elements?.borderStyle || 'solid',
+    borderWidth: style?.elements?.borderWidth || '1px',
+    color: style?.menu?.color || 'gray.600',
+    fontStyle: style?.menu?.fontStyle || 'normal',
+    textTransform: style?.menu?.textTransform || 'none',
+  };
+
   return (
     <>
-      <Text fontWeight="bold" mb="4">
+      <Text fontWeight="bold" mb="4" mt="6">
         Demo
       </Text>
       <Box mb="8" w="100%">
         <HStack
+          style={menuStyles}
           alignItems="center"
           bg={backgroundColor}
           borderRadius={6}
           color={color}
+          fontStyle={fontStyle}
           justify="center"
           p="0.5rem"
+          textTransform={textTransform}
           wrap="wrap"
         >
           {demoMenuItems?.map((item) => (
@@ -194,7 +197,7 @@ export default function MenuDesign() {
       <Boxling mb="8" w="100%">
         <Flex justify="space-around">
           <Center>
-            <Flex alignItems="center" flexDirection="column">
+            <Flex align="center" flexDirection="column">
               <Text fontWeight="bold" mb="2">
                 Background color
               </Text>
@@ -219,7 +222,7 @@ export default function MenuDesign() {
           </Center>
 
           <Center>
-            <Flex alignItems="center" flexDirection="column">
+            <Flex align="center" flexDirection="column">
               <Text fontWeight="bold" mb="2">
                 Text Color
               </Text>

@@ -128,30 +128,32 @@ function HeaderMenu({ Host, pageTitles }) {
     return pathname.includes(item?.name);
   };
 
-  const backgroundColor = style?.menu?.backgroundColor;
-  const color = style?.menu?.color;
-  const fontStyle = style?.menu?.fontStyle || 'normal';
-  const textTransform = style?.menu?.textTransform || 'none';
+  const menuStyles = {
+    backgroundColor: style?.menu?.backgroundColor || 'gray.50',
+    borderColor: style?.elements?.borderColor || 'gray.300',
+    borderRadius: style?.elements?.borderRadius || '6px',
+    borderStyle: style?.elements?.borderStyle || 'solid',
+    borderWidth: style?.elements?.borderWidth || '1px',
+    color: style?.menu?.color || 'gray.600',
+    fontStyle: style?.menu?.fontStyle || 'normal',
+    textTransform: style?.menu?.textTransform || 'none',
+  };
 
   return (
     <Center className="main-menu" mb="4" px="4">
       <HStack
         alignItems="center"
-        bg={backgroundColor || 'gray.50'}
-        borderRadius={6}
-        color={color || 'gray.600'}
-        fontStyle={fontStyle}
         justify="center"
         mb="2"
         p="2"
-        textTransform={textTransform}
         wrap="wrap"
+        style={menuStyles}
       >
         {menuItems?.map((item, index) =>
           item.name === 'info' ? (
             <InfoPagesMenu
               key="info"
-              backgroundColor={backgroundColor}
+              backgroundColor={menuStyles.backgroundColor}
               label={item.label}
               pageTitles={pageTitles}
               pathname={pathname}
