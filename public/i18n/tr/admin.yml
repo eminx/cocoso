@@ -196,6 +196,7 @@ composable:
   description: Özel bir sayfa oluştur ve bunu açılış sayfası, kampanya sayfası veya istediğin herhangi bir sayfa olarak düzenle
   form:
     addContent: İçerik ekle
+    addToMenu: Özelleştirilebilir sayfa ekle
     addRow: Satır ekle
     emptySpace: Boşluk
     emptySpaceHelper: Lütfen boşluk için piksel bazlı bir yükseklik gir

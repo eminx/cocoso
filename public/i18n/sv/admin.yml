@@ -196,6 +196,7 @@ composable:
   description: Komponera en sida och gör den till startsida, kampanjsida eller till vad du behöver
   form:
     addContent: Lägg till innehåll
+    addToMenu: Lägg till en komponerbara sida
     addRow: Lägg till en rad
     emptySpace: Tomt utrymme
     emptySpaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten

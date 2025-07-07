@@ -166,7 +166,7 @@ export default function MenuSettings() {
           <Boxling>
             <Box bg="gray.100" mb="8" p="4">
               <Text fontSize="lg" mb="2">
-                Add a composable page
+                {t('composable.form.addToMenu')}
               </Text>
 
               <ReactSelect

@@ -196,6 +196,7 @@ composable:
   description: Compose a page and assign it as a landing page, campaign page, or just about any page you like
   form:
     addContent: Add Content
+    addToMenu: Add a composable page
     addRow: Add a row
     emptySpace: Empty Space
     emptySpaceHelper: Please enter the height of the empty space in pixels
