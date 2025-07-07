@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 const defaultContentProps = {
-  bg: 'brand.50',
+  bg: 'blueGray.50',
   borderRadius: 'lg',
   h: '80%',
   mt: '8',

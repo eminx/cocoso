@@ -15,7 +15,9 @@ export const initialLoaderValues = {
   isSuccess: false,
 };
 
-export const LoaderContext = createContext({ loaders: initialLoaderValues });
+export const LoaderContext = createContext({
+  loaders: initialLoaderValues,
+});
 
 const getLoaderValue = (loaders) => {
   let progress = 0;
@@ -36,10 +38,13 @@ const getLoaderValue = (loaders) => {
 const renderToasts = (loaders, tc, justUpdated = false) => {
   const options = { id: 'loader' };
   if (loaders.isSuccess) {
-    toast.success(tc(`message.success.${justUpdated ? 'update' : 'create'}`), {
-      ...options,
-      duration: 3000,
-    });
+    toast.success(
+      tc(`message.success.${justUpdated ? 'update' : 'create'}`),
+      {
+        ...options,
+        duration: 3000,
+      }
+    );
     return;
   }
   if (loaders.isSendingForm) {
@@ -76,15 +81,20 @@ export default function NewEntryHandler({ children }) {
   };
 
   const loaderValue = getLoaderValue(loaders);
-  const justUpdated = searchParams.get('edit') === 'true' || searchParams.get('edit') === 'false';
+  const justUpdated =
+    searchParams.get('edit') === 'true' ||
+    searchParams.get('edit') === 'false';
   renderToasts(loaders, tc, justUpdated);
 
   const href = useHref();
-  let context = href.split('/')[1] || currentHost?.settings?.menu[0]?.name;
+  let context =
+    href.split('/')[1] || currentHost?.settings?.menu[0]?.name;
   if (context[0] === '@') {
     context = 'works';
   }
-  const string = `common:labels.${forEdit ? 'update' : 'create'}.${context}`;
+  const string = `common:labels.${
+    forEdit ? 'update' : 'create'
+  }.${context}`;
 
   const entryHeader = (
     <Box bg="transparent">
@@ -94,7 +104,12 @@ export default function NewEntryHandler({ children }) {
           hasStripe
           size="md"
           value={loaderValue}
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+          }}
         />
       ) : null}
       <Trans i18nKey={string} />
@@ -110,7 +125,6 @@ export default function NewEntryHandler({ children }) {
       <Modal
         closeOnEsc={false}
         contentProps={{
-          bg: 'gray.50',
           h: 'auto',
           mt: '12',
         }}
@@ -123,7 +137,14 @@ export default function NewEntryHandler({ children }) {
       >
         {children}
         {loaders.isCreating && (
-          <Box bg="rgba(0, 0, 0, 0.5)" w="100%" h="100%" position="absolute" top="12px" left="0" />
+          <Box
+            bg="rgba(0, 0, 0, 0.5)"
+            w="100%"
+            h="100%"
+            position="absolute"
+            top="12px"
+            left="0"
+          />
         )}
       </Modal>
 

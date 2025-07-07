@@ -97,7 +97,7 @@ export default function ComposablePageSettings() {
           }))
         }
       >
-        <Box bg="gray.50" borderRadius="md">
+        <Box borderRadius="md">
           <Box pb="2">
             <FormField
               label={<Trans i18nKey="admin:composable.form.title" />}

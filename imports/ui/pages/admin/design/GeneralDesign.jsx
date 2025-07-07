@@ -7,6 +7,7 @@ import ImageUploader from '/imports/ui/forms/ImageUploader';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
+import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';
 
 export default function GeneralDesign() {
   const { currentHost, getCurrentHost } = useContext(StateContext);
@@ -93,28 +94,60 @@ export default function GeneralDesign() {
   return (
     <>
       <Box mb="4" mt="6">
-        <Text fontWeight="bold" mb="4">
-          Background color
-        </Text>
+        <Flex justify="space-between">
+          <Box px="6" w="50%">
+            <Text fontWeight="bold" mb="4">
+              Background color
+            </Text>
+          </Box>
+          <Box px="6" w="50%">
+            <Text fontWeight="bold" mb="4">
+              Background image
+            </Text>
+          </Box>
+        </Flex>
         <Boxling bg={backgroundColor} mb="2" w="100%">
-          <Center>
-            <ChromePicker
-              color={backgroundColor}
-              onChange={handleBackgroundColorChange}
-            />
-          </Center>
+          <Flex justify="space-between">
+            <Box>
+              <Center>
+                <GenericColorPicker
+                  color={backgroundColor}
+                  onChange={handleBackgroundColorChange}
+                />
+              </Center>
 
-          <Center>
-            <Button
-              bg="white"
-              size="xs"
-              variant="ghost"
-              mt="2"
-              onClick={resetBackgroundColor}
-            >
-              Reset
-            </Button>
-          </Center>
+              <Center>
+                <Button
+                  bg="white"
+                  size="xs"
+                  variant="ghost"
+                  mt="2"
+                  onClick={resetBackgroundColor}
+                >
+                  Reset
+                </Button>
+              </Center>
+            </Box>
+            <Box>
+              <ImageUploader
+                isMultiple={false}
+                ping={uploadingBackgroundImage}
+                preExistingImages={[backgroundImage] || []}
+                onUploadedImages={handleUploadedBackgroundImage}
+              />
+              <Center my="4">
+                <Button
+                  bg="white"
+                  colorScheme="red"
+                  size="xs"
+                  variant="ghost"
+                  onClick={removeBackgroundImage}
+                >
+                  Remove
+                </Button>
+              </Center>
+            </Box>
+          </Flex>
         </Boxling>
 
         <Flex justify="flex-end">
@@ -125,28 +158,7 @@ export default function GeneralDesign() {
       </Box>
 
       <Box mb="4" mt="6">
-        <Text fontWeight="bold" mb="4">
-          Background image
-        </Text>
-        <Boxling mb="2">
-          <ImageUploader
-            isMultiple={false}
-            ping={uploadingBackgroundImage}
-            preExistingImages={[backgroundImage] || []}
-            onUploadedImages={handleUploadedBackgroundImage}
-          />
-          <Center my="4">
-            <Button
-              bg="white"
-              colorScheme="red"
-              size="xs"
-              variant="ghost"
-              onClick={removeBackgroundImage}
-            >
-              Remove
-            </Button>
-          </Center>
-        </Boxling>
+        <Boxling mb="2"></Boxling>
 
         <Flex justify="flex-end">
           <Button

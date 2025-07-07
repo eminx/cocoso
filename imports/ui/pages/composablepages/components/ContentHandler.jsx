@@ -70,20 +70,18 @@ function ButtonContent({ value, onChange }) {
   );
 }
 
-function Divider({ value, onChange }) {
-  const options = [
-    {
-      key: 'line',
-      label: <Trans i18nKey="admin:composable.form.line" />,
-      kind: 'line',
-    },
-    {
-      key: 'empty-space',
-      label: <Trans i18nKey="admin:composable.form.emptySpace" />,
-      kind: 'emptySpace',
-    },
-  ];
+const dividerMenuOptions = [
+  {
+    label: <Trans i18nKey="admin:composable.form.line" />,
+    kind: 'line',
+  },
+  {
+    label: <Trans i18nKey="admin:composable.form.emptySpace" />,
+    kind: 'emptySpace',
+  },
+];
 
+function Divider({ value, onChange }) {
   const handleSelect = (item) => {
     onChange({
       ...value,
@@ -114,7 +112,7 @@ function Divider({ value, onChange }) {
                   />
                 ) || 'Select'
               }
-              options={options}
+              options={dividerMenuOptions}
               rightIcon={<ChevronDownIcon size="18px" />}
               onSelect={onChange}
             >

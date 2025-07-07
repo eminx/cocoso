@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Badge, Button, Center, IconButton, VStack } from '@chakra-ui/react';
+import {
+  Badge,
+  Button,
+  Center,
+  IconButton,
+  VStack,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
@@ -7,7 +13,15 @@ import { call } from '../utils/shared';
 import Drawer from '../generic/Drawer';
 import { Chattery, useChattery } from '../chattery';
 
-export function ChatUI({ context, currentUser, item, open, title, withInput, setOpen }) {
+export function ChatUI({
+  context,
+  currentUser,
+  item,
+  open,
+  title,
+  withInput,
+  setOpen,
+}) {
   const [tc] = useTranslation('common');
   const { discussion } = item && useChattery(item._id);
 
@@ -30,12 +44,16 @@ export function ChatUI({ context, currentUser, item, open, title, withInput, set
   };
 
   const removeNotification = async (messageIndex) => {
-    const shouldRun = currentUser?.notifications?.find((notification) => {
-      if (!notification.unSeenIndexes) {
-        return false;
+    const shouldRun = currentUser?.notifications?.find(
+      (notification) => {
+        if (!notification.unSeenIndexes) {
+          return false;
+        }
+        return notification.unSeenIndexes.some(
+          (unSeenIndex) => unSeenIndex === messageIndex
+        );
       }
-      return notification.unSeenIndexes.some((unSeenIndex) => unSeenIndex === messageIndex);
-    });
+    );
 
     if (!shouldRun) {
       return;
@@ -50,7 +68,7 @@ export function ChatUI({ context, currentUser, item, open, title, withInput, set
 
   return (
     <Drawer
-      bg="gray.300"
+      // bg="gray.300"
       bodyProps={{ paddingTop: 0, paddingBottom: 0 }}
       isOpen={open}
       title={title || tc('labels.discussion')}
@@ -66,11 +84,26 @@ export function ChatUI({ context, currentUser, item, open, title, withInput, set
   );
 }
 
-export function ChatButton({ context, currentUser, item, notificationCount, title, withInput }) {
+export function ChatButton({
+  context,
+  currentUser,
+  item,
+  notificationCount,
+  title,
+  withInput,
+}) {
   const [open, setOpen] = useState(false);
   const [tc] = useTranslation('common');
 
-  const props = { context, currentUser, item, open, title, withInput, setOpen };
+  const props = {
+    context,
+    currentUser,
+    item,
+    open,
+    title,
+    withInput,
+    setOpen,
+  };
 
   return (
     <>
@@ -102,7 +135,12 @@ export function ChatButton({ context, currentUser, item, notificationCount, titl
               {notificationCount}
             </Badge>
           )}
-          <Button color="brand.50" size="xs" variant="link" onClick={() => setOpen(true)}>
+          <Button
+            color="brand.50"
+            size="xs"
+            variant="link"
+            onClick={() => setOpen(true)}
+          >
             {tc('labels.discussion')}
           </Button>
         </VStack>

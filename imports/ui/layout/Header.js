@@ -214,7 +214,7 @@ export default function Header({
             <Box maxHeight={isLogoSmall ? '48px' : '96px'} p="2">
               <Img
                 h={isLogoSmall ? '48px' : '96px'}
-                maxW={360}
+                maxW="360px"
                 objectFit="contain"
                 src={Host.logo}
               />

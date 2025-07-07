@@ -40,7 +40,7 @@ function ConfirmModal({
       {...otherProps}
     >
       <AlertDialogOverlay zIndex={9999}>
-        <AlertDialogContent bg="brand.50" zIndex={9999}>
+        <AlertDialogContent bg="blueGray.50" zIndex={9999}>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
           </AlertDialogHeader>

@@ -10,8 +10,8 @@ import {
   DrawerCloseButton,
 } from '@chakra-ui/react';
 
-function Drawer({
-  bg = 'gray.100',
+export default function Drawer({
+  bg = 'blueGray.50',
   bodyProps,
   children,
   footer,
@@ -45,5 +45,3 @@ function Drawer({
     </CDrawer>
   );
 }
-
-export default Drawer;
