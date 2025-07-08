@@ -1,40 +1,6 @@
 import React, { ReactNode } from 'react';
 import { styled } from 'restyle';
 
-// Shorthands
-type ShorthandProps = {
-  [key: string]: string;
-};
-
-const shorthandProps: ShorthandProps = {
-  p: 'padding',
-  pt: 'paddingTop',
-  pr: 'paddingRight',
-  pb: 'paddingBottom',
-  pl: 'paddingLeft',
-  px: 'paddingInline',
-  py: 'paddingBlock',
-  m: 'margin',
-  mt: 'marginTop',
-  mr: 'marginRight',
-  mb: 'marginBottom',
-  ml: 'marginLeft',
-  mx: 'marginInline',
-  my: 'marginBlock',
-  bg: 'backgroundColor',
-  maxW: 'maxWidth',
-  maxH: 'maxHeight',
-  w: 'width',
-  h: 'height',
-  pos: 'position',
-  d: 'display',
-  t: 'top',
-  r: 'right',
-  b: 'bottom',
-  l: 'left',
-  z: 'zIndex',
-};
-
 // Spacing
 type SpaceScale = {
   [key: number]: string;
@@ -55,23 +21,44 @@ const spaceScale: SpaceScale = {
 };
 
 const getSpacing = (value: string | number): string => {
+  // Handle non-string/non-number values (like Symbols)
+  if (typeof value !== 'string' && typeof value !== 'number') {
+    return spaceScale[0];
+  }
+
   if (Number(value)) {
     return spaceScale[value as keyof typeof spaceScale];
   }
   return spaceScale[0];
 };
 
-const transformProps = (props: any) => {
-  const transformedProps = { ...props };
-  Object.keys(props).forEach((key) => {
-    if (shorthandProps[key]) {
-      const value = getSpacing(props[key]);
-      transformedProps[shorthandProps[key]] = value;
-      delete transformedProps[key];
-    }
-  });
-  return transformedProps;
+const xToRem = (x: number) => {
+  return `${x * 0.25}rem`;
 };
+
+// Box
+export const Box = styled('div', (props: any) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  paddingInlineStart: xToRem(props.pl),
+  paddingInlineEnd: xToRem(props.pr),
+  paddingInline: xToRem(props.px),
+  paddingTop: xToRem(props.pt || props.py),
+  paddingBottom: xToRem(props.pb || props.py),
+  padding: xToRem(props.p),
+  marginInline: xToRem(props.mx),
+  marginInlineStart: xToRem(props.ml),
+  marginInlineEnd: xToRem(props.mr),
+  marginTop: xToRem(props.mt || props.my),
+  marginBottom: xToRem(props.mb || props.my),
+  margin: xToRem(props.m),
+  flex: props.flex,
+  backgroundColor: props.bg,
+  width: props.w,
+  height: props.h,
+  maxWidth: props.maxW,
+  maxHeight: props.maxH,
+}));
 
 // Alert
 interface AlertProps {
@@ -129,13 +116,6 @@ export const Avatar = styled('div', (props: AvatarProps) => ({
     color: '#4A5568',
     fontSize: `calc(${props.size || '2.5rem'} / 2.5)`,
   },
-}));
-
-// Box
-export const Box = styled('div', (props: any) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  // ...transformProps(props),
 }));
 
 // Badge
