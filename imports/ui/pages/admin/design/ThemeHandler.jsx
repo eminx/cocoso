@@ -202,7 +202,9 @@ export default function ThemeHandler() {
         >
           {themeOptions.map((option) => (
             <Radio key={option.value} value={option.value}>
-              {option.label}
+              <Trans
+                i18nKey={`admin:design.theme.options.${option.value}`}
+              />
             </Radio>
           ))}
         </RadioGroup>

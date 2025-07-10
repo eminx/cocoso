@@ -248,9 +248,9 @@ design:
     color: Theme Color
     demo: Demo
     button: Button
-  themes:
-    gray: Gray Scale
-    custom: Custom
+    options:
+      gray: Gray Scale
+      custom: Custom
   background:
     title: Background
     color: Background Color

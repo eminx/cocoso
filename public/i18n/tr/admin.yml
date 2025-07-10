@@ -248,9 +248,9 @@ design:
     color: Tema rengi
     demo: Önizleme
     button: Buton
-  themes:
-    gray: Gri tonları
-    custom: Özelleştirilmiş
+    options:
+      gray: Gri tonları
+      custom: Özelleştirilmiş
   background:
     title: Arka plan
     color: Arka plan rengi

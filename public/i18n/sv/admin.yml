@@ -248,9 +248,9 @@ design:
     color: Temafärg
     demo: Demo
     button: Knapp
-  themes:
-    gray: Gråskala
-    custom: Anpassad
+    options:
+      gray: Gråskala
+      custom: Anpassad
   background:
     title: Bakgrund
     color: Bakgrundsfärg
