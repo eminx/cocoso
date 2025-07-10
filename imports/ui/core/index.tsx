@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { styled } from 'restyle';
 
 // Spacing
@@ -32,33 +32,69 @@ const getSpacing = (value: string | number): string => {
   return spaceScale[0];
 };
 
-const xToRem = (x: number) => {
+const xToRem = (x: any) => {
+  if (!x || typeof Number(x) !== 'number') {
+    return 'none';
+  }
   return `${x * 0.25}rem`;
 };
 
+const getColor = (color: string) => {
+  const colorParts = color?.split('.');
+  if (!colorParts || colorParts.length !== 2) {
+    return color;
+  }
+
+  return colorParts
+    ? `var(--chakra-colors-${colorParts[0]}-${colorParts[1]})`
+    : 'gray.900';
+};
+
 // Box
-export const Box = styled('div', (props: any) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  paddingInlineStart: xToRem(props.pl),
-  paddingInlineEnd: xToRem(props.pr),
-  paddingInline: xToRem(props.px),
-  paddingTop: xToRem(props.pt || props.py),
-  paddingBottom: xToRem(props.pb || props.py),
-  padding: xToRem(props.p),
-  marginInline: xToRem(props.mx),
-  marginInlineStart: xToRem(props.ml),
-  marginInlineEnd: xToRem(props.mr),
-  marginTop: xToRem(props.mt || props.my),
-  marginBottom: xToRem(props.mb || props.my),
-  margin: xToRem(props.m),
-  flex: props.flex,
-  backgroundColor: props.bg,
-  width: props.w,
-  height: props.h,
-  maxWidth: props.maxW,
-  maxHeight: props.maxH,
-}));
+export const Box = styled(
+  // (props: any) => props.as || 'div',
+  'div',
+  (props: any) => ({
+    backgroundColor: getColor(props.bg),
+    borderRadius: props.borderRadius,
+    border: props.border,
+    borderColor: props.borderColor,
+    borderStyle: props.borderStyle,
+    borderWidth: props.borderWidth,
+    boxShadow: props.boxShadow,
+    color: props.color,
+    cursor: props.cursor,
+    display: 'block',
+    fontSize: props.fontSize,
+    fontWeight: props.fontWeight,
+    gap: props.gap,
+    height: props.h,
+    paddingInlineStart: xToRem(props.pl),
+    paddingInlineEnd: xToRem(props.pr),
+    paddingInline: xToRem(props.px),
+    paddingTop: xToRem(props.pt || props.py),
+    paddingBottom: xToRem(props.pb || props.py),
+    padding: xToRem(props.p),
+    marginInline: xToRem(props.mx),
+    marginInlineStart: xToRem(props.ml),
+    marginInlineEnd: xToRem(props.mr),
+    marginTop: xToRem(props.mt || props.my),
+    marginBottom: xToRem(props.mb || props.my),
+    margin: xToRem(props.m),
+    maxWidth: props.maxW,
+    maxHeight: props.maxH,
+    width: props.w,
+    ':active': {
+      ...props._active,
+    },
+    ':focus': {
+      ...props._focus,
+    },
+    ':hover': {
+      ...props._hover,
+    },
+  })
+);
 
 // Alert
 interface AlertProps {
@@ -154,15 +190,23 @@ export const Badge = styled('span', (props: BadgeProps) => ({
 // Button
 interface ButtonProps {
   color?: string;
-  variant?: string;
-  size?: string;
+  variant?: 'solid' | 'ghost' | 'outline';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   leftIcon?: ReactNode;
+  mx?: string | number;
+  ml?: string | number;
+  mr?: string | number;
+  mt?: string | number;
+  mb?: string | number;
+  my?: string | number;
+  m?: string | number;
   rightIcon?: ReactNode;
   onClick?: () => void;
 }
 
 export const Button = styled('button', (props: ButtonProps) => {
   const variant = props.variant || 'solid';
+  const size = props.size || 'md';
   return {
     backgroundColor:
       variant === 'ghost'
@@ -173,33 +217,68 @@ export const Button = styled('button', (props: ButtonProps) => {
     borderRadius: '0.375rem',
     borderStyle: 'solid',
     borderWidth: variant === 'outline' ? '1px' : '0',
-    borderColor: props.color || 'var(--chakra-colors-brand-200',
+    borderColor: props.color || 'var(--chakra-colors-brand-100',
     color:
       variant === 'solid' ? 'white' : 'var(--chakra-colors-brand-500)',
     cursor: 'pointer',
-    display: 'inline-flex',
+    fontSize:
+      size === 'xs'
+        ? '0.75rem'
+        : size === 'sm'
+        ? '0.875rem'
+        : size === 'lg'
+        ? '1.125rem'
+        : '1rem',
     fontWeight: 'bold',
-    paddingInlineStart: '1rem',
-    paddingInlineEnd: '1rem',
-    paddingTop: '0.5rem',
-    paddingBottom: '0.5rem',
+    marginInline: xToRem(props.mx),
+    marginInlineStart: xToRem(props.ml),
+    marginInlineEnd: xToRem(props.mr),
+    marginTop: xToRem(props.mt || props.my),
+    marginBottom: xToRem(props.mb || props.my),
+    margin: xToRem(props.m),
+    paddingInline:
+      variant === 'ghost'
+        ? '0.45rem'
+        : size === 'xs'
+        ? '0.55rem'
+        : size === 'sm'
+        ? '0.75rem'
+        : size === 'lg'
+        ? '1.25rem'
+        : '1rem',
+    paddingTop:
+      variant === 'ghost'
+        ? '0.20rem'
+        : size === 'xs'
+        ? '0.35rem'
+        : size === 'sm'
+        ? '0.35rem'
+        : size === 'lg'
+        ? '0.55rem'
+        : '0.45rem',
+    paddingBottom:
+      variant === 'ghost'
+        ? '0.20rem'
+        : size === 'xs'
+        ? '0.35rem'
+        : size === 'sm'
+        ? '0.35rem'
+        : size === 'lg'
+        ? '0.55rem'
+        : '0.45rem',
     ':hover': {
       backgroundColor:
-        variant === 'ghost'
-          ? 'var(--chakra-colors-brand-100)'
-          : variant === 'outline'
-          ? 'var(--chakra-colors-brand-100)'
-          : 'var(--chakra-colors-brand-600)',
+        variant === 'solid'
+          ? 'var(--chakra-colors-brand-600)'
+          : 'var(--chakra-colors-brand-100)',
     },
-    // ...transformProps(props),
+    ':focus': {
+      backgroundColor:
+        variant === 'solid'
+          ? 'var(--chakra-colors-brand-700)'
+          : 'var(--chakra-colors-brand-200)',
+    },
   };
-});
-
-// Center
-export const Center = styled(Box, {
-  alignItems: 'center',
-  flexDirection: 'row',
-  justifyContent: 'center',
 });
 
 // Container
@@ -228,14 +307,21 @@ export const Divider = styled('hr', {
 });
 
 // Flex
-export const Flex = styled(Box, (props: any) => ({
-  align: props.align || 'flex-start',
-  alignItems: props.alignItems || 'flex-start',
-  direction: props.direction || 'row',
-  flexDirection: props.flexDirection || 'row',
+export const Flex = styled('div', (props: any) => ({
+  alignItems: props.align || props.alignItems || 'flex-start',
+  display: 'flex',
+  gap: props.gap || '1rem',
+  flexDirection: props.direction || props.flexDirection || 'row',
   flexWrap: props.wrap || props.flexWrap || 'wrap',
   justifyContent: props.justify || props.justifyContent || 'flex-start',
-  wrap: props.wrap || 'wrap',
+}));
+
+// Center
+export const Center = styled(Flex, (props: any) => ({
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
 }));
 
 // Grid
@@ -276,7 +362,6 @@ export const Heading = styled('h2', (props: HeadingProps) => {
     fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
     lineHeight: 1.2,
     fontFamily: 'Raleway, sans-serif',
-    // ...transformProps(props),
   };
 });
 
@@ -284,8 +369,7 @@ export const Heading = styled('h2', (props: HeadingProps) => {
 export const Image = styled('img', (props: any) => ({
   height: 'auto',
   objectFit: props.objectFit || 'cover',
-  width: '100%',
-  ...transformProps(props),
+  // width: '100%',
 }));
 
 // Input
@@ -293,7 +377,6 @@ export const Input = styled('input', (props: any) => ({
   padding: '0.5rem',
   border: '1px solid #ccc',
   borderRadius: '0.25rem',
-  // ...transformProps(props),
 }));
 
 // Link
@@ -301,7 +384,6 @@ export const Link = styled('a', (props: any) => ({
   color: 'inherit',
   cursor: 'pointer',
   textDecoration: 'none',
-  // ...transformProps(props),
 }));
 
 // Menu
@@ -364,14 +446,14 @@ export const Wrap = styled(Stack, {
 });
 
 // Text
-interface TextProps {
-  fontSize?: string;
-  size?: string;
-  fontWeight?: string;
-  color?: string;
-  lineHeight?: string;
-  textAlign?: string;
-}
+// interface TextProps {
+//   fontSize?: string;
+//   size?: string;
+//   fontWeight?: string;
+//   color?: string;
+//   lineHeight?: string;
+//   textAlign?: string;
+// }
 
 const fontSizes = {
   xs: '0.75rem',
@@ -389,17 +471,45 @@ const fontSizes = {
   '9xl': '8rem',
 };
 
-export const Text = styled('p', (props: TextProps) => {
+export const Tag = styled('span', (props: any) => ({
+  alignItems: 'center',
+  display: 'inline-flex',
+  backgroundColor: props.bg || 'var(--chakra-colors-gray-100)',
+  borderRadius: '0.375rem',
+  fontSize: '0.875rem',
+  // fontWeight: 'bold',
+  padding: '0.25rem 0.5rem',
+}));
+
+export const Text = styled('p', (props: any) => {
   const color = props.color?.split('.');
+  const fontSize = props.size || props.fontSize;
+
   return {
     color: color
       ? `var(--chakra-colors-${color[0]}-${color[1]})`
       : 'gray.900',
-    fontSize: props.size
-      ? fontSizes[props.size as keyof typeof fontSizes]
+    fontSize: fontSize
+      ? fontSizes[fontSize as keyof typeof fontSizes]
       : fontSizes.md,
-    // ...transformProps(props),
+    fontWeight: props.fontWeight || 'normal',
+    paddingInlineStart: xToRem(props.pl),
+    paddingInlineEnd: xToRem(props.pr),
+    paddingInline: xToRem(props.px),
+    paddingTop: xToRem(props.pt || props.py),
+    paddingBottom: xToRem(props.pb || props.py),
+    padding: xToRem(props.p),
+    marginInline: xToRem(props.mx),
+    marginInlineStart: xToRem(props.ml),
+    marginInlineEnd: xToRem(props.mr),
+    marginTop: xToRem(props.mt || props.my),
+    marginBottom: xToRem(props.mb || props.my),
+    margin: xToRem(props.m),
   };
+});
+
+export const Code = styled(Text, {
+  fontFamily: 'monospace',
 });
 
 // export const Modal = styled.div`

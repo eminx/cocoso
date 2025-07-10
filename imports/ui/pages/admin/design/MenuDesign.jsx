@@ -1,21 +1,21 @@
 import React, { useContext, useState } from 'react';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  HStack,
-  Text,
-} from '@chakra-ui/react';
-import { ChromePicker } from 'react-color';
+import { Trans } from 'react-i18next';
 
+import { Box, Button, Center, Flex, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';
 import Menu from '/imports/ui/generic/Menu';
-import { fontStyleOptions, textTransformOptions } from './styleOptions';
+import { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
+import {
+  borderRadiusOptions,
+  borderStyleOptions,
+  borderWidthOptions,
+  fontStyleOptions,
+  textTransformOptions,
+} from './styleOptions';
 
 const demoMenuItems = [
   {
@@ -43,32 +43,6 @@ export default function MenuDesign() {
     },
   });
 
-  const handleBackgroundColorChange = (color) => {
-    setState((prevState) => ({
-      ...prevState,
-      style: {
-        ...prevState.style,
-        menu: {
-          ...prevState.style.menu,
-          backgroundColor: color.hex,
-        },
-      },
-    }));
-  };
-
-  const resetBackgroundColor = () => {
-    setState((prevState) => ({
-      ...prevState,
-      style: {
-        ...prevState.style,
-        menu: {
-          ...prevState.style.menu,
-          backgroundColor: '#faf7f5',
-        },
-      },
-    }));
-  };
-
   const handleTextColorChange = (color) => {
     setState((prevState) => ({
       ...prevState,
@@ -95,19 +69,6 @@ export default function MenuDesign() {
     }));
   };
 
-  const handleSelectTextTransform = (item) => {
-    setState((prevState) => ({
-      ...prevState,
-      style: {
-        ...prevState.style,
-        menu: {
-          ...prevState.style.menu,
-          textTransform: item.value,
-        },
-      },
-    }));
-  };
-
   const resetTextColor = () => {
     setState((prevState) => ({
       ...prevState,
@@ -115,7 +76,7 @@ export default function MenuDesign() {
         ...prevState.style,
         menu: {
           ...prevState.style.menu,
-          color: '#58504b',
+          color: 'gray.600',
         },
       },
     }));
@@ -135,9 +96,22 @@ export default function MenuDesign() {
     }
   };
 
+  const handleStyleChange = (key, value) => {
+    console.log('key', key);
+    setState((prevState) => ({
+      ...prevState,
+      style: {
+        ...prevState.style,
+        menu: {
+          ...prevState.style.menu,
+          [key]: value,
+        },
+      },
+    }));
+  };
+
   const { style } = state;
-  const backgroundColor = style?.menu?.backgroundColor;
-  const color = style?.menu?.color;
+
   const fontStyle = fontStyleOptions.find(
     (option) => option.value === style?.menu?.fontStyle
   )?.label;
@@ -145,16 +119,25 @@ export default function MenuDesign() {
     (option) => option.value === style?.menu?.textTransform
   )?.label;
 
-  const menuStyles = {
+  const menuStyle = {
     backgroundColor: style?.menu?.backgroundColor || 'gray.50',
-    borderColor: style?.elements?.borderColor || 'gray.300',
-    borderRadius: style?.elements?.borderRadius || '6px',
-    borderStyle: style?.elements?.borderStyle || 'solid',
-    borderWidth: style?.elements?.borderWidth || '1px',
+    borderColor: style?.menu?.borderColor || 'gray.300',
+    borderRadius: style?.menu?.borderRadius || '6px',
+    borderStyle: style?.menu?.borderStyle || 'solid',
+    borderWidth: style?.menu?.borderWidth || '1px',
     color: style?.menu?.color || 'gray.600',
     fontStyle: style?.menu?.fontStyle || 'normal',
     textTransform: style?.menu?.textTransform || 'none',
   };
+
+  const {
+    backgroundColor,
+    borderColor,
+    borderRadius,
+    borderStyle,
+    borderWidth,
+    color,
+  } = menuStyle;
 
   return (
     <>
@@ -162,88 +145,81 @@ export default function MenuDesign() {
         Demo
       </Text>
       <Box mb="8" w="100%">
-        <HStack
-          style={menuStyles}
-          alignItems="center"
-          bg={backgroundColor}
-          borderRadius={6}
-          color={color}
-          fontStyle={fontStyle}
-          justify="center"
-          p="0.5rem"
+        <Flex
+          css={{
+            alignItems: 'center',
+            backgroundColor,
+            color,
+            fontStyle,
+            justifyContent: 'center',
+            padding: '0.5rem',
+            ...menuStyle,
+          }}
           textTransform={textTransform}
-          wrap="wrap"
         >
           {demoMenuItems?.map((item) => (
-            <Box as="span" px="2">
+            <Box key={item.name} as="span" px="2">
               <Text
-                borderBottom="1px solid transparent"
-                _hover={{
-                  borderBottom: '1px solid',
-                  cursor: 'pointer',
+                css={{
+                  borderBottom: '1px solid transparent',
+                  ':hover': {
+                    borderBottom: '1px solid',
+                    cursor: 'pointer',
+                  },
                 }}
               >
                 {item.name}
               </Text>
             </Box>
           ))}
-        </HStack>
+        </Flex>
       </Box>
 
       <Text fontWeight="bold" mb="4">
         Colors
       </Text>
-
       <Boxling mb="8" w="100%">
         <Flex justify="space-around">
           <Center>
-            <Flex align="center" flexDirection="column">
-              <Text fontWeight="bold" mb="2">
-                Background color
-              </Text>
-              <Box bg={backgroundColor} w="72px" h="24px" mb="4" />
-
-              <Box mb="4">
-                <GenericColorPicker
-                  color={backgroundColor}
-                  onChange={handleBackgroundColorChange}
-                />
-              </Box>
+            <BoxlingColumn title="Background color">
+              <GenericColorPicker
+                color={backgroundColor}
+                onChange={(selectedItem) =>
+                  handleStyleChange('backgroundColor', selectedItem.hex)
+                }
+              />
 
               <Button
                 bg="white"
                 size="xs"
                 variant="ghost"
-                onClick={resetBackgroundColor}
+                onClick={() =>
+                  handleStyleChange('backgroundColor', '#faf7f5')
+                }
               >
                 Reset
               </Button>
-            </Flex>
+            </BoxlingColumn>
           </Center>
 
           <Center>
-            <Flex align="center" flexDirection="column">
-              <Text fontWeight="bold" mb="2">
-                Text Color
-              </Text>
-              <Box bg={color} w="72px" h="24px" mb="4" />
-
-              <Box mb="4">
-                <GenericColorPicker
-                  color={color}
-                  onChange={handleTextColorChange}
-                />
-              </Box>
+            <BoxlingColumn title="Text color">
+              <GenericColorPicker
+                color={color}
+                onChange={(selectedItem) =>
+                  handleStyleChange('color', selectedItem.hex)
+                }
+              />
 
               <Button
                 bg="white"
                 size="xs"
                 variant="ghost"
-                onClick={resetTextColor}
+                onClick={() => handleStyleChange('color', 'gray.600')}
               >
                 Reset
               </Button>
-            </Flex>
+            </BoxlingColumn>
           </Center>
         </Flex>
       </Boxling>
@@ -251,44 +227,101 @@ export default function MenuDesign() {
       <Text fontWeight="bold" mb="4">
         Text
       </Text>
-
       <Boxling mb="8" w="100%">
         <Flex justify="space-around">
           <Center>
-            <Flex alignItems="center" flexDirection="column">
-              <Text fontWeight="bold" mb="2">
-                Font Style
-              </Text>
+            <BoxlingColumn title="Font Style">
               <Menu
                 buttonLabel={fontStyle}
                 options={fontStyleOptions}
-                onSelect={handleSelectFontStyle}
+                onSelect={(selectedItem) =>
+                  handleStyleChange('fontStyle', selectedItem.value)
+                }
               >
                 {(item) => item.label}
               </Menu>
-            </Flex>
+            </BoxlingColumn>
           </Center>
 
           <Center>
-            <Flex alignItems="center" flexDirection="column">
-              <Text fontWeight="bold" mb="2">
-                Text Transform
-              </Text>
+            <BoxlingColumn title="Text Transform">
               <Menu
                 buttonLabel={textTransform}
                 options={textTransformOptions}
-                onSelect={handleSelectTextTransform}
+                onSelect={(selectedItem) =>
+                  handleStyleChange('textTransform', selectedItem.value)
+                }
               >
                 {(item) => item.label}
               </Menu>
-            </Flex>
+            </BoxlingColumn>
           </Center>
         </Flex>
       </Boxling>
 
-      <Flex justify="flex-end">
+      <Text fontWeight="bold" mb="4">
+        Border
+      </Text>
+      <Boxling mb="8" w="100%">
+        <Flex justify="space-around">
+          <Center>
+            <BoxlingColumn title="Border Color">
+              <GenericColorPicker
+                color={borderColor}
+                onChange={(selectedItem) =>
+                  handleStyleChange('borderColor', selectedItem.hex)
+                }
+              />
+            </BoxlingColumn>
+          </Center>
+
+          <Center>
+            <BoxlingColumn title="Border Radius">
+              <Menu
+                buttonLabel={borderRadius}
+                options={borderRadiusOptions}
+                onSelect={(selectedItem) =>
+                  handleStyleChange('borderRadius', selectedItem.value)
+                }
+              >
+                {(item) => item.label}
+              </Menu>
+            </BoxlingColumn>
+          </Center>
+
+          <Center>
+            <BoxlingColumn title="Border Style">
+              <Menu
+                buttonLabel={borderStyle}
+                options={borderStyleOptions}
+                onSelect={(selectedItem) =>
+                  handleStyleChange('borderStyle', selectedItem.value)
+                }
+              >
+                {(item) => item.label}
+              </Menu>
+            </BoxlingColumn>
+          </Center>
+
+          <Center>
+            <BoxlingColumn title="Border Width">
+              <Menu
+                buttonLabel={borderWidth}
+                options={borderWidthOptions}
+                onSelect={(selectedItem) =>
+                  handleStyleChange('borderWidth', selectedItem.value)
+                }
+              >
+                {(item) => item.label}
+              </Menu>
+            </BoxlingColumn>
+          </Center>
+        </Flex>
+      </Boxling>
+
+      <Flex justify="flex-end" mb="12">
         <Button mt="2" onClick={updateHostStyle}>
-          Confirm
+          <Trans i18nKey="common:actions.submit" />
         </Button>
       </Flex>
     </>

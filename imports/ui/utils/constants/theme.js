@@ -30,6 +30,7 @@ const generateTheme = (hue) => {
         300: brand(hue, '75'),
         400: brand(hue, '65'),
         500: brand(hue, '40'),
+        // 500: 'rgb(88, 80, 75)' ,
         600: brand(hue, '32'),
         700: brand(hue, '20'),
         800: brand(hue, '12'),

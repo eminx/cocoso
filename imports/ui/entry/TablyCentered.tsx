@@ -20,13 +20,11 @@ import {
   MenuButton,
   VStack,
   Wrap,
-  Image,
 } from '@chakra-ui/react';
 
 import NiceSlider from '../generic/NiceSlider';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
-import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 interface Author {
   username: string;
@@ -308,16 +306,11 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
             <Box maxW="540px" w="100%">
               <Box w="100%">
                 {tabs && (
-                  <Tabs
-                    align="center"
-                    colorScheme="gray.800"
-                    index={tabIndex}
-                    mt="2"
-                    mb="1"
-                    tabs={tabs}
-                  >
-                    {adminMenu && <AdminMenu adminMenu={adminMenu} />}
-                  </Tabs>
+                  <Box mt="2">
+                    <Tabs justify="center" index={tabIndex} tabs={tabs}>
+                      {adminMenu && <AdminMenu adminMenu={adminMenu} />}
+                    </Tabs>
+                  </Box>
                 )}
 
                 <Box mb="24">

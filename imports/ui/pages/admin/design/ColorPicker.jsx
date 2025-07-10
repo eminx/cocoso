@@ -1,4 +1,7 @@
 import React, { useContext, useState } from 'react';
+import { HuePicker } from 'react-color';
+import { useTranslation } from 'react-i18next';
+
 import {
   Box,
   Button,
@@ -6,17 +9,14 @@ import {
   Code,
   Flex,
   Text,
-} from '@chakra-ui/react';
-import { HuePicker } from 'react-color';
-import { useTranslation } from 'react-i18next';
-
+} from '/imports/ui/core';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 
 const getDefaultColor = (hue) => ({ h: hue, s: 80, l: 0.1, a: 0 });
 
-const getHue = (pickedColor) => {
-  const hue = parseInt(pickedColor?.hsl?.h, 10) + 1;
+const getHue = (pickedHue) => {
+  const hue = parseInt(pickedHue, 10) + 1;
   return hue.toString();
 };
 
@@ -37,11 +37,12 @@ export default function ColorPicker() {
   const [t] = useTranslation('admin');
 
   const handleChange = (pickedColor) => {
-    if (pickedColor?.hsl?.h === color?.hsl?.h) {
+    const pickedHue = pickedColor?.hsl?.h;
+    if (pickedHue === color?.hsl?.h) {
       return;
     }
     setColor(pickedColor);
-    const parsedHue = getHue(pickedColor);
+    const parsedHue = getHue(pickedHue);
     setHue(parsedHue);
   };
 
@@ -49,11 +50,13 @@ export default function ColorPicker() {
 
   return (
     <>
-      <Box>
-        <Text mb="4">{t('color.info')}</Text>
-      </Box>
+      <Text mb="2">Select desired color from palette</Text>
+      <Text mb="4" size="sm">
+        {t('color.info')}
+      </Text>
+
       <Boxling>
-        <Center pb="4" position="relative">
+        <Center css={{ paddingBottom: '1rem' }} position="relative">
           <HuePicker
             color={color}
             height="20px"
@@ -62,29 +65,43 @@ export default function ColorPicker() {
           />
         </Center>
 
-        <Center bg={parseHue(hue, 90)} p="4">
-          <Center
-            borderRadius="50%"
-            bg={parseHue(hue, 40)}
-            height="120px"
-            width="120px"
+        <Center
+          bg={parseHue(hue, 90)}
+          p="4"
+          style={{ justifyContent: 'center' }}
+        >
+          <Flex
+            css={{
+              alignItems: 'center',
+              borderRadius: '50%',
+              backgroundColor: parseHue(hue, 50),
+              flexDirection: 'column',
+              justifyContent: 'center',
+              height: '120px',
+              width: '120px',
+            }}
+            style={{ display: 'flex' }}
           >
-            <Code bg="none" color="white" fontWeight="bold">
+            <Code
+              css={{ color: 'white', fontWeight: 'bold' }}
+              size="sm"
+            >
               hue: {hue}
             </Code>
-          </Center>
+          </Flex>
         </Center>
       </Boxling>
 
       {hue !== originalHostHue && (
         <Box>
-          <Center my="4">
-            <Flex flexDirection="column">
-              <Button mb="2" onClick={setSelectedHue}>
+          <Center style={{ justifyContent: 'center' }}>
+            <Flex align="center" flexDirection="column">
+              <Button onClick={setSelectedHue}>
                 {tc('actions.submit')}
               </Button>
               <Button
                 colorScheme="orange"
+                mb="4"
                 variant="ghost"
                 onClick={() => setHue(originalHostHue)}
               >

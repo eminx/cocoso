@@ -130,10 +130,10 @@ function HeaderMenu({ Host, pageTitles }) {
 
   const menuStyles = {
     backgroundColor: style?.menu?.backgroundColor || 'gray.50',
-    borderColor: style?.elements?.borderColor || 'gray.300',
-    borderRadius: style?.elements?.borderRadius || '6px',
-    borderStyle: style?.elements?.borderStyle || 'solid',
-    borderWidth: style?.elements?.borderWidth || '1px',
+    borderColor: style?.menu?.borderColor || 'gray.300',
+    borderRadius: style?.menu?.borderRadius || '6px',
+    borderStyle: style?.menu?.borderStyle || 'solid',
+    borderWidth: style?.menu?.borderWidth || '1px',
     color: style?.menu?.color || 'gray.600',
     fontStyle: style?.menu?.fontStyle || 'normal',
     textTransform: style?.menu?.textTransform || 'none',

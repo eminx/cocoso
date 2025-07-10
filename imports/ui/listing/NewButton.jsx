@@ -57,18 +57,14 @@ export default function NewButton() {
 
   return (
     <IconButton
-      _hover={{ bg: 'gray.300' }}
-      _focus={{ bg: 'gray.400' }}
-      as="span"
-      bg="brand.500"
-      // borderColor="blueGray.400"
-      // borderWidth="2px"
+      bg="white"
       borderRadius="lg"
-      color="brand.50"
+      borderWidth="2px"
       cursor="pointer"
       icon={<AddIcon />}
       mx="2"
       size="sm"
+      variant="outline"
       onClick={() => setSearchParams({ new: 'true' })}
     />
   );

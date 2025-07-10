@@ -1,71 +1,130 @@
 import React, { useId } from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Box, Link as CLink, Tabs as CTabs, Tab, TabList } from '@chakra-ui/react';
+import { styled } from 'restyle';
 
-const linkStyle = {
-  marginBottom: 0,
-};
+import { Badge, Box, Flex, Text } from '/imports/ui/core';
 
-const tabProps = {
-  _hover: {
-    borderBottomColor: 'brand.200',
-  },
-  _focus: {
-    boxShadow: 'none',
-  },
-  _selected: {
-    borderBottomColor: 'brand.500',
-  },
-  as: 'span',
-  fontFamily: "'Sarabun', sans-serif",
-  fontWeight: 'bold',
+// Styled components
+const TabsContainer = styled('div', {
+  position: 'relative',
+  top: '1px',
+});
+
+const TabsList = styled('div', (props) => ({
+  display: 'flex',
+  alignItems: props.alignItems || 'center',
+  flexShrink: '0',
+  justifyContent: props.justify || 'flex-start',
+  flexDirection: 'row',
+  borderBottom: '1px solid #e2e8f0',
+}));
+
+const TabItem = styled('div', (props) => ({
+  borderBottom: `2px solid ${
+    props.isSelected ? 'var(--chakra-colors-brand-500)' : 'transparent'
+  }`,
+  color: 'var(--chakra-colors-gray-700)',
+  cursor: 'pointer',
+  display: 'inline-flex',
   justifyContent: 'flex-start',
-  paddingInline: '4',
-};
+  paddingInline: '1rem',
+  paddingBlock: '0.5rem',
+  transition: 'border-color 0.2s, color 0.2s',
+  ':hover': {
+    borderBottomColor: props.isSelected
+      ? 'var(--chakra-colors-brand-500)'
+      : 'var(--chakra-colors-brand-200)',
+    color: 'var(--chakra-colors-brand-500)',
+  },
+  ':focus': {
+    outline: 'none',
+    boxShadow: '0 0 0 2px var(--chakra-colors-brand-200)',
+  },
+}));
 
-function CoTab({ tab }) {
+const TabLink = styled(Link, {
+  color: 'inherit',
+  marginBottom: 0,
+  textDecoration: 'none',
+  ':hover': {
+    textDecoration: 'none',
+  },
+});
+
+const TabButton = styled('button', {
+  background: 'none',
+  border: 'none',
+  color: 'inherit',
+  cursor: 'pointer',
+  marginBottom: 0,
+  textDecoration: 'none',
+  ':hover': {
+    textDecoration: 'none',
+  },
+});
+
+function CoTab({ tab, isSelected }) {
   const instanceId = useId();
   if (!tab) {
     return null;
   }
 
   return (
-    <Tab {...tabProps} id={instanceId}>
-      {tab.title}
-      {tab.badge && (
-        <Badge colorScheme="red" size="xs" mt="-2">
-          {tab.badge}
-        </Badge>
-      )}
-    </Tab>
+    <TabItem isSelected={isSelected} id={instanceId}>
+      <Flex
+        css={{
+          alignItems: 'center',
+          gap: '0.5rem',
+        }}
+      >
+        <Text
+          css={{
+            fontWeight: 'bold',
+          }}
+        >
+          {tab.title}
+        </Text>
+        {tab.badge && (
+          <Badge variant="solid" colorScheme="red" size="xs">
+            {tab.badge}
+          </Badge>
+        )}
+      </Flex>
+    </TabItem>
   );
 }
 
-function Tabs({ tabs, children, ...otherProps }) {
+function Tabs({ index, tabs, children, ...otherProps }) {
   return (
-    <Box position="relative" top="1px">
-      <CTabs flexShrink="0" variant="line" {...otherProps}>
-        <TabList flexWrap="wrap" borderBottom="none">
-          {tabs?.map((tab, index) =>
-            tab.path ? (
-              <Link key={tab.key || tab.path} to={tab.path} style={linkStyle} onClick={tab.onClick}>
-                <CoTab index={index} tab={tab} />
-              </Link>
-            ) : (
-              <CLink
-                key={tab.key || tab.title}
-                _hover={{ textDecoration: 'none' }}
-                style={linkStyle}
+    <TabsContainer>
+      <TabsList {...otherProps}>
+        {tabs?.map((tab, tabIndex) => {
+          const isSelected = tabIndex === index;
+
+          if (tab.path) {
+            return (
+              <TabLink
+                key={tab.key || tab.path}
+                to={tab.path}
                 onClick={tab.onClick}
               >
-                <CoTab tab={tab} />
-              </CLink>
-            )
-          )}
-          {children}
-        </TabList>
-      </CTabs>
-    </Box>
+                <CoTab tab={tab} isSelected={isSelected} />
+              </TabLink>
+            );
+          } else {
+            return (
+              <TabButton
+                key={tab.key || tab.title}
+                onClick={tab.onClick}
+              >
+                <CoTab tab={tab} isSelected={isSelected} />
+              </TabButton>
+            );
+          }
+        })}
+        {children}
+      </TabsList>
+    </TabsContainer>
   );
 }
 

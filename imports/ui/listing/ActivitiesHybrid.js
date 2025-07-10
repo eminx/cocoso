@@ -9,11 +9,17 @@ import PopupHandler from './PopupHandler';
 import InfiniteScroller from './InfiniteScroller';
 import SexyThumb from './SexyThumb';
 
-export default function ActivitiesHybrid({ activities, Host, showPast }) {
+export default function ActivitiesHybrid({
+  activities,
+  Host,
+  showPast,
+}) {
   const [modalItem, setModalItem] = useState(null);
   const [, setSearchParams] = useSearchParams();
 
-  const activitiesInMenu = Host?.settings?.menu?.find((item) => item.name === 'activities');
+  const activitiesInMenu = Host?.settings?.menu?.find(
+    (item) => item.name === 'activities'
+  );
   const description = activitiesInMenu?.description;
   const heading = activitiesInMenu?.label;
 
@@ -38,12 +44,19 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
     },
   ];
 
-  const groupsInMenu = Host?.settings?.menu?.find((item) => item.name === 'groups');
+  const groupsInMenu = Host?.settings?.menu?.find(
+    (item) => item.name === 'groups'
+  );
   const url = `${Host?.host}/${activitiesInMenu?.name}`;
 
   return (
     <>
-      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
+      <PageHeading
+        description={description}
+        heading={heading}
+        imageUrl={Host?.logo}
+        url={url}
+      />
       <Center pb="4">
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
       </Center>
@@ -51,13 +64,19 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
       <Box px="2" pb="8">
         <InfiniteScroller items={activities}>
           {(item, index) => (
-            <Center key={item._id} flex="1 1 355px" onClick={() => setModalItem(item)}>
+            <Center
+              key={item._id}
+              flex="1 1 355px"
+              onClick={() => setModalItem(item)}
+            >
               <SexyThumb
                 activity={item}
                 host={Host?.isPortalHost ? item.host : null}
                 index={index}
                 showPast={showPast}
-                tags={item.isGroupMeeting ? [groupsInMenu?.label] : null}
+                tags={
+                  item.isGroupMeeting ? [groupsInMenu?.label] : null
+                }
               />
             </Center>
           )}

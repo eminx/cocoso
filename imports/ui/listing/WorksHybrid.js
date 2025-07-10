@@ -27,13 +27,18 @@ export default function WorksHybrid({ works, Host }) {
     if (!category || category === 'all') {
       return works;
     }
-    return works.filter((work) => work.category && work.category.label === category.toLowerCase());
+    return works.filter(
+      (work) =>
+        work.category && work.category.label === category.toLowerCase()
+    );
   };
 
   const categories = getCategoriesAssignedToWorks(works);
 
   const worksWithCategoryColors = getFilteredWorks().map((work) => {
-    const currentCategory = categories.find((cat) => cat?.label === work?.category?.label);
+    const currentCategory = categories.find(
+      (cat) => cat?.label === work?.category?.label
+    );
     const categoryColor = currentCategory?.color;
     return {
       ...work,
@@ -41,14 +46,21 @@ export default function WorksHybrid({ works, Host }) {
     };
   });
 
-  const worksInMenu = Host?.settings?.menu?.find((item) => item.name === 'works');
+  const worksInMenu = Host?.settings?.menu?.find(
+    (item) => item.name === 'works'
+  );
   const description = worksInMenu?.description;
   const heading = worksInMenu?.label;
   const url = `${Host?.host}/${worksInMenu?.name}`;
 
   return (
     <>
-      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
+      <PageHeading
+        description={description}
+        heading={heading}
+        imageUrl={Host?.logo}
+        url={url}
+      />
 
       <Center px="4">
         <Flex justify="center" wrap="wrap">
@@ -93,7 +105,11 @@ export default function WorksHybrid({ works, Host }) {
                     url: work.authorAvatar,
                   }
                 }
-                color={categories.find((cat) => cat?.label === work.category?.label)?.color}
+                color={
+                  categories.find(
+                    (cat) => cat?.label === work.category?.label
+                  )?.color
+                }
                 host={Host?.isPortalHost ? work.host : null}
                 imageUrl={work?.images && work.images[0]}
                 index={index}
@@ -105,7 +121,11 @@ export default function WorksHybrid({ works, Host }) {
         </InfiniteScroller>
 
         {modalItem && (
-          <PopupHandler item={modalItem} kind="works" onClose={() => setModalItem(null)} />
+          <PopupHandler
+            item={modalItem}
+            kind="works"
+            onClose={() => setModalItem(null)}
+          />
         )}
       </Box>
     </>

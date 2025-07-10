@@ -1,7 +1,6 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
 
-// import { Box } from '/imports/ui/core';
+import { Box, Flex, Text } from '/imports/ui/core';
 
 const styles = {
   backgroundColor: '#F6F6F6',
@@ -9,6 +8,18 @@ const styles = {
   borderRadius: 20,
   ':hover': { backgroundColor: 'white' },
 };
+
+export function BoxlingColumn({ title, children }) {
+  return (
+    <Flex align="center" flexDirection="column">
+      <Text fontWeight="bold" mb="2" size="sm">
+        {title}
+      </Text>
+
+      {children}
+    </Flex>
+  );
+}
 
 export default function Boxling({ children, ...otherProps }) {
   return (

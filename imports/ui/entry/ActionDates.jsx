@@ -1,20 +1,34 @@
 import React from 'react';
-import { Box, Flex } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 
+import { Box, Flex } from '../core';
 import { DateJust } from './FancyDate';
 
 const today = dayjs().format('YYYY-MM-DD');
-const yesterday = dayjs(new Date()).add(-1, 'days').format('YYYY-MM-DD');
+const yesterday = dayjs(new Date())
+  .add(-1, 'days')
+  .format('YYYY-MM-DD');
 
 const getFutureOccurrences = (dates) =>
-  dates.filter((date) => dayjs(date.endDate, 'YYYY-MM-DD').isAfter(yesterday));
+  dates.filter((date) =>
+    dayjs(date.endDate, 'YYYY-MM-DD').isAfter(yesterday)
+  );
 
 const getPastOccurrences = (dates) =>
-  dates.filter((date) => dayjs(date.endTime, 'YYYY-MM-DD').isBefore(today));
+  dates.filter((date) =>
+    dayjs(date.endTime, 'YYYY-MM-DD').isBefore(today)
+  );
 
-export default function ActionDates({ activity, showPast = false, showTime = false }) {
-  if (!activity || !activity.datesAndTimes || !activity.datesAndTimes.length) {
+export default function ActionDates({
+  activity,
+  showPast = false,
+  showTime = false,
+}) {
+  if (
+    !activity ||
+    !activity.datesAndTimes ||
+    !activity.datesAndTimes.length
+  ) {
     return null;
   }
 

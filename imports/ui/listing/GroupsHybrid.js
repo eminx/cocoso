@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-// import { Box, Center } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Center } from '/imports/ui/core';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 import InfiniteScroller from './InfiniteScroller';
@@ -28,7 +27,7 @@ export default function GroupsHybrid({ groups, Host }) {
         url={url}
       />
 
-      <Box py="2" pl="8">
+      <Box px="2" pb="8">
         <InfiniteScroller items={groups}>
           {(item, index) => (
             <Center
@@ -45,6 +44,7 @@ export default function GroupsHybrid({ groups, Host }) {
             </Center>
           )}
         </InfiniteScroller>
+
         {modalItem && (
           <PopupHandler
             item={modalItem}

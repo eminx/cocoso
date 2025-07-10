@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Center, Tag, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
+import { Box, Center, Tag, Text } from '/imports/ui/core';
 import TablyCentered from './TablyCentered';
 import FancyDate from './FancyDate';
 import { accordionProps } from '../utils/constants/general';
@@ -20,7 +20,8 @@ export default function ActivityHybrid({ activity, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {activity?.longDescription && HTMLReactParser(activity?.longDescription)}
+          {activity?.longDescription &&
+            HTMLReactParser(activity?.longDescription)}
         </Box>
       ),
       path: 'info',
@@ -29,11 +30,23 @@ export default function ActivityHybrid({ activity, Host }) {
 
   if (activity?.isPublicActivity) {
     tabs.push({
-      title: <Trans i18nKey="activities:public.labels.location">Location</Trans>,
+      title: (
+        <Trans i18nKey="activities:public.labels.location">
+          Location
+        </Trans>
+      ),
       content: (
         <Box bg="white" p="6">
           {activity?.place && (
-            <Text fontWeight="bold" fontSize="lg" mb="2" textAlign="center">
+            <Text
+              mb="2"
+              css={{
+                fontWeight: 'bold',
+                fontSize: 'lg',
+                textAlign: 'center',
+                fontWeight: 'bold',
+              }}
+            >
               {activity?.place}
             </Text>
           )}
@@ -45,7 +58,10 @@ export default function ActivityHybrid({ activity, Host }) {
           {activity?.address && (
             <Text fontSize="lg">
               <b>
-                <Trans i18nKey="activities:public.labels.address">Address</Trans>:{' '}
+                <Trans i18nKey="activities:public.labels.address">
+                  Address
+                </Trans>
+                :{' '}
               </b>
               {activity.address}
             </Text>
@@ -58,11 +74,20 @@ export default function ActivityHybrid({ activity, Host }) {
 
   if (!activity.isPublicActivity) {
     tabs.push({
-      title: <Trans i18nKey="activities:public.labels.dates">See Dates</Trans>,
+      title: (
+        <Trans i18nKey="activities:public.labels.dates">
+          See Dates
+        </Trans>
+      ),
       content: (
         <Box p="6">
           {activity.datesAndTimes?.map((occurrence) => (
-            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2" mb="4">
+            <Box
+              key={occurrence.startDate + occurrence.startTime}
+              {...buttonProps}
+              p="2"
+              mb="4"
+            >
               <FancyDate occurrence={occurrence} />
             </Box>
           ))}
@@ -72,12 +97,18 @@ export default function ActivityHybrid({ activity, Host }) {
     });
   }
 
-  const activitiesInMenu = Host?.settings?.menu.find((item) => item.name === 'activities');
-  const calendarInMenu = Host?.settings?.menu.find((item) => item.name === 'calendar');
+  const activitiesInMenu = Host?.settings?.menu.find(
+    (item) => item.name === 'activities'
+  );
+  const calendarInMenu = Host?.settings?.menu.find(
+    (item) => item.name === 'calendar'
+  );
   const { isPublicActivity } = activity;
   const backLink = {
     value: isPublicActivity ? '/activities' : '/calendar',
-    label: isPublicActivity ? activitiesInMenu?.label : calendarInMenu?.label,
+    label: isPublicActivity
+      ? activitiesInMenu?.label
+      : calendarInMenu?.label,
   };
 
   const url = `https://${activity.host}/activities/${activity._id}`;
@@ -90,7 +121,11 @@ export default function ActivityHybrid({ activity, Host }) {
         </Center>
       }
       backLink={backLink}
-      images={activity?.isPublicActivity ? activity?.images || [activity?.imageUrl] : null}
+      images={
+        activity?.isPublicActivity
+          ? activity?.images || [activity?.imageUrl]
+          : null
+      }
       subTitle={activity?.subTitle}
       tabs={tabs}
       title={activity?.title}

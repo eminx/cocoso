@@ -5,7 +5,13 @@ import { Client } from 'react-hydration-provider';
 
 import NewButton from './NewButton';
 
-export default function PageHeading({ description, heading, imageUrl, url, children }) {
+export default function PageHeading({
+  description,
+  heading,
+  imageUrl,
+  url,
+  children,
+}) {
   return (
     <>
       <Helmet>
@@ -16,7 +22,10 @@ export default function PageHeading({ description, heading, imageUrl, url, child
         <meta property="og:title" content={heading?.substring(0, 40)} />
         <meta property="og:url" content={url} />
         <meta property="og:image" content={imageUrl} />
-        <meta property="og:description" content={description?.substring(0, 150)} />
+        <meta
+          property="og:description"
+          content={description?.substring(0, 150)}
+        />
         <meta property="og:type" content="website" />
       </Helmet>
       <Center>

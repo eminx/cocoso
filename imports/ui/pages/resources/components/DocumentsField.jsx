@@ -1,7 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { Box, Code, Flex, Link as CLink, Text, Skeleton } from '@chakra-ui/react';
+import {
+  Box,
+  Code,
+  Flex,
+  Link as CLink,
+  Text,
+  Skeleton,
+} from '@chakra-ui/react';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
@@ -11,7 +18,11 @@ import NiceList from '../../../generic/NiceList';
 import DocumentUploadHelper from '../../../forms/UploadHelpers';
 import { StateContext } from '../../../LayoutContainer';
 
-export default function DocumentsField({ contextType, contextId, isAllowed = false }) {
+export default function DocumentsField({
+  contextType,
+  contextId,
+  isAllowed = false,
+}) {
   const [documents, setDocuments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +34,10 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
       return;
     }
     try {
-      const response = await call('getDocumentsByAttachments', contextId);
+      const response = await call(
+        'getDocumentsByAttachments',
+        contextId
+      );
       setDocuments(response.reverse());
       setIsLoading(false);
     } catch (error) {
@@ -38,9 +52,17 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
 
   const createDocument = async (uploadableFile, downloadUrl) => {
     try {
-      await call('createDocument', uploadableFile.name, downloadUrl, contextType, contextId);
+      await call(
+        'createDocument',
+        uploadableFile.name,
+        downloadUrl,
+        contextType,
+        contextId
+      );
       getDocuments();
-      message.success(`${uploadableFile.name} ${tc('documents.fileDropper')}`);
+      message.success(
+        `${uploadableFile.name} ${tc('documents.fileDropper')}`
+      );
     } catch (error) {
       message.error(error.reason);
     } finally {
@@ -88,7 +110,14 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
   };
 
   if (isLoading) {
-    return <Skeleton w="100%" h="100%" startColor="brand.100" endColor="brand.200" />;
+    return (
+      <Skeleton
+        w="100%"
+        h="100%"
+        startColor="brand.100"
+        endColor="brand.200"
+      />
+    );
   }
 
   if (!documents) {
@@ -120,14 +149,20 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
                     rel="noreferrer"
                     target="_blank"
                   >
-                    {document.documentLabel} <ExternalLinkIcon mr="2px" fontSize="sm" />
+                    {document.documentLabel}{' '}
+                    <ExternalLinkIcon mr="2px" fontSize="sm" />
                   </CLink>
                 </Code>
               </Box>
             )}
           </NiceList>
         ) : (
-          <Text fontSize="sm" fontWeight="bold" mb="4" textAlign="center">
+          <Text
+            fontSize="sm"
+            fontWeight="bold"
+            mb="4"
+            textAlign="center"
+          >
             {tc('documents.empty')}
           </Text>
         )}
@@ -152,7 +187,12 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
                   {...getRootProps()}
                 >
                   {isUploading ? (
-                    <Skeleton w="100%" h="100%" startColor="brand.100" endColor="brand.200" />
+                    <Skeleton
+                      w="100%"
+                      h="100%"
+                      startColor="brand.100"
+                      endColor="brand.200"
+                    />
                   ) : (
                     <Text textAlign="center" fontSize="sm">
                       {tc('documents.drop')}
