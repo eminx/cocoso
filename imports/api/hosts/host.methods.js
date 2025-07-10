@@ -119,10 +119,10 @@ Meteor.methods({
         {
           fields: {
             host: 1,
-            logo: 1,
-            theme: 1,
             isPortalHost: 1,
+            logo: 1,
             settings: 1,
+            theme: 1,
           },
         }
       );
@@ -138,10 +138,10 @@ Meteor.methods({
       {
         fields: {
           host: 1,
-          settings: 1,
-          style: 1,
-          logo: 1,
           isPortalHost: 1,
+          logo: 1,
+          settings: 1,
+          theme: 1,
         },
       }
     );
