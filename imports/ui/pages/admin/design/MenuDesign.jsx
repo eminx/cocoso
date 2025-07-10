@@ -94,6 +94,13 @@ export default function MenuDesign() {
     color,
   } = menuStyle;
 
+  const borderRadiusLabel =
+    borderRadiusOptions.find((option) => option.value === borderRadius)
+      ?.label || borderRadius;
+  const borderWidthLabel =
+    borderWidthOptions.find((option) => option.value === borderWidth)
+      ?.label || borderWidth;
+
   return (
     <>
       <Text fontWeight="bold" mb="4" mt="6">
@@ -271,7 +278,11 @@ export default function MenuDesign() {
               title={<Trans i18nKey="admin:design.border.radius" />}
             >
               <Menu
-                buttonLabel={borderRadius}
+                buttonLabel={
+                  <Trans
+                    i18nKey={`admin:design.border.radiusOptions.${borderRadiusLabel}`}
+                  />
+                }
                 options={borderRadiusOptions}
                 onSelect={(selectedOption) =>
                   handleStyleChange(
@@ -294,7 +305,11 @@ export default function MenuDesign() {
               title={<Trans i18nKey="admin:design.border.style" />}
             >
               <Menu
-                buttonLabel={borderStyle}
+                buttonLabel={
+                  <Trans
+                    i18nKey={`admin:design.border.styleOptions.${borderStyle}`}
+                  />
+                }
                 options={borderStyleOptions}
                 onSelect={(selectedOption) =>
                   handleStyleChange('borderStyle', selectedOption.value)
@@ -314,7 +329,11 @@ export default function MenuDesign() {
               title={<Trans i18nKey="admin:design.border.width" />}
             >
               <Menu
-                buttonLabel={borderWidth}
+                buttonLabel={
+                  <Trans
+                    i18nKey={`admin:design.border.widthOptions.${borderWidthLabel}`}
+                  />
+                }
                 options={borderWidthOptions}
                 onSelect={(selectedOption) =>
                   handleStyleChange('borderWidth', selectedOption.value)
