@@ -15,8 +15,9 @@ import {
   themeOptions,
 } from '/imports/ui/pages/admin/design/styleOptions';
 
-import ColorPicker from './HuePicker';
+import HuePicker from './HuePicker';
 import BackgroundHandler from './BackgroundHandler';
+import Loader from '/imports/ui/generic/Loader';
 
 export default function ThemeHandler() {
   const { currentHost, getCurrentHost, setCurrentHost } =
@@ -125,10 +126,12 @@ export default function ThemeHandler() {
       }));
       await call('updateHostTheme', newTheme);
       await getCurrentHost();
-      message.success('Theme saved');
+      message.success(<Trans i18nKey="admin:design.message.success" />);
     } catch (error) {
       message.error(
-        error.error || error.reason || 'Failed to save theme'
+        error.error || error.reason || (
+          <Trans i18nKey="admin:design.message.error" />
+        )
       );
     } finally {
       setState((prevState) => ({
@@ -167,11 +170,20 @@ export default function ThemeHandler() {
     updateHostTheme();
   };
 
+  const handleHueChange = (hue) => {
+    setState((prevState) => ({
+      ...prevState,
+      hasChanges: true,
+    }));
+  };
+
   if (!currentHost) {
     return (
-      <Center p="8">
-        <Text>Loading theme settings...</Text>
-      </Center>
+      <Box>
+        <Center>
+          <Loader />
+        </Center>
+      </Box>
     );
   }
 
@@ -220,7 +232,7 @@ export default function ThemeHandler() {
             <Trans i18nKey="admin:design.theme.color" />
           </Text>
           <Boxling mb="8">
-            <ColorPicker />
+            <HuePicker onChange={handleHueChange} />
           </Boxling>
         </>
       )}

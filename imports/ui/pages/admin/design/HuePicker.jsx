@@ -22,7 +22,7 @@ const parseHue = (hue, lightness) => {
   return `hsla(${hue}deg, 80%,${lightness}%, 1)`;
 };
 
-export default function HuePicker() {
+export default function HuePicker({ onChange }) {
   const { currentHost, setCurrentHost } = useContext(StateContext);
   const [initialHue] = useState(currentHost?.theme?.hue);
 
@@ -39,6 +39,8 @@ export default function HuePicker() {
         hue: pickedHue,
       },
     }));
+
+    onChange();
   };
 
   const resetHue = () => {
@@ -46,6 +48,8 @@ export default function HuePicker() {
       ...prevState,
       theme: { ...prevState.theme, hue: initialHue },
     }));
+
+    onChange();
   };
 
   const hue = currentHost?.theme?.hue;

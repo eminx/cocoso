@@ -53,9 +53,13 @@ export default function MenuDesign() {
     try {
       await call('updateHostTheme', newTheme);
       await getCurrentHost();
-      message.success('Menu saved');
+      message.success(<Trans i18nKey="admin:design.message.success" />);
     } catch (error) {
-      message.error(error.error || error.reason);
+      message.error(
+        error.error || error.reason || (
+          <Trans i18nKey="admin:design.message.error" />
+        )
+      );
     }
   };
 
@@ -74,29 +78,12 @@ export default function MenuDesign() {
 
   const { theme } = state;
 
-  const fontStyle = fontStyleOptions.find(
-    (option) => option.value === theme?.menu?.fontStyle
-  )?.label;
-  const textTransform = textTransformOptions.find(
-    (option) => option.value === theme?.menu?.textTransform
-  )?.label;
+  const fontStyle =
+    theme?.menu?.fontStyle || defaultMenuStyle.fontStyle;
+  const textTransform =
+    theme?.menu?.textTransform || defaultMenuStyle.textTransform;
 
-  const menuStyle = {
-    backgroundColor:
-      theme?.menu?.backgroundColor || defaultMenuStyle.backgroundColor,
-    borderColor:
-      theme?.menu?.borderColor || defaultMenuStyle.borderColor,
-    borderRadius:
-      theme?.menu?.borderRadius || defaultMenuStyle.borderRadius,
-    borderStyle:
-      theme?.menu?.borderStyle || defaultMenuStyle.borderStyle,
-    borderWidth:
-      theme?.menu?.borderWidth || defaultMenuStyle.borderWidth,
-    color: theme?.menu?.color || defaultMenuStyle.color,
-    fontStyle: theme?.menu?.fontStyle || defaultMenuStyle.fontStyle,
-    textTransform:
-      theme?.menu?.textTransform || defaultMenuStyle.textTransform,
-  };
+  const menuStyle = theme?.menu || defaultMenuStyle;
 
   const {
     backgroundColor,
@@ -144,12 +131,14 @@ export default function MenuDesign() {
       </Box>
 
       <Text fontWeight="bold" mb="4">
-        Colors
+        <Trans i18nKey="admin:design.color.colors" />
       </Text>
       <Boxling mb="8" w="100%">
         <Flex justify="space-around">
           <Center>
-            <BoxlingColumn title="Background color">
+            <BoxlingColumn
+              title={<Trans i18nKey="admin:design.background.color" />}
+            >
               <GenericColorPicker
                 color={backgroundColor}
                 onChange={(selectedOption) =>
@@ -168,13 +157,15 @@ export default function MenuDesign() {
                   handleStyleChange('backgroundColor', '#faf7f5')
                 }
               >
-                Reset
+                <Trans i18nKey="common:actions.reset" />
               </Button>
             </BoxlingColumn>
           </Center>
 
           <Center>
-            <BoxlingColumn title="Text color">
+            <BoxlingColumn
+              title={<Trans i18nKey="admin:design.color.text" />}
+            >
               <GenericColorPicker
                 color={color}
                 onChange={(selectedOption) =>
@@ -190,7 +181,7 @@ export default function MenuDesign() {
                   handleStyleChange('color', defaultMenuStyle.color)
                 }
               >
-                Reset
+                <Trans i18nKey="common:actions.reset" />
               </Button>
             </BoxlingColumn>
           </Center>
@@ -198,28 +189,46 @@ export default function MenuDesign() {
       </Boxling>
 
       <Text fontWeight="bold" mb="4">
-        Text
+        <Trans i18nKey="admin:design.text.title" />
       </Text>
       <Boxling mb="8" w="100%">
         <Flex justify="space-around">
           <Center>
-            <BoxlingColumn title="Font Style">
+            <BoxlingColumn
+              title={<Trans i18nKey="admin:design.text.fontStyle" />}
+            >
               <Menu
-                buttonLabel={fontStyle}
+                buttonLabel={
+                  <Trans
+                    i18nKey={`admin:design.text.fontStyleOptions.${fontStyle}`}
+                  />
+                }
                 options={fontStyleOptions}
                 onSelect={(selectedOption) =>
                   handleStyleChange('fontStyle', selectedOption.value)
                 }
               >
-                {(item) => item.label}
+                {(item) => (
+                  <Trans
+                    i18nKey={`admin:design.text.fontStyleOptions.${item.value}`}
+                  />
+                )}
               </Menu>
             </BoxlingColumn>
           </Center>
 
           <Center>
-            <BoxlingColumn title="Text Transform">
+            <BoxlingColumn
+              title={
+                <Trans i18nKey="admin:design.text.textTransform" />
+              }
+            >
               <Menu
-                buttonLabel={textTransform}
+                buttonLabel={
+                  <Trans
+                    i18nKey={`admin:design.text.textTransformOptions.${textTransform}`}
+                  />
+                }
                 options={textTransformOptions}
                 onSelect={(selectedOption) =>
                   handleStyleChange(
@@ -228,7 +237,11 @@ export default function MenuDesign() {
                   )
                 }
               >
-                {(item) => item.label}
+                {(item) => (
+                  <Trans
+                    i18nKey={`admin:design.text.textTransformOptions.${item.value}`}
+                  />
+                )}
               </Menu>
             </BoxlingColumn>
           </Center>
@@ -236,12 +249,14 @@ export default function MenuDesign() {
       </Boxling>
 
       <Text fontWeight="bold" mb="4">
-        Border
+        <Trans i18nKey="admin:design.border.title" />
       </Text>
       <Boxling mb="8" w="100%">
         <Flex justify="space-around">
           <Center>
-            <BoxlingColumn title="Border Color">
+            <BoxlingColumn
+              title={<Trans i18nKey="admin:design.border.color" />}
+            >
               <GenericColorPicker
                 color={borderColor}
                 onChange={(selectedOption) =>
@@ -252,7 +267,9 @@ export default function MenuDesign() {
           </Center>
 
           <Center>
-            <BoxlingColumn title="Border Radius">
+            <BoxlingColumn
+              title={<Trans i18nKey="admin:design.border.radius" />}
+            >
               <Menu
                 buttonLabel={borderRadius}
                 options={borderRadiusOptions}
@@ -263,13 +280,19 @@ export default function MenuDesign() {
                   )
                 }
               >
-                {(item) => item.label}
+                {(item) => (
+                  <Trans
+                    i18nKey={`admin:design.border.radiusOptions.${item.label}`}
+                  />
+                )}
               </Menu>
             </BoxlingColumn>
           </Center>
 
           <Center>
-            <BoxlingColumn title="Border Style">
+            <BoxlingColumn
+              title={<Trans i18nKey="admin:design.border.style" />}
+            >
               <Menu
                 buttonLabel={borderStyle}
                 options={borderStyleOptions}
@@ -277,13 +300,19 @@ export default function MenuDesign() {
                   handleStyleChange('borderStyle', selectedOption.value)
                 }
               >
-                {(item) => item.label}
+                {(item) => (
+                  <Trans
+                    i18nKey={`admin:design.border.styleOptions.${item.value}`}
+                  />
+                )}
               </Menu>
             </BoxlingColumn>
           </Center>
 
           <Center>
-            <BoxlingColumn title="Border Width">
+            <BoxlingColumn
+              title={<Trans i18nKey="admin:design.border.width" />}
+            >
               <Menu
                 buttonLabel={borderWidth}
                 options={borderWidthOptions}
@@ -291,7 +320,11 @@ export default function MenuDesign() {
                   handleStyleChange('borderWidth', selectedOption.value)
                 }
               >
-                {(item) => item.label}
+                {(item) => (
+                  <Trans
+                    i18nKey={`admin:design.border.widthOptions.${item.label}`}
+                  />
+                )}
               </Menu>
             </BoxlingColumn>
           </Center>

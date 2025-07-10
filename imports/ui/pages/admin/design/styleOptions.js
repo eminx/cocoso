@@ -1,13 +1,10 @@
-import React from 'react';
-import { Trans } from 'react-i18next';
-
 export const borderRadiusOptions = [
-  { label: 'None', value: '0' },
-  { label: 'Tiny', value: '0.125rem' },
-  { label: 'Small', value: '0.25rem' },
-  { label: 'Medium', value: '0.5rem' },
-  { label: 'Large', value: '1.25rem' },
-  { label: 'X-Large', value: '2rem' },
+  { label: 'none', value: '0' },
+  { label: 'tiny', value: '0.125rem' },
+  { label: 'small', value: '0.25rem' },
+  { label: 'medium', value: '0.5rem' },
+  { label: 'large', value: '1.25rem' },
+  { label: 'xlarge', value: '2rem' },
 ];
 
 export const borderStyleOptions = [
@@ -22,10 +19,10 @@ export const borderStyleOptions = [
 ];
 
 export const borderWidthOptions = [
-  { label: 'None', value: '0' },
-  { label: 'Thin (1px)', value: '1px' },
-  { label: 'Medium (2px)', value: '2px' },
-  { label: 'Thick (4px)', value: '4px' },
+  { label: 'none', value: '0' },
+  { label: 'thin', value: '1px' },
+  { label: 'medium', value: '2px' },
+  { label: 'thick', value: '4px' },
 ];
 
 export const fontStyleOptions = [
@@ -42,11 +39,11 @@ export const textTransformOptions = [
 
 export const themeOptions = [
   {
-    label: <Trans i18nKey="admin:design.themes.gray" />,
+    label: 'Gray',
     value: 'gray',
   },
   {
-    label: <Trans i18nKey="admin:design.themes.custom" />,
+    label: 'Custom',
     value: 'custom',
   },
 ];

@@ -96,12 +96,6 @@ categories:
   message:
     denySpecialChars: Kısa çizgi (-) dışındaki özel karakterlere izin verilmez
 
-color:
-  revert: Önceki renge dön
-  info: Web sitenizin teması olarak istediğin rengi seçmek için kaydırıcıyı kullan. Seçilen renk tonunun açık ve koyu varyasyonları, tüm kullanıcı arayüzünün farklı bölümlerinde kullanılacaktır.
-  alert1: Şimdi sitede dolaşıp bu rengi test edebilir ve ardından, beğenirsen, buraya geri gelip seçtiğin rengi onaylayabilirsin.
-  alert2: Sayfayı yenilersen veya pencereyi/sekmeyi kapatırsan, önceki renge geri döner.
-
 # ADMIN EMAILS PAGE
 emails:
   title: Otomatik E-postalar
@@ -268,6 +262,27 @@ design:
     radius: Kenarlık yuvarlaklığı
     width: Kenarlık kalınlığı
     style: Kenarlık stili
+    radiusOptions:
+      none: Yok
+      tiny: Çok küçük
+      small: Küçük
+      medium: Orta
+      large: Büyük
+      xlarge: Çok büyük
+    styleOptions:
+      solid: Düz
+      dotted: Noktalı
+      dashed: Kesikli
+      double: Çift
+      groove: Oluk
+      ridge: Sırt
+      inset: İçe dönük
+      outset: Dışa dönük
+    widthOptions:
+      none: Yok
+      thin: İnce
+      medium: Orta
+      thick: Kalın
   menu:
     title: Menü
     color: Metin rengi
@@ -275,6 +290,8 @@ design:
     background: Arka plan rengi
     demo: Önizleme
   color:
+    colors: Renkler
+    text: Metin rengi
     description: Tema, butonlar gibi birçok arayüz ögesinin görünümünü etkiler
     pick: Renk seç
     select: Paletten istediğin rengi seç
@@ -282,3 +299,18 @@ design:
     info: Topluluk web siteniz için istediğiniz rengi seçmek üzere kaydırıcıyı ayarlayın. Seçilen renk tonunun açık ve koyu varyasyonları, tüm kullanıcı arayüzünün farklı bölümlerinde kullanılacaktır.
     alert1: Artık sitede dolaşabilir ve bu rengi test edebilir, ardından buraya geri dönüp beğenirseniz onaylayabilirsiniz.
     alert2: Sayfayı yenilerseniz veya pencereyi/sekmeyi kapatırsanız, orijinal renge geri döner.
+  text:
+    title: Metin
+    fontStyle: Yazı tipi
+    textTransform: Metin dönüşümü
+    fontStyleOptions:
+      normal: Normal
+      italic: Italik
+    textTransformOptions:
+      none: Olduğu gibi
+      uppercase: Hepsi büyük harf
+      lowercase: Hepsi küçük harf
+      capitalize: İlk harf büyük
+  message:
+    success: Tema başarıyla kaydedildi!
+    error: Tema kaydedilemedi

@@ -262,6 +262,27 @@ design:
     radius: Border Radius
     width: Border Width
     style: Border Style
+    radiusOptions:
+      none: None
+      tiny: Tiny
+      small: Small
+      medium: Medium
+      large: Large
+      xlarge: X-Large
+    styleOptions:
+      solid: Solid
+      dotted: Dotted
+      dashed: Dashed
+      double: Double
+      groove: Groove
+      ridge: Ridge
+      inset: Inset
+      outset: Outset
+    widthOptions:
+      none: None
+      thin: Thin
+      medium: Medium
+      thick: Thick
   menu:
     title: Menu
     color: Text Color
@@ -269,6 +290,8 @@ design:
     background: Background Color
     demo: Demo
   color:
+    colors: Colors
+    text: Text Color
     description: Theme affects many of the UI elements such as buttons
     pick: Pick color
     select: Select desired color from palette
@@ -276,3 +299,18 @@ design:
     info: Adjust the slider to select your desired color for your community website. The light and dark variations of the hue color selected will be used in different parts of the entire user interface.
     alert1: Now you can surf around the site and test this color, and then come back here and confirm if you like it.
     alert2: If you refresh the page or close the window/tab, it will revert to the original color.
+  text:
+    title: Text
+    fontStyle: Font Style
+    textTransform: Text Transform
+    fontStyleOptions:
+      normal: Normal
+      italic: Italic
+    textTransformOptions:
+      none: None
+      uppercase: Uppercase
+      lowercase: Lowercase
+      capitalize: Capitalize
+  message:
+    success: Theme successfully saved!
+    error: Failed to save theme

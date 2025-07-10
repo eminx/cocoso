@@ -96,12 +96,6 @@ categories:
   message:
     denySpecialChars: Specialtecken, förutom bindestreck (-), är inte tillåtna
 
-color:
-  revert: Revert
-  info: Dra i reglaget för att välja önskad färg för din community. Den valda nyansen kommer att användas i olika delar av hela användargränssnittet.
-  alert1: Nu kan du surfa runt på sidan och testa den här färgen, och sedan komma tillbaka hit och bekräfta om du gillar den.
-  alert2: Om du uppdaterar sidan eller stänger fönstret/fliken kommer den att återgå till den ursprungliga färgen.
-
 # ADMIN EMAILS PAGE
 emails:
   title: Automatiserade e-postmeddelanden
@@ -268,6 +262,27 @@ design:
     radius: Kantlinjeradius
     width: Kantlinjebredd
     style: Kantlinjestil
+    radiusOptions:
+      none: Ingen
+      tiny: Mycket liten
+      small: Liten
+      medium: Medel
+      large: Stor
+      xlarge: Mycket stor
+    styleOptions:
+      solid: Solid
+      dotted: Punktad
+      dashed: Streckad
+      double: Dubbel
+      groove: Ränna
+      ridge: Kammar
+      inset: Inskjuten
+      outset: Utskjuten
+    widthOptions:
+      none: Ingen
+      thin: Tunn
+      medium: Medel
+      thick: Tjock
   menu:
     title: Meny
     color: Textfärg
@@ -275,6 +290,8 @@ design:
     background: Bakgrundsfärg
     demo: Demo
   color:
+    colors: Färger
+    text: Textfärg
     description: Tema påverkar många av UI-elementen såsom knappar
     pick: Välj färg
     select: Välj önskad färg från paletten
@@ -282,3 +299,18 @@ design:
     info: Justera reglaget för att välja önskad färg för din communitys webbplats. De ljusa och mörka variationerna av den valda färgnyansen kommer att användas i olika delar av hela användargränssnittet.
     alert1: Nu kan du surfa runt på sidan och testa den här färgen, och sedan komma tillbaka hit och bekräfta om du gillar den.
     alert2: Om du uppdaterar sidan eller stänger fönstret/fliken kommer den att återgå till den ursprungliga färgen.
+  text:
+    title: Text
+    fontStyle: Typsnitt
+    textTransform: Texttransform
+    fontStyleOptions:
+      normal: Normal
+      italic: Italic
+    textTransformOptions:
+      none: Ingen
+      uppercase: Uppslagning
+      lowercase: Nedslagning
+      capitalize: Kapitalisering
+  message:
+    success: Tema har sparats!
+    error: Tema kunde inte sparas
