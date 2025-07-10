@@ -247,13 +247,21 @@ export default function ThemeHandler() {
             title={<Trans i18nKey="admin:design.border.radius" />}
           >
             <Menu
-              buttonLabel={currentBorderRadius?.label}
+              buttonLabel={
+                <Trans
+                  i18nKey={`admin:design.border.radiusOptions.${currentBorderRadius?.label}`}
+                />
+              }
               options={borderRadiusOptions}
               onSelect={(selectedOption) =>
                 handleStyleChange('borderRadius', selectedOption?.value)
               }
             >
-              {(item) => item.label}
+              {(item) => (
+                <Trans
+                  i18nKey={`admin:design.border.radiusOptions.${item.label}`}
+                />
+              )}
             </Menu>
           </BoxlingColumn>
         </Flex>
