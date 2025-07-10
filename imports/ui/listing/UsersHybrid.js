@@ -1,6 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Avatar, Box, Button, Center, Divider, Flex, Text } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Text,
+} from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 import Cascader from 'antd/lib/cascader';
@@ -30,7 +38,9 @@ export default function UsersHybrid({ users, keywords, Host }) {
           label: kw.label,
           value: kw._id,
           children: users
-            .filter((m) => m?.keywords?.map((k) => k.keywordId)?.includes(kw._id))
+            .filter((m) =>
+              m?.keywords?.map((k) => k.keywordId)?.includes(kw._id)
+            )
             ?.map((mx) => ({
               label: mx.username,
               value: mx.username,
@@ -48,7 +58,10 @@ export default function UsersHybrid({ users, keywords, Host }) {
       [users?.length, keywords?.length]
     );
 
-  const usersInMenu = Host?.settings?.menu?.find((item) => item.name === 'people');
+  const usersInMenu = Host?.settings?.menu?.find((item) =>
+    ['people', 'members'].includes(item.name)
+  );
+
   const description = usersInMenu?.description;
   const heading = usersInMenu?.label;
   const url = `${Host?.host}/${usersInMenu?.name}`;
@@ -106,7 +119,11 @@ export default function UsersHybrid({ users, keywords, Host }) {
               <Divider my="2" />
 
               {selectedProfile.bio && (
-                <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
+                <Box
+                  borderLeft="4px solid"
+                  borderColor="brand.500"
+                  pl="2"
+                >
                   {parseHtml(selectedProfile.bio)}
                 </Box>
               )}
@@ -118,7 +135,11 @@ export default function UsersHybrid({ users, keywords, Host }) {
   );
 
   const filterCascaderOptions = (inputValue, path) =>
-    path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+    path.some(
+      (option) =>
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) >
+        -1
+    );
 
   const handleCascaderSelect = (value) => {
     const username = value[1];
@@ -130,7 +151,12 @@ export default function UsersHybrid({ users, keywords, Host }) {
 
   return (
     <>
-      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
+      <PageHeading
+        description={description}
+        heading={heading}
+        imageUrl={Host?.logo}
+        url={url}
+      />
 
       <Center>
         <Tabs index={showKeywordSearch ? 1 : 0} mb="4" tabs={tabs} />
@@ -157,7 +183,9 @@ export default function UsersHybrid({ users, keywords, Host }) {
         <Box>
           <Center mb="4">
             <Text fontSize="sm">
-              <Trans i18nKey="members:message.sortedRandomly">Sorted randomly</Trans>
+              <Trans i18nKey="members:message.sortedRandomly">
+                Sorted randomly
+              </Trans>
             </Text>
           </Center>
 
