@@ -189,6 +189,7 @@ pages:
 composable:
   title: Özelleştirilebilir sayfalar
   existing: Mevcut olanlar
+  none: Henüz özelleştirilebilir sayfa yok
   new: Yeni oluştur
   create: Oluştur
   newTitleInputLabel: Başlık
@@ -242,3 +243,42 @@ composable:
     unpublishText: Bu sayfayı yayından kaldırmak istediğinden emin misin?
     publishSuccess: Sayfa yayınlandı
     unpublishSuccess: Sayfa yayından kaldırıldı
+
+design:
+  description: Web sitenin görünümünü istediğin şekilde özelleştirmek için tema ve menüyü tercihlerine göre ayarla
+  tabs:
+    theme: Tema
+    menu: Menü
+  theme:
+    title: Tema
+    color: Tema rengi
+    demo: Önizleme
+    button: Buton
+  themes:
+    gray: Gri tonları
+    custom: Özelleştirilmiş
+  background:
+    title: Arka plan
+    color: Arka plan rengi
+    image: Arka plan görseli
+    repeat: Arka plan görselini tekrarla
+  border:
+    title: Kenarlıklar
+    color: Kenarlık rengi
+    radius: Kenarlık yuvarlaklığı
+    width: Kenarlık kalınlığı
+    style: Kenarlık stili
+  menu:
+    title: Menü
+    color: Metin rengi
+    border: Kenarlık
+    background: Arka plan rengi
+    demo: Önizleme
+  color:
+    description: Tema, butonlar gibi birçok arayüz ögesinin görünümünü etkiler
+    pick: Renk seç
+    select: Paletten istediğin rengi seç
+    revert: Varsayılana Dön
+    info: Topluluk web siteniz için istediğiniz rengi seçmek üzere kaydırıcıyı ayarlayın. Seçilen renk tonunun açık ve koyu varyasyonları, tüm kullanıcı arayüzünün farklı bölümlerinde kullanılacaktır.
+    alert1: Artık sitede dolaşabilir ve bu rengi test edebilir, ardından buraya geri dönüp beğenirseniz onaylayabilirsiniz.
+    alert2: Sayfayı yenilerseniz veya pencereyi/sekmeyi kapatırsanız, orijinal renge geri döner.

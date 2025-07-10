@@ -128,7 +128,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
     }
   };
 
-  const chakraTheme = generateTheme(hue);
+  const chakraTheme = generateTheme(currentHost?.theme?.hue);
 
   const hostWithinUser =
     currentUser &&
@@ -172,11 +172,12 @@ function LayoutPage({ currentUser, userLoading, children }) {
               getPlatform,
               setHue,
               setSelectedHue,
+              setCurrentHost,
             }}
           >
             <DummyWrapper
               animate={rendered && !isDesktop}
-              style={currentHost?.style}
+              theme={currentHost?.theme}
             >
               {rendered && !adminPage && (
                 <TopBarHandler

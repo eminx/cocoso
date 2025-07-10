@@ -2,13 +2,6 @@ import React from 'react';
 
 import { Box, Flex, Text } from '/imports/ui/core';
 
-const styles = {
-  backgroundColor: '#F6F6F6',
-  padding: '24px',
-  borderRadius: 20,
-  ':hover': { backgroundColor: 'white' },
-};
-
 export function BoxlingColumn({ title, children }) {
   return (
     <Flex align="center" flexDirection="column">
@@ -23,7 +16,17 @@ export function BoxlingColumn({ title, children }) {
 
 export default function Boxling({ children, ...otherProps }) {
   return (
-    <Box bg="blueGray.50" p="6" borderRadius={20} {...otherProps}>
+    <Box
+      bg="blueGray.50"
+      p="6"
+      css={{
+        borderRadius: 20,
+        ':hover': {
+          backgroundColor: 'white',
+        },
+      }}
+      {...otherProps}
+    >
       {children}
     </Box>
   );

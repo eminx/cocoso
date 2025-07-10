@@ -34,8 +34,8 @@ const textProps = {
 };
 
 export function InfoPagesMenu({
-  backgroundColor,
   label,
+  menuStyles,
   pageTitles,
   pathname,
 }) {
@@ -51,11 +51,17 @@ export function InfoPagesMenu({
     px: '2',
   };
 
+  const itemStyles = {
+    color: menuStyles?.color || 'gray.600',
+    fontStyle: menuStyles?.fontStyle || 'normal',
+    textTransform: menuStyles?.textTransform || 'none',
+  };
+
   if (!hydrated) {
     return (
       <Link key={label} to="/info">
         <Flex {...itemProps}>
-          <Text {...textProps} mr="1">
+          <Text {...textProps} mr="1" style={itemStyles}>
             {label}
           </Text>
           <ChevronDownIcon size="16px" />
@@ -72,7 +78,7 @@ export function InfoPagesMenu({
         suppressHydrationWarning
       >
         <Flex {...itemProps}>
-          <Text {...textProps} mr="1">
+          <Text {...textProps} mr="1" style={itemStyles}>
             {label}
           </Text>
           <ChevronDownIcon size="16px" />
@@ -81,7 +87,7 @@ export function InfoPagesMenu({
       <MenuList
         maxHeight="480px"
         overflowY="scroll"
-        rootProps={{ style: { backgroundColor }, zIndex: 1051 }}
+        rootProps={{ style: { zIndex: 1051 } }}
         suppressHydrationWarning
       >
         {pageTitles.map((item) => (
@@ -106,7 +112,7 @@ function HeaderMenu({ Host, pageTitles }) {
   const [isDesktop] = useMediaQuery(['(min-width: 960px)']);
 
   const settings = Host?.settings;
-  const style = Host?.style;
+  const menuStyles = Host?.theme?.menu;
 
   const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } =
     settings || {};
@@ -128,17 +134,6 @@ function HeaderMenu({ Host, pageTitles }) {
     return pathname.includes(item?.name);
   };
 
-  const menuStyles = {
-    backgroundColor: style?.menu?.backgroundColor || 'gray.50',
-    borderColor: style?.menu?.borderColor || 'gray.300',
-    borderRadius: style?.menu?.borderRadius || '6px',
-    borderStyle: style?.menu?.borderStyle || 'solid',
-    borderWidth: style?.menu?.borderWidth || '1px',
-    color: style?.menu?.color || 'gray.600',
-    fontStyle: style?.menu?.fontStyle || 'normal',
-    textTransform: style?.menu?.textTransform || 'none',
-  };
-
   return (
     <Center className="main-menu" mb="4" px="4">
       <HStack
@@ -153,8 +148,8 @@ function HeaderMenu({ Host, pageTitles }) {
           item.name === 'info' ? (
             <InfoPagesMenu
               key="info"
-              backgroundColor={menuStyles.backgroundColor}
               label={item.label}
+              menuStyles={menuStyles}
               pageTitles={pageTitles}
               pathname={pathname}
             />

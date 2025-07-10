@@ -29,7 +29,7 @@ export default function ComposablePages() {
 
   return (
     <>
-      <Heading css={{ fontWeight: '300' }} mb="6" size="sm">
+      <Heading css={{ fontWeight: '300' }} size="sm">
         <Trans i18nKey="admin:composable.description" />
       </Heading>
 

@@ -13,21 +13,32 @@ const thumbStyle = (backgroundImage) => ({
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
 });
 
+const parseImages = (images) => {
+  if (!images || images.length === 0) {
+    return [];
+  }
+
+  return images
+    .filter((image) => image && image !== 'none')
+    .map((image) => ({
+      src: image,
+      uploaded: true,
+    }));
+};
+
 export default function ImageUploader({
   preExistingImages = [],
   isMultiple = true,
   ping = false,
   uploadParam = 'genericEntryImageUpload',
+  onSelectImages,
   onUploadedImages,
 }) {
-  const [localImages, setLocalImages] = useState(
-    preExistingImages
-      ? preExistingImages.map((image) => ({
-          src: image,
-          uploaded: true,
-        }))
-      : []
-  );
+  const [localImages, setLocalImages] = useState([]);
+
+  useEffect(() => {
+    setLocalImages(parseImages(preExistingImages));
+  }, [preExistingImages]);
 
   const uploadImages = async () => {
     try {
@@ -47,7 +58,9 @@ export default function ImageUploader({
           return uploadedImage;
         })
       );
-      onUploadedImages(imagesReadyToSave);
+      if (typeof onUploadedImages === 'function') {
+        onUploadedImages(imagesReadyToSave);
+      }
     } catch (error) {
       console.log('Error uploading:', error);
       message.error(error.reason || error.error);
@@ -64,40 +77,47 @@ export default function ImageUploader({
     if (!isMultiple) {
       const file = files[0];
       const reader = new FileReader();
+      const onLoad = () => {
+        const newLocalImages = [
+          {
+            src: reader.result,
+            resizableData: file,
+            uploaded: false,
+          },
+        ];
+        setLocalImages(newLocalImages);
+        if (typeof onSelectImages === 'function') {
+          onSelectImages(newLocalImages);
+        }
+        reader.removeEventListener('load', onLoad);
+      };
+
+      reader.addEventListener('load', onLoad, false);
       reader.readAsDataURL(file);
-      reader.addEventListener(
-        'load',
-        () => {
-          setLocalImages([
-            {
-              src: reader.result,
-              resizableData: file,
-              uploaded: false,
-            },
-          ]);
-        },
-        false
-      );
       return;
     }
 
     files.forEach((uploadableImage) => {
       const reader = new FileReader();
-      reader.readAsDataURL(uploadableImage);
-      reader.addEventListener(
-        'load',
-        () => {
-          setLocalImages((prevLocalImages) => [
+      const onLoad = () => {
+        setLocalImages((prevLocalImages) => {
+          const newLocalImages = [
             ...prevLocalImages,
             {
               src: reader.result,
               resizableData: uploadableImage,
               uploaded: false,
             },
-          ]);
-        },
-        false
-      );
+          ];
+          if (typeof onSelectImages === 'function') {
+            onSelectImages(newLocalImages);
+          }
+          return newLocalImages;
+        });
+        reader.removeEventListener('load', onLoad);
+      };
+      reader.addEventListener('load', onLoad, false);
+      reader.readAsDataURL(uploadableImage);
     });
   };
 
@@ -117,13 +137,18 @@ export default function ImageUploader({
     );
   };
 
-  if (!localImages || localImages.length === 0) {
+  if (!isMultiple) {
     return (
       <>
         <Center>
           <FileDropper
+            imageUrl={
+              localImages && localImages.length > 0
+                ? localImages[0]?.src
+                : undefined
+            }
             setUploadableImage={setUploadableImages}
-            isMultiple={isMultiple}
+            isMultiple={false}
           />
         </Center>
         <DocumentUploadHelper />
@@ -131,16 +156,13 @@ export default function ImageUploader({
     );
   }
 
-  if (!isMultiple) {
+  if (!localImages || localImages.length === 0) {
     return (
       <>
         <Center>
           <FileDropper
-            imageUrl={
-              localImages?.length > 0 ? localImages[0].src : null
-            }
             setUploadableImage={setUploadableImages}
-            isMultiple={false}
+            isMultiple={isMultiple}
           />
         </Center>
         <DocumentUploadHelper />

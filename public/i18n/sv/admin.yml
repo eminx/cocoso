@@ -189,6 +189,7 @@ pages:
 composable:
   title: Komponerbara sidor
   existing: Befintliga
+  none: Inga komponerbara sidor ännu
   new: Skapa ny
   create: Skapa
   newTitleInputLabel: Titel
@@ -242,3 +243,42 @@ composable:
     unpublishText: Är du säker på att du vill avpublicera den här sidan?
     publishSuccess: Sidan har publicerats
     unpublishSuccess: Sidan har återställts som utkast
+
+design:
+  description: Anpassa din webbplats utseende genom att justera temat och menyn för att passa dina behov
+  tabs:
+    theme: Tema
+    menu: Meny
+  theme:
+    title: Tema
+    color: Temafärg
+    demo: Demo
+    button: Knapp
+  themes:
+    gray: Gråskala
+    custom: Anpassad
+  background:
+    title: Bakgrund
+    color: Bakgrundsfärg
+    image: Bakgrundsbild
+    repeat: Upprepa bakgrundsbild
+  border:
+    title: Kantlinjer
+    color: Kantlinjefärg
+    radius: Kantlinjeradius
+    width: Kantlinjebredd
+    style: Kantlinjestil
+  menu:
+    title: Meny
+    color: Textfärg
+    border: Kantlinje
+    background: Bakgrundsfärg
+    demo: Demo
+  color:
+    description: Tema påverkar många av UI-elementen såsom knappar
+    pick: Välj färg
+    select: Välj önskad färg från paletten
+    revert: Återställ
+    info: Justera reglaget för att välja önskad färg för din communitys webbplats. De ljusa och mörka variationerna av den valda färgnyansen kommer att användas i olika delar av hela användargränssnittet.
+    alert1: Nu kan du surfa runt på sidan och testa den här färgen, och sedan komma tillbaka hit och bekräfta om du gillar den.
+    alert2: Om du uppdaterar sidan eller stänger fönstret/fliken kommer den att återgå till den ursprungliga färgen.

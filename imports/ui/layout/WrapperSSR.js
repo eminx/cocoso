@@ -21,7 +21,7 @@ export default function WrapperSSR({
 
   const pages = Meteor.call('getPageTitles');
   const pageTitles = pages.map((p) => p.title);
-  const hue = Host?.settings?.hue;
+  const hue = Host?.theme?.hue;
   const chakraTheme = generateTheme(hue || '233');
 
   return (
@@ -31,7 +31,7 @@ export default function WrapperSSR({
       <I18nextProvider i18n={i18n}>
         <ChakraProvider theme={chakraTheme}>
           <ColorModeProvider>
-            <DummyWrapper style={Host?.style}>
+            <DummyWrapper theme={Host?.theme}>
               <Header
                 Host={Host}
                 isLogoSmall={isEntryPage}

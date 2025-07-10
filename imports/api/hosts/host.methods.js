@@ -119,10 +119,10 @@ Meteor.methods({
         {
           fields: {
             host: 1,
-            settings: 1,
-            style: 1,
             logo: 1,
+            theme: 1,
             isPortalHost: 1,
+            settings: 1,
           },
         }
       );
@@ -333,7 +333,7 @@ Meteor.methods({
     return host;
   },
 
-  async updateHostStyle(style) {
+  async updateHostTheme(theme) {
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
     const currentUser = Meteor.user();
@@ -345,7 +345,7 @@ Meteor.methods({
     try {
       await Hosts.updateAsync(currentHost._id, {
         $set: {
-          style,
+          theme,
         },
       });
     } catch (error) {

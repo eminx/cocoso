@@ -1,10 +1,13 @@
+import React from 'react';
+import { Trans } from 'react-i18next';
+
 export const borderRadiusOptions = [
-  { label: '0', value: '0' },
-  { label: '2', value: '2px' },
-  { label: '4', value: '4px' },
-  { label: '6', value: '6px' },
-  { label: '8', value: '8px' },
-  { label: 'full', value: '50%' },
+  { label: 'None', value: '0' },
+  { label: 'Tiny', value: '0.125rem' },
+  { label: 'Small', value: '0.25rem' },
+  { label: 'Medium', value: '0.5rem' },
+  { label: 'Large', value: '1.25rem' },
+  { label: 'X-Large', value: '2rem' },
 ];
 
 export const borderStyleOptions = [
@@ -19,11 +22,10 @@ export const borderStyleOptions = [
 ];
 
 export const borderWidthOptions = [
-  { label: '0', value: '0' },
-  { label: '1', value: '1px' },
-  { label: '2', value: '2px' },
-  { label: '3', value: '3px' },
-  { label: '4', value: '4px' },
+  { label: 'None', value: '0' },
+  { label: 'Thin (1px)', value: '1px' },
+  { label: 'Medium (2px)', value: '2px' },
+  { label: 'Thick (4px)', value: '4px' },
 ];
 
 export const fontStyleOptions = [
@@ -36,4 +38,15 @@ export const textTransformOptions = [
   { label: 'Uppercase', value: 'uppercase' },
   { label: 'Lowercase', value: 'lowercase' },
   { label: 'Capitalize', value: 'capitalize' },
+];
+
+export const themeOptions = [
+  {
+    label: <Trans i18nKey="admin:design.themes.gray" />,
+    value: 'gray',
+  },
+  {
+    label: <Trans i18nKey="admin:design.themes.custom" />,
+    value: 'custom',
+  },
 ];

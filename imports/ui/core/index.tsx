@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import { styled } from 'restyle';
 
+import Checkbox from '/imports/ui/forms/Checkbox';
+
 // Spacing
 type SpaceScale = {
   [key: number]: string;
@@ -238,13 +240,13 @@ export const Button = styled('button', (props: ButtonProps) => {
     margin: xToRem(props.m),
     paddingInline:
       variant === 'ghost'
-        ? '0.45rem'
-        : size === 'xs'
-        ? '0.55rem'
-        : size === 'sm'
         ? '0.75rem'
+        : size === 'xs'
+        ? '0.65rem'
+        : size === 'sm'
+        ? '0.85rem'
         : size === 'lg'
-        ? '1.25rem'
+        ? '1.15rem'
         : '1rem',
     paddingTop:
       variant === 'ghost'
@@ -280,6 +282,9 @@ export const Button = styled('button', (props: ButtonProps) => {
     },
   };
 });
+
+//Checkbox
+export { Checkbox };
 
 // Container
 interface ContainerProps {

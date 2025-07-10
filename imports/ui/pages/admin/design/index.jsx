@@ -1,29 +1,21 @@
 import React from 'react';
-import { Box, Heading } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 
+import { Box, Heading } from '/imports/ui/core';
 import TablyRouter from '/imports/ui/generic/TablyRouter';
-import GeneralDesign from './GeneralDesign';
-import ThemeSelector from './ThemeSelector';
+
 import MenuDesign from './MenuDesign';
+import ThemeHandler from './ThemeHandler';
 
 export default function DesignOptions() {
   const tabs = [
     {
-      // title: <Trans i18nKey="admin:settings.tabs.color" />,
-      title: 'Theme',
+      title: <Trans i18nKey="admin:design.tabs.theme" />,
       path: 'theme',
-      content: <ThemeSelector />,
+      content: <ThemeHandler />,
     },
     {
-      // title: <Trans i18nKey="admin:settings.tabs.color" />,
-      title: 'Body',
-      path: 'body',
-      content: <GeneralDesign />,
-    },
-    {
-      // title: <Trans i18nKey="admin:settings.tabs.color" />,
-      title: 'Menu',
+      title: <Trans i18nKey="admin:design.tabs.menu" />,
       path: 'navigation',
       content: <MenuDesign />,
     },
@@ -31,7 +23,13 @@ export default function DesignOptions() {
 
   return (
     <Box>
-      <TablyRouter tabs={tabs} />
+      <Heading css={{ fontWeight: '300' }} mb="6" size="sm">
+        <Trans i18nKey="admin:design.description" />
+      </Heading>
+
+      <Box my="8">
+        <TablyRouter tabs={tabs} />
+      </Box>
     </Box>
   );
 }

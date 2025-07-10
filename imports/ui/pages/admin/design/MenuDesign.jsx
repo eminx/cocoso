@@ -29,105 +29,73 @@ const demoMenuItems = [
   },
 ];
 
+const defaultMenuStyle = {
+  backgroundColor: '#faf7f5',
+  color: '#58504b',
+  fontStyle: 'normal',
+  fontWeight: 'normal',
+  textTransform: 'none',
+};
+
 export default function MenuDesign() {
   const { currentHost, getCurrentHost } = useContext(StateContext);
   const [state, setState] = useState({
-    style: currentHost?.style || {
-      menu: {
-        backgroundColor: '#faf7f5',
-        color: '#58504b',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        textTransform: 'none',
-      },
+    theme: currentHost?.theme || {
+      menu: defaultMenuStyle,
     },
   });
 
-  const handleTextColorChange = (color) => {
-    setState((prevState) => ({
-      ...prevState,
-      style: {
-        ...prevState.style,
-        menu: {
-          ...prevState.style.menu,
-          color: color.hex,
-        },
-      },
-    }));
-  };
-
-  const handleSelectFontStyle = (item) => {
-    setState((prevState) => ({
-      ...prevState,
-      style: {
-        ...prevState.style,
-        menu: {
-          ...prevState.style.menu,
-          fontStyle: item.value,
-        },
-      },
-    }));
-  };
-
-  const resetTextColor = () => {
-    setState((prevState) => ({
-      ...prevState,
-      style: {
-        ...prevState.style,
-        menu: {
-          ...prevState.style.menu,
-          color: 'gray.600',
-        },
-      },
-    }));
-  };
-
-  const updateHostStyle = async () => {
-    const newStyle = {
-      ...state.style,
+  const updateHostTheme = async () => {
+    const newTheme = {
+      ...state.theme,
     };
 
     try {
-      await call('updateHostStyle', newStyle);
+      await call('updateHostTheme', newTheme);
       await getCurrentHost();
-      message.success('Background saved');
+      message.success('Menu saved');
     } catch (error) {
       message.error(error.error || error.reason);
     }
   };
 
   const handleStyleChange = (key, value) => {
-    console.log('key', key);
     setState((prevState) => ({
       ...prevState,
-      style: {
-        ...prevState.style,
+      theme: {
+        ...prevState.theme,
         menu: {
-          ...prevState.style.menu,
+          ...prevState.theme.menu,
           [key]: value,
         },
       },
     }));
   };
 
-  const { style } = state;
+  const { theme } = state;
 
   const fontStyle = fontStyleOptions.find(
-    (option) => option.value === style?.menu?.fontStyle
+    (option) => option.value === theme?.menu?.fontStyle
   )?.label;
   const textTransform = textTransformOptions.find(
-    (option) => option.value === style?.menu?.textTransform
+    (option) => option.value === theme?.menu?.textTransform
   )?.label;
 
   const menuStyle = {
-    backgroundColor: style?.menu?.backgroundColor || 'gray.50',
-    borderColor: style?.menu?.borderColor || 'gray.300',
-    borderRadius: style?.menu?.borderRadius || '6px',
-    borderStyle: style?.menu?.borderStyle || 'solid',
-    borderWidth: style?.menu?.borderWidth || '1px',
-    color: style?.menu?.color || 'gray.600',
-    fontStyle: style?.menu?.fontStyle || 'normal',
-    textTransform: style?.menu?.textTransform || 'none',
+    backgroundColor:
+      theme?.menu?.backgroundColor || defaultMenuStyle.backgroundColor,
+    borderColor:
+      theme?.menu?.borderColor || defaultMenuStyle.borderColor,
+    borderRadius:
+      theme?.menu?.borderRadius || defaultMenuStyle.borderRadius,
+    borderStyle:
+      theme?.menu?.borderStyle || defaultMenuStyle.borderStyle,
+    borderWidth:
+      theme?.menu?.borderWidth || defaultMenuStyle.borderWidth,
+    color: theme?.menu?.color || defaultMenuStyle.color,
+    fontStyle: theme?.menu?.fontStyle || defaultMenuStyle.fontStyle,
+    textTransform:
+      theme?.menu?.textTransform || defaultMenuStyle.textTransform,
   };
 
   const {
@@ -184,8 +152,11 @@ export default function MenuDesign() {
             <BoxlingColumn title="Background color">
               <GenericColorPicker
                 color={backgroundColor}
-                onChange={(selectedItem) =>
-                  handleStyleChange('backgroundColor', selectedItem.hex)
+                onChange={(selectedOption) =>
+                  handleStyleChange(
+                    'backgroundColor',
+                    selectedOption.hex
+                  )
                 }
               />
 
@@ -206,8 +177,8 @@ export default function MenuDesign() {
             <BoxlingColumn title="Text color">
               <GenericColorPicker
                 color={color}
-                onChange={(selectedItem) =>
-                  handleStyleChange('color', selectedItem.hex)
+                onChange={(selectedOption) =>
+                  handleStyleChange('color', selectedOption.hex)
                 }
               />
 
@@ -215,7 +186,9 @@ export default function MenuDesign() {
                 bg="white"
                 size="xs"
                 variant="ghost"
-                onClick={() => handleStyleChange('color', 'gray.600')}
+                onClick={() =>
+                  handleStyleChange('color', defaultMenuStyle.color)
+                }
               >
                 Reset
               </Button>
@@ -234,8 +207,8 @@ export default function MenuDesign() {
               <Menu
                 buttonLabel={fontStyle}
                 options={fontStyleOptions}
-                onSelect={(selectedItem) =>
-                  handleStyleChange('fontStyle', selectedItem.value)
+                onSelect={(selectedOption) =>
+                  handleStyleChange('fontStyle', selectedOption.value)
                 }
               >
                 {(item) => item.label}
@@ -248,8 +221,11 @@ export default function MenuDesign() {
               <Menu
                 buttonLabel={textTransform}
                 options={textTransformOptions}
-                onSelect={(selectedItem) =>
-                  handleStyleChange('textTransform', selectedItem.value)
+                onSelect={(selectedOption) =>
+                  handleStyleChange(
+                    'textTransform',
+                    selectedOption.value
+                  )
                 }
               >
                 {(item) => item.label}
@@ -268,8 +244,8 @@ export default function MenuDesign() {
             <BoxlingColumn title="Border Color">
               <GenericColorPicker
                 color={borderColor}
-                onChange={(selectedItem) =>
-                  handleStyleChange('borderColor', selectedItem.hex)
+                onChange={(selectedOption) =>
+                  handleStyleChange('borderColor', selectedOption.hex)
                 }
               />
             </BoxlingColumn>
@@ -280,8 +256,11 @@ export default function MenuDesign() {
               <Menu
                 buttonLabel={borderRadius}
                 options={borderRadiusOptions}
-                onSelect={(selectedItem) =>
-                  handleStyleChange('borderRadius', selectedItem.value)
+                onSelect={(selectedOption) =>
+                  handleStyleChange(
+                    'borderRadius',
+                    selectedOption.value
+                  )
                 }
               >
                 {(item) => item.label}
@@ -294,8 +273,8 @@ export default function MenuDesign() {
               <Menu
                 buttonLabel={borderStyle}
                 options={borderStyleOptions}
-                onSelect={(selectedItem) =>
-                  handleStyleChange('borderStyle', selectedItem.value)
+                onSelect={(selectedOption) =>
+                  handleStyleChange('borderStyle', selectedOption.value)
                 }
               >
                 {(item) => item.label}
@@ -308,8 +287,8 @@ export default function MenuDesign() {
               <Menu
                 buttonLabel={borderWidth}
                 options={borderWidthOptions}
-                onSelect={(selectedItem) =>
-                  handleStyleChange('borderWidth', selectedItem.value)
+                onSelect={(selectedOption) =>
+                  handleStyleChange('borderWidth', selectedOption.value)
                 }
               >
                 {(item) => item.label}
@@ -320,7 +299,7 @@ export default function MenuDesign() {
       </Boxling>
 
       <Flex justify="flex-end" mb="12">
-        <Button mt="2" onClick={updateHostStyle}>
+        <Button mt="2" onClick={updateHostTheme}>
           <Trans i18nKey="common:actions.submit" />
         </Button>
       </Flex>

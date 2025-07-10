@@ -126,7 +126,13 @@ const platformFields = [
   },
 ];
 
-const acceptedImageFormatsForUploads = ['.jpeg', '.jpg', '.png'];
+const acceptedImageFormatsForUploads = [
+  '.jpeg',
+  '.jpg',
+  '.png',
+  '.webp',
+  '.svg',
+];
 
 const acceptedDocumentFormatsForUploads = [
   '.doc',

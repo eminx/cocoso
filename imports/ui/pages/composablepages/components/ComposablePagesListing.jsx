@@ -45,12 +45,21 @@ export default function ComposablePagesListing({
 }) {
   return (
     <Box flexGrow={1}>
-      <Text
-        size="lg"
-        css={{ marginBottom: '1rem', fontWeight: 'bold' }}
-      >
-        <Trans i18nKey="admin:composable.existing" />:
-      </Text>
+      {composablePageTitles.length > 0 ? (
+        <Text
+          size="lg"
+          css={{ marginBottom: '1rem', fontWeight: 'bold' }}
+        >
+          <Trans i18nKey="admin:composable.existing" />:
+        </Text>
+      ) : (
+        <Text
+          size="lg"
+          css={{ marginBottom: '1rem', fontWeight: 'bold' }}
+        >
+          <Trans i18nKey="admin:composable.none" />
+        </Text>
+      )}
 
       {composablePageTitles.map((composablePage) => (
         <Link
