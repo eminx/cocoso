@@ -52,9 +52,13 @@ const ModalContent = styled(
         ? '32rem'
         : props.size === 'xl'
         ? '36rem'
+        : props.size === '2xl'
+        ? '48rem'
         : '28rem',
     width: '100%',
     maxHeight: '90vh',
+    display: 'flex',
+    flexDirection: 'column',
     overflow: 'hidden',
     position: 'relative',
     opacity: props.visible ? 1 : 0,
@@ -99,6 +103,8 @@ const CloseButton = styled('button', {
 const Body = styled('div', {
   padding: '1.5rem',
   overflowY: 'auto',
+  flex: '1 1 auto',
+  minHeight: 0,
 });
 
 const Footer = styled('div', {

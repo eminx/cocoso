@@ -5,8 +5,7 @@ import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
-import Modal from '../generic/Modal';
-import ConfirmModal from '../generic/ConfirmModal';
+import Modal from '/imports/ui/core/Modal';
 
 export const initialLoaderValues = {
   isCreating: false,
@@ -123,14 +122,15 @@ export default function NewEntryHandler({ children }) {
   return (
     <LoaderContext.Provider value={{ loaders, setLoaders }}>
       <Modal
+        closeOnOverlayClick={false}
         closeOnEsc={false}
-        contentProps={{
-          h: 'auto',
-          mt: '12',
-        }}
-        isOpen={isOpen}
-        motionPreset="slideInBottom"
-        scrollBehavior="outside"
+        // contentProps={{
+        //   h: 'auto',
+        //   mt: '12',
+        // }}
+        open={isOpen}
+        // motionPreset="slideInBottom"
+        // scrollBehavior="outside"
         size="2xl"
         title={entryHeader}
         onClose={() => setConfirmOpen(true)}
@@ -148,16 +148,16 @@ export default function NewEntryHandler({ children }) {
         )}
       </Modal>
 
-      <ConfirmModal
+      <Modal
         confirmText={tc('modals.confirm.newentry.yes')}
         cancelText={tc('modals.confirm.newentry.cancel')}
         title={tc('modals.confirm.newentry.title')}
-        visible={confirmOpen}
+        open={confirmOpen}
         onConfirm={handleCancelAndClose}
-        onCancel={() => setConfirmOpen(false)}
+        onClose={() => setConfirmOpen(false)}
       >
         {tc('modals.confirm.newentry.body')}
-      </ConfirmModal>
+      </Modal>
     </LoaderContext.Provider>
   );
 }
