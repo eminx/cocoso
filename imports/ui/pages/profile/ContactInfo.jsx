@@ -3,7 +3,7 @@ import { Box, Button, Center } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
-import ConfirmModal from '../../generic/ConfirmModal';
+import Modal from '/imports/ui/core/Modal';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import { message } from '../../generic/message';
@@ -46,8 +46,8 @@ export default function ContactInfo({ username }) {
         </Button>
       </Center>
 
-      <ConfirmModal
-        visible={modalOpen}
+      <Modal
+        open={modalOpen}
         title={
           <>
             <Trans i18nKey="common:labels.contact">Contact</Trans>
@@ -59,13 +59,18 @@ export default function ContactInfo({ username }) {
         onClose={() => setModalOpen(false)}
       >
         {contactInfo ? (
-          <Box bg="white" className="text-content" p="4" textAlign="center">
+          <Box
+            bg="white"
+            className="text-content"
+            p="4"
+            textAlign="center"
+          >
             {HTMLReactParser(contactInfo)}
           </Box>
         ) : (
           <Loader />
         )}
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }
