@@ -15,7 +15,7 @@ import {
 } from './Box';
 import { Button, IconButton } from './Button';
 import Checkbox from './Checkbox';
-import { Code, Heading, Link, Text } from './Text';
+import { Code, Heading, Link, Tag, Text } from './Text';
 import Input from './Input';
 import Image from './Image';
 import { Radio, RadioGroup } from './RadioButtons';
@@ -44,6 +44,7 @@ export {
   Radio,
   RadioGroup,
   Stack,
+  Tag,
   Text,
   VStack,
   Wrap,

@@ -13,17 +13,19 @@ export function BoxlingColumn({ title, children }) {
   );
 }
 
-export default function Boxling({ children, ...otherProps }) {
+export default function Boxling({ children, css, ...otherProps }) {
   return (
     <Box
       bg="blueGray.50"
       p="6"
       css={{
-        borderRadius: 'var(--cocoso-border-radius)',
+        borderRadius: '1rem',
         ':hover': {
           backgroundColor: 'white',
         },
+        ...css,
       }}
+      w="100%"
       {...otherProps}
     >
       {children}

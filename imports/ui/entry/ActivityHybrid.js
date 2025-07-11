@@ -56,7 +56,7 @@ export default function ActivityHybrid({ activity, Host }) {
             </Center>
           )}
           {activity?.address && (
-            <Text fontSize="lg">
+            <Text css={{ textAlign: 'center' }}>
               <b>
                 <Trans i18nKey="activities:public.labels.address">
                   Address

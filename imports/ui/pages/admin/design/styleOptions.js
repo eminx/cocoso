@@ -47,3 +47,47 @@ export const themeOptions = [
     value: 'custom',
   },
 ];
+
+export const getGrayTheme = (theme) => ({
+  hue: theme.hue, // Keep for potential reverse case
+  variant: 'gray',
+  body: {
+    backgroundColor: 'var(--cocoso-colors-gray-100)',
+    backgroundImage: 'none',
+    backgroundRepeat: 'no-repeat',
+    borderRadius: theme.body.borderRadius,
+    fontFamily: theme.body.fontFamily || 'sans-serif',
+  },
+  menu: {
+    backgroundColor: 'var(--cocoso-colors-gray-50)',
+    borderColor: 'var(--cocoso-colors-gray-200)',
+    borderRadius: theme.menu.borderRadius || '0.25rem',
+    borderStyle: theme.menu.borderStyle || 'solid',
+    borderWidth: theme.menu.borderWidth || '0px',
+    color: 'var(--cocoso-colors-gray-800)',
+    fontStyle: theme.menu.fontStyle || 'normal',
+    textTransform: theme.menu.textTransform || 'none',
+  },
+});
+
+export const getCustomTheme = (theme) => ({
+  hue: theme.hue, // Keep for potential reverse case
+  variant: 'custom',
+  body: {
+    backgroundColor: 'var(--cocoso-colors-theme-100)',
+    backgroundImage: 'none',
+    backgroundRepeat: 'no-repeat',
+    borderRadius: theme.body.borderRadius || '0.25rem',
+    fontFamily: theme.body.fontFamily || 'sans-serif',
+  },
+  menu: {
+    backgroundColor: 'var(--cocoso-colors-theme-50)',
+    borderColor: 'var(--cocoso-colors-theme-200)',
+    borderRadius: theme.menu.borderRadius || '0.25rem',
+    borderStyle: theme.menu.borderStyle || 'solid',
+    borderWidth: theme.menu.borderWidth || '0px',
+    color: 'var(--cocoso-colors-theme-800)',
+    fontStyle: theme.menu.fontStyle || 'normal',
+    textTransform: theme.menu.textTransform || 'none',
+  },
+});

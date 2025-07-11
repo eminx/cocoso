@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { Center } from '@chakra-ui/react';
 import { useDrop } from 'react-dnd';
 
+import { Center } from '@chakra-ui/react';
 import { ComposablePageContext } from '../ComposablePageForm';
 
 export default function DropTarget({

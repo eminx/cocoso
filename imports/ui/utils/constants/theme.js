@@ -5,14 +5,14 @@ const brand = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 export const luxxStyle = {
   field: {
     backgroundColor: 'white',
-    borderColor: 'gray.300',
-    borderRadius: '8px',
+    borderColor: 'var(--cocoso-colors-theme-200)',
+    borderRadius: 'var(--cocoso-border-radius)',
     borderWidth: '2px',
     _hover: {
-      borderColor: 'gray.500',
+      borderColor: 'var(--cocoso-colors-theme-300)',
     },
     _focus: {
-      borderColor: 'gray.600',
+      borderColor: 'var(--cocoso-colors-theme-400)',
     },
   },
 };

@@ -115,7 +115,7 @@ invite:
   info: Lütfen davet etmek istediğin kişi için veri ekle
   success: Bir e-posta gönderildi ve {{ name }} başarıyla davet edildi
   email:
-    label: eposta adresi
+    label: E-posta adresi
     holder: murat@skogen.pm
     already: Bu eposta adresi zaten eklenmiş
     valid: Lütfen geçerli bir eposta adresi gir

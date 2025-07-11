@@ -35,7 +35,7 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
     borderRadius: 'var(--cocoso-border-radius)',
     borderStyle: 'solid',
     borderWidth: variant === 'ghost' ? '0' : '2px',
-    borderColor: props.color || 'var(--cocoso-colors-theme-500)',
+    borderColor: props.color || 'var(--cocoso-colors-theme-200)',
     color:
       variant === 'solid' ? 'white' : 'var(--cocoso-colors-theme-500)',
     cursor: 'pointer',

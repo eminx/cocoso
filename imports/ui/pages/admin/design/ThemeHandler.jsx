@@ -13,6 +13,8 @@ import Boxling, {
 import {
   borderRadiusOptions,
   themeOptions,
+  getCustomTheme,
+  getGrayTheme,
 } from '/imports/ui/pages/admin/design/styleOptions';
 
 import HuePicker from './HuePicker';
@@ -31,11 +33,35 @@ export default function ThemeHandler() {
     updating: false,
   });
 
-  const currentTheme = currentHost?.theme?.body;
+  const currentTheme = currentHost?.theme;
 
   const currentBorderRadius = borderRadiusOptions?.find(
-    (option) => option?.value === currentTheme?.borderRadius
+    (option) => option?.value === currentTheme?.body?.borderRadius
   );
+
+  const handleThemeChange = (selectedValue) => {
+    const newTheme =
+      selectedValue === 'custom'
+        ? getCustomTheme(currentTheme)
+        : selectedValue === 'gray'
+        ? getGrayTheme(currentTheme)
+        : null;
+
+    if (!newTheme) {
+      message.error(<Trans i18nKey="admin:design.message.error" />);
+      return;
+    }
+
+    setCurrentHost((prevState) => ({
+      ...prevState,
+      theme: newTheme,
+    }));
+
+    setState((prevState) => ({
+      ...prevState,
+      hasChanges: true,
+    }));
+  };
 
   const handleStyleChange = (key, value) => {
     if (currentHost?.theme?.body?.[key] === value) {
@@ -196,9 +222,7 @@ export default function ThemeHandler() {
       <Box mb="8">
         <RadioGroup
           value={currentTheme?.variant}
-          onChange={(selectedValue) =>
-            handleStyleChange('variant', selectedValue)
-          }
+          onChange={(selectedValue) => handleThemeChange(selectedValue)}
         >
           {themeOptions.map((option) => (
             <Radio key={option.value} value={option.value}>

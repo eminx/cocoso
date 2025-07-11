@@ -21,9 +21,9 @@ const TabsList = styled('div', (props) => ({
 
 const TabItem = styled('div', (props) => ({
   borderBottom: `2px solid ${
-    props.isSelected ? 'var(--chakra-colors-brand-500)' : 'transparent'
+    props.isSelected ? 'var(--cocoso-colors-theme-500)' : 'transparent'
   }`,
-  color: 'var(--chakra-colors-gray-700)',
+  color: 'var(--cocoso-colors-gray-700)',
   cursor: 'pointer',
   display: 'inline-flex',
   justifyContent: 'flex-start',
@@ -32,13 +32,13 @@ const TabItem = styled('div', (props) => ({
   transition: 'border-color 0.2s, color 0.2s',
   ':hover': {
     borderBottomColor: props.isSelected
-      ? 'var(--chakra-colors-brand-500)'
-      : 'var(--chakra-colors-brand-200)',
-    color: 'var(--chakra-colors-brand-500)',
+      ? 'var(--cocoso-colors-theme-500)'
+      : 'var(--cocoso-colors-theme-200)',
+    color: 'var(--cocoso-colors-theme-500)',
   },
   ':focus': {
     outline: 'none',
-    boxShadow: '0 0 0 2px var(--chakra-colors-brand-200)',
+    boxShadow: '0 0 0 2px var(--cocoso-colors-theme-200)',
   },
 }));
 

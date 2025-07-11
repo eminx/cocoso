@@ -25,14 +25,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { call } from '/imports/ui/utils/shared';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { message } from '/imports/ui/generic/message';
-import Row from './components/Row';
-import { rowTypes } from './constants';
 import ConfirmModal from '/imports/ui/generic/ConfirmModal';
-import ContentHandler from './components/ContentHandler';
-import BottomToolbar from './components/BottomToolbar';
 import TopToolBar from '/imports/ui/pages/composablepages/components/TopToolbar';
+import { rowTypes } from './constants';
 import ComposablePageCreator from './components/ComposablePageCreator';
 import ComposablePagesListing from './components/ComposablePagesListing';
+import ContentHandler from './components/ContentHandler';
+import Row from './components/Row';
+import BottomToolbar from './components/BottomToolbar';
 
 const getNewRow = (rowType) => {
   const selectedRowType = rowTypes.find(
@@ -260,12 +260,12 @@ export default function ComposablePageForm({
       }
       setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
       setContentModal({ open: false, content: null });
-      message.success(
-        <Trans
-          i18nKey="common:message.success.save"
-          tOptions={{ domain: 'page' }}
-        />
-      );
+      // message.success(
+      //   <Trans
+      //     i18nKey="common:message.success.save"
+      //     tOptions={{ domain: 'page' }}
+      //   />
+      // );
     } catch (error) {
       message.error(error.reason || error.error);
     }
@@ -345,7 +345,17 @@ export default function ComposablePageForm({
                       />
                     </SortableKnob>
                   </Box>
-                  <Boxling bg="blueGray.300" flexGrow={1} mb="4" p="2">
+                  <Boxling
+                    bg="blueGray.300"
+                    css={{
+                      flexGrow: 1,
+                      ':hover': {
+                        backgroundColor: 'none',
+                      },
+                    }}
+                    mb="4"
+                    p="2"
+                  >
                     <Row row={row} rowIndex={rowIndex} />
                     <Center>
                       <Button
@@ -440,7 +450,7 @@ export default function ComposablePageForm({
           variant="outline"
           onClick={() => setDeleteWholePageModal(true)}
         >
-          Delete
+          <Trans i18nKey="common:actions.remove" />
         </Button>
 
         <ConfirmModal

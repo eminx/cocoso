@@ -211,7 +211,7 @@ composable:
       image-slider: Slayt
       text: Metin
       video: Video
-  confirmedDelete:
+  confirmDelete:
     title: Silmeyi onayla
     text1: Bu modülü silmek istediğinden emin misin?
     text2: Onaylarsan, seçili modül silinecek ve geri alınamayacaktır.

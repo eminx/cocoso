@@ -6,21 +6,76 @@ const getColor = (hue, lightness) =>
 
 export default function GlobalStyles({ theme }) {
   const hue = theme?.hue || 220;
+  const variant = theme?.variant;
+  const isGray = variant === 'gray';
 
   return (
     <GlobalStylesRestyle>
       {{
         body: {
-          '--cocoso-colors-theme-50': getColor(hue, '97'),
-          '--cocoso-colors-theme-100': getColor(hue, '92'),
-          '--cocoso-colors-theme-200': getColor(hue, '85'),
-          '--cocoso-colors-theme-300': getColor(hue, '75'),
-          '--cocoso-colors-theme-400': getColor(hue, '65'),
-          '--cocoso-colors-theme-500': getColor(hue, '40'),
-          '--cocoso-colors-theme-600': getColor(hue, '32'),
-          '--cocoso-colors-theme-700': getColor(hue, '20'),
-          '--cocoso-colors-theme-800': getColor(hue, '12'),
-          '--cocoso-colors-theme-900': getColor(hue, '8'),
+          '--cocoso-colors-theme-50': isGray
+            ? 'rgb(250, 247, 245)'
+            : getColor(hue, '97'),
+          '--cocoso-colors-theme-100': isGray
+            ? 'rgb(240, 235, 230)'
+            : getColor(hue, '92'),
+          '--cocoso-colors-theme-200': isGray
+            ? 'rgb(228, 222, 218)'
+            : getColor(hue, '85'),
+          '--cocoso-colors-theme-300': isGray
+            ? 'rgb(125, 120, 115)'
+            : getColor(hue, '75'),
+          '--cocoso-colors-theme-400': isGray
+            ? 'rgb(105, 100, 95)'
+            : getColor(hue, '65'),
+          '--cocoso-colors-theme-500': isGray
+            ? 'rgb(88, 80, 75)'
+            : getColor(hue, '40'),
+          '--cocoso-colors-theme-600': isGray
+            ? 'rgb(78, 70, 65)'
+            : getColor(hue, '32'),
+          '--cocoso-colors-theme-700': isGray
+            ? 'rgb(68, 60, 52)'
+            : getColor(hue, '20'),
+          '--cocoso-colors-theme-800': isGray
+            ? 'rgb(48, 40, 32)'
+            : getColor(hue, '12'),
+          '--cocoso-colors-theme-900': isGray
+            ? 'rgb(25, 20, 15)'
+            : getColor(hue, '8'),
+
+          '--chakra-colors-brand-50': isGray
+            ? 'rgb(250, 247, 245)'
+            : getColor(hue, '97'),
+          '--chakra-colors-brand-100': isGray
+            ? 'rgb(240, 235, 230)'
+            : getColor(hue, '92'),
+          '--chakra-colors-brand-200': isGray
+            ? 'rgb(228, 222, 218)'
+            : getColor(hue, '86'),
+          '--chakra-colors-brand-300': isGray
+            ? 'rgb(125, 120, 115)'
+            : getColor(hue, '80'),
+          '--chakra-colors-brand-400': isGray
+            ? 'rgb(105, 100, 95)'
+            : getColor(hue, '72'),
+          '--chakra-colors-brand-500': isGray
+            ? 'rgb(88, 80, 75)'
+            : getColor(hue, '40'),
+          '--chakra-colors-brand-600': isGray
+            ? 'rgb(78, 70, 65)'
+            : getColor(hue, '32'),
+          '--chakra-colors-brand-700': isGray
+            ? 'rgb(68, 60, 52)'
+            : getColor(hue, '20'),
+          '--chakra-colors-brand-800': isGray
+            ? 'rgb(48, 40, 32)'
+            : getColor(hue, '12'),
+          '--chakra-colors-brand-900': isGray
+            ? 'rgb(25, 20, 15)'
+            : getColor(hue, '8'),
+
+          '--chakra-radii-md': theme?.body?.borderRadius || '0.25rem',
 
           '--cocoso-colors-gray-50': 'rgb(250, 247, 245)',
           '--cocoso-colors-gray-100': 'rgb(240, 235, 230)',

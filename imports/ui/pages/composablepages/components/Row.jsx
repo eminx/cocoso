@@ -97,7 +97,7 @@ export function Column({ column, columnIndex, rowIndex }) {
   };
 
   return (
-    <Boxling bg="white" m="2" p="2" minH="120px">
+    <Boxling bg="white" p="2" minH="120px">
       <Center>
         <SortableList onSortEnd={handleSortColumn}>
           {column.map((content, contentIndex) => {
@@ -174,7 +174,11 @@ export default function Row({ row, rowIndex }) {
   const gridTemplateColumns = getGridTemplateColumns(gridType);
 
   return (
-    <Box display="grid" gridTemplateColumns={gridTemplateColumns}>
+    <Box
+      display="grid"
+      gap="2"
+      gridTemplateColumns={gridTemplateColumns}
+    >
       {columns.map((column, columnIndex) => (
         <Box
           key={gridType + columnIndex}

@@ -8,6 +8,15 @@ export const Box = styled('div', (props: any) => ({
   ...getPropStyles(props),
 }));
 
+// Center
+export const Center = styled('div', (props: any) => ({
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  ...getPropStyles(props),
+}));
+
 // Container
 interface ContainerProps {
   maxW?: string;
@@ -29,17 +38,8 @@ export const Flex = styled('div', (props: any) => ({
   display: 'flex',
   gap: props.gap || '0.5rem',
   // flexDirection: props.direction || props.flexDirection || 'row',
-  flexWrap: props.wrap || props.flexWrap || 'wrap',
+  flexWrap: props.wrap || props.flexWrap || 'nowrap',
   justifyContent: props.justify || props.justifyContent || 'flex-start',
-  ...getPropStyles(props),
-}));
-
-// Center
-export const Center = styled('div', (props: any) => ({
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
   ...getPropStyles(props),
 }));
 
@@ -74,4 +74,6 @@ export const VStack = styled(Flex, {
   flexDirection: 'column',
 });
 
-export const Wrap = styled(Flex, {});
+export const Wrap = (props: any) => {
+  return <Flex flexWrap="wrap" {...props} />;
+};

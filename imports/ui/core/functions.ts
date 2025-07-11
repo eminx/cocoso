@@ -16,6 +16,19 @@ export const spaceScale: SpaceScale = {
   16: '4rem',
 };
 
+type BorderRadiusScale = {
+  [key: string]: string;
+};
+
+export const borderRadiusScale: BorderRadiusScale = {
+  '0': '0',
+  xs: '0.125rem',
+  sm: '0.25rem',
+  md: '0.5rem',
+  lg: '1.25rem',
+  xl: '2rem',
+};
+
 export const getSpacing = (value: string | number): string => {
   if (typeof value !== 'string' && typeof value !== 'number') {
     return spaceScale[0];
@@ -50,7 +63,12 @@ export const getPropStyles = (props: any) => {
     ...(props.bg && {
       backgroundColor: getColor(props.bg),
     }),
-    // borderRadius: props.borderRadius || 'var(--cocoso-border-radius)',
+    ...(props.borderRadius && {
+      borderRadius:
+        borderRadiusScale[
+          props.borderRadius as keyof typeof borderRadiusScale
+        ],
+    }),
     ...(props.color && {
       color: getColor(props.color),
     }),
