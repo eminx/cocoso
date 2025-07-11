@@ -10,12 +10,17 @@ export default function GroupDocuments({ documents }) {
   }
 
   return (
-    <Box bg="white" p="4" pt="6">
+    <Box bg="gray.50" p="2" mb="2">
       <NiceList keySelector="downloadUrl" list={documents}>
         {(document) => (
           <Flex align="center" color="blue.500">
-            <Code bg="white" fontWeight="bold" isTruncated mr="1">
-              <CLink color="blue.500" href={document.downloadUrl} rel="noreferrer" target="_blank">
+            <Code isTruncated mr="1">
+              <CLink
+                color="blue.500"
+                href={document.downloadUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
                 {document.name}
               </CLink>
             </Code>

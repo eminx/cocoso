@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Avatar, AvatarGroup, Box, Flex, Link as CLink, Text } from '@chakra-ui/react';
+import {
+  Avatar,
+  AvatarGroup,
+  Box,
+  Flex,
+  Link as CLink,
+  Text,
+} from '@chakra-ui/react';
 
-import Modal from '../../../generic/Modal';
-import NiceList from '../../../generic/NiceList';
+import Modal from '/imports/ui/core/Modal';
+import NiceList from '/imports/ui/generic/NiceList';
 
 export default function GroupMembers({ group }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,18 +33,27 @@ export default function GroupMembers({ group }) {
         onClick={() => setModalOpen(true)}
       >
         {group.members?.map((member) => (
-          <Avatar key={member.memberId} name={member.username} showBorder src={member.avatar} />
+          <Avatar
+            key={member.memberId}
+            name={member.username}
+            showBorder
+            src={member.avatar}
+          />
         ))}
       </AvatarGroup>
 
       <Modal
-        isCentered
-        isOpen={modalOpen}
+        hideFooter
+        open={modalOpen}
         title={t('labels.member')}
         onClose={() => setModalOpen(false)}
-        onCancel={() => setModalOpen(false)}
       >
-        <NiceList keySelector="username" list={group.members} py="4" spacing="4">
+        <NiceList
+          keySelector="username"
+          list={group.members}
+          py="4"
+          spacing="4"
+        >
           {(member) => (
             <Link to={`/@${member.username}/bio`}>
               <Flex align="center">
@@ -48,7 +64,10 @@ export default function GroupMembers({ group }) {
                   size="md"
                   src={member.avatar}
                 />
-                <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
+                <CLink
+                  as="span"
+                  fontWeight={member.isAdmin ? 700 : 400}
+                >
                   {member.username}
                 </CLink>
                 <Text ml="1">{member.isAdmin && '(admin)'}</Text>

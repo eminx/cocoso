@@ -14,11 +14,12 @@ import {
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
-import FancyDate from '../../../entry/FancyDate';
-import Modal from '../../../generic/Modal';
+import Modal from '/imports/ui/core/Modal';
+import FancyDate from '/imports/ui/entry/FancyDate';
+import { accordionProps } from '/imports/ui/utils/constants/general';
+import ActionButton from '/imports/ui/generic/ActionButton';
+
 import OccurrenceRsvpContent from './OccurrenceRsvpContent';
-import { accordionProps } from '../../../utils/constants/general';
-import ActionButton from '../../../generic/ActionButton';
 
 if (Meteor.isClient) {
   import 'react-table/react-table.css';
@@ -38,7 +39,8 @@ function AccordionDates({ activity, onCloseModal }) {
   }
 
   const isRegistrationEnabled =
-    activity.isRegistrationEnabled || activity.isRegistrationDisabled === false;
+    activity.isRegistrationEnabled ||
+    activity.isRegistrationDisabled === false;
 
   const items = [...activity.datesAndTimes];
 
@@ -51,7 +53,12 @@ function AccordionDates({ activity, onCloseModal }) {
 
         <Box>
           {items.map((occurrence) => (
-            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2" mb="4">
+            <Box
+              key={occurrence.startDate + occurrence.startTime}
+              {...buttonProps}
+              p="2"
+              mb="4"
+            >
               <FancyDate occurrence={occurrence} />
             </Box>
           ))}
@@ -69,7 +76,10 @@ function AccordionDates({ activity, onCloseModal }) {
       )}
       <Accordion allowToggle>
         {items.map((occurrence, occurrenceIndex) => (
-          <AccordionItem key={occurrence.startDate + occurrence.startTime} {...itemProps}>
+          <AccordionItem
+            key={occurrence.startDate + occurrence.startTime}
+            {...itemProps}
+          >
             <AccordionButton {...buttonProps}>
               <Box flex="1" textAlign="left">
                 <FancyDate occurrence={occurrence} />
@@ -112,7 +122,8 @@ function SubInfo({ occurrence }) {
         </Text>
 
         <Text fontSize="sm" fontWeight="bold">
-          {dayjs(occurrence?.startDate).format('DD')} {dayjs(occurrence?.startDate).format('MMM')}
+          {dayjs(occurrence?.startDate).format('DD')}{' '}
+          {dayjs(occurrence?.startDate).format('MMM')}
         </Text>
       </Flex>
     </Center>
@@ -128,10 +139,13 @@ export default function RsvpHandler({ activity }) {
   }
 
   const isRegistrationEnabled =
-    activity.isRegistrationEnabled || activity.isRegistrationDisabled === false;
+    activity.isRegistrationEnabled ||
+    activity.isRegistrationDisabled === false;
 
   const today = new Date().toISOString().substring(0, 10);
-  const nextEvent = activity.datesAndTimes?.find((d) => d.startDate > today);
+  const nextEvent = activity.datesAndTimes?.find(
+    (d) => d.startDate > today
+  );
 
   return (
     <>
@@ -151,15 +165,20 @@ export default function RsvpHandler({ activity }) {
       </Box>
 
       <Modal
-        isOpen={modalOpen}
+        hideFooter
+        open={modalOpen}
         size="lg"
         title={
-          isRegistrationEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')
+          isRegistrationEnabled
+            ? t('public.labels.datesAndRegistration')
+            : t('public.labels.dates')
         }
-        onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >
-        <AccordionDates activity={activity} onCloseModal={() => setModalOpen(false)} />
+        <AccordionDates
+          activity={activity}
+          onCloseModal={() => setModalOpen(false)}
+        />
       </Modal>
     </>
   );

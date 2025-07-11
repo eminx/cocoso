@@ -14,12 +14,13 @@ import parseHtml from 'html-react-parser';
 import Cascader from 'antd/lib/cascader';
 import { parse } from 'query-string';
 
+import Tabs from '/imports/ui/entry/Tabs';
+import Modal from '/imports/ui/core/Modal';
+
 import PageHeading from './PageHeading';
 import InfiniteScroller from './InfiniteScroller';
-import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 import { Bio } from '../entry/UserHybrid';
-import Tabs from '../entry/Tabs';
-import Modal from '../generic/Modal';
+import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 
 export default function UsersHybrid({ users, keywords, Host }) {
   const [modalItem, setModalItem] = useState(null);
@@ -206,11 +207,11 @@ export default function UsersHybrid({ users, keywords, Host }) {
       )}
 
       <Modal
-        actionButtonLabel={'Visit Profile'}
-        bg="gray.100"
-        isOpen={Boolean(modalItem)}
+        confirmText={<Trans i18nKey="members:actions.visit" />}
+        hideHeader
+        open={Boolean(modalItem)}
         size="xl"
-        onActionButtonClick={() => navigate(`/@${modalItem.username}`)}
+        onConfirm={() => navigate(`/@${modalItem.username}`)}
         onClose={() => setModalItem(null)}
       >
         <Box pt="8">

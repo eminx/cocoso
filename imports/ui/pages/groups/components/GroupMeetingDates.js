@@ -16,20 +16,28 @@ import {
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-import FancyDate from '../../../entry/FancyDate';
-import Modal from '../../../generic/Modal';
-import { accordionProps } from '../../../utils/constants/general';
-import { message } from '../../../generic/message';
-import { call } from '../../../utils/shared';
+import FancyDate from '/imports/ui/entry/FancyDate';
+import Modal from '/imports/ui/core/Modal';
+import { accordionProps } from '/imports/ui/utils/constants/general';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/ui/utils/shared';
+import ActionButton from '/imports/ui/generic/ActionButton';
+
 import { GroupContext } from '../Group';
-import ActionButton from '../../../generic/ActionButton';
 
 const { buttonProps, itemProps, panelProps } = accordionProps;
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
-const isFutureMeeting = (meeting) => dayjs(meeting.endDate).isAfter(yesterday);
+const isFutureMeeting = (meeting) =>
+  dayjs(meeting.endDate).isAfter(yesterday);
 
-function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose }) {
+function MeetingDatesContent({
+  currentUser,
+  group,
+  isAdmin,
+  isMember,
+  onClose,
+}) {
   const [regButtonDisabled, setRegButtonDisabled] = useState(false);
   const [delButtonDisabled, setDelButtonDisabled] = useState(false);
   const { getGroupById } = useContext(GroupContext);
@@ -120,7 +128,9 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
         const isAttending =
           currentUser &&
           meeting.attendees &&
-          meeting.attendees.map((attendee) => attendee.username).includes(currentUser.username);
+          meeting.attendees
+            .map((attendee) => attendee.username)
+            .includes(currentUser.username);
 
         return (
           <AccordionItem
@@ -150,7 +160,8 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
                             <Text as="span" fontWeight="bold">
                               {attendee.username}
                             </Text>
-                            {(attendee.firstName || attendee.lastName) && (
+                            {(attendee.firstName ||
+                              attendee.lastName) && (
                               <Text as="span">{` (${attendee.firstName} ${attendee.lastName})`}</Text>
                             )}
                           </ListItem>
@@ -176,9 +187,13 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
                     size="sm"
                     colorScheme={isAttending ? 'red' : 'green'}
                     isLoading={regButtonDisabled}
-                    onClick={() => toggleAttendance(meeting.meetingId, meetingIndex)}
+                    onClick={() =>
+                      toggleAttendance(meeting.meetingId, meetingIndex)
+                    }
                   >
-                    {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}
+                    {isAttending
+                      ? t('meeting.isAttending.false')
+                      : t('meeting.isAttending.true')}
                   </Button>
                 </Center>
               )}
@@ -203,7 +218,9 @@ export default function GroupMeetingDates(props) {
   const isFutureMeetings =
     group.meetings &&
     group.meetings.length > 0 &&
-    group.meetings.filter((meeting) => dayjs(meeting.endDate).isAfter(yesterday)).length > 0;
+    group.meetings.filter((meeting) =>
+      dayjs(meeting.endDate).isAfter(yesterday)
+    ).length > 0;
 
   if (!isFutureMeetings) {
     return (
@@ -219,7 +236,10 @@ export default function GroupMeetingDates(props) {
         <Box>
           <Center>
             {isMember && (
-              <ActionButton label={t('actions.register')} onClick={() => setModalOpen(true)} />
+              <ActionButton
+                label={t('actions.register')}
+                onClick={() => setModalOpen(true)}
+              />
             )}
           </Center>
           <Center>
@@ -250,11 +270,9 @@ export default function GroupMeetingDates(props) {
       </Center>
 
       <Modal
-        h="80%"
-        isCentered
-        isOpen={modalOpen}
+        hideFooter
+        open={modalOpen}
         title={t('labels.meetings')}
-        onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >
         {isMember && (
@@ -262,7 +280,10 @@ export default function GroupMeetingDates(props) {
             {t('meeting.info.member')}
           </Text>
         )}
-        <MeetingDatesContent {...props} onClose={() => setModalOpen(false)} />
+        <MeetingDatesContent
+          {...props}
+          onClose={() => setModalOpen(false)}
+        />
       </Modal>
     </>
   );

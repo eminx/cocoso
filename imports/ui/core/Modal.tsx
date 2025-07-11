@@ -43,7 +43,7 @@ const Overlay = styled('div', (props: { visible?: boolean }) => ({
 const ModalContent = styled(
   'div',
   (props: { size?: string; visible?: boolean }) => ({
-    backgroundColor: 'white',
+    backgroundColor: 'var(--cocoso-colors-gray-50)',
     borderRadius: '0.5rem',
     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
     maxWidth:
@@ -62,6 +62,7 @@ const ModalContent = styled(
         : '28rem',
     width: '100%',
     maxHeight: '90vh',
+    minHeight: '50vh',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',

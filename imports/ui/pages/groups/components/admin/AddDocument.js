@@ -1,15 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import React, { useContext, useState } from 'react';
-import { Box, Center, Flex, Heading, Spinner, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '../../../../generic/Modal';
-import DocumentUploadHelper from '../../../../forms/UploadHelpers';
-import GroupDocuments from '../GroupDocuments';
+import Modal from '/imports/ui/core/Modal';
+import DocumentUploadHelper from '/imports/ui/forms/UploadHelpers';
+import { message } from '/imports/ui/generic/message';
+
 import { GroupContext } from '../../Group';
-import { message } from '../../../../generic/message';
+import GroupDocuments from '../GroupDocuments';
 
 export default function AddDocument({ onClose }) {
   const [isUploading, setIsUploading] = useState(false);
@@ -72,7 +80,13 @@ export default function AddDocument({ onClose }) {
   };
 
   return (
-    <Modal isOpen size="lg" title={tc('documents.label')} onClose={onClose}>
+    <Modal
+      hideFooter
+      open
+      size="lg"
+      title={tc('documents.label')}
+      onClose={onClose}
+    >
       <ReactDropzone onDrop={handleFileDrop} multiple={false}>
         {({ getRootProps, getInputProps, isDragActive }) => (
           <Box
@@ -96,7 +110,9 @@ export default function AddDocument({ onClose }) {
                 </Flex>
               </Center>
             ) : (
-              <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
+              <div style={{ textAlign: 'center' }}>
+                {tc('documents.drop')}
+              </div>
             )}
             <input {...getInputProps()} />
           </Box>
@@ -105,10 +121,14 @@ export default function AddDocument({ onClose }) {
 
       <DocumentUploadHelper isImage={false} />
 
-      <Box pt="8">
-        <Heading size="sm">{tc('documents.label')}</Heading>
-        <GroupDocuments documents={group.documents} />
-      </Box>
+      {group.documents?.length > 0 ? (
+        <Box py="8">
+          <Heading mb="2" size="sm">
+            {tc('documents.label')}
+          </Heading>
+          <GroupDocuments documents={group.documents} />
+        </Box>
+      ) : null}
     </Modal>
   );
 }

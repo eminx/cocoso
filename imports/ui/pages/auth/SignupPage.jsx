@@ -1,12 +1,19 @@
 import React, { useContext } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Heading,
+  Image,
+  Link as CLink,
+  Text,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { StateContext } from '../../LayoutContainer';
+import Modal from '/imports/ui/core/Modal';
+import { StateContext } from '/imports/ui/LayoutContainer';
 import { Signup } from './index';
 import { createAccount } from './functions';
-import Modal from '../../generic/Modal';
 
 export default function SignupPage() {
   const [t] = useTranslation('accounts');
@@ -22,9 +29,11 @@ export default function SignupPage() {
   return (
     <Box pb="8">
       <Modal
-        contentProps={{ h: 'auto' }}
-        isOpen
-        scrollBehavior="outside"
+        // contentProps={{ h: 'auto' }}
+        hideHeader
+        hideFooter
+        open
+        // scrollBehavior="outside"
         size="2xl"
         onClose={() => navigate('/')}
       >
@@ -33,15 +42,19 @@ export default function SignupPage() {
             {platform && (
               <Center>
                 <Box>
-                  <Center p="4">
-                    <Image w="240px" src={platform?.logo} />
-                  </Center>
+                  {platform?.logo && (
+                    <Center p="4">
+                      <Image w="240px" src={platform?.logo} />
+                    </Center>
+                  )}
                   <Heading mb="4" size="md" textAlign="center">
                     {t('signup.labels.title')}
                   </Heading>
                   {/* {platform?.isFederationLayout && ( */}
                   <Text textAlign="center">
-                    {t('signup.labels.platform', { platform: platform?.name })}
+                    {t('signup.labels.platform', {
+                      platform: platform?.name,
+                    })}
                   </Text>
                   {/* )} */}
                 </Box>
@@ -59,7 +72,13 @@ export default function SignupPage() {
               </Text>
             </Center>
 
-            <Box bg="gray.50" borderColor="gray.300" borderWidth={1} mb="4" p="6">
+            <Box
+              bg="gray.50"
+              borderColor="gray.300"
+              borderWidth={1}
+              mb="4"
+              p="6"
+            >
               <Signup onSubmit={(values) => createAccount(values)} />
             </Box>
           </Box>
