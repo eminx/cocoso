@@ -1,8 +1,13 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Center } from '@chakra-ui/react';
 
+import { Center } from '/imports/ui/core';
 import { call } from '../../utils/shared';
 import UserHybrid from '../../entry/UserHybrid';
 import Loader from '../../generic/Loader';
@@ -69,7 +74,9 @@ export default function UserProfile() {
     );
   }
 
-  const role = currentHost.members?.find((m) => m.username === username)?.role;
+  const role = currentHost.members?.find(
+    (m) => m.username === username
+  )?.role;
 
   // const setAsParticipant = async (user) => {
   //   try {
@@ -95,7 +102,9 @@ export default function UserProfile() {
     <>
       <UserHybrid role={role} user={user} Host={currentHost} />
 
-      {rendered && <UserInteractionHandler user={user} slideStart={rendered} />}
+      {rendered && (
+        <UserInteractionHandler user={user} slideStart={rendered} />
+      )}
     </>
   );
 }

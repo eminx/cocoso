@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Center, Heading } from '@chakra-ui/react';
-import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
-import NiceSlider from '../generic/NiceSlider';
+import HTMLReactParser from 'html-react-parser';
 
+import { Box, Center, Heading } from '/imports/ui/core';
+import NiceSlider from '../generic/NiceSlider';
 import { parseTitle } from '../utils/shared';
 
 function SimplePage({ description, images, imageUrl, title, url }) {
@@ -19,12 +19,15 @@ function SimplePage({ description, images, imageUrl, title, url }) {
         <meta property="og:image" content={images && images[0]} />
         <meta property="og:url" content={url} />
         <meta property="og:image" content={imageUrl} />
-        <meta property="og:description" content={description?.substring(0, 150)} />
+        <meta
+          property="og:description"
+          content={description?.substring(0, 150)}
+        />
         <meta property="og:type" content="article" />
       </Helmet>
 
       <Center>
-        <Heading as="h1" color="gray.800" mb="6" mt="4" size="lg">
+        <Heading css={{ margin: '1rem 0.5rem 0.5rem' }} size="lg">
           {title}
         </Heading>
       </Center>
@@ -37,8 +40,15 @@ function SimplePage({ description, images, imageUrl, title, url }) {
 
       {description && (
         <Center>
-          <Box bg="white" className="text-content" maxW="540px" mt="2" mb="24" p="6">
-            {description && parseHtml(description)}
+          <Box
+            bg="white"
+            className="text-content"
+            maxW="540px"
+            mt="2"
+            mb="24"
+            p="6"
+          >
+            {description && HTMLReactParser(description)}
           </Box>
         </Center>
       )}
@@ -49,7 +59,9 @@ function SimplePage({ description, images, imageUrl, title, url }) {
 export default function PageHybrid({ pages }) {
   const { pageTitle } = useParams();
   const navigate = useNavigate();
-  const currentPage = pages.find((page) => parseTitle(page.title) === pageTitle);
+  const currentPage = pages.find(
+    (page) => parseTitle(page.title) === pageTitle
+  );
 
   if (!pages || pages.length === 0) {
     return null;

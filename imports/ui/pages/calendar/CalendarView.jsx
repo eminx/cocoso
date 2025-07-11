@@ -64,7 +64,7 @@ export default function CalendarView(props) {
         onSelectEvent={props.onSelect}
         onSelectSlot={props.onSelectSlot}
       />
-      <NewEntryHandler title="Create a new activity">
+      <NewEntryHandler>
         <NewCalendarActivity resources={resources} />
       </NewEntryHandler>
     </>

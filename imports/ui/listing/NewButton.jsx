@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-// import { IconButton } from '@chakra-ui/react';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 
 import { IconButton } from '/imports/ui/core';

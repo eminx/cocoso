@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
 
+import { Box } from '/imports/ui/core';
 import { message } from '../../generic/message';
 import Paginate from '../../listing/Paginate';
 import NewGridThumb from '../../listing/NewGridThumb';
@@ -35,7 +35,9 @@ function MemberWorks({ currentHost, user }) {
         return (
           <Box key={work._id}>
             {isExternal ? (
-              <a href={`https://${work.host}/@${work.authorUsername}/works/${work._id}/info`}>
+              <a
+                href={`https://${work.host}/@${work.authorUsername}/works/${work._id}/info`}
+              >
                 <NewGridThumb
                   avatar={{
                     name: work.authorUsername,
@@ -48,7 +50,9 @@ function MemberWorks({ currentHost, user }) {
                 />
               </a>
             ) : (
-              <Link to={`/@${work.authorUsername}/works/${work._id}/info`}>
+              <Link
+                to={`/@${work.authorUsername}/works/${work._id}/info`}
+              >
                 <NewGridThumb
                   avatar={{
                     name: work.authorUsername,

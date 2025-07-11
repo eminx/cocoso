@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Box, Center, Flex } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
+import { Box, Center, Flex } from '/imports/ui/core';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 import InfiniteScroller from './InfiniteScroller';
@@ -69,8 +69,6 @@ export default function WorksHybrid({ works, Host }) {
             label={t('all')}
             checkable
             checked={Boolean(category) === false || category === 'all'}
-            mb="2"
-            mr="2"
             onClick={() => setCategoryFilter('all')}
           />
           {categories.map((cat) => (
@@ -80,8 +78,6 @@ export default function WorksHybrid({ works, Host }) {
               checked={category === cat.label}
               filterColor={cat.color}
               label={cat.label}
-              mb="2"
-              mr="2"
               onClick={() => setCategoryFilter(cat.label)}
             />
           ))}

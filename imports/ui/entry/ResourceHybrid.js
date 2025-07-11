@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Text, VStack } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
+import { Box, Text, VStack } from '/imports/ui/core';
 import TablyCentered from './TablyCentered';
 import DocumentsField from '../pages/resources/components/DocumentsField';
 
@@ -17,7 +17,8 @@ export default function ResourceHybrid({ documents, resource, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {resource?.description && HTMLReactParser(resource?.description)}
+          {resource?.description &&
+            HTMLReactParser(resource?.description)}
         </Box>
       ),
       path: 'info',
@@ -32,11 +33,13 @@ export default function ResourceHybrid({ documents, resource, Host }) {
           {resource.resourcesForCombo.map((res) => (
             <Link key={res._id} to={`/resources/${res._id}/info`}>
               <Box
-                _hover={{ bg: 'white' }}
-                bg="gray.50"
-                borderRadius="lg"
-                color="blue.500"
-                p="2"
+                css={{
+                  ':hover': {
+                    backgroundColor: 'white',
+                  },
+                }}
+                px="4"
+                py="2"
                 textAlign="left"
               >
                 <Text fontSize="lg">{res.label}</Text>
@@ -54,7 +57,10 @@ export default function ResourceHybrid({ documents, resource, Host }) {
       title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: (
         <Box p="4">
-          <DocumentsField contextType="works" contextId={resource?._id} />
+          <DocumentsField
+            contextType="works"
+            contextId={resource?._id}
+          />
         </Box>
       ),
       path: 'documents',
@@ -75,10 +81,14 @@ export default function ResourceHybrid({ documents, resource, Host }) {
   }
 
   if (resource.isBookable) {
-    tags.push(<Trans i18nKey="resources:cards.isBookable">Bookable</Trans>);
+    tags.push(
+      <Trans i18nKey="resources:cards.isBookable">Bookable</Trans>
+    );
   }
 
-  const resourcesInMenu = Host?.settings?.menu?.find((item) => item.name === 'resources');
+  const resourcesInMenu = Host?.settings?.menu?.find(
+    (item) => item.name === 'resources'
+  );
   const backLink = {
     value: '/resources',
     label: resourcesInMenu?.label,

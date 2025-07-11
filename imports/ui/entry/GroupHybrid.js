@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Center } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
+import { Box, Center } from '/imports/ui/core';
 import TablyCentered from './TablyCentered';
 import GroupDocuments from '../pages/groups/components/GroupDocuments';
 import GroupMembers from '../pages/groups/components/GroupMembers';
@@ -34,7 +34,9 @@ export default function GroupHybrid({ group, Host }) {
     });
   }
 
-  const groupsInMenu = Host.settings?.menu.find((item) => item.name === 'groups');
+  const groupsInMenu = Host.settings?.menu.find(
+    (item) => item.name === 'groups'
+  );
   const tags = [];
   if (group.isPrivate) {
     tags.push(<Trans i18nKey="common:labels.private">Private</Trans>);

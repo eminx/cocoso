@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
 
+import { Box } from '/imports/ui/core';
 import { message } from '../../generic/message';
 import Paginate from '../../listing/Paginate';
 import NewGridThumb from '../../listing/NewGridThumb';
@@ -29,7 +29,9 @@ function MemberActivities({ currentHost, user }) {
     return null;
   }
 
-  const publicActivities = activities.filter((item) => item.isPublicActivity);
+  const publicActivities = activities.filter(
+    (item) => item.isPublicActivity
+  );
   const isPortalHost = currentHost?.isPortalHost;
 
   return (
@@ -39,12 +41,18 @@ function MemberActivities({ currentHost, user }) {
         return (
           <Box key={activity._id}>
             {isExternal ? (
-              <a href={`https://${activity.host}/activities/${activity._id}/info`}>
+              <a
+                href={`https://${activity.host}/activities/${activity._id}/info`}
+              >
                 <NewGridThumb
                   host={isPortalHost && activity.host}
                   imageUrl={activity.imageUrl}
                   title={activity.title}
-                  subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
+                  subTitle={
+                    activity.isGroup
+                      ? activity.readingMaterial
+                      : activity.subTitle
+                  }
                 />
               </a>
             ) : (
@@ -53,7 +61,11 @@ function MemberActivities({ currentHost, user }) {
                   host={isPortalHost && activity.host}
                   imageUrl={activity.imageUrl}
                   title={activity.title}
-                  subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
+                  subTitle={
+                    activity.isGroup
+                      ? activity.readingMaterial
+                      : activity.subTitle
+                  }
                 />
               </Link>
             )}

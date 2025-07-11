@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center } from '@chakra-ui/react';
 
+import { Box, Center } from '/imports/ui/core';
 import Template from '../../layout/Template';
 import NewHostForm from '../../forms/NewHostForm';
 import { message } from '../../generic/message';
@@ -64,7 +64,10 @@ function NewHost() {
     <Box w="100%">
       <Template heading={tc('labels.create.host')}>
         <Box py="6">
-          <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
+          <NewHostForm
+            defaultValues={hostModel}
+            onSubmit={handleSubmit}
+          />
         </Box>
       </Template>
     </Box>

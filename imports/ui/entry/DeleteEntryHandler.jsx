@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
+import { Center, Text } from '/imports/ui/core';
 import { StateContext } from '../LayoutContainer';
 import { call } from '../utils/shared';
 import ConfirmModal from '../generic/ConfirmModal';
@@ -30,7 +30,8 @@ export default function DeleteEntryHandler({ item, context }) {
   const navigate = useNavigate();
   const [tc] = useTranslation('common');
 
-  const { canCreateContent, currentUser, role } = useContext(StateContext);
+  const { canCreateContent, currentUser, role } =
+    useContext(StateContext);
 
   const deleteEntry = async () => {
     const deleteMethod = getDeleteMethod(context);
@@ -72,13 +73,23 @@ export default function DeleteEntryHandler({ item, context }) {
       title={tc('modals.confirm.delete.title')}
       visible={isOpen}
       onConfirm={() => deleteEntry()}
-      onCancel={() => setSearchParams((params) => ({ ...params, delete: 'false' }))}
+      onCancel={() =>
+        setSearchParams((params) => ({ ...params, delete: 'false' }))
+      }
     >
       <Text fontSize="xl" mb="2">
         {tc('modals.confirm.delete.body')}
       </Text>
-      <Center bg="red.200" borderRadius="lg" color="red.900" p="2" textAlign="center">
-        <Text fontSize="lg">{tc('modals.confirm.delete.cantundo')}</Text>
+      <Center
+        bg="red.200"
+        borderRadius="lg"
+        color="red.900"
+        p="2"
+        textAlign="center"
+      >
+        <Text fontSize="lg">
+          {tc('modals.confirm.delete.cantundo')}
+        </Text>
       </Center>
     </ConfirmModal>
   );
