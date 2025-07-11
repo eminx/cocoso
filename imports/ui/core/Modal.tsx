@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { styled } from 'restyle';
 import { useTranslation } from 'react-i18next';
 
@@ -28,7 +29,7 @@ const Overlay = styled('div', (props: { visible?: boolean }) => ({
   bottom: 0,
   backgroundColor: 'rgba(0, 0, 0, 0.5)',
   backdropFilter: 'brightness(0.8)',
-  zIndex: 1500,
+  zIndex: 9999,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -126,6 +127,25 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const [tc] = useTranslation('common');
   const overlayRef = useRef<HTMLDivElement>(null);
+  const [portalContainer, setPortalContainer] =
+    useState<HTMLElement | null>(null);
+
+  // Create portal container
+  useEffect(() => {
+    if (open && !portalContainer) {
+      const container = document.createElement('div');
+      container.id = 'modal-portal';
+      document.body.appendChild(container);
+      setPortalContainer(container);
+    }
+
+    return () => {
+      if (portalContainer && !open) {
+        document.body.removeChild(portalContainer);
+        setPortalContainer(null);
+      }
+    };
+  }, [open, portalContainer]);
 
   // Handle escape key
   useEffect(() => {
@@ -174,7 +194,7 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
-  return (
+  const modalContent = (
     <Overlay
       ref={overlayRef}
       onClick={handleOverlayClick}
@@ -229,6 +249,13 @@ const Modal: React.FC<ModalProps> = ({
       </ModalContent>
     </Overlay>
   );
+
+  // Render modal using portal if container exists, otherwise render normally
+  if (portalContainer && open) {
+    return createPortal(modalContent, portalContainer);
+  }
+
+  return open ? modalContent : null;
 };
 
 export default Modal;
