@@ -1,6 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useLayoutEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -17,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 
 import ProfileForm from './ProfileForm';
-import ConfirmModal from '../../generic/ConfirmModal';
+import Modal from '/imports/ui/core/Modal';
 import { message } from '../../generic/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import FormSwitch from '../../forms/FormSwitch';
@@ -34,12 +40,14 @@ function EditProfile() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadableAvatarLocal, setUploadableAvatarLocal] = useState(null);
+  const [uploadableAvatarLocal, setUploadableAvatarLocal] =
+    useState(null);
   const [uploadableAvatar, setUploadableAvatar] = useState(null);
   const [lang, setLang] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { currentHost, currentUser, platform, role } = useContext(StateContext);
+  const { currentHost, currentUser, platform, role } =
+    useContext(StateContext);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -77,7 +85,10 @@ function EditProfile() {
 
     try {
       const resizedAvatar = await resizeImage(uploadableAvatar, 1200);
-      const uploadedAvatar = await uploadImage(resizedAvatar, 'avatarImageUpload');
+      const uploadedAvatar = await uploadImage(
+        resizedAvatar,
+        'avatarImageUpload'
+      );
       await call('setAvatar', uploadedAvatar);
       message.success(
         tc('message.success.save', {
@@ -193,8 +204,12 @@ function EditProfile() {
     }
   };
 
-  const isMember = ['admin', 'contributor', 'participant'].includes(role);
-  const currentMembership = currentUser.memberships.find((m) => m.host === currentHost.host);
+  const isMember = ['admin', 'contributor', 'participant'].includes(
+    role
+  );
+  const currentMembership = currentUser.memberships.find(
+    (m) => m.host === currentHost.host
+  );
   const isUserPublic = Boolean(currentMembership?.isPublic);
   const isUserPublicGlobally = currentUser?.isPublic;
   const communityName = currentHost?.settings?.name;
@@ -223,7 +238,10 @@ function EditProfile() {
               {t('profile.image')}
             </Heading>
             <AvatarUploader
-              imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
+              imageUrl={
+                uploadableAvatarLocal ||
+                (currentUser.avatar && currentUser.avatar.src)
+              }
               isUploading={isUploading}
               uploadableAvatarLocal={uploadableAvatarLocal}
               removeAvatar={removeAvatar}
@@ -238,7 +256,10 @@ function EditProfile() {
               {t('profile.label')}
             </Heading>
             <Box mb="4">
-              <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
+              <ProfileForm
+                defaultValues={currentUser}
+                onSubmit={handleSubmitInfo}
+              />
             </Box>
           </Boxling>
 
@@ -256,10 +277,17 @@ function EditProfile() {
           <Heading mb="4" size="md">
             {tc('langs.form.label')}
           </Heading>
-          <ChangeLanguage hideHelper select onChange={(selectedLang) => setLang(selectedLang)} />
+          <ChangeLanguage
+            hideHelper
+            select
+            onChange={(selectedLang) => setLang(selectedLang)}
+          />
 
           <Flex justify="flex-end" mt="4">
-            <Button disabled={lang === currentUser.lang} onClick={handleSetLanguage}>
+            <Button
+              disabled={lang === currentUser.lang}
+              onClick={handleSetLanguage}
+            >
               {tc('actions.submit')}
             </Button>
           </Flex>
@@ -274,7 +302,12 @@ function EditProfile() {
           <Box mb="4">
             <Heading size="md" pb="4">
               {platform?.name}{' '}
-              <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
+              <Text
+                as="span"
+                fontSize="md"
+                fontWeight="light"
+                textTransform="lowercase"
+              >
                 {tc('domains.platform')}
               </Text>
             </Heading>
@@ -282,7 +315,9 @@ function EditProfile() {
               colorScheme="green"
               isChecked={isUserPublicGlobally}
               label={t('profile.makePublic.labelGlobal')}
-              onChange={({ target: { checked } }) => setProfilePublicGlobally(checked)}
+              onChange={({ target: { checked } }) =>
+                setProfilePublicGlobally(checked)
+              }
             />
             <Text fontSize="sm" my="2">
               {t('profile.makePublic.helperTextGlobal')}
@@ -294,7 +329,12 @@ function EditProfile() {
           <Box pl="4">
             <Heading size="md" pb="4">
               {communityName}{' '}
-              <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
+              <Text
+                as="span"
+                fontSize="md"
+                fontWeight="light"
+                textTransform="lowercase"
+              >
                 {tc('domains.community')}
               </Text>
             </Heading>
@@ -319,9 +359,13 @@ function EditProfile() {
               <FormSwitch
                 colorScheme="green"
                 isChecked={isUserPublic}
-                isDisabled={!isUserPublicGlobally || currentHost.isPortalHost}
+                isDisabled={
+                  !isUserPublicGlobally || currentHost.isPortalHost
+                }
                 label={t('profile.makePublic.label')}
-                onChange={({ target: { checked } }) => setProfilePublic(checked)}
+                onChange={({ target: { checked } }) =>
+                  setProfilePublic(checked)
+                }
               />
               <Text fontSize="sm" my="2">
                 {t('profile.makePublic.helperText')}
@@ -329,7 +373,11 @@ function EditProfile() {
             </Box>
 
             <Box py="2">
-              <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
+              <Button
+                colorScheme="red"
+                size="sm"
+                onClick={() => setIsLeaveModalOn(true)}
+              >
                 {t('actions.leave', { host: communityName })}
               </Button>
             </Box>
@@ -341,7 +389,8 @@ function EditProfile() {
 
   const pathname = location?.pathname;
   const pathnameLastPart = pathname.split('/').pop();
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
+  const tabIndex =
+    tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
   if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
@@ -353,15 +402,27 @@ function EditProfile() {
         <Box>
           <Heading mb="4" size="md">
             {platform?.name}{' '}
-            <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
+            <Text
+              as="span"
+              fontSize="md"
+              fontWeight="light"
+              textTransform="lowercase"
+            >
               {tc('domains.platform')}
             </Text>
           </Heading>
 
-          <Alert bg="blueGray.50" borderRadius="lg" mb="8" status="info">
+          <Alert
+            bg="blueGray.50"
+            borderRadius="lg"
+            mb="8"
+            status="info"
+          >
             <AlertIcon color="gray.800" />
             <Text fontSize="sm" mr="4">
-              {t('profile.message.platform', { platform: platform?.name })}
+              {t('profile.message.platform', {
+                platform: platform?.name,
+              })}
             </Text>
           </Alert>
 
@@ -370,7 +431,11 @@ function EditProfile() {
           <Box>
             <Routes>
               {tabs.map((tab) => (
-                <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+                <Route
+                  key={tab.title}
+                  path={tab.path}
+                  element={<Box pt="2">{tab.content}</Box>}
+                />
               ))}
             </Routes>
           </Box>
@@ -380,14 +445,18 @@ function EditProfile() {
 
         <Box bg="red.100" mt="24">
           <VStack spacing="4" p="4">
-            <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
+            <Button
+              colorScheme="red"
+              size="sm"
+              onClick={() => setIsDeleteModalOn(true)}
+            >
               {t('delete.action')}
             </Button>
           </VStack>
         </Box>
 
-        <ConfirmModal
-          visible={isLeaveModalOn}
+        <Modal
+          open={isLeaveModalOn}
           title={t('leave.title')}
           confirmText={t('leave.label')}
           confirmButtonProps={{
@@ -395,13 +464,13 @@ function EditProfile() {
             isLoading: isLeaving,
           }}
           onConfirm={leaveHost}
-          onCancel={() => setIsLeaveModalOn(false)}
+          onClose={() => setIsLeaveModalOn(false)}
         >
           <Text>{t('leave.body')}</Text>
-        </ConfirmModal>
+        </Modal>
 
-        <ConfirmModal
-          visible={isDeleteModalOn}
+        <Modal
+          open={isDeleteModalOn}
           title={t('delete.title')}
           confirmText={t('delete.label')}
           confirmButtonProps={{
@@ -410,10 +479,10 @@ function EditProfile() {
             isDisabled: isDeleting,
           }}
           onConfirm={deleteAccount}
-          onCancel={() => setIsDeleteModalOn(false)}
+          onClose={() => setIsDeleteModalOn(false)}
         >
           <Text>{t('delete.body')}</Text>
-        </ConfirmModal>
+        </Modal>
       </Box>
     </>
   );
