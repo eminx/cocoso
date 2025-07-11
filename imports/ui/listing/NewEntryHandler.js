@@ -124,6 +124,7 @@ export default function NewEntryHandler({ children }) {
       <Modal
         closeOnOverlayClick={false}
         closeOnEsc={false}
+        hideFooter
         // contentProps={{
         //   h: 'auto',
         //   mt: '12',

@@ -167,7 +167,6 @@ export default function PopupHandler({
     <Modal
       confirmText={getButtonLabel()}
       hideHeader
-      // bg="gray.100"
       open={item}
       cancelText={copied ? tc('actions.copied') : tc('actions.share')}
       size="xl"

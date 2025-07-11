@@ -251,10 +251,10 @@ const Modal: React.FC<ModalProps> = ({
         {/* Footer */}
         {!hideFooter && (
           <Footer>
-            <Button variant="outline" onClick={handleCancel}>
+            <Button size="sm" variant="outline" onClick={handleCancel}>
               {cancelText || tc('actions.cancel')}
             </Button>
-            <Button onClick={handleConfirm}>
+            <Button size="sm" onClick={handleConfirm}>
               {confirmText || tc('actions.submit')}
             </Button>
           </Footer>
