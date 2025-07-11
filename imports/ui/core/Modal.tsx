@@ -168,7 +168,7 @@ const Modal: React.FC<ModalProps> = ({
 
   // Handle overlay click
   const handleOverlayClick = (event: React.MouseEvent) => {
-    if (closeOnOverlayClick && event.target === overlayRef.current) {
+    if (closeOnOverlayClick && event.target === event.currentTarget) {
       onClose();
     }
   };

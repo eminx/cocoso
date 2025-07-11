@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import Modal from '/imports/ui/core/Modal';
 import { Center, Text } from '/imports/ui/core';
 import { StateContext } from '../LayoutContainer';
 import { call } from '../utils/shared';
-import ConfirmModal from '../generic/ConfirmModal';
 import { message } from '../generic/message';
 
 function getDeleteMethod(context) {
@@ -65,15 +65,15 @@ export default function DeleteEntryHandler({ item, context }) {
   const isOpen = searchParams.get('delete') === 'true';
 
   return (
-    <ConfirmModal
-      confirmButtonProps={{
-        colorScheme: 'red',
-      }}
+    <Modal
+      // confirmButtonProps={{
+      //   colorScheme: 'red',
+      // }}
       confirmText={tc('modals.confirm.delete.yes')}
       title={tc('modals.confirm.delete.title')}
-      visible={isOpen}
+      open={isOpen}
       onConfirm={() => deleteEntry()}
-      onCancel={() =>
+      onClose={() =>
         setSearchParams((params) => ({ ...params, delete: 'false' }))
       }
     >
@@ -91,6 +91,6 @@ export default function DeleteEntryHandler({ item, context }) {
           {tc('modals.confirm.delete.cantundo')}
         </Text>
       </Center>
-    </ConfirmModal>
+    </Modal>
   );
 }
