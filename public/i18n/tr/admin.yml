@@ -137,6 +137,7 @@ newsletter:
     title: Herkese göndermeyi onayla
     body: Bu e-postayı topluluğunuzun tüm üyelerine göndermek üzeresin. Bu e-postayı üyelerinize gönderdikten sonra bu işlemi geri alamazsın.
     yes: Evet, lütfen gönder
+    send: E-postayı gönder
   error:
     required: Boş bir e-posta gönderemezsin. Gönderilecek e-posta için gövde metni veya resim girmen ya da içerik ögeleri eklemen gerekir.
   form:

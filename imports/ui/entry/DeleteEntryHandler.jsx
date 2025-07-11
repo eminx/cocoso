@@ -66,9 +66,9 @@ export default function DeleteEntryHandler({ item, context }) {
 
   return (
     <Modal
-      // confirmButtonProps={{
-      //   colorScheme: 'red',
-      // }}
+      confirmButtonProps={{
+        colorScheme: 'red',
+      }}
       confirmText={tc('modals.confirm.delete.yes')}
       title={tc('modals.confirm.delete.title')}
       open={isOpen}

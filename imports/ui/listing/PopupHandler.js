@@ -1,10 +1,17 @@
 import React, { useContext, useState } from 'react';
-import { Box, Center, Flex, Heading, ModalBody, Tag } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  ModalBody,
+  Tag,
+} from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '../generic/Modal';
+import Modal from '/imports/ui/core/Modal';
 import { StateContext } from '../LayoutContainer';
 import NiceSlider from '../generic/NiceSlider';
 import ActionDates from '../entry/ActionDates';
@@ -26,7 +33,13 @@ function PopupHeader({ subTitle, tags, title }) {
         {title}
       </Heading>
       {subTitle && (
-        <Heading as="h2" fontSize="1.3em" fontWeight="light" lineHeight={1} textAlign="center">
+        <Heading
+          as="h2"
+          fontSize="1.3em"
+          fontWeight="light"
+          lineHeight={1}
+          textAlign="center"
+        >
           {subTitle}
         </Heading>
       )}
@@ -35,7 +48,13 @@ function PopupHeader({ subTitle, tags, title }) {
           {tags.map(
             (tag) =>
               tag && (
-                <Tag key={tag} bg="gray.50" color="gray.800" fontSize="14px" fontWeight="bold">
+                <Tag
+                  key={tag}
+                  bg="gray.50"
+                  color="gray.800"
+                  fontSize="14px"
+                  fontWeight="bold"
+                >
                   {tag}
                 </Tag>
               )
@@ -46,7 +65,14 @@ function PopupHeader({ subTitle, tags, title }) {
   );
 }
 
-function PopupContent({ action = null, content, images, subTitle, title, tags }) {
+function PopupContent({
+  action = null,
+  content,
+  images,
+  subTitle,
+  title,
+  tags,
+}) {
   return (
     <>
       <PopupHeader subTitle={subTitle} tags={tags} title={title} />
@@ -87,7 +113,12 @@ const getLinkPath = (item, kind, isCurrentHost = false) => {
   };
 };
 
-export default function PopupHandler({ item, kind, showPast, onClose }) {
+export default function PopupHandler({
+  item,
+  kind,
+  showPast,
+  onClose,
+}) {
   const [copied, setCopied] = useState(false);
   const { allHosts, currentHost } = useContext(StateContext);
   const navigate = useNavigate();
@@ -111,7 +142,11 @@ export default function PopupHandler({ item, kind, showPast, onClose }) {
   };
 
   const handleActionButtonClick = () => {
-    const link = getLinkPath(item, kind, item.host === currentHost.host);
+    const link = getLinkPath(
+      item,
+      kind,
+      item.host === currentHost.host
+    );
     if (link.isHref) {
       window.open(link.path, '_self');
       return;
@@ -130,28 +165,34 @@ export default function PopupHandler({ item, kind, showPast, onClose }) {
 
   return (
     <Modal
-      actionButtonLabel={getButtonLabel()}
-      bg="gray.100"
-      isOpen={item}
-      secondaryButtonLabel={copied ? tc('actions.copied') : tc('actions.share')}
+      confirmText={getButtonLabel()}
+      hideHeader
+      // bg="gray.100"
+      open={item}
+      cancelText={copied ? tc('actions.copied') : tc('actions.share')}
       size="xl"
-      onActionButtonClick={() => handleActionButtonClick()}
+      onConfirm={() => handleActionButtonClick()}
       onClose={onClose}
       onSecondaryButtonClick={handleCopyLink}
     >
-      <ModalBody pt="6">
-        <PopupContent
-          action={<ActionDates activity={item} showPast={showPast} showTime />}
-          content={
-            (item.longDescription && parseHtml(item.longDescription)) ||
-            (item.description && parseHtml(item.description))
-          }
-          images={item.images || [item.imageUrl]}
-          subTitle={item.subTitle || item.readingMaterial || item.shortDescription || null}
-          tags={tags}
-          title={item.title || item.label}
-        />
-      </ModalBody>
+      <PopupContent
+        action={
+          <ActionDates activity={item} showPast={showPast} showTime />
+        }
+        content={
+          (item.longDescription && parseHtml(item.longDescription)) ||
+          (item.description && parseHtml(item.description))
+        }
+        images={item.images || [item.imageUrl]}
+        subTitle={
+          item.subTitle ||
+          item.readingMaterial ||
+          item.shortDescription ||
+          null
+        }
+        tags={tags}
+        title={item.title || item.label}
+      />
     </Modal>
   );
 }

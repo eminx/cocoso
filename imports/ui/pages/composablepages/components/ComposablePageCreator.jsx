@@ -4,7 +4,7 @@ import { Button, Center, Input } from '@chakra-ui/react';
 import FilePlusIcon from 'lucide-react/dist/esm/icons/file-plus';
 import { Trans } from 'react-i18next';
 
-import ConfirmModal from '/imports/ui/generic/ConfirmModal';
+import Modal from '/imports/ui/core/Modal';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
@@ -57,12 +57,12 @@ export default function ComposablePageCreator({
         </Button>
       </Center>
 
-      <ConfirmModal
+      <Modal
         confirmText={<Trans i18nKey="admin:composable.create" />}
+        open={createPageModal.visible}
         title={<Trans i18nKey="admin:composable.title" />}
-        visible={createPageModal.visible}
         onConfirm={createComposablePage}
-        onCancel={() => setCreatePageModal(emptyPageModal)}
+        onClose={() => setCreatePageModal(emptyPageModal)}
       >
         <FormField
           label={
@@ -84,7 +84,7 @@ export default function ComposablePageCreator({
             }
           />
         </FormField>
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }

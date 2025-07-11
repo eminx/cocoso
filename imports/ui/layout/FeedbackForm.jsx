@@ -3,13 +3,6 @@ import {
   Button,
   Center,
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalCloseButton,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Select,
   Textarea,
   VStack,
@@ -17,7 +10,8 @@ import {
 
 import { useTranslation } from 'react-i18next';
 
-import FormField from '../forms/FormField';
+import Modal from '/imports/ui/core/Modal';
+import FormField from '/imports/ui/forms/FormField';
 
 function FeedbackForm({ isDarkText = false }) {
   const [tc] = useTranslation('common');
@@ -36,47 +30,43 @@ function FeedbackForm({ isDarkText = false }) {
         </Button>
       </Center>
 
-      <Modal isOpen={showFeedbackModal} onClose={() => setShowFeedbackModal(false)}>
-        <ModalOverlay />
-        <ModalContent bg="brand.50">
-          <ModalHeader>{tc('modals.feedback.label')}</ModalHeader>
-          <ModalCloseButton />
-          <form action="https://formspree.io/f/xdopweon" method="POST">
-            <ModalBody>
-              <VStack spacing="6">
-                <FormField label={tc('modals.feedback.form.email.label')}>
-                  <Input type="email" name="_replyto" />
-                </FormField>
+      <Modal
+        hideFooter
+        open={showFeedbackModal}
+        title={tc('modals.feedback.label')}
+        onClose={() => setShowFeedbackModal(false)}
+      >
+        <form action="https://formspree.io/f/xdopweon" method="POST">
+          <VStack mb="8" spacing="6">
+            <FormField label={tc('modals.feedback.form.email.label')}>
+              <Input type="email" name="_replyto" />
+            </FormField>
 
-                <FormField label={tc('modals.feedback.form.subject.label')}>
-                  <Select name="subject">
-                    {[
-                      tc('modals.feedback.form.subject.select.suggest'),
-                      tc('modals.feedback.form.subject.select.bug'),
-                      tc('modals.feedback.form.subject.select.compliment'),
-                    ].map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </Select>
-                </FormField>
+            <FormField label={tc('modals.feedback.form.subject.label')}>
+              <Select name="subject">
+                {[
+                  tc('modals.feedback.form.subject.select.suggest'),
+                  tc('modals.feedback.form.subject.select.bug'),
+                  tc('modals.feedback.form.subject.select.compliment'),
+                ].map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </Select>
+            </FormField>
 
-                <FormField label={tc('modals.feedback.form.details.label')}>
-                  <Textarea name="message" />
-                </FormField>
-              </VStack>
-            </ModalBody>
-            <ModalFooter>
-              <Button mr={3} onClick={() => setShowFeedbackModal(false)}>
-                {tc('actions.close')}
-              </Button>
-              <Button colorScheme="blue" type="submit">
-                {tc('actions.send')}
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
+            <FormField label={tc('modals.feedback.form.details.label')}>
+              <Textarea
+                style={{
+                  border: '2px solid var(--cocoso-colors-theme-400)',
+                }}
+                name="message"
+                rows={10}
+              />
+            </FormField>
+          </VStack>
+        </form>
       </Modal>
     </>
   );

@@ -16,10 +16,10 @@ import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
-import { StateContext } from '../LayoutContainer';
-import { call } from '../utils/shared';
-import ConfirmModal from '../generic/ConfirmModal';
-import NiceSlider from '../generic/NiceSlider';
+import Modal from '/imports/ui/core/Modal';
+import { call } from '/imports/ui/utils/shared';
+import NiceSlider from '/imports/ui/generic/NiceSlider';
+import { StateContext } from '/imports/ui/LayoutContainer';
 
 const buttonProps = {
   color: 'gray.700',
@@ -38,7 +38,8 @@ export default function FederationIconMenu() {
   const [infoOpen, setInfoOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hostInfo, setHostInfo] = useState(null);
-  const { allHosts, currentHost, currentUser, isDesktop, platform } = useContext(StateContext);
+  const { allHosts, currentHost, currentUser, isDesktop, platform } =
+    useContext(StateContext);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const navigate = useNavigate();
@@ -71,7 +72,10 @@ export default function FederationIconMenu() {
         p="1"
       >
         <Image
-          _hover={{ filter: 'invert(100%)', transition: 'all .2s ease-in-out' }}
+          _hover={{
+            filter: 'invert(100%)',
+            transition: 'all .2s ease-in-out',
+          }}
           borderRadius="lg"
           cursor="pointer"
           fit="contain"
@@ -87,13 +91,20 @@ export default function FederationIconMenu() {
             onOpen={() => setMenuOpen(true)}
             onClose={() => setMenuOpen(false)}
           >
-            <MenuButton {...buttonProps} as={Button} rightIcon={<ChevronDownIcon size="16px" />}>
+            <MenuButton
+              {...buttonProps}
+              as={Button}
+              rightIcon={<ChevronDownIcon size="16px" />}
+            >
               {t('profile.myCommunities')}
             </MenuButton>
 
             <MenuList>
               {currentUser.memberships?.map((m) => (
-                <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
+                <MenuItem
+                  key={m.host}
+                  onClick={() => (location.href = `https://${m.host}`)}
+                >
                   {m.hostname}
                 </MenuItem>
               ))}
@@ -119,32 +130,38 @@ export default function FederationIconMenu() {
         )}
       </HStack>
 
-      <ConfirmModal
+      <Modal
         confirmText={tc('modals.toPortalApp')}
         hideFooter={isPortalHost}
-        isCentered
-        scrollBehavior="inside"
+        open={infoOpen}
+        // scrollBehavior="inside"
         size="2xl"
         title={platform?.name}
-        visible={infoOpen}
-        onConfirm={() => (window.location.href = `https://${platform.portalHost}`)}
-        onCancel={() => setInfoOpen(false)}
-        onOverlayClick={() => setInfoOpen(false)}
+        onConfirm={() =>
+          (window.location.href = `https://${platform.portalHost}`)
+        }
+        onClose={() => setInfoOpen(false)}
       >
         {hostInfo && (
           <Box>
             {hostInfo.images && (
               <Center mb="6">
-                <NiceSlider alt={hostInfo.title} height="auto" images={hostInfo.images} />
+                <NiceSlider
+                  alt={hostInfo.title}
+                  height="auto"
+                  images={hostInfo.images}
+                />
               </Center>
             )}
 
             {hostInfo.longDescription && (
-              <Box className="text-content">{parseHtml(hostInfo?.longDescription)}</Box>
+              <Box className="text-content">
+                {parseHtml(hostInfo?.longDescription)}
+              </Box>
             )}
           </Box>
         )}
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }

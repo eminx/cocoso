@@ -137,6 +137,7 @@ newsletter:
     title: Bekräfta sändning till alla personer
     body: Du är på väg att skicka detta e-postmeddelande till alla medlemmar i din community. Du kan inte återställa denna åtgärd när du har skickat detta e-postmeddelande till dina medlemmar.
     yes: Ja, skicka gärna
+    send: Skicka e-post
   error:
     required: Du kan inte skicka ett tomt e-postmeddelande. Du måste ange antingen brödtext eller bild, eller infoga innehållsobjekt för att e-postmeddelandet ska skickas.
   form:

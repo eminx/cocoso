@@ -24,7 +24,7 @@ import Menu from '/imports/ui/generic/Menu';
 import { call } from '/imports/ui/utils/shared';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { message } from '/imports/ui/generic/message';
-import ConfirmModal from '/imports/ui/generic/ConfirmModal';
+import Modal from '/imports/ui/core/Modal';
 import TopToolBar from '/imports/ui/pages/composablepages/components/TopToolbar';
 import { rowTypes } from './constants';
 import ComposablePageCreator from './components/ComposablePageCreator';
@@ -398,30 +398,28 @@ export default function ComposablePageForm({
             <BottomToolbar />
           </Center>
 
-          <ConfirmModal
+          <Modal
+            closeOnOverlayClick={false}
             confirmButtonProps={{ isLoading: contentModal?.uploading }}
-            size="4xl"
+            open={contentModal?.open}
+            size="3xl"
             title={<Trans i18nKey="admin:composable.form.addContent" />}
-            visible={contentModal?.open}
             onConfirm={confirmContentModal}
-            onCancel={(prevState) =>
-              setContentModal({ open: false, content: null })
-            }
-            onOverlayClick={(prevState) =>
+            onClose={(prevState) =>
               setContentModal({ open: false, content: null })
             }
           >
             <ContentHandler />
-          </ConfirmModal>
+          </Modal>
 
-          <ConfirmModal
+          <Modal
             confirmButtonProps={{ colorScheme: 'red' }}
+            open={deleteModuleModal.visible}
             title={
               <Trans i18nKey="admin:composable.confirmDelete.title" />
             }
-            visible={deleteModuleModal.visible}
             onConfirm={() => handleDeleteModule()}
-            onCancel={() => setDeleteModuleModal(emptyModuleModal)}
+            onClose={() => setDeleteModuleModal(emptyModuleModal)}
           >
             <Text fontWeight="bold" mb="2">
               <Trans i18nKey="admin:composable.confirmDelete.text1" />
@@ -429,7 +427,7 @@ export default function ComposablePageForm({
             <Text>
               <Trans i18nKey="admin:composable.confirmDelete.text2" />
             </Text>
-          </ConfirmModal>
+          </Modal>
         </ComposablePageContext.Provider>
       </DndProvider>
 
@@ -443,15 +441,15 @@ export default function ComposablePageForm({
           <Trans i18nKey="common:actions.remove" />
         </Button>
 
-        <ConfirmModal
+        <Modal
           confirmButtonProps={{ colorScheme: 'red' }}
           confirmText={<Trans i18nKey="admin:pages.actions.delete" />}
+          open={deleteWholePageModal}
           title={
             <Trans i18nKey="admin:composable.confirmDelete.title" />
           }
-          visible={deleteWholePageModal}
           onConfirm={deleteComposablePage}
-          onCancel={() => setDeleteWholePageModal(false)}
+          onClose={() => setDeleteWholePageModal(false)}
         >
           <Text fontWeight="bold" mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage" />
@@ -459,7 +457,7 @@ export default function ComposablePageForm({
           <Text mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage2" />
           </Text>
-        </ConfirmModal>
+        </Modal>
       </Center>
     </div>
   );

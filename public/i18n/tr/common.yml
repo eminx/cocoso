@@ -173,7 +173,7 @@ modals:
         label: Konu
         select:
           suggest: Öneri
-          bug: Bug
+          bug: Problem
           compliment: İltifat
       details:
         label: Detaylar

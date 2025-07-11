@@ -14,9 +14,10 @@ interface ModalProps {
   cancelText?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
+  onSecondaryButtonClick?: () => void;
   hideFooter?: boolean;
   hideHeader?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
   closeOnOverlayClick?: boolean;
 }
 
@@ -53,7 +54,11 @@ const ModalContent = styled(
         : props.size === 'xl'
         ? '36rem'
         : props.size === '2xl'
-        ? '48rem'
+        ? '42rem'
+        : props.size === '3xl'
+        ? '50rem'
+        : props.size === 'full'
+        ? '100vw'
         : '28rem',
     width: '100%',
     maxHeight: '90vh',
@@ -126,6 +131,7 @@ const Modal: React.FC<ModalProps> = ({
   cancelText,
   onConfirm,
   onCancel,
+  onSecondaryButtonClick,
   hideFooter = false,
   hideHeader = false,
   size = 'md',
@@ -186,6 +192,10 @@ const Modal: React.FC<ModalProps> = ({
 
   // Handle cancel
   const handleCancel = () => {
+    if (onSecondaryButtonClick) {
+      onSecondaryButtonClick();
+      return;
+    }
     if (onCancel) {
       onCancel();
     } else {
@@ -238,18 +248,14 @@ const Modal: React.FC<ModalProps> = ({
         <Body>{children}</Body>
 
         {/* Footer */}
-        {!hideFooter && (confirmText || cancelText) && (
+        {!hideFooter && (
           <Footer>
-            {cancelText && (
-              <Button variant="outline" onClick={handleCancel}>
-                {cancelText || tc('actions.cancel')}
-              </Button>
-            )}
-            {confirmText && (
-              <Button onClick={handleConfirm}>
-                {confirmText || tc('actions.submit')}
-              </Button>
-            )}
+            <Button variant="outline" onClick={handleCancel}>
+              {cancelText || tc('actions.cancel')}
+            </Button>
+            <Button onClick={handleConfirm}>
+              {confirmText || tc('actions.submit')}
+            </Button>
           </Footer>
         )}
       </ModalContent>

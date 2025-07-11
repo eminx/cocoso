@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Button, Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import ConfirmModal from '../../../generic/ConfirmModal';
+import Modal from '/imports/ui/core/Modal';
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
 import { StateContext } from '../../../LayoutContainer';
@@ -30,20 +30,23 @@ export default function LeaveButton() {
 
   return (
     <>
-      <Center>
-        <Button colorScheme="red" variant="link" onClick={() => setModalOpen(true)}>
+      <Center mb="8">
+        <Button
+          colorScheme="red"
+          variant="link"
+          onClick={() => setModalOpen(true)}
+        >
           {t('actions.leave')}
         </Button>
       </Center>
 
-      <ConfirmModal
+      <Modal
         confirmButtonProps={{
           colorScheme: 'red',
         }}
-        visible={modalOpen}
+        open={modalOpen}
         title={t('modal.leave.title')}
         onConfirm={leaveGroup}
-        onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >
         <Text>
@@ -51,7 +54,7 @@ export default function LeaveButton() {
             title: group?.title,
           })}
         </Text>
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }

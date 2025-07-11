@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import ConfirmModal from '../../../generic/ConfirmModal';
+import Modal from '/imports/ui/core/Modal';
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
 import { StateContext } from '../../../LayoutContainer';
@@ -51,11 +51,10 @@ export default function GroupJoinButton() {
         </Button>
       </Center>
 
-      <ConfirmModal
-        visible={modalOpen}
+      <Modal
+        open={modalOpen}
         title={t('modal.join.title')}
         onConfirm={joinGroup}
-        onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >
         <Text>
@@ -63,7 +62,7 @@ export default function GroupJoinButton() {
             title: group?.title,
           })}
         </Text>
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }

@@ -17,9 +17,9 @@ import {
 import { z } from 'zod';
 import i18next from 'i18next';
 
-import FormField from '../../forms/FormField';
-import ConfirmModal from '../../generic/ConfirmModal';
-import Terms from '../../entry/Terms';
+import Modal from '/imports/ui/core/Modal';
+import FormField from '/imports/ui/forms/FormField';
+import Terms from '/imports/ui/entry/Terms';
 
 import {
   loginModel,
@@ -140,7 +140,9 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
                   textDecoration="underline"
                   onClick={() => setModalOpen(true)}
                 >
-                  {t('signup.form.terms.label', { terms: t('signup.form.terms.terms') })}
+                  {t('signup.form.terms.label', {
+                    terms: t('signup.form.terms.terms'),
+                  })}
                 </Link>
               </Flex>
             </FormField>
@@ -148,7 +150,9 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button
-              isDisabled={!isDirty || (!termsChecked && !hideTermsCheck)}
+              isDisabled={
+                !isDirty || (!termsChecked && !hideTermsCheck)
+              }
               isLoading={isSubmitting}
               type="submit"
             >
@@ -158,19 +162,18 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
         </VStack>
       </form>
 
-      <ConfirmModal
+      <Modal
         confirmText={tc('actions.confirmRead')}
         cancelText={tc('actions.close')}
         scrollBehavior="inside"
         size="full"
         title="Terms of Service & Privacy Policy"
-        visible={modalOpen}
+        open={modalOpen}
         onConfirm={confirmModal}
-        onCancel={() => setModalOpen(false)}
-        onClickOutside={() => setModalOpen(false)}
+        onClose={() => setModalOpen(false)}
       >
         <Terms />
-      </ConfirmModal>
+      </Modal>
     </Box>
   );
 };
@@ -202,7 +205,11 @@ const ForgotPassword = ({ onForgotPassword }) => {
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+          <Button
+            isDisabled={!isDirty}
+            isLoading={isSubmitting}
+            type="submit"
+          >
             {tc('actions.submit')}
           </Button>
         </Flex>
@@ -241,7 +248,11 @@ const ResetPassword = ({ onResetPassword }) => {
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+          <Button
+            isDisabled={!isDirty}
+            isLoading={isSubmitting}
+            type="submit"
+          >
             {tc('actions.submit')}
           </Button>
         </Flex>
@@ -260,7 +271,9 @@ const AuthContainer = () => {
         <Signup />
         <Center>
           <Text>{t('signup.labels.subtitle')}</Text>
-          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
+          <Link onClick={() => setMode('login')}>
+            {t('actions.login')}
+          </Link>
         </Center>
       </Box>
     );
@@ -271,8 +284,12 @@ const AuthContainer = () => {
       <Box>
         <ForgotPassword />
         <Flex justify="space-around">
-          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
-          <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
+          <Link onClick={() => setMode('login')}>
+            {t('actions.login')}
+          </Link>
+          <Link onClick={() => setMode('signup')}>
+            {t('actions.signup')}
+          </Link>
         </Flex>
       </Box>
     );
@@ -283,11 +300,15 @@ const AuthContainer = () => {
       <Login />
       <Center mb="8">
         <Heading>{t('login.labels.subtitle')}</Heading>
-        <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
+        <Link onClick={() => setMode('signup')}>
+          {t('actions.signup')}
+        </Link>
       </Center>
       <Center>
         <Heading>{t('actions.forgot')}</Heading>
-        <Link onClick={() => setMode('recover')}>{t('actions.reset')}</Link>
+        <Link onClick={() => setMode('recover')}>
+          {t('actions.reset')}
+        </Link>
       </Center>
     </Box>
   );

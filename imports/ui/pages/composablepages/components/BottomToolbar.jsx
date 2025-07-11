@@ -5,7 +5,7 @@ import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
 
 import { ComposablePageContext } from '../ComposablePageForm';
-import ConfirmModal from '/imports/ui/generic/ConfirmModal';
+import Modal from '/imports/ui/core/Modal';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
 
@@ -124,10 +124,11 @@ export default function BottomToolbar() {
         </Button>
       </Flex>
 
-      <ConfirmModal
+      <Modal
         confirmButtonProps={{
           colorScheme: isPublished ? 'orange' : 'green',
         }}
+        open={state.publishModalVisible}
         title={
           <Trans
             i18nKey={`admin:composable.toolbar.${
@@ -135,9 +136,8 @@ export default function BottomToolbar() {
             }`}
           />
         }
-        visible={state.publishModalVisible}
         onConfirm={() => handlePublish()}
-        onCancel={() =>
+        onClose={() =>
           setState((prevState) => ({
             ...prevState,
             publishModalVisible: false,
@@ -151,7 +151,7 @@ export default function BottomToolbar() {
             }`}
           />
         </Text>
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }

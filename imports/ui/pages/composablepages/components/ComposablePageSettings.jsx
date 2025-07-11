@@ -10,7 +10,7 @@ import {
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
 
-import ConfirmModal from '/imports/ui/generic/ConfirmModal';
+import Modal from '/imports/ui/core/Modal';
 import FormField from '/imports/ui/forms/FormField';
 import { call } from '/imports/ui/utils/shared';
 import { ComposablePageContext } from '../ComposablePageForm';
@@ -86,11 +86,11 @@ export default function ComposablePageSettings() {
         <Trans i18nKey="admin:composable.settings.title" />
       </Button>
 
-      <ConfirmModal
+      <Modal
+        open={state.settingsModalOpen}
         title={<Trans i18nKey="admin:composable.settings.title" />}
-        visible={state.settingsModalOpen}
         onConfirm={confirmChange}
-        onCancel={() =>
+        onClose={() =>
           setState((prevState) => ({
             ...prevState,
             settingsModalOpen: false,
@@ -140,7 +140,7 @@ export default function ComposablePageSettings() {
             </Checkbox>
           </Box>
         </Box>
-      </ConfirmModal>
+      </Modal>
     </div>
   );
 }
