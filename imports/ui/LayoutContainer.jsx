@@ -24,6 +24,7 @@ import { Footer, PlatformFooter } from './layout/Footers';
 import TopBarHandler from './layout/TopBarHandler';
 import DummyWrapper from './layout/DummyWrapper';
 import { message } from './generic/message';
+import GlobalStyles from './layout/GlobalStyles';
 
 export const StateContext = React.createContext(null);
 
@@ -175,6 +176,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               setCurrentHost,
             }}
           >
+            <GlobalStyles theme={currentHost?.theme} />
             <DummyWrapper
               animate={rendered && !isDesktop}
               theme={currentHost?.theme}

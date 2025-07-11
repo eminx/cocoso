@@ -52,51 +52,95 @@ const getColor = (color: string) => {
     : 'gray.900';
 };
 
+const getPropStyles = (props: any) => {
+  const styles = {
+    ...(props.bg && {
+      backgroundColor: getColor(props.bg),
+    }),
+    // borderRadius: props.borderRadius || 'var(--cocoso-border-radius)',
+    ...(props.color && {
+      color: getColor(props.color),
+    }),
+    ...(props.cursor && {
+      cursor: props.cursor,
+    }),
+    ...(props.h && {
+      height: props.h,
+    }),
+    ...(props.maxH && {
+      maxHeight: props.maxH,
+    }),
+    ...(props.maxW && {
+      maxWidth: props.maxW,
+    }),
+    ...(props.w && {
+      width: props.w,
+    }),
+    ...(props.pl && {
+      paddingInlineStart: xToRem(props.pl),
+    }),
+    ...(props.pr && {
+      paddingInlineEnd: xToRem(props.pr),
+    }),
+    ...(props.px && {
+      paddingInline: xToRem(props.px),
+    }),
+    ...(props.pt && {
+      paddingTop: xToRem(props.pt),
+    }),
+    ...(props.pb && {
+      paddingBottom: xToRem(props.pb),
+    }),
+    ...(props.py && {
+      paddingTop: xToRem(props.pt || props.py),
+      paddingBottom: xToRem(props.pb || props.py),
+    }),
+    ...(props.p && {
+      padding: xToRem(props.p),
+    }),
+    ...(props.mx && {
+      marginInline: xToRem(props.mx),
+      marginInlineStart: xToRem(props.ml),
+      marginInlineEnd: xToRem(props.mr),
+    }),
+    ...(props.mt && {
+      marginTop: xToRem(props.mt),
+    }),
+    ...(props.mb && {
+      marginBottom: xToRem(props.mb),
+    }),
+    ...(props.my && {
+      marginTop: xToRem(props.my),
+      marginBottom: xToRem(props.my),
+    }),
+    ...(props.m && {
+      margin: xToRem(props.m),
+    }),
+    ...(props._hover && {
+      ':hover': {
+        ...props.hover,
+      },
+    }),
+    ...(props._focus && {
+      ':focus': {
+        ...props._focus,
+      },
+    }),
+    ...(props._active && {
+      ':active': {
+        ...props._active,
+      },
+    }),
+  };
+
+  return styles;
+};
+
 // Box
-export const Box = styled(
-  // (props: any) => props.as || 'div',
-  'div',
-  (props: any) => ({
-    backgroundColor: getColor(props.bg),
-    borderRadius: props.borderRadius,
-    border: props.border,
-    borderColor: props.borderColor,
-    borderStyle: props.borderStyle,
-    borderWidth: props.borderWidth,
-    boxShadow: props.boxShadow,
-    color: props.color,
-    cursor: props.cursor,
-    display: 'block',
-    fontSize: props.fontSize,
-    fontWeight: props.fontWeight,
-    gap: props.gap,
-    height: props.h,
-    paddingInlineStart: xToRem(props.pl),
-    paddingInlineEnd: xToRem(props.pr),
-    paddingInline: xToRem(props.px),
-    paddingTop: xToRem(props.pt || props.py),
-    paddingBottom: xToRem(props.pb || props.py),
-    padding: xToRem(props.p),
-    marginInline: xToRem(props.mx),
-    marginInlineStart: xToRem(props.ml),
-    marginInlineEnd: xToRem(props.mr),
-    marginTop: xToRem(props.mt || props.my),
-    marginBottom: xToRem(props.mb || props.my),
-    margin: xToRem(props.m),
-    maxWidth: props.maxW,
-    maxHeight: props.maxH,
-    width: props.w,
-    ':active': {
-      ...props._active,
-    },
-    ':focus': {
-      ...props._focus,
-    },
-    ':hover': {
-      ...props._hover,
-    },
-  })
-);
+export const Box = styled('div', (props: any) => ({
+  display: 'block',
+  ...getPropStyles(props),
+}));
 
 // Alert
 interface AlertProps {
@@ -215,13 +259,13 @@ export const Button = styled('button', (props: ButtonProps) => {
         ? 'none'
         : variant === 'outline'
         ? 'white'
-        : 'var(--chakra-colors-brand-500)',
+        : 'var(--cocoso-colors-theme-500)',
     borderRadius: '0.375rem',
     borderStyle: 'solid',
     borderWidth: variant === 'outline' ? '1px' : '0',
-    borderColor: props.color || 'var(--chakra-colors-brand-100',
+    borderColor: props.color || 'var(--cocoso-colors-theme-100',
     color:
-      variant === 'solid' ? 'white' : 'var(--chakra-colors-brand-500)',
+      variant === 'solid' ? 'white' : 'var(--cocoso-colors-theme-500)',
     cursor: 'pointer',
     fontSize:
       size === 'xs'
@@ -271,14 +315,14 @@ export const Button = styled('button', (props: ButtonProps) => {
     ':hover': {
       backgroundColor:
         variant === 'solid'
-          ? 'var(--chakra-colors-brand-600)'
-          : 'var(--chakra-colors-brand-100)',
+          ? 'var(--cocoso-colors-theme-600)'
+          : 'var(--cocoso-colors-theme-100)',
     },
     ':focus': {
       backgroundColor:
         variant === 'solid'
-          ? 'var(--chakra-colors-brand-700)'
-          : 'var(--chakra-colors-brand-200)',
+          ? 'var(--cocoso-colors-theme-700)'
+          : 'var(--cocoso-colors-theme-200)',
     },
   };
 });
@@ -316,17 +360,19 @@ export const Flex = styled('div', (props: any) => ({
   alignItems: props.align || props.alignItems || 'flex-start',
   display: 'flex',
   gap: props.gap || '1rem',
-  flexDirection: props.direction || props.flexDirection || 'row',
+  // flexDirection: props.direction || props.flexDirection || 'row',
   flexWrap: props.wrap || props.flexWrap || 'wrap',
   justifyContent: props.justify || props.justifyContent || 'flex-start',
+  ...getPropStyles(props),
 }));
 
 // Center
-export const Center = styled(Flex, (props: any) => ({
+export const Center = styled('div', (props: any) => ({
   alignItems: 'center',
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'center',
+  ...getPropStyles(props),
 }));
 
 // Grid
@@ -391,74 +437,16 @@ export const Link = styled('a', (props: any) => ({
   textDecoration: 'none',
 }));
 
-// Menu
-interface MenuProps {
-  isOpen?: boolean;
-}
-
-export const Menu = styled('div', {
-  display: 'inline-block',
-  position: 'relative',
-});
-
-export const MenuButton = styled(Button, {
-  display: 'inline-flex',
-});
-
-export const MenuList = styled('div', (props: MenuProps) => ({
-  backgroundColor: 'white',
-  borderRadius: '0.375rem',
-  boxShadow:
-    '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-  display: props.isOpen ? 'block' : 'none',
-  marginTop: '0.25rem',
-  minWidth: '200px',
-  padding: '0.5rem 0',
-  position: 'absolute',
-  right: '0',
-  top: '100%',
-  zIndex: 1000,
-}));
-
-export const MenuItem = styled(Button, {
-  background: 'none',
-  border: 'none',
-  cursor: 'pointer',
-  padding: '0.5rem 1rem',
-  textAlign: 'left',
-  width: '100%',
-  '&:hover': {
-    backgroundColor: '#edf2f7',
-  },
-});
-
 // Stack, HStack, VStack, Wrap
-export const Stack = styled(Flex, (props: any) => ({
-  flexDirection: props.direction || 'column',
-  gap: props.spacing ? getSpacing(props.spacing) : '0.5rem',
-}));
+export const Stack = styled(Flex, {});
 
-export const HStack = styled(Stack, {
-  flexDirection: 'row',
-});
+export const HStack = styled(Flex, {});
 
-export const VStack = styled(Stack, {
+export const VStack = styled(Flex, {
   flexDirection: 'column',
 });
 
-export const Wrap = styled(Stack, {
-  flexWrap: 'wrap',
-});
-
-// Text
-// interface TextProps {
-//   fontSize?: string;
-//   size?: string;
-//   fontWeight?: string;
-//   color?: string;
-//   lineHeight?: string;
-//   textAlign?: string;
-// }
+export const Wrap = styled(Flex, {});
 
 const fontSizes = {
   xs: '0.75rem',
@@ -479,12 +467,22 @@ const fontSizes = {
 export const Tag = styled('span', (props: any) => ({
   alignItems: 'center',
   display: 'inline-flex',
-  backgroundColor: props.bg || 'var(--chakra-colors-gray-100)',
+  backgroundColor: props.bg || 'var(--cocoso-colors-gray-100)',
   borderRadius: '0.375rem',
   fontSize: '0.875rem',
   // fontWeight: 'bold',
   padding: '0.25rem 0.5rem',
 }));
+
+// Text
+// interface TextProps {
+//   fontSize?: string;
+//   size?: string;
+//   fontWeight?: string;
+//   color?: string;
+//   lineHeight?: string;
+//   textAlign?: string;
+// }
 
 export const Text = styled('p', (props: any) => {
   const color = props.color?.split('.');
@@ -516,66 +514,3 @@ export const Text = styled('p', (props: any) => {
 export const Code = styled(Text, {
   fontFamily: 'monospace',
 });
-
-// export const Modal = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: rgba(0, 0, 0, 0.4);
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   z-index: 1000;
-// `;
-
-// export const ModalContent = styled.div`
-//   background: white;
-//   padding: 2rem;
-//   border-radius: 0.5rem;
-//   max-width: 500px;
-//   width: 90%;
-//   position: relative;
-// `;
-
-// export const ModalCloseButton = styled.button`
-//   position: absolute;
-//   top: 0.75rem;
-//   right: 0.75rem;
-//   background: none;
-//   border: none;
-//   cursor: pointer;
-// `;
-
-// interface AccordionProps {
-//   isOpen?: boolean;
-// }
-
-// export const Accordion = styled.div`
-//   width: 100%;
-//   border: 1px solid #e2e8f0;
-//   border-radius: 0.375rem;
-// `;
-
-// export const AccordionButton = styled.button`
-//   width: 100%;
-//   padding: 1rem;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   background: none;
-//   border: none;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #f7fafc;
-//   }
-// `;
-
-// export const AccordionPanel = styled.div<AccordionProps>`
-//   padding: ${(props) => (props.isOpen ? '1rem' : '0')};
-//   height: ${(props) => (props.isOpen ? 'auto' : '0')};
-//   overflow: hidden;
-//   transition: all 0.2s ease-in-out;
-// `;

@@ -9,6 +9,7 @@ import Header from './Header';
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
 import { Footer } from './Footers';
+import GlobalStyles from './GlobalStyles';
 
 export default function WrapperSSR({
   Host,
@@ -27,6 +28,7 @@ export default function WrapperSSR({
   return (
     <>
       <HelmetHybrid Host={Host} />
+      <GlobalStyles theme={Host?.theme} />
 
       <I18nextProvider i18n={i18n}>
         <ChakraProvider theme={chakraTheme}>

@@ -1,16 +1,15 @@
 import React from 'react';
 
-import { Box, Flex, Text } from '/imports/ui/core';
+import { Box, Text, VStack } from '/imports/ui/core';
 
 export function BoxlingColumn({ title, children }) {
   return (
-    <Flex align="center" flexDirection="column">
+    <VStack align="center" gap="1">
       <Text fontWeight="bold" mb="2" size="sm">
         {title}
       </Text>
-
       {children}
-    </Flex>
+    </VStack>
   );
 }
 
@@ -20,7 +19,7 @@ export default function Boxling({ children, ...otherProps }) {
       bg="blueGray.50"
       p="6"
       css={{
-        borderRadius: 20,
+        borderRadius: 'var(--cocoso-border-radius)',
         ':hover': {
           backgroundColor: 'white',
         },

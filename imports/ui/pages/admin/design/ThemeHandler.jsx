@@ -244,7 +244,7 @@ export default function ThemeHandler() {
       </Text>
 
       <Boxling mb="8">
-        <Flex justify="center">
+        <Center>
           <BoxlingColumn
             title={<Trans i18nKey="admin:design.border.radius" />}
           >
@@ -266,7 +266,7 @@ export default function ThemeHandler() {
               )}
             </Menu>
           </BoxlingColumn>
-        </Flex>
+        </Center>
       </Boxling>
 
       {currentTheme?.variant === 'custom' && (
@@ -288,7 +288,7 @@ export default function ThemeHandler() {
         </Button>
       </Flex>
 
-      <Box bg="red.50" borderRadius="lg" fontWeight="bold" p="4" my="8">
+      <Box bg="red.50" borderRadius="md" fontWeight="bold" p="4" my="8">
         <Text mb="2">
           <Trans i18nKey="admin:design.color.alert1" />
         </Text>{' '}

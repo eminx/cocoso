@@ -6,7 +6,7 @@ import {
   Button,
   Center,
   Checkbox,
-  Flex,
+  VStack,
   Text,
 } from '/imports/ui/core';
 import Boxling, {
@@ -40,7 +40,7 @@ export default function BackgroundHandler({
       </Text>
 
       <Boxling mb="8">
-        <Flex align="center" direction="column" gap="1">
+        <VStack align="center" gap="1">
           <GenericColorPicker
             color={backgroundColor}
             onChange={(selectedOption) =>
@@ -49,7 +49,7 @@ export default function BackgroundHandler({
           />
           <Button
             bg="white"
-            size="xs"
+            size="sm"
             variant="ghost"
             onClick={() =>
               handleStyleChange('backgroundColor', '#f0ebe6')
@@ -57,7 +57,7 @@ export default function BackgroundHandler({
           >
             <Trans i18nKey="common:actions.reset" />
           </Button>
-        </Flex>
+        </VStack>
       </Boxling>
 
       <Text fontWeight="bold" mb="4">
@@ -85,22 +85,20 @@ export default function BackgroundHandler({
         </Center>
 
         {backgroundImage && backgroundImage !== 'none' && (
-          <Box pt="8">
-            <Center>
-              <Checkbox
-                checked={backgroundRepeat}
-                onChange={(event) => {
-                  const checked = event.target.checked;
-                  handleStyleChange(
-                    'backgroundRepeat',
-                    checked ? 'repeat' : 'no-repeat'
-                  );
-                }}
-              >
-                <Trans i18nKey="admin:design.background.repeat" />
-              </Checkbox>
-            </Center>
-          </Box>
+          <Center pt="8">
+            <Checkbox
+              checked={backgroundRepeat}
+              onChange={(event) => {
+                const checked = event.target.checked;
+                handleStyleChange(
+                  'backgroundRepeat',
+                  checked ? 'repeat' : 'no-repeat'
+                );
+              }}
+            >
+              <Trans i18nKey="admin:design.background.repeat" />
+            </Checkbox>
+          </Center>
         )}
       </Boxling>
     </>
