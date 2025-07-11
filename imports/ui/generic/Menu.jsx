@@ -51,7 +51,7 @@ export default function GenericMenu({
       >
         {options.map((item) => (
           <MenuItem
-            key={item.key || item.value}
+            key={item.key || item.value || item.label}
             onClick={() => onSelect(item)}
           >
             {children(item)}

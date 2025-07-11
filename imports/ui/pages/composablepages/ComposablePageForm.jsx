@@ -10,9 +10,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
-import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
-import '@szhsin/react-menu/dist/index.css';
-import '@szhsin/react-menu/dist/transitions/zoom.css';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
 import SortableList, {
   SortableItem,
@@ -21,7 +18,9 @@ import SortableList, {
 import { arrayMoveImmutable } from 'array-move';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import PlusIcon from 'lucide-react/dist/esm/icons/plus';
 
+import Menu from '/imports/ui/generic/Menu';
 import { call } from '/imports/ui/utils/shared';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { message } from '/imports/ui/generic/message';
@@ -110,8 +109,8 @@ export default function ComposablePageForm({
     }
   }, [contentModal.uploaded]);
 
-  const handleAddRow = (rowType) => {
-    const newRow = getNewRow(rowType);
+  const handleAddRow = (selectedRow) => {
+    const newRow = getNewRow(selectedRow.value);
     setCurrentPage((prevPage) => ({
       ...prevPage,
       contentRows: [
@@ -357,10 +356,9 @@ export default function ComposablePageForm({
                     p="2"
                   >
                     <Row row={row} rowIndex={rowIndex} />
-                    <Center>
+                    <Center py="4">
                       <Button
                         colorScheme="red"
-                        my="2"
                         size="xs"
                         variant="link"
                         onClick={() =>
@@ -384,22 +382,14 @@ export default function ComposablePageForm({
             <Box w="40px" style={{ flexGrow: 0, flexShrink: 0 }} />
             <Center mt="4" mb="12" flexGrow={1}>
               <Menu
-                placement="bottom"
-                menuButton={
-                  <Button size="sm" variant="outline">
-                    <Trans i18nKey="admin:composable.form.addRow" />
-                  </Button>
+                buttonLabel={
+                  <Trans i18nKey="admin:composable.form.addRow" />
                 }
-                transition
-                onItemClick={(event) => {
-                  handleAddRow(event.value);
-                }}
+                leftIcon={<PlusIcon size="18px" />}
+                options={rowTypes}
+                onSelect={handleAddRow}
               >
-                {rowTypes.map((rowType) => (
-                  <MenuItem key={rowType.value} value={rowType.value}>
-                    {rowType.label}
-                  </MenuItem>
-                ))}
+                {(rowType) => rowType.label}
               </Menu>
             </Center>
           </Flex>
