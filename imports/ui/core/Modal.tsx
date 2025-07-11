@@ -14,7 +14,9 @@ interface ModalProps {
   onConfirm?: () => void;
   onCancel?: () => void;
   hideFooter?: boolean;
+  hideHeader?: boolean;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  closeOnOverlayClick?: boolean;
 }
 
 // Styled components using restyle
@@ -26,7 +28,7 @@ const Overlay = styled('div', (props: { visible?: boolean }) => ({
   bottom: 0,
   backgroundColor: 'rgba(0, 0, 0, 0.5)',
   backdropFilter: 'brightness(0.8)',
-  zIndex: 50,
+  zIndex: 1500,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -69,6 +71,7 @@ const Header = styled('div', {
   padding: '1.5rem',
   paddingBottom: '1rem',
   borderBottom: '1px solid #e5e7eb',
+  minHeight: '1rem',
 });
 
 const Title = styled('h2', {
@@ -117,7 +120,9 @@ const Modal: React.FC<ModalProps> = ({
   onConfirm,
   onCancel,
   hideFooter = false,
+  hideHeader = false,
   size = 'md',
+  closeOnOverlayClick = true,
 }) => {
   const [tc] = useTranslation('common');
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -143,9 +148,14 @@ const Modal: React.FC<ModalProps> = ({
 
   // Handle overlay click
   const handleOverlayClick = (event: React.MouseEvent) => {
-    if (event.target === overlayRef.current) {
+    if (closeOnOverlayClick && event.target === overlayRef.current) {
       onClose();
     }
+  };
+
+  // Handle modal content click to prevent event bubbling
+  const handleModalContentClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
   };
 
   // Handle cancel
@@ -170,11 +180,15 @@ const Modal: React.FC<ModalProps> = ({
       onClick={handleOverlayClick}
       visible={open}
     >
-      <ModalContent size={size} visible={open}>
+      <ModalContent
+        size={size}
+        visible={open}
+        onClick={handleModalContentClick}
+      >
         {/* Header */}
-        {title && (
+        {!hideHeader && (
           <Header>
-            <Title>{title}</Title>
+            {title ? <Title>{title}</Title> : <div></div>}
             <CloseButton onClick={onClose} aria-label="Close">
               <svg
                 width="20"
