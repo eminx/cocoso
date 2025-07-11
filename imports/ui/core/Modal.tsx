@@ -29,14 +29,14 @@ const Overlay = styled('div', (props: { visible?: boolean }) => ({
   bottom: 0,
   backgroundColor: 'rgba(0, 0, 0, 0.5)',
   backdropFilter: 'brightness(0.8)',
-  zIndex: 9999,
+  zIndex: 1405,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   padding: '1rem',
   opacity: props.visible ? 1 : 0,
   visibility: props.visible ? 'visible' : 'hidden',
-  transition: 'opacity 0.2s ease-in-out, visibility 0.2s ease-in-out',
+  transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out',
 }));
 
 const ModalContent = styled(
@@ -65,7 +65,7 @@ const ModalContent = styled(
     transform: props.visible
       ? 'scale(1) translateY(0)'
       : 'scale(0.95) translateY(20px)',
-    transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
+    transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
   })
 );
 
@@ -89,7 +89,7 @@ const Title = styled('h2', {
 const CloseButton = styled('button', {
   padding: '0.25rem',
   borderRadius: '9999px',
-  transition: 'all 0.2s',
+  transition: 'all 0.3s',
   color: '#9ca3af',
   border: 'none',
   background: 'transparent',

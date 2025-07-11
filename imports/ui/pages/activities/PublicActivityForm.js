@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Checkbox, FormLabel, NumberInput, NumberInputField } from '@chakra-ui/react';
+import {
+  Box,
+  Checkbox,
+  FormLabel,
+  NumberInput,
+  NumberInputField,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -8,7 +14,9 @@ import { call } from '../../utils/shared';
 import GenericEntryForm from '../../forms/GenericEntryForm';
 import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
-import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
+import DatesAndTimes, {
+  emptyDateAndTime,
+} from '../../forms/DatesAndTimes';
 import publicActivityFormFields from './publicActivityFormFields';
 import { LoaderContext } from '../../listing/NewEntryHandler';
 import { message } from '../../generic/message';
@@ -28,18 +36,24 @@ export const emptyFormValues = {
 export default function PublicActivityForm({ activity, onFinalize }) {
   const [state, setState] = useState({
     capacity: activity ? activity.capacity : defaultCapacity,
-    datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
+    datesAndTimes: activity
+      ? activity.datesAndTimes
+      : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
-    selectedResource: activity ? { label: activity.resource, _id: activity.resourceId } : null,
+    selectedResource: activity
+      ? { label: activity.resource, _id: activity.resourceId }
+      : null,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
     isRegistrationEnabled: activity
-      ? !activity.isRegistrationDisabled || activity.isRegistrationEnabled
+      ? !activity.isRegistrationDisabled ||
+        activity.isRegistrationEnabled
       : true,
     resources: [],
   });
   const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('activities');
-  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
+  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] =
+    useState(false);
 
   const getResources = async () => {
     try {
@@ -60,12 +74,14 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   const isFormValid = () => {
     const { datesAndTimes } = state;
     const isConflictHard = datesAndTimes.some(
-      (occurrence) => Boolean(occurrence.conflict) && occurrence.isConflictHard
+      (occurrence) =>
+        Boolean(occurrence.conflict) && occurrence.isConflictHard
     );
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     const isTimesInValid = datesAndTimes.some(
-      (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
+      (dateTime) =>
+        !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
     );
 
     setIsSubmitButtonDisabled(isTimesInValid || isConflictHard);
@@ -73,7 +89,11 @@ export default function PublicActivityForm({ activity, onFinalize }) {
 
   useEffect(() => {
     isFormValid();
-  }, [state.datesAndTimes, state.selectedResource, state.isExclusiveActivity]);
+  }, [
+    state.datesAndTimes,
+    state.selectedResource,
+    state.isExclusiveActivity,
+  ]);
 
   useEffect(() => {
     if (!loaders.isCreating) {
@@ -170,6 +190,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   };
 
   const handleUploadedImages = (images) => {
+    console.log('handleUploadedImages', images);
     setLoaders((prevState) => ({
       ...prevState,
       isSendingForm: true,
@@ -219,7 +240,11 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         </Box>
       </FormField>
 
-      <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')} my="12">
+      <FormField
+        helperText={t('form.resource.helper')}
+        label={t('form.resource.label')}
+        my="12"
+      >
         <AutoCompleteSelect
           isClearable
           onChange={handleSelectResource}
@@ -254,9 +279,18 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         />
       </FormField>
 
-      <FormField helperText={t('form.rsvp.helper')} label={t('form.rsvp.label')} mt="4" mb="10">
+      <FormField
+        helperText={t('form.rsvp.helper')}
+        label={t('form.rsvp.label')}
+        mt="4"
+        mb="10"
+      >
         <Box bg="white" borderRadius="lg" display="inline" p="2">
-          <Checkbox isChecked={state.isRegistrationEnabled} size="lg" onChange={handleRsvpSwitch}>
+          <Checkbox
+            isChecked={state.isRegistrationEnabled}
+            size="lg"
+            onChange={handleRsvpSwitch}
+          >
             <FormLabel cursor="pointer" mb="0">
               {t('form.rsvp.holder')}
             </FormLabel>
@@ -264,7 +298,8 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         </Box>
       </FormField>
 
-      {(!state.isRegistrationDisabled || state.isRegistrationEnabled) && (
+      {(!state.isRegistrationDisabled ||
+        state.isRegistrationEnabled) && (
         <FormField
           helperText={t('form.capacity.helper')}
           label={t('form.capacity.label')}
