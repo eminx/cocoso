@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { styled } from 'restyle';
 
 import Checkbox from '/imports/ui/forms/Checkbox';
@@ -260,10 +260,10 @@ export const Button = styled('button', (props: ButtonProps) => {
         : variant === 'outline'
         ? 'white'
         : 'var(--cocoso-colors-theme-500)',
-    borderRadius: '0.375rem',
+    borderRadius: 'var(--cocoso-border-radius)',
     borderStyle: 'solid',
-    borderWidth: variant === 'outline' ? '1px' : '0',
-    borderColor: props.color || 'var(--cocoso-colors-theme-100',
+    borderWidth: variant === 'ghost' ? '0' : '2px',
+    borderColor: props.color || 'var(--cocoso-colors-theme-500)',
     color:
       variant === 'solid' ? 'white' : 'var(--cocoso-colors-theme-500)',
     cursor: 'pointer',
@@ -316,16 +316,33 @@ export const Button = styled('button', (props: ButtonProps) => {
       backgroundColor:
         variant === 'solid'
           ? 'var(--cocoso-colors-theme-600)'
-          : 'var(--cocoso-colors-theme-100)',
+          : 'var(--cocoso-colors-theme-50)',
     },
     ':focus': {
       backgroundColor:
         variant === 'solid'
           ? 'var(--cocoso-colors-theme-700)'
-          : 'var(--cocoso-colors-theme-200)',
+          : 'var(--cocoso-colors-theme-100)',
     },
   };
 });
+
+interface IconButtonProps extends ButtonProps {
+  icon: ReactNode;
+}
+
+const IconButtonComponent = styled(
+  Button,
+  (props: IconButtonProps) => ({
+    padding: '0.3rem',
+  })
+);
+
+export const IconButton = (props: IconButtonProps) => {
+  return (
+    <IconButtonComponent {...props}>{props.icon}</IconButtonComponent>
+  );
+};
 
 //Checkbox
 export { Checkbox };

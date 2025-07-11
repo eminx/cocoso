@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { IconButton } from '@chakra-ui/react';
+// import { IconButton } from '@chakra-ui/react';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
+
+import { IconButton } from '/imports/ui/core';
 import { StateContext } from '../LayoutContainer';
 
 const getRoute = (item) => {
@@ -57,10 +59,7 @@ export default function NewButton() {
 
   return (
     <IconButton
-      bg="white"
-      borderRadius="lg"
-      borderWidth="2px"
-      cursor="pointer"
+      css={{ margin: '0 1rem' }}
       icon={<AddIcon />}
       mx="2"
       size="sm"
