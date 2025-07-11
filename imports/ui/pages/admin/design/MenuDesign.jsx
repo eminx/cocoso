@@ -115,9 +115,9 @@ export default function MenuDesign() {
             fontStyle,
             justifyContent: 'center',
             padding: '0.5rem',
+            textTransform,
             ...menuStyle,
           }}
-          textTransform={textTransform}
         >
           {demoMenuItems?.map((item) => (
             <Box key={item.name} as="span" px="2">

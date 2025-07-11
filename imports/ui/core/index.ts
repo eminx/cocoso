@@ -3,6 +3,7 @@ import Avatar from './Avatar';
 import Badge from './Badge';
 import {
   Box,
+  Center,
   Container,
   Divider,
   Flex,
@@ -17,7 +18,7 @@ import Checkbox from './Checkbox';
 import { Code, Heading, Link, Text } from './Text';
 import Input from './Input';
 import Image from './Image';
-import RadioButtons from './RadioButtons';
+import { Radio, RadioGroup } from './RadioButtons';
 
 export {
   Alert,
@@ -27,6 +28,7 @@ export {
   Badge,
   Box,
   Button,
+  Center,
   Checkbox,
   Code,
   Container,
@@ -39,7 +41,8 @@ export {
   Image,
   Input,
   Link,
-  RadioButtons,
+  Radio,
+  RadioGroup,
   Stack,
   Text,
   VStack,

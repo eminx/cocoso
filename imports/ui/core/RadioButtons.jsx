@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'restyle';
-import { Box, Flex, Text } from '/imports/ui/core';
+import { Flex, Text } from '/imports/ui/core';
 
 // Styled components
 const RadioContainer = styled('label', (props) => ({
@@ -116,5 +116,3 @@ export function RadioGroup({
     </Flex>
   );
 }
-
-export default Radio;

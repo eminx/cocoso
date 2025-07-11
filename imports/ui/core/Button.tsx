@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react';
 import { styled } from 'restyle';
 
+import { Flex } from './Box';
 import { xToRem } from './functions';
 
 // Button
 interface ButtonProps {
+  children?: any;
   color?: string;
-  variant?: 'solid' | 'ghost' | 'outline';
-  size?: 'xs' | 'sm' | 'md' | 'lg';
   leftIcon?: ReactNode;
   mx?: string | number;
   ml?: string | number;
@@ -17,10 +17,12 @@ interface ButtonProps {
   my?: string | number;
   m?: string | number;
   rightIcon?: ReactNode;
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  variant?: 'solid' | 'ghost' | 'outline';
   onClick?: () => void;
 }
 
-export const Button = styled('button', (props: ButtonProps) => {
+const ButtonComponent = styled('button', (props: ButtonProps) => {
   const variant = props.variant || 'solid';
   const size = props.size || 'md';
   return {
@@ -97,12 +99,22 @@ export const Button = styled('button', (props: ButtonProps) => {
   };
 });
 
+export const Button = (props: ButtonProps) => {
+  return (
+    <ButtonComponent {...props}>
+      <Flex align="center" gap="0.25rem">
+        {props.leftIcon} {props.children} {props.rightIcon}
+      </Flex>
+    </ButtonComponent>
+  );
+};
+
 interface IconButtonProps extends ButtonProps {
   icon: ReactNode;
 }
 
-const IconButtonComponent = styled(Button, () => ({
-  padding: '0.3rem',
+const IconButtonComponent = styled(ButtonComponent, () => ({
+  padding: '0.25rem',
 }));
 
 export const IconButton = (props: IconButtonProps) => {

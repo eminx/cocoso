@@ -81,7 +81,7 @@ export const Heading = styled('h2', (props: HeadingProps) => {
   };
 });
 
-export const Code = styled(Text, {
+export const Code = styled('span', {
   fontFamily: 'monospace',
 });
 

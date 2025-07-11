@@ -64,7 +64,7 @@ export default function HuePicker({ onChange }) {
         <Trans i18nKey="admin:design.color.info" />
       </Text>
 
-      <Center css={{ paddingBottom: '1rem' }} position="relative">
+      <Center css={{ paddingBottom: '1rem', position: 'relative' }}>
         <HuePickerComponent
           color={color}
           height="20px"
@@ -75,11 +75,7 @@ export default function HuePicker({ onChange }) {
 
       {hue !== color?.hsl?.h && (
         <>
-          <Center
-            bg={parseHue(hue, 90)}
-            p="4"
-            style={{ justifyContent: 'center' }}
-          >
+          <Center bg={parseHue(hue, 90)} p="4">
             <Flex
               css={{
                 alignItems: 'center',
@@ -90,7 +86,6 @@ export default function HuePicker({ onChange }) {
                 height: '120px',
                 width: '120px',
               }}
-              style={{ display: 'flex' }}
             >
               <Code
                 css={{ color: 'white', fontWeight: 'bold' }}

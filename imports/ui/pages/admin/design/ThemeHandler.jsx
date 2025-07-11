@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Trans } from 'react-i18next';
 
 import { Box, Button, Center, Flex, Text } from '/imports/ui/core';
-import { RadioGroup, Radio } from '/imports/ui/forms/RadioButtons';
+import { RadioGroup, Radio } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
@@ -288,7 +288,7 @@ export default function ThemeHandler() {
         </Button>
       </Flex>
 
-      <Box bg="red.50" borderRadius="md" fontWeight="bold" p="4" my="8">
+      <Box bg="red.100" p="4" my="8">
         <Text mb="2">
           <Trans i18nKey="admin:design.color.alert1" />
         </Text>{' '}
