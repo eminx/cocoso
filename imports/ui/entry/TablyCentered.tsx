@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import LinkIcon from 'lucide-react/dist/esm/icons/link';
-import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 
@@ -14,10 +13,6 @@ import {
   Flex,
   Heading,
   Link as CLink,
-  Menu,
-  MenuList,
-  MenuItem,
-  MenuButton,
   VStack,
   Wrap,
 } from '@chakra-ui/react';
@@ -43,19 +38,6 @@ interface HeaderProps {
   title: string;
 }
 
-interface AdminMenuItem {
-  label: string;
-  link?: string;
-  onClick?: () => void;
-}
-
-interface AdminMenuProps {
-  adminMenu: {
-    label: string;
-    items: AdminMenuItem[];
-  } | null;
-}
-
 interface Tab {
   path: string;
   title: string;
@@ -64,10 +46,6 @@ interface Tab {
 
 interface TablyCenteredProps {
   action?: React.ReactNode;
-  adminMenu?: {
-    label: string;
-    items: AdminMenuItem[];
-  } | null;
   author?: Author | null;
   backLink?: string;
   content?: React.ReactNode;
@@ -214,36 +192,8 @@ const Header: React.FC<HeaderProps> = ({
   );
 };
 
-const AdminMenu: React.FC<AdminMenuProps> = ({ adminMenu }) => {
-  if (!adminMenu || !adminMenu.label || !adminMenu.items) {
-    return null;
-  }
-
-  return (
-    <Menu direction="rtl" placement="bottom-end">
-      <MenuButton color="brand.500" fontSize="md" px="4" pb="2">
-        <SettingsIcon />
-      </MenuButton>
-      <MenuList>
-        {adminMenu.items.map((item) =>
-          item.link ? (
-            <Link key={item.label} to={item.link}>
-              <MenuItem>{item.label}</MenuItem>
-            </Link>
-          ) : (
-            <MenuItem key={item.label} onClick={item.onClick}>
-              {item.label}
-            </MenuItem>
-          )
-        )}
-      </MenuList>
-    </Menu>
-  );
-};
-
 const TablyCentered: React.FC<TablyCenteredProps> = ({
   action = null,
-  adminMenu = null,
   author = null,
   backLink,
   content,
@@ -307,9 +257,11 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
               <Box w="100%">
                 {tabs && (
                   <Box mt="2">
-                    <Tabs justify="center" index={tabIndex} tabs={tabs}>
-                      {adminMenu && <AdminMenu adminMenu={adminMenu} />}
-                    </Tabs>
+                    <Tabs
+                      justify="center"
+                      index={tabIndex}
+                      tabs={tabs}
+                    />
                   </Box>
                 )}
 

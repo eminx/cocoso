@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { styled } from 'restyle';
 import { useTranslation } from 'react-i18next';
 
+import { Button } from '/imports/ui/core';
+
 interface ModalProps {
-  isOpen: boolean;
+  open: boolean;
   onClose: () => void;
   title?: string;
   children: React.ReactNode;
@@ -16,38 +18,49 @@ interface ModalProps {
 }
 
 // Styled components using restyle
-const Overlay = styled('div', {
+const Overlay = styled('div', (props: { visible?: boolean }) => ({
   position: 'fixed',
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
   backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  backdropFilter: 'blur(4px)',
+  backdropFilter: 'brightness(0.8)',
   zIndex: 50,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   padding: '1rem',
-});
-
-const ModalContent = styled('div', (props: { size?: string }) => ({
-  backgroundColor: 'white',
-  borderRadius: '0.5rem',
-  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-  maxWidth:
-    props.size === 'sm'
-      ? '24rem'
-      : props.size === 'lg'
-      ? '32rem'
-      : props.size === 'xl'
-      ? '36rem'
-      : '28rem',
-  width: '100%',
-  maxHeight: '90vh',
-  overflow: 'hidden',
-  position: 'relative',
+  opacity: props.visible ? 1 : 0,
+  visibility: props.visible ? 'visible' : 'hidden',
+  transition: 'opacity 0.2s ease-in-out, visibility 0.2s ease-in-out',
 }));
+
+const ModalContent = styled(
+  'div',
+  (props: { size?: string; visible?: boolean }) => ({
+    backgroundColor: 'white',
+    borderRadius: '0.5rem',
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+    maxWidth:
+      props.size === 'sm'
+        ? '24rem'
+        : props.size === 'lg'
+        ? '32rem'
+        : props.size === 'xl'
+        ? '36rem'
+        : '28rem',
+    width: '100%',
+    maxHeight: '90vh',
+    overflow: 'hidden',
+    position: 'relative',
+    opacity: props.visible ? 1 : 0,
+    transform: props.visible
+      ? 'scale(1) translateY(0)'
+      : 'scale(0.95) translateY(20px)',
+    transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
+  })
+);
 
 const Header = styled('div', {
   display: 'flex',
@@ -94,40 +107,8 @@ const Footer = styled('div', {
   borderTop: '1px solid #e5e7eb',
 });
 
-const Button = styled('button', {
-  padding: '0.5rem 1rem',
-  fontSize: '0.875rem',
-  fontWeight: 500,
-  borderRadius: '0.375rem',
-  transition: 'all 0.2s',
-  border: '1px solid transparent',
-  cursor: 'pointer',
-  '&:focus': {
-    outline: 'none',
-    boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.5)',
-  },
-});
-
-const CancelButton = styled(Button, {
-  color: '#374151',
-  backgroundColor: 'white',
-  borderColor: '#d1d5db',
-  '&:hover': {
-    backgroundColor: '#f9fafb',
-  },
-});
-
-const ConfirmButton = styled(Button, {
-  color: 'white',
-  backgroundColor: '#2563eb',
-  borderColor: 'transparent',
-  '&:hover': {
-    backgroundColor: '#1d4ed8',
-  },
-});
-
 const Modal: React.FC<ModalProps> = ({
-  isOpen,
+  open,
   onClose,
   title,
   children,
@@ -149,7 +130,7 @@ const Modal: React.FC<ModalProps> = ({
       }
     };
 
-    if (isOpen) {
+    if (open) {
       document.addEventListener('keydown', handleEscape);
       document.body.style.overflow = 'hidden';
     }
@@ -158,7 +139,7 @@ const Modal: React.FC<ModalProps> = ({
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [open, onClose]);
 
   // Handle overlay click
   const handleOverlayClick = (event: React.MouseEvent) => {
@@ -183,11 +164,13 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <Overlay ref={overlayRef} onClick={handleOverlayClick}>
-      <ModalContent size={size}>
+    <Overlay
+      ref={overlayRef}
+      onClick={handleOverlayClick}
+      visible={open}
+    >
+      <ModalContent size={size} visible={open}>
         {/* Header */}
         {title && (
           <Header>
@@ -218,14 +201,14 @@ const Modal: React.FC<ModalProps> = ({
         {!hideFooter && (confirmText || cancelText) && (
           <Footer>
             {cancelText && (
-              <CancelButton onClick={handleCancel}>
+              <Button variant="outline" onClick={handleCancel}>
                 {cancelText || tc('actions.cancel')}
-              </CancelButton>
+              </Button>
             )}
             {confirmText && (
-              <ConfirmButton onClick={handleConfirm}>
+              <Button onClick={handleConfirm}>
                 {confirmText || tc('actions.submit')}
-              </ConfirmButton>
+              </Button>
             )}
           </Footer>
         )}

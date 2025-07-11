@@ -51,7 +51,6 @@ export default function GroupHybrid({ group, Host }) {
           <GroupMembers group={group} />
         </Center>
       }
-      adminMenu={null}
       backLink={{ value: '/groups', label: groupsInMenu?.label }}
       images={[group.imageUrl]}
       subTitle={group.readingMaterial}

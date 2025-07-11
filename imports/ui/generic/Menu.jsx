@@ -61,3 +61,5 @@ export default function GenericMenu({
     </>
   );
 }
+
+export { Menu, MenuItem, MenuButton };

@@ -16,6 +16,7 @@ import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { useTranslation } from 'react-i18next';
 
+import Modal from '/imports/ui/core/Modal';
 import CalendarView from './CalendarView';
 import ConfirmModal from '../../generic/ConfirmModal';
 import Tag from '../../generic/Tag';
@@ -342,8 +343,8 @@ export default function Calendar() {
         </Box>
       </Box>
 
-      <ConfirmModal
-        visible={Boolean(selectedActivity)}
+      <Modal
+        open={Boolean(selectedActivity)}
         title={selectedActivity && selectedActivity.title}
         confirmText={tc('actions.entryPage')}
         cancelText={
@@ -351,9 +352,9 @@ export default function Calendar() {
             ? tc('actions.update')
             : tc('actions.close')
         }
+        onClose={() => setSelectedActivity(null)}
         onConfirm={() => handlePrimaryButtonClick()}
         onCancel={() => handleSecondaryButtonClick()}
-        onOverlayClick={() => setSelectedActivity(null)}
       >
         <Box
           bg="brand.50"
@@ -394,7 +395,7 @@ export default function Calendar() {
               </Link>
             </Center>
           )} */}
-      </ConfirmModal>
+      </Modal>
     </Box>
   );
 }

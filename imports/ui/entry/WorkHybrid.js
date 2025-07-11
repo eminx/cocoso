@@ -74,8 +74,6 @@ export default function WorkHybrid({ documents, work, Host }) {
 
   return (
     <TablyCentered
-      action={null}
-      adminMenu={null}
       author={
         work.showAvatar && {
           src: work.authorAvatar,

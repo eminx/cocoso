@@ -98,8 +98,6 @@ export default function ResourceHybrid({ documents, resource, Host }) {
 
   return (
     <TablyCentered
-      action={null}
-      adminMenu={null}
       backLink={backLink}
       images={resource?.images}
       tabs={tabs}
