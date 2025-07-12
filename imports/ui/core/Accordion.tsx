@@ -18,13 +18,15 @@ interface AccordionProps extends SzAccordionProps {
   }[];
 }
 
-const AccordionItem = styled(
-  SzAccordionItem,
-  (props: AccordionItemProps) => ({
-    borderRadius: 'var(--cocoso-border-radius)',
-    color: 'var(--cocoso-colors-gray-900)',
-    width: '100%',
-  })
+const AccordionItem = (props: AccordionItemProps) => (
+  <SzAccordionItem
+    {...props}
+    style={{
+      borderRadius: 'var(--cocoso-border-radius)',
+      color: 'var(--cocoso-colors-gray-900)',
+      width: '100%',
+    }}
+  />
 );
 
 const Chevron = styled(ChevronIcon, (props: { isEnter: boolean }) => ({
@@ -65,7 +67,7 @@ const Accordion = ({ options, ...props }: AccordionProps) => {
         {options.map((item) => (
           <AccordionItem
             key={item.key}
-            header={({ state }) => (
+            header={({ state }: { state: { isEnter: boolean } }) => (
               <Flex align="center" justify="space-between">
                 {item.header} <Chevron isEnter={state.isEnter} />
               </Flex>
