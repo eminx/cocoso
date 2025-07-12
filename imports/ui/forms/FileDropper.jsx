@@ -4,7 +4,7 @@ import { Center, Flex, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 const containerStyle = {
-  borderRadius: 8,
+  borderRadius: 'var(--cocoso-border-radius)',
 };
 
 export default function FileDropper({
@@ -28,11 +28,11 @@ export default function FileDropper({
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Flex
           {...getRootProps()}
-          _hover={{ bg: 'gray.50', borderColor: 'gray.500' }}
+          _hover={{ bg: 'gray.50', borderColor: 'brand.300' }}
           align="center"
           bg={isDragActive ? 'gray.300' : 'white'}
           border="2px dashed"
-          borderColor={isDragActive ? 'gray.600' : 'gray.300'}
+          borderColor={isDragActive ? 'brand.500' : 'brand.200'}
           cursor="grab"
           direction="column"
           justify="center"

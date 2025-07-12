@@ -55,6 +55,7 @@
     "@react-email/row": "0.0.8",
     "@react-email/section": "0.0.12",
     "@react-email/text": "0.0.8",
+    "@szhsin/react-accordion": "^1.4.1",
     "@szhsin/react-menu": "^4.4.0",
     "antd": "^5.24.5",
     "array-move": "^4.0.0",

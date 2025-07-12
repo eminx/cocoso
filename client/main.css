@@ -204,21 +204,6 @@ input::placeholder {
   font-weight: normal;
 }
 
-/* .chakra-input,
-.chakra-select,
-.chakra-numberinput__field,
-.chakra-checkbox__control:not([data-checked]),
-.chakra-textarea {
-  background-color: #fff !important;
-} */
-
-/* .chakra-input:hover,
-.chakra-select:hover,
-.chakra-numberinput__field:hover,
-.chakra-textarea:hover {
-  background-color: #f7f7f7 !important;
-} */
-
 .my-masonry-grid {
   display: -webkit-box; /* Not needed if autoprefixing */
   display: -ms-flexbox; /* Not needed if autoprefixing */

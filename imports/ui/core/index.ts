@@ -18,6 +18,7 @@ import Checkbox from './Checkbox';
 import { Code, Heading, Link, Tag, Text } from './Text';
 import Input from './Input';
 import Image from './Image';
+import Modal, { Drawer, Overlay } from './Modal';
 import { Radio, RadioGroup } from './RadioButtons';
 
 export {
@@ -33,6 +34,7 @@ export {
   Code,
   Container,
   Divider,
+  Drawer,
   Flex,
   Grid,
   Heading,
@@ -41,6 +43,8 @@ export {
   Image,
   Input,
   Link,
+  Modal,
+  Overlay,
   Radio,
   RadioGroup,
   Stack,

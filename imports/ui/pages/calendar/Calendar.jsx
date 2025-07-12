@@ -17,17 +17,17 @@ import makeAnimated from 'react-select/animated';
 import { useTranslation } from 'react-i18next';
 
 import Modal from '/imports/ui/core/Modal';
-import CalendarView from './CalendarView';
-import ConfirmModal from '../../generic/ConfirmModal';
-import Tag from '../../generic/Tag';
 import {
   call,
   getNonComboResourcesWithColor,
   getComboResourcesWithColor,
   parseAllBookingsWithResources,
-} from '../../utils/shared';
-import { StateContext } from '../../LayoutContainer';
-import PageHeading from '../../listing/PageHeading';
+} from '/imports/ui/utils/shared';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import PageHeading from '/imports/ui/listing/PageHeading';
+import Tag from '/imports/ui/generic/Tag';
+
+import CalendarView from './CalendarView';
 
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;
@@ -384,17 +384,6 @@ export default function Calendar() {
               ? ''
               : parseHtml(selectedActivity?.longDescription))}
         </Text>
-
-        {/* {!selectedActivity?.isGroupPrivate && (
-            <Center>
-              <Link to={selectedLinkForModal}>
-                <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
-                  {' '}
-                  {tc('actions.entryPage')}
-                </Button>
-              </Link>
-            </Center>
-          )} */}
       </Modal>
     </Box>
   );
