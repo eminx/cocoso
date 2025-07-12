@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { styled } from 'restyle';
+import { styled, GlobalStyles } from 'restyle';
 
 import { Flex } from './Box';
 import { xToRem } from './functions';
@@ -8,7 +8,11 @@ import { xToRem } from './functions';
 interface ButtonProps {
   children?: any;
   color?: string;
+  disabled?: boolean;
+  isDisabled?: boolean; // backwards compatibility
   leftIcon?: ReactNode;
+  loading?: boolean;
+  isLoading?: boolean; // backwards compatibility
   mx?: string | number;
   ml?: string | number;
   mr?: string | number;
@@ -25,6 +29,8 @@ interface ButtonProps {
 const ButtonComponent = styled('button', (props: ButtonProps) => {
   const variant = props.variant || 'solid';
   const size = props.size || 'md';
+  const disabled = props.disabled || props.isDisabled;
+
   return {
     backgroundColor:
       variant === 'ghost'
@@ -38,7 +44,7 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
     borderColor: props.color || 'var(--cocoso-colors-theme-200)',
     color:
       variant === 'solid' ? 'white' : 'var(--cocoso-colors-theme-500)',
-    cursor: 'pointer',
+    cursor: disabled ? 'not-allowed' : 'pointer',
     fontSize:
       size === 'xs'
         ? '0.75rem'
@@ -54,6 +60,7 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
     marginTop: xToRem(props.mt || props.my),
     marginBottom: xToRem(props.mb || props.my),
     margin: xToRem(props.m),
+    opacity: disabled ? 0.6 : 1,
     paddingInline:
       variant === 'ghost'
         ? '0.75rem'
@@ -84,28 +91,64 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
         : size === 'lg'
         ? '0.55rem'
         : '0.45rem',
+    pointerEvents: disabled ? 'none' : 'auto',
     ':hover': {
-      backgroundColor:
-        variant === 'solid'
-          ? 'var(--cocoso-colors-theme-600)'
-          : 'var(--cocoso-colors-theme-50)',
+      backgroundColor: disabled
+        ? undefined
+        : variant === 'solid'
+        ? 'var(--cocoso-colors-theme-600)'
+        : 'var(--cocoso-colors-theme-50)',
     },
     ':focus': {
-      backgroundColor:
-        variant === 'solid'
-          ? 'var(--cocoso-colors-theme-700)'
-          : 'var(--cocoso-colors-theme-100)',
+      backgroundColor: disabled
+        ? undefined
+        : variant === 'solid'
+        ? 'var(--cocoso-colors-theme-700)'
+        : 'var(--cocoso-colors-theme-100)',
     },
   };
 });
 
 export const Button = (props: ButtonProps) => {
+  const disabled = props.disabled || props.isDisabled;
+  const loading = props.loading || props.isLoading;
+  const isDisabled = disabled || loading; // Button is disabled if explicitly disabled OR loading
+
   return (
-    <ButtonComponent {...props}>
-      <Flex align="center" gap="0.25rem">
-        {props.leftIcon} {props.children} {props.rightIcon}
-      </Flex>
-    </ButtonComponent>
+    <>
+      <GlobalStyles>
+        {{
+          '@keyframes spin': {
+            '0%': { transform: 'rotate(0deg)' },
+            '100%': { transform: 'rotate(360deg)' },
+          },
+        }}
+      </GlobalStyles>
+      <ButtonComponent
+        {...props}
+        disabled={isDisabled}
+        onClick={isDisabled ? undefined : props.onClick}
+      >
+        <Flex align="center" gap="0.25rem">
+          {loading && (
+            <div
+              style={{
+                width: '1rem',
+                height: '1rem',
+                border: '2px solid currentColor',
+                borderTop: '2px solid transparent',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite',
+                marginRight: '0.25rem',
+              }}
+            />
+          )}
+          {!loading && props.leftIcon}
+          {props.children}
+          {!loading && props.rightIcon}
+        </Flex>
+      </ButtonComponent>
+    </>
   );
 };
 

@@ -4,7 +4,7 @@ import Settings from 'lucide-react/dist/esm/icons/settings';
 import { useTranslation } from 'react-i18next';
 
 import Menu from '/imports/ui/generic/Menu';
-import { Center, Text } from '/imports/ui/core';
+import { Text } from '/imports/ui/core';
 
 export default function AdminFunctions({ menuItems, onSelect }) {
   const [t] = useTranslation('admin');

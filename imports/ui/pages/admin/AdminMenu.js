@@ -1,7 +1,16 @@
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Box, Code, Flex, Heading, List, ListItem, Text } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Code,
+  Flex,
+  Heading,
+  List,
+  ListItem,
+  Text,
+} from '@chakra-ui/react';
 import Eye from 'lucide-react/dist/esm/icons/eye';
 
 import { StateContext } from '../../LayoutContainer';
@@ -76,7 +85,9 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
   const pathname = location?.pathname;
 
   const itemSplitted = item.value.split('/');
-  const isCurrentRoute = pathname.includes(isSub ? itemSplitted[1] : itemSplitted[0]);
+  const isCurrentRoute = pathname.includes(
+    isSub ? itemSplitted[1] : itemSplitted[0]
+  );
 
   if (isSub && !pathname.includes(parentValue)) {
     return null;
@@ -93,7 +104,11 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
       p="2.5"
       onClick={() => onItemClick(item)}
     >
-      <Text fontWeight={isCurrentRoute ? 'bold' : 'normal'} isTruncated textOverflow="ellipsis">
+      <Text
+        fontWeight={isCurrentRoute ? 'bold' : 'normal'}
+        isTruncated
+        textOverflow="ellipsis"
+      >
         {item.label}
       </Text>
     </Box>
@@ -101,7 +116,8 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
 }
 
 export default function AdminMenu({ routes, onItemClick }) {
-  const { currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const { currentHost, currentUser, isDesktop, role } =
+    useContext(StateContext);
   const [t] = useTranslation('admin');
 
   const isAdmin = role === 'admin';
@@ -127,7 +143,14 @@ export default function AdminMenu({ routes, onItemClick }) {
 
       <Flex direction="column" h="100%" overflowY="auto">
         {isDesktop && isAdmin && (
-          <Heading flexGrow="0" color="blueGray.800" p="4" pb="0" size="md" textAlign="center">
+          <Heading
+            flexGrow="0"
+            color="blueGray.800"
+            p="4"
+            pb="0"
+            size="md"
+            textAlign="center"
+          >
             {t('panel')}
           </Heading>
         )}
@@ -155,19 +178,15 @@ export default function AdminMenu({ routes, onItemClick }) {
         <Box
           cursor="pointer"
           flexGrow="0"
-          onClick={() => onItemClick({ label: 'My Profile', value: '/admin/my-profile' })}
+          onClick={() =>
+            onItemClick({
+              label: 'My Profile',
+              value: '/admin/my-profile',
+            })
+          }
         >
           <AdminUserThumb currentUser={currentUser} />
         </Box>
-
-        {/* {isSuperAdmin && isPortalHost && platform && (
-          <Box mb="2" mt="6">
-            <Heading color="blueGray.50" size="sm">
-              {`${platform.name} ${tc('domains.platform')}`}
-            </Heading>
-            <ListMenu list={superadminMenu} />
-          </Box>
-        )} */}
       </Flex>
     </Flex>
   );

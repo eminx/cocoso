@@ -29,11 +29,17 @@ import { getFullName } from '../utils/shared';
 
 function NotificationLinkItem({ host, item, children }) {
   if (item.host && host === item.host) {
-    return <Link to={`/${item.context}/${item.contextId}`}>{children}</Link>;
+    return (
+      <Link to={`/${item.context}/${item.contextId}`}>{children}</Link>
+    );
   }
 
   return (
-    <CLink href={`https://${item.host || host}/${item.context}/${item.contextId}`}>
+    <CLink
+      href={`https://${item.host || host}/${item.context}/${
+        item.contextId
+      }`}
+    >
       {children}
     </CLink>
   );
@@ -75,7 +81,9 @@ export function UserThumb({ isNotification = false }) {
             <CheckCircle color="#010101" size="16" />
           </AvatarBadge>
         )}
-        {isNotification && <AvatarBadge bg="tomato" borderColor="white" boxSize="1em" />}
+        {isNotification && (
+          <AvatarBadge bg="tomato" borderColor="white" boxSize="1em" />
+        )}
       </Avatar>
 
       <Box
@@ -88,7 +96,11 @@ export function UserThumb({ isNotification = false }) {
         <Text fontSize={isDesktop ? 'md' : 'sm'} fontWeight="bold">
           {currentUser.username}
         </Text>
-        <Text fontSize={isDesktop ? 'sm' : 'xs'} fontWeight="light" isTruncated>
+        <Text
+          fontSize={isDesktop ? 'sm' : 'xs'}
+          fontWeight="light"
+          isTruncated
+        >
           {getFullName(currentUser)}
         </Text>
       </Box>
@@ -97,7 +109,13 @@ export function UserThumb({ isNotification = false }) {
 }
 
 export default function UserPopup({ isOpen, setIsOpen }) {
-  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const {
+    canCreateContent,
+    currentHost,
+    currentUser,
+    isDesktop,
+    role,
+  } = useContext(StateContext);
   const navigate = useNavigate();
 
   if (!currentHost) {
@@ -130,7 +148,9 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
   const isNotification = notifications && notifications.length > 0;
   const host = currentHost?.host;
-  const roleTranslated = <Trans i18nKey={`roles.${role}`} ns="members" />;
+  const roleTranslated = (
+    <Trans i18nKey={`roles.${role}`} ns="members" />
+  );
 
   const isAdmin = role === 'admin';
 
@@ -172,7 +192,12 @@ export default function UserPopup({ isOpen, setIsOpen }) {
             <Box px="4" py="1">
               <Text fontWeight="bold" fontSize="xl">
                 {currentUser.username}{' '}
-                <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">
+                <Text
+                  as="span"
+                  fontSize="sm"
+                  fontWeight="light"
+                  textTransform="lowercase"
+                >
                   {roleTranslated}
                 </Text>
               </Text>
@@ -184,17 +209,29 @@ export default function UserPopup({ isOpen, setIsOpen }) {
             <Link to="/admin/home">
               <MenuItem px="4">
                 <Bolt size="20" style={{ marginRight: '6px' }} />
-                <Trans i18nKey="members:dashboard">Admin Dashboard</Trans>
+                <Trans i18nKey="members:dashboard">
+                  Admin Dashboard
+                </Trans>
               </MenuItem>
             </Link>
           )}
           {isAdmin && <MenuDivider />}
 
           {isNotification && (
-            <MenuGroup title={<Trans i18nKey="common:menu.notifications.label">Login</Trans>}>
+            <MenuGroup
+              title={
+                <Trans i18nKey="common:menu.notifications.label">
+                  Login
+                </Trans>
+              }
+            >
               <Box px="1">
                 {notifications.map((item) => (
-                  <NotificationLinkItem key={item.contextId + item.count} host={host} item={item}>
+                  <NotificationLinkItem
+                    key={item.contextId + item.count}
+                    host={host}
+                    item={item}
+                  >
                     <MenuItem>
                       <Text>{item.title} </Text>
                       <Badge colorScheme="red" size="xs">
@@ -213,18 +250,24 @@ export default function UserPopup({ isOpen, setIsOpen }) {
             <Box px="1">
               <Link to={currentUser && `/@${currentUser?.username}`}>
                 <MenuItem as="span">
-                  <Trans i18nKey="common:menu.member.profile">My Profile</Trans>
+                  <Trans i18nKey="common:menu.member.profile">
+                    My Profile
+                  </Trans>
                 </MenuItem>
               </Link>
               <Link to={'/admin/my-profile'}>
                 <MenuItem as="span">
-                  <Trans i18nKey="common:menu.member.settings">Profile Settings</Trans>
+                  <Trans i18nKey="common:menu.member.settings">
+                    Profile Settings
+                  </Trans>
                 </MenuItem>
               </Link>
               {canCreateContent && (
                 <Link to="/my-activities">
                   <MenuItem as="span">
-                    <Trans i18nKey="common:menu.member.activities">My Activities</Trans>
+                    <Trans i18nKey="common:menu.member.activities">
+                      My Activities
+                    </Trans>
                   </MenuItem>
                 </Link>
               )}
@@ -235,7 +278,11 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
           <MenuGroup>
             <Center py="2">
-              <Button size="sm" variant="ghost" onClick={() => handleLogout()}>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => handleLogout()}
+              >
                 <Trans i18nKey="common:actions.logout">Logout</Trans>
               </Button>
             </Center>

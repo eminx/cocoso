@@ -1,6 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Menu, MenuButton, MenuList, MenuItem, Select, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Select,
+  Text,
+} from '@chakra-ui/react';
 
 import { allLangs } from '../../startup/i18n';
 
@@ -17,7 +25,9 @@ export default function ChangeLanguage({
   if (!select)
     return (
       <Box textAlign={isCentered ? 'center' : 'initial'}>
-        {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
+        {!hideHelper && (
+          <Text fontSize="sm">{t('common:langs.form.label')}:</Text>
+        )}
         <Menu placement="top">
           <MenuButton fontWeight="bold" textDecoration="underline">
             {t(`common:langs.${i18n.language}`)}
@@ -27,7 +37,9 @@ export default function ChangeLanguage({
               <MenuItem
                 key={lang.value}
                 color="gray.700"
-                fontWeight={lang.value === currentLang ? 'bold' : 'normal'}
+                fontWeight={
+                  lang.value === currentLang ? 'bold' : 'normal'
+                }
                 onClick={() => i18n.changeLanguage(lang.value)}
               >
                 {lang.label}
@@ -40,7 +52,9 @@ export default function ChangeLanguage({
 
   return (
     <Box>
-      {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
+      {!hideHelper && (
+        <Text fontSize="sm">{t('common:langs.form.label')}:</Text>
+      )}
       <Select
         name="lang"
         placeholder={t('common:langs.form.holder')}
@@ -48,7 +62,11 @@ export default function ChangeLanguage({
         {...(register && register('lang'))}
       >
         {allLangs.map((lang) => (
-          <option key={lang.value} selected={lang.value === currentLang} value={lang.value}>
+          <option
+            key={lang.value}
+            selected={lang.value === currentLang}
+            value={lang.value}
+          >
             {lang.label}
             {/* {t(`common:langs.${lang}`)} */}
           </option>
