@@ -5,10 +5,16 @@ import HTMLReactParser from 'html-react-parser';
 import { Box, Center, Tag, Text } from '/imports/ui/core';
 import TablyCentered from './TablyCentered';
 import FancyDate from './FancyDate';
-import { accordionProps } from '../utils/constants/general';
 import ActionDates from './ActionDates';
 
-const { buttonProps } = accordionProps;
+const buttonStyle = {
+  backgroundColor: 'var(--cocoso-colors-theme-100)',
+  borderRadius: 'var(--cocoso-border-radius)',
+  color: 'var(--cocoso-colors-gray-900)',
+  margin: '0.5rem 0',
+  padding: '1rem',
+  width: '100%',
+};
 
 export default function ActivityHybrid({ activity, Host }) {
   if (!activity) {
@@ -80,13 +86,13 @@ export default function ActivityHybrid({ activity, Host }) {
         </Trans>
       ),
       content: (
-        <Box p="6">
+        <Box>
           {activity.datesAndTimes?.map((occurrence) => (
             <Box
               key={occurrence.startDate + occurrence.startTime}
-              {...buttonProps}
               p="2"
               mb="4"
+              style={buttonStyle}
             >
               <FancyDate occurrence={occurrence} />
             </Box>

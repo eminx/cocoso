@@ -387,7 +387,7 @@ export default function RsvpContent({
         open={Boolean(selectedOccurrence)}
         size="2xl"
         title={
-          <Box mr="8">
+          <Box mr="8" w="100%">
             <FancyDate occurrence={selectedOccurrence} />
           </Box>
         }

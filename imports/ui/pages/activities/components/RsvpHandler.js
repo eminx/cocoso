@@ -1,22 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  Center,
-  Flex,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
-import Modal from '/imports/ui/core/Modal';
+import { Accordion, Modal } from '/imports/ui/core';
 import FancyDate from '/imports/ui/entry/FancyDate';
-import { accordionProps } from '/imports/ui/utils/constants/general';
 import ActionButton from '/imports/ui/generic/ActionButton';
 
 import OccurrenceRsvpContent from './OccurrenceRsvpContent';
@@ -25,7 +14,14 @@ if (Meteor.isClient) {
   import 'react-table/react-table.css';
 }
 
-const { buttonProps, itemProps, panelProps } = accordionProps;
+const buttonStyle = {
+  backgroundColor: 'var(--cocoso-colors-theme-100)',
+  borderRadius: 'var(--cocoso-border-radius)',
+  color: 'var(--cocoso-colors-gray-900)',
+  margin: '0.5rem 0',
+  padding: '1rem',
+  width: '100%',
+};
 
 function AccordionDates({ activity, onCloseModal }) {
   const [t] = useTranslation('activities');
@@ -55,9 +51,7 @@ function AccordionDates({ activity, onCloseModal }) {
           {items.map((occurrence) => (
             <Box
               key={occurrence.startDate + occurrence.startTime}
-              {...buttonProps}
-              p="2"
-              mb="4"
+              style={buttonStyle}
             >
               <FancyDate occurrence={occurrence} />
             </Box>
@@ -74,24 +68,16 @@ function AccordionDates({ activity, onCloseModal }) {
           {t('public.register.disabled.false')}
         </Text>
       )}
-      <Accordion allowToggle>
-        {items.map((occurrence, occurrenceIndex) => (
-          <AccordionItem
-            key={occurrence.startDate + occurrence.startTime}
-            {...itemProps}
-          >
-            <AccordionButton {...buttonProps}>
-              <Box flex="1" textAlign="left">
-                <FancyDate occurrence={occurrence} />
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-
-            <AccordionPanel {...panelProps}>
-              <Text m="2" fontWeight="bold">
+      <Accordion
+        options={items.map((occurrence, occurrenceIndex) => ({
+          key: occurrence.startDate + occurrence.startTime,
+          header: <FancyDate occurrence={occurrence} />,
+          content: (
+            <Box>
+              <Text fontWeight="bold">
                 {t('public.register.label')}
               </Text>
-              <Box px="2">
+              <Box>
                 <OccurrenceRsvpContent
                   activity={activity}
                   occurrence={occurrence}
@@ -99,10 +85,10 @@ function AccordionDates({ activity, onCloseModal }) {
                   onCloseModal={onCloseModal}
                 />
               </Box>
-            </AccordionPanel>
-          </AccordionItem>
-        ))}
-      </Accordion>
+            </Box>
+          ),
+        }))}
+      />
     </Box>
   );
 }

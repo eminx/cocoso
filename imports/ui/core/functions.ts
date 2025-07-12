@@ -78,6 +78,9 @@ export const getPropStyles = (props: any) => {
     ...(props.h && {
       height: props.h,
     }),
+    ...(props.flex && {
+      flex: props.flex,
+    }),
     ...(props.maxH && {
       maxHeight: props.maxH,
     }),

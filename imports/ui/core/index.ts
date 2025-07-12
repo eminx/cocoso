@@ -1,6 +1,7 @@
 import { Alert, AlertTitle, AlertDescription } from './Alert';
 import Avatar from './Avatar';
 import Badge from './Badge';
+import { Accordion, AccordionItem } from './Accordion';
 import {
   Box,
   Center,
@@ -22,6 +23,8 @@ import Modal, { Drawer, Overlay } from './Modal';
 import { Radio, RadioGroup } from './RadioButtons';
 
 export {
+  Accordion,
+  AccordionItem,
   Alert,
   AlertTitle,
   AlertDescription,

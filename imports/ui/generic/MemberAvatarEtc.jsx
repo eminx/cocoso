@@ -1,5 +1,14 @@
 import React from 'react';
-import { Avatar, Box, Center, HStack, Tag, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Center,
+  HStack,
+  Tag,
+  Text,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import CircleCheck from 'lucide-react/dist/esm/icons/circle-check';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
@@ -14,8 +23,9 @@ const tagProps = {
 };
 
 function MemberAvatarEtc({ isThumb = true, user, role }) {
-  const { avatar } = user;
-  const avatarSrc = avatar?.src || avatar;
+  if (!user) return null;
+
+  const avatarSrc = user?.avatar?.src || user?.avatar;
   const [t] = useTranslation('members');
 
   return (
@@ -24,7 +34,7 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
         <Avatar
           borderRadius="lg"
           maxW={350}
-          name={user.username}
+          name={user?.username}
           showBorder
           size={!avatarSrc || isThumb ? '2xl' : '4xl'}
           src={avatarSrc}
@@ -49,7 +59,9 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
                   }
                 >
                   <Text fontWeight="bold">
-                    {role === 'contributor' ? t('roles.verified') : t('roles.admin')}
+                    {role === 'contributor'
+                      ? t('roles.verified')
+                      : t('roles.admin')}
                   </Text>
                 </Popover>
               </Box>
