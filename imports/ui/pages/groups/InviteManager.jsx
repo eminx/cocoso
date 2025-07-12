@@ -14,10 +14,15 @@ import {
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import FormField from '../../forms/FormField';
-import { call, emailIsValid, includesSpecialCharacters } from '../../utils/shared';
-import { message } from '../../generic/message';
-import Drawer from '../../generic/Drawer';
+import { Drawer } from '/imports/ui/core';
+import FormField from '/imports/ui/forms/FormField';
+import {
+  call,
+  emailIsValid,
+  includesSpecialCharacters,
+} from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+
 import { GroupContext } from './Group';
 
 const EmailsContainer = (props) => (
@@ -41,7 +46,9 @@ export default function InviteManager() {
   const peopleInvited = group.peopleInvited;
 
   const isAlreadyInvited = () => {
-    const inviteEmailsList = peopleInvited.map((person) => person.email);
+    const inviteEmailsList = peopleInvited.map(
+      (person) => person.email
+    );
     const emailInput = state.emailInput;
     if (inviteEmailsList.indexOf(emailInput) !== -1) {
       message.error(t('invite.email.already'));
@@ -58,7 +65,10 @@ export default function InviteManager() {
     }
 
     const firstNameInput = state.firstNameInput;
-    if (firstNameInput.length < 2 || includesSpecialCharacters(firstNameInput)) {
+    if (
+      firstNameInput.length < 2 ||
+      includesSpecialCharacters(firstNameInput)
+    ) {
       message.error(t('invite.firstName.valid'));
       return true;
     }
@@ -79,7 +89,9 @@ export default function InviteManager() {
     try {
       await call('invitePersonToPrivateGroup', group._id, person);
       await getGroupById();
-      message.success(t('invite.success', { name: state.firstNameInput }));
+      message.success(
+        t('invite.success', { name: state.firstNameInput })
+      );
       setState((prevState) => ({
         ...prevState,
         firstNameInput: '',
@@ -120,13 +132,16 @@ export default function InviteManager() {
 
   return (
     <Drawer
-      isOpen={isOpen}
+      open={isOpen}
       title={t('actions.invite')}
       onClose={() => setSearchParams({ invite: 'false' })}
     >
       <Box>
-        <VStack py="6">
-          <Text>{t('invite.info')}</Text>
+        <VStack py="2" gap="2">
+          <Flex justify="flex-start" w="100%" mb="2">
+            <Text>{t('invite.info')}</Text>
+          </Flex>
+
           <FormField label={t('invite.email.label')}>
             <Input
               onChange={handleEmailInputChange}
@@ -143,14 +158,19 @@ export default function InviteManager() {
             />
           </FormField>
           <FormField>
-            <Flex justifyContent="flex-end">
-              <Button onClick={handleSendInvite}>{t('invite.submit')}</Button>
+            <Flex justify="flex-end">
+              <Button onClick={handleSendInvite}>
+                {t('invite.submit')}
+              </Button>
             </Flex>
           </FormField>
         </VStack>
 
         <Box py="8">
-          <EmailsContainer title="People Invited" count={peopleInvited?.length}>
+          <EmailsContainer
+            title="People Invited"
+            count={peopleInvited?.length}
+          >
             {peopleInvited?.map((person) => (
               <Tag
                 key={person.email}
@@ -166,7 +186,9 @@ export default function InviteManager() {
                   {person?.firstName}
                 </TagLabel>
                 <Text>{person?.email}</Text>
-                <TagCloseButton onClick={() => handleRemoveInvite(person)} />
+                <TagCloseButton
+                  onClick={() => handleRemoveInvite(person)}
+                />
               </Tag>
             ))}
           </EmailsContainer>

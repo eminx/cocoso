@@ -3,6 +3,7 @@ import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
 import { Box, Center } from '/imports/ui/core';
+
 import TablyCentered from './TablyCentered';
 import GroupDocuments from '../pages/groups/components/GroupDocuments';
 import GroupMembers from '../pages/groups/components/GroupMembers';

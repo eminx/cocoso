@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Box, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
 import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
 
-import Drawer from '../generic/Drawer';
+import { Drawer } from '/imports/ui/core';
+
 import ChangeLanguageMenu from './ChangeLanguageMenu';
 import { StateContext } from '../LayoutContainer';
 import { InfoPagesMenu } from './Header';
@@ -31,15 +32,26 @@ function MenuContent({ menuItems, pageTitles, onToggle }) {
         if (item.name === 'info') {
           return (
             <Box py="2" key="info">
-              <InfoPagesMenu label={item.label} pageTitles={pageTitles} pathname={pathname} />
+              <InfoPagesMenu
+                label={item.label}
+                pageTitles={pageTitles}
+                pathname={pathname}
+              />
             </Box>
           );
         }
         return (
-          <Link key={item.name} style={{ textShadow: 'none' }} to={item.route} onClick={onToggle}>
+          <Link
+            key={item.name}
+            style={{ textShadow: 'none' }}
+            to={item.route}
+            onClick={onToggle}
+          >
             <Box px="2" py="1">
               <Text
-                _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
+                _hover={
+                  !isCurrentPageLabel && { textDecoration: 'underline' }
+                }
                 fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
               >
                 {item.label}
@@ -68,12 +80,14 @@ const getRoute = (item) => {
 };
 
 export default function MenuDrawer() {
-  const { currentHost, isDesktop, pageTitles, platform } = useContext(StateContext);
+  const { currentHost, isDesktop, pageTitles, platform } =
+    useContext(StateContext);
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
 
   const settings = currentHost?.settings;
-  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } = settings || {};
+  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } =
+    settings || {};
 
   if (isDesktop && !isBurgerMenuOnDesktop) {
     return null;
@@ -122,16 +136,13 @@ export default function MenuDrawer() {
         </Text>
       </Flex>
 
-      <Drawer
-        bg="white"
-        isOpen={isOpen}
-        size="sm"
-        title={tc('menu.label')}
-        titleColor="brand.900"
-        onClose={onToggle}
-      >
+      <Drawer open={isOpen} title={tc('menu.label')} onClose={onToggle}>
         <Flex flexDirection="column" h="100%" justify="space-between">
-          <MenuContent menuItems={menuItems} pageTitles={pageTitles} onToggle={onToggle} />
+          <MenuContent
+            menuItems={menuItems}
+            pageTitles={pageTitles}
+            onToggle={onToggle}
+          />
 
           <Box color="brand.600" mt="4">
             <MenuFooter />

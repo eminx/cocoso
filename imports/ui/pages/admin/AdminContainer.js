@@ -1,19 +1,34 @@
 import React, { useContext, useState } from 'react';
-import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  SimpleGrid,
+  Text,
+} from '@chakra-ui/react';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
 import Eye from 'lucide-react/dist/esm/icons/eye';
 
-import { StateContext } from '../../LayoutContainer';
-import Alert from '../../generic/Alert';
+import { Drawer } from '/imports/ui/core';
+import Alert from '/imports/ui/generic/Alert';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import EditProfile from '/imports/ui/pages/profile/EditProfile';
+
 import AdminMenu from './AdminMenu';
-import Drawer from '../../generic/Drawer';
 import getAdminRoutes from './getAdminRoutes';
-import EditProfile from '../profile/EditProfile';
 
 export default function AdminContainer() {
-  const { currentUser, currentHost, isDesktop, role } = useContext(StateContext);
+  const { currentUser, currentHost, isDesktop, role } =
+    useContext(StateContext);
   const [drawerMenuOpen, setDrawerMenuOpen] = useState(false);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
@@ -65,7 +80,11 @@ export default function AdminContainer() {
     }
     if (item.isMulti) {
       navigate(item.content[0]?.value);
-      if (!isDesktop && currentRoute?.value?.split('/')[0] === item?.value?.split('/')[0]) {
+      if (
+        !isDesktop &&
+        currentRoute?.value?.split('/')[0] ===
+          item?.value?.split('/')[0]
+      ) {
         setDrawerMenuOpen(false);
       }
       return;
@@ -85,7 +104,11 @@ export default function AdminContainer() {
   };
 
   const EditProfileRoute = currentUser && (
-    <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
+    <Route
+      key="my-profile"
+      path="/my-profile/*"
+      element={<EditProfile />}
+    />
   );
 
   if (!currentHost) {
@@ -105,24 +128,30 @@ export default function AdminContainer() {
       <Box bg="blueGray.100" minH="100vh">
         <Drawer
           bg="white"
-          isOpen={drawerMenuOpen}
-          bodyProps={{ p: '0' }}
-          headerProps={{ bg: 'blueGray.800' }}
-          placement="left"
-          size="xs"
+          open={drawerMenuOpen}
+          noPadding
+          position="left"
+          size="sm"
           title={t('menulabel')}
-          titleColor="brand.50"
           onClose={() => setDrawerMenuOpen(false)}
         >
           <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Drawer>
         <Box>
           <Flex align="center" bg="blueGray.50" w="100%">
-            <Flex {...iconContainerProps} onClick={() => setDrawerMenuOpen(true)}>
+            <Flex
+              {...iconContainerProps}
+              onClick={() => setDrawerMenuOpen(true)}
+            >
               <Bolt />
               <Text fontSize="xs">{t('menu.title')}</Text>
             </Flex>
-            <Heading flexGrow="1" color="blueGray.900" size="md" textAlign="center">
+            <Heading
+              flexGrow="1"
+              color="blueGray.900"
+              size="md"
+              textAlign="center"
+            >
               {isAdmin ? t('panel') : ta('profile.settings')}
             </Heading>
             <Link to="/">
@@ -138,10 +167,18 @@ export default function AdminContainer() {
               {routes?.map((route) =>
                 route.isMulti ? (
                   route.content.map((routeSub) => (
-                    <Route key={routeSub.value} path={routeSub.value} element={routeSub.content} />
+                    <Route
+                      key={routeSub.value}
+                      path={routeSub.value}
+                      element={routeSub.content}
+                    />
                   ))
                 ) : (
-                  <Route key={route.value} path={route.value} element={route.content} />
+                  <Route
+                    key={route.value}
+                    path={route.value}
+                    element={route.content}
+                  />
                 )
               )}
               {EditProfileRoute}
@@ -160,15 +197,25 @@ export default function AdminContainer() {
         </Box>
 
         <Box p="8">
-          <Heading mb="8">{isAdmin ? currentRoute?.label : ta('profile.settings')}</Heading>
+          <Heading mb="8">
+            {isAdmin ? currentRoute?.label : ta('profile.settings')}
+          </Heading>
           <Routes>
             {routes?.map((route) =>
               route.isMulti ? (
                 route.content.map((routeSub) => (
-                  <Route key={routeSub.value} path={routeSub.value} element={routeSub.content} />
+                  <Route
+                    key={routeSub.value}
+                    path={routeSub.value}
+                    element={routeSub.content}
+                  />
                 ))
               ) : (
-                <Route key={route.value} path={route.value} element={route.content} />
+                <Route
+                  key={route.value}
+                  path={route.value}
+                  element={route.content}
+                />
               )
             )}
             {EditProfileRoute}

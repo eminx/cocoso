@@ -9,6 +9,7 @@ import {
   Link as CLink,
   Text,
 } from '@chakra-ui/react';
+import { useHydrated } from 'react-hydration-provider';
 
 import Modal from '/imports/ui/core/Modal';
 import NiceList from '/imports/ui/generic/NiceList';
@@ -16,6 +17,7 @@ import NiceList from '/imports/ui/generic/NiceList';
 export default function GroupMembers({ group }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
+  const hydrated = useHydrated();
 
   if (!group) {
     return null;
@@ -42,40 +44,42 @@ export default function GroupMembers({ group }) {
         ))}
       </AvatarGroup>
 
-      <Modal
-        hideFooter
-        open={modalOpen}
-        title={t('labels.member')}
-        onClose={() => setModalOpen(false)}
-      >
-        <NiceList
-          keySelector="username"
-          list={group.members}
-          py="4"
-          spacing="4"
+      {hydrated && (
+        <Modal
+          hideFooter
+          open={modalOpen}
+          title={t('labels.member')}
+          onClose={() => setModalOpen(false)}
         >
-          {(member) => (
-            <Link to={`/@${member.username}/bio`}>
-              <Flex align="center">
-                <Avatar
-                  borderRadius="lg"
-                  mr="2"
-                  name={member.username}
-                  size="md"
-                  src={member.avatar}
-                />
-                <CLink
-                  as="span"
-                  fontWeight={member.isAdmin ? 700 : 400}
-                >
-                  {member.username}
-                </CLink>
-                <Text ml="1">{member.isAdmin && '(admin)'}</Text>
-              </Flex>
-            </Link>
-          )}
-        </NiceList>
-      </Modal>
+          <NiceList
+            keySelector="username"
+            list={group.members}
+            py="4"
+            spacing="4"
+          >
+            {(member) => (
+              <Link to={`/@${member.username}/bio`}>
+                <Flex align="center">
+                  <Avatar
+                    borderRadius="lg"
+                    mr="2"
+                    name={member.username}
+                    size="md"
+                    src={member.avatar}
+                  />
+                  <CLink
+                    as="span"
+                    fontWeight={member.isAdmin ? 700 : 400}
+                  >
+                    {member.username}
+                  </CLink>
+                  <Text ml="1">{member.isAdmin && '(admin)'}</Text>
+                </Flex>
+              </Link>
+            )}
+          </NiceList>
+        </Modal>
+      )}
     </Box>
   );
 }

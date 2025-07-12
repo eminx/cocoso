@@ -7,23 +7,19 @@ import { Button } from '/imports/ui/core';
 
 // Common props interface
 interface BaseProps {
-  open: boolean;
-  onClose: () => void;
-  title?: string;
-  children: React.ReactNode;
-  confirmText?: string;
   cancelText?: string;
-  onConfirm?: () => void;
-  onCancel?: () => void;
-  onSecondaryButtonClick?: () => void;
+  children: React.ReactNode;
+  closeOnOverlayClick?: boolean;
+  confirmText?: string;
   hideFooter?: boolean;
   hideHeader?: boolean;
-  closeOnOverlayClick?: boolean;
-}
-
-// Modal-specific props
-interface ModalProps extends BaseProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
+  noPadding?: boolean;
+  onCancel?: () => void;
+  onClose: () => void;
+  onConfirm?: () => void;
+  onSecondaryButtonClick?: () => void;
+  open: boolean;
+  title?: string;
 }
 
 // Drawer-specific props
@@ -32,81 +28,86 @@ interface DrawerProps extends BaseProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
 }
 
+// Modal-specific props
+interface ModalProps extends BaseProps {
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
+}
+
 // Overlay props
 interface OverlayProps {
-  visible?: boolean;
+  centered?: boolean;
   children: React.ReactNode;
   onClick?: (event: React.MouseEvent) => void;
-  centered?: boolean;
+  visible?: boolean;
 }
 
 // Shared styled components
-const Header = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '1.5rem',
-  paddingBottom: '1rem',
-  borderBottom: '1px solid #e5e7eb',
-  minHeight: '1rem',
-});
-
-const Title = styled('h2', {
-  fontSize: '1.25rem',
-  fontWeight: 600,
-  color: '#111827',
-  margin: 0,
-});
+const Body = styled('div', (props: any) => ({
+  flex: '1 1 auto',
+  minHeight: 0,
+  overflowY: 'auto',
+  padding: props.noPadding ? '0px' : '1.5rem',
+}));
 
 const CloseButton = styled('button', {
-  padding: '0.25rem',
-  borderRadius: '9999px',
-  transition: 'all 0.3s',
-  color: '#9ca3af',
-  border: 'none',
   background: 'transparent',
+  border: 'none',
+  borderRadius: '9999px',
+  color: '#9ca3af',
   cursor: 'pointer',
+  padding: '0.25rem',
+  transition: 'all 0.3s',
   '&:hover': {
     backgroundColor: '#f3f4f6',
     color: '#4b5563',
   },
 });
 
-const Body = styled('div', {
-  padding: '1.5rem',
-  overflowY: 'auto',
-  flex: '1 1 auto',
-  minHeight: 0,
-});
-
 const Footer = styled('div', {
-  display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
+  borderTop: '1px solid #e5e7eb',
+  display: 'flex',
   gap: '0.75rem',
+  justifyContent: 'flex-end',
   padding: '1.5rem',
   paddingTop: '1rem',
-  borderTop: '1px solid #e5e7eb',
+});
+
+const Header = styled('div', {
+  alignItems: 'center',
+  borderBottom: '1px solid #e5e7eb',
+  display: 'flex',
+  justifyContent: 'space-between',
+  minHeight: '1rem',
+  padding: '1.5rem',
+  paddingBottom: '1rem',
+});
+
+const Title = styled('h2', {
+  color: '#111827',
+  fontSize: '1.25rem',
+  fontWeight: 600,
+  margin: 0,
 });
 
 // Overlay component
 const BaseOverlay = styled(
   'div',
   (props: { visible?: boolean; centered?: boolean }) => ({
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     backdropFilter: 'brightness(0.8)',
-    zIndex: 1405,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    bottom: 0,
+    left: 0,
     opacity: props.visible ? 1 : 0,
-    visibility: props.visible ? 'visible' : 'hidden',
+    position: 'fixed',
+    right: 0,
+    top: 0,
     transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out',
+    visibility: props.visible ? 'visible' : 'hidden',
+    zIndex: 1405,
     ...(props.centered && {
-      display: 'flex',
       alignItems: 'center',
+      display: 'flex',
       justifyContent: 'center',
       padding: '1rem',
     }),
@@ -114,16 +115,16 @@ const BaseOverlay = styled(
 );
 
 export const Overlay: React.FC<OverlayProps> = ({
-  visible = false,
+  centered = false,
   children,
   onClick,
-  centered = false,
+  visible = false,
 }) => {
   return (
     <BaseOverlay
-      visible={visible}
       centered={centered}
       onClick={onClick}
+      visible={visible}
     >
       {children}
     </BaseOverlay>
@@ -137,6 +138,9 @@ const ModalContent = styled(
     backgroundColor: 'var(--cocoso-colors-gray-50)',
     borderRadius: '0.5rem',
     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+    display: 'flex',
+    flexDirection: 'column',
+    maxHeight: '90vh',
     maxWidth:
       props.size === 'sm'
         ? '24rem'
@@ -151,18 +155,15 @@ const ModalContent = styled(
         : props.size === 'full'
         ? '100vw'
         : '28rem',
-    width: '100%',
-    maxHeight: '90vh',
     minHeight: '50vh',
-    display: 'flex',
-    flexDirection: 'column',
+    opacity: props.visible ? 1 : 0,
     overflow: 'hidden',
     position: 'relative',
-    opacity: props.visible ? 1 : 0,
     transform: props.visible
       ? 'scale(1) translateY(0)'
       : 'scale(0.95) translateY(20px)',
-    transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
+    transition: 'all 0.3s ease-in-out',
+    width: '100%',
   })
 );
 
@@ -170,85 +171,79 @@ const ModalContent = styled(
 const DrawerContent = styled(
   'div',
   (props: { position?: string; size?: string; visible?: boolean }) => {
-    const sizeMap = {
-      sm: '20rem',
-      md: '24rem',
-      lg: '28rem',
-      xl: '32rem',
-      full: '100vw',
-    };
-
-    const getSize = () => {
-      const size =
-        sizeMap[props.size as keyof typeof sizeMap] || sizeMap.md;
-      return props.size === 'full' ? '100vw' : size;
-    };
-
-    const getMaxSize = (dimension: 'width' | 'height') => {
-      return props.size === 'full'
+    const maxHeight = props.size === 'full' ? '100vh' : '90vh';
+    const maxSize = props.size === 'full' ? '100vw' : '90vw';
+    const size =
+      props.size === 'sm'
+        ? '20rem'
+        : props.size === 'lg'
+        ? '28rem'
+        : props.size === 'xl'
+        ? '32rem'
+        : props.size === 'full'
         ? '100vw'
-        : dimension === 'width'
-        ? '90vw'
-        : '90vh';
+        : '24rem';
+
+    const base = {
+      backgroundColor: 'var(--cocoso-colors-gray-50)',
+      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+      display: 'flex',
+      flexDirection: 'column' as const,
+      overflow: 'hidden',
+      position: 'fixed' as const,
+      transition: 'all 0.3s ease-in-out',
     };
 
-    const getPositionStyles = () => {
-      const isHorizontal =
-        props.position === 'left' || props.position === 'right';
-      const isVertical =
-        props.position === 'top' || props.position === 'bottom';
-
-      const baseStyles = {
-        position: 'fixed' as const,
-        backgroundColor: 'var(--cocoso-colors-gray-50)',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        display: 'flex',
-        flexDirection: 'column' as const,
-        overflow: 'hidden',
-        transition: 'transform 0.3s ease-out',
-      };
-
-      if (isHorizontal) {
-        return {
-          ...baseStyles,
-          top: 0,
-          bottom: 0,
-          [props.position === 'left' ? 'left' : 'right']: 0,
-          transform: props.visible
-            ? 'translateX(0)'
-            : `translateX(${props.position === 'left' ? '-' : ''}100%)`,
-          width: getSize(),
-          maxWidth: getMaxSize('width'),
-        };
-      }
-
-      if (isVertical) {
-        return {
-          ...baseStyles,
-          left: 0,
-          right: 0,
-          [props.position === 'top' ? 'top' : 'bottom']: 0,
-          transform: props.visible
-            ? 'translateY(0)'
-            : `translateY(${props.position === 'top' ? '-' : ''}100%)`,
-          height: getSize(),
-          maxHeight: getMaxSize('height'),
-        };
-      }
-
-      // Default to right
+    if (props.position === 'bottom') {
       return {
-        ...baseStyles,
-        top: 0,
-        right: 0,
+        ...base,
         bottom: 0,
-        transform: props.visible ? 'translateX(0)' : 'translateX(100%)',
-        width: getSize(),
-        maxWidth: getMaxSize('width'),
+        height: size,
+        left: 0,
+        maxHeight: maxHeight,
+        right: 0,
+        transform: props.visible ? 'translateY(0)' : 'translateY(100%)',
       };
-    };
+    }
 
-    return getPositionStyles();
+    if (props.position === 'left') {
+      return {
+        ...base,
+        bottom: 0,
+        left: 0,
+        maxWidth: maxSize,
+        top: 0,
+        transform: props.visible
+          ? 'translateX(0)'
+          : 'translateX(-100%)',
+        width: size,
+      };
+    }
+
+    if (props.position === 'top') {
+      return {
+        ...base,
+        height: size,
+        left: 0,
+        maxHeight: maxHeight,
+        right: 0,
+        top: 0,
+        transform: props.visible
+          ? 'translateY(0)'
+          : 'translateY(-100%)',
+      };
+    }
+
+    // Default to right
+    return {
+      ...base,
+      bottom: 0,
+      maxWidth: maxSize,
+      right: 0,
+      top: 0,
+      transform: props.visible ? 'translateX(0)' : 'translateX(100%)',
+      width: size,
+    };
   }
 );
 
@@ -281,7 +276,7 @@ const usePortal = (
 
   // Create portal container
   useEffect(() => {
-    if (open && !portalContainer) {
+    if (!portalContainer) {
       const container = document.createElement('div');
       container.id = portalId;
       document.body.appendChild(container);
@@ -289,12 +284,12 @@ const usePortal = (
     }
 
     return () => {
-      if (portalContainer && !open) {
+      if (portalContainer) {
         document.body.removeChild(portalContainer);
         setPortalContainer(null);
       }
     };
-  }, [open, portalContainer, portalId]);
+  }, [portalContainer, portalId]);
 
   // Handle escape key
   useEffect(() => {
@@ -320,27 +315,29 @@ const usePortal = (
 
 // Shared content component
 const Content: React.FC<{
-  children: React.ReactNode;
-  title?: string;
-  onClose: () => void;
-  hideHeader?: boolean;
-  hideFooter?: boolean;
-  confirmText?: string;
   cancelText?: string;
-  onConfirm?: () => void;
+  children: React.ReactNode;
+  confirmText?: string;
+  hideFooter?: boolean;
+  hideHeader?: boolean;
+  noPadding?: boolean;
   onCancel?: () => void;
+  onClose: () => void;
+  onConfirm?: () => void;
   onSecondaryButtonClick?: () => void;
+  title?: string;
 }> = ({
-  children,
-  title,
-  onClose,
-  hideHeader = false,
-  hideFooter = false,
-  confirmText,
   cancelText,
-  onConfirm,
+  children,
+  confirmText,
+  hideFooter = false,
+  hideHeader = false,
+  noPadding = false,
   onCancel,
+  onClose,
+  onConfirm,
   onSecondaryButtonClick,
+  title,
 }) => {
   const [tc] = useTranslation('common');
 
@@ -377,7 +374,7 @@ const Content: React.FC<{
       )}
 
       {/* Body */}
-      <Body>{children}</Body>
+      <Body noPadding={noPadding}>{children}</Body>
 
       {/* Footer */}
       {!hideFooter && (
@@ -396,19 +393,20 @@ const Content: React.FC<{
 
 // Modal component (default export)
 const Modal: React.FC<ModalProps> = ({
-  open,
-  onClose,
-  title,
-  children,
-  confirmText,
   cancelText,
-  onConfirm,
-  onCancel,
-  onSecondaryButtonClick,
+  children,
+  closeOnOverlayClick = true,
+  confirmText,
   hideFooter = false,
   hideHeader = false,
+  noPadding,
+  onCancel,
+  onClose,
+  onConfirm,
+  onSecondaryButtonClick,
+  open,
   size = 'md',
-  closeOnOverlayClick = true,
+  title,
 }) => {
   const portalContainer = usePortal(open, onClose, 'modal-portal');
 
@@ -432,14 +430,15 @@ const Modal: React.FC<ModalProps> = ({
         onClick={handleModalContentClick}
       >
         <Content
-          title={title}
-          onClose={onClose}
-          hideHeader={hideHeader}
-          hideFooter={hideFooter}
-          confirmText={confirmText}
           cancelText={cancelText}
-          onConfirm={onConfirm}
+          confirmText={confirmText}
+          hideFooter={hideFooter}
+          hideHeader={hideHeader}
+          noPadding={noPadding}
+          title={title}
           onCancel={onCancel}
+          onClose={onClose}
+          onConfirm={onConfirm}
           onSecondaryButtonClick={onSecondaryButtonClick}
         >
           {children}
@@ -448,30 +447,31 @@ const Modal: React.FC<ModalProps> = ({
     </Overlay>
   );
 
-  // Render modal using portal if container exists, otherwise render normally
-  if (portalContainer && open) {
+  // Always render modal, but control visibility with CSS
+  if (portalContainer) {
     return createPortal(modalContent, portalContainer);
   }
 
-  return open ? modalContent : null;
+  return modalContent;
 };
 
 // Drawer component (named export)
 export const Drawer: React.FC<DrawerProps> = ({
-  open,
-  onClose,
-  title,
-  children,
-  confirmText,
   cancelText,
-  onConfirm,
-  onCancel,
-  onSecondaryButtonClick,
-  hideFooter = false,
+  children,
+  closeOnOverlayClick = true,
+  confirmText,
+  hideFooter = true,
   hideHeader = false,
+  noPadding,
+  onCancel,
+  onClose,
+  onConfirm,
+  onSecondaryButtonClick,
+  open,
   position = 'right',
   size = 'md',
-  closeOnOverlayClick = true,
+  title,
 }) => {
   const portalContainer = usePortal(open, onClose, 'drawer-portal');
 
@@ -496,14 +496,15 @@ export const Drawer: React.FC<DrawerProps> = ({
         onClick={handleDrawerContentClick}
       >
         <Content
-          title={title}
-          onClose={onClose}
-          hideHeader={hideHeader}
-          hideFooter={hideFooter}
-          confirmText={confirmText}
           cancelText={cancelText}
-          onConfirm={onConfirm}
+          confirmText={confirmText}
+          hideFooter={hideFooter}
+          hideHeader={hideHeader}
+          title={title}
+          noPadding={noPadding}
           onCancel={onCancel}
+          onClose={onClose}
+          onConfirm={onConfirm}
           onSecondaryButtonClick={onSecondaryButtonClick}
         >
           {children}
@@ -512,12 +513,12 @@ export const Drawer: React.FC<DrawerProps> = ({
     </Overlay>
   );
 
-  // Render drawer using portal if container exists, otherwise render normally
-  if (portalContainer && open) {
+  // Always render drawer, but control visibility with CSS
+  if (portalContainer) {
     return createPortal(drawerContent, portalContainer);
   }
 
-  return open ? drawerContent : null;
+  return drawerContent;
 };
 
 export default Modal;

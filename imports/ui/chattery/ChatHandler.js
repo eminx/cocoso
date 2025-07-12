@@ -9,8 +9,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
-import { call } from '../utils/shared';
-import Drawer from '../generic/Drawer';
+import { Drawer } from '/imports/ui/core';
+
+import { call } from '/imports/ui/utils/shared';
 import { Chattery, useChattery } from '../chattery';
 
 export function ChatUI({
@@ -68,9 +69,8 @@ export function ChatUI({
 
   return (
     <Drawer
-      // bg="gray.300"
-      bodyProps={{ paddingTop: 0, paddingBottom: 0 }}
-      isOpen={open}
+      open={open}
+      size="xl"
       title={title || tc('labels.discussion')}
       onClose={() => setOpen(false)}
     >
