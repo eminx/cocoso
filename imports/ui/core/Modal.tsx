@@ -178,7 +178,7 @@ const DrawerContent = styled(
       full: '100vw',
     };
 
-    const getSize = (dimension: 'width' | 'height') => {
+    const getSize = () => {
       const size =
         sizeMap[props.size as keyof typeof sizeMap] || sizeMap.md;
       return props.size === 'full' ? '100vw' : size;
@@ -217,7 +217,7 @@ const DrawerContent = styled(
           transform: props.visible
             ? 'translateX(0)'
             : `translateX(${props.position === 'left' ? '-' : ''}100%)`,
-          width: getSize('width'),
+          width: getSize(),
           maxWidth: getMaxSize('width'),
         };
       }
@@ -231,7 +231,7 @@ const DrawerContent = styled(
           transform: props.visible
             ? 'translateY(0)'
             : `translateY(${props.position === 'top' ? '-' : ''}100%)`,
-          height: getSize('height'),
+          height: getSize(),
           maxHeight: getMaxSize('height'),
         };
       }
@@ -243,7 +243,7 @@ const DrawerContent = styled(
         right: 0,
         bottom: 0,
         transform: props.visible ? 'translateX(0)' : 'translateX(100%)',
-        width: getSize('width'),
+        width: getSize(),
         maxWidth: getMaxSize('width'),
       };
     };
