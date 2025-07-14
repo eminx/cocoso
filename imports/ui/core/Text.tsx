@@ -34,6 +34,9 @@ interface TextProps {
   color?: string;
   lineHeight?: string;
   textAlign?: string;
+  _hover?: any;
+  _active?: any;
+  _focus?: any;
 }
 
 export const Text = styled('p', (props: TextProps) => {
@@ -49,6 +52,9 @@ export const Text = styled('p', (props: TextProps) => {
       ? fontSizes[fontSize as keyof typeof fontSizes]
       : fontSizes.md,
     fontWeight: props.fontWeight || 'normal',
+    ':hover': props._hover || {},
+    ':active': props._active || {},
+    ':focus': props._focus || {},
   };
 });
 
