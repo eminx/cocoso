@@ -3,17 +3,11 @@ import { styled } from 'restyle';
 
 import { getPropStyles, getSpacing } from '/imports/ui/core/functions';
 
-// Minimal Chakra-like Box
-export type BoxProps = React.HTMLAttributes<HTMLElement> & {
-  as?: React.ElementType;
-  style?: React.CSSProperties;
-};
-
-export const Box = React.forwardRef<HTMLElement, BoxProps>(
-  ({ as: Component = 'div', style, ...rest }, ref) => {
-    return <Component ref={ref} style={style} {...rest} />;
-  }
-);
+// Box
+export const Box = styled('div', (props: any) => ({
+  display: 'block',
+  ...getPropStyles(props),
+}));
 
 // Center
 export const Center = styled('div', (props: any) => ({
@@ -44,7 +38,7 @@ export const Flex = styled('div', (props: any) => ({
   alignItems: props.align || props.alignItems || 'flex-start',
   display: 'flex',
   gap: props.gap || '0.5rem',
-  flexDirection: props.direction || props.flexDirection || 'row',
+  // flexDirection: props.direction || props.flexDirection || 'row',
   flexWrap: props.wrap || props.flexWrap || 'nowrap',
   justifyContent: props.justify || props.justifyContent || 'flex-start',
   ...getPropStyles(props),
