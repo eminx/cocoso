@@ -16,7 +16,7 @@ export function BoxlingColumn({ title, children }) {
 export default function Boxling({ children, css, ...otherProps }) {
   return (
     <Box
-      bg="blueGray.50"
+      bg="bluegray.50"
       p="6"
       css={{
         borderRadius: '1rem',
