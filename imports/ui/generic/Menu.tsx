@@ -65,11 +65,12 @@ export default function GenericMenu({
           ? options.map((item) => (
               <MenuItem
                 key={item.key || item.value || item.label}
+                disabled={item.isDisabled}
                 onClick={() => onSelect?.(item)}
               >
                 {typeof children === 'function'
                   ? children(item)
-                  : children}
+                  : item.label}
               </MenuItem>
             ))
           : children}
