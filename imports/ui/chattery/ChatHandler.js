@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import {
-  Badge,
-  Button,
-  Center,
-  IconButton,
-  VStack,
-} from '@chakra-ui/react';
+import { Badge } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
-import { Drawer } from '/imports/ui/core';
-
+import {
+  Button,
+  Center,
+  Drawer,
+  IconButton,
+  Text,
+  VStack,
+} from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
+
 import { Chattery, useChattery } from '../chattery';
 
 export function ChatUI({
@@ -108,17 +109,14 @@ export function ChatButton({
   return (
     <>
       <Center>
-        <VStack spacing="0" position="relative">
+        <VStack
+          spacing="0"
+          position="relative"
+          style={{ alignItems: 'center', gap: '0' }}
+        >
           <IconButton
-            _hover={{ bg: 'brand.100' }}
-            _active={{ bg: 'brand.200' }}
-            bg="brand.50"
-            border="1px solid"
-            color="brand.600"
-            fontSize="32px"
             icon={<MessagesSquare />}
-            isRound
-            variant="ghost"
+            variant="outline"
             onClick={() => setOpen(true)}
           />
           {notificationCount && (
@@ -135,14 +133,15 @@ export function ChatButton({
               {notificationCount}
             </Badge>
           )}
-          <Button
+          <Text
             color="brand.50"
-            size="xs"
-            variant="link"
+            fontSize="xs"
+            fontWeight="bold"
+            textAlign="center"
             onClick={() => setOpen(true)}
           >
             {tc('labels.discussion')}
-          </Button>
+          </Text>
         </VStack>
       </Center>
 

@@ -48,9 +48,13 @@ function AccordionDates({ activity, onCloseModal }) {
         </Text>
 
         <Box>
-          {items.map((occurrence) => (
+          {items.map((occurrence, occurrenceIndex) => (
             <Box
-              key={occurrence.startDate + occurrence.startTime}
+              key={
+                occurrence.startDate +
+                occurrence.startTime +
+                occurrenceIndex
+              }
               style={buttonStyle}
             >
               <FancyDate occurrence={occurrence} />
@@ -70,7 +74,10 @@ function AccordionDates({ activity, onCloseModal }) {
       )}
       <Accordion
         options={items.map((occurrence, occurrenceIndex) => ({
-          key: occurrence.startDate + occurrence.startTime,
+          key:
+            occurrence.startDate +
+            occurrence.startTime +
+            occurrenceIndex,
           header: <FancyDate occurrence={occurrence} />,
           content: (
             <Box>

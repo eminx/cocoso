@@ -18,6 +18,7 @@ import { Button, IconButton } from './Button';
 import Checkbox from './Checkbox';
 import { Code, Heading, Link, Tag, Text } from './Text';
 import Input from './Input';
+import NumberInput from './NumberInput';
 import Image from './Image';
 import Modal, { Drawer, Overlay } from './Modal';
 import { Radio, RadioGroup } from './RadioButtons';
@@ -46,6 +47,7 @@ export {
   Image,
   Input,
   Link,
+  NumberInput,
   Modal,
   Overlay,
   Radio,

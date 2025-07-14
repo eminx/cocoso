@@ -1,19 +1,18 @@
 import React, { useState, useContext } from 'react';
+import { FormControl, FormLabel } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
+
 import {
   Box,
   Button,
   Center,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
   Input,
+  Modal,
   Text,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
-
-import Modal from '/imports/ui/core/Modal';
+} from '/imports/ui/core';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import FancyDate from '/imports/ui/entry/FancyDate';
 import { call } from '/imports/ui/utils/shared';
@@ -85,6 +84,7 @@ export default function RsvpContent({
   };
 
   const handleRsvpSubmit = async (values) => {
+    console.log('handleRsvpSubmit', values);
     let isAlreadyRegistered = false;
     occurrence.attendees?.forEach((attendee) => {
       if (!attendee) {
@@ -319,7 +319,8 @@ export default function RsvpContent({
       )}
 
       <Modal
-        isOpen={isRsvpCancelModalOn}
+        hideFooter
+        open={isRsvpCancelModalOn}
         size="lg"
         title={
           rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound

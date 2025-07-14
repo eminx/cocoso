@@ -1,20 +1,19 @@
 import React, { useEffect } from 'react';
-import {
-  Box,
-  Center,
-  FormControl,
-  FormLabel,
-  IconButton,
-  Switch,
-  Text,
-  Wrap,
-} from '@chakra-ui/react';
+import { FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import DeleteIcon from 'lucide-react/dist/esm/icons/x';
 import { useTranslation } from 'react-i18next';
 
-import { call } from '../utils/shared';
+import {
+  Box,
+  Center,
+  Flex,
+  IconButton,
+  Text,
+  Wrap,
+} from '/imports/ui/core';
 
+import { call } from '../utils/shared';
 import DateTimePicker from './DateTimePicker';
 
 const today = new Date().toISOString().substring(0, 10);
@@ -36,7 +35,13 @@ export function ConflictMarker({ occurrence, t }) {
 
   return (
     <Box>
-      <Text color="red.600" fontSize="sm" fontWeight="bold" my="4" textAlign="center">
+      <Text
+        color="red.600"
+        fontSize="sm"
+        fontWeight="bold"
+        my="4"
+        textAlign="center"
+      >
         {t('form.conflict.alert')}
         <br />
       </Text>
@@ -82,11 +87,17 @@ export default function DatesAndTimes({
           ...occurrence,
           resourceId,
         };
-        const conflict = await call('checkDatesForConflict', params, activityId);
+        const conflict = await call(
+          'checkDatesForConflict',
+          params,
+          activityId
+        );
         return {
           ...occurrence,
           conflict,
-          isConflictHard: conflict && (isExclusiveActivity || conflict?.isExclusiveActivity),
+          isConflictHard:
+            conflict &&
+            (isExclusiveActivity || conflict?.isExclusiveActivity),
         };
       })
     );
@@ -108,14 +119,18 @@ export default function DatesAndTimes({
       resourceId,
     };
 
-    const conflict = resourceId ? await call('checkDatesForConflict', params, activityId) : null;
+    const conflict = resourceId
+      ? await call('checkDatesForConflict', params, activityId)
+      : null;
 
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (index === occurrenceIndex) {
         return {
           ...occurrence,
           conflict,
-          isConflictHard: conflict && (isExclusiveActivity || conflict?.isExclusiveActivity),
+          isConflictHard:
+            conflict &&
+            (isExclusiveActivity || conflict?.isExclusiveActivity),
         };
       }
       return item;
@@ -124,14 +139,22 @@ export default function DatesAndTimes({
     onDatesAndTimesChange(newDatesAndTimes);
   };
 
-  const addOccurrence = () => {
-    const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
+  const addOccurrence = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const newDatesAndTimes = [
+      ...datesAndTimes,
+      { ...emptyDateAndTime },
+    ];
 
     onDatesAndTimesChange(newDatesAndTimes);
   };
 
   const removeOccurrence = (index) => {
-    const newDatesAndTimes = datesAndTimes.filter((item, i) => i !== index);
+    const newDatesAndTimes = datesAndTimes.filter(
+      (item, i) => i !== index
+    );
 
     onDatesAndTimesChange(newDatesAndTimes);
   };
@@ -154,37 +177,31 @@ export default function DatesAndTimes({
 
   const getBorderColor = (occurrence) => {
     if (!occurrence || !occurrence.conflict) {
-      return 'gray.400';
+      return 'var(--cocoso-colors-theme-200)';
     } else if (occurrence.isConflictHard) {
-      return 'tomato';
+      return 'var(--cocoso-colors-red-600)';
     }
     return 'orange';
   };
 
-  const getOccurrenceId = (occurrence) => {
+  const getOccurrenceId = (occurrence, index) => {
     if (!occurrence) {
       return null;
     }
     const { startDate, startTime, endDate, endTime } = occurrence;
-    return `${startDate}-${startTime}-${endDate}-${endTime}`;
+    return `${startDate}-${startTime}-${endDate}-${endTime}-${index}`;
   };
 
-  const containerProps = {
-    bg: 'white',
-    borderWidth: '2px',
-    borderRadius: 'lg',
-    mb: '4',
-    p: '4',
-    position: 'relative',
+  const containerStyle = {
+    backgroundColor: 'white',
+    border: '2px solid',
+    borderRadius: 'var(--cocoso-border-radius)',
+    marginBottom: '1rem',
+    padding: '1rem',
   };
 
-  const iconProps = {
-    bg: 'gray.600',
-    icon: <DeleteIcon size="16px" style={{ zIndex: 1 }} />,
-    position: 'absolute',
-    right: '12px',
-    top: '12px',
-    size: 'xs',
+  const iconStyle = {
+    flexGrow: 0,
   };
 
   if (!datesAndTimes || datesAndTimes.length === 0) {
@@ -196,15 +213,27 @@ export default function DatesAndTimes({
   return (
     <Box mb="4" mt="2">
       {datesAndTimes?.map((occurrence, index) => {
-        const id = getOccurrenceId(occurrence);
+        const id = getOccurrenceId(occurrence, index);
         return (
-          <Box key={id} {...containerProps} borderColor={getBorderColor(occurrence)}>
-            {isDeletable && <IconButton {...iconProps} onClick={() => removeOccurrence(index)} />}
-
-            <Box mb="2">
-              <FormControl w="auto" alignItems="center" display="flex">
+          <Box
+            key={id}
+            style={{
+              ...containerStyle,
+              borderColor: getBorderColor(occurrence),
+            }}
+          >
+            <Flex mb="2">
+              <FormControl
+                w="auto"
+                alignItems="center"
+                display="flex"
+                flexGrow="1"
+              >
                 <Switch
-                  isChecked={occurrence?.isRange || occurrence.startDate !== occurrence.endDate}
+                  isChecked={
+                    occurrence?.isRange ||
+                    occurrence.startDate !== occurrence.endDate
+                  }
                   id={id}
                   onChange={(event) => handleRangeSwitch(event, index)}
                   py="2"
@@ -213,7 +242,17 @@ export default function DatesAndTimes({
                   {t('form.days.multiple')}
                 </FormLabel>
               </FormControl>
-            </Box>
+
+              {isDeletable && (
+                <IconButton
+                  colorScheme="red"
+                  icon={<DeleteIcon />}
+                  size="xs"
+                  style={iconStyle}
+                  onClick={() => removeOccurrence(index)}
+                />
+              )}
+            </Flex>
 
             <Wrap>
               <DateTimePicker
@@ -222,12 +261,22 @@ export default function DatesAndTimes({
               />
             </Wrap>
 
-            {occurrence?.conflict && <ConflictMarker occurrence={occurrence} t={t} />}
+            {occurrence?.conflict && (
+              <ConflictMarker occurrence={occurrence} t={t} />
+            )}
           </Box>
         );
       })}
-      <Center bg="white" borderRadius="lg" p="6">
-        <IconButton bg="gray.700" size="lg" onClick={addOccurrence} icon={<AddIcon />} />
+      <Center
+        bg="white"
+        p="6"
+        style={{ borderRadius: 'var(--cocoso-border-radius)' }}
+      >
+        <IconButton
+          icon={<AddIcon />}
+          size="lg"
+          onClick={addOccurrence}
+        />
       </Center>
     </Box>
   );
