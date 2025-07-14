@@ -7,7 +7,7 @@ import {
   Code,
   Flex,
   IconButton,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
 import { SortableKnob } from 'react-easy-sort';
 import GripHorizontal from 'lucide-react/dist/esm/icons/grip-horizontal';
 import EditIcon from 'lucide-react/dist/esm/icons/edit';
@@ -42,7 +42,7 @@ function ModulePreview({ content }) {
         );
       case 'text':
         return (
-          <Box fontSize="12px" px="2">
+          <Box px="2" style={{ fontSize: '12px' }}>
             {content.value?.html
               ? HTMLReactParser(content.value.html.substring(0, 100))
               : null}
@@ -112,7 +112,7 @@ export default function ContentModule(props) {
     >
       <Flex justify="space-between" w="100%">
         <Button
-          _hover={{ bg: 'blueGray.200' }}
+          _hover={{ bg: 'bluegray.200' }}
           colorScheme="blue"
           cursor="pointer"
           flexGrow="1"

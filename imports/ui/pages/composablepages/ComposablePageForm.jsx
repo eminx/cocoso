@@ -344,17 +344,7 @@ export default function ComposablePageForm({
                       />
                     </SortableKnob>
                   </Box>
-                  <Boxling
-                    bg="blueGray.300"
-                    css={{
-                      flexGrow: 1,
-                      ':hover': {
-                        backgroundColor: 'none',
-                      },
-                    }}
-                    mb="4"
-                    p="2"
-                  >
+                  <Boxling style={{ flexGrow: 1 }} mb="4" p="2">
                     <Row row={row} rowIndex={rowIndex} />
                     <Center py="4">
                       <Button

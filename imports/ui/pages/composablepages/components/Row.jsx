@@ -1,13 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  IconButton,
-  Text,
-} from '@chakra-ui/react';
+import { styled } from 'restyle';
 import { Trans } from 'react-i18next';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
@@ -15,6 +7,7 @@ import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
 import { arrayMoveImmutable } from 'array-move';
 import { SortableKnob } from 'react-easy-sort';
 
+import { Box, Center, Flex, IconButton } from '/imports/ui/core';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { contentTypes, getGridTemplateColumns } from '../constants';
 import { ComposablePageContext } from '../ComposablePageForm';
@@ -97,7 +90,14 @@ export function Column({ column, columnIndex, rowIndex }) {
   };
 
   return (
-    <Boxling bg="white" p="2" minH="120px">
+    <Boxling
+      style={{
+        backgroundColor: 'white',
+        borderRadius: 'var(--cocoso-border-radius)',
+        minHeight: '120px',
+        padding: '0.5rem',
+      }}
+    >
       <Center>
         <SortableList onSortEnd={handleSortColumn}>
           {column.map((content, contentIndex) => {
@@ -107,8 +107,8 @@ export function Column({ column, columnIndex, rowIndex }) {
                 style={{ width: '100%' }}
               >
                 <Flex
-                  _hover={{ bg: 'blueGray.50' }}
-                  bg="blueGray.200"
+                  _hover={{ bg: 'bluegray.50' }}
+                  bg="bluegray.200"
                   borderRadius="md"
                   mb="2"
                   p="1"
@@ -116,12 +116,12 @@ export function Column({ column, columnIndex, rowIndex }) {
                 >
                   <SortableKnob>
                     <IconButton
-                      colorScheme="gray"
-                      cursor="ns-resize"
                       icon={<ArrowUpDownIcon size="16px" />}
-                      p="2"
                       size="sm"
-                      variant="unstyled"
+                      variant="ghost"
+                      style={{
+                        cursor: 'ns-resize',
+                      }}
                     />
                   </SortableKnob>
                   <ContentModule
@@ -162,7 +162,16 @@ export function Column({ column, columnIndex, rowIndex }) {
   );
 }
 
-const flexBasis = '300px';
+const GridRow = styled('div', (props) => ({
+  backgroundColor: 'var(--cocoso-colors-bluegray-300)',
+  borderRadius: 'var(--cocoso-border-radius)',
+  display: 'grid',
+  gridTemplateRows: '1fr',
+  gap: '0.5rem',
+  padding: '0.5rem',
+  width: '100%',
+  gridTemplateColumns: props.gridTemplateColumns,
+}));
 
 export default function Row({ row, rowIndex }) {
   const { columns, gridType } = row;
@@ -174,16 +183,9 @@ export default function Row({ row, rowIndex }) {
   const gridTemplateColumns = getGridTemplateColumns(gridType);
 
   return (
-    <Box
-      display="grid"
-      gap="2"
-      gridTemplateColumns={gridTemplateColumns}
-    >
+    <GridRow gridTemplateColumns={gridTemplateColumns}>
       {columns.map((column, columnIndex) => (
-        <Box
-          key={gridType + columnIndex}
-          gridTemplateColumns={gridTemplateColumns}
-        >
+        <Box key={gridType + columnIndex}>
           <Column
             column={column}
             columnIndex={columnIndex}
@@ -191,6 +193,6 @@ export default function Row({ row, rowIndex }) {
           />
         </Box>
       ))}
-    </Box>
+    </GridRow>
   );
 }
