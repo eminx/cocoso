@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Badge } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
 import {
+  Badge,
   Button,
   Center,
   Drawer,
@@ -75,12 +75,14 @@ export function ChatUI({
       title={title || tc('labels.discussion')}
       onClose={() => setOpen(false)}
     >
-      <Chattery
-        messages={discussion}
-        withInput={withInput}
-        onNewMessage={addNewChatMessage}
-        removeNotification={removeNotification}
-      />
+      {open && (
+        <Chattery
+          messages={discussion}
+          withInput={withInput}
+          onNewMessage={addNewChatMessage}
+          removeNotification={removeNotification}
+        />
+      )}
     </Drawer>
   );
 }
@@ -110,9 +112,11 @@ export function ChatButton({
     <>
       <Center>
         <VStack
-          spacing="0"
-          position="relative"
-          style={{ alignItems: 'center', gap: '0' }}
+          style={{
+            alignItems: 'center',
+            gap: '0',
+            position: 'relative',
+          }}
         >
           <IconButton
             icon={<MessagesSquare />}
@@ -121,14 +125,18 @@ export function ChatButton({
           />
           {notificationCount && (
             <Badge
-              borderRadius="full"
-              border="2px solid white"
-              colorScheme="red"
-              position="absolute"
-              right="-6px"
-              size="md"
-              top="24px"
-              variant="solid"
+              style={{
+                border: '2px solid white',
+                borderRadius: '50%',
+                colorScheme: 'red',
+                fontSize: '0.75rem',
+                height: '1.5rem',
+                padding: '0.45rem',
+                position: 'absolute',
+                right: '-0.75rem',
+                top: '-0.5rem',
+                width: '1.5rem',
+              }}
             >
               {notificationCount}
             </Badge>
