@@ -54,12 +54,7 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
   const focusBg =
     variant === 'solid'
       ? `var(--cocoso-colors-${colorScheme}-700)`
-      : `var(--cocoso-colors-${colorScheme}-500)`;
-
-  const focusColor =
-    variant === 'solid'
-      ? 'white'
-      : `var(--cocoso-colors-${colorScheme}-50)`;
+      : `var(--cocoso-colors-${colorScheme}-100)`;
 
   return {
     backgroundColor: bg,
@@ -121,7 +116,6 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
     },
     ':focus': {
       backgroundColor: disabled ? undefined : focusBg,
-      color: focusColor,
     },
   };
 });

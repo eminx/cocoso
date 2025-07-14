@@ -57,13 +57,27 @@ export const Grid = styled('div', (props: GridProps) => ({
 }));
 
 // Divider
-export const Divider = styled('hr', {
-  border: 'none',
-  borderTop: '1px solid #b3b3b3',
-  margin: '1rem auto',
-  maxWidth: '980px',
-  padding: '0 1rem',
-  width: '100%',
+interface DividerProps {
+  orientation?: 'horizontal' | 'vertical';
+  color?: string;
+  thickness?: string;
+  margin?: string;
+}
+
+export const Divider = styled('hr', (props: DividerProps) => {
+  const vertical = props.orientation === 'vertical';
+
+  return {
+    border: 'none',
+    backgroundColor: props.color || 'var(--cocoso-colors-gray-300)',
+    margin: props.margin || (vertical ? '0 0.5rem' : '0.5rem auto'),
+    maxWidth: vertical ? 'none' : '980px',
+    padding: '0',
+    width: vertical ? props.thickness || '1px' : '100%',
+    height: vertical ? 'auto' : props.thickness || '1px',
+    minHeight: vertical ? '1rem' : 'auto',
+    alignSelf: vertical ? 'stretch' : 'auto',
+  };
 });
 
 // Stack, HStack, VStack, Wrap

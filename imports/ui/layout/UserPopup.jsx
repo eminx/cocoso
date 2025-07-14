@@ -179,7 +179,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
           </Text>
         </Box>
 
-        {isAdmin && <hr />}
+        {isAdmin && <Divider />}
 
         {isAdmin && (
           <Link to="/admin/home">
@@ -192,7 +192,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
           </Link>
         )}
 
-        {isAdmin && <hr />}
+        {isAdmin && <Divider />}
 
         {isNotification && (
           <>
@@ -225,7 +225,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
           </>
         )}
 
-        {isNotification && <hr />}
+        {isNotification && <Divider />}
 
         <Link to={currentUser && `/@${currentUser?.username}`}>
           <MenuItem>
@@ -251,7 +251,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
           </Link>
         )}
 
-        <hr />
+        <Divider />
 
         <Center py="2">
           <Button

@@ -1,23 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useMediaQuery } from '@chakra-ui/react';
+import { Trans } from 'react-i18next';
+import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+import { useHydrated } from 'react-hydration-provider';
+
 import {
   Box,
   Center,
   Flex,
   Heading,
   HStack,
-  Img,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
+  Image,
   Text,
-  useMediaQuery,
-} from '@chakra-ui/react';
-import { Trans } from 'react-i18next';
-import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
-import { useHydrated } from 'react-hydration-provider';
+} from '/imports/ui/core';
+import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 
 import { parseTitle } from '../utils/shared';
 
@@ -28,12 +26,13 @@ if (isClient) {
   import '@szhsin/react-menu/dist/transitions/zoom.css';
 }
 
-const textProps = {
-  _hover: { borderBottom: '1px solid' },
-  as: 'span',
+const borderColor = 'var(--cocoso-colors-gray-700) !important';
+const baseTextStyles = {
+  borderBottom: '2px solid transparent',
   fontFamily: 'Raleway, Sarabun, sans-serif',
   fontSize: 16,
   fontWeight: '500',
+  ':hover': { borderBottomColor: borderColor },
 };
 
 export function InfoPagesMenu({
@@ -42,31 +41,28 @@ export function InfoPagesMenu({
   pageTitles,
   pathname,
 }) {
-  const context = pathname.split('/')[1];
-  const isCurrentContext = context === 'info';
+  const isCurrentContext = pathname.includes('info');
   const hydrated = useHydrated();
 
-  const itemProps = {
+  const flexStyles = {
     align: 'center',
-    as: 'span',
-    borderBottom: isCurrentContext ? '2px solid' : null,
     pointerEvents: 'none',
     px: '2',
   };
 
-  const itemStyles = {
+  const textStyles = {
+    ...baseTextStyles,
     color: menuStyles?.color || 'gray.600',
     fontStyle: menuStyles?.fontStyle || 'normal',
+    marginRight: '0.25rem',
     textTransform: menuStyles?.textTransform || 'none',
   };
 
   if (!hydrated) {
     return (
       <Link key={label} to="/info">
-        <Flex {...itemProps}>
-          <Text {...textProps} mr="1" style={itemStyles}>
-            {label}
-          </Text>
+        <Flex css={flexStyles}>
+          <Text css={textStyles}>{label}</Text>
           <ChevronDownIcon size="16px" />
         </Flex>
       </Link>
@@ -74,23 +70,30 @@ export function InfoPagesMenu({
   }
 
   return (
-    <Menu placement="bottom-end">
-      <MenuButton
-        _hover={{ borderBottom: '1px solid' }}
-        id="info-pages-menu"
-        suppressHydrationWarning
-      >
-        <Flex {...itemProps}>
-          <Text {...textProps} mr="1" style={itemStyles}>
-            {label}
-          </Text>
+    <Menu
+      align="end"
+      id="info-pages-menu"
+      suppressHydrationWarning
+      button={
+        <Flex
+          css={{
+            ...flexStyles,
+            borderBottom: isCurrentContext
+              ? `2px solid ${borderColor}`
+              : '',
+          }}
+        >
+          <Text css={textStyles}>{label}</Text>
           <ChevronDownIcon size="16px" />
         </Flex>
-      </MenuButton>
-      <MenuList
-        maxHeight="480px"
-        overflowY="scroll"
-        rootProps={{ style: { zIndex: 1051 } }}
+      }
+    >
+      <Box
+        css={{
+          maxHeight: '480px',
+          overflowY: 'scroll',
+          rootProps: { style: { zIndex: 1051 } },
+        }}
         suppressHydrationWarning
       >
         {pageTitles.map((item) => (
@@ -104,7 +107,7 @@ export function InfoPagesMenu({
             </MenuItem>
           </Link>
         ))}
-      </MenuList>
+      </Box>
     </Menu>
   );
 }
@@ -140,7 +143,7 @@ function HeaderMenu({ Host, pageTitles }) {
   return (
     <Center className="main-menu" mb="4" px="4">
       <HStack
-        alignItems="center"
+        align="center"
         justify="center"
         mb="2"
         p="2"
@@ -167,10 +170,12 @@ function HeaderMenu({ Host, pageTitles }) {
             >
               <Box as="span" px="2">
                 <Text
-                  {...textProps}
-                  borderBottom={
-                    isCurrentContext(item, index) ? '2px solid' : null
-                  }
+                  css={{
+                    ...baseTextStyles,
+                    borderBottomColor: isCurrentContext(item, index)
+                      ? borderColor
+                      : 'transparent',
+                  }}
                 >
                   {item.label}
                 </Text>
@@ -182,12 +187,15 @@ function HeaderMenu({ Host, pageTitles }) {
           <Link to="/communities">
             <Box as="span" px="2">
               <Text
-                {...textProps}
-                borderBottom={
-                  pathname === '/communities' ? '2px solid' : null
-                }
+                css={{
+                  ...baseTextStyles,
+                  borderBottomColor:
+                    pathname === '/communities'
+                      ? borderColor
+                      : 'transparent',
+                }}
               >
-                <Trans i18nKey="platform.communities" ns="common">
+                <Trans i18nKey="common:platform.communities">
                   Communities
                 </Trans>
               </Text>
@@ -215,12 +223,15 @@ export default function Header({
       <Center mb="10">
         <Link to="/">
           {currentHost.logo ? (
-            <Box maxHeight={isLogoSmall ? '48px' : '96px'} p="2">
-              <Img
-                h={isLogoSmall ? '48px' : '96px'}
-                maxW="360px"
-                objectFit="contain"
+            <Box maxH={isLogoSmall ? '48px' : '96px'} p="2">
+              <Image
                 src={Host.logo}
+                css={{
+                  height: isLogoSmall ? '48px' : '96px',
+                  maxWidth: '360px',
+                  objectFit: 'contain',
+                  width: '100%',
+                }}
               />
             </Box>
           ) : (

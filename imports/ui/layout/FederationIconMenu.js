@@ -1,5 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import parseHtml from 'html-react-parser';
+import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+
 import {
   Box,
   Button,
@@ -7,16 +11,10 @@ import {
   Divider,
   HStack,
   Image,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
-import parseHtml from 'html-react-parser';
-import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+  Modal,
+} from '/imports/ui/core';
+import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 
-import Modal from '/imports/ui/core/Modal';
 import { call } from '/imports/ui/utils/shared';
 import NiceSlider from '/imports/ui/generic/NiceSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -63,63 +61,56 @@ export default function FederationIconMenu() {
   return (
     <>
       <HStack
-        _hover={{ bg: 'white' }}
-        bg="rgba(255, 252, 250, 0.9)"
-        borderRadius="lg"
+        align="center"
         className="federation-logo"
-        ml="2"
         mr="1"
+        ml="2"
         p="1"
+        css={{
+          borderRadius: 'var(--cocoso-border-radius)',
+          backgroundColor: 'rgba(255, 252, 250, 0.9)',
+          ':hover': {
+            backgroundColor: 'white',
+          },
+        }}
       >
         <Image
-          _hover={{
-            filter: 'invert(100%)',
-            transition: 'all .2s ease-in-out',
-          }}
-          borderRadius="lg"
-          cursor="pointer"
-          fit="contain"
           src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
-          w={isDesktop ? '44px' : '28px'}
-          h={isDesktop ? '44px' : '28px'}
+          css={{
+            cursor: 'pointer',
+            objectFit: 'contain',
+            width: isDesktop ? '44px' : '28px',
+            height: isDesktop ? '44px' : '28px',
+            borderRadius: 'var(--cocoso-border-radius)',
+            ':hover': {
+              filter: 'invert(100%)',
+              transition: 'all .2s ease-in-out',
+            },
+          }}
           onClick={() => handleSetHostInfo()}
         />
 
         {currentUser ? (
-          <Menu
-            infoOpen={menuOpen}
-            onOpen={() => setMenuOpen(true)}
-            onClose={() => setMenuOpen(false)}
-          >
-            <MenuButton
-              {...buttonProps}
-              as={Button}
-              rightIcon={<ChevronDownIcon size="16px" />}
-            >
-              {t('profile.myCommunities')}
-            </MenuButton>
-
-            <MenuList>
-              {currentUser.memberships?.map((m) => (
-                <MenuItem
-                  key={m.host}
-                  onClick={() => (location.href = `https://${m.host}`)}
-                >
-                  {m.hostname}
-                </MenuItem>
-              ))}
-              <Divider colorScheme="gray.700" mt="2" />
+          <Menu align="start" buttonLabel={t('profile.myCommunities')}>
+            {currentUser.memberships?.map((m) => (
               <MenuItem
-                key="all-communities"
-                onClick={() =>
-                  currentHost?.isPortalHost
-                    ? navigate('/communities')
-                    : (location.href = `https://${platform?.portalHost}/communities`)
-                }
+                key={m.host}
+                onClick={() => (location.href = `https://${m.host}`)}
               >
-                {tc('labels.allCommunities')}
+                {m.hostname}
               </MenuItem>
-            </MenuList>
+            ))}
+            <Divider />
+            <MenuItem
+              key="all-communities"
+              onClick={() =>
+                currentHost?.isPortalHost
+                  ? navigate('/communities')
+                  : (location.href = `https://${platform?.portalHost}/communities`)
+              }
+            >
+              {tc('labels.allCommunities')}
+            </MenuItem>
           </Menu>
         ) : (
           <Link to="/communities">
