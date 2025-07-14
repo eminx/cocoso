@@ -209,7 +209,7 @@ export default function MenuSettings() {
                         </Flex>
                         {value.isComposablePage ? (
                           <IconButton
-                            colorScheme="gray"
+                            colorScheme="bluegray"
                             icon={
                               <XIcon
                                 size="18px"

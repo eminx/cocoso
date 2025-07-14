@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Center, IconButton } from '@chakra-ui/react';
 import SmallCloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
+
+import { Box, Center, IconButton } from '/imports/ui/core';
 
 import FileDropper from './FileDropper';
 import { resizeImage, uploadImage } from '../utils/shared';
@@ -149,7 +150,7 @@ export default function ImageUploader({
   }
 
   return (
-    <Box>
+    <>
       <Center>
         <Box w="100%">
           <SortableList
@@ -196,6 +197,6 @@ export default function ImageUploader({
         setUploadableImage={setUploadableImages}
         isMultiple
       />
-    </Box>
+    </>
   );
 }

@@ -3,9 +3,10 @@ import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
 import { Box, Center, Tag, Text } from '/imports/ui/core';
-import TablyCentered from './TablyCentered';
-import FancyDate from './FancyDate';
+
 import ActionDates from './ActionDates';
+import FancyDate from './FancyDate';
+import TablyCentered from './TablyCentered';
 
 const buttonStyle = {
   backgroundColor: 'var(--cocoso-colors-theme-100)',

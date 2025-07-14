@@ -56,6 +56,8 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
       ? `var(--cocoso-colors-${colorScheme}-700)`
       : `var(--cocoso-colors-${colorScheme}-100)`;
 
+  console.log(colorScheme, 'bg', bg);
+
   return {
     backgroundColor: bg,
     borderRadius: 'var(--cocoso-border-radius)',

@@ -1,14 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  IconButton,
-  Text,
-} from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
 import SortableList, {
@@ -20,12 +11,22 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import PlusIcon from 'lucide-react/dist/esm/icons/plus';
 
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  IconButton,
+  Modal,
+  Text,
+} from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
+import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
 import Boxling from '/imports/ui/pages/admin/Boxling';
-import { message } from '/imports/ui/generic/message';
-import Modal from '/imports/ui/core/Modal';
-import TopToolBar from '/imports/ui/pages/composablepages/components/TopToolbar';
+
+import TopToolBar from './components/TopToolbar';
 import { rowTypes } from './constants';
 import ComposablePageCreator from './components/ComposablePageCreator';
 import ComposablePagesListing from './components/ComposablePagesListing';
@@ -344,13 +345,13 @@ export default function ComposablePageForm({
                       />
                     </SortableKnob>
                   </Box>
-                  <Boxling style={{ flexGrow: 1 }} mb="4" p="2">
+                  <Box style={{ flexGrow: 1 }} mb="4" p="2">
                     <Row row={row} rowIndex={rowIndex} />
                     <Center py="4">
                       <Button
                         colorScheme="red"
                         size="xs"
-                        variant="link"
+                        variant="ghost"
                         onClick={() =>
                           setDeleteModuleModal({
                             moduleType: 'row',
@@ -362,7 +363,7 @@ export default function ComposablePageForm({
                         <Trans i18nKey="admin:composable.form.removeRow" />
                       </Button>
                     </Center>
-                  </Boxling>
+                  </Box>
                 </Flex>
               </SortableItem>
             ))}
