@@ -125,6 +125,10 @@ export default function GlobalStyles({ theme }) {
           '--cocoso-border-radius': theme?.body?.borderRadius,
           '--cocoso-border-style': theme?.body?.borderStyle,
           '--cocoso-border-width': theme?.body?.borderWidth,
+
+          '--cocoso-box-shadow':
+            theme?.body?.boxShadow ||
+            '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
         },
       }}
     </GlobalStylesRestyle>

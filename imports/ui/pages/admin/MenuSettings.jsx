@@ -1,19 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Switch } from '@chakra-ui/react';
+import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
+import XIcon from 'lucide-react/dist/esm/icons/x';
+import SortableList, { SortableItem } from 'react-easy-sort';
+import { arrayMoveImmutable } from 'array-move';
+import ReactSelect from 'react-select';
+
 import {
   Box,
   Button,
   Flex,
   Heading,
   IconButton,
-  Switch,
   Text,
-} from '@chakra-ui/react';
-import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
-import XIcon from 'lucide-react/dist/esm/icons/x';
-import SortableList, { SortableItem } from 'react-easy-sort';
-import { arrayMoveImmutable } from 'array-move';
-import ReactSelect from 'react-select';
+} from '/imports/ui/core';
 
 import { call } from '../../utils/shared';
 import Loader from '../../generic/Loader';
@@ -156,15 +157,19 @@ export default function MenuSettings() {
       title: t('settings.tabs.menuOrder'),
       path: 'order',
       content: (
-        <Box my="8">
+        <Box py="8">
           <Heading as="h4" fontSize="18px" mb="2">
             {t('settings.tabs.menuOrder')}
           </Heading>
 
           <Text mb="4">{t('menu.tabs.order.info')}</Text>
 
-          <Boxling>
-            <Box bg="gray.100" mb="8" p="4">
+          <Boxling
+            style={{
+              backgroundColor: 'var(--cocoso-colors-bluegray-50)',
+            }}
+          >
+            <Box mb="8" p="2">
               <Text fontSize="lg" mb="2">
                 {t('composable.form.addToMenu')}
               </Text>
@@ -187,14 +192,16 @@ export default function MenuSettings() {
                     <SortableItem key={value.name}>
                       <Flex
                         align="center"
-                        bg="white"
-                        boxShadow="md"
-                        borderRadius="lg"
-                        cursor="move"
                         justifyContent="space-between"
                         mb="4"
                         p="2"
-                        style={{ fontFamily: 'Sarabun, sans-serif' }}
+                        style={{
+                          backgroundColor: 'white',
+                          boxShadow: 'var(--cocoso-box-shadow)',
+                          borderRadius: 'var(--cocoso-border-radius)',
+                          cursor: 'move',
+                          fontFamily: 'sans-serif',
+                        }}
                       >
                         <Flex align="center">
                           <DragHandleIcon />{' '}
