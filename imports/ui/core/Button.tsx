@@ -8,6 +8,7 @@ import { xToRem } from './functions';
 interface ButtonProps {
   children?: any;
   color?: string;
+  colorScheme?: string;
   disabled?: boolean;
   isDisabled?: boolean; // backwards compatibility
   leftIcon?: ReactNode;
@@ -31,20 +32,37 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
   const variant = props.variant || 'solid';
   const size = props.size || 'md';
   const disabled = props.disabled || props.isDisabled;
+  const colorScheme = props.colorScheme || 'theme';
+
+  // Color variables
+  const bg =
+    variant === 'ghost'
+      ? 'none'
+      : variant === 'outline'
+      ? 'white'
+      : `var(--cocoso-colors-${colorScheme}-500)`;
+  const border =
+    props.color || `var(--cocoso-colors-${colorScheme}-200)`;
+  const textColor =
+    variant === 'solid'
+      ? 'white'
+      : `var(--cocoso-colors-${colorScheme}-500)`;
+  const hoverBg =
+    variant === 'solid'
+      ? `var(--cocoso-colors-${colorScheme}-600)`
+      : `var(--cocoso-colors-${colorScheme}-50)`;
+  const focusBg =
+    variant === 'solid'
+      ? `var(--cocoso-colors-${colorScheme}-700)`
+      : `var(--cocoso-colors-${colorScheme}-100)`;
 
   return {
-    backgroundColor:
-      variant === 'ghost'
-        ? 'none'
-        : variant === 'outline'
-        ? 'white'
-        : 'var(--cocoso-colors-theme-500)',
+    backgroundColor: bg,
     borderRadius: 'var(--cocoso-border-radius)',
     borderStyle: 'solid',
     borderWidth: variant === 'ghost' ? '0' : '2px',
-    borderColor: props.color || 'var(--cocoso-colors-theme-200)',
-    color:
-      variant === 'solid' ? 'white' : 'var(--cocoso-colors-theme-500)',
+    borderColor: border,
+    color: textColor,
     cursor: disabled ? 'not-allowed' : 'pointer',
     fontSize:
       size === 'xs'
@@ -94,18 +112,10 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
         : '0.45rem',
     pointerEvents: disabled ? 'none' : 'auto',
     ':hover': {
-      backgroundColor: disabled
-        ? undefined
-        : variant === 'solid'
-        ? 'var(--cocoso-colors-theme-600)'
-        : 'var(--cocoso-colors-theme-50)',
+      backgroundColor: disabled ? undefined : hoverBg,
     },
     ':focus': {
-      backgroundColor: disabled
-        ? undefined
-        : variant === 'solid'
-        ? 'var(--cocoso-colors-theme-700)'
-        : 'var(--cocoso-colors-theme-100)',
+      backgroundColor: disabled ? undefined : focusBg,
     },
   };
 });
@@ -157,6 +167,7 @@ interface IconButtonProps
   extends Omit<ButtonProps, 'leftIcon' | 'rightIcon' | 'children'> {
   icon: ReactNode;
   'aria-label': string;
+  colorScheme?: string;
   style?: React.CSSProperties;
 }
 
@@ -165,6 +176,7 @@ export const IconButton = (props: IconButtonProps) => {
     icon,
     'aria-label': ariaLabel,
     disabled: disabledProp,
+    colorScheme = 'theme',
     isDisabled,
     loading: loadingProp,
     isLoading,
@@ -192,10 +204,11 @@ export const IconButton = (props: IconButtonProps) => {
         size={size}
         variant={variant}
         aria-label={ariaLabel}
+        colorScheme={colorScheme}
         disabled={isDisabledFinal}
         onClick={isDisabledFinal ? undefined : props.onClick}
         style={{
-          borderRadius: '50%',
+          borderRadius: 'var(--cocoso-border-radius)',
           padding:
             size === 'xs'
               ? '0.25rem'
