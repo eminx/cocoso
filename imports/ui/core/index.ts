@@ -18,10 +18,13 @@ import { Button, IconButton } from './Button';
 import Checkbox from './Checkbox';
 import { Code, Heading, Link, Tag, Text } from './Text';
 import Input from './Input';
-import NumberInput from './NumberInput';
 import Image from './Image';
 import Modal, { Drawer, Overlay } from './Modal';
+import NumberInput from './NumberInput';
 import { Radio, RadioGroup } from './RadioButtons';
+import Spinner from './Spinner';
+import Select from './Select';
+import Textarea from './Textarea';
 
 export {
   Accordion,
@@ -52,9 +55,12 @@ export {
   Overlay,
   Radio,
   RadioGroup,
+  Spinner,
   Stack,
   Tag,
   Text,
   VStack,
   Wrap,
+  Textarea,
+  Select,
 };

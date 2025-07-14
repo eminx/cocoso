@@ -1,23 +1,26 @@
 import React, { useContext } from 'react';
 import {
+  Controller,
+  useForm,
+  Control,
+  UseFormRegister,
+} from 'react-hook-form';
+import { Trans } from 'react-i18next';
+
+import {
   Box,
   Button,
   Checkbox,
   Flex,
-  FormLabel,
   Input,
   NumberInput,
-  NumberInputField,
   Select,
   Textarea,
   VStack,
-} from '@chakra-ui/react';
-import { Controller, useForm, Control, UseFormRegister } from 'react-hook-form';
-import { Trans } from 'react-i18next';
+} from '/imports/ui/core';
 
 import Quill from './Quill';
 import FormField from './FormField';
-import { luxxStyle } from '../utils/constants/theme';
 import { LoaderContext } from '../listing/NewEntryHandler';
 
 interface Option {
@@ -26,7 +29,13 @@ interface Option {
 }
 
 interface FormFieldItem {
-  type: 'input' | 'textarea' | 'checkbox' | 'select' | 'quill' | 'number';
+  type:
+    | 'input'
+    | 'textarea'
+    | 'checkbox'
+    | 'select'
+    | 'quill'
+    | 'number';
   value: string;
   props?: Record<string, any>;
   placeholder?: string | undefined;
@@ -50,7 +59,11 @@ interface GenericEntryFormProps {
   onSubmit: () => void;
 }
 
-function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
+function FieldItemHandler({
+  control,
+  item,
+  register,
+}: FieldItemHandlerProps) {
   const props = {
     ...register(item.value, item.props),
     placeholder: item.placeholder,
@@ -60,24 +73,9 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
     case 'input':
       return <Input {...props} />;
     case 'textarea':
-      return (
-        <Textarea
-          _hover={luxxStyle.field._hover}
-          _focus={luxxStyle.field._focus}
-          style={luxxStyle.field}
-          {...props}
-        />
-      );
+      return <Textarea {...props} />;
     case 'checkbox':
-      return (
-        <Box bg="white" borderRadius="lg" display="inline" p="2">
-          <Checkbox size="lg" {...props}>
-            <FormLabel style={{ cursor: 'pointer' }} mb="0">
-              {item.placeholder}
-            </FormLabel>
-          </Checkbox>
-        </Box>
-      );
+      return <Checkbox {...props} />;
     case 'select':
       return (
         <Select {...props}>
@@ -89,11 +87,7 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
         </Select>
       );
     case 'number':
-      return (
-        <NumberInput>
-          <NumberInputField {...props} />
-        </NumberInput>
-      );
+      return <NumberInput {...props} />;
     case 'quill':
       return (
         <Controller
@@ -123,19 +117,31 @@ export default function GenericEntryForm({
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <VStack spacing="4">
+        <VStack gap="0">
           {formFields.map((item, index) => (
             <Box key={item.value} w="100%">
               {index === childrenIndex && children}
-              <FormField {...item.props} helperText={item.helper} label={item.label}>
-                <FieldItemHandler control={control} item={item} register={register} />
+              <FormField
+                {...item.props}
+                helperText={item.helper}
+                label={item.label}
+              >
+                <FieldItemHandler
+                  control={control}
+                  item={item}
+                  register={register}
+                />
               </FormField>
             </Box>
           ))}
         </VStack>
 
         <Flex justify="flex-end" mt="8" mb="12">
-          <Button isDisabled={isSubmitButtonDisabled} isLoading={loaders?.isCreating} type="submit">
+          <Button
+            isDisabled={isSubmitButtonDisabled}
+            isLoading={loaders?.isCreating}
+            type="submit"
+          >
             <Trans i18nKey="common:actions.submit">Submit</Trans>
           </Button>
         </Flex>

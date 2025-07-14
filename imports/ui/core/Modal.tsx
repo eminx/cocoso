@@ -54,7 +54,7 @@ const CloseButton = styled('button', {
   background: 'transparent',
   border: 'none',
   borderRadius: '9999px',
-  color: '#9ca3af',
+  color: 'var(--cocoso-colors-gray-600)',
   cursor: 'pointer',
   padding: '0.25rem',
   transition: 'all 0.3s',

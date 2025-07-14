@@ -174,6 +174,99 @@ export default function GlobalStyles({ theme }) {
             cursor: 'not-allowed',
             background: '#f5f5f5',
           },
+          '.cocoso-textarea': {
+            width: '100%',
+            minHeight: '6rem',
+            borderRadius: 'var(--cocoso-border-radius, 0.375rem)',
+            border: '2px solid var(--cocoso-colors-theme-200, #ccc)',
+            background: 'white',
+            color: 'var(--cocoso-colors-gray-900, #222)',
+            outline: 'none',
+            transition: 'border-color 0.2s',
+            fontFamily: 'inherit',
+            resize: 'vertical',
+            boxSizing: 'border-box',
+          },
+          '.cocoso-textarea--sm': {
+            padding: '0.25rem 0.5rem',
+            fontSize: '0.875rem',
+          },
+          '.cocoso-textarea--md': {
+            padding: '0.5rem 1rem',
+            fontSize: '1rem',
+          },
+          '.cocoso-textarea--lg': {
+            padding: '0.75rem 1.25rem',
+            fontSize: '1.125rem',
+          },
+          '.cocoso-textarea:hover': {
+            borderColor: 'var(--cocoso-colors-theme-300, #3182ce)',
+          },
+          '.cocoso-textarea:focus': {
+            borderColor: 'var(--cocoso-colors-theme-500, #3182ce)',
+          },
+          '.cocoso-textarea:active': {
+            borderColor: 'var(--cocoso-colors-theme-500, #3182ce)',
+          },
+          '.cocoso-textarea[aria-invalid="true"]': {
+            borderColor: 'var(--cocoso-colors-red-500, #e53e3e)',
+          },
+          '.cocoso-textarea:disabled': {
+            opacity: 0.6,
+            cursor: 'not-allowed',
+            background: '#f5f5f5',
+          },
+          '.cocoso-select': {
+            width: '100%',
+            borderRadius: 'var(--cocoso-border-radius, 0.375rem)',
+            border: '2px solid var(--cocoso-colors-theme-200, #ccc)',
+            background: 'white',
+            color: 'var(--cocoso-colors-gray-900, #222)',
+            outline: 'none',
+            transition: 'border-color 0.2s',
+            appearance: 'none',
+            fontFamily: 'inherit',
+            boxSizing: 'border-box',
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 8L10 11L13 8' stroke='%23666%27 stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'right 0.75rem center',
+            backgroundSize: '1.25em 1.25em',
+            paddingRight: '2.5rem',
+          },
+          '.cocoso-select--sm': {
+            padding: '0.25rem 2.5rem 0.25rem 0.5rem',
+            fontSize: '0.875rem',
+          },
+          '.cocoso-select--md': {
+            padding: '0.5rem 2.5rem 0.5rem 1rem',
+            fontSize: '1rem',
+          },
+          '.cocoso-select--lg': {
+            padding: '0.75rem 2.5rem 0.75rem 1.25rem',
+            fontSize: '1.125rem',
+          },
+          '.cocoso-select:hover': {
+            borderColor: 'var(--cocoso-colors-theme-300, #3182ce)',
+          },
+          '.cocoso-select:focus': {
+            borderColor: 'var(--cocoso-colors-theme-500, #3182ce)',
+          },
+          '.cocoso-select:active': {
+            borderColor: 'var(--cocoso-colors-theme-500, #3182ce)',
+          },
+          '.cocoso-select[aria-invalid="true"]': {
+            borderColor: 'var(--cocoso-colors-red-500, #e53e3e)',
+          },
+          '.cocoso-select:disabled': {
+            opacity: 0.6,
+            cursor: 'not-allowed',
+            background: '#f5f5f5',
+          },
+
+          '.szh-menu': {
+            borderRadius: 'var(--cocoso-border-radius)',
+          },
         }}
       </GlobalStylesRestyle>
     </>

@@ -1,20 +1,21 @@
 import React, { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import XIcon from 'lucide-react/dist/esm/icons/x';
+
 import {
   Box,
   Button,
+  Drawer,
   Flex,
+  HStack,
   Heading,
+  IconButton,
   Input,
-  Tag,
-  TagCloseButton,
-  TagLabel,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
 
-import { Drawer } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import {
   call,
@@ -30,7 +31,7 @@ const EmailsContainer = (props) => (
     <Heading size="md" mb="4">
       {props.title} ({props.count})
     </Heading>
-    <Box>{props.children}</Box>
+    <HStack wrap="wrap">{props.children}</HStack>
   </Box>
 );
 
@@ -138,9 +139,7 @@ export default function InviteManager() {
     >
       <Box>
         <VStack py="2" gap="2">
-          <Flex justify="flex-start" w="100%" mb="2">
-            <Text>{t('invite.info')}</Text>
-          </Flex>
+          <Text mb="2">{t('invite.info')}</Text>
 
           <FormField label={t('invite.email.label')}>
             <Input
@@ -172,24 +171,27 @@ export default function InviteManager() {
             count={peopleInvited?.length}
           >
             {peopleInvited?.map((person) => (
-              <Tag
+              <Flex
                 key={person.email}
-                borderRadius="full"
-                colorScheme="green"
-                mb="2"
-                mr="2"
-                px="4"
-                py="2"
-                variant="solid"
+                align="center"
+                bg="green.50"
+                gap="0"
+                pl="2"
+                css={{
+                  border: '1px solid',
+                  borderColor: 'var(--cocoso-colors-green-400)',
+                  borderRadius: 'var(--cocoso-border-radius)',
+                }}
               >
-                <TagLabel fontWeight="bold" mr="2">
-                  {person?.firstName}
-                </TagLabel>
-                <Text>{person?.email}</Text>
-                <TagCloseButton
+                <Box px="1">{`${person?.firstName} <${person?.email}>`}</Box>
+                <IconButton
+                  color="var(--cocoso-colors-red-300)"
+                  icon={<XIcon size={12} />}
+                  variant="ghost"
+                  size="xs"
                   onClick={() => handleRemoveInvite(person)}
                 />
-              </Tag>
+              </Flex>
             ))}
           </EmailsContainer>
         </Box>

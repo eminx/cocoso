@@ -1,6 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Center, Flex, Heading, Link as CLink, List, ListItem, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Link as CLink,
+  List,
+  ListItem,
+  Text,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
@@ -28,16 +37,27 @@ export function Footer({ currentHost, isFederationFooter }) {
     return null;
   }
 
-  const activeMenu = currentHost.settings?.menu?.filter((item) => item.isVisible);
+  const activeMenu = currentHost.settings?.menu?.filter(
+    (item) => item.isVisible
+  );
   const { settings } = currentHost;
 
   return (
     <Box bg="gray.700" bottom={0} color="gray.100">
       <Center p="4">
-        <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
+        <List
+          direction="row"
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+        >
           {activeMenu.map((item) => (
             <ListItem key={item.name} px="4" py="2">
-              <Link to={item.name === 'info' ? '/info/about' : `/${item.name}`}>
+              <Link
+                to={
+                  item.name === 'info' ? '/info/about' : `/${item.name}`
+                }
+              >
                 <CLink as="span">{item.label}</CLink>{' '}
               </Link>
             </ListItem>
@@ -62,7 +82,10 @@ export function Footer({ currentHost, isFederationFooter }) {
                   {parseHtml(settings?.footer)}
                 </Box>
               ) : (
-                <OldFooter host={currentHost.host} settings={settings} />
+                <OldFooter
+                  host={currentHost.host}
+                  settings={settings}
+                />
               )}
             </Center>
             {!isFederationFooter && (
@@ -81,7 +104,7 @@ export function Footer({ currentHost, isFederationFooter }) {
         </Center>
       )}
       <Center p="4">
-        <ChangeLanguageMenu isCentered />
+        <ChangeLanguageMenu centered />
       </Center>
     </Box>
   );
@@ -94,7 +117,13 @@ export function PlatformFooter({ platform, children }) {
   }
   return (
     <Center bg="gray.900" className="platform-footer">
-      <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
+      <Box
+        color="white"
+        fontSize="85%"
+        maxW="480px"
+        py="4"
+        textAlign="center"
+      >
         <Box p="4">
           <a href={`https://${platform?.portalHost}`}>
             <Heading color="white" size="md">

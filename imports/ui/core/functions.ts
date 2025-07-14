@@ -90,14 +90,21 @@ export const getPropStyles = (props: any) => {
     ...(props.w && {
       width: props.w,
     }),
+    ...(props.p && {
+      padding: xToRem(props.p),
+    }),
+    ...(props.px && {
+      paddingInline: xToRem(props.px),
+    }),
+    ...(props.py && {
+      paddingTop: xToRem(props.pt || props.py),
+      paddingBottom: xToRem(props.pb || props.py),
+    }),
     ...(props.pl && {
       paddingInlineStart: xToRem(props.pl),
     }),
     ...(props.pr && {
       paddingInlineEnd: xToRem(props.pr),
-    }),
-    ...(props.px && {
-      paddingInline: xToRem(props.px),
     }),
     ...(props.pt && {
       paddingTop: xToRem(props.pt),
@@ -105,30 +112,23 @@ export const getPropStyles = (props: any) => {
     ...(props.pb && {
       paddingBottom: xToRem(props.pb),
     }),
-    ...(props.py && {
-      paddingTop: xToRem(props.pt || props.py),
-      paddingBottom: xToRem(props.pb || props.py),
-    }),
-    ...(props.p && {
-      padding: xToRem(props.p),
+    ...(props.m && {
+      margin: xToRem(props.m),
     }),
     ...(props.mx && {
       marginInline: xToRem(props.mx),
       marginInlineStart: xToRem(props.ml),
       marginInlineEnd: xToRem(props.mr),
     }),
+    ...(props.my && {
+      marginTop: xToRem(props.my),
+      marginBottom: xToRem(props.my),
+    }),
     ...(props.mt && {
       marginTop: xToRem(props.mt),
     }),
     ...(props.mb && {
       marginBottom: xToRem(props.mb),
-    }),
-    ...(props.my && {
-      marginTop: xToRem(props.my),
-      marginBottom: xToRem(props.my),
-    }),
-    ...(props.m && {
-      margin: xToRem(props.m),
     }),
     ...(props._hover && {
       ':hover': {

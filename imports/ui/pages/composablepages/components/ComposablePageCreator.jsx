@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Center, Input } from '@chakra-ui/react';
 import FilePlusIcon from 'lucide-react/dist/esm/icons/file-plus';
 import { Trans } from 'react-i18next';
 
-import Modal from '/imports/ui/core/Modal';
+import { Button, Center, Input, Modal } from '/imports/ui/core';
+
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';

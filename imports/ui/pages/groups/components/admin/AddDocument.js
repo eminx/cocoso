@@ -1,18 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import React, { useContext, useState } from 'react';
+import ReactDropzone from 'react-dropzone';
+import { useTranslation } from 'react-i18next';
+
 import {
   Box,
   Center,
   Flex,
   Heading,
+  Modal,
   Spinner,
   Text,
-} from '@chakra-ui/react';
-import ReactDropzone from 'react-dropzone';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
 
-import Modal from '/imports/ui/core/Modal';
 import DocumentUploadHelper from '/imports/ui/forms/UploadHelpers';
 import { message } from '/imports/ui/generic/message';
 
