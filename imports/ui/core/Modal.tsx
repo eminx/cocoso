@@ -26,6 +26,7 @@ interface BaseProps {
 interface DrawerProps extends BaseProps {
   position?: 'left' | 'right' | 'top' | 'bottom';
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  styles?: any;
 }
 
 // Modal-specific props
@@ -170,7 +171,12 @@ const ModalContent = styled(
 // Drawer content styling
 const DrawerContent = styled(
   'div',
-  (props: { position?: string; size?: string; visible?: boolean }) => {
+  (props: {
+    position?: string;
+    size?: string;
+    styles?: any;
+    visible?: boolean;
+  }) => {
     const maxHeight = props.size === 'full' ? '100vh' : '90vh';
     const maxSize = props.size === 'full' ? '100vw' : '90vw';
     const size =
@@ -243,6 +249,7 @@ const DrawerContent = styled(
       top: 0,
       transform: props.visible ? 'translateX(0)' : 'translateX(100%)',
       width: size,
+      ...props.styles,
     };
   }
 );
@@ -472,6 +479,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   position = 'right',
   size = 'md',
   title,
+  styles,
 }) => {
   const portalContainer = usePortal(open, onClose, 'drawer-portal');
 
@@ -492,6 +500,7 @@ export const Drawer: React.FC<DrawerProps> = ({
       <DrawerContent
         position={position}
         size={size}
+        styles={styles}
         visible={open}
         onClick={handleDrawerContentClick}
       >
