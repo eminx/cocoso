@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Switch } from '@chakra-ui/react';
 import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
 import XIcon from 'lucide-react/dist/esm/icons/x';
 import SortableList, { SortableItem } from 'react-easy-sort';
@@ -10,6 +9,7 @@ import ReactSelect from 'react-select';
 import {
   Box,
   Button,
+  Checkbox,
   Flex,
   Heading,
   IconButton,
@@ -242,47 +242,43 @@ export default function MenuSettings() {
       content: (
         <Box my="8">
           <Boxling mb="4">
-            <Heading as="h4" fontSize="18px" mb="2">
-              {t('menu.burgermenu.title')}
-            </Heading>
+            <Box mb="2">
+              <Heading as="h4" fontSize="18px">
+                {t('menu.burgermenu.title')}
+              </Heading>
+            </Box>
 
-            <Text mb="4">{t('menu.burgermenu.text')}</Text>
+            <Text fontSize="sm" mb="4">
+              {t('menu.burgermenu.text')}
+            </Text>
 
-            <Flex mb="4">
-              <Switch
-                isChecked={Boolean(localSettings.isBurgerMenuOnMobile)}
+            <Flex py="4">
+              <Checkbox
+                checked={Boolean(localSettings.isBurgerMenuOnMobile)}
                 mr="2"
                 mt="1"
                 name="isBurgerMenuOnMobile"
                 onChange={(event) =>
                   handleSwitchBurgerMenuMobile(event.target.checked)
                 }
-              />
-
-              <Box>
-                <Text fontWeight="bold">
-                  {t('menu.burgermenu.mobile')}
-                </Text>
-              </Box>
+              >
+                {t('menu.burgermenu.mobile')}
+              </Checkbox>
             </Flex>
 
             <Flex mb="4">
-              <Switch
-                isChecked={Boolean(localSettings.isBurgerMenuOnDesktop)}
-                isDisabled={!localSettings.isBurgerMenuOnMobile}
+              <Checkbox
+                checked={Boolean(localSettings.isBurgerMenuOnDesktop)}
+                disabled={!localSettings.isBurgerMenuOnMobile}
                 mr="2"
                 mt="1"
                 name="isBurgerMenuOnDesktop"
                 onChange={(event) =>
                   handleSwitchBurgerMenuDesktop(event.target.checked)
                 }
-              />
-
-              <Box>
-                <Text fontWeight="bold">
-                  {t('menu.burgermenu.desktop')}
-                </Text>
-              </Box>
+              >
+                {t('menu.burgermenu.desktop')}
+              </Checkbox>
             </Flex>
           </Boxling>
 
