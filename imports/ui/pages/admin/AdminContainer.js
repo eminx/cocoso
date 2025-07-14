@@ -98,7 +98,7 @@ export default function AdminContainer() {
   const iconContainerProps = {
     align: 'center',
     direction: 'column',
-    color: 'blueGray.800',
+    color: 'bluegray.800',
     cursor: 'pointer',
     p: '2',
   };
@@ -125,7 +125,7 @@ export default function AdminContainer() {
 
   if (!isDesktop) {
     return (
-      <Box bg="blueGray.100" minH="100vh">
+      <Box bg="bluegray.100" minH="100vh">
         <Drawer
           bg="white"
           open={drawerMenuOpen}
@@ -138,7 +138,7 @@ export default function AdminContainer() {
           <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Drawer>
         <Box>
-          <Flex align="center" bg="blueGray.50" w="100%">
+          <Flex align="center" bg="bluegray.50" w="100%">
             <Flex
               {...iconContainerProps}
               onClick={() => setDrawerMenuOpen(true)}
@@ -148,7 +148,7 @@ export default function AdminContainer() {
             </Flex>
             <Heading
               flexGrow="1"
-              color="blueGray.900"
+              color="bluegray.900"
               size="md"
               textAlign="center"
             >
@@ -190,7 +190,7 @@ export default function AdminContainer() {
   }
 
   return (
-    <Box bg="blueGray.100" minH="100vh">
+    <Box bg="bluegray.100" minH="100vh">
       <SimpleGrid columns={2} h="100%" templateColumns="320px 50%">
         <Box>
           <AdminMenu routes={routes} onItemClick={handleItemClick} />

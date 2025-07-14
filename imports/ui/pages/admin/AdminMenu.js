@@ -20,8 +20,8 @@ export function AdminMenuHeader({ currentHost }) {
   return (
     <Link to="/">
       <Box
-        _hover={{ bg: 'blueGray.800', color: 'white' }}
-        _focus={{ bg: 'blueGray.300' }}
+        _hover={{ bg: 'bluegray.800', color: 'white' }}
+        _focus={{ bg: 'bluegray.300' }}
         bg="white"
         px="4"
         py="2"
@@ -32,7 +32,7 @@ export function AdminMenuHeader({ currentHost }) {
             {currentHost.settings?.name}
           </Text>
         </Flex>
-        <Code bg="blueGray.50" color="blueGray.900" fontSize="xs">
+        <Code bg="bluegray.50" color="bluegray.900" fontSize="xs">
           {currentHost.host}
         </Code>
       </Box>
@@ -51,8 +51,8 @@ export function AdminUserThumb({ currentUser }) {
 
   return (
     <Box
-      _hover={{ bg: 'blueGray.800' }}
-      bg={isCurrentRoute ? 'blueGray.900' : 'blueGray.700'}
+      _hover={{ bg: 'bluegray.800' }}
+      bg={isCurrentRoute ? 'bluegray.900' : 'bluegray.700'}
       color="white"
       p="4"
     >
@@ -95,10 +95,10 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
 
   return (
     <Box
-      _hover={{ bg: 'blueGray.100' }}
-      // bg={isCurrentRoute && !item.isMulti ? 'blueGray.100' : 'inherit'}
+      _hover={{ bg: 'bluegray.100' }}
+      // bg={isCurrentRoute && !item.isMulti ? 'bluegray.100' : 'inherit'}
       borderRightWidth={isCurrentRoute && !item.isMulti ? '3px' : '0'}
-      borderRightColor="blueGray.500"
+      borderRightColor="bluegray.500"
       cursor="pointer"
       ml={isSub ? '4' : '0'}
       p="2.5"
@@ -131,8 +131,8 @@ export default function AdminMenu({ routes, onItemClick }) {
 
   return (
     <Flex
-      bg="blueGray.50"
-      color="blueGray.800"
+      bg="bluegray.50"
+      color="bluegray.800"
       direction="column"
       justify="space-between"
       h={isDesktop ? '100%' : 'calc(100% - 60px)'}
@@ -145,7 +145,7 @@ export default function AdminMenu({ routes, onItemClick }) {
         {isDesktop && isAdmin && (
           <Heading
             flexGrow="0"
-            color="blueGray.800"
+            color="bluegray.800"
             p="4"
             pb="0"
             size="md"
