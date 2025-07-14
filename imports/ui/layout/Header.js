@@ -23,14 +23,17 @@ import { parseTitle } from '../utils/shared';
 
 const isClient = Meteor?.isClient;
 
+if (isClient) {
+  import '@szhsin/react-menu/dist/index.css';
+  import '@szhsin/react-menu/dist/transitions/zoom.css';
+}
+
 const textProps = {
   _hover: { borderBottom: '1px solid' },
   as: 'span',
-  // borderColor: 'gray.600',
   fontFamily: 'Raleway, Sarabun, sans-serif',
   fontSize: 16,
   fontWeight: '500',
-  // textShadow: '1px 1px 1px #fff',
 };
 
 export function InfoPagesMenu({
