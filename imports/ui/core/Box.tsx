@@ -1,12 +1,19 @@
+import React from 'react';
 import { styled } from 'restyle';
 
 import { getPropStyles, getSpacing } from '/imports/ui/core/functions';
 
-// Box
-export const Box = styled('div', (props: any) => ({
-  display: 'block',
-  ...getPropStyles(props),
-}));
+// Minimal Chakra-like Box
+export type BoxProps = React.HTMLAttributes<HTMLElement> & {
+  as?: React.ElementType;
+  style?: React.CSSProperties;
+};
+
+export const Box = React.forwardRef<HTMLElement, BoxProps>(
+  ({ as: Component = 'div', style, ...rest }, ref) => {
+    return <Component ref={ref} style={style} {...rest} />;
+  }
+);
 
 // Center
 export const Center = styled('div', (props: any) => ({
