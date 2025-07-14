@@ -44,7 +44,7 @@ export const Flex = styled('div', (props: any) => ({
   alignItems: props.align || props.alignItems || 'flex-start',
   display: 'flex',
   gap: props.gap || '0.5rem',
-  // flexDirection: props.direction || props.flexDirection || 'row',
+  flexDirection: props.direction || props.flexDirection || 'row',
   flexWrap: props.wrap || props.flexWrap || 'nowrap',
   justifyContent: props.justify || props.justifyContent || 'flex-start',
   ...getPropStyles(props),
