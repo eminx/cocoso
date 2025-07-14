@@ -16,7 +16,7 @@ import ChangeLanguageMenu from './ChangeLanguageMenu';
 import { StateContext } from '../LayoutContainer';
 import { InfoPagesMenu } from './Header';
 
-function MenuContent({ menuItems, pageTitles, onToggle }) {
+function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -32,7 +32,10 @@ function MenuContent({ menuItems, pageTitles, onToggle }) {
   };
 
   return (
-    <VStack align="flex-start">
+    <VStack
+      align="flex-start"
+      style={{ ...styles, padding: '1rem', width: '100%' }}
+    >
       {menuItems.map((item) => {
         const isCurrentPageLabel = isCurrentPage(item);
         if (item.name === 'info') {
@@ -53,7 +56,7 @@ function MenuContent({ menuItems, pageTitles, onToggle }) {
             to={item.route}
             onClick={onToggle}
           >
-            <Box px="2" py="1">
+            <Box p="2">
               <Text
                 _hover={
                   !isCurrentPageLabel && { textDecoration: 'underline' }
@@ -120,6 +123,8 @@ export default function MenuDrawer() {
     });
   }
 
+  const menuStyles = currentHost?.theme?.menu;
+
   const onToggle = () => setIsOpen(!isOpen);
 
   return (
@@ -137,10 +142,16 @@ export default function MenuDrawer() {
         </Text>
       </Flex>
 
-      <Drawer open={isOpen} title={tc('menu.label')} onClose={onToggle}>
+      <Drawer
+        open={isOpen}
+        styles={{ backgroundColor: 'var(--cocoso-colors-theme-100)' }}
+        title={tc('menu.label')}
+        onClose={onToggle}
+      >
         <Flex flexDirection="column" h="100%" justify="space-between">
           <MenuContent
             menuItems={menuItems}
+            styles={menuStyles}
             pageTitles={pageTitles}
             onToggle={onToggle}
           />
