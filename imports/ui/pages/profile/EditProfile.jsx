@@ -413,7 +413,7 @@ function EditProfile() {
           </Heading>
 
           <Alert
-            bg="blueGray.50"
+            bg="bluegray.50"
             borderRadius="lg"
             mb="8"
             status="info"
