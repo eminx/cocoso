@@ -1,10 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
 import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
 
-import { Drawer } from '/imports/ui/core';
+import {
+  Box,
+  Drawer,
+  Flex,
+  IconButton,
+  Text,
+  VStack,
+} from '/imports/ui/core';
 
 import ChangeLanguageMenu from './ChangeLanguageMenu';
 import { StateContext } from '../LayoutContainer';
@@ -120,18 +126,13 @@ export default function MenuDrawer() {
     <Box>
       <Flex align="center" flexDirection="column" px="2">
         <IconButton
-          _hover={{
-            bg: 'gray.800',
-          }}
-          bg="gray.600"
-          borderColor="#fff"
-          borderWidth="2px"
           icon={<HamburgerIcon fontSize="24px" />}
           size={isDesktop ? 'md' : 'sm'}
+          variant="outline"
           onClick={onToggle}
         />
 
-        <Text fontSize="12px" textAlign="center">
+        <Text style={{ fontSize: '12px' }} textAlign="center">
           {tc('menu.label')}
         </Text>
       </Flex>
