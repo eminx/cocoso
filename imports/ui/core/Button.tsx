@@ -24,6 +24,7 @@ interface ButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   variant?: 'solid' | 'ghost' | 'outline';
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
 const ButtonComponent = styled('button', (props: ButtonProps) => {
@@ -152,16 +153,94 @@ export const Button = (props: ButtonProps) => {
   );
 };
 
-interface IconButtonProps extends ButtonProps {
+interface IconButtonProps
+  extends Omit<ButtonProps, 'leftIcon' | 'rightIcon' | 'children'> {
   icon: ReactNode;
+  'aria-label': string;
+  style?: React.CSSProperties;
 }
 
-const IconButtonComponent = styled(ButtonComponent, () => ({
-  padding: '0.25rem',
-}));
-
 export const IconButton = (props: IconButtonProps) => {
+  const {
+    icon,
+    'aria-label': ariaLabel,
+    disabled: disabledProp,
+    isDisabled,
+    loading: loadingProp,
+    isLoading,
+    size = 'md',
+    variant = 'ghost',
+    ...rest
+  } = props;
+
+  const disabled = disabledProp || isDisabled;
+  const loading = loadingProp || isLoading;
+  const isDisabledFinal = disabled || loading;
+
   return (
-    <IconButtonComponent {...props}>{props.icon}</IconButtonComponent>
+    <>
+      <GlobalStyles>
+        {{
+          '@keyframes spin': {
+            '0%': { transform: 'rotate(0deg)' },
+            '100%': { transform: 'rotate(360deg)' },
+          },
+        }}
+      </GlobalStyles>
+      <ButtonComponent
+        {...rest}
+        size={size}
+        variant={variant}
+        aria-label={ariaLabel}
+        disabled={isDisabledFinal}
+        onClick={isDisabledFinal ? undefined : props.onClick}
+        style={{
+          borderRadius: '50%',
+          padding:
+            size === 'xs'
+              ? '0.25rem'
+              : size === 'sm'
+              ? '0.35rem'
+              : size === 'lg'
+              ? '0.65rem'
+              : '0.5rem',
+          width:
+            size === 'xs'
+              ? '2rem'
+              : size === 'sm'
+              ? '2.25rem'
+              : size === 'lg'
+              ? '2.75rem'
+              : '2.5rem',
+          height:
+            size === 'xs'
+              ? '2rem'
+              : size === 'sm'
+              ? '2.25rem'
+              : size === 'lg'
+              ? '2.75rem'
+              : '2.5rem',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          ...rest.style,
+        }}
+      >
+        {loading ? (
+          <div
+            style={{
+              width: '1rem',
+              height: '1rem',
+              border: '2px solid currentColor',
+              borderTop: '2px solid transparent',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+            }}
+          />
+        ) : (
+          icon
+        )}
+      </ButtonComponent>
+    </>
   );
 };
