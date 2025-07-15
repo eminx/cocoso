@@ -18,6 +18,8 @@ import {
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
 import Eye from 'lucide-react/dist/esm/icons/eye';
 
+import Loader from '/imports/ui/core/Loader';
+
 import { Drawer } from '/imports/ui/core';
 import Alert from '/imports/ui/generic/Alert';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -95,6 +97,18 @@ export default function AdminContainer() {
     }
   };
 
+  if (!currentHost) {
+    return <Loader />;
+  }
+
+  if (!currentUser) {
+    return (
+      <Center p="12">
+        <Alert>{tc('message.access.deny')}</Alert>
+      </Center>
+    );
+  }
+
   const iconContainerProps = {
     align: 'center',
     direction: 'column',
@@ -110,18 +124,6 @@ export default function AdminContainer() {
       element={<EditProfile />}
     />
   );
-
-  if (!currentHost) {
-    return null;
-  }
-
-  if (!currentUser) {
-    return (
-      <Center p="12">
-        <Alert>{tc('message.access.deny')}</Alert>
-      </Center>
-    );
-  }
 
   if (!isDesktop) {
     return (

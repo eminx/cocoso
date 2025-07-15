@@ -22,7 +22,7 @@ import Modal from '/imports/ui/core/Modal';
 import NiceList from '/imports/ui/generic/NiceList';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import Loader from '/imports/ui/generic/Loader';
+import Loader from '../../../core/Loader';
 
 import EmailPreview from './EmailPreview';
 import { StateContext } from '/imports/ui/LayoutContainer';

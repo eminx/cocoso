@@ -13,7 +13,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { call } from '../../utils/shared';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
@@ -39,13 +39,21 @@ function EmailForm({ defaultValues, key, onSubmit }) {
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <VStack spacing="4">
             <FormField label={t('emails.form.subject.label')}>
-              <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
+              <Input
+                {...register('subject')}
+                placeholder={t('emails.form.subject.holder')}
+              />
             </FormField>
 
             <FormField label={t('emails.form.appeal.label')}>
               <InputGroup w="280px">
-                <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
-                <InputRightAddon>{t('emails.form.appeal.addon')}</InputRightAddon>
+                <Input
+                  {...register('appeal')}
+                  placeholder={t('emails.form.appeal.holder')}
+                />
+                <InputRightAddon>
+                  {t('emails.form.appeal.addon')}
+                </InputRightAddon>
               </InputGroup>
             </FormField>
 
@@ -58,7 +66,11 @@ function EmailForm({ defaultValues, key, onSubmit }) {
             </FormField>
 
             <Flex justify="flex-end" py="2" w="100%">
-              <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+              <Button
+                isDisabled={!isDirty}
+                isLoading={isSubmitting}
+                type="submit"
+              >
                 {tc('actions.submit')}
               </Button>
             </Flex>

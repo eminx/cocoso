@@ -1,11 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Routes, Navigate, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Input, Stack, Switch as CSwitch, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Input,
+  Stack,
+  Switch as CSwitch,
+  Text,
+} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import Alert from '../../generic/Alert';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
@@ -59,8 +68,12 @@ function PlatformOptions({ initialValues, onSubmit }) {
         <Flex>
           <CSwitch mr="2" mt="2" {...register('isFederationLayout')} />
           <Box>
-            <Text fontSize="lg">{t('info.platform.federationLabel')}</Text>
-            <Text fontSize="sm">{t('info.platform.federationText')}</Text>
+            <Text fontSize="lg">
+              {t('info.platform.federationLabel')}
+            </Text>
+            <Text fontSize="sm">
+              {t('info.platform.federationText')}
+            </Text>
           </Box>
         </Flex>
         <Flex justify="flex-end" py="4">
@@ -117,7 +130,9 @@ export default function PlatformSettings() {
     try {
       await call('updatePlatformSettings', values);
       await getPlatformNow();
-      message.success(tc('message.success.update', { domain: 'Platform settings' }));
+      message.success(
+        tc('message.success.update', { domain: 'Platform settings' })
+      );
     } catch (error) {
       message.error(error.reason);
       console.log(error);
@@ -183,8 +198,14 @@ export default function PlatformSettings() {
   const uploadLogo = async () => {
     setUploading(true);
     try {
-      const resizedImage = await resizeImage(localImage.uploadableImage, 800);
-      const uploadedImage = await uploadImage(resizedImage, 'platformLogoUpload');
+      const resizedImage = await resizeImage(
+        localImage.uploadableImage,
+        800
+      );
+      const uploadedImage = await uploadImage(
+        resizedImage,
+        'platformLogoUpload'
+      );
       await call('updatePlatformSettings', { logo: uploadedImage });
       message.success(t('logo.message.success'));
     } catch (error) {
@@ -206,7 +227,10 @@ export default function PlatformSettings() {
           <Text mb="3" fontWeight="bold">
             {t('info.platform.info')}
           </Text>
-          <PlatformSettingsForm initialValues={platform} onSubmit={handleFormSubmit} />
+          <PlatformSettingsForm
+            initialValues={platform}
+            onSubmit={handleFormSubmit}
+          />
         </Box>
       ),
     },
@@ -220,7 +244,9 @@ export default function PlatformSettings() {
           </Text>
           <Box>
             <FileDropper
-              uploadableImageLocal={localImage && localImage.uploadableImageLocal}
+              uploadableImageLocal={
+                localImage && localImage.uploadableImageLocal
+              }
               imageUrl={platform?.logo}
               setUploadableImage={setUploadableImage}
               width={isImage && '120px'}
@@ -229,7 +255,10 @@ export default function PlatformSettings() {
           </Box>
           {localImage && localImage.uploadableImageLocal && (
             <Center p="2">
-              <Button isLoading={uploading} onClick={() => uploadLogo()}>
+              <Button
+                isLoading={uploading}
+                onClick={() => uploadLogo()}
+              >
                 {tc('actions.submit')}
               </Button>
             </Center>
@@ -245,7 +274,10 @@ export default function PlatformSettings() {
           <Text mb="3" fontWeight="bold">
             {t('info.platform.options')}
           </Text>
-          <PlatformOptions initialValues={platform} onSubmit={handleOptionsSubmit} />
+          <PlatformOptions
+            initialValues={platform}
+            onSubmit={handleOptionsSubmit}
+          />
         </Box>
       ),
     },
@@ -261,9 +293,15 @@ export default function PlatformSettings() {
             {t('info.platform.footer.description')}
           </Text>
           <Box w="100%">
-            <ReactQuill value={platform.footer} onChange={(value) => handleFooterChange(value)} />
+            <ReactQuill
+              value={platform.footer}
+              onChange={(value) => handleFooterChange(value)}
+            />
             <Flex justify="flex-end" mt="4" w="100%">
-              <Button type="submit" onClick={() => handleFooterSubmit(platform)}>
+              <Button
+                type="submit"
+                onClick={() => handleFooterSubmit(platform)}
+              >
                 {tc('actions.submit')}
               </Button>
             </Flex>
@@ -275,7 +313,8 @@ export default function PlatformSettings() {
 
   const pathname = location?.pathname;
   const pathnameLastPart = pathname.split('/').pop();
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
+  const tabIndex =
+    tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
   if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
@@ -288,7 +327,11 @@ export default function PlatformSettings() {
       <Box pt="4">
         <Routes>
           {tabs.map((tab) => (
-            <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+            <Route
+              key={tab.title}
+              path={tab.path}
+              element={<Box pt="2">{tab.content}</Box>}
+            />
           ))}
         </Routes>
       </Box>

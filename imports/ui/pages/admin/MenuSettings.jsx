@@ -17,7 +17,7 @@ import {
 } from '/imports/ui/core';
 
 import { call } from '../../utils/shared';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';

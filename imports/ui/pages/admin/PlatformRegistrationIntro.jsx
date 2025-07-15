@@ -15,7 +15,7 @@ import {
 } from '/imports/ui/core';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import ReactQuill from '../../forms/Quill';

@@ -7,7 +7,7 @@ import Modal from '/imports/ui/core/Modal';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import { message } from '../../generic/message';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 
 export default function ContactInfo({ username }) {
   const [modalOpen, setModalOpen] = useState(false);

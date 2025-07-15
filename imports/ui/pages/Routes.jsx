@@ -4,7 +4,7 @@ import loadable from '@loadable/component';
 
 import LayoutContainer, { StateContext } from '../LayoutContainer';
 import Terms from '../entry/Terms';
-import Loader from '../generic/Loader';
+import Loader from '../core/Loader';
 import ComposablePageView from './composablepages/ComposablePageView';
 
 const Communities = loadable(() =>

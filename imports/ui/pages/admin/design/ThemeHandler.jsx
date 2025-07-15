@@ -19,7 +19,7 @@ import {
 
 import HuePicker from './HuePicker';
 import BackgroundHandler from './BackgroundHandler';
-import Loader from '/imports/ui/generic/Loader';
+import Loader from '../../../core/Loader';
 
 export default function ThemeHandler() {
   const { currentHost, getCurrentHost, setCurrentHost } =

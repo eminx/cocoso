@@ -4,7 +4,7 @@ import { Box, Fade, Flex, Slide } from '@chakra-ui/react';
 import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
 import MenuDrawer from './MenuDrawer';
-import Loader from '/imports/ui/generic/Loader';
+import Loader from '../core/Loader';
 
 export default function TopBarHandler({ slideStart }) {
   const [scrollTop, setScrollTop] = useState(0);
@@ -50,12 +50,6 @@ export default function TopBarHandler({ slideStart }) {
           </Flex>
         </Fade>
       </Slide>
-
-      {/* <Fade in={scrollTop < 120}>
-        <Box style={burgerMenuStyle}>
-          <MenuDrawer in={slideStart} />
-        </Box>
-      </Fade> */}
     </>
   );
 }

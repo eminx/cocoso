@@ -23,7 +23,7 @@ import CheckIcon from 'lucide-react/dist/esm/icons/check';
 
 import { call } from '/imports/ui/utils/shared';
 
-import Loader from '../../../generic/Loader';
+import Loader from '../../../core/Loader';
 import { message } from '../../../generic/message';
 import { ActivityDates } from './EmailPreview';
 import FormField from '../../../forms/FormField';
@@ -99,7 +99,9 @@ export default function ContentInserter({ currentHost, onSelect }) {
 
   const isPortalHost = currentHost?.isPortalHost;
   const menu = currentHost?.settings?.menu;
-  const activitiesInMenu = menu?.find((item) => item.name === 'activities');
+  const activitiesInMenu = menu?.find(
+    (item) => item.name === 'activities'
+  );
   const worksInMenu = menu?.find((item) => item.name === 'works');
 
   const getActivities = async () => {
@@ -139,11 +141,15 @@ export default function ContentInserter({ currentHost, onSelect }) {
     if (!activities) {
       return null;
     }
-    const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
+    const lowerCaseFilterWord =
+      filterWord === '' ? '' : filterWord.toLowerCase();
     return activities.filter((activity) => {
       const activityWordFiltered =
-        activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
-        activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+        activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !==
+          -1 ||
+        activity?.subTitle
+          ?.toLowerCase()
+          .indexOf(lowerCaseFilterWord) !== -1;
 
       return activityWordFiltered;
     });
@@ -153,11 +159,15 @@ export default function ContentInserter({ currentHost, onSelect }) {
     if (!works) {
       return null;
     }
-    const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
+    const lowerCaseFilterWord =
+      filterWord === '' ? '' : filterWord.toLowerCase();
     return works.filter((work) => {
       const workWordFiltered =
-        work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
-        work?.shortDescription?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+        work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !==
+          -1 ||
+        work?.shortDescription
+          ?.toLowerCase()
+          .indexOf(lowerCaseFilterWord) !== -1;
 
       return workWordFiltered;
     });
@@ -196,7 +206,8 @@ export default function ContentInserter({ currentHost, onSelect }) {
     }
   };
 
-  const activitiesFiltered = activitiesInMenu?.isVisible && getActivitiesFiltered();
+  const activitiesFiltered =
+    activitiesInMenu?.isVisible && getActivitiesFiltered();
   const worksFiltered = worksInMenu?.isVisible && getWorksFiltered();
 
   if (!activitiesInMenu?.isVisible && !worksInMenu?.isVisible) {
@@ -205,7 +216,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
 
   return (
     <>
-      <FormField label={t('newsletter.labels.insertcontent')} mt="4" mb="4">
+      <FormField
+        label={t('newsletter.labels.insertcontent')}
+        mt="4"
+        mb="4"
+      >
         <Text color="gray.600" fontSize="sm">
           {t('newsletter.contenthelper')}
         </Text>
@@ -231,7 +246,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
             />
             {filterWord !== '' && (
               <InputRightElement>
-                <CloseIcon cursor="pointer" fontSize="2xs" onClick={() => setFilterWord('')} />
+                <CloseIcon
+                  cursor="pointer"
+                  fontSize="2xs"
+                  onClick={() => setFilterWord('')}
+                />
               </InputRightElement>
             )}
           </InputGroup>
@@ -245,7 +264,9 @@ export default function ContentInserter({ currentHost, onSelect }) {
                       {activitiesFiltered?.map((activity) => (
                         <ListItemCheckbox
                           item={activity}
-                          onSelect={(item) => handleSelectItem(item, 'activities')}
+                          onSelect={(item) =>
+                            handleSelectItem(item, 'activities')
+                          }
                         >
                           <ActivityDates activity={activity} />
                         </ListItemCheckbox>
@@ -264,7 +285,9 @@ export default function ContentInserter({ currentHost, onSelect }) {
                       {worksFiltered?.map((work) => (
                         <ListItemCheckbox
                           item={work}
-                          onSelect={(item) => handleSelectItem(item, 'works')}
+                          onSelect={(item) =>
+                            handleSelectItem(item, 'works')
+                          }
                         >
                           {work.shortDescription}
                         </ListItemCheckbox>

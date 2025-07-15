@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { call } from '../../utils/shared';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
@@ -93,7 +93,9 @@ function Categories() {
             <Input
               placeholder="PAJAMAS"
               value={categoryInput}
-              onChange={(event) => handleCategoryInputChange(event.target.value)}
+              onChange={(event) =>
+                handleCategoryInputChange(event.target.value)
+              }
             />
             <Button type="submit">{tc('actions.add')}</Button>
           </HStack>
@@ -105,8 +107,12 @@ function Categories() {
           {categories.map((category) => (
             <WrapItem key={category._id}>
               <Tag size="sm" colorScheme="messenger">
-                <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
-                <TagCloseButton onClick={() => removeCategory(category._id)} />
+                <TagLabel fontWeight="bold">
+                  {category.label.toUpperCase()}
+                </TagLabel>
+                <TagCloseButton
+                  onClick={() => removeCategory(category._id)}
+                />
               </Tag>
             </WrapItem>
           ))}

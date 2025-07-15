@@ -11,7 +11,7 @@ import {
   resizeImage,
   uploadImage,
 } from '/imports/ui/utils/shared';
-import Loader from '/imports/ui/generic/Loader';
+import Loader from '../../../core/Loader';
 import { message } from '/imports/ui/generic/message';
 import Alert from '/imports/ui/generic/Alert';
 import { StateContext } from '../../../LayoutContainer';

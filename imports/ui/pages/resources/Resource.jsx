@@ -1,10 +1,16 @@
-import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import ResourceHybrid from '../../entry/ResourceHybrid';
 import ResourceInteractionHandler from './components/ResourceInteractionHandler';
 import NewEntryHandler from '../../listing/NewEntryHandler';
@@ -37,7 +43,10 @@ export default function Resource() {
     try {
       const response = await call('getResourceById', resourceId);
       setResource(response);
-      const docs = await call('getDocumentsByAttachments', response._id);
+      const docs = await call(
+        'getDocumentsByAttachments',
+        response._id
+      );
       setDocuments(docs);
     } catch (error) {
       message.error(error.reason);
@@ -59,7 +68,11 @@ export default function Resource() {
 
   return (
     <>
-      <ResourceHybrid documents={documents} resource={resource} Host={currentHost} />
+      <ResourceHybrid
+        documents={documents}
+        resource={resource}
+        Host={currentHost}
+      />
       {rendered && (
         <ResourceContext.Provider value={contextValue}>
           <ResourceInteractionHandler slideStart={rendered} />

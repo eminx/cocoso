@@ -11,7 +11,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import NiceList from '../../generic/NiceList';
 import Alert from '../../generic/Alert';
 import UsageReport from './UsageReport';

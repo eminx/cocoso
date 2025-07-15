@@ -5,7 +5,7 @@ import { Box, Button, Center, Flex, Text } from '@chakra-ui/react';
 
 import ReactQuill from '../../forms/Quill';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import Alert from '../../generic/Alert';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
@@ -20,7 +20,8 @@ export default function Settings() {
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
   const location = useLocation();
-  const { currentUser, currentHost, role, getCurrentHost } = useContext(StateContext);
+  const { currentUser, currentHost, role, getCurrentHost } =
+    useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -86,8 +87,14 @@ export default function Settings() {
   const uploadLogo = async () => {
     setUploading(true);
     try {
-      const resizedImage = await resizeImage(localImage.uploadableImage, 800);
-      const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
+      const resizedImage = await resizeImage(
+        localImage.uploadableImage,
+        800
+      );
+      const uploadedImage = await uploadImage(
+        resizedImage,
+        'hostLogoUpload'
+      );
       await call('assignHostLogo', uploadedImage);
       getCurrentHost();
       message.success(t('logo.message.success'));
@@ -100,7 +107,8 @@ export default function Settings() {
   };
 
   const isImage =
-    (localImage && localImage.uploadableImageLocal) || (currentHost && currentHost.logo);
+    (localImage && localImage.uploadableImageLocal) ||
+    (currentHost && currentHost.logo);
 
   const tabs = [
     {
@@ -122,12 +130,17 @@ export default function Settings() {
                 width={isImage && '280px'}
                 round={false}
                 setUploadableImage={setUploadableImage}
-                uploadableImageLocal={localImage && localImage.uploadableImageLocal}
+                uploadableImageLocal={
+                  localImage && localImage.uploadableImageLocal
+                }
               />
             </Center>
             {localImage && localImage.uploadableImageLocal && (
               <Center p="4">
-                <Button isLoading={uploading} onClick={() => uploadLogo()}>
+                <Button
+                  isLoading={uploading}
+                  onClick={() => uploadLogo()}
+                >
                   {tc('actions.submit')}
                 </Button>
               </Center>
@@ -148,7 +161,10 @@ export default function Settings() {
           </Center>
 
           <Boxling>
-            <SettingsForm initialValues={localSettings} onSubmit={updateHostSettings} />
+            <SettingsForm
+              initialValues={localSettings}
+              onSubmit={updateHostSettings}
+            />
           </Boxling>
         </>
       ),
@@ -164,7 +180,9 @@ export default function Settings() {
               className="ql-editor-text-align-center"
               placeholder={t('pages.form.description.holder')}
               value={localSettings?.footer}
-              onChange={(value) => setLocalSettings({ ...localSettings, footer: value })}
+              onChange={(value) =>
+                setLocalSettings({ ...localSettings, footer: value })
+              }
             />
 
             <Flex justify="flex-end" pt="4">
@@ -179,7 +197,8 @@ export default function Settings() {
   ];
   const pathname = location?.pathname;
   const pathnameLastPart = pathname.split('/').pop();
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
+  const tabIndex =
+    tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
   if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
@@ -192,7 +211,11 @@ export default function Settings() {
       <Box mb="24">
         <Routes>
           {tabs.map((tab) => (
-            <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+            <Route
+              key={tab.title}
+              path={tab.path}
+              element={<Box pt="2">{tab.content}</Box>}
+            />
           ))}
         </Routes>
       </Box>

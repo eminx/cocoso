@@ -20,7 +20,7 @@ import {
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../generic/NiceList';
 import Template from '../../layout/Template';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import Alert from '../../generic/Alert';
 
 const focusStyle = {
@@ -34,7 +34,12 @@ function ActivityItem({ act }) {
     <HStack align="flex-start" bg="white" p="3" w="100%">
       {act.isPublicActivity && (
         <Box p="2">
-          <Image fit="cover" w="xs" fill src={act.imageUrl || (act.images && act.images[0])} />
+          <Image
+            fit="cover"
+            w="xs"
+            fill
+            src={act.imageUrl || (act.images && act.images[0])}
+          />
         </Box>
       )}
       <Box w="100%">
@@ -101,7 +106,12 @@ export default function Activities({ history }) {
                 </NiceList>
               </TabPanel>
               <TabPanel px="0">
-                <NiceList actionsDisabled list={activities.filter((act) => act.isPublicActivity)}>
+                <NiceList
+                  actionsDisabled
+                  list={activities.filter(
+                    (act) => act.isPublicActivity
+                  )}
+                >
                   {(act) => (
                     <Link to={`/activities/${act._id}/info`}>
                       <ActivityItem act={act} history={history} />
@@ -110,8 +120,15 @@ export default function Activities({ history }) {
                 </NiceList>
               </TabPanel>
               <TabPanel px="0">
-                <NiceList actionsDisabled list={activities.filter((act) => !act.isPublicActivity)}>
-                  {(act) => <ActivityItem act={act} history={history} />}
+                <NiceList
+                  actionsDisabled
+                  list={activities.filter(
+                    (act) => !act.isPublicActivity
+                  )}
+                >
+                  {(act) => (
+                    <ActivityItem act={act} history={history} />
+                  )}
                 </NiceList>
               </TabPanel>
             </TabPanels>

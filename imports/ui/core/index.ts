@@ -25,6 +25,7 @@ import { Radio, RadioGroup } from './RadioButtons';
 import Spinner from './Spinner';
 import Select from './Select';
 import Textarea from './Textarea';
+import Loader from './Loader';
 
 export {
   Accordion,
@@ -50,6 +51,7 @@ export {
   Image,
   Input,
   Link,
+  Loader,
   NumberInput,
   Modal,
   Overlay,

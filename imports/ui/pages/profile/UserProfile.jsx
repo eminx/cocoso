@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Center } from '/imports/ui/core';
 import { call } from '../../utils/shared';
 import UserHybrid from '../../entry/UserHybrid';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import Alert from '/imports/ui/generic/Alert';
 import { StateContext } from '../../LayoutContainer';
