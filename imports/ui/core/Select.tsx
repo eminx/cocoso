@@ -28,11 +28,15 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       readOnly,
       isReadOnly,
       style,
+      value,
+      onChange,
       children,
       ...rest
     },
     ref
   ) => {
+    console.log('Select', value);
+
     const isSelectDisabled = disabled || isDisabled;
     const isSelectInvalid = invalid || isInvalid;
     const isSelectRequired = required || isRequired;
@@ -41,8 +45,10 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       <select
         ref={ref}
         className={`cocoso-select ${sizeClass}`}
+        defaultValue={value}
         disabled={isSelectDisabled}
         required={isSelectRequired}
+        onChange={onChange}
         aria-invalid={isSelectInvalid}
         style={style}
         {...rest}

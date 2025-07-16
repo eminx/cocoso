@@ -182,10 +182,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               theme={currentHost?.theme}
             >
               {rendered && !adminPage && (
-                <TopBarHandler
-                  currentUser={currentUser}
-                  slideStart={rendered}
-                />
+                <TopBarHandler slideStart={rendered} />
               )}
               {!adminPage && (
                 <Header

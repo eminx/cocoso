@@ -83,12 +83,12 @@ export const Divider = styled('hr', (props: DividerProps) => {
 // Stack, HStack, VStack, Wrap
 export const Stack = styled(Flex, {});
 
-export const HStack = styled(Flex, {});
+export const HStack = (props: any) => (
+  <Flex flexDirection="row" {...props} />
+);
 
-export const VStack = styled(Flex, {
-  flexDirection: 'column',
-});
+export const VStack = (props: any) => (
+  <Flex flexDirection="column" {...props} />
+);
 
-export const Wrap = (props: any) => {
-  return <Flex flexWrap="wrap" {...props} />;
-};
+export const Wrap = (props: any) => <Flex flexWrap="wrap" {...props} />;

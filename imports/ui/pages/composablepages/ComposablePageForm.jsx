@@ -332,39 +332,44 @@ export default function ComposablePageForm({
           <SortableList onSortEnd={handleSortRows}>
             {currentPage.contentRows?.map((row, rowIndex) => (
               <SortableItem key={row.id || row.gridType + rowIndex}>
-                <Flex>
-                  <Box style={{ flexGrow: 0, flexShrink: 0 }}>
-                    <SortableKnob>
-                      <IconButton
-                        colorScheme="gray"
-                        cursor="move"
-                        icon={<ArrowUpDownIcon />}
-                        p="2"
-                        size="sm"
-                        variant="ghost"
-                      />
-                    </SortableKnob>
-                  </Box>
-                  <Box style={{ flexGrow: 1 }} mb="4" p="2">
-                    <Row row={row} rowIndex={rowIndex} />
-                    <Center py="4">
-                      <Button
-                        colorScheme="red"
-                        size="xs"
-                        variant="ghost"
-                        onClick={() =>
-                          setDeleteModuleModal({
-                            moduleType: 'row',
-                            rowIndex,
-                            visible: true,
-                          })
-                        }
-                      >
-                        <Trans i18nKey="admin:composable.form.removeRow" />
-                      </Button>
-                    </Center>
-                  </Box>
-                </Flex>
+                <div>
+                  <Flex gap="0">
+                    <Box style={{ flexGrow: 0, flexShrink: 0 }}>
+                      <SortableKnob>
+                        <button>
+                          <ArrowUpDownIcon />
+                          {/* <IconButton
+                          aria-label="Move row"
+                          cursor="move"
+                          icon={<ArrowUpDownIcon />}
+                          p="2"
+                          size="sm"
+                          variant="ghost"
+                        /> */}
+                        </button>
+                      </SortableKnob>
+                    </Box>
+                    <Box style={{ flexGrow: 1 }} mb="4" p="2">
+                      <Row row={row} rowIndex={rowIndex} />
+                      <Center py="4">
+                        <Button
+                          colorScheme="red"
+                          size="xs"
+                          variant="ghost"
+                          onClick={() =>
+                            setDeleteModuleModal({
+                              moduleType: 'row',
+                              rowIndex,
+                              visible: true,
+                            })
+                          }
+                        >
+                          <Trans i18nKey="admin:composable.form.removeRow" />
+                        </Button>
+                      </Center>
+                    </Box>
+                  </Flex>
+                </div>
               </SortableItem>
             ))}
           </SortableList>

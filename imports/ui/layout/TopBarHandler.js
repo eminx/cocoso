@@ -1,5 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { Box, Fade, Flex, Slide } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+
+import { Fade, Slide } from '/imports/ui/core';
 
 import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
@@ -22,33 +24,27 @@ export default function TopBarHandler({ slideStart }) {
     };
   }, []);
 
-  // const burgerMenuStyle = {
-  //   position: 'fixed',
-  //   top: isDesktop ? '72px' : '60px',
-  //   right: '8px',
-  // };
-
   return (
     <>
       <Slide
-        direction="top"
-        in={slideStart}
+        // direction="top"
+        ping={slideStart}
         unmountOnExit
-        style={{ zIndex: isOpen ? 2 : 1, pointerEvents: 'none' }}
+        // style={{ zIndex: isOpen ? 2 : 1, pointerEvents: 'none' }}
       >
-        <Fade in={scrollTop < 120}>
-          <Flex justify="space-between" w="100%">
-            <Box p="1" pointerEvents="all">
-              <Suspense fallback={<Loader />}>
-                <FederationIconMenu />
-              </Suspense>
-            </Box>
-            <Flex p="1" pointerEvents="all">
-              <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
-              <MenuDrawer />
-            </Flex>
+        {/* <Fade in={scrollTop < 120}> */}
+        <Flex justify="space-between" w="100%">
+          <Box p="1" pointerEvents="all">
+            <Suspense fallback={<Loader />}>
+              <FederationIconMenu />
+            </Suspense>
+          </Box>
+          <Flex p="1" pointerEvents="all">
+            <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
+            <MenuDrawer />
           </Flex>
-        </Fade>
+        </Flex>
+        {/* </Fade> */}
       </Slide>
     </>
   );

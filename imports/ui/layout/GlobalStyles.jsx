@@ -264,6 +264,42 @@ export default function GlobalStyles({ theme }) {
             background: '#f5f5f5',
           },
 
+          '.cocoso-slide': {
+            position: 'fixed',
+            width: '100%',
+            zIndex: 1000,
+            transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+            willChange: 'transform',
+          },
+          '.cocoso-slide-top': {
+            bottom: '0',
+            transform: 'translateY(100%)',
+          },
+          '.cocoso-slide-top-ping': {
+            transform: 'translateY(0)',
+          },
+          '.cocoso-slide-bottom': {
+            top: '0',
+            transform: 'translateY(-100%)',
+          },
+          '.cocoso-slide-bottom-ping': {
+            transform: 'translateY(0)',
+          },
+          '.cocoso-slide-left': {
+            right: '0',
+            transform: 'translateX(100%)',
+          },
+          '.cocoso-slide-left-ping': {
+            transform: 'translateX(0)',
+          },
+          '.cocoso-slide-right': {
+            left: '0',
+            transform: 'translateX(-100%)',
+          },
+          '.cocoso-slide-right-ping': {
+            transform: 'translateX(0)',
+          },
+
           '.szh-menu': {
             borderRadius: 'var(--cocoso-border-radius)',
           },

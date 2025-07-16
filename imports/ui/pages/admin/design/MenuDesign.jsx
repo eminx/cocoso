@@ -157,7 +157,6 @@ export default function MenuDesign() {
               />
 
               <Button
-                bg="white"
                 size="xs"
                 variant="ghost"
                 onClick={() =>
@@ -181,7 +180,6 @@ export default function MenuDesign() {
               />
 
               <Button
-                bg="white"
                 size="xs"
                 variant="ghost"
                 onClick={() =>

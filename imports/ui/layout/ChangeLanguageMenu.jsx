@@ -23,15 +23,16 @@ export default function ChangeLanguage({
       <Select
         name="lang"
         placeholder={t('common:langs.form.holder')}
-        onChange={
-          register ? null : (e) => i18n.changeLanguage(e.target.value)
-        }
+        value={currentLang}
+        onChange={(e) => {
+          console.log('onChange', e.target.value);
+        }}
         {...(register && register('lang'))}
       >
         {allLangs.map((lang) => (
           <option
             key={lang.value}
-            selected={lang.value === currentLang}
+            // selected={lang.value === currentLang}
             value={lang.value}
           >
             {lang.label}

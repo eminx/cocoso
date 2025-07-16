@@ -48,14 +48,14 @@ export default function BackgroundHandler({
             }
           />
           <Button
-            bg="white"
+            colorScheme="red"
             size="sm"
             variant="ghost"
             onClick={() =>
               handleStyleChange('backgroundColor', '#f0ebe6')
             }
           >
-            <Trans i18nKey="common:actions.reset" />
+            <Trans i18nKey="admin:design.color.revert" />
           </Button>
         </VStack>
       </Boxling>

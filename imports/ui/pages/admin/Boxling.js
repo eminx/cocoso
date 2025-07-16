@@ -19,7 +19,7 @@ export default function Boxling({ children, css, ...otherProps }) {
       bg="bluegray.50"
       p="6"
       css={{
-        borderRadius: '1rem',
+        borderRadius: 'var(--cocoso-border-radius)',
         ':hover': {
           backgroundColor: 'white',
         },

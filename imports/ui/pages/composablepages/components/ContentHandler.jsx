@@ -106,11 +106,9 @@ function Divider({ value, onChange }) {
             </Text>
             <Menu
               buttonLabel={
-                (
-                  <Trans
-                    i18nKey={`admin:composable.form.${value.kind}`}
-                  />
-                ) || 'Select'
+                <Trans
+                  i18nKey={`admin:composable.form.${value.kind}`}
+                />
               }
               options={dividerMenuOptions}
               rightIcon={<ChevronDownIcon size="18px" />}
@@ -214,12 +212,9 @@ function ImageContent({ value, ping, onChange }) {
         {value.isLink ? (
           <FormField
             helperText={
-              <Text>
-                Should start with <code>http://</code> or{' '}
-                <code>https://</code>
-              </Text>
+              <Trans i18nKey="admin:composable.form.linkHelper" />
             }
-            label="Link Value"
+            label={<Trans i18nKey="admin:composable.form.link" />}
             my="4"
           >
             <Input

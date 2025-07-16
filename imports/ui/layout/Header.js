@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useMediaQuery } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
-import { useHydrated } from 'react-hydration-provider';
 
 import {
   Box,
@@ -26,13 +25,16 @@ if (isClient) {
   import '@szhsin/react-menu/dist/transitions/zoom.css';
 }
 
-const borderColor = 'var(--cocoso-colors-gray-700) !important';
+const borderColor = 'var(--cocoso-colors-gray-600) !important';
 const baseTextStyles = {
   borderBottom: '2px solid transparent',
   fontFamily: 'Raleway, Sarabun, sans-serif',
   fontSize: 16,
   fontWeight: '500',
-  ':hover': { borderBottomColor: borderColor },
+  ':hover': {
+    borderBottomColor: borderColor,
+    borderBottomWidth: '1px',
+  },
 };
 
 export function InfoPagesMenu({
@@ -42,7 +44,6 @@ export function InfoPagesMenu({
   pathname,
 }) {
   const isCurrentContext = pathname.includes('info');
-  const hydrated = useHydrated();
 
   const flexStyles = {
     align: 'center',
@@ -58,17 +59,6 @@ export function InfoPagesMenu({
     textTransform: menuStyles?.textTransform || 'none',
   };
 
-  if (!hydrated) {
-    return (
-      <Link key={label} to="/info">
-        <Flex css={flexStyles}>
-          <Text css={textStyles}>{label}</Text>
-          <ChevronDownIcon size="16px" />
-        </Flex>
-      </Link>
-    );
-  }
-
   return (
     <Menu
       align="end"
@@ -76,6 +66,8 @@ export function InfoPagesMenu({
       suppressHydrationWarning
       button={
         <Flex
+          align="center"
+          gap="1"
           css={{
             ...flexStyles,
             borderBottom: isCurrentContext
@@ -94,14 +86,9 @@ export function InfoPagesMenu({
           overflowY: 'scroll',
           rootProps: { style: { zIndex: 1051 } },
         }}
-        suppressHydrationWarning
       >
         {pageTitles.map((item) => (
-          <Link
-            key={item._id}
-            to={`/info/${parseTitle(item.title)}`}
-            suppressHydrationWarning
-          >
+          <Link key={item._id} to={`/info/${parseTitle(item.title)}`}>
             <MenuItem as="span" color="gray.600" id={item._id}>
               {item.title}
             </MenuItem>

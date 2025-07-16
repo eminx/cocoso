@@ -106,31 +106,37 @@ export function Column({ column, columnIndex, rowIndex }) {
                 key={content.id || content.type + contentIndex}
                 style={{ width: '100%' }}
               >
-                <Flex
-                  _hover={{ bg: 'bluegray.50' }}
-                  bg="bluegray.200"
-                  borderRadius="md"
-                  mb="2"
-                  p="1"
-                  w="100%"
-                >
-                  <SortableKnob>
-                    <IconButton
+                <div>
+                  <Flex
+                    _hover={{ bg: 'bluegray.50' }}
+                    bg="bluegray.200"
+                    borderRadius="md"
+                    mb="2"
+                    p="1"
+                    w="100%"
+                  >
+                    <SortableKnob>
+                      {/* <IconButton
+                      aria-label="Move content"
                       icon={<ArrowUpDownIcon size="16px" />}
                       size="sm"
                       variant="ghost"
                       style={{
                         cursor: 'ns-resize',
                       }}
+                    /> */}
+                      <button>
+                        <ArrowUpDownIcon />
+                      </button>
+                    </SortableKnob>
+                    <ContentModule
+                      content={content}
+                      contentIndex={contentIndex}
+                      columnIndex={columnIndex}
+                      rowIndex={rowIndex}
                     />
-                  </SortableKnob>
-                  <ContentModule
-                    content={content}
-                    contentIndex={contentIndex}
-                    columnIndex={columnIndex}
-                    rowIndex={rowIndex}
-                  />
-                </Flex>
+                  </Flex>
+                </div>
               </SortableItem>
             );
           })}

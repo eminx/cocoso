@@ -103,20 +103,21 @@ export default function DropTarget({
       : 'green.100';
 
   return (
-    <Center
-      bg={bg}
-      borderRadius="md"
-      border={canDrop && !isSameColumn ? '1px dashed' : 'none'}
-      borderColor={canDrop && !isSameColumn ? 'green.500' : 'none'}
-      borderWidth="2px"
-      minH="102px"
-      mb="2"
-      p="0"
-      ref={dropRef}
-      transition="all 0.2s ease-in-out"
-      w="100%"
-    >
-      {canDrop ? null : children}
-    </Center>
+    <div ref={dropRef}>
+      <Center
+        bg={bg}
+        borderRadius="md"
+        border={canDrop && !isSameColumn ? '1px dashed' : 'none'}
+        borderColor={canDrop && !isSameColumn ? 'green.500' : 'none'}
+        borderWidth="2px"
+        minH="102px"
+        mb="2"
+        p="0"
+        transition="all 0.2s ease-in-out"
+        w="100%"
+      >
+        {canDrop ? null : children}
+      </Center>
+    </div>
   );
 }
