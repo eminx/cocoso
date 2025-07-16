@@ -272,29 +272,29 @@ export default function GlobalStyles({ theme }) {
             willChange: 'transform',
           },
           '.cocoso-slide-top': {
-            bottom: '0',
-            transform: 'translateY(100%)',
+            top: '0',
+            transform: 'translateY(-100%)',
           },
           '.cocoso-slide-top-ping': {
             transform: 'translateY(0)',
           },
           '.cocoso-slide-bottom': {
-            top: '0',
-            transform: 'translateY(-100%)',
+            bottom: '0',
+            transform: 'translateY(100%)',
           },
           '.cocoso-slide-bottom-ping': {
             transform: 'translateY(0)',
           },
           '.cocoso-slide-left': {
-            right: '0',
-            transform: 'translateX(100%)',
+            left: '0',
+            transform: 'translateX(-100%)',
           },
           '.cocoso-slide-left-ping': {
             transform: 'translateX(0)',
           },
           '.cocoso-slide-right': {
-            left: '0',
-            transform: 'translateX(-100%)',
+            right: '0',
+            transform: 'translateX(100%)',
           },
           '.cocoso-slide-right-ping': {
             transform: 'translateX(0)',
