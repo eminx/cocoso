@@ -17,12 +17,10 @@ export const Fade: React.FC<FadeProps> = ({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (ping) {
-      setShow(true);
-    }
+    setShow(ping);
   }, [ping]);
 
-  let className = `cocoso-fade`;
+  let className = 'cocoso-fade';
   if (show) {
     className += ` cocoso-fade-ping`;
   }

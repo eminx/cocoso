@@ -300,6 +300,15 @@ export default function GlobalStyles({ theme }) {
             transform: 'translateX(0)',
           },
 
+          '.cocoso-fade': {
+            opacity: 0,
+            transition: 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            willChange: 'opacity',
+          },
+          '.cocoso-fade-ping': {
+            opacity: 1,
+          },
+
           '.szh-menu': {
             borderRadius: 'var(--cocoso-border-radius)',
           },
