@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heading, Text, Wrap } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
+
+import { Heading, Text, Wrap } from '/imports/ui/core';
 
 import Boxling from './Boxling';
 

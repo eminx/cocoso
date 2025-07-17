@@ -44,15 +44,28 @@ export const Flex = styled('div', (props: any) => ({
   ...getPropStyles(props),
 }));
 
+export const FormControl = (props: any) => (
+  <Box direction="column" {...props} />
+);
+
+export const FormLabel = styled('label', (props: any) => ({
+  display: 'block',
+  fontSize: '0.875rem',
+  fontWeight: 'bold',
+  marginBottom: '0.5rem',
+  ...getPropStyles(props),
+}));
+
 // Grid
 interface GridProps {
-  columns?: string;
+  templateColumns?: string;
   gap?: string | number;
 }
 
 export const Grid = styled('div', (props: GridProps) => ({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+  gridTemplateColumns:
+    props.templateColumns || 'repeat(auto-fit, minmax(200px, 1fr))',
   gap: props.gap ? getSpacing(props.gap) : '1rem',
 }));
 
@@ -83,9 +96,7 @@ export const Divider = styled('hr', (props: DividerProps) => {
 // Stack, HStack, VStack, Wrap
 export const Stack = styled(Flex, {});
 
-export const HStack = (props: any) => (
-  <Flex flexDirection="row" {...props} />
-);
+export const HStack = (props: any) => <Flex flexDirection="row" {...props} />;
 
 export const VStack = (props: any) => (
   <Flex flexDirection="column" {...props} />

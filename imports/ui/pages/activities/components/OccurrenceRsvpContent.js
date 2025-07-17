@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { FormControl, FormLabel } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
@@ -8,6 +7,8 @@ import {
   Button,
   Center,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
   Input,
   Modal,
@@ -39,11 +40,8 @@ export default function RsvpContent({
   const [t] = useTranslation('activities');
   const { canCreateContent, currentUser } = useContext(StateContext);
   const { getActivityById } = useContext(ActivityContext);
-  const {
-    isRsvpCancelModalOn,
-    rsvpCancelModalInfo,
-    selectedOccurrence,
-  } = state;
+  const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } =
+    state;
 
   if (!activity || !occurrence || !occurrence.attendees) {
     return null;
@@ -76,9 +74,7 @@ export default function RsvpContent({
         occurrenceIndex,
         email: currentUser ? currentUser.emails[0].address : '',
         lastName:
-          currentUser && currentUser.lastName
-            ? currentUser.lastName
-            : '',
+          currentUser && currentUser.lastName ? currentUser.lastName : '',
       },
     });
   };
@@ -113,9 +109,7 @@ export default function RsvpContent({
 
     if (capacity < registeredNumberOfAttendees + numberOfPeople) {
       const capacityLeft = capacity - registeredNumberOfAttendees;
-      message.error(
-        t('public.register.notEnoughSeats', { capacityLeft })
-      );
+      message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
     }
 
@@ -157,9 +151,7 @@ export default function RsvpContent({
 
     if (capacity < registeredNumberOfAttendees + numberOfPeople) {
       const capacityLeft = capacity - registeredNumberOfAttendees;
-      message.error(
-        t('public.register.notEnoughSeats', { capacityLeft })
-      );
+      message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
     }
 
@@ -287,9 +279,7 @@ export default function RsvpContent({
           <Box py="2">
             <Text color="gray.800">{t('public.past')}</Text>
           </Box>
-        ) : capacity &&
-          occurrence.attendees &&
-          getTotalNumber() >= capacity ? (
+        ) : capacity && occurrence.attendees && getTotalNumber() >= capacity ? (
           <p>
             {capacityGotFullByYou && t('public.capacity.fullByYou')}
             {t('public.capacity.full')}
@@ -297,9 +287,7 @@ export default function RsvpContent({
         ) : (
           <RsvpForm
             defaultValues={defaultRsvpValues}
-            onSubmit={(values) =>
-              handleRsvpSubmit(values, occurrenceIndex)
-            }
+            onSubmit={(values) => handleRsvpSubmit(values, occurrenceIndex)}
           />
         )}
       </Box>
@@ -327,9 +315,7 @@ export default function RsvpContent({
             ? t('public.cancel.found')
             : t('public.cancel.notFound')
         }
-        onClose={() =>
-          setState({ ...state, isRsvpCancelModalOn: false })
-        }
+        onClose={() => setState({ ...state, isRsvpCancelModalOn: false })}
       >
         {rsvpCancelModalInfo?.isInfoFound ? (
           <RsvpForm
@@ -341,13 +327,9 @@ export default function RsvpContent({
         ) : (
           <Box>
             <FormControl id="lastname" mb="3" size="sm">
-              <FormLabel>
-                {t('public.register.form.name.last')}
-              </FormLabel>
+              <FormLabel>{t('public.register.form.name.last')}</FormLabel>
               <Input
-                value={
-                  rsvpCancelModalInfo && rsvpCancelModalInfo.lastName
-                }
+                value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
                 onChange={(e) =>
                   setState({
                     ...state,
@@ -398,10 +380,7 @@ export default function RsvpContent({
           {t('public.attendance.label')}
         </Heading>
         <Box bg="white" p="2">
-          <RsvpList
-            occurrence={selectedOccurrence}
-            title={activity?.title}
-          />
+          <RsvpList occurrence={selectedOccurrence} title={activity?.title} />
         </Box>
       </Modal>
     </Box>

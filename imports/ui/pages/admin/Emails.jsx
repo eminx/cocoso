@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { call } from '../../utils/shared';
 import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
+import Alert from '../../core/Alert';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../forms/FormField';
 import { defaultEmails } from '../../../startup/constants';

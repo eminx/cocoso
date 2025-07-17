@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Checkbox, FormLabel, Text } from '@chakra-ui/react';
+import { Box, Checkbox, Text } from '/imports/ui/core';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -108,7 +108,11 @@ export default function ResourceForm({ resource, onFinalize }) {
       formFields={resourceFormFields(t)}
       onSubmit={handleSubmit}
     >
-      <FormField helperText={t('form.image.helper')} label={t('form.image.label')} mb="12">
+      <FormField
+        helperText={t('form.image.helper')}
+        label={t('form.image.label')}
+        mb="12"
+      >
         <ImageUploader
           ping={loaders?.isUploadingImages}
           preExistingImages={resource ? resource.images : []}
@@ -124,13 +128,18 @@ export default function ResourceForm({ resource, onFinalize }) {
       >
         <Box bg="white" borderRadius="lg" display="inline" p="2">
           <Checkbox
-            isChecked={state.isCombo}
+            checked={state.isCombo}
             size="lg"
-            onChange={(e) => setState((prevState) => ({ ...prevState, isCombo: e.target.checked }))}
+            onChange={(e) =>
+              setState((prevState) => ({
+                ...prevState,
+                isCombo: e.target.checked,
+              }))
+            }
           >
-            <FormLabel style={{ cursor: 'pointer' }} mb="0">
+            <label style={{ cursor: 'pointer' }}>
               {tc('labels.select')}
-            </FormLabel>
+            </label>
           </Checkbox>
         </Box>
         {state.isCombo && (

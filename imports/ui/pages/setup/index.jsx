@@ -7,12 +7,12 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
-import { Box, Button, Center } from '/imports/ui/core';
+import { Alert, Box, Button, Center } from '/imports/ui/core';
 import { Signup } from '../auth';
 import NewPlatform from './NewPlatform';
 import Stepper from '../../generic/Stepper';
 import { call } from '../../utils/shared';
-import { Alert, message } from '../../generic/message';
+import { message } from '../../generic/message';
 import NewHost from './NewHost';
 
 const defaultSteps = [

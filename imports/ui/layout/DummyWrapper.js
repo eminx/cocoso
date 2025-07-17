@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
 import { HydrationProvider } from 'react-hydration-provider';
 import { useLocation } from 'react-router-dom';
+
+import { Box } from '/imports/ui/core';
 
 export default function DummyWrapper({
   animate = false,
@@ -20,12 +21,14 @@ export default function DummyWrapper({
   return (
     <HydrationProvider>
       <Box
-        backgroundColor={theme?.body?.backgroundColor}
-        backgroundImage={theme?.body?.backgroundImage}
-        backgroundRepeat={theme?.body?.backgroundRepeat}
         boxShadow="md"
         className={wrapperClass}
         id="main-content-container"
+        style={{
+          backgroundColor: theme?.body?.backgroundColor,
+          backgroundImage: theme?.body?.backgroundImage,
+          backgroundRepeat: theme?.body?.backgroundRepeat,
+        }}
         {...otherProps}
       >
         {children}

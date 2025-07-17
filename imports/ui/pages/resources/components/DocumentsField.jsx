@@ -6,9 +6,9 @@ import {
   Code,
   Flex,
   Link as CLink,
+  Loader,
   Text,
-  Skeleton,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
@@ -110,14 +110,7 @@ export default function DocumentsField({
   };
 
   if (isLoading) {
-    return (
-      <Skeleton
-        w="100%"
-        h="100%"
-        startColor="brand.100"
-        endColor="brand.200"
-      />
-    );
+    return <Loader relative />;
   }
 
   if (!documents) {

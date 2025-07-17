@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import Eye from 'lucide-react/dist/esm/icons/eye';
+
 import {
   Avatar,
   Box,
@@ -11,7 +13,6 @@ import {
   ListItem,
   Text,
 } from '@chakra-ui/react';
-import Eye from 'lucide-react/dist/esm/icons/eye';
 
 import { StateContext } from '../../LayoutContainer';
 import { getFullName } from '../../utils/shared';

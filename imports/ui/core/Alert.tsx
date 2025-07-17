@@ -1,9 +1,11 @@
+import React from 'react';
 import { styled } from 'restyle';
+import AlertIcon from 'lucide-react/dist/esm/icons/alert-circle';
+import InfoIcon from 'lucide-react/dist/esm/icons/info';
+import WarningIcon from 'lucide-react/dist/esm/icons/alert-triangle';
+import CheckIcon from 'lucide-react/dist/esm/icons/check';
 
-// Alert
-interface AlertProps {
-  status?: 'info' | 'warning' | 'success' | 'error';
-}
+import { Box, Flex } from './Box';
 
 const alertColors = {
   info: '#3182CE',
@@ -12,22 +14,71 @@ const alertColors = {
   error: '#E53E3E',
 };
 
-export const Alert = styled('div', (props: AlertProps) => ({
-  padding: '1rem',
-  borderRadius: '0.375rem',
-  backgroundColor: props.status
-    ? `${alertColors[props.status]}20`
-    : '#3182CE20',
-  border: '1px solid',
-  borderColor: props.status ? alertColors[props.status] : '#3182CE',
-  color: props.status ? alertColors[props.status] : '#3182CE',
-}));
-
-export const AlertTitle = styled('div', {
+const AlertTitle = styled('h3', {
+  fontSize: '1.5rem',
   fontWeight: 'bold',
   marginBottom: '0.5rem',
 });
 
-export const AlertDescription = styled('div', {
-  fontSize: '0.875rem',
+const AlertDescription = styled('div', {
+  fontSize: '1.25rem',
 });
+
+// AlertContainer
+interface AlertContainerProps {
+  status?: 'info' | 'warning' | 'success' | 'error';
+}
+
+const AlertContainer = styled('div', (props: AlertContainerProps) => {
+  const color =
+    props.status === 'error'
+      ? 'red'
+      : props.status === 'warning'
+      ? 'orange'
+      : props.status === 'success'
+      ? 'green'
+      : 'blue';
+
+  return {
+    padding: '1rem',
+    borderRadius: 'var(--cocoso-border-radius)',
+    backgroundColor: `var(--cocoso-colors-${color}-50)`,
+    border: '1px solid',
+    borderColor: `var(--cocoso-colors-${color}-300)`,
+    color: `var(--cocoso-colors-${color}-700)`,
+  };
+});
+
+interface AlertProps {
+  message?: string | React.ReactNode;
+  title?: string | React.ReactNode;
+  type?: 'info' | 'warning' | 'success' | 'error';
+  children?: React.ReactNode;
+}
+
+export default function Alert({
+  message,
+  title,
+  type = 'info',
+  children,
+  ...props
+}: AlertProps) {
+  return (
+    <AlertContainer status={type} {...props}>
+      <Flex>
+        {type === 'info' && <InfoIcon color={alertColors[type]} />}
+        {type === 'warning' && (
+          <WarningIcon color={alertColors[type]} />
+        )}
+        {type === 'success' && <CheckIcon color={alertColors[type]} />}
+        {type === 'error' && <AlertIcon color={alertColors[type]} />}
+        <Box>
+          {title && <AlertTitle>{title}</AlertTitle>}
+          {(message || children) && (
+            <AlertDescription>{message || children}</AlertDescription>
+          )}
+        </Box>
+      </Flex>
+    </AlertContainer>
+  );
+}

@@ -7,21 +7,20 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  SimpleGrid,
-  Text,
-} from '@chakra-ui/react';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
 import Eye from 'lucide-react/dist/esm/icons/eye';
 
-import Loader from '/imports/ui/core/Loader';
-
-import { Drawer } from '/imports/ui/core';
-import Alert from '/imports/ui/generic/Alert';
+import {
+  Alert,
+  Box,
+  Center,
+  Drawer,
+  Flex,
+  Heading,
+  Grid,
+  Loader,
+  Text,
+} from '/imports/ui/core';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import EditProfile from '/imports/ui/pages/profile/EditProfile';
 
@@ -84,8 +83,7 @@ export default function AdminContainer() {
       navigate(item.content[0]?.value);
       if (
         !isDesktop &&
-        currentRoute?.value?.split('/')[0] ===
-          item?.value?.split('/')[0]
+        currentRoute?.value?.split('/')[0] === item?.value?.split('/')[0]
       ) {
         setDrawerMenuOpen(false);
       }
@@ -114,22 +112,18 @@ export default function AdminContainer() {
     direction: 'column',
     color: 'bluegray.800',
     cursor: 'pointer',
+    gap: '0',
     p: '2',
   };
 
   const EditProfileRoute = currentUser && (
-    <Route
-      key="my-profile"
-      path="/my-profile/*"
-      element={<EditProfile />}
-    />
+    <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
   );
 
   if (!isDesktop) {
     return (
       <Box bg="bluegray.100" minH="100vh">
         <Drawer
-          bg="white"
           open={drawerMenuOpen}
           noPadding
           position="left"
@@ -140,7 +134,12 @@ export default function AdminContainer() {
           <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Drawer>
         <Box>
-          <Flex align="center" bg="bluegray.50" w="100%">
+          <Flex
+            align="center"
+            bg="bluegray.50"
+            justify="space-between"
+            w="100%"
+          >
             <Flex
               {...iconContainerProps}
               onClick={() => setDrawerMenuOpen(true)}
@@ -193,7 +192,7 @@ export default function AdminContainer() {
 
   return (
     <Box bg="bluegray.100" minH="100vh">
-      <SimpleGrid columns={2} h="100%" templateColumns="320px 50%">
+      <Grid h="100%" templateColumns="320px 50%">
         <Box>
           <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Box>
@@ -223,7 +222,7 @@ export default function AdminContainer() {
             {EditProfileRoute}
           </Routes>
         </Box>
-      </SimpleGrid>
+      </Grid>
     </Box>
   );
 }

@@ -1,11 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Center } from '/imports/ui/core';
+import { Alert, Box, Center } from '/imports/ui/core';
 import Template from '../../layout/Template';
 import NewHostForm from '../../forms/NewHostForm';
 import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 

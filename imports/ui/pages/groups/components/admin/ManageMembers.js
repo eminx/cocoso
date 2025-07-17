@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { Avatar, Flex, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { Avatar, Flex, Link as CLink, Text } from '/imports/ui/core';
 
 import Modal from '/imports/ui/core/Modal';
 import NiceList from '/imports/ui/generic/NiceList';

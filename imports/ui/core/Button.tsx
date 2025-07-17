@@ -41,12 +41,9 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
       : variant === 'outline'
       ? 'white'
       : `var(--cocoso-colors-${colorScheme}-500)`;
-  const border =
-    props.color || `var(--cocoso-colors-${colorScheme}-200)`;
+  const border = props.color || `var(--cocoso-colors-${colorScheme}-200)`;
   const textColor =
-    variant === 'solid'
-      ? 'white'
-      : `var(--cocoso-colors-${colorScheme}-500)`;
+    variant === 'solid' ? 'white' : `var(--cocoso-colors-${colorScheme}-500)`;
   const hoverBg =
     variant === 'solid'
       ? `var(--cocoso-colors-${colorScheme}-600)`
@@ -70,7 +67,7 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
         : size === 'sm'
         ? '0.875rem'
         : size === 'lg'
-        ? '1.125rem'
+        ? '1.1rem'
         : '1rem',
     fontWeight: 'bold',
     marginInline: xToRem(props.mx),
@@ -140,7 +137,7 @@ export const Button = (props: ButtonProps) => {
         disabled={isDisabled}
         onClick={isDisabled ? undefined : props.onClick}
       >
-        <Flex align="center" gap="0.25rem">
+        <Flex align="center" justify="center" gap="0.25rem">
           {loading && (
             <div
               style={{

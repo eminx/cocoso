@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Button, Center, Flex, Image } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
+import { GlobalStyles } from 'restyle';
+
+import { Box, Button, Center, Flex, Image } from '/imports/ui/core';
 
 import { getResponsiveGridColumns } from '/imports/ui/pages/composablepages/constants';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
-import { GlobalStyles } from 'restyle';
 
 function ContentModule({ module, Host }) {
   const currentHost = Host;

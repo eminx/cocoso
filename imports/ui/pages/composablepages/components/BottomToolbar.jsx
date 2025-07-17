@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Flex, Link, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
 
-import { ComposablePageContext } from '../ComposablePageForm';
-import Modal from '/imports/ui/core/Modal';
-import { message } from '/imports/ui/generic/message';
+import { Button, Flex, Link, Modal, Text } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+
+import { ComposablePageContext } from '../ComposablePageForm';
 
 export default function BottomToolbar() {
   const [state, setState] = useState({

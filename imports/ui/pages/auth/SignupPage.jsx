@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 import {
   Box,
   Center,
   Heading,
   Image,
   Link as CLink,
+  Modal,
   Text,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
 
-import Modal from '/imports/ui/core/Modal';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { Signup } from './index';
 import { createAccount } from './functions';

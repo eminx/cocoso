@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import parseHtml from 'html-react-parser';
+import AutoCompleteSelect from 'react-select';
+import makeAnimated from 'react-select/animated';
+import { useTranslation } from 'react-i18next';
+
 import {
   Box,
   Button,
@@ -9,12 +14,7 @@ import {
   Link as CLink,
   Text,
   Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
-import parseHtml from 'html-react-parser';
-import AutoCompleteSelect from 'react-select';
-import makeAnimated from 'react-select/animated';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
 
 import Modal from '/imports/ui/core/Modal';
 import {
@@ -254,7 +254,7 @@ export default function Calendar() {
           {!selectFilterView ? (
             <Box>
               <Wrap justify="center" px="1" pb="1" mb="3">
-                <WrapItem>
+                <Box>
                   <Tag
                     alignSelf="center"
                     checkable
@@ -264,12 +264,12 @@ export default function Calendar() {
                     checked={!calendarFilter}
                     onClick={() => setCalendarFilter(null)}
                   />
-                </WrapItem>
+                </Box>
 
                 {nonComboResourcesWithColor
                   .filter((r) => r.isBookable)
                   .map((resource) => (
-                    <WrapItem key={resource._id}>
+                    <Box key={resource._id}>
                       <Tag
                         checkable
                         label={resource.label}
@@ -277,14 +277,14 @@ export default function Calendar() {
                         checked={calendarFilter?._id === resource._id}
                         onClick={() => setCalendarFilter(resource)}
                       />
-                    </WrapItem>
+                    </Box>
                   ))}
               </Wrap>
               <Wrap justify="center" mb="2" px="1">
                 {comboResourcesWithColor
                   .filter((r) => r.isBookable)
                   .map((resource) => (
-                    <WrapItem key={resource._id}>
+                    <Box key={resource._id}>
                       <Tag
                         checkable
                         label={resource.label}
@@ -293,7 +293,7 @@ export default function Calendar() {
                         checked={calendarFilter?._id === resource._id}
                         onClick={() => setCalendarFilter(resource)}
                       />
-                    </WrapItem>
+                    </Box>
                   ))}
               </Wrap>
             </Box>

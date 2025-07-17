@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Alert, AlertTitle, AlertDescription, Box, Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
+
+import { Box } from '/imports/ui/core';
 
 import { StateContext } from '../LayoutContainer';
 
@@ -24,7 +25,9 @@ function NewEntryHelper({
 
   const titleGeneric = isEmptyListing
     ? parseHtml(tc('message.newentryhelper.emptylisting.title'))
-    : parseHtml(tc('message.newentryhelper.title', { listing: activeMenuItem?.label }));
+    : parseHtml(
+        tc('message.newentryhelper.title', { listing: activeMenuItem?.label })
+      );
 
   const descriptionGeneric = isEmptyListing
     ? tc('message.newentryhelper.emptylisting.description')
@@ -49,10 +52,16 @@ function NewEntryHelper({
         py="8"
         w={w}
       >
-        <h3 className="thumb-title" style={{ color: 'var(--chakra-colors-brand-500)' }}>
+        <h3
+          className="thumb-title"
+          style={{ color: 'var(--chakra-colors-brand-500)' }}
+        >
           {titleGeneric}
         </h3>
-        <h4 className="thumb-subtitle" style={{ color: 'var(--chakra-colors-brand-500)' }}>
+        <h4
+          className="thumb-subtitle"
+          style={{ color: 'var(--chakra-colors-brand-500)' }}
+        >
           {descriptionGeneric}
         </h4>
       </Box>

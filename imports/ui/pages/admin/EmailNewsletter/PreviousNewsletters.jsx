@@ -6,6 +6,8 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 import {
   Box,
   Center,
@@ -13,19 +15,17 @@ import {
   Flex,
   Heading,
   Image,
+  Loader,
+  Modal,
   Link as CLink,
   Text,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
-
-import Modal from '/imports/ui/core/Modal';
+} from '/imports/ui/core';
 import NiceList from '/imports/ui/generic/NiceList';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import Loader from '../../../core/Loader';
+import { StateContext } from '/imports/ui/LayoutContainer';
 
 import EmailPreview from './EmailPreview';
-import { StateContext } from '/imports/ui/LayoutContainer';
 
 export default function PreviousNewsletters() {
   const [emails, setEmails] = useState(null);

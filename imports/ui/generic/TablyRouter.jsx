@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
 import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
+
+import { Box } from '/imports/ui/core';
 
 import Tabs from '../entry/Tabs';
 

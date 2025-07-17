@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
   Button,
   Center,
   Input,
+  Modal,
   Select,
   Textarea,
   VStack,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
 
-import { useTranslation } from 'react-i18next';
-
-import Modal from '/imports/ui/core/Modal';
 import FormField from '/imports/ui/forms/FormField';
 
 function FeedbackForm({ isDarkText = false }) {

@@ -7,9 +7,9 @@ import {
   FormLabel,
   Input,
   NumberInput,
-  NumberInputField,
   Text,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
+
 import ReactPlayer from 'react-player';
 import { Trans } from 'react-i18next';
 
@@ -74,10 +74,12 @@ const dividerMenuOptions = [
   {
     label: <Trans i18nKey="admin:composable.form.line" />,
     kind: 'line',
+    key: 'line',
   },
   {
     label: <Trans i18nKey="admin:composable.form.emptySpace" />,
     kind: 'emptySpace',
+    key: 'emptySpace',
   },
 ];
 
@@ -89,7 +91,8 @@ function Divider({ value, onChange }) {
     });
   };
 
-  const handleEmptySpaceHeightChange = (height) => {
+  const handleEmptySpaceHeightChange = (e) => {
+    const height = e.target.value;
     onChange({
       ...value,
       height,
@@ -136,9 +139,7 @@ function Divider({ value, onChange }) {
                   step={1}
                   value={value.height}
                   onChange={handleEmptySpaceHeightChange}
-                >
-                  <NumberInputField />
-                </NumberInput>
+                />
               </FormField>
             </Box>
           )}

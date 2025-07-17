@@ -47,10 +47,18 @@ const colorSchemes = {
       border: '1px solid #707EAE',
     },
   },
+  gray: {
+    solid: { background: '#6B7280', color: 'white', border: 'none' },
+    subtle: { background: '#F3F4F6', color: '#4B5563', border: 'none' },
+    outline: {
+      background: 'transparent',
+      color: '#4B5563',
+      border: '1px solid #6B7280',
+    },
+  },
 };
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLSpanElement> {
+export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   size?: 'sm' | 'md' | 'lg';
   colorScheme?: keyof typeof colorSchemes;
   variant?: 'solid' | 'subtle' | 'outline';
@@ -59,12 +67,7 @@ export interface BadgeProps
 }
 
 const StyledBadge = styled('span', (props: BadgeProps) => {
-  const {
-    size = 'md',
-    colorScheme = 'red',
-    variant = 'solid',
-    style,
-  } = props;
+  const { size = 'md', colorScheme = 'gray', variant = 'solid', style } = props;
   const colorSet = colorSchemes[colorScheme] || colorSchemes.red;
   return {
     ...badgeBase,

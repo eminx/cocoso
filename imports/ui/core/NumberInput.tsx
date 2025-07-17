@@ -5,6 +5,7 @@ export interface NumberInputProps extends Omit<InputProps, 'type'> {
   min?: number;
   max?: number;
   step?: number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const NumberInput = React.forwardRef<
@@ -24,6 +25,7 @@ const NumberInput = React.forwardRef<
       isRequired,
       readOnly,
       isReadOnly,
+      onChange,
       ...rest
     },
     ref
@@ -40,6 +42,13 @@ const NumberInput = React.forwardRef<
         disabled={disabled || isDisabled}
         required={required || isRequired}
         readOnly={readOnly || isReadOnly}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value === '' || value === '-') {
+            e.target.value = '0';
+          }
+          onChange?.(e);
+        }}
         {...rest}
       />
     );

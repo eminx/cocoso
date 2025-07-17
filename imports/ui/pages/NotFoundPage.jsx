@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { Box, Link as CLink, Text } from '/imports/ui/core';
 
 import Template from '../layout/Template';
 

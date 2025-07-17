@@ -1,18 +1,20 @@
 import React, { useContext, useState } from 'react';
+import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
+
 import {
+  Accordion,
   Box,
   Button,
   Center,
   Flex,
+  Modal,
   List,
   ListItem,
   Text,
-} from '@chakra-ui/react';
-import dayjs from 'dayjs';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
 
 import FancyDate from '/imports/ui/entry/FancyDate';
-import { Accordion, AccordionItem, Modal } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
 import ActionButton from '/imports/ui/generic/ActionButton';

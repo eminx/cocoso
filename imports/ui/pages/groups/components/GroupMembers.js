@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useHydrated } from 'react-hydration-provider';
+
 import {
   Avatar,
   AvatarGroup,
@@ -8,8 +10,7 @@ import {
   Flex,
   Link as CLink,
   Text,
-} from '@chakra-ui/react';
-import { useHydrated } from 'react-hydration-provider';
+} from '/imports/ui/core';
 
 import Modal from '/imports/ui/core/Modal';
 import NiceList from '/imports/ui/generic/NiceList';
@@ -26,18 +27,22 @@ export default function GroupMembers({ group }) {
   return (
     <Box>
       <AvatarGroup
-        _hover={{ bg: 'gray.200', borderRadius: '8px' }}
-        cursor="pointer"
         max={6}
         p="2"
-        size="lg"
-        spacing="-1.5rem"
+        css={{
+          cursor: 'pointer',
+          ':hover': {
+            bg: 'var(--chakra-colors-gray-200)',
+            borderRadius: '8px',
+          },
+        }}
         onClick={() => setModalOpen(true)}
       >
         {group.members?.map((member) => (
           <Avatar
             key={member.memberId}
             name={member.username}
+            size="lg"
             showBorder
             src={member.avatar}
           />

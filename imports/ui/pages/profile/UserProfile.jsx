@@ -7,12 +7,11 @@ import React, {
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Center } from '/imports/ui/core';
+import { Alert, Center, Loader } from '/imports/ui/core';
+
 import { call } from '../../utils/shared';
 import UserHybrid from '../../entry/UserHybrid';
-import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
-import Alert from '/imports/ui/generic/Alert';
 import { StateContext } from '../../LayoutContainer';
 import UserInteractionHandler from './components/UserInteractionHandler';
 

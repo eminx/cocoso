@@ -77,6 +77,7 @@ const headingSizes = {
 export const Heading = styled('h2', (props: HeadingProps) => {
   const color = props.color?.split('.');
   return {
+    ...getPropStyles(props),
     color: color
       ? `var(--chakra-colors-${color[0]}-${color[1]})`
       : 'inherit',

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { Box, Center } from '/imports/ui/core';
 
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';

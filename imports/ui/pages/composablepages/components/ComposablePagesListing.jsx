@@ -1,16 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Link as CLink,
-  Tag,
-} from '@chakra-ui/react';
 import PlusIcon from 'lucide-react/dist/esm/icons/plus';
 import { Trans } from 'react-i18next';
 import dayjs from 'dayjs';
+
+import { Box, Flex, Link as CLink, Tag } from '/imports/ui/core';
 
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { Heading, Text } from '/imports/ui/core';

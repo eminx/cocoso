@@ -17,11 +17,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import { Alert, Loader } from '../../core';
+
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../generic/NiceList';
 import Template from '../../layout/Template';
-import Loader from '../../core/Loader';
-import Alert from '../../generic/Alert';
 
 const focusStyle = {
   boxShadow: 'none',
@@ -134,7 +134,7 @@ export default function Activities({ history }) {
             </TabPanels>
           </Tabs>
         ) : (
-          <Alert margin="medium" message={tm('message.guest')} />
+          <Alert message={tm('message.guest')} />
         )}
       </Template>
     </>

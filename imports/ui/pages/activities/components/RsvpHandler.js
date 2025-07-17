@@ -1,10 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
-import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
-import { Accordion, Modal } from '/imports/ui/core';
+import { Accordion, Box, Center, Flex, Modal, Text } from '/imports/ui/core';
 import FancyDate from '/imports/ui/entry/FancyDate';
 import ActionButton from '/imports/ui/generic/ActionButton';
 
@@ -35,8 +34,7 @@ function AccordionDates({ activity, onCloseModal }) {
   }
 
   const isRegistrationEnabled =
-    activity.isRegistrationEnabled ||
-    activity.isRegistrationDisabled === false;
+    activity.isRegistrationEnabled || activity.isRegistrationDisabled === false;
 
   const items = [...activity.datesAndTimes];
 
@@ -51,9 +49,7 @@ function AccordionDates({ activity, onCloseModal }) {
           {items.map((occurrence, occurrenceIndex) => (
             <Box
               key={
-                occurrence.startDate +
-                occurrence.startTime +
-                occurrenceIndex
+                occurrence.startDate + occurrence.startTime + occurrenceIndex
               }
               style={buttonStyle}
             >
@@ -74,16 +70,11 @@ function AccordionDates({ activity, onCloseModal }) {
       )}
       <Accordion
         options={items.map((occurrence, occurrenceIndex) => ({
-          key:
-            occurrence.startDate +
-            occurrence.startTime +
-            occurrenceIndex,
+          key: occurrence.startDate + occurrence.startTime + occurrenceIndex,
           header: <FancyDate occurrence={occurrence} />,
           content: (
             <Box>
-              <Text fontWeight="bold">
-                {t('public.register.label')}
-              </Text>
+              <Text fontWeight="bold">{t('public.register.label')}</Text>
               <Box>
                 <OccurrenceRsvpContent
                   activity={activity}
@@ -132,13 +123,10 @@ export default function RsvpHandler({ activity }) {
   }
 
   const isRegistrationEnabled =
-    activity.isRegistrationEnabled ||
-    activity.isRegistrationDisabled === false;
+    activity.isRegistrationEnabled || activity.isRegistrationDisabled === false;
 
   const today = new Date().toISOString().substring(0, 10);
-  const nextEvent = activity.datesAndTimes?.find(
-    (d) => d.startDate > today
-  );
+  const nextEvent = activity.datesAndTimes?.find((d) => d.startDate > today);
 
   return (
     <>

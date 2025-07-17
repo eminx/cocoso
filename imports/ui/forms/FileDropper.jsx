@@ -1,7 +1,8 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import { Center, Flex, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { Center, Flex, Image, Text } from '/imports/ui/core';
 
 const containerStyle = {
   borderRadius: 'var(--cocoso-border-radius)',

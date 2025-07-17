@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Box, Center } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
+
+import { Box, Center } from '/imports/ui/core';
 
 import Tabs from '../entry/Tabs';
 import PageHeading from './PageHeading';
@@ -9,11 +10,7 @@ import PopupHandler from './PopupHandler';
 import InfiniteScroller from './InfiniteScroller';
 import SexyThumb from './SexyThumb';
 
-export default function ActivitiesHybrid({
-  activities,
-  Host,
-  showPast,
-}) {
+export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const [modalItem, setModalItem] = useState(null);
   const [, setSearchParams] = useSearchParams();
 
@@ -74,9 +71,7 @@ export default function ActivitiesHybrid({
                 host={Host?.isPortalHost ? item.host : null}
                 index={index}
                 showPast={showPast}
-                tags={
-                  item.isGroupMeeting ? [groupsInMenu?.label] : null
-                }
+                tags={item.isGroupMeeting ? [groupsInMenu?.label] : null}
               />
             </Center>
           )}

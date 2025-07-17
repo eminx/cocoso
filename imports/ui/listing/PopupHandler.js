@@ -1,44 +1,44 @@
 import React, { useContext, useState } from 'react';
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  ModalBody,
-  Tag,
-} from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '/imports/ui/core/Modal';
-import { StateContext } from '../LayoutContainer';
-import NiceSlider from '../generic/NiceSlider';
+import { Box, Center, Flex, Heading, Modal, Tag } from '/imports/ui/core';
+import { StateContext } from '/imports/ui/LayoutContainer';
+
 import ActionDates from '../entry/ActionDates';
+import NiceSlider from '../generic/NiceSlider';
 
 function PopupHeader({ subTitle, tags, title }) {
   const fontFamily = "'Raleway', sans-serif";
+
+  const styles = {
+    lineHeight: 1,
+    textAlign: 'center',
+    textShadow: '1px 1px 1px #fff',
+  };
 
   return (
     <Box mb="4">
       <Heading
         as="h1"
-        fontFamily={fontFamily}
-        fontSize="1.8em"
-        lineHeight={1}
         mb="2"
-        textAlign="center"
-        textShadow="1px 1px 1px #fff"
+        css={{
+          ...styles,
+          fontFamily,
+          fontSize: '1.8rem',
+        }}
       >
         {title}
       </Heading>
       {subTitle && (
         <Heading
           as="h2"
-          fontSize="1.3em"
-          fontWeight="light"
-          lineHeight={1}
-          textAlign="center"
+          css={{
+            ...styles,
+            fontSize: '1.3rem',
+            fontWeight: '300',
+          }}
         >
           {subTitle}
         </Heading>
@@ -50,10 +50,12 @@ function PopupHeader({ subTitle, tags, title }) {
               tag && (
                 <Tag
                   key={tag}
-                  bg="gray.50"
-                  color="gray.800"
-                  fontSize="14px"
-                  fontWeight="bold"
+                  css={{
+                    background: 'var(--cocoso-colors-gray-50)',
+                    color: 'var(--cocoso-colors-gray-800)',
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                  }}
                 >
                   {tag}
                 </Tag>
@@ -113,12 +115,7 @@ const getLinkPath = (item, kind, isCurrentHost = false) => {
   };
 };
 
-export default function PopupHandler({
-  item,
-  kind,
-  showPast,
-  onClose,
-}) {
+export default function PopupHandler({ item, kind, showPast, onClose }) {
   const [copied, setCopied] = useState(false);
   const { allHosts, currentHost } = useContext(StateContext);
   const navigate = useNavigate();
@@ -142,11 +139,7 @@ export default function PopupHandler({
   };
 
   const handleActionButtonClick = () => {
-    const link = getLinkPath(
-      item,
-      kind,
-      item.host === currentHost.host
-    );
+    const link = getLinkPath(item, kind, item.host === currentHost.host);
     if (link.isHref) {
       window.open(link.path, '_self');
       return;
@@ -175,19 +168,14 @@ export default function PopupHandler({
       onSecondaryButtonClick={handleCopyLink}
     >
       <PopupContent
-        action={
-          <ActionDates activity={item} showPast={showPast} showTime />
-        }
+        action={<ActionDates activity={item} showPast={showPast} showTime />}
         content={
           (item.longDescription && parseHtml(item.longDescription)) ||
           (item.description && parseHtml(item.description))
         }
         images={item.images || [item.imageUrl]}
         subTitle={
-          item.subTitle ||
-          item.readingMaterial ||
-          item.shortDescription ||
-          null
+          item.subTitle || item.readingMaterial || item.shortDescription || null
         }
         tags={tags}
         title={item.title || item.label}

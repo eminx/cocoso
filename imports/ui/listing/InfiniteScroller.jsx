@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { Flex, Skeleton, Wrap } from '@chakra-ui/react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
+
+import { Flex, Loader, Wrap } from '/imports/ui/core';
 
 import NewEntryHelper from '../generic/NewEntryHelper';
 import FiltrerSorter from './FiltrerSorter';
@@ -60,13 +61,24 @@ const sortItems = (items, sortValue) => {
 
   return items.sort((a, b) => {
     if (sortValue === 'name') {
-      return a.label ? a.label?.localeCompare(b.label) : a.title?.localeCompare(b.title);
+      return a.label
+        ? a.label?.localeCompare(b.label)
+        : a.title?.localeCompare(b.title);
     }
-    return new Date(b.createdAt || b.creationDate) - new Date(a.createdAt || a.creationDate);
+    return (
+      new Date(b.createdAt || b.creationDate) -
+      new Date(a.createdAt || a.creationDate)
+    );
   });
 };
 
-const filterSortItems = (items, filterValue, sortValue, currentPage, itemsPerPage) => {
+const filterSortItems = (
+  items,
+  filterValue,
+  sortValue,
+  currentPage,
+  itemsPerPage
+) => {
   if (!items) {
     return [];
   }
@@ -90,7 +102,8 @@ export default function InfiniteScroller({
   const [sortValue, setSortValue] = useState('');
 
   const currentItems = useMemo(
-    () => filterSortItems(items, filterValue, sortValue, currentPage, itemsPerPage),
+    () =>
+      filterSortItems(items, filterValue, sortValue, currentPage, itemsPerPage),
     [items, filterValue, sortValue, currentPage]
   );
 
@@ -100,10 +113,9 @@ export default function InfiniteScroller({
     }, 300);
   };
 
-  const hasMore = items?.length > currentItems?.length && currentItems?.length >= itemsPerPage;
-
-  const skeletonWidth = smallThumb || isMasonry ? '2xs' : 'auto';
-  const skeletonHeight = smallThumb || isMasonry ? '180px' : '315px';
+  const hasMore =
+    items?.length > currentItems?.length &&
+    currentItems?.length >= itemsPerPage;
 
   const filtrerProps = {
     filterValue,
@@ -128,24 +140,23 @@ export default function InfiniteScroller({
             columnClassName="my-masonry-grid_column"
           >
             {currentItems?.map((item, index) => children(item, index))}
-            {hasMore && <Skeleton endColor="gray.300" w="185px" h="185px" m="4" />}
+            {hasMore && <Loader relative />}
             {!hasMore && canCreateContent && (
-              <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
+              <NewEntryHelper
+                buttonLink={newHelperLink}
+                small={isMasonry || smallThumb}
+              />
             )}
           </Masonry>
         ) : (
           <Wrap align="center" justify="center" spacing="2">
             {currentItems?.map((item, index) => children(item, index))}
-            {hasMore && (
-              <Skeleton
-                // className="sexy-thumb-container"
-                endColor="gray.300"
-                h={skeletonHeight}
-                w={skeletonWidth}
-              />
-            )}
+            {hasMore && <Loader relative />}
             {!hasMore && canCreateContent && (
-              <NewEntryHelper buttonLink={newHelperLink} small={smallThumb || isMasonry} />
+              <NewEntryHelper
+                buttonLink={newHelperLink}
+                small={smallThumb || isMasonry}
+              />
             )}
           </Wrap>
         )}

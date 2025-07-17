@@ -3,17 +3,17 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Trans, useTranslation } from 'react-i18next';
 import {
+  Alert,
   Box,
   Flex,
   Heading,
   Input,
+  Loader,
   Select,
   Text,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
 
-import Loader from '../../core/Loader';
 import NiceList from '../../generic/NiceList';
-import Alert from '../../generic/Alert';
 import UsageReport from './UsageReport';
 import Boxling from './Boxling';
 import TablyRouter from '../../generic/TablyRouter';

@@ -1,5 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Trans } from 'react-i18next';
+import parseHtml from 'html-react-parser';
+import Cascader from 'antd/lib/cascader';
+import { parse } from 'query-string';
+
 import {
   Avatar,
   Box,
@@ -7,15 +12,10 @@ import {
   Center,
   Divider,
   Flex,
+  Modal,
   Text,
-} from '@chakra-ui/react';
-import { Trans } from 'react-i18next';
-import parseHtml from 'html-react-parser';
-import Cascader from 'antd/lib/cascader';
-import { parse } from 'query-string';
-
+} from '/imports/ui/core';
 import Tabs from '/imports/ui/entry/Tabs';
-import Modal from '/imports/ui/core/Modal';
 
 import PageHeading from './PageHeading';
 import InfiniteScroller from './InfiniteScroller';
@@ -120,11 +120,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
               <Divider my="2" />
 
               {selectedProfile.bio && (
-                <Box
-                  borderLeft="4px solid"
-                  borderColor="brand.500"
-                  pl="2"
-                >
+                <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
                   {parseHtml(selectedProfile.bio)}
                 </Box>
               )}
@@ -138,8 +134,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
   const filterCascaderOptions = (inputValue, path) =>
     path.some(
       (option) =>
-        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) >
-        -1
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
     );
 
   const handleCascaderSelect = (value) => {

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Center, Heading, Img, Text, VStack, Wrap } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
+
+import { Center, Heading, Image, Text, VStack, Wrap } from '/imports/ui/core';
 
 export default function Gridder({ items }) {
   if (!items) {
@@ -27,13 +28,16 @@ export default function Gridder({ items }) {
         <Wrap justify="center">
           {items.map((item) => (
             <VStack key={item._id} w={360} mb="4">
-              <Img
+              <Image
                 w={360}
                 h={240}
-                objectFit="cover"
-                src={item.imageUrl || (item.images && item.images[0]) || item.logo}
+                src={
+                  item.imageUrl || (item.images && item.images[0]) || item.logo
+                }
               />
-              <Heading fontSize={18}>{item.title || item.label || item.settings?.name}</Heading>
+              <Heading fontSize={18}>
+                {item.title || item.label || item.settings?.name}
+              </Heading>
               <Text>{item._id}</Text>
             </VStack>
           ))}

@@ -8,25 +8,24 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
+
 import {
   Alert,
-  AlertIcon,
-  AlertTitle,
   Box,
   Button,
   Center,
+  Checkbox,
   Divider,
   Flex,
   Heading,
   Text,
   VStack,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
 
 import ProfileForm from './ProfileForm';
 import Modal from '/imports/ui/core/Modal';
 import { message } from '../../generic/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
-import FormSwitch from '../../forms/FormSwitch';
 import { StateContext } from '../../LayoutContainer';
 import AvatarUploader from './AvatarUploader';
 import Tabs from '../../entry/Tabs';
@@ -217,10 +216,7 @@ function EditProfile() {
   if (!isMember) {
     return (
       <Center p="8">
-        <Alert status="error">
-          <AlertIcon />
-          <AlertTitle>{t('profile.message.deny')}</AlertTitle>
-        </Alert>
+        <Alert type="error">{t('profile.message.deny')}</Alert>
       </Center>
     );
   }
@@ -311,14 +307,14 @@ function EditProfile() {
                 {tc('domains.platform')}
               </Text>
             </Heading>
-            <FormSwitch
-              colorScheme="green"
-              isChecked={isUserPublicGlobally}
-              label={t('profile.makePublic.labelGlobal')}
+            <Checkbox
+              checked={isUserPublicGlobally}
               onChange={({ target: { checked } }) =>
                 setProfilePublicGlobally(checked)
               }
-            />
+            >
+              {t('profile.makePublic.labelGlobal')}
+            </Checkbox>
             <Text fontSize="sm" my="2">
               {t('profile.makePublic.helperTextGlobal')}
             </Text>
@@ -339,8 +335,7 @@ function EditProfile() {
               </Text>
             </Heading>
 
-            <Alert bg="white" status="info" p="0">
-              <AlertIcon color="gray.800" />
+            <Alert bg="white" type="info" p="0">
               <Text fontSize="sm">
                 <Trans
                   i18nKey="accounts:profile.message.role"
@@ -356,17 +351,17 @@ function EditProfile() {
             </Alert>
 
             <Box py="4">
-              <FormSwitch
-                colorScheme="green"
-                isChecked={isUserPublic}
-                isDisabled={
+              <Checkbox
+                checked={isUserPublic}
+                disabled={
                   !isUserPublicGlobally || currentHost.isPortalHost
                 }
-                label={t('profile.makePublic.label')}
                 onChange={({ target: { checked } }) =>
                   setProfilePublic(checked)
                 }
-              />
+              >
+                {t('profile.makePublic.label')}
+              </Checkbox>
               <Text fontSize="sm" my="2">
                 {t('profile.makePublic.helperText')}
               </Text>
@@ -399,34 +394,36 @@ function EditProfile() {
   return (
     <>
       <Box mb="8" minHeight="100vh">
-        <Box>
-          <Heading mb="4" size="md">
+        <Box w="100%">
+          <Heading size="md">
             {platform?.name}{' '}
-            <Text
-              as="span"
-              fontSize="md"
-              fontWeight="light"
-              textTransform="lowercase"
+            <span
+              style={{
+                fontSize: '0.875rem',
+                fontWeight: 300,
+                textTransform: 'lowercase',
+              }}
             >
               {tc('domains.platform')}
-            </Text>
+            </span>
           </Heading>
 
-          <Alert
-            bg="bluegray.50"
-            borderRadius="lg"
-            mb="8"
-            status="info"
-          >
-            <AlertIcon color="gray.800" />
-            <Text fontSize="sm" mr="4">
-              {t('profile.message.platform', {
-                platform: platform?.name,
-              })}
-            </Text>
-          </Alert>
+          <Box mb="4">
+            <Alert
+              bg="bluegray.50"
+              borderRadius="lg"
+              mb="8"
+              type="info"
+            >
+              <Text fontSize="sm" mr="4">
+                {t('profile.message.platform', {
+                  platform: platform?.name,
+                })}
+              </Text>
+            </Alert>
+          </Box>
 
-          <Tabs align="center" index={tabIndex} mb="4" tabs={tabs} />
+          <Tabs align="center" index={tabIndex} tabs={tabs} />
 
           <Box>
             <Routes>
@@ -439,9 +436,9 @@ function EditProfile() {
               ))}
             </Routes>
           </Box>
-
-          <Divider my="4" />
         </Box>
+
+        <Divider my="4" />
 
         <Box bg="red.100" mt="24">
           <VStack spacing="4" p="4">

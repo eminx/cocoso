@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Text } from '@chakra-ui/react';
+import {
+  Alert,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Loader,
+  Text,
+} from '/imports/ui/core';
 
 import ReactQuill from '../../forms/Quill';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../forms/FileDropper';

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Box } from '@chakra-ui/react';
+
+import { Box } from '/imports/ui/core';
 
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
@@ -9,14 +10,21 @@ import NewGridThumb from './NewGridThumb';
 export default function ResourcesHybrid({ resources, Host }) {
   const [modalItem, setModalItem] = useState(null);
 
-  const resourcesInMenu = Host?.settings?.menu?.find((item) => item.name === 'resources');
+  const resourcesInMenu = Host?.settings?.menu?.find(
+    (item) => item.name === 'resources'
+  );
   const description = resourcesInMenu?.description;
   const heading = resourcesInMenu?.label;
   const url = `${Host?.host}/${resourcesInMenu?.name}`;
 
   return (
     <>
-      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
+      <PageHeading
+        description={description}
+        heading={heading}
+        imageUrl={Host?.logo}
+        url={url}
+      />
 
       <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={resources}>
@@ -40,7 +48,11 @@ export default function ResourcesHybrid({ resources, Host }) {
         </InfiniteScroller>
 
         {modalItem && (
-          <PopupHandler item={modalItem} kind="resources" onClose={() => setModalItem(null)} />
+          <PopupHandler
+            item={modalItem}
+            kind="resources"
+            onClose={() => setModalItem(null)}
+          />
         )}
       </Box>
     </>

@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Select,
-  Switch,
-  Textarea,
-} from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '/imports/ui/core/Modal';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  Modal,
+  Select,
+  Textarea,
+} from '/imports/ui/core';
+
 import DateTimePicker from '/imports/ui/forms/DateTimePicker';
 import { ConflictMarker } from '/imports/ui/forms/DatesAndTimes';
 import { call } from '/imports/ui/utils/shared';
@@ -55,14 +55,15 @@ function AddMeetingForm({
         />
 
         <FormControl alignItems="center" display="flex" my="4">
-          <Switch
+          <Checkbox
             id="is-local-switch"
-            isChecked={isLocal}
+            checked={isLocal}
             onChange={({ target: { checked } }) => setIsLocal(checked)}
-          />
-          <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
-            {t('meeting.form.switch', { place: hostname })}
-          </FormLabel>
+          >
+            <label htmlFor="is-local-switch">
+              {t('meeting.form.switch', { place: hostname })}
+            </label>
+          </Checkbox>
         </FormControl>
 
         {isLocal ? (

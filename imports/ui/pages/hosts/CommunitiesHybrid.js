@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import HTMLReactParser from 'html-react-parser';
+import { useTranslation } from 'react-i18next';
+import CheckIcon from 'lucide-react/dist/esm/icons/check';
+
 import {
   Box,
   Button,
   Center,
   Code,
-  Img,
+  Image,
   Link as CLink,
+  Modal,
   Text,
-} from '@chakra-ui/react';
-import HTMLReactParser from 'html-react-parser';
-import { useTranslation } from 'react-i18next';
-import CheckIcon from 'lucide-react/dist/esm/icons/check';
+} from '/imports/ui/core';
 
-import Modal from '/imports/ui/core/Modal';
 import PageHeading from '../../listing/PageHeading';
 import InfiniteScroller from '../../listing/InfiniteScroller';
 import NewGridThumb from '../../listing/NewGridThumb';
@@ -208,7 +209,11 @@ export default function CommunitiesHybrid({
                 </Center>
                 {modalItem.logo && (
                   <Center p="2">
-                    <Img fit="contain" w="160px" src={modalItem.logo} />
+                    <Image
+                      fit="contain"
+                      width="160px"
+                      src={modalItem.logo}
+                    />
                   </Center>
                 )}
               </Box>

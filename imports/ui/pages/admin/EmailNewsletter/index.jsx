@@ -1,20 +1,22 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Center, Link as CLink, Text } from '@chakra-ui/react';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '/imports/ui/core/Modal';
 import {
-  call,
-  resizeImage,
-  uploadImage,
-} from '/imports/ui/utils/shared';
-import Loader from '../../../core/Loader';
+  Alert,
+  Box,
+  Center,
+  Link as CLink,
+  Loader,
+  Modal,
+  Text,
+} from '/imports/ui/core';
+import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import Alert from '/imports/ui/generic/Alert';
-import { StateContext } from '../../../LayoutContainer';
+import { StateContext } from '/imports/ui/LayoutContainer';
+
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';
 import Boxling from '../Boxling';
@@ -42,8 +44,7 @@ export default function EmailNewsletter() {
     preview: false,
     lastConfirm: false,
   });
-  const { currentHost, currentUser, role, platform } =
-    useContext(StateContext);
+  const { currentHost, currentUser, role, platform } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 

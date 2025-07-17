@@ -35,8 +35,6 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     },
     ref
   ) => {
-    console.log('Select', value);
-
     const isSelectDisabled = disabled || isDisabled;
     const isSelectInvalid = invalid || isInvalid;
     const isSelectRequired = required || isRequired;

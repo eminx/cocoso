@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import dayjs from 'dayjs';
-import { Box, Flex, HStack, Tag as CTag } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+import { Box, Flex, HStack, Tag as CTag } from '/imports/ui/core';
 
 import { DateJust } from '../entry/FancyDate';
 import { StateContext } from '../LayoutContainer';
@@ -44,29 +45,45 @@ function ThumbDate({ occurrence }) {
       color={isPast ? 'gray.400' : 'white'}
     >
       <DateJust>{occurrence.startDate}</DateJust>
-      {occurrence.startDate !== occurrence.endDate && <span style={{ margin: '0 2px' }}>–</span>}
-      {occurrence.startDate !== occurrence.endDate && <DateJust>{occurrence.endDate}</DateJust>}
+      {occurrence.startDate !== occurrence.endDate && (
+        <span style={{ margin: '0 2px' }}>–</span>
+      )}
+      {occurrence.startDate !== occurrence.endDate && (
+        <DateJust>{occurrence.endDate}</DateJust>
+      )}
     </Flex>
   );
 }
 
-export default function SexyThumb({ activity, host, index, showPast = false, tags }) {
+export default function SexyThumb({
+  activity,
+  host,
+  index,
+  showPast = false,
+  tags,
+}) {
   const { allHosts } = isClient && useContext(StateContext);
 
   if (!activity) {
     return null;
   }
 
-  const { datesAndTimes, hostName, readingMaterial, subTitle, tag, title } = activity;
+  const { datesAndTimes, hostName, readingMaterial, subTitle, tag, title } =
+    activity;
   const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
 
   const dates = datesAndTimes;
-  const futureDates = dates.filter((date) => dayjs(date.endDate, 'YYYY-MM-DD').isAfter(yesterday));
-  const pastDates = dates.filter((date) => dayjs(date.endDate, 'YYYY-MM-DD').isBefore(tomorrow));
+  const futureDates = dates.filter((date) =>
+    dayjs(date.endDate, 'YYYY-MM-DD').isAfter(yesterday)
+  );
+  const pastDates = dates.filter((date) =>
+    dayjs(date.endDate, 'YYYY-MM-DD').isBefore(tomorrow)
+  );
   const remainingFuture = futureDates && futureDates.length - 3;
   const remainingPast = futureDates && pastDates.length - 1;
 
-  const hostValue = host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
+  const hostValue =
+    host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
 
   return (
     <Box

@@ -1,20 +1,12 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-  Button,
-  Center,
-  Flex,
-  Input,
-  InputGroup,
-  InputRightAddon,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import FormField from '../../../forms/FormField';
-import ReactQuill from '../../../forms/Quill';
-import FileDropper from '../../../forms/FileDropper';
+import { Button, Center, Flex, Input, VStack } from '/imports/ui/core';
+import FormField from '/imports/ui/forms/FormField';
+import ReactQuill from '/imports/ui/forms/Quill';
+import FileDropper from '/imports/ui/forms/FileDropper';
+
 import ContentInserter from './ContentInserter';
 
 export default function EmailForm({
@@ -68,14 +60,14 @@ export default function EmailForm({
             label={t('emails.form.appeal.label')}
             mb="4"
           >
-            <InputGroup w="280px">
+            <Flex align="center" w="280px">
               <Input
                 placeholder={t('emails.form.appeal.holder')}
                 value={email.appeal}
                 onChange={(event) => handleChange('appeal', event.target.value)}
               />
-              <InputRightAddon children={t('emails.form.appeal.addon')} />
-            </InputGroup>
+              <Text>{t('emails.form.appeal.addon')}</Text>
+            </Flex>
           </FormField>
 
           <FormField
@@ -101,7 +93,10 @@ export default function EmailForm({
             label={t('emails.form.body.label')}
             mb="4"
           >
-            <ReactQuill value={email.body} onChange={(value) => handleChange('body', value)} />
+            <ReactQuill
+              value={email.body}
+              onChange={(value) => handleChange('body', value)}
+            />
           </FormField>
 
           <ContentInserter currentHost={currentHost} onSelect={onSelectItems} />

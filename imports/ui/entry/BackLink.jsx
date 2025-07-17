@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@chakra-ui/react';
 import ChevronLeftIcon from 'lucide-react/dist/esm/icons/chevron-left';
+
+import { Button } from '/imports/ui/core';
 
 export default function BackLink({ backLink }) {
   if (!backLink) {
@@ -13,11 +14,12 @@ export default function BackLink({ backLink }) {
   return (
     <Link to={link}>
       <Button
-        as="span"
-        color="blue.700"
-        fontWeight="normal"
         leftIcon={<ChevronLeftIcon size={18} />}
-        variant="link"
+        size="lg"
+        variant="ghost"
+        css={{
+          fontWeight: 'normal',
+        }}
       >
         {backLink?.label}
       </Button>

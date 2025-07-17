@@ -1,12 +1,26 @@
 import React, { useContext } from 'react';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { Box, Center, Flex, Heading, Link as CLink, Text } from '@chakra-ui/react';
+import {
+  Link,
+  Navigate,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Link as CLink,
+  Text,
+} from '/imports/ui/core';
+
+import { StateContext } from '/imports/ui/LayoutContainer';
+import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+
 import { ResetPassword } from './index';
-import { StateContext } from '../../LayoutContainer';
-import { call } from '../../utils/shared';
-import { message } from '../../generic/message';
 
 function ResetPasswordPage() {
   const [t] = useTranslation('accounts');

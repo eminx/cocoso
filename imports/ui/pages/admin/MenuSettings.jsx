@@ -7,19 +7,19 @@ import { arrayMoveImmutable } from 'array-move';
 import ReactSelect from 'react-select';
 
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
   Flex,
   Heading,
   IconButton,
+  Loader,
   Text,
 } from '/imports/ui/core';
 
 import { call } from '../../utils/shared';
-import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
 import TablyRouter from '../../generic/TablyRouter';
 import Boxling from './Boxling';
@@ -169,14 +169,13 @@ export default function MenuSettings() {
               backgroundColor: 'var(--cocoso-colors-bluegray-50)',
             }}
           >
-            <Box mb="8" p="2">
+            <Box mb="8">
               <Text fontSize="lg" mb="2">
                 {t('composable.form.addToMenu')}
               </Text>
 
               <ReactSelect
                 options={getComposablePageOptions()}
-                placeholder="Select a page"
                 value={null}
                 onChange={addComposablePage}
                 getOptionValue={(option) => option._id}
@@ -190,39 +189,41 @@ export default function MenuSettings() {
                   .filter((item) => item.isVisible)
                   .map((value, index) => (
                     <SortableItem key={value.name}>
-                      <Flex
-                        align="center"
-                        justifyContent="space-between"
-                        mb="4"
-                        p="2"
-                        style={{
-                          backgroundColor: 'white',
-                          boxShadow: 'var(--cocoso-box-shadow)',
-                          borderRadius: 'var(--cocoso-border-radius)',
-                          cursor: 'move',
-                          fontFamily: 'sans-serif',
-                        }}
-                      >
-                        <Flex align="center">
-                          <DragHandleIcon />{' '}
-                          <Text ml="2">{value.label}</Text>
+                      <div>
+                        <Flex
+                          align="center"
+                          justifyContent="space-between"
+                          mb="4"
+                          p="2"
+                          style={{
+                            backgroundColor: 'white',
+                            boxShadow: 'var(--cocoso-box-shadow)',
+                            borderRadius: 'var(--cocoso-border-radius)',
+                            cursor: 'move',
+                            fontFamily: 'sans-serif',
+                          }}
+                        >
+                          <Flex align="center">
+                            <DragHandleIcon />{' '}
+                            <Text ml="2">{value.label}</Text>
+                          </Flex>
+                          {value.isComposablePage ? (
+                            <IconButton
+                              colorScheme="bluegray"
+                              icon={
+                                <XIcon
+                                  size="18px"
+                                  onClick={() =>
+                                    removeComposablePage(index)
+                                  }
+                                />
+                              }
+                              size="xs"
+                              variant="ghost"
+                            />
+                          ) : null}
                         </Flex>
-                        {value.isComposablePage ? (
-                          <IconButton
-                            colorScheme="bluegray"
-                            icon={
-                              <XIcon
-                                size="18px"
-                                onClick={() =>
-                                  removeComposablePage(index)
-                                }
-                              />
-                            }
-                            size="xs"
-                            variant="ghost"
-                          />
-                        ) : null}
-                      </Flex>
+                      </div>
                     </SortableItem>
                   ))}
               </SortableList>

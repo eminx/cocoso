@@ -24,7 +24,7 @@ function ListItemWithActions({
 
   return (
     <Flex align="flex-start" justify="space-between">
-      <Box>{renderChildren(listItem)}</Box>
+      <Box w="100%">{renderChildren(listItem)}</Box>
       {actions && (
         <Menu
           align="end"

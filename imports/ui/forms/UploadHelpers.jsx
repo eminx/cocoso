@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Code, Flex, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { Box, Code, Flex, Text } from '/imports/ui/core';
 
 import {
   acceptedImageFormatsForUploads,
@@ -11,7 +12,9 @@ import {
 export default function DocumentUploadHelper({ isImage = true }) {
   const [tc] = useTranslation('common');
 
-  const uploadables = isImage ? acceptedImageFormatsForUploads : acceptedDocumentFormatsForUploads;
+  const uploadables = isImage
+    ? acceptedImageFormatsForUploads
+    : acceptedDocumentFormatsForUploads;
 
   return (
     <Box w="100%" mt="2">

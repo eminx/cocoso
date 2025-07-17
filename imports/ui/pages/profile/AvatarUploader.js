@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Button, Center, Flex, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { Box, Button, Flex, Text, VStack } from '/imports/ui/core';
 
 import FileDropper from '../../forms/FileDropper';
 
@@ -58,9 +59,16 @@ export default function AvatarUploader({
       </Box>
       {!uploadableAvatarLocal && (
         <Box px="6">
-          <Text fontSize="sm">{t('profile.form.avatar.changeHelper')}</Text>
+          <Text fontSize="sm">
+            {t('profile.form.avatar.changeHelper')}
+          </Text>
           {imageUrl && (
-            <Button colorScheme="red" my="4" size="sm" onClick={removeAvatar}>
+            <Button
+              colorScheme="red"
+              my="4"
+              size="sm"
+              onClick={removeAvatar}
+            >
               {t('profile.form.avatar.remove')}
             </Button>
           )}

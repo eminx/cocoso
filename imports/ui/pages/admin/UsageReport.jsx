@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
+import dayjs from 'dayjs';
+import 'react-table/react-table.css';
+import Select from 'react-select';
+import { CSVLink } from 'react-csv';
+import { useTranslation } from 'react-i18next';
+
 import {
   Box,
   Button,
@@ -8,15 +14,9 @@ import {
   Code,
   Flex,
   Heading,
+  Modal,
   Text,
-} from '@chakra-ui/react';
-import dayjs from 'dayjs';
-import 'react-table/react-table.css';
-import Select from 'react-select';
-import { CSVLink } from 'react-csv';
-import { useTranslation } from 'react-i18next';
-
-import { Modal } from '/imports/ui/core';
+} from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 
@@ -99,9 +99,7 @@ export default function UsageReport({ user, onClose }) {
 
     const allParsedActivitiesSorted = allParsedActivities
       .filter((a) =>
-        selectedResource
-          ? a.resourceId === selectedResource.value
-          : true
+        selectedResource ? a.resourceId === selectedResource.value : true
       )
       .sort(compareDatesForSort);
 
@@ -113,8 +111,7 @@ export default function UsageReport({ user, onClose }) {
       const previous = allParsedActivitiesSorted[i - 1];
       if (
         i === 0 ||
-        a?.startDate?.substring(0, 7) ===
-          previous?.startDate?.substring(0, 7)
+        a?.startDate?.substring(0, 7) === previous?.startDate?.substring(0, 7)
       ) {
         total += a.consumption;
         allParsedActivitiesSortedInMonths[monthCounter].push(a);
@@ -191,10 +188,7 @@ export default function UsageReport({ user, onClose }) {
               onChange={handleSelectResource}
             />
             <Heading size="md" mb="2">
-              {dayjs(activitiesPerMonth[0]?.startDate).format(
-                'MMMM YYYY'
-              )}
-              :{' '}
+              {dayjs(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}:{' '}
               <Code fontSize="xl" fontWeight="bold">{`${
                 totalHours && totalHours[index]
               } `}</Code>{' '}
@@ -232,9 +226,7 @@ export default function UsageReport({ user, onClose }) {
                 filename={`${
                   user.username
                 }_${activitiesPerMonth[0]?.startDate.substring(0, 7)}_${
-                  selectedResource
-                    ? selectedResource.label
-                    : 'all-resources'
+                  selectedResource ? selectedResource.label : 'all-resources'
                 }`}
                 target="_blank"
               >

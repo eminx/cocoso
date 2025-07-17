@@ -15,7 +15,7 @@ import {
   Link as CLink,
   VStack,
   Wrap,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
 
 import NiceSlider from '../generic/NiceSlider';
 import Tabs from './Tabs';
@@ -72,7 +72,6 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
           <Avatar
             borderRadius="lg"
             name={author.username}
-            showBorder
             src={author.src}
           />
           <CLink as="span" color="brand.500">
@@ -112,23 +111,26 @@ const Header: React.FC<HeaderProps> = ({
       >
         <Box px="2">
           <Heading
-            as="h1"
-            lineHeight={1}
-            my="2"
             size="lg"
-            textAlign={author ? 'left' : 'center'}
-            textShadow="1px 1px 1px #fff"
+            css={{
+              lineHeight: 1,
+              margin: '0.5rem 0',
+              textAlign: author ? 'left' : 'center',
+              textShadow: '1px 1px 1px #fff',
+            }}
           >
             {title}
           </Heading>
           {subTitle && (
             <Heading
-              as="h2"
-              size="md"
-              fontWeight="400"
-              lineHeight={1}
-              my="2"
-              textAlign={author ? 'left' : 'center'}
+              size="sm"
+              css={{
+                lineHeight: 1,
+                fontWeight: 'normal',
+                margin: '0.5rem 0',
+                textAlign: author ? 'left' : 'center',
+                textShadow: '1px 1px 1px #fff',
+              }}
             >
               {subTitle}
             </Heading>
@@ -140,18 +142,7 @@ const Header: React.FC<HeaderProps> = ({
               mt="2"
             >
               {tags.map((tag, i) => (
-                <Badge
-                  key={tag + i}
-                  bg="gray.50"
-                  borderRadius="lg"
-                  color="gray.800"
-                  fontSize="14px"
-                  px="2"
-                  py="1"
-                  textTransform="capitalize"
-                >
-                  {tag}
-                </Badge>
+                <Badge key={tag + i}>{tag}</Badge>
               ))}
             </Wrap>
           )}
@@ -169,11 +160,13 @@ const Header: React.FC<HeaderProps> = ({
         </Box>
 
         <Button
-          color="blue.700"
-          fontWeight="normal"
           leftIcon={<LinkIcon size={18} />}
-          mr="4"
-          variant="link"
+          size="lg"
+          variant="ghost"
+          css={{
+            fontWeight: 'normal',
+            marginRight: '1rem',
+          }}
           onClick={() => handleCopyLink()}
         >
           {copied ? (

@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Center } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
-import Modal from '/imports/ui/core/Modal';
+import { Box, Button, Center, Modal, Loader } from '/imports/ui/core';
+
 import { call } from '../../utils/shared';
-import { StateContext } from '../../LayoutContainer';
 import { message } from '../../generic/message';
-import Loader from '../../core/Loader';
+import { StateContext } from '../../LayoutContainer';
 
 export default function ContactInfo({ username }) {
   const [modalOpen, setModalOpen] = useState(false);

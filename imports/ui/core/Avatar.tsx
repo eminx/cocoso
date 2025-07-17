@@ -1,12 +1,13 @@
 import React from 'react';
 import { styled } from 'restyle';
+import { HStack } from './Box';
 
 // Avatar props interface
 export interface AvatarProps {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl';
-  name?: string;
-  src?: string;
   borderRadius?: string;
+  name?: string;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl';
+  src?: string;
   children?: React.ReactNode; // for badge or status
 }
 
@@ -44,7 +45,8 @@ const AvatarWrapper = styled('div', (props: AvatarProps) => ({
 const AvatarContainer = styled('div', (props: AvatarProps) => ({
   width: '100%',
   height: '100%',
-  borderRadius: props.borderRadius || '50%',
+  borderRadius: props.borderRadius || 'var(--cocoso-border-radius)',
+  border: '2px solid white',
   overflow: 'hidden',
   backgroundColor: '#e2e8f0',
   display: 'flex',
@@ -88,7 +90,6 @@ const Avatar: React.FC<AvatarProps> = ({
   size = 'md',
   name,
   src,
-  borderRadius,
   children,
   ...props
 }) => {
@@ -96,7 +97,7 @@ const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <AvatarWrapper size={size} {...props}>
-      <AvatarContainer size={size} borderRadius={borderRadius}>
+      <AvatarContainer size={size}>
         {src ? (
           <AvatarImage src={src} alt={name} />
         ) : (
@@ -107,5 +108,9 @@ const Avatar: React.FC<AvatarProps> = ({
     </AvatarWrapper>
   );
 };
+
+export const AvatarGroup = (props: any) => (
+  <HStack gap={props.spacing || '-5rem'} {...props} />
+);
 
 export default Avatar;

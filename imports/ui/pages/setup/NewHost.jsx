@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Center } from '/imports/ui/core';
 import NewHostForm from '../../forms/NewHostForm';
 import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
+import Alert from '../../core/Alert';
 import { call } from '../../utils/shared';
 
 function NewHost({ setFinished }) {

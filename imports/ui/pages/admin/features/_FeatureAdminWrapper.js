@@ -1,11 +1,15 @@
 import React from 'react';
-import { Heading } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import TablyRouter from '../../../generic/TablyRouter';
+import { Heading } from '/imports/ui/core';
+import TablyRouter from '/imports/ui/generic/TablyRouter';
+
 import MainFeatureSettings from './MainFeatureSettings';
 
-export default function FeatureAdminWrapper({ menuItemName, furtherTabs = [] }) {
+export default function FeatureAdminWrapper({
+  menuItemName,
+  furtherTabs = [],
+}) {
   const [t] = useTranslation('admin');
 
   const tabs = [

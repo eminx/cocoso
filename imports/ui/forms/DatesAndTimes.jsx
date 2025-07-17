@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import DeleteIcon from 'lucide-react/dist/esm/icons/x';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +6,10 @@ import { useTranslation } from 'react-i18next';
 import {
   Box,
   Center,
+  Checkbox,
   Flex,
+  FormControl,
+  FormLabel,
   IconButton,
   Text,
   Wrap,
@@ -229,8 +231,8 @@ export default function DatesAndTimes({
                 display="flex"
                 flexGrow="1"
               >
-                <Switch
-                  isChecked={
+                <Checkbox
+                  checked={
                     occurrence?.isRange ||
                     occurrence.startDate !== occurrence.endDate
                   }

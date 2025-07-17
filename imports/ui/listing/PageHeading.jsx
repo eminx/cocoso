@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Center, Heading, Divider } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { Client } from 'react-hydration-provider';
+
+import { Box, Center, Heading, Divider } from '/imports/ui/core';
 
 import NewButton from './NewButton';
 
@@ -43,13 +44,13 @@ export default function PageHeading({
             <Center>{children}</Center>
             {description && (
               <Heading
-                as="h2"
-                fontFamily="'Sarabun', sans-serif"
-                fontSize="1.17em"
-                fontWeight="300"
-                lineHeight="1.3"
-                maxW="520px"
-                my="2"
+                size="sm"
+                css={{
+                  fontFamily: "'Sarabun', sans-serif",
+                  fontWeight: '300',
+                  lineHeight: '1.3',
+                  maxWidth: '520px',
+                }}
                 textAlign="center"
               >
                 {description}

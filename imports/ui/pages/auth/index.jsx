@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
+import i18next from 'i18next';
+
 import {
   Box,
   Button,
@@ -11,13 +14,10 @@ import {
   Heading,
   Input,
   Link,
+  Modal,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import { z } from 'zod';
-import i18next from 'i18next';
-
-import Modal from '/imports/ui/core/Modal';
+} from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import Terms from '/imports/ui/entry/Terms';
 

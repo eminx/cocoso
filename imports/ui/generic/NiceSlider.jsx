@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
-import { Box, Center, Flex, HStack, Img } from '@chakra-ui/react';
 import FsLightbox from 'fslightbox-react';
 import { Fade, Slide } from 'react-slideshow-image';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Client, useHydrated } from 'react-hydration-provider';
+
+import { Box, Center, Flex, HStack, Image } from '/imports/ui/core';
 
 if (Meteor.isClient) {
   import 'react-slideshow-image/dist/styles.css';
@@ -136,7 +137,7 @@ export default function NiceSlider({
       <>
         <Flex h={height} justify="center">
           <Center>
-            <Img
+            <Image
               src={images[0]}
               style={imageStyle}
               onClick={() => setToggler(!toggler)}

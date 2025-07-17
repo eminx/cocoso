@@ -121,6 +121,7 @@
     "@meteorjs/eslint-config-meteor": "^1.0.5",
     "@tanstack/eslint-plugin-query": "^5.62.16",
     "@types/react-dom": "^19.1.6",
+    "@types/react-helmet": "^6.1.11",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/parser": "^5.20.0",
     "autoprefixer": "^10.4.20",

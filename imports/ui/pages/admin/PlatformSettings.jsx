@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Routes, Navigate, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
+
 import {
+  Alert,
   Box,
   Button,
   Center,
+  Checkbox,
   Flex,
   Input,
+  Loader,
   Stack,
-  Switch as CSwitch,
   Text,
-} from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
-
-import { StateContext } from '../../LayoutContainer';
-import Loader from '../../core/Loader';
-import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
-import { call, resizeImage, uploadImage } from '../../utils/shared';
-import FormField from '../../forms/FormField';
-import FileDropper from '../../forms/FileDropper';
-import Tabs from '../../entry/Tabs';
-import ReactQuill from '../../forms/Quill';
+} from '/imports/ui/core';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import { message } from '/imports/ui/generic/message';
+import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
+import FormField from '/imports/ui/forms/FormField';
+import FileDropper from '/imports/ui/forms/FileDropper';
+import Tabs from '/imports/ui/entry/Tabs';
+import ReactQuill from '/imports/ui/forms/Quill';
 
 function PlatformSettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
@@ -66,14 +66,10 @@ function PlatformOptions({ initialValues, onSubmit }) {
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Stack spacing="4">
         <Flex>
-          <CSwitch mr="2" mt="2" {...register('isFederationLayout')} />
+          <Checkbox mr="2" mt="2" {...register('isFederationLayout')} />
           <Box>
-            <Text fontSize="lg">
-              {t('info.platform.federationLabel')}
-            </Text>
-            <Text fontSize="sm">
-              {t('info.platform.federationText')}
-            </Text>
+            <Text fontSize="lg">{t('info.platform.federationLabel')}</Text>
+            <Text fontSize="sm">{t('info.platform.federationText')}</Text>
           </Box>
         </Flex>
         <Flex justify="flex-end" py="4">
@@ -198,10 +194,7 @@ export default function PlatformSettings() {
   const uploadLogo = async () => {
     setUploading(true);
     try {
-      const resizedImage = await resizeImage(
-        localImage.uploadableImage,
-        800
-      );
+      const resizedImage = await resizeImage(localImage.uploadableImage, 800);
       const uploadedImage = await uploadImage(
         resizedImage,
         'platformLogoUpload'
@@ -255,10 +248,7 @@ export default function PlatformSettings() {
           </Box>
           {localImage && localImage.uploadableImageLocal && (
             <Center p="2">
-              <Button
-                isLoading={uploading}
-                onClick={() => uploadLogo()}
-              >
+              <Button isLoading={uploading} onClick={() => uploadLogo()}>
                 {tc('actions.submit')}
               </Button>
             </Center>

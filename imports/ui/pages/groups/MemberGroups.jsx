@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
 
-import { message } from '../../generic/message';
-import Paginate from '../../listing/Paginate';
-import NewGridThumb from '../../listing/NewGridThumb';
+import { Box } from '/imports/ui/core';
+
+import Paginate from '/imports/ui/listing/Paginate';
+import NewGridThumb from '/imports/ui/listing/NewGridThumb';
+import { message } from '/imports/ui/generic/message';
 
 function MemberGroups({ currentHost, user }) {
   const [groups, setGroups] = useState([]);
@@ -38,7 +39,9 @@ function MemberGroups({ currentHost, user }) {
         return (
           <Box key={group._id}>
             {isExternal ? (
-              <a href={`https://${group.host}/groups/${group._id}/info`}>
+              <a
+                href={`https://${group.host}/groups/${group._id}/info`}
+              >
                 <NewGridThumb
                   host={isPortalHost && group.host}
                   imageUrl={group.imageUrl}

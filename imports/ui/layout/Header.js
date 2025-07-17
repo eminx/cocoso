@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useMediaQuery } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
@@ -15,6 +14,7 @@ import {
   Text,
 } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
+import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
 import { parseTitle } from '../utils/shared';
 
@@ -37,12 +37,7 @@ const baseTextStyles = {
   },
 };
 
-export function InfoPagesMenu({
-  label,
-  menuStyles,
-  pageTitles,
-  pathname,
-}) {
+export function InfoPagesMenu({ label, menuStyles, pageTitles, pathname }) {
   const isCurrentContext = pathname.includes('info');
 
   const flexStyles = {
@@ -70,9 +65,7 @@ export function InfoPagesMenu({
           gap="1"
           css={{
             ...flexStyles,
-            borderBottom: isCurrentContext
-              ? `2px solid ${borderColor}`
-              : '',
+            borderBottom: isCurrentContext ? `2px solid ${borderColor}` : '',
           }}
         >
           <Text css={textStyles}>{label}</Text>
@@ -102,13 +95,12 @@ export function InfoPagesMenu({
 function HeaderMenu({ Host, pageTitles }) {
   const location = useLocation();
   const { pathname } = location;
-  const [isDesktop] = useMediaQuery(['(min-width: 960px)']);
+  const isDesktop = useMediaQuery('(min-width: 960px)');
 
   const settings = Host?.settings;
   const menuStyles = Host?.theme?.menu;
 
-  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } =
-    settings || {};
+  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } = settings || {};
 
   if (isDesktop && isBurgerMenuOnDesktop) {
     return null;
@@ -149,11 +141,7 @@ function HeaderMenu({ Host, pageTitles }) {
           ) : (
             <Link
               key={item.name}
-              to={
-                item.isComposablePage
-                  ? `/cp/${item.name}`
-                  : `/${item.name}`
-              }
+              to={item.isComposablePage ? `/cp/${item.name}` : `/${item.name}`}
             >
               <Box as="span" px="2">
                 <Text
@@ -177,14 +165,10 @@ function HeaderMenu({ Host, pageTitles }) {
                 css={{
                   ...baseTextStyles,
                   borderBottomColor:
-                    pathname === '/communities'
-                      ? borderColor
-                      : 'transparent',
+                    pathname === '/communities' ? borderColor : 'transparent',
                 }}
               >
-                <Trans i18nKey="common:platform.communities">
-                  Communities
-                </Trans>
+                <Trans i18nKey="common:platform.communities">Communities</Trans>
               </Text>
             </Box>
           </Link>
@@ -194,11 +178,7 @@ function HeaderMenu({ Host, pageTitles }) {
   );
 }
 
-export default function Header({
-  Host,
-  pageTitles,
-  isLogoSmall = false,
-}) {
+export default function Header({ Host, pageTitles, isLogoSmall = false }) {
   const currentHost = Host;
 
   if (!currentHost) {

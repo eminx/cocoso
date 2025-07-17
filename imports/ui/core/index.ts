@@ -1,6 +1,6 @@
-import { Alert, AlertTitle, AlertDescription } from './Alert';
 import { Accordion, AccordionItem } from './Accordion';
-import Avatar from './Avatar';
+import Alert from './Alert';
+import Avatar, { AvatarGroup } from './Avatar';
 import Badge from './Badge';
 import {
   Box,
@@ -8,6 +8,8 @@ import {
   Container,
   Divider,
   Flex,
+  FormControl,
+  FormLabel,
   Grid,
   Stack,
   HStack,
@@ -24,17 +26,16 @@ import Loader from './Loader';
 import Modal, { Drawer, Overlay } from './Modal';
 import NumberInput from './NumberInput';
 import { Radio, RadioGroup } from './RadioButtons';
-import Spinner from './Spinner';
 import Select from './Select';
+import Spinner from './Spinner';
 import Textarea from './Textarea';
 
 export {
   Accordion,
   AccordionItem,
   Alert,
-  AlertTitle,
-  AlertDescription,
   Avatar,
+  AvatarGroup,
   Badge,
   Box,
   Button,
@@ -46,6 +47,8 @@ export {
   Drawer,
   Fade,
   Flex,
+  FormControl,
+  FormLabel,
   Grid,
   Heading,
   HStack,

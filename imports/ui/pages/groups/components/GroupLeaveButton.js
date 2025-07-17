@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Button, Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '/imports/ui/core/Modal';
+import { Button, Center, Modal, Text } from '/imports/ui/core';
+
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
 import { StateContext } from '../../../LayoutContainer';

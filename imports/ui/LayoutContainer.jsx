@@ -2,12 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import {
-  Box,
-  ChakraProvider,
-  ColorModeProvider,
-  useMediaQuery,
-} from '@chakra-ui/react';
+import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -15,6 +10,9 @@ import 'dayjs/locale/en-gb';
 import 'dayjs/locale/sv';
 import 'dayjs/locale/tr';
 import updateLocale from 'dayjs/plugin/updateLocale';
+
+import { Box } from '/imports/ui/core';
+import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
 import { call } from './utils/shared';
 import generateTheme from './utils/constants/theme';
@@ -39,10 +37,8 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [hue, setHue] = useState('233');
   const [rendered, setRendered] = useState(false);
   const [, i18n] = useTranslation();
-  const [isDesktop, isMobile] = useMediaQuery([
-    '(min-width: 960px)',
-    '(max-width: 480px)',
-  ]);
+  const isDesktop = useMediaQuery('(min-width: 960px)');
+  const isMobile = useMediaQuery('(max-width: 480px)');
   const location = useLocation();
   const { pathname } = location;
   const [tc] = useTranslation('common');
@@ -139,11 +135,9 @@ function LayoutPage({ currentUser, userLoading, children }) {
     );
 
   const role = hostWithinUser && hostWithinUser.role;
-  const canCreateContent =
-    role && ['admin', 'contributor'].includes(role);
+  const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
-  const isFederationFooter =
-    platform?.isFederationLayout && platform.footer;
+  const isFederationFooter = platform?.isFederationLayout && platform.footer;
   const isLogoSmall =
     !['pages', 'cp'].includes(pathnameSplitted[1]) &&
     Boolean(pathnameSplitted[2]);
@@ -200,9 +194,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
                   currentHost={currentHost}
                   isFederationFooter={isFederationFooter}
                 />
-                {isFederationFooter && (
-                  <PlatformFooter platform={platform} />
-                )}
+                {isFederationFooter && <PlatformFooter platform={platform} />}
               </Box>
             )}
           </StateContext.Provider>
@@ -210,9 +202,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
       </ChakraProvider>
 
       {rendered && (
-        <Toaster
-          containerStyle={{ minWidth: '120px', zIndex: 999999 }}
-        />
+        <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />
       )}
     </>
   );

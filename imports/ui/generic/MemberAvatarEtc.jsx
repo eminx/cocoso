@@ -1,17 +1,9 @@
 import React from 'react';
-import {
-  Avatar,
-  Box,
-  Center,
-  HStack,
-  Tag,
-  Text,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import CircleCheck from 'lucide-react/dist/esm/icons/circle-check';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
+
+import { Avatar, Box, Center, HStack, Tag, Text, Wrap } from '/imports/ui/core';
 
 import Popover from './Popover';
 import { getFullName } from '../utils/shared';
@@ -75,9 +67,9 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
         {!isThumb && user.keywords && (
           <Wrap justify="center" py="2">
             {user.keywords?.map((k) => (
-              <WrapItem key={k.keywordId}>
+              <Box key={k.keywordId}>
                 <Tag {...tagProps}>{k.keywordLabel}</Tag>
-              </WrapItem>
+              </Box>
             ))}
           </Wrap>
         )}

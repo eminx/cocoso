@@ -1,14 +1,8 @@
 import React, { useContext, useState } from 'react';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Input,
-  VStack,
-} from '@chakra-ui/react';
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
+
+import { Box, Button, Checkbox, Input } from '/imports/ui/core';
 
 import Modal from '/imports/ui/core/Modal';
 import FormField from '/imports/ui/forms/FormField';

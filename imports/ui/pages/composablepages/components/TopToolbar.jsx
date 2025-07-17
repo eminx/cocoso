@@ -1,15 +1,9 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Input,
-  Tag,
-} from '@chakra-ui/react';
 import ReactSelect from 'react-select';
 import { Trans } from 'react-i18next';
+
+import { Box, Flex, Tag } from '/imports/ui/core';
 
 import ComposablePageSettings from './ComposablePageSettings';
 

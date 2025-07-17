@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
-import { Code, Text } from '@chakra-ui/react';
+
+import { Code, Text } from '/imports/ui/core';
 
 import Settings from './Settings';
 import MenuSettings from './MenuSettings';

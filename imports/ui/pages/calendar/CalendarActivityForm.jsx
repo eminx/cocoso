@@ -1,15 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Checkbox, FormLabel } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
-import { call } from '../../utils/shared';
-import GenericEntryForm from '../../forms/GenericEntryForm';
-import FormField from '../../forms/FormField';
-import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
+import { Box, Checkbox } from '/imports/ui/core';
+
+import { call } from '/imports/ui/utils/shared';
+import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
+import FormField from '/imports/ui/forms/FormField';
+import DatesAndTimes, {
+  emptyDateAndTime,
+} from '/imports/ui/forms/DatesAndTimes';
+import { LoaderContext } from '/imports/ui/listing/NewEntryHandler';
+
 import calendarActivityFormFields from './calendarActivityFormFields';
-import { LoaderContext } from '../../listing/NewEntryHandler';
 
 const animatedComponents = makeAnimated();
 
@@ -20,13 +24,18 @@ export const emptyFormValues = {
 
 export default function CalendarActivityForm({ activity, onFinalize }) {
   const [state, setState] = useState({
-    datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
+    datesAndTimes: activity
+      ? activity.datesAndTimes
+      : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
-    selectedResource: activity ? { label: activity.resource, value: activity.resourceId } : null,
+    selectedResource: activity
+      ? { label: activity.resource, value: activity.resourceId }
+      : null,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
     resources: [],
   });
-  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
+  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] =
+    useState(false);
 
   const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('activities');
@@ -71,12 +80,14 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   const isFormValid = () => {
     const { datesAndTimes } = state;
     const isConflictHard = datesAndTimes.some(
-      (occurrence) => Boolean(occurrence.conflict) && occurrence.isConflictHard
+      (occurrence) =>
+        Boolean(occurrence.conflict) && occurrence.isConflictHard
     );
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     const isTimesInValid = datesAndTimes.some(
-      (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
+      (dateTime) =>
+        !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
     );
 
     setIsSubmitButtonDisabled(isTimesInValid || isConflictHard);
@@ -84,7 +95,11 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
 
   useEffect(() => {
     isFormValid();
-  }, [state.datesAndTimes, state.selectedResource, state.isExclusiveActivity]);
+  }, [
+    state.datesAndTimes,
+    state.selectedResource,
+    state.isExclusiveActivity,
+  ]);
 
   const parseActivity = async () => {
     const sortedDatesAndTimes = state.datesAndTimes.sort((a, b) => {
@@ -167,21 +182,27 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       isSubmitButtonDisabled={isSubmitButtonDisabled}
       onSubmit={handleSubmit}
     >
-      <FormField helperText={t('form.exclusive.helper')} label={t('form.exclusive.label')} my="4">
+      <FormField
+        helperText={t('form.exclusive.helper')}
+        label={t('form.exclusive.label')}
+        my="4"
+      >
         <Box bg="white" borderRadius="lg" display="inline" p="2">
           <Checkbox
-            isChecked={state.isExclusiveActivity}
+            checked={state.isExclusiveActivity}
             size="lg"
             onChange={handleExclusiveSwitch}
           >
-            <FormLabel style={{ cursor: 'pointer' }} mb="0">
-              {t('form.exclusive.holder')}
-            </FormLabel>
+            <label>{t('form.exclusive.holder')}</label>
           </Checkbox>
         </Box>
       </FormField>
 
-      <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')} my="12">
+      <FormField
+        helperText={t('form.resource.helper')}
+        label={t('form.resource.label')}
+        my="12"
+      >
         <AutoCompleteSelect
           isClearable
           onChange={handleSelectResource}
