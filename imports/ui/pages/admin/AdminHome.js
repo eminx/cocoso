@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 
-import { Heading, Text, Wrap } from '/imports/ui/core';
+import { Flex, Heading, Text } from '/imports/ui/core';
 
 import Boxling from './Boxling';
 
@@ -53,20 +53,25 @@ export default function AdminHome() {
   const navigate = useNavigate();
 
   return (
-    <Wrap spacing="4">
+    <Flex wrap="wrap" gap="1rem">
       {shortCuts.map((item) => (
         <Boxling
           key={item.link}
-          _hover={{ bg: 'white' }}
-          style={{ flex: '1 1 200px', cursor: 'pointer' }}
+          flex="1 1 200px"
+          css={{
+            cursor: 'pointer',
+            ':hover': {
+              backgroundColor: 'white',
+            },
+          }}
           onClick={() => navigate(item.link)}
         >
-          <Heading color="blue.700" mb="2" size="md">
+          <Heading color="blue.700" mb="2" size="sm">
             {item.label}
           </Heading>
           <Text>{item.helper}</Text>
         </Boxling>
       ))}
-    </Wrap>
+    </Flex>
   );
 }

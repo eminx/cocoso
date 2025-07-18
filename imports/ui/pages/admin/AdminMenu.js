@@ -12,20 +12,26 @@ import {
   List,
   ListItem,
   Text,
-} from '@chakra-ui/react';
-
-import { StateContext } from '../../LayoutContainer';
-import { getFullName } from '../../utils/shared';
+} from '/imports/ui/core';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import { getFullName } from '/imports/ui/utils/shared';
 
 export function AdminMenuHeader({ currentHost }) {
   return (
-    <Link to="/">
+    <Link to="/" style={{ width: '100%' }}>
       <Box
-        _hover={{ bg: 'bluegray.800', color: 'white' }}
-        _focus={{ bg: 'bluegray.300' }}
         bg="white"
         px="4"
         py="2"
+        css={{
+          ':hover': {
+            backgroundColor: 'var(--cocoso-colors-bluegray-800)',
+            color: 'white',
+          },
+          ':focus': {
+            backgroundColor: 'var(--cocoso-colors-bluegray-300)',
+          },
+        }}
       >
         <Flex align="center">
           <Eye />
@@ -52,26 +58,34 @@ export function AdminUserThumb({ currentUser }) {
 
   return (
     <Box
-      _hover={{ bg: 'bluegray.800' }}
       bg={isCurrentRoute ? 'bluegray.900' : 'bluegray.700'}
-      color="white"
       p="4"
+      css={{
+        ':hover': {
+          backgroundColor: 'var(--cocoso-colors-bluegray-800)',
+        },
+      }}
     >
-      <Flex>
+      <Flex align="center">
         <Avatar
-          _hover={{ bg: 'brand.200' }}
-          bg="brand.100"
-          borderRadius="8px"
-          showBorder
           size="lg"
           src={currentUser.avatar && currentUser.avatar.src}
+          css={{
+            backgroundColor: 'var(--cocoso-colors-theme-100)',
+            borderRadius: 'var(--cocoso-border-radius)',
+            ':hover': {
+              backgroundColor: 'var(--cocoso-colors-theme-200)',
+            },
+          }}
         />
 
-        <Box align="flex-start" textAlign="left" px="3">
-          <Text fontSize="lg" fontWeight="bold">
+        <Box align="flex-start" px="2" pb="1" css={{ textAlign: 'left' }}>
+          <Text fontSize="lg" fontWeight="bold" css={{ color: 'white' }}>
             {currentUser.username}
           </Text>
-          <Text fontWeight="light">{getFullName(currentUser)}</Text>
+          <Text fontWeight="light" css={{ color: 'white' }}>
+            {getFullName(currentUser)}
+          </Text>
         </Box>
       </Flex>
     </Box>
@@ -96,19 +110,26 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
 
   return (
     <Box
-      _hover={{ bg: 'bluegray.100' }}
-      // bg={isCurrentRoute && !item.isMulti ? 'bluegray.100' : 'inherit'}
-      borderRightWidth={isCurrentRoute && !item.isMulti ? '3px' : '0'}
-      borderRightColor="bluegray.500"
       cursor="pointer"
-      ml={isSub ? '4' : '0'}
       p="2.5"
+      css={{
+        borderRightWidth: isCurrentRoute && !item.isMulti ? '3px' : '0',
+        borderRightColor: 'var(--cocoso-colors-bluegray-500)',
+        marginLeft: isSub ? '1rem' : '0',
+        ':hover': {
+          backgroundColor: 'var(--cocoso-colors-bluegray-100)',
+        },
+      }}
       onClick={() => onItemClick(item)}
     >
       <Text
         fontWeight={isCurrentRoute ? 'bold' : 'normal'}
-        isTruncated
-        textOverflow="ellipsis"
+        css={{
+          color: 'var(--cocoso-colors-bluegray-800)',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
       >
         {item.label}
       </Text>
@@ -133,31 +154,40 @@ export default function AdminMenu({ routes, onItemClick }) {
   return (
     <Flex
       bg="bluegray.50"
-      color="bluegray.800"
-      direction="column"
-      justify="space-between"
       h={isDesktop ? '100%' : 'calc(100% - 60px)'}
-      position="fixed"
       w={isDesktop ? '320px' : '100%'}
+      css={{
+        position: 'fixed',
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+      }}
     >
       {isDesktop && <AdminMenuHeader currentHost={currentHost} />}
 
-      <Flex direction="column" h="100%" overflowY="auto">
+      <Flex
+        direction="column"
+        justifyContent="space-between"
+        h="100%"
+        w="100%"
+        css={{ overflowY: 'auto' }}
+      >
         {isDesktop && isAdmin && (
           <Heading
-            flexGrow="0"
-            color="bluegray.800"
-            p="4"
-            pb="0"
-            size="md"
-            textAlign="center"
+            p="2"
+            css={{
+              color: 'var(--cocoso-colors-bluegray-800)',
+              flexGrow: '0',
+              fontSize: '1.25rem',
+              textAlign: 'center',
+              width: '100%',
+            }}
           >
             {t('panel')}
           </Heading>
         )}
 
-        <Box h="100%" flexGrow="1" p="4">
-          <List>
+        <Box h="100%" p="4" w="100%" css={{ flexGrow: '1', overflowY: 'auto' }}>
+          <List w="100%">
             {routes?.map((item) => (
               <ListItem key={item.value} p="0">
                 <AdminMenuItem item={item} onItemClick={onItemClick} />
@@ -177,8 +207,11 @@ export default function AdminMenu({ routes, onItemClick }) {
         </Box>
 
         <Box
-          cursor="pointer"
-          flexGrow="0"
+          w="100%"
+          css={{
+            cursor: 'pointer',
+            flexGrow: '0',
+          }}
           onClick={() =>
             onItemClick({
               label: 'My Profile',

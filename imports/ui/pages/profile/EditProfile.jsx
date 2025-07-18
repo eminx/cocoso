@@ -18,22 +18,27 @@ import {
   Divider,
   Flex,
   Heading,
+  Modal,
+  Tabs,
   Text,
-  VStack,
 } from '/imports/ui/core';
+import { message } from '/imports/ui/generic/message';
+import ChangeLanguage from '/imports/ui/layout/ChangeLanguageMenu';
+import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
+import { StateContext } from '/imports/ui/LayoutContainer';
 
-import ProfileForm from './ProfileForm';
-import Modal from '/imports/ui/core/Modal';
-import { message } from '../../generic/message';
-import { call, resizeImage, uploadImage } from '../../utils/shared';
-import { StateContext } from '../../LayoutContainer';
 import AvatarUploader from './AvatarUploader';
-import Tabs from '../../core/Tabs';
-import ChangeLanguage from '../../layout/ChangeLanguageMenu';
-import KeywordsManager from './KeywordsManager';
 import Boxling from '../admin/Boxling';
+import KeywordsManager from './KeywordsManager';
+import ProfileForm from './ProfileForm';
 
-function EditProfile() {
+const subSpanStyle = {
+  fontSize: '0.875rem',
+  fontWeight: 300,
+  textTransform: 'lowercase',
+};
+
+export default function EditProfile() {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
   const [isLeaveModalOn, setIsLeaveModalOn] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -294,14 +299,7 @@ function EditProfile() {
           <Box mb="4">
             <Heading size="md" pb="4">
               {platform?.name}{' '}
-              <Text
-                as="span"
-                fontSize="md"
-                fontWeight="light"
-                textTransform="lowercase"
-              >
-                {tc('domains.platform')}
-              </Text>
+              <span style={subSpanStyle}>{tc('domains.platform')}</span>
             </Heading>
             <Checkbox
               checked={isUserPublicGlobally}
@@ -321,14 +319,7 @@ function EditProfile() {
           <Box pl="4">
             <Heading size="md" pb="4">
               {communityName}{' '}
-              <Text
-                as="span"
-                fontSize="md"
-                fontWeight="light"
-                textTransform="lowercase"
-              >
-                {tc('domains.community')}
-              </Text>
+              <span style={subSpanStyle}>{tc('domains.community')}</span>
             </Heading>
 
             <Alert bg="white" type="info" p="0">
@@ -389,17 +380,9 @@ function EditProfile() {
     <>
       <Box mb="8" minHeight="100vh">
         <Box w="100%">
-          <Heading size="md">
+          <Heading size="md" mb="4">
             {platform?.name}{' '}
-            <span
-              style={{
-                fontSize: '0.875rem',
-                fontWeight: 300,
-                textTransform: 'lowercase',
-              }}
-            >
-              {tc('domains.platform')}
-            </span>
+            <span style={subSpanStyle}>{tc('domains.platform')}</span>
           </Heading>
 
           <Box mb="4">
@@ -430,7 +413,7 @@ function EditProfile() {
         <Divider my="4" />
 
         <Box bg="red.100" mt="24">
-          <VStack spacing="4" p="4">
+          <Center p="4">
             <Button
               colorScheme="red"
               size="sm"
@@ -438,7 +421,7 @@ function EditProfile() {
             >
               {t('delete.action')}
             </Button>
-          </VStack>
+          </Center>
         </Box>
 
         <Modal
@@ -473,5 +456,3 @@ function EditProfile() {
     </>
   );
 }
-
-export default EditProfile;
