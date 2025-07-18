@@ -11,6 +11,8 @@ import {
   FormControl,
   FormLabel,
   Grid,
+  List,
+  ListItem,
   Stack,
   HStack,
   VStack,
@@ -28,6 +30,7 @@ import NumberInput from './NumberInput';
 import { Radio, RadioGroup } from './RadioButtons';
 import Select from './Select';
 import Spinner from './Spinner';
+import Tabs from './Tabs';
 import Textarea from './Textarea';
 
 export {
@@ -56,19 +59,22 @@ export {
   Image,
   Input,
   Link,
+  List,
+  ListItem,
   Loader,
   NumberInput,
   Modal,
   Overlay,
   Radio,
   RadioGroup,
+  Select,
   Slide,
   Spinner,
   Stack,
+  Tabs,
   Tag,
   Text,
+  Textarea,
   VStack,
   Wrap,
-  Textarea,
-  Select,
 };

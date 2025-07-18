@@ -21,7 +21,7 @@ const AlertTitle = styled('h3', {
 });
 
 const AlertDescription = styled('div', {
-  fontSize: '1.25rem',
+  fontSize: '1rem',
 });
 
 // AlertContainer
@@ -40,12 +40,12 @@ const AlertContainer = styled('div', (props: AlertContainerProps) => {
       : 'blue';
 
   return {
-    padding: '1rem',
     borderRadius: 'var(--cocoso-border-radius)',
-    backgroundColor: `var(--cocoso-colors-${color}-50)`,
+    backgroundColor: `var(--cocoso-colors-bluegray-50)`,
     border: '1px solid',
     borderColor: `var(--cocoso-colors-${color}-300)`,
-    color: `var(--cocoso-colors-${color}-700)`,
+    color: `var(--cocoso-colors-gray-800)`,
+    padding: '1rem',
   };
 });
 
@@ -67,9 +67,7 @@ export default function Alert({
     <AlertContainer status={type} {...props}>
       <Flex>
         {type === 'info' && <InfoIcon color={alertColors[type]} />}
-        {type === 'warning' && (
-          <WarningIcon color={alertColors[type]} />
-        )}
+        {type === 'warning' && <WarningIcon color={alertColors[type]} />}
         {type === 'success' && <CheckIcon color={alertColors[type]} />}
         {type === 'error' && <AlertIcon color={alertColors[type]} />}
         <Box>

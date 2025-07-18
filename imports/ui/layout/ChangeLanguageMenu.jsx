@@ -16,9 +16,22 @@ export default function ChangeLanguage({
   const currentLang = i18n.language;
 
   return (
-    <Box>
+    <Box
+      bg="brand.50"
+      p="2"
+      css={{ borderRadius: 'var(--cocoso-border-radius)' }}
+    >
       {!hideHelper && (
-        <Text fontSize="sm">{t('common:langs.form.label')}:</Text>
+        <Text
+          fontSize="sm"
+          mb="2"
+          css={{
+            marginBottom: '0.5rem',
+            textAlign: 'center',
+          }}
+        >
+          {t('common:langs.form.label')}:
+        </Text>
       )}
       <Select
         name="lang"

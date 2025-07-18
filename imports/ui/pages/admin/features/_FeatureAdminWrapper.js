@@ -1,9 +1,8 @@
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
 
-import { Heading } from '/imports/ui/core';
-import TablyRouter from '/imports/ui/generic/TablyRouter';
-
+import TablyRouter from '../../../generic/TablyRouter';
 import MainFeatureSettings from './MainFeatureSettings';
 
 export default function FeatureAdminWrapper({
@@ -21,12 +20,5 @@ export default function FeatureAdminWrapper({
     ...furtherTabs,
   ];
 
-  return (
-    <>
-      <Heading fontWeight="light" mb="6" size="md">
-        {t(`menu.info.${menuItemName}`)}
-      </Heading>
-      <TablyRouter tabs={tabs} />
-    </>
-  );
+  return <TablyRouter tabs={tabs} />;
 }

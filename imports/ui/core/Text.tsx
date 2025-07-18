@@ -78,9 +78,7 @@ export const Heading = styled('h2', (props: HeadingProps) => {
   const color = props.color?.split('.');
   return {
     ...getPropStyles(props),
-    color: color
-      ? `var(--chakra-colors-${color[0]}-${color[1]})`
-      : 'inherit',
+    color: color ? `var(--chakra-colors-${color[0]}-${color[1]})` : 'inherit',
     fontWeight: 700,
     fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
     lineHeight: 1.2,
@@ -88,8 +86,26 @@ export const Heading = styled('h2', (props: HeadingProps) => {
   };
 });
 
-export const Code = styled('span', {
-  fontFamily: 'monospace',
+interface CodeProps {
+  fontSize?: string;
+  size?: string;
+  color?: string;
+}
+
+export const Code = styled('span', (props: CodeProps) => {
+  const fontSize = props.size || props.fontSize;
+  const color = props.color?.split('.');
+  return {
+    color: color ? `var(--chakra-colors-${color[0]}-${color[1]})` : 'inherit',
+    padding: '0.25rem 0.5rem',
+    margin: '0 0.25rem',
+    borderRadius: 'var(--cocoso-border-radius)',
+    backgroundColor: 'var(--cocoso-colors-blueGray-50)',
+    fontFamily: 'monospace',
+    fontSize: fontSize
+      ? fontSizes[fontSize as keyof typeof fontSizes]
+      : fontSizes.md,
+  };
 });
 
 export const Link = styled('a', () => ({

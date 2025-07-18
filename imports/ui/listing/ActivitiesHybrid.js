@@ -4,7 +4,7 @@ import { Trans } from 'react-i18next';
 
 import { Box, Center } from '/imports/ui/core';
 
-import Tabs from '../entry/Tabs';
+import Tabs from '../core/Tabs';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 import InfiniteScroller from './InfiniteScroller';

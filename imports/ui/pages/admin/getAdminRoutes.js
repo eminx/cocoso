@@ -23,12 +23,12 @@ import {
 import ComposablePages from '/imports/ui/pages/composablepages';
 
 const getMenuLabel = (menuItems, key) => (
-  <Text as="span">
+  <>
     {menuItems?.find((item) => item.name === key)?.label}
-    <Code bg="gray.50" fontSize="xs" ml="2">
+    <Code bg="gray.50" size="xs" ml="2">
       /{key}
     </Code>
-  </Text>
+  </>
 );
 
 const getAdminRoutes = (menuItems) => [
@@ -36,6 +36,7 @@ const getAdminRoutes = (menuItems) => [
     label: <Trans i18nKey="admin:home" />,
     value: 'home',
     content: <AdminHome />,
+    description: 'ISte hom',
   },
   {
     label: <Trans i18nKey="admin:settings.title" />,
@@ -64,6 +65,7 @@ const getAdminRoutes = (menuItems) => [
     value: 'composable-pages/*',
     isMulti: false,
     content: <ComposablePages />,
+    description: <Trans i18nKey="admin:composable.description" />,
   },
   {
     label: <Trans i18nKey="admin:listings.title" />,
@@ -74,11 +76,13 @@ const getAdminRoutes = (menuItems) => [
         label: getMenuLabel(menuItems, 'activities'),
         value: 'features/activities/*',
         content: <ActivitiesAdmin />,
+        description: <Trans i18nKey="admin:menu.info.activities" />,
       },
       {
         label: getMenuLabel(menuItems, 'calendar'),
         value: 'features/calendar/*',
         content: <CalendarAdmin />,
+        description: <Trans i18nKey="admin:menu.info.calendar" />,
       },
       // {
       //   label: (
@@ -96,26 +100,31 @@ const getAdminRoutes = (menuItems) => [
         label: getMenuLabel(menuItems, 'groups'),
         value: 'features/groups/*',
         content: <GroupsAdmin />,
+        description: <Trans i18nKey="admin:menu.info.groups" />,
       },
       {
         label: getMenuLabel(menuItems, 'info'),
         value: 'features/pages/*',
         content: <PagesAdmin />,
+        description: <Trans i18nKey="admin:menu.info.info" />,
       },
       {
         label: getMenuLabel(menuItems, 'people'),
         value: 'features/people/*',
         content: <PeopleAdmin />,
+        description: <Trans i18nKey="admin:menu.info.people" />,
       },
       {
         label: getMenuLabel(menuItems, 'resources'),
         value: 'features/resources/*',
         content: <ResourcesAdmin />,
+        description: <Trans i18nKey="admin:menu.info.resources" />,
       },
       {
         label: getMenuLabel(menuItems, 'works'),
         value: 'features/works/*',
         content: <WorksAdmin />,
+        description: <Trans i18nKey="admin:menu.info.works" />,
       },
     ],
   },

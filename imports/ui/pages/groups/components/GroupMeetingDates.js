@@ -22,8 +22,7 @@ import ActionButton from '/imports/ui/generic/ActionButton';
 import { GroupContext } from '../Group';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
-const isFutureMeeting = (meeting) =>
-  dayjs(meeting.endDate).isAfter(yesterday);
+const isFutureMeeting = (meeting) => dayjs(meeting.endDate).isAfter(yesterday);
 
 function MeetingDatesContent({
   currentUser,
@@ -153,9 +152,9 @@ function MeetingDatesContent({
               <Center py="2" mt="2">
                 <Button
                   colorScheme="red"
-                  isLoading={delButtonDisabled}
+                  loading={delButtonDisabled}
                   size="xs"
-                  variant="link"
+                  variant="outline"
                   onClick={() => deleteActivity(meeting.meetingId)}
                 >
                   {t('meeting.actions.remove')}
@@ -167,7 +166,7 @@ function MeetingDatesContent({
               <Button
                 size="sm"
                 colorScheme={isAttending ? 'red' : 'green'}
-                isLoading={regButtonDisabled}
+                loading={regButtonDisabled}
                 onClick={() =>
                   toggleAttendance(meeting.meetingId, meetingIndex)
                 }
@@ -260,10 +259,7 @@ export default function GroupMeetingDates(props) {
             {t('meeting.info.member')}
           </Text>
         )}
-        <MeetingDatesContent
-          {...props}
-          onClose={() => setModalOpen(false)}
-        />
+        <MeetingDatesContent {...props} onClose={() => setModalOpen(false)} />
       </Modal>
     </>
   );

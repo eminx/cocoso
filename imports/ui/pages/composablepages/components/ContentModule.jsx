@@ -1,13 +1,6 @@
 import React, { useContext } from 'react';
 import { Trans } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Code,
-  Flex,
-  IconButton,
-} from '/imports/ui/core';
+import { Box, Button, Center, Code, Flex, IconButton } from '/imports/ui/core';
 import { SortableKnob } from 'react-easy-sort';
 import GripHorizontal from 'lucide-react/dist/esm/icons/grip-horizontal';
 import EditIcon from 'lucide-react/dist/esm/icons/edit';
@@ -27,18 +20,10 @@ function ModulePreview({ content }) {
       case 'divider':
         return <Divider />;
       case 'image':
-        return (
-          <img
-            src={content.value?.src}
-            style={{ borderRadius: '6px' }}
-          />
-        );
+        return <img src={content.value?.src} style={{ borderRadius: '6px' }} />;
       case 'image-slider':
         return (
-          <img
-            src={content.value?.images[0]}
-            style={{ borderRadius: '6px' }}
-          />
+          <img src={content.value?.images[0]} style={{ borderRadius: '6px' }} />
         );
       case 'text':
         return (
@@ -123,9 +108,7 @@ export default function ContentModule(props) {
           variant="ghost"
           onClick={() => handleOpenContentModal(content, contentIndex)}
         >
-          <Trans
-            i18nKey={`admin:composable.form.types.${content.type}`}
-          />
+          <Trans i18nKey={`admin:composable.form.types.${content.type}`} />
         </Button>
         <IconButton
           colorScheme="red"
@@ -148,10 +131,7 @@ export default function ContentModule(props) {
 
       <ModulePreview content={content} />
 
-      <GripHorizontal
-        size="20px"
-        style={{ transform: 'translateX(-14px)' }}
-      />
+      <GripHorizontal size="20px" style={{ transform: 'translateX(-14px)' }} />
     </Flex>
   );
 }

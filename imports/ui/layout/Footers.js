@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import HTMLReactParser from 'html-react-parser';
+
 import {
   Box,
   Center,
   Flex,
   Heading,
   Link as CLink,
-  List,
-  ListItem,
   Text,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
-import parseHtml from 'html-react-parser';
+} from '/imports/ui/core';
 
 import FeedbackForm from './FeedbackForm';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
@@ -45,24 +44,23 @@ export function Footer({ currentHost, isFederationFooter }) {
   return (
     <Box bg="gray.700" bottom={0} color="gray.100">
       <Center p="4">
-        <List
-          direction="row"
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="center"
-        >
+        <Flex wrap="wrap" justify="center">
           {activeMenu.map((item) => (
-            <ListItem key={item.name} px="4" py="2">
+            <Box key={item.name} p="2">
               <Link
                 to={
-                  item.name === 'info' ? '/info/about' : `/${item.name}`
+                  item.name === 'info'
+                    ? '/info/about'
+                    : item.isComposablePage
+                    ? `/cp/${item.name}`
+                    : `/${item.name}`
                 }
               >
                 <CLink as="span">{item.label}</CLink>{' '}
               </Link>
-            </ListItem>
+            </Box>
           ))}
-        </List>
+        </Flex>
       </Center>
 
       {!currentHost.isPortalHost && (
@@ -79,13 +77,10 @@ export function Footer({ currentHost, isFederationFooter }) {
                   textAlign="center"
                   w="100%"
                 >
-                  {parseHtml(settings?.footer)}
+                  {HTMLReactParser(settings?.footer)}
                 </Box>
               ) : (
-                <OldFooter
-                  host={currentHost.host}
-                  settings={settings}
-                />
+                <OldFooter host={currentHost.host} settings={settings} />
               )}
             </Center>
             {!isFederationFooter && (
@@ -117,13 +112,7 @@ export function PlatformFooter({ platform, children }) {
   }
   return (
     <Center bg="gray.900" className="platform-footer">
-      <Box
-        color="white"
-        fontSize="85%"
-        maxW="480px"
-        py="4"
-        textAlign="center"
-      >
+      <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
         <Box p="4">
           <a href={`https://${platform?.portalHost}`}>
             <Heading color="white" size="md">
@@ -133,7 +122,7 @@ export function PlatformFooter({ platform, children }) {
         </Box>
 
         <Box p="2" className="text-content">
-          {parseHtml(platform.footer)}
+          {HTMLReactParser(platform.footer)}
         </Box>
         <Box p="2">{children}</Box>
 

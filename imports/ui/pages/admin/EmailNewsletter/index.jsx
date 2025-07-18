@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Box,
+  Button,
   Center,
   Link as CLink,
   Loader,
@@ -218,17 +219,18 @@ export default function EmailNewsletter() {
           </Box>
         )}
 
-        <Box mb="4">
+        <Center p="4" mb="4">
           <Link target="_blank" to="/newsletters">
-            <CLink as="span" color="blue.500" display="flex">
+            <Button
+              colorScheme="blue"
+              leftIcon={<ExternalLinkIcon />}
+              variant="ghost"
+            >
               {t('newsletter.labels.previouslink')}{' '}
-              <ExternalLinkIcon
-                size="16px"
-                style={{ marginLeft: '4px', marginTop: '4px' }}
-              />
-            </CLink>
+            </Button>
           </Link>
-        </Box>
+        </Center>
+
         <Text mb="4">{t('newsletter.subtitle')}</Text>
 
         <Boxling>

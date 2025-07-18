@@ -25,6 +25,7 @@ interface ButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   variant?: 'solid' | 'ghost' | 'outline';
   onClick?: () => void;
+  css?: React.CSSProperties;
   style?: React.CSSProperties;
 }
 
@@ -151,9 +152,9 @@ export const Button = (props: ButtonProps) => {
               }}
             />
           )}
-          {!loading && props.leftIcon}
+          {!loading && props.leftIcon ? props.leftIcon : null}
           {props.children}
-          {!loading && props.rightIcon}
+          {!loading && props.rightIcon ? props.rightIcon : null}
         </Flex>
       </ButtonComponent>
     </>

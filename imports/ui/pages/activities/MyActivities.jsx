@@ -3,25 +3,20 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Box,
   Heading,
   HStack,
   Image,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
+  Loader,
   Tag,
-  TagLabel,
   Text,
-} from '@chakra-ui/react';
-
-import { Alert, Loader } from '../../core';
+} from '/imports/ui/core';
 
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../generic/NiceList';
 import Template from '../../layout/Template';
+import TablyRouter from '/imports/ui/generic/TablyRouter';
 
 const focusStyle = {
   boxShadow: 'none',
@@ -46,11 +41,7 @@ function ActivityItem({ act }) {
         <Heading mb="2" overflowWrap="anywhere" size="md">
           {act.title}
         </Heading>
-        {act.resource && (
-          <Tag mb="2">
-            <TagLabel>{act.resource}</TagLabel>
-          </Tag>
-        )}
+        {act.resource && <Tag mb="2">{act.resource}</Tag>}
         <Text fontWeight="light">{act.subTitle}</Text>
         <Text fontStyle="italic" p="1" textAlign="right">
           {act.datesAndTimes.length} {t('members.occurences')}
@@ -80,59 +71,49 @@ export default function Activities({ history }) {
     });
   }, []);
 
+  const allActivities = activities;
+  const publicActivities = activities.filter((act) => act.isPublicActivity);
+  const privateActivities = activities.filter((act) => !act.isPublicActivity);
+
+  const renderList = (activities) => {
+    return (
+      <NiceList list={activities}>
+        {(act) => (
+          <Link to={`/activities/${act._id}/info`}>
+            <ActivityItem act={act} />
+          </Link>
+        )}
+      </NiceList>
+    );
+  };
+
   if (loading || !activities) {
     return <Loader />;
   }
+
+  const tabs = [
+    {
+      title: t('members.tabs.all'),
+      path: '/activities',
+      content: renderList(allActivities),
+    },
+    {
+      title: t('members.tabs.public'),
+      path: '/activities/public',
+      content: renderList(publicActivities),
+    },
+    {
+      title: t('members.tabs.private'),
+      path: '/activities/private',
+      content: renderList(privateActivities),
+    },
+  ];
 
   return (
     <>
       <Template heading={tc('menu.member.activities')}>
         {currentUser && activities ? (
-          <Tabs>
-            <TabList>
-              <Tab _focus={focusStyle}>{t('members.tabs.all')}</Tab>
-              <Tab _focus={focusStyle}>{t('members.tabs.public')}</Tab>
-              <Tab _focus={focusStyle}>{t('members.tabs.private')}</Tab>
-            </TabList>
-
-            <TabPanels>
-              <TabPanel px="0">
-                <NiceList actionsDisabled list={activities}>
-                  {(act) => (
-                    <Link to={`/activities/${act._id}/info`}>
-                      <ActivityItem act={act} />
-                    </Link>
-                  )}
-                </NiceList>
-              </TabPanel>
-              <TabPanel px="0">
-                <NiceList
-                  actionsDisabled
-                  list={activities.filter(
-                    (act) => act.isPublicActivity
-                  )}
-                >
-                  {(act) => (
-                    <Link to={`/activities/${act._id}/info`}>
-                      <ActivityItem act={act} history={history} />
-                    </Link>
-                  )}
-                </NiceList>
-              </TabPanel>
-              <TabPanel px="0">
-                <NiceList
-                  actionsDisabled
-                  list={activities.filter(
-                    (act) => !act.isPublicActivity
-                  )}
-                >
-                  {(act) => (
-                    <ActivityItem act={act} history={history} />
-                  )}
-                </NiceList>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+          <TablyRouter tabs={tabs} />
         ) : (
           <Alert message={tm('message.guest')} />
         )}

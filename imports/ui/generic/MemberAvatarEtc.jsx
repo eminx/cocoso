@@ -5,7 +5,7 @@ import Bolt from 'lucide-react/dist/esm/icons/bolt';
 
 import { Avatar, Box, Center, HStack, Tag, Text, Wrap } from '/imports/ui/core';
 
-import Popover from './Popover';
+// import Popover from './Popover';
 import { getFullName } from '../utils/shared';
 
 const tagProps = {
@@ -28,7 +28,7 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
           maxW={350}
           name={user?.username}
           showBorder
-          size={!avatarSrc || isThumb ? '2xl' : '4xl'}
+          size={!avatarSrc || isThumb ? '2xl' : '6xl'}
           src={avatarSrc}
         />
       </Center>
@@ -39,7 +39,7 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
             <Text fontWeight="bold" fontSize="xl">
               {user.username}
             </Text>
-            {['contributor', 'admin'].includes(role) && (
+            {/* {['contributor', 'admin'].includes(role) && (
               <Box ml="1">
                 <Popover
                   triggerComponent={
@@ -57,7 +57,7 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
                   </Text>
                 </Popover>
               </Box>
-            )}
+            )} */}
           </HStack>
         </Center>
         <Center mb="4">

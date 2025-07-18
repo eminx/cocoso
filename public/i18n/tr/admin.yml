@@ -105,7 +105,7 @@ emails:
       label: Konu
       holder: Hoşgeldin
     appeal:
-      label: Çağrış
+      label: Hitap
       holder: Sevgili
       addon: '@username'
     body:

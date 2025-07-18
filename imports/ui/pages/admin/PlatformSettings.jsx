@@ -20,7 +20,7 @@ import { message } from '/imports/ui/generic/message';
 import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
 import FormField from '/imports/ui/forms/FormField';
 import FileDropper from '/imports/ui/forms/FileDropper';
-import Tabs from '/imports/ui/entry/Tabs';
+import Tabs from '../../core/Tabs';
 import ReactQuill from '/imports/ui/forms/Quill';
 
 function PlatformSettingsForm({ initialValues, onSubmit }) {

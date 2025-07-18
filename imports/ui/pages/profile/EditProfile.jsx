@@ -28,7 +28,7 @@ import { message } from '../../generic/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import AvatarUploader from './AvatarUploader';
-import Tabs from '../../entry/Tabs';
+import Tabs from '../../core/Tabs';
 import ChangeLanguage from '../../layout/ChangeLanguageMenu';
 import KeywordsManager from './KeywordsManager';
 import Boxling from '../admin/Boxling';
@@ -39,14 +39,12 @@ function EditProfile() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadableAvatarLocal, setUploadableAvatarLocal] =
-    useState(null);
+  const [uploadableAvatarLocal, setUploadableAvatarLocal] = useState(null);
   const [uploadableAvatar, setUploadableAvatar] = useState(null);
   const [lang, setLang] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { currentHost, currentUser, platform, role } =
-    useContext(StateContext);
+  const { currentHost, currentUser, platform, role } = useContext(StateContext);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -203,9 +201,7 @@ function EditProfile() {
     }
   };
 
-  const isMember = ['admin', 'contributor', 'participant'].includes(
-    role
-  );
+  const isMember = ['admin', 'contributor', 'participant'].includes(role);
   const currentMembership = currentUser.memberships.find(
     (m) => m.host === currentHost.host
   );
@@ -353,9 +349,7 @@ function EditProfile() {
             <Box py="4">
               <Checkbox
                 checked={isUserPublic}
-                disabled={
-                  !isUserPublicGlobally || currentHost.isPortalHost
-                }
+                disabled={!isUserPublicGlobally || currentHost.isPortalHost}
                 onChange={({ target: { checked } }) =>
                   setProfilePublic(checked)
                 }
@@ -409,12 +403,7 @@ function EditProfile() {
           </Heading>
 
           <Box mb="4">
-            <Alert
-              bg="bluegray.50"
-              borderRadius="lg"
-              mb="8"
-              type="info"
-            >
+            <Alert bg="bluegray.50" borderRadius="lg" mb="8" type="info">
               <Text fontSize="sm" mr="4">
                 {t('profile.message.platform', {
                   platform: platform?.name,

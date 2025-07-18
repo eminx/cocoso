@@ -17,7 +17,7 @@ import { message } from '../../generic/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../forms/FileDropper';
-import Tabs from '../../entry/Tabs';
+import Tabs from '../../core/Tabs';
 import Boxling from './Boxling';
 
 export default function Settings() {
@@ -93,14 +93,8 @@ export default function Settings() {
   const uploadLogo = async () => {
     setUploading(true);
     try {
-      const resizedImage = await resizeImage(
-        localImage.uploadableImage,
-        800
-      );
-      const uploadedImage = await uploadImage(
-        resizedImage,
-        'hostLogoUpload'
-      );
+      const resizedImage = await resizeImage(localImage.uploadableImage, 800);
+      const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
       await call('assignHostLogo', uploadedImage);
       getCurrentHost();
       message.success(t('logo.message.success'));
@@ -123,7 +117,7 @@ export default function Settings() {
       content: (
         <>
           <Center>
-            <Text fontWeight="bold" mb="3" textAlign="center">
+            <Text fontWeight="bold" mb="4" textAlign="center">
               {t('logo.info')}
             </Text>
           </Center>
@@ -143,10 +137,7 @@ export default function Settings() {
             </Center>
             {localImage && localImage.uploadableImageLocal && (
               <Center p="4">
-                <Button
-                  isLoading={uploading}
-                  onClick={() => uploadLogo()}
-                >
+                <Button isLoading={uploading} onClick={() => uploadLogo()}>
                   {tc('actions.submit')}
                 </Button>
               </Center>
@@ -161,7 +152,7 @@ export default function Settings() {
       content: (
         <>
           <Center>
-            <Text mb="3" fontWeight="bold">
+            <Text mb="4" fontWeight="bold">
               {t('info.info')}
             </Text>
           </Center>
@@ -180,6 +171,11 @@ export default function Settings() {
       path: 'footer',
       content: (
         <>
+          <Center>
+            <Text mb="4" fontWeight="bold">
+              {t('settings.tabs.footer')}
+            </Text>
+          </Center>
           <Text mb="4">{t('info.platform.footer.description')}</Text>
           <Boxling>
             <ReactQuill
@@ -214,7 +210,7 @@ export default function Settings() {
     <Box>
       <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
-      <Box mb="24">
+      <Box mb="24" py="4">
         <Routes>
           {tabs.map((tab) => (
             <Route

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
+import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import HTMLReactParser from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 
@@ -13,7 +8,7 @@ import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 import MemberWorks from '../pages/works/MemberWorks';
 import MemberActivities from '../pages/activities/MemberActivities';
 import MemberGroups from '../pages/groups/MemberGroups';
-import Tabs from './Tabs';
+import Tabs from '../core/Tabs';
 import BackLink from './BackLink';
 import { stripHtml, getFullName } from '/imports/ui/utils/shared';
 
@@ -58,8 +53,7 @@ export default function UserHybrid({ user, Host }) {
   menu
     ?.filter(
       (item) =>
-        ['activities', 'groups', 'works'].includes(item.name) &&
-        item.isVisible
+        ['activities', 'groups', 'works'].includes(item.name) && item.isVisible
     )
     ?.forEach((item) => {
       tabs.push({
@@ -69,9 +63,7 @@ export default function UserHybrid({ user, Host }) {
     });
 
   const pathnameLastPart = location.pathname.split('/').pop();
-  const tabIndex = tabs.findIndex(
-    (tab) => tab.path === pathnameLastPart
-  );
+  const tabIndex = tabs.findIndex((tab) => tab.path === pathnameLastPart);
   const isPortalHost = Host?.isPortalHost;
   const members = menu?.find((item) => item.name === 'people');
   const title = `${getFullName(user)} | ${user.username} | ${
@@ -80,8 +72,7 @@ export default function UserHybrid({ user, Host }) {
   const url = `https://${Host.host}/@${user.username}`;
   const imageUrl = user?.avatar?.src || user?.avatar || Host.logo;
   const tags = user.keywords?.map((k) => k.keywordLabel);
-  const description =
-    user.bio && stripHtml(user.bio)?.substring(0, 150);
+  const description = user.bio && stripHtml(user.bio)?.substring(0, 150);
 
   return (
     <>
@@ -102,9 +93,7 @@ export default function UserHybrid({ user, Host }) {
       </Helmet>
 
       <Box p="2">
-        <BackLink
-          backLink={{ label: members?.label, value: '/people' }}
-        />
+        <BackLink backLink={{ label: members?.label, value: '/people' }} />
       </Box>
 
       <Center>

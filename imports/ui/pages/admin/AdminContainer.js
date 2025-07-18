@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import {
   Link,
   Route,
@@ -27,6 +27,61 @@ import EditProfile from '/imports/ui/pages/profile/EditProfile';
 import AdminMenu from './AdminMenu';
 import getAdminRoutes from './getAdminRoutes';
 
+function RouteRenderer({ routes, currentRoute }) {
+  const { currentUser } = useContext(StateContext);
+  if (!routes) {
+    return null;
+  }
+
+  const EditProfileRoute = currentUser && (
+    <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
+  );
+  return (
+    <Box p="6">
+      <Box mb="8">
+        <Heading mb="2">{currentRoute?.label}</Heading>
+        {currentRoute?.description && (
+          <Heading css={{ fontWeight: '300' }} size="sm">
+            {currentRoute?.description}
+          </Heading>
+        )}
+      </Box>
+
+      <Routes>
+        {routes?.map((route) =>
+          route.isMulti ? (
+            route.content.map((routeSub) => (
+              <>
+                <Route
+                  key={routeSub.value}
+                  path={routeSub.value}
+                  element={routeSub.content}
+                />
+              </>
+            ))
+          ) : (
+            <Route
+              key={route.value}
+              path={route.value}
+              element={route.content}
+            />
+          )
+        )}
+        {EditProfileRoute}
+      </Routes>
+    </Box>
+  );
+}
+
+const iconContainerProps = {
+  align: 'center',
+  direction: 'column',
+  color: 'bluegray.800',
+  cursor: 'pointer',
+  gap: '0',
+  p: '2',
+};
+
 export default function AdminContainer() {
   const { currentUser, currentHost, isDesktop, role } =
     useContext(StateContext);
@@ -44,7 +99,7 @@ export default function AdminContainer() {
 
   const pathname = location?.pathname;
 
-  const getCurrentRoute = () => {
+  const getCurrentRoute = useCallback(() => {
     if (!routes) {
       return null;
     }
@@ -71,7 +126,7 @@ export default function AdminContainer() {
     });
 
     return allRoutes.find((r) => pathname.includes(r.value));
-  };
+  }, [routes, pathname]);
 
   const currentRoute = getCurrentRoute();
 
@@ -107,19 +162,6 @@ export default function AdminContainer() {
     );
   }
 
-  const iconContainerProps = {
-    align: 'center',
-    direction: 'column',
-    color: 'bluegray.800',
-    cursor: 'pointer',
-    gap: '0',
-    p: '2',
-  };
-
-  const EditProfileRoute = currentUser && (
-    <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
-  );
-
   if (!isDesktop) {
     return (
       <Box bg="bluegray.100" minH="100vh">
@@ -133,6 +175,7 @@ export default function AdminContainer() {
         >
           <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Drawer>
+
         <Box>
           <Flex
             align="center"
@@ -162,29 +205,8 @@ export default function AdminContainer() {
               </Flex>
             </Link>
           </Flex>
-          <Box p="6">
-            {isAdmin && <Heading mb="8">{currentRoute?.label}</Heading>}
-            <Routes>
-              {routes?.map((route) =>
-                route.isMulti ? (
-                  route.content.map((routeSub) => (
-                    <Route
-                      key={routeSub.value}
-                      path={routeSub.value}
-                      element={routeSub.content}
-                    />
-                  ))
-                ) : (
-                  <Route
-                    key={route.value}
-                    path={route.value}
-                    element={route.content}
-                  />
-                )
-              )}
-              {EditProfileRoute}
-            </Routes>
-          </Box>
+
+          <RouteRenderer routes={routes} currentRoute={currentRoute} />
         </Box>
       </Box>
     );
@@ -197,31 +219,7 @@ export default function AdminContainer() {
           <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Box>
 
-        <Box p="8">
-          <Heading mb="8">
-            {isAdmin ? currentRoute?.label : ta('profile.settings')}
-          </Heading>
-          <Routes>
-            {routes?.map((route) =>
-              route.isMulti ? (
-                route.content.map((routeSub) => (
-                  <Route
-                    key={routeSub.value}
-                    path={routeSub.value}
-                    element={routeSub.content}
-                  />
-                ))
-              ) : (
-                <Route
-                  key={route.value}
-                  path={route.value}
-                  element={route.content}
-                />
-              )
-            )}
-            {EditProfileRoute}
-          </Routes>
-        </Box>
+        <RouteRenderer routes={routes} currentRoute={currentRoute} />
       </Grid>
     </Box>
   );

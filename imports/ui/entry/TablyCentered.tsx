@@ -18,7 +18,7 @@ import {
 } from '/imports/ui/core';
 
 import NiceSlider from '../generic/NiceSlider';
-import Tabs from './Tabs';
+import Tabs from '../core/Tabs';
 import BackLink from './BackLink';
 
 interface Author {
@@ -69,11 +69,7 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
           justify="center"
           spacing="0"
         >
-          <Avatar
-            borderRadius="lg"
-            name={author.username}
-            src={author.src}
-          />
+          <Avatar borderRadius="lg" name={author.username} src={author.src} />
           <CLink as="span" color="brand.500">
             {author.username}
           </CLink>
@@ -95,9 +91,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const handleCopyLink = async (): Promise<void> => {
     const host = window?.location?.host;
-    await navigator.clipboard.writeText(
-      `https://${host}${location.pathname}`
-    );
+    await navigator.clipboard.writeText(`https://${host}${location.pathname}`);
     setCopied(true);
   };
 
@@ -203,8 +197,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
   const tabIndex =
     tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  const description =
-    subTitle || content?.toString() || author?.username;
+  const description = subTitle || content?.toString() || author?.username;
   const imageUrl = images && images[0];
 
   return (
@@ -250,11 +243,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
               <Box w="100%">
                 {tabs && (
                   <Box mt="2">
-                    <Tabs
-                      justify="center"
-                      index={tabIndex}
-                      tabs={tabs}
-                    />
+                    <Tabs justify="center" index={tabIndex} tabs={tabs} />
                   </Box>
                 )}
 

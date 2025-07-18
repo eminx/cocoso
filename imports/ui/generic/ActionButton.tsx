@@ -12,12 +12,12 @@ export default function ActionButton({ label, onClick }: ActionButtonProps) {
 
   return (
     <Button
+      size={isDesktop ? 'lg' : 'md'}
       css={{
         borderColor: 'brand.100',
         borderWidth: '2px',
         colorScheme: 'brand',
         height: '48px',
-        size: isDesktop ? 'lg' : 'md',
         width: isDesktop ? '240px' : '180px',
       }}
       onClick={onClick}

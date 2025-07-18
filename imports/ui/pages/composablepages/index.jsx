@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Trans } from 'react-i18next';
 
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
@@ -28,22 +27,16 @@ export default function ComposablePages() {
   }, []);
 
   return (
-    <>
-      <Heading css={{ fontWeight: '300' }} size="sm">
-        <Trans i18nKey="admin:composable.description" />
-      </Heading>
-
-      <Routes>
-        <Route
-          path=":composablePageId"
-          element={
-            <ComposablePageForm
-              composablePageTitles={composablePageTitles}
-              getComposablePageTitles={getComposablePageTitles}
-            />
-          }
-        />
-      </Routes>
-    </>
+    <Routes>
+      <Route
+        path=":composablePageId"
+        element={
+          <ComposablePageForm
+            composablePageTitles={composablePageTitles}
+            getComposablePageTitles={getComposablePageTitles}
+          />
+        }
+      />
+    </Routes>
   );
 }

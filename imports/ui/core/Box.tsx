@@ -59,13 +59,16 @@ export const FormLabel = styled('label', (props: any) => ({
 // Grid
 interface GridProps {
   templateColumns?: string;
+  gridTemplateColumns?: string;
   gap?: string | number;
 }
 
 export const Grid = styled('div', (props: GridProps) => ({
   display: 'grid',
   gridTemplateColumns:
-    props.templateColumns || 'repeat(auto-fit, minmax(200px, 1fr))',
+    props.templateColumns ||
+    props.gridTemplateColumns ||
+    'repeat(auto-fit, minmax(200px, 1fr))',
   gap: props.gap ? getSpacing(props.gap) : '1rem',
 }));
 
@@ -92,6 +95,17 @@ export const Divider = styled('hr', (props: DividerProps) => {
     alignSelf: vertical ? 'stretch' : 'auto',
   };
 });
+
+export const List = styled('ul', (props: any) => ({
+  listStyleType: 'none',
+  padding: '0',
+  ...getPropStyles(props),
+}));
+
+export const ListItem = styled('li', (props: any) => ({
+  marginBottom: '0.5rem',
+  ...getPropStyles(props),
+}));
 
 // Stack, HStack, VStack, Wrap
 export const Stack = styled(Flex, {});

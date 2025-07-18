@@ -5,9 +5,7 @@ import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
 import { GlobalStyles } from 'restyle';
 
-import { Box, Button, Center, Flex, Image } from '/imports/ui/core';
-
-import { getResponsiveGridColumns } from '/imports/ui/pages/composablepages/constants';
+import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -138,12 +136,10 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
       )}
       <Flex flexDirection="column">
         {composablePage.contentRows.map((row, rowIndex) => (
-          <Box
+          <Grid
             key={row.id || row.gridType + rowIndex}
-            display="grid"
-            gridTemplateColumns={getResponsiveGridColumns(row.gridType)}
-            gap={{ base: 2, md: 4 }}
             p="4"
+            templateColumns="repeat(auto-fit, minmax(250px, 1fr))"
           >
             {row.columns.map((column, columnIndex) => (
               <Box key={columnIndex}>
@@ -154,7 +150,7 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
                 ))}
               </Box>
             ))}
-          </Box>
+          </Grid>
         ))}
       </Flex>
     </Box>

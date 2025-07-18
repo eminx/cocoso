@@ -29,8 +29,10 @@ const fontSizeMap = {
   md: '1.25rem',
   lg: '1.5rem',
   xl: '2rem',
-  '2xl': '3rem',
-  '4xl': '4rem',
+  '2xl': '4rem',
+  '4xl': '8rem',
+  '5xl': '12rem',
+  '6xl': '16rem',
 };
 
 // Styled wrapper for positioning badge

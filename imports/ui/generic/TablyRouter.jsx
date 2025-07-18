@@ -3,7 +3,7 @@ import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
 
 import { Box } from '/imports/ui/core';
 
-import Tabs from '../entry/Tabs';
+import Tabs from '../core/Tabs';
 
 export default function TablyRouter({ tabs, children }) {
   const location = useLocation();
