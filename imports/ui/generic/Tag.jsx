@@ -6,7 +6,7 @@ import { Box, Flex, IconButton } from '/imports/ui/core';
 function Tag({
   label = '',
   gradientBackground = null,
-  filterColor = '#2d2d2d',
+  filterColor,
   checkable = false,
   checked = false,
   removable = false,
@@ -25,11 +25,13 @@ function Tag({
       }
       return 'white';
     }
-    return 'teal.500';
+    return 'var(--cocoso-colors-gray-50)';
   };
 
   return (
     <Flex
+      align="center"
+      gap="0"
       style={{
         background: getBackground(),
         borderRadius: 'var(--cocoso-border-radius)',
@@ -63,11 +65,7 @@ function Tag({
         </span>
       </Box>
       {removable && (
-        <IconButton
-          icon={<SmallCloseIcon />}
-          size="xs"
-          onClick={onRemove}
-        />
+        <IconButton icon={<SmallCloseIcon />} size="xs" onClick={onRemove} />
       )}
     </Flex>
   );

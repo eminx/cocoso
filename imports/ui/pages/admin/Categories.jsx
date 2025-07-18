@@ -1,22 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
+  Alert,
+  Box,
   Button,
   HStack,
   Input,
-  Tag,
-  TagCloseButton,
-  TagLabel,
+  Loader,
   Text,
   Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
+import Tag from '/imports/ui/generic/Tag';
+import { message } from '/imports/ui/generic/message';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import { call } from '/imports/ui/utils/shared';
 
-import { call } from '../../utils/shared';
-import Loader from '../../core/Loader';
-import { message } from '../../generic/message';
-import Alert from '../../core/Alert';
-import { StateContext } from '../../LayoutContainer';
 import Boxling from './Boxling';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
@@ -75,7 +74,7 @@ function Categories() {
     if (specialCh.test(value)) {
       message.error(t('categories.message.denySpecialChars'));
     } else {
-      setCategoryInput(value.toUpperCase());
+      setCategoryInput(value);
     }
   };
 
@@ -84,7 +83,7 @@ function Categories() {
   }
 
   return (
-    <>
+    <Box py="4">
       <Text mb="3">{t('categories.info')}</Text>
 
       <Boxling mb="4">
@@ -103,22 +102,19 @@ function Categories() {
       </Boxling>
 
       <Boxling>
-        <Wrap p="1" spacing="2" mb="2">
+        <Wrap p="1" gap="2" mb="2">
           {categories.map((category) => (
-            <WrapItem key={category._id}>
-              <Tag size="sm" colorScheme="messenger">
-                <TagLabel fontWeight="bold">
-                  {category.label.toUpperCase()}
-                </TagLabel>
-                <TagCloseButton
-                  onClick={() => removeCategory(category._id)}
-                />
-              </Tag>
-            </WrapItem>
+            <Tag
+              key={category._id}
+              label={category.label.toUpperCase()}
+              m="2"
+              removable
+              onRemove={() => removeCategory(category._id)}
+            />
           ))}
         </Wrap>
       </Boxling>
-    </>
+    </Box>
   );
 }
 
