@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -15,7 +14,6 @@ import { Box } from '/imports/ui/core';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
 import { call } from './utils/shared';
-import generateTheme from './utils/constants/theme';
 import Header from './layout/Header';
 import HelmetHybrid from './layout/HelmetHybrid';
 import { Footer, PlatformFooter } from './layout/Footers';
@@ -125,8 +123,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
     }
   };
 
-  const chakraTheme = generateTheme(currentHost?.theme?.hue);
-
   const hostWithinUser =
     currentUser &&
     currentUser.memberships &&
@@ -147,59 +143,53 @@ function LayoutPage({ currentUser, userLoading, children }) {
   return (
     <>
       <HelmetHybrid Host={currentHost} />
-      <ChakraProvider theme={chakraTheme}>
-        <ColorModeProvider>
-          <StateContext.Provider
-            value={{
-              allHosts,
-              canCreateContent,
-              currentUser,
-              currentHost,
-              hue,
-              isDesktop,
-              isMobile,
-              pageTitles,
-              platform,
-              role,
-              userLoading,
-              getCurrentHost,
-              getPageTitles,
-              getPlatform,
-              setHue,
-              setSelectedHue,
-              setCurrentHost,
-            }}
-          >
-            <GlobalStyles theme={currentHost?.theme} />
-            <DummyWrapper
-              animate={rendered && !isDesktop}
-              theme={currentHost?.theme}
-            >
-              {rendered && !adminPage && (
-                <TopBarHandler slideStart={rendered} />
-              )}
-              {!adminPage && (
-                <Header
-                  Host={currentHost}
-                  isLogoSmall={isLogoSmall}
-                  pageTitles={pageTitles}
-                />
-              )}
-              {children}
-            </DummyWrapper>
+      <StateContext.Provider
+        value={{
+          allHosts,
+          canCreateContent,
+          currentUser,
+          currentHost,
+          hue,
+          isDesktop,
+          isMobile,
+          pageTitles,
+          platform,
+          role,
+          userLoading,
+          getCurrentHost,
+          getPageTitles,
+          getPlatform,
+          setHue,
+          setSelectedHue,
+          setCurrentHost,
+        }}
+      >
+        <GlobalStyles theme={currentHost?.theme} />
+        <DummyWrapper
+          animate={rendered && !isDesktop}
+          theme={currentHost?.theme}
+        >
+          {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
+          {!adminPage && (
+            <Header
+              Host={currentHost}
+              isLogoSmall={isLogoSmall}
+              pageTitles={pageTitles}
+            />
+          )}
+          {children}
+        </DummyWrapper>
 
-            {rendered && !adminPage && (
-              <Box>
-                <Footer
-                  currentHost={currentHost}
-                  isFederationFooter={isFederationFooter}
-                />
-                {isFederationFooter && <PlatformFooter platform={platform} />}
-              </Box>
-            )}
-          </StateContext.Provider>
-        </ColorModeProvider>
-      </ChakraProvider>
+        {rendered && !adminPage && (
+          <Box>
+            <Footer
+              currentHost={currentHost}
+              isFederationFooter={isFederationFooter}
+            />
+            {isFederationFooter && <PlatformFooter platform={platform} />}
+          </Box>
+        )}
+      </StateContext.Provider>
 
       {rendered && (
         <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />

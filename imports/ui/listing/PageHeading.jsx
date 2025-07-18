@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Client } from 'react-hydration-provider';
 
-import { Box, Center, Heading, Divider } from '/imports/ui/core';
+import { Box, Center, Divider, Heading, Text } from '/imports/ui/core';
 
 import NewButton from './NewButton';
 
@@ -29,7 +29,7 @@ export default function PageHeading({
         />
         <meta property="og:type" content="website" />
       </Helmet>
-      <Center>
+      <Center mb="4">
         <Box px="2">
           <Center position="relative">
             <Heading as="h1" size="lg" textAlign="center">
@@ -43,18 +43,18 @@ export default function PageHeading({
             <Divider borderColor="brand.500" minW="280px" />
             <Center>{children}</Center>
             {description && (
-              <Heading
-                size="sm"
+              <Text
+                size="lg"
                 css={{
                   fontFamily: "'Sarabun', sans-serif",
                   fontWeight: '300',
                   lineHeight: '1.3',
                   maxWidth: '520px',
+                  textAlign: 'center',
                 }}
-                textAlign="center"
               >
                 {description}
-              </Heading>
+              </Text>
             )}
           </Box>
         </Box>

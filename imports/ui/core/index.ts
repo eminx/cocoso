@@ -31,6 +31,7 @@ import { Radio, RadioGroup } from './RadioButtons';
 import Select from './Select';
 import Spinner from './Spinner';
 import Tabs from './Tabs';
+import Progress from './Progress';
 import Textarea from './Textarea';
 
 export {
@@ -71,6 +72,7 @@ export {
   Slide,
   Spinner,
   Stack,
+  Progress,
   Tabs,
   Tag,
   Text,
