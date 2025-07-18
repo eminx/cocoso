@@ -1,48 +1,46 @@
-import React from 'react';
-import {
-  Box,
-  Button,
-  Collapse,
-  Flex,
-  Heading,
-  Input,
-  Select,
-  Wrap,
-  useDisclosure,
-} from '@chakra-ui/react';
+import React, { useState } from 'react';
 import { Trans } from 'react-i18next';
 import ListFilter from 'lucide-react/dist/esm/icons/list-filter';
-import ChevronDown from 'lucide-react/dist/esm/icons/chevron-down';
-import ChevronUp from 'lucide-react/dist/esm/icons/chevron-up';
+
+import {
+  Accordion,
+  Box,
+  Button,
+  Flex,
+  Input,
+  Select,
+  Text,
+  Wrap,
+} from '/imports/ui/core';
 
 function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
   return (
     <Wrap justify="space-around">
-      <Box w="2xs" px="4">
-        <Heading fontSize="sm">
+      <Box>
+        <Text fontSize="xs">
           <Trans i18nKey="labels.filter" ns="common">
             Filter
           </Trans>
-        </Heading>
+        </Text>
         <Input
-          my="2"
           size="sm"
           value={filterValue}
+          css={{ margin: '0.5rem 0' }}
           onChange={(event) => setFilterValue(event.target.value)}
         />
       </Box>
 
-      <Box w="2xs" px="4">
-        <Heading fontSize="sm">
+      <Box>
+        <Text fontSize="xs">
           <Trans i18nKey="labels.sort" ns="common">
             Sort
           </Trans>
-        </Heading>
+        </Text>
         <Select
-          my="2"
           name="sorter"
           size="sm"
           value={sortValue}
+          css={{ margin: '0.5rem 0' }}
           onChange={(e) => setSortValue(e.target.value)}
         >
           <option value="date">
@@ -63,47 +61,39 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
 }
 
 export default function FiltrerSorter(props) {
-  const { isOpen, onToggle } = useDisclosure();
+  const { open, setOpen } = useState();
 
   const handleToggle = () => {
-    if (isOpen) {
+    if (open) {
       props.setFilterValue('');
     }
-    onToggle();
+    setOpen(!open);
   };
 
   return (
-    <Box>
-      <Flex justify="flex-end">
-        <Button
-          color="gray.600"
-          fontWeight="normal"
-          leftIcon={<ListFilter />}
-          mb="2"
-          rightIcon={isOpen ? <ChevronUp size={18} /> : <ChevronDown size={15} />}
-          size="xs"
-          variant="link"
-          onClick={() => handleToggle()}
-        >
-          <Trans i18nKey="common:labels.filterAndSort">Filter & Sort</Trans>
-        </Button>
-      </Flex>
-
-      <Box>
-        <Collapse in={isOpen} animateOpacity>
-          <Box
-            bg="gray.50"
-            borderColor="gray.400"
-            borderWidth={1}
-            borderRadius="lg"
-            mb="4"
-            mx="2"
-            p="4"
-          >
-            <Inputs {...props} />
-          </Box>
-        </Collapse>
-      </Box>
-    </Box>
+    <Flex justify="flex-end" my="2" w="300px">
+      <Accordion
+        options={[
+          {
+            key: '1',
+            header: (
+              <Flex align="center" w="100%">
+                <ListFilter />
+                <span style={{ fontSize: '0.875rem' }}>
+                  <Trans i18nKey="common:labels.filterAndSort">
+                    Filter & Sort
+                  </Trans>
+                </span>
+              </Flex>
+            ),
+            content: (
+              <Box>
+                <Inputs {...props} />
+              </Box>
+            ),
+          },
+        ]}
+      />
+    </Flex>
   );
 }
