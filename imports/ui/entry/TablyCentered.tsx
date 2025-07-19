@@ -6,13 +6,13 @@ import { Helmet } from 'react-helmet';
 
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Center,
   Flex,
   Heading,
   Link as CLink,
+  Tag,
   VStack,
   Wrap,
 } from '/imports/ui/core';
@@ -136,7 +136,9 @@ const Header: React.FC<HeaderProps> = ({
               mt="2"
             >
               {tags.map((tag, i) => (
-                <Badge key={tag + i}>{tag}</Badge>
+                <Tag colorScheme="gray" key={tag + i}>
+                  {tag}
+                </Tag>
               ))}
             </Wrap>
           )}

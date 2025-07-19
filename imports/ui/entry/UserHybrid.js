@@ -21,12 +21,14 @@ export function Bio({ user }) {
     <Flex justifyContent="center" mb="4">
       <Box
         bg="white"
-        borderLeft="4px solid"
-        borderColor="theme.500"
         className="text-content"
-        maxW="480px"
         p="4"
         w="100%"
+        css={{
+          borderColor: 'var(--cocoso-colors-theme-500)',
+          borderLeft: '4px solid',
+          maxWidth: '480px',
+        }}
       >
         {HTMLReactParser(user.bio)}
       </Box>

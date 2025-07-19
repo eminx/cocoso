@@ -15,7 +15,6 @@ import {
 
 import { StateContext } from '../LayoutContainer';
 import Tag from '../generic/Tag';
-import { m } from 'framer-motion';
 
 const isClient = Meteor.isClient;
 
@@ -64,9 +63,11 @@ export default function NewGridThumb({
       }}
     >
       <Box
-        borderRadius="lg"
         className="text-link-container"
-        position="relative"
+        css={{
+          borderRadius: 'var(--cocoso-border-radius)',
+          position: 'relative',
+        }}
       >
         <Center
           bg={imageUrl ? 'white' : 'theme.100'}
@@ -89,7 +90,14 @@ export default function NewGridThumb({
             )
           ) : (
             coverText && (
-              <Text color="theme.600" fontSize="3xl" fontWeight="light" m="4">
+              <Text
+                css={{
+                  color: 'var(--cocoso-colors-theme-600)',
+                  fontSize: '2rem',
+                  fontWeight: 'light',
+                  margin: '1rem',
+                }}
+              >
                 {coverText}
               </Text>
             )
@@ -148,10 +156,12 @@ export default function NewGridThumb({
             {subTitle && (
               <Heading
                 className="text-link"
-                fontSize="1rem"
-                fontWeight="light"
-                mb="2"
-                overflowWrap="anywhere"
+                css={{
+                  fontSize: '1rem',
+                  fontWeight: 'light',
+                  marginBottom: '0.5rem',
+                  overflowWrap: 'anywhere',
+                }}
               >
                 {subTitle}
               </Heading>
@@ -161,7 +171,7 @@ export default function NewGridThumb({
 
           {avatar && (
             <Box pt="2">
-              <Avatar borderRadius="lg" name={avatar.name} src={avatar.url} />
+              <Avatar name={avatar.name} src={avatar.url} />
             </Box>
           )}
         </Flex>

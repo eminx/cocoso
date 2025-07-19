@@ -2,8 +2,8 @@ import React from 'react';
 import { HydrationProvider } from 'react-hydration-provider';
 import { useLocation } from 'react-router-dom';
 
-import CocosoCSSProvider from './CocosoCSSProvider';
 import { Box } from '/imports/ui/core';
+import GlobalStyles from './GlobalStyles';
 
 export default function DummyWrapper({
   animate = false,
@@ -21,21 +21,20 @@ export default function DummyWrapper({
 
   return (
     <HydrationProvider>
-      <CocosoCSSProvider hue={theme?.hue}>
-        <Box
-          boxShadow="md"
-          className={wrapperClass}
-          id="main-content-container"
-          style={{
-            backgroundColor: theme?.body?.backgroundColor,
-            backgroundImage: theme?.body?.backgroundImage,
-            backgroundRepeat: theme?.body?.backgroundRepeat,
-          }}
-          {...otherProps}
-        >
-          {children}
-        </Box>
-      </CocosoCSSProvider>
+      <GlobalStyles theme={theme} />
+      <Box
+        boxShadow="md"
+        className={wrapperClass}
+        id="main-content-container"
+        style={{
+          backgroundColor: theme?.body?.backgroundColor,
+          backgroundImage: theme?.body?.backgroundImage,
+          backgroundRepeat: theme?.body?.backgroundRepeat,
+        }}
+        {...otherProps}
+      >
+        {children}
+      </Box>
     </HydrationProvider>
   );
 }

@@ -34,11 +34,12 @@ export default function ContactInfo({ username }) {
     <>
       <Center>
         <Button
-          borderColor="theme.200"
-          borderWidth="2px"
-          colorScheme="brand"
-          height="48px"
-          width={isDesktop ? '240px' : '180px'}
+          h="48px"
+          w={isDesktop ? '240px' : '180px'}
+          css={{
+            borderColor: 'var(--cocoso-colors-theme-200)',
+            borderWidth: '2px',
+          }}
           onClick={() => setModalOpen(true)}
         >
           <Trans i18nKey="common:labels.contact">Contact</Trans>

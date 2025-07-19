@@ -40,7 +40,12 @@ export default function PageHeading({
             </Client>
           </Center>
           <Box py="2">
-            <Divider borderColor="theme.500" minW="280px" />
+            <Divider
+              css={{
+                borderColor: 'var(--cocoso-colors-theme-500)',
+                minWidth: '280px',
+              }}
+            />
             <Center>{children}</Center>
             {description && (
               <Text

@@ -41,16 +41,22 @@ function NewEntryHelper({
   return (
     <Link className="sexy-thumb-container" to={buttonLink}>
       <Box
-        _hover={{ bg: 'theme.100' }}
-        _active={{ bg: 'theme.200' }}
         bg="theme.50"
-        border="1px solid"
-        borderColor="theme.500"
-        fontWeight="bold"
         h={h}
         px="4"
         py="8"
         w={w}
+        css={{
+          border: '1px solid',
+          borderColor: 'var(--cocoso-colors-theme-500)',
+          fontWeight: 'bold',
+          ':hover': {
+            bg: 'var(--cocoso-colors-theme-100)',
+          },
+          ':active': {
+            bg: 'var(--cocoso-colors-theme-200)',
+          },
+        }}
       >
         <h3
           className="thumb-title"

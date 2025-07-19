@@ -40,9 +40,7 @@ function ButtonContent({ value, onChange }) {
     <Center>
       <Box maxW="md">
         <FormField
-          helperText={
-            <Trans i18nKey="admin:composable.form.labelHelper" />
-          }
+          helperText={<Trans i18nKey="admin:composable.form.labelHelper" />}
           label={<Trans i18nKey="admin:composable.form.label" />}
           mb="8"
           required
@@ -54,9 +52,7 @@ function ButtonContent({ value, onChange }) {
         </FormField>
 
         <FormField
-          helperText={
-            <Trans i18nKey="admin:composable.form.linkHelper" />
-          }
+          helperText={<Trans i18nKey="admin:composable.form.linkHelper" />}
           label={<Trans i18nKey="admin:composable.form.link" />}
           required
         >
@@ -109,9 +105,7 @@ function Divider({ value, onChange }) {
             </Text>
             <Menu
               buttonLabel={
-                <Trans
-                  i18nKey={`admin:composable.form.${value.kind}`}
-                />
+                <Trans i18nKey={`admin:composable.form.${value.kind}`} />
               }
               options={dividerMenuOptions}
               rightIcon={<ChevronDownIcon size="18px" />}
@@ -127,9 +121,7 @@ function Divider({ value, onChange }) {
                 helperText={
                   <Trans i18nKey="admin:composable.form.emptySpaceHelper" />
                 }
-                label={
-                  <Trans i18nKey="admin:composable.form.emptySpace" />
-                }
+                label={<Trans i18nKey="admin:composable.form.emptySpace" />}
                 required
               >
                 <NumberInput
@@ -212,18 +204,22 @@ function ImageContent({ value, ping, onChange }) {
 
         {value.isLink ? (
           <FormField
-            helperText={
-              <Trans i18nKey="admin:composable.form.linkHelper" />
-            }
+            helperText={<Trans i18nKey="admin:composable.form.linkHelper" />}
             label={<Trans i18nKey="admin:composable.form.link" />}
             my="4"
           >
             <Input
-              _hover={{ borderColor }}
-              _focus={{ borderColor }}
-              borderColor={borderColor}
               size="sm"
               value={value.linkValue}
+              css={{
+                borderColor,
+                ':hover': {
+                  borderColor,
+                },
+                ':focus': {
+                  borderColor,
+                },
+              }}
               onChange={handleInputChange}
             />
           </FormField>
@@ -280,9 +276,7 @@ function VideoContent({ value, onChange }) {
       <Box maxW="md">
         <FormField
           label={<Trans i18nKey="admin:composable.form.video" />}
-          helperText={
-            <Trans i18nKey="admin:composable.form.videoHelper" />
-          }
+          helperText={<Trans i18nKey="admin:composable.form.videoHelper" />}
           required
         >
           <Input
@@ -314,9 +308,7 @@ function VideoContent({ value, onChange }) {
 }
 
 export default function ContentHandler() {
-  const { contentModal, setContentModal } = useContext(
-    ComposablePageContext
-  );
+  const { contentModal, setContentModal } = useContext(ComposablePageContext);
 
   if (!contentModal) {
     return null;
@@ -355,15 +347,11 @@ export default function ContentHandler() {
   }
 
   if (type === 'image') {
-    return (
-      <ImageContent {...genericProps} ping={contentModal?.uploading} />
-    );
+    return <ImageContent {...genericProps} ping={contentModal?.uploading} />;
   }
 
   if (type === 'image-slider') {
-    return (
-      <SliderContent {...genericProps} ping={contentModal?.uploading} />
-    );
+    return <SliderContent {...genericProps} ping={contentModal?.uploading} />;
   }
 
   if (type === 'text') {

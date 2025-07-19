@@ -43,7 +43,9 @@ export default function FileDropper({
           w="100%"
           css={{
             ...containerStyle,
-            borderColor: isDragActive ? 'theme.500' : 'theme.200',
+            borderColor: isDragActive
+              ? 'var(--cocoso-colors-theme-500)'
+              : 'var(--cocoso-colors-theme-200)',
           }}
           {...otherProps}
         >

@@ -149,17 +149,21 @@ export default function DocumentsField({
             <ReactDropzone onDrop={handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
                 <Flex
-                  _hover={{ bg: 'theme.50' }}
                   align="center"
                   bg={isDragActive ? 'gray.300' : 'white'}
-                  border="2px dashed"
-                  borderColor="theme.500"
-                  cursor="grab"
                   direction="column"
                   h="120px"
                   justify="center"
                   p="4"
                   w="100%"
+                  css={{
+                    border: '2px dashed',
+                    borderColor: 'var(--cocoso-colors-theme-500)',
+                    cursor: 'grab',
+                    ':hover': {
+                      bg: 'var(--cocoso-colors-theme-50)',
+                    },
+                  }}
                   {...getRootProps()}
                 >
                   {isUploading ? (

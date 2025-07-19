@@ -48,15 +48,7 @@ function PopupHeader({ subTitle, tags, title }) {
           {tags.map(
             (tag) =>
               tag && (
-                <Tag
-                  key={tag}
-                  css={{
-                    background: 'var(--cocoso-colors-gray-50)',
-                    color: 'var(--cocoso-colors-gray-800)',
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                  }}
-                >
+                <Tag key={tag} colorScheme="gray" size="sm">
                   {tag}
                 </Tag>
               )

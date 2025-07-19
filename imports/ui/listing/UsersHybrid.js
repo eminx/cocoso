@@ -120,7 +120,13 @@ export default function UsersHybrid({ users, keywords, Host }) {
               <Divider my="2" />
 
               {selectedProfile.bio && (
-                <Box borderLeft="4px solid" borderColor="theme.500" pl="2">
+                <Box
+                  pl="2"
+                  css={{
+                    borderLeft: '4px solid',
+                    borderColor: 'var(--cocoso-colors-theme-500)',
+                  }}
+                >
                   {HTMLReactParser(selectedProfile.bio)}
                 </Box>
               )}

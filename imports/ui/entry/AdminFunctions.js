@@ -2,8 +2,8 @@ import React from 'react';
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { useTranslation } from 'react-i18next';
 
+import { Flex, IconButton, Text } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
-import { IconButton, Text } from '/imports/ui/core';
 
 export default function AdminFunctions({ menuItems, onSelect }) {
   const [t] = useTranslation('admin');
@@ -12,7 +12,7 @@ export default function AdminFunctions({ menuItems, onSelect }) {
     <Menu
       align="start"
       button={
-        <>
+        <Flex direction="column" align="center" gap="0">
           <IconButton icon={<SettingsIcon />} variant="outline" />
           <Text
             color="theme.50"
@@ -22,7 +22,7 @@ export default function AdminFunctions({ menuItems, onSelect }) {
           >
             {t('label')}
           </Text>
-        </>
+        </Flex>
       }
       direction="top"
       options={menuItems}

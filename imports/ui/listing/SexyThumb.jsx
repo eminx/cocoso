@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import dayjs from 'dayjs';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import { Box, Flex, HStack, Tag as CTag } from '/imports/ui/core';
+import { Box, Flex, HStack, Tag } from '/imports/ui/core';
 
 import { DateJust } from '../entry/FancyDate';
 import { StateContext } from '../LayoutContainer';
@@ -88,14 +88,15 @@ export default function SexyThumb({
   return (
     <Box
       bg="theme.500"
-      border="1px solid"
-      borderColor="white"
-      borderRadius="lg"
-      boxShadow="xl"
       className="thumb-cover-container"
-      fontWeight="bold"
       h={imageStyle.height}
       maxW={imageStyle.maxWidth}
+      css={{
+        border: '1px solid',
+        borderColor: 'white',
+        borderRadius: 'lg',
+        fontWeight: 'bold',
+      }}
     >
       <div className="thumb-cover">
         <LazyLoadImage
@@ -108,10 +109,17 @@ export default function SexyThumb({
       </div>
 
       {host && (
-        <Box p="1" position="absolute" right="12px" bottom="8px">
-          <CTag bg="rgba(255, 255, 255, 0.7)" size="sm">
+        <Box
+          p="1"
+          css={{
+            bottom: '8px',
+            position: 'absolute',
+            right: '12px',
+          }}
+        >
+          <Tag colorScheme="gray" size="sm">
             {hostValue}
-          </CTag>
+          </Tag>
         </Box>
       )}
 
@@ -123,9 +131,9 @@ export default function SexyThumb({
             {tags && (
               <Flex my="2">
                 {tags.map((t) => (
-                  <CTag bg="gray.700" color="white" key={t} size="sm">
+                  <Tag colorScheme="gray" key={t} size="sm">
                     {t}
-                  </CTag>
+                  </Tag>
                 ))}
               </Flex>
             )}

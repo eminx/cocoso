@@ -20,16 +20,12 @@ import { Login } from './index';
 
 export default function LoginPage() {
   const [t] = useTranslation('accounts');
-  const { currentUser, currentHost, platform, role } =
-    useContext(StateContext);
+  const { currentUser, currentHost, platform, role } = useContext(StateContext);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isJoinModal, setIsJoinModal] = useState(false);
   const navigate = useNavigate();
 
-  if (
-    currentUser &&
-    ['participant', 'contributor', 'admin'].includes(role)
-  ) {
+  if (currentUser && ['participant', 'contributor', 'admin'].includes(role)) {
     return <Navigate to="/admin/my-profile/general" />;
   }
 
@@ -38,20 +34,16 @@ export default function LoginPage() {
       return;
     }
     setIsSubmitted(true);
-    Meteor.loginWithPassword(
-      values.username,
-      values.password,
-      (error) => {
-        if (error) {
-          message.error(error.reason);
-          setIsSubmitted(false);
-          return;
-        }
-        setTimeout(() => {
-          setIsJoinModal(true);
-        }, 300);
+    Meteor.loginWithPassword(values.username, values.password, (error) => {
+      if (error) {
+        message.error(error.reason);
+        setIsSubmitted(false);
+        return;
       }
-    );
+      setTimeout(() => {
+        setIsJoinModal(true);
+      }, 300);
+    });
   };
 
   const cancelJoin = () => {
@@ -106,15 +98,14 @@ export default function LoginPage() {
 
             <Box
               bg="gray.50"
-              borderColor="gray.300"
-              borderWidth={1}
               mb="4"
               p="6"
+              css={{
+                border: '1px solid',
+                borderColor: 'var(--cocoso-colors-gray-300)',
+              }}
             >
-              <Login
-                isSubmitted={isSubmitted}
-                onSubmit={handleSubmit}
-              />
+              <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
             </Box>
             <Center>
               <Text textAlign="center">
@@ -143,9 +134,7 @@ export default function LoginPage() {
         <Center>
           <Image src={currentHost?.logo} m="4" width="4xs" />
         </Center>
-        <Text fontSize="lg">
-          {t('profile.joinAsParticipantQuestion')}
-        </Text>
+        <Text fontSize="lg">{t('profile.joinAsParticipantQuestion')}</Text>
       </Modal>
     </Box>
   );

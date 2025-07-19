@@ -11,8 +11,9 @@ import { ComposablePageContext } from '../ComposablePageForm';
 import { message } from '/imports/ui/generic/message';
 
 export default function ComposablePageSettings() {
-  const { currentPage, setCurrentPage, updateComposablePage } =
-    useContext(ComposablePageContext);
+  const { currentPage, setCurrentPage, updateComposablePage } = useContext(
+    ComposablePageContext
+  );
 
   const [state, setState] = useState({
     settingsModalOpen: false,
@@ -37,15 +38,11 @@ export default function ComposablePageSettings() {
 
   const confirmChange = async () => {
     if (currentPage.title === '') {
-      message.error(
-        <Trans i18nKey="admin:composable.messages.titleEmpty" />
-      );
+      message.error(<Trans i18nKey="admin:composable.messages.titleEmpty" />);
       return;
     }
     if (currentPage.title.length > 50) {
-      message.error(
-        <Trans i18nKey="admin:composable.messages.titleTooLong" />
-      );
+      message.error(<Trans i18nKey="admin:composable.messages.titleTooLong" />);
       return;
     }
     try {
@@ -63,9 +60,8 @@ export default function ComposablePageSettings() {
   const settings = currentPage?.settings || {};
 
   return (
-    <div>
+    <div style={{ flexGrow: '0' }}>
       <Button
-        flexGrow={0}
         ml="4"
         rightIcon={<SettingsIcon size="16px" />}
         size="sm"
@@ -93,9 +89,7 @@ export default function ComposablePageSettings() {
       >
         <Box borderRadius="md">
           <Box pb="2">
-            <FormField
-              label={<Trans i18nKey="admin:composable.form.title" />}
-            >
+            <FormField label={<Trans i18nKey="admin:composable.form.title" />}>
               <Input
                 type="text"
                 value={currentPage?.title}
@@ -107,14 +101,10 @@ export default function ComposablePageSettings() {
           <Box>
             <Checkbox
               isChecked={settings?.hideTitle}
-              onChange={(e) =>
-                updateSettings({ hideTitle: e.target.checked })
-              }
+              onChange={(e) => updateSettings({ hideTitle: e.target.checked })}
             >
               <FormField
-                label={
-                  <Trans i18nKey="admin:composable.settings.hideTitle" />
-                }
+                label={<Trans i18nKey="admin:composable.settings.hideTitle" />}
               />
             </Checkbox>
           </Box>
@@ -122,14 +112,10 @@ export default function ComposablePageSettings() {
           <Box>
             <Checkbox
               isChecked={settings?.hideMenu}
-              onChange={(e) =>
-                updateSettings({ hideMenu: e.target.checked })
-              }
+              onChange={(e) => updateSettings({ hideMenu: e.target.checked })}
             >
               <FormField
-                label={
-                  <Trans i18nKey="admin:composable.settings.hideMenu" />
-                }
+                label={<Trans i18nKey="admin:composable.settings.hideMenu" />}
               />
             </Checkbox>
           </Box>

@@ -75,10 +75,12 @@ export default function SignupPage() {
 
             <Box
               bg="gray.50"
-              borderColor="gray.300"
-              borderWidth={1}
               mb="4"
               p="6"
+              css={{
+                border: '1px solid',
+                borderColor: 'var(--cocoso-colors-gray-300)',
+              }}
             >
               <Signup onSubmit={(values) => createAccount(values)} />
             </Box>

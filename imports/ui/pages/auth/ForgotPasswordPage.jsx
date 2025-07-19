@@ -49,7 +49,14 @@ function ForgotPasswordPage() {
             </Text>
           </Center>
 
-          <Box bg="theme.50" borderColor="theme.100" borderWidth={1} p="6">
+          <Box
+            bg="theme.50"
+            p="6"
+            css={{
+              border: '1px solid',
+              borderColor: 'var(--cocoso-colors-theme-100)',
+            }}
+          >
             {emailSent ? (
               <Text>{t('password.message.linkSend')}</Text>
             ) : (

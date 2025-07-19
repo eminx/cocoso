@@ -18,14 +18,23 @@ const fontSizes = {
   '9xl': '8rem',
 };
 
-export const Tag = styled('span', (props: any) => ({
-  alignItems: 'center',
-  display: 'inline-flex',
-  backgroundColor: props.bg || 'var(--cocoso-colors-gray-100)',
-  borderRadius: '0.375rem',
-  fontSize: '0.875rem',
-  padding: '0.25rem 0.5rem',
-}));
+export const Tag = styled('span', (props: any) => {
+  const colorScheme = props.colorScheme || 'theme';
+  const backgroundColor = `var(--cocoso-colors-${colorScheme}-600)`;
+  const color = `var(--cocoso-colors-${colorScheme}-50)`;
+
+  return {
+    alignItems: 'center',
+    display: 'inline-flex',
+    backgroundColor,
+    borderRadius: 'var(--cocoso-border-radius)',
+    color,
+    fontSize: '0.875rem',
+    fontWeight: '400',
+    padding: '0.25rem 0.5rem',
+    textTransform: 'capitalize',
+  };
+});
 
 interface TextProps {
   fontSize?: string;

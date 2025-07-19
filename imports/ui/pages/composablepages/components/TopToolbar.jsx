@@ -19,7 +19,7 @@ export default function TopToolBar({ composablePageTitles }) {
 
   return (
     <Flex align="center" justify="space-between" my="8">
-      <Box flexGrow={1}>
+      <Box css={{ flexGrow: 1 }}>
         <ReactSelect
           options={composablePageTitles}
           placeholder={<Trans i18nKey="common:labels.select" />}
@@ -40,17 +40,15 @@ export default function TopToolBar({ composablePageTitles }) {
         />
       </Box>
 
-      <Tag
-        colorScheme={isPublished ? 'green' : 'orange'}
-        ml="4"
-        variant="solid"
-      >
-        <Trans
-          i18nKey={`admin:composable.toolbar.${
-            isPublished ? 'published' : 'unpublished'
-          }`}
-        />
-      </Tag>
+      <Box pl="4">
+        <Tag colorScheme={isPublished ? 'green' : 'orange'} variant="solid">
+          <Trans
+            i18nKey={`admin:composable.toolbar.${
+              isPublished ? 'published' : 'unpublished'
+            }`}
+          />
+        </Tag>
+      </Box>
 
       <ComposablePageSettings />
     </Flex>

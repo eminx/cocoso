@@ -20,7 +20,6 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
   return (
     <>
       <HelmetHybrid Host={Host} />
-      <GlobalStyles theme={Host?.theme} />
 
       <I18nextProvider i18n={i18n}>
         <DummyWrapper theme={Host?.theme}>

@@ -92,13 +92,15 @@ export default function AddDocument({ onClose }) {
         {({ getRootProps, getInputProps, isDragActive }) => (
           <Box
             bg={isDragActive ? 'theme.300' : 'theme.50'}
-            border="1x dashed"
-            borderColor="theme.300"
-            borderRadius="lg"
-            cursor="grab"
             h="180px"
             p="4"
             w="100%"
+            css={{
+              border: '1px dashed',
+              borderColor: 'var(--cocoso-colors-theme-300)',
+              borderRadius: 'var(--cocoso-border-radius)',
+              cursor: 'grab',
+            }}
             {...getRootProps()}
           >
             {isUploading ? (
