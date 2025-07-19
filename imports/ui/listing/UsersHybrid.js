@@ -154,8 +154,8 @@ export default function UsersHybrid({ users, keywords, Host }) {
         url={url}
       />
 
-      <Center>
-        <Tabs index={showKeywordSearch ? 1 : 0} mb="4" tabs={tabs} />
+      <Center mb="4">
+        <Tabs index={showKeywordSearch ? 1 : 0} tabs={tabs} />
       </Center>
 
       {showKeywordSearch ? (
@@ -185,13 +185,15 @@ export default function UsersHybrid({ users, keywords, Host }) {
             </Text>
           </Center>
 
-          <InfiniteScroller hideFiltrerSorter items={users}>
+          <InfiniteScroller hideFiltrerSorter items={users} itemsPerPage={20}>
             {(user) => (
               <Box
                 key={user.username}
-                cursor="pointer"
-                flexBasis="240px"
                 m="4"
+                css={{
+                  cursor: 'pointer',
+                  flexBasis: '240px',
+                }}
                 onClick={() => setModalItem(user)}
               >
                 <MemberAvatarEtc user={user} />
