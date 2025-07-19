@@ -24,7 +24,7 @@ function ReserveButton({ resource }) {
     <Link to={link}>
       <Button
         as="span"
-        borderColor="brand.200"
+        borderColor="theme.200"
         borderWidth="2px"
         colorScheme="brand"
         height="48px"
@@ -37,8 +37,7 @@ function ReserveButton({ resource }) {
 }
 
 export default function ResourceInteractionHandler({ slideStart }) {
-  const { canCreateContent, currentUser, role } =
-    useContext(StateContext);
+  const { canCreateContent, currentUser, role } = useContext(StateContext);
   const { resource } = useContext(ResourceContext);
 
   if (role === 'admin') {
@@ -47,9 +46,7 @@ export default function ResourceInteractionHandler({ slideStart }) {
         <Box w="40px">
           <ResourceAdminFunctions />
         </Box>
-        {resource.isBookable ? (
-          <ReserveButton resource={resource} />
-        ) : null}
+        {resource.isBookable ? <ReserveButton resource={resource} /> : null}
         <Box>
           <ChatButton
             context="resources"

@@ -48,11 +48,8 @@ function AddMeetingForm({
 
   return (
     <>
-      <Box bg="brand.50" borderRadius="lg" p="4">
-        <DateTimePicker
-          value={newMeeting}
-          onChange={handleDateChange}
-        />
+      <Box bg="theme.50" borderRadius="lg" p="4">
+        <DateTimePicker value={newMeeting} onChange={handleDateChange} />
 
         <FormControl alignItems="center" display="flex" my="4">
           <Checkbox
@@ -70,9 +67,7 @@ function AddMeetingForm({
           <Select
             name="resource"
             placeholder={t('meeting.form.resource')}
-            onChange={({ target: { value } }) =>
-              handleResourceChange(value)
-            }
+            onChange={({ target: { value } }) => handleResourceChange(value)}
           >
             {resources.map((r) => (
               <option key={r._id}>{r.label}</option>
@@ -82,9 +77,7 @@ function AddMeetingForm({
           <Textarea
             placeholder={t('meeting.form.location')}
             size="sm"
-            onChange={(event) =>
-              handleResourceChange(event.target.value)
-            }
+            onChange={(event) => handleResourceChange(event.target.value)}
           />
         )}
       </Box>
@@ -115,13 +108,8 @@ export default function AddMeeting({ onClose }) {
   const { currentHost } = useContext(StateContext);
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
-  const {
-    activities,
-    conflictingBooking,
-    isFormValid,
-    newMeeting,
-    resources,
-  } = state;
+  const { activities, conflictingBooking, isFormValid, newMeeting, resources } =
+    state;
 
   const getData = async () => {
     try {
@@ -142,14 +130,8 @@ export default function AddMeeting({ onClose }) {
   }, []);
 
   const checkDatesForConflict = async () => {
-    const {
-      resourceId,
-      resource,
-      startDate,
-      startTime,
-      endDate,
-      endTime,
-    } = state.newMeeting;
+    const { resourceId, resource, startDate, startTime, endDate, endTime } =
+      state.newMeeting;
     if (!resourceId || !startDate || !startTime || !endTime) {
       if (resource) {
         setState((prevState) => ({
@@ -175,10 +157,7 @@ export default function AddMeeting({ onClose }) {
       resource,
     };
 
-    const conflictingBooking = await call(
-      'checkDatesForConflict',
-      params
-    );
+    const conflictingBooking = await call('checkDatesForConflict', params);
 
     setState((prevState) => ({
       ...prevState,
@@ -207,9 +186,7 @@ export default function AddMeeting({ onClose }) {
   };
 
   const handleResourceChange = (resourceLabel) => {
-    const selectedResource = resources.find(
-      (r) => r?.label === resourceLabel
-    );
+    const selectedResource = resources.find((r) => r?.label === resourceLabel);
 
     setState((prevState) => ({
       ...prevState,
@@ -270,12 +247,7 @@ export default function AddMeeting({ onClose }) {
   };
 
   return (
-    <Modal
-      hideFooter
-      open
-      title={t('meeting.form.label')}
-      onClose={onClose}
-    >
+    <Modal hideFooter open title={t('meeting.form.label')} onClose={onClose}>
       <AddMeetingForm
         buttonDisabled={!isFormValid}
         conflictingBooking={conflictingBooking}

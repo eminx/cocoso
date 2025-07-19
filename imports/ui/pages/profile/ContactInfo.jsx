@@ -34,7 +34,7 @@ export default function ContactInfo({ username }) {
     <>
       <Center>
         <Button
-          borderColor="brand.200"
+          borderColor="theme.200"
           borderWidth="2px"
           colorScheme="brand"
           height="48px"
@@ -58,12 +58,7 @@ export default function ContactInfo({ username }) {
         onClose={() => setModalOpen(false)}
       >
         {contactInfo ? (
-          <Box
-            bg="white"
-            className="text-content"
-            p="4"
-            textAlign="center"
-          >
+          <Box bg="white" className="text-content" p="4" textAlign="center">
             {HTMLReactParser(contactInfo)}
           </Box>
         ) : (

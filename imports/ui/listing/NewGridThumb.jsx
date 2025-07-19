@@ -60,7 +60,7 @@ export default function NewGridThumb({
         borderRadius: 'var(--cocoso-border-radius)',
         cursor: 'pointer',
         overflow: 'hidden',
-        ':hover': { bg: 'brand.50' },
+        ':hover': { bg: 'theme.50' },
       }}
     >
       <Box
@@ -69,7 +69,7 @@ export default function NewGridThumb({
         position="relative"
       >
         <Center
-          bg={imageUrl ? 'white' : 'brand.100'}
+          bg={imageUrl ? 'white' : 'theme.100'}
           h={fixedImageHeight ? '220px' : 'auto'}
           css={{
             overflow: 'hidden',
@@ -89,7 +89,7 @@ export default function NewGridThumb({
             )
           ) : (
             coverText && (
-              <Text color="brand.600" fontSize="3xl" fontWeight="light" m="4">
+              <Text color="theme.600" fontSize="3xl" fontWeight="light" m="4">
                 {coverText}
               </Text>
             )

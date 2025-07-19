@@ -17,7 +17,7 @@ export default function ChangeLanguage({
 
   return (
     <Box
-      bg="brand.50"
+      bg="theme.50"
       p="2"
       css={{ borderRadius: 'var(--cocoso-border-radius)' }}
     >

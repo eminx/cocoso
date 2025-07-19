@@ -32,7 +32,7 @@ export default function GroupMembers({ group }) {
         css={{
           cursor: 'pointer',
           ':hover': {
-            bg: 'var(--chakra-colors-gray-200)',
+            bg: 'var(--cocoso-colors-gray-200)',
             borderRadius: '8px',
           },
         }}
@@ -72,10 +72,7 @@ export default function GroupMembers({ group }) {
                     size="md"
                     src={member.avatar}
                   />
-                  <CLink
-                    as="span"
-                    fontWeight={member.isAdmin ? 700 : 400}
-                  >
+                  <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
                     {member.username}
                   </CLink>
                   <Text ml="1">{member.isAdmin && '(admin)'}</Text>

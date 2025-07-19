@@ -236,7 +236,7 @@ export default function GroupMeetingDates(props) {
           <Center>
             {!isMember && (
               <Button
-                color="brand.50"
+                color="theme.50"
                 fontSize="sm"
                 variant="link"
                 onClick={() => setModalOpen(true)}

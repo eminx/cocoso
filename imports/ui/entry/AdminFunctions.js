@@ -15,7 +15,7 @@ export default function AdminFunctions({ menuItems, onSelect }) {
         <>
           <IconButton icon={<SettingsIcon />} variant="outline" />
           <Text
-            color="brand.50"
+            color="theme.50"
             fontSize="xs"
             fontWeight="bold"
             textAlign="center"

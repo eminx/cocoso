@@ -22,7 +22,7 @@ export function Bio({ user }) {
       <Box
         bg="white"
         borderLeft="4px solid"
-        borderColor="brand.500"
+        borderColor="theme.500"
         className="text-content"
         maxW="480px"
         p="4"

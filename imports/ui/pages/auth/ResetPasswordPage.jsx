@@ -1,10 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Link,
-  Navigate,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -52,7 +47,7 @@ function ResetPasswordPage() {
           <Text fontSize="lg" mb="6" textAlign="center">
             {t('password.labels.subtitle.reset')}
           </Text>
-          <Box bg="brand.50" mb="4" p="6">
+          <Box bg="theme.50" mb="4" p="6">
             <ResetPassword onResetPassword={handleResetPassword} />
           </Box>
           <Flex justify="space-around" mt="4">

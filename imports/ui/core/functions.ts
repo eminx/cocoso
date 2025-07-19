@@ -54,7 +54,7 @@ export const getColor = (color: string) => {
   }
 
   return colorParts
-    ? `var(--chakra-colors-${colorParts[0]}-${colorParts[1]})`
+    ? `var(--cocoso-colors-${colorParts[0]}-${colorParts[1]})`
     : 'gray.900';
 };
 
@@ -65,9 +65,7 @@ export const getPropStyles = (props: any) => {
     }),
     ...(props.borderRadius && {
       borderRadius:
-        borderRadiusScale[
-          props.borderRadius as keyof typeof borderRadiusScale
-        ],
+        borderRadiusScale[props.borderRadius as keyof typeof borderRadiusScale],
     }),
     ...(props.color && {
       color: getColor(props.color),

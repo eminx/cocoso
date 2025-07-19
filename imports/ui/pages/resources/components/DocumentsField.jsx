@@ -1,14 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Code,
-  Flex,
-  Link as CLink,
-  Loader,
-  Text,
-} from '/imports/ui/core';
+import { Box, Code, Flex, Link as CLink, Loader, Text } from '/imports/ui/core';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
@@ -34,10 +27,7 @@ export default function DocumentsField({
       return;
     }
     try {
-      const response = await call(
-        'getDocumentsByAttachments',
-        contextId
-      );
+      const response = await call('getDocumentsByAttachments', contextId);
       setDocuments(response.reverse());
       setIsLoading(false);
     } catch (error) {
@@ -60,9 +50,7 @@ export default function DocumentsField({
         contextId
       );
       getDocuments();
-      message.success(
-        `${uploadableFile.name} ${tc('documents.fileDropper')}`
-      );
+      message.success(`${uploadableFile.name} ${tc('documents.fileDropper')}`);
     } catch (error) {
       message.error(error.reason);
     } finally {
@@ -150,12 +138,7 @@ export default function DocumentsField({
             )}
           </NiceList>
         ) : (
-          <Text
-            fontSize="sm"
-            fontWeight="bold"
-            mb="4"
-            textAlign="center"
-          >
+          <Text fontSize="sm" fontWeight="bold" mb="4" textAlign="center">
             {tc('documents.empty')}
           </Text>
         )}
@@ -166,11 +149,11 @@ export default function DocumentsField({
             <ReactDropzone onDrop={handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
                 <Flex
-                  _hover={{ bg: 'brand.50' }}
+                  _hover={{ bg: 'theme.50' }}
                   align="center"
                   bg={isDragActive ? 'gray.300' : 'white'}
                   border="2px dashed"
-                  borderColor="brand.500"
+                  borderColor="theme.500"
                   cursor="grab"
                   direction="column"
                   h="120px"
@@ -183,8 +166,8 @@ export default function DocumentsField({
                     <Skeleton
                       w="100%"
                       h="100%"
-                      startColor="brand.100"
-                      endColor="brand.200"
+                      startColor="theme.100"
+                      endColor="theme.200"
                     />
                   ) : (
                     <Text textAlign="center" fontSize="sm">

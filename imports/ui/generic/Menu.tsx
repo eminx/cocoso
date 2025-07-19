@@ -38,12 +38,7 @@ export default function GenericMenu({
 }: GenericMenuProps): React.ReactElement | null {
   // Default button if none provided
   const defaultButton = (
-    <Button
-      leftIcon={leftIcon}
-      rightIcon={rightIcon}
-      size="sm"
-      variant="ghost"
-    >
+    <Button leftIcon={leftIcon} rightIcon={rightIcon} size="sm" variant="ghost">
       {buttonLabel}
     </Button>
   );
@@ -68,9 +63,7 @@ export default function GenericMenu({
                 disabled={item.isDisabled}
                 onClick={() => onSelect?.(item)}
               >
-                {typeof children === 'function'
-                  ? children(item)
-                  : item.label}
+                {typeof children === 'function' ? children(item) : item.label}
               </MenuItem>
             ))
           : children}

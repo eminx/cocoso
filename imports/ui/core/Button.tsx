@@ -6,6 +6,7 @@ import { xToRem } from './functions';
 
 // Button
 interface ButtonProps {
+  as?: string;
   children?: any;
   color?: string;
   colorScheme?: string;

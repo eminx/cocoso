@@ -3,14 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
 
-import {
-  Box,
-  Drawer,
-  Flex,
-  IconButton,
-  Text,
-  VStack,
-} from '/imports/ui/core';
+import { Box, Drawer, Flex, IconButton, Text, VStack } from '/imports/ui/core';
 
 import ChangeLanguageMenu from './ChangeLanguageMenu';
 import { StateContext } from '../LayoutContainer';
@@ -58,9 +51,7 @@ function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
           >
             <Box p="2">
               <Text
-                _hover={
-                  !isCurrentPageLabel && { textDecoration: 'underline' }
-                }
+                _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
                 fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
               >
                 {item.label}
@@ -95,8 +86,7 @@ export default function MenuDrawer() {
   const [tc] = useTranslation('common');
 
   const settings = currentHost?.settings;
-  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } =
-    settings || {};
+  const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } = settings || {};
 
   if (isDesktop && !isBurgerMenuOnDesktop) {
     return null;
@@ -156,7 +146,7 @@ export default function MenuDrawer() {
             onToggle={onToggle}
           />
 
-          <Box color="brand.600" mt="4">
+          <Box color="theme.600" mt="4">
             <MenuFooter />
           </Box>
         </Flex>

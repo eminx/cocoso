@@ -46,16 +46,14 @@ export function ChatUI({
   };
 
   const removeNotification = async (messageIndex) => {
-    const shouldRun = currentUser?.notifications?.find(
-      (notification) => {
-        if (!notification.unSeenIndexes) {
-          return false;
-        }
-        return notification.unSeenIndexes.some(
-          (unSeenIndex) => unSeenIndex === messageIndex
-        );
+    const shouldRun = currentUser?.notifications?.find((notification) => {
+      if (!notification.unSeenIndexes) {
+        return false;
       }
-    );
+      return notification.unSeenIndexes.some(
+        (unSeenIndex) => unSeenIndex === messageIndex
+      );
+    });
 
     if (!shouldRun) {
       return;
@@ -142,7 +140,7 @@ export function ChatButton({
             </Badge>
           )}
           <Text
-            color="brand.50"
+            color="theme.50"
             fontSize="xs"
             fontWeight="bold"
             textAlign="center"

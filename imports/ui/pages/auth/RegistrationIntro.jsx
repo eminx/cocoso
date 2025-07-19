@@ -39,7 +39,7 @@ function RegistrationIntro() {
       {/* <Center pb="4">
         <Image className="logo" fit="contain" src={platform.logo} />
       </Center> */}
-      <Box bg="brand.900" mx="4" pt="8" pb="20">
+      <Box bg="theme.900" mx="4" pt="8" pb="20">
         {/* <Center pb="4">
           <Heading color="gray.50">{platform.name}</Heading>
         </Center> */}

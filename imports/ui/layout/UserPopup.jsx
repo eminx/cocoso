@@ -25,16 +25,12 @@ import { getFullName } from '../utils/shared';
 
 function NotificationLinkItem({ host, item, children }) {
   if (item.host && host === item.host) {
-    return (
-      <Link to={`/${item.context}/${item.contextId}`}>{children}</Link>
-    );
+    return <Link to={`/${item.context}/${item.contextId}`}>{children}</Link>;
   }
 
   return (
     <CLink
-      href={`https://${item.host || host}/${item.context}/${
-        item.contextId
-      }`}
+      href={`https://${item.host || host}/${item.context}/${item.contextId}`}
     >
       {children}
     </CLink>
@@ -43,8 +39,8 @@ function NotificationLinkItem({ host, item, children }) {
 
 const linkButtonProps = {
   as: 'span',
-  bg: 'brand.50',
-  color: 'brand.500',
+  bg: 'theme.50',
+  color: 'theme.500',
   fontWeight: 'normal',
   variant: 'ghost',
   size: 'sm',
@@ -93,11 +89,7 @@ export function UserThumb({ isNotification = false }) {
         <Text fontSize={isDesktop ? 'md' : 'sm'} fontWeight="bold">
           {currentUser.username}
         </Text>
-        <Text
-          fontSize={isDesktop ? 'sm' : 'xs'}
-          fontWeight="light"
-          isTruncated
-        >
+        <Text fontSize={isDesktop ? 'sm' : 'xs'} fontWeight="light" isTruncated>
           {getFullName(currentUser)}
         </Text>
       </Flex>
@@ -106,13 +98,8 @@ export function UserThumb({ isNotification = false }) {
 }
 
 export default function UserPopup({ isOpen, setIsOpen }) {
-  const {
-    canCreateContent,
-    currentHost,
-    currentUser,
-    isDesktop,
-    role,
-  } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop, role } =
+    useContext(StateContext);
   const navigate = useNavigate();
 
   if (!currentHost) {
@@ -145,9 +132,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
   const isNotification = notifications && notifications.length > 0;
   const host = currentHost?.host;
-  const roleTranslated = (
-    <Trans i18nKey={`roles.${role}`} ns="members" />
-  );
+  const roleTranslated = <Trans i18nKey={`roles.${role}`} ns="members" />;
 
   const isAdmin = role === 'admin';
 
@@ -229,9 +214,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
         <Link to={currentUser && `/@${currentUser?.username}`}>
           <MenuItem>
-            <Trans i18nKey="common:menu.member.profile">
-              My Profile
-            </Trans>
+            <Trans i18nKey="common:menu.member.profile">My Profile</Trans>
           </MenuItem>
         </Link>
         <Link to={'/admin/my-profile'}>
@@ -254,11 +237,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
         <Divider />
 
         <Center py="2">
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => handleLogout()}
-          >
+          <Button size="sm" variant="ghost" onClick={() => handleLogout()}>
             <Trans i18nKey="common:actions.logout">Logout</Trans>
           </Button>
         </Center>

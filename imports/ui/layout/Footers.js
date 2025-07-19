@@ -128,7 +128,7 @@ export function PlatformFooter({ platform, children }) {
 
         <Box>
           <Link to="/terms-&-privacy-policy">
-            <CLink as="span" color="brand.50" fontSize="xs">
+            <CLink as="span" color="theme.50" fontSize="xs">
               {tc('terms.title')}{' '}
             </CLink>
           </Link>

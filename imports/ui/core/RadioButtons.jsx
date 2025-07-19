@@ -24,9 +24,9 @@ const HiddenInput = styled('input', {
 });
 
 const RadioCircle = styled('span', (props) => ({
-  background: props.checked ? 'var(--chakra-colors-brand-100)' : '#fff',
+  background: props.checked ? 'var(--cocoso-colors-theme-100)' : '#fff',
   border: `2px solid ${
-    props.checked ? 'var(--chakra-colors-brand-500)' : '#b3b3b3'
+    props.checked ? 'var(--cocoso-colors-theme-500)' : '#b3b3b3'
   }`,
   borderRadius: '50%',
   boxSizing: 'border-box',
@@ -36,8 +36,8 @@ const RadioCircle = styled('span', (props) => ({
   position: 'relative',
   transition: 'border-color 0.2s, box-shadow 0.2s',
   ...(props.focused && {
-    boxShadow: '0 0 0 2px var(--chakra-colors-brand-200)',
-    borderColor: 'var(--chakra-colors-brand-500)',
+    boxShadow: '0 0 0 2px var(--cocoso-colors-theme-200)',
+    borderColor: 'var(--cocoso-colors-theme-500)',
   }),
   width: '1.25em',
 }));
@@ -45,7 +45,7 @@ const RadioCircle = styled('span', (props) => ({
 const RadioDot = styled('span', (props) => ({
   display: props.checked ? 'block' : 'none',
   borderRadius: '50%',
-  background: 'var(--chakra-colors-brand-500)',
+  background: 'var(--cocoso-colors-theme-500)',
   height: '0.6em',
   left: '50%',
   position: 'absolute',

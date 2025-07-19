@@ -49,12 +49,7 @@ function ForgotPasswordPage() {
             </Text>
           </Center>
 
-          <Box
-            bg="brand.50"
-            borderColor="brand.100"
-            borderWidth={1}
-            p="6"
-          >
+          <Box bg="theme.50" borderColor="theme.100" borderWidth={1} p="6">
             {emailSent ? (
               <Text>{t('password.message.linkSend')}</Text>
             ) : (

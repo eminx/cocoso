@@ -6,6 +6,12 @@ import { Center, Flex, Image, Text } from '/imports/ui/core';
 
 const containerStyle = {
   borderRadius: 'var(--cocoso-border-radius)',
+  border: '2px dashed',
+  cursor: 'grab',
+  ':hover': {
+    bg: 'var(--cocoso-colors-gray-50)',
+    borderColor: 'var(--cocoso-colors-theme-300)',
+  },
 };
 
 export default function FileDropper({
@@ -29,17 +35,16 @@ export default function FileDropper({
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Flex
           {...getRootProps()}
-          _hover={{ bg: 'gray.50', borderColor: 'brand.300' }}
           align="center"
           bg={isDragActive ? 'gray.300' : 'white'}
-          border="2px dashed"
-          borderColor={isDragActive ? 'brand.500' : 'brand.200'}
-          cursor="grab"
           direction="column"
           justify="center"
           h={height}
           w="100%"
-          {...containerStyle}
+          css={{
+            ...containerStyle,
+            borderColor: isDragActive ? 'theme.500' : 'theme.200',
+          }}
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (

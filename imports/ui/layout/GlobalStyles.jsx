@@ -1,8 +1,7 @@
 import React from 'react';
 import { GlobalStyles as GlobalStylesRestyle } from 'restyle';
 
-const getColor = (hue, lightness) =>
-  `hsl(${hue}deg, 80%, ${lightness}%)`;
+const getColor = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 
 export default function GlobalStyles({ theme }) {
   const hue = theme?.hue || 220;
@@ -18,7 +17,7 @@ export default function GlobalStyles({ theme }) {
             .cocoso-input, .cocoso-input--{size}
             colorScheme is handled by CSS variables (set on :root or body)
           */
-          body: {
+          ':root': {
             '--cocoso-colors-theme-50': isGray
               ? 'rgb(250, 247, 245)'
               : getColor(hue, '97'),
@@ -49,39 +48,6 @@ export default function GlobalStyles({ theme }) {
             '--cocoso-colors-theme-900': isGray
               ? 'rgb(25, 20, 15)'
               : getColor(hue, '8'),
-
-            '--chakra-colors-brand-50': isGray
-              ? 'rgb(250, 247, 245)'
-              : getColor(hue, '97'),
-            '--chakra-colors-brand-100': isGray
-              ? 'rgb(240, 235, 230)'
-              : getColor(hue, '92'),
-            '--chakra-colors-brand-200': isGray
-              ? 'rgb(228, 222, 218)'
-              : getColor(hue, '86'),
-            '--chakra-colors-brand-300': isGray
-              ? 'rgb(125, 120, 115)'
-              : getColor(hue, '80'),
-            '--chakra-colors-brand-400': isGray
-              ? 'rgb(105, 100, 95)'
-              : getColor(hue, '72'),
-            '--chakra-colors-brand-500': isGray
-              ? 'rgb(88, 80, 75)'
-              : getColor(hue, '40'),
-            '--chakra-colors-brand-600': isGray
-              ? 'rgb(78, 70, 65)'
-              : getColor(hue, '32'),
-            '--chakra-colors-brand-700': isGray
-              ? 'rgb(68, 60, 52)'
-              : getColor(hue, '20'),
-            '--chakra-colors-brand-800': isGray
-              ? 'rgb(48, 40, 32)'
-              : getColor(hue, '12'),
-            '--chakra-colors-brand-900': isGray
-              ? 'rgb(25, 20, 15)'
-              : getColor(hue, '8'),
-
-            '--chakra-radii-md': theme?.body?.borderRadius || '0.25rem',
 
             '--cocoso-colors-gray-50': 'rgb(250, 247, 245)',
             '--cocoso-colors-gray-100': 'rgb(240, 235, 230)',
@@ -157,6 +123,10 @@ export default function GlobalStyles({ theme }) {
             '--cocoso-box-shadow':
               theme?.body?.boxShadow ||
               '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
+          },
+          body: {
+            backgroundColor: 'var(--cocoso-colors-theme-50)',
+            fontFamily: "'Sarabun', sans-serif",
           },
           '.cocoso-input': {
             width: '100%',

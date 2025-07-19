@@ -204,7 +204,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
           ) : (
             <Box>
               <Heading
-                color="brand.800"
+                color="theme.800"
                 fontWeight="400"
                 fontFamily="Raleway, Sarabun, sans-serif"
               >

@@ -136,7 +136,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
                 </Box>
                 <Link
                   as="span"
-                  color="brand.600"
+                  color="theme.600"
                   textDecoration="underline"
                   onClick={() => setModalOpen(true)}
                 >
@@ -150,9 +150,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button
-              isDisabled={
-                !isDirty || (!termsChecked && !hideTermsCheck)
-              }
+              isDisabled={!isDirty || (!termsChecked && !hideTermsCheck)}
               isLoading={isSubmitting}
               type="submit"
             >
@@ -205,11 +203,7 @@ const ForgotPassword = ({ onForgotPassword }) => {
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button
-            isDisabled={!isDirty}
-            isLoading={isSubmitting}
-            type="submit"
-          >
+          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>
@@ -248,11 +242,7 @@ const ResetPassword = ({ onResetPassword }) => {
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button
-            isDisabled={!isDirty}
-            isLoading={isSubmitting}
-            type="submit"
-          >
+          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>
@@ -271,9 +261,7 @@ const AuthContainer = () => {
         <Signup />
         <Center>
           <Text>{t('signup.labels.subtitle')}</Text>
-          <Link onClick={() => setMode('login')}>
-            {t('actions.login')}
-          </Link>
+          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
         </Center>
       </Box>
     );
@@ -284,12 +272,8 @@ const AuthContainer = () => {
       <Box>
         <ForgotPassword />
         <Flex justify="space-around">
-          <Link onClick={() => setMode('login')}>
-            {t('actions.login')}
-          </Link>
-          <Link onClick={() => setMode('signup')}>
-            {t('actions.signup')}
-          </Link>
+          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
+          <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
         </Flex>
       </Box>
     );
@@ -300,15 +284,11 @@ const AuthContainer = () => {
       <Login />
       <Center mb="8">
         <Heading>{t('login.labels.subtitle')}</Heading>
-        <Link onClick={() => setMode('signup')}>
-          {t('actions.signup')}
-        </Link>
+        <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
       </Center>
       <Center>
         <Heading>{t('actions.forgot')}</Heading>
-        <Link onClick={() => setMode('recover')}>
-          {t('actions.reset')}
-        </Link>
+        <Link onClick={() => setMode('recover')}>{t('actions.reset')}</Link>
       </Center>
     </Box>
   );

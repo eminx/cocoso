@@ -39,7 +39,7 @@ function useThrottle(callback, delay) {
 
 const flexProps = {
   align: 'flex-start',
-  bg: 'brand.900',
+  bg: 'theme.900',
   borderTop: '1px solid',
   borderTopColor: 'gray.400',
   justify: 'center',
@@ -54,11 +54,7 @@ const slideProps = (slideStart) => ({
   ping: slideStart,
 });
 
-export default function SlideWidget({
-  slideStart,
-  children,
-  ...otherProps
-}) {
+export default function SlideWidget({ slideStart, children, ...otherProps }) {
   const [position, setPosition] = useState('fixed');
   const [widgetHeight, setWidgetHeight] = useState(0);
   const positionRef = useRef(position);

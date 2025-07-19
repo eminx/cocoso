@@ -91,9 +91,9 @@ export default function AddDocument({ onClose }) {
       <ReactDropzone onDrop={handleFileDrop} multiple={false}>
         {({ getRootProps, getInputProps, isDragActive }) => (
           <Box
-            bg={isDragActive ? 'brand.300' : 'brand.50'}
+            bg={isDragActive ? 'theme.300' : 'theme.50'}
             border="1x dashed"
-            borderColor="brand.300"
+            borderColor="theme.300"
             borderRadius="lg"
             cursor="grab"
             h="180px"
@@ -111,9 +111,7 @@ export default function AddDocument({ onClose }) {
                 </Flex>
               </Center>
             ) : (
-              <div style={{ textAlign: 'center' }}>
-                {tc('documents.drop')}
-              </div>
+              <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
             )}
             <input {...getInputProps()} />
           </Box>

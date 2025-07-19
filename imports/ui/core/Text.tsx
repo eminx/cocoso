@@ -46,7 +46,7 @@ export const Text = styled('p', (props: TextProps) => {
   return {
     ...getPropStyles(props),
     color: color
-      ? `var(--chakra-colors-${color[0]}-${color[1]})`
+      ? `var(--cocoso-colors-${color[0]}-${color[1]})`
       : 'var(--cocoso-colors-gray-900)',
     fontSize: fontSize
       ? fontSizes[fontSize as keyof typeof fontSizes]
@@ -78,7 +78,7 @@ export const Heading = styled('h2', (props: HeadingProps) => {
   const color = props.color?.split('.');
   return {
     ...getPropStyles(props),
-    color: color ? `var(--chakra-colors-${color[0]}-${color[1]})` : 'inherit',
+    color: color ? `var(--cocoso-colors-${color[0]}-${color[1]})` : 'inherit',
     fontWeight: 700,
     fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
     lineHeight: 1.2,
@@ -96,11 +96,11 @@ export const Code = styled('span', (props: CodeProps) => {
   const fontSize = props.size || props.fontSize;
   const color = props.color?.split('.');
   return {
-    color: color ? `var(--chakra-colors-${color[0]}-${color[1]})` : 'inherit',
+    color: color ? `var(--cocoso-colors-${color[0]}-${color[1]})` : 'inherit',
     padding: '0.25rem 0.5rem',
     margin: '0 0.25rem',
     borderRadius: 'var(--cocoso-border-radius)',
-    backgroundColor: 'var(--cocoso-colors-blueGray-50)',
+    backgroundColor: 'var(--cocoso-colors-bluegray-50)',
     fontFamily: 'monospace',
     fontSize: fontSize
       ? fontSizes[fontSize as keyof typeof fontSizes]

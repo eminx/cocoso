@@ -41,11 +41,11 @@ function NewEntryHelper({
   return (
     <Link className="sexy-thumb-container" to={buttonLink}>
       <Box
-        _hover={{ bg: 'brand.100' }}
-        _active={{ bg: 'brand.200' }}
-        bg="brand.50"
+        _hover={{ bg: 'theme.100' }}
+        _active={{ bg: 'theme.200' }}
+        bg="theme.50"
         border="1px solid"
-        borderColor="brand.500"
+        borderColor="theme.500"
         fontWeight="bold"
         h={h}
         px="4"
@@ -54,13 +54,13 @@ function NewEntryHelper({
       >
         <h3
           className="thumb-title"
-          style={{ color: 'var(--chakra-colors-brand-500)' }}
+          style={{ color: 'var(--cocoso-colors-theme-500)' }}
         >
           {titleGeneric}
         </h3>
         <h4
           className="thumb-subtitle"
-          style={{ color: 'var(--chakra-colors-brand-500)' }}
+          style={{ color: 'var(--cocoso-colors-theme-500)' }}
         >
           {descriptionGeneric}
         </h4>

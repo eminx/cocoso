@@ -40,7 +40,7 @@ export default function PageHeading({
             </Client>
           </Center>
           <Box py="2">
-            <Divider borderColor="brand.500" minW="280px" />
+            <Divider borderColor="theme.500" minW="280px" />
             <Center>{children}</Center>
             {description && (
               <Text

@@ -87,7 +87,7 @@ export default function SexyThumb({
 
   return (
     <Box
-      bg="brand.500"
+      bg="theme.500"
       border="1px solid"
       borderColor="white"
       borderRadius="lg"
@@ -140,7 +140,7 @@ export default function SexyThumb({
               }}
             >
               {!showPast && futureDates && (
-                <HStack align="center" color="brand.50" mb="4" spacing="4">
+                <HStack align="center" color="theme.50" mb="4" spacing="4">
                   {futureDates.slice(0, 3).map((occurrence) => (
                     <ThumbDate
                       key={occurrence?.startDate + occurrence?.startTime}

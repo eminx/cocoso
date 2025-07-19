@@ -11,7 +11,7 @@ import { getFullName } from '../utils/shared';
 const tagProps = {
   bg: 'white',
   border: '1px solid',
-  borderColor: 'brand.500',
+  borderColor: 'theme.500',
 };
 
 function MemberAvatarEtc({ isThumb = true, user, role }) {

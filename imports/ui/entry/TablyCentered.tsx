@@ -70,7 +70,7 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
           spacing="0"
         >
           <Avatar borderRadius="lg" name={author.username} src={author.src} />
-          <CLink as="span" color="brand.500">
+          <CLink as="span" color="theme.500">
             {author.username}
           </CLink>
         </VStack>

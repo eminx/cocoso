@@ -24,34 +24,26 @@ const HiddenInput = styled('input', {
 });
 
 const CheckboxBox = styled('span', (props) => ({
-  background: props.checked ? 'var(--chakra-colors-brand-500)' : '#fff',
+  background: props.checked ? 'var(--cocoso-colors-theme-500)' : '#fff',
   border: `2px solid ${
-    props.checked ? 'var(--chakra-colors-brand-500)' : '#b3b3b3'
+    props.checked ? 'var(--cocoso-colors-theme-500)' : '#b3b3b3'
   }`,
   borderRadius: '0.25rem',
   boxSizing: 'border-box',
   display: 'inline-block',
   height:
-    props.size === 'sm'
-      ? '1rem'
-      : props.size === 'lg'
-      ? '1.5rem'
-      : '1.25rem',
+    props.size === 'sm' ? '1rem' : props.size === 'lg' ? '1.5rem' : '1.25rem',
   width:
-    props.size === 'sm'
-      ? '1rem'
-      : props.size === 'lg'
-      ? '1.5rem'
-      : '1.25rem',
+    props.size === 'sm' ? '1rem' : props.size === 'lg' ? '1.5rem' : '1.25rem',
   position: 'relative',
   transition: 'all 0.2s ease-in-out',
   ...(props.focused && {
-    boxShadow: '0 0 0 2px var(--chakra-colors-brand-200)',
-    borderColor: 'var(--chakra-colors-brand-500)',
+    boxShadow: '0 0 0 2px var(--cocoso-colors-theme-200)',
+    borderColor: 'var(--cocoso-colors-theme-500)',
   }),
   ...(props.indeterminate && {
-    background: 'var(--chakra-colors-brand-500)',
-    borderColor: 'var(--chakra-colors-brand-500)',
+    background: 'var(--cocoso-colors-theme-500)',
+    borderColor: 'var(--cocoso-colors-theme-500)',
   }),
 }));
 
@@ -62,17 +54,9 @@ const CheckboxIcon = styled('svg', (props) => ({
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width:
-    props.size === 'sm'
-      ? '0.6rem'
-      : props.size === 'lg'
-      ? '0.9rem'
-      : '0.75rem',
+    props.size === 'sm' ? '0.6rem' : props.size === 'lg' ? '0.9rem' : '0.75rem',
   height:
-    props.size === 'sm'
-      ? '0.6rem'
-      : props.size === 'lg'
-      ? '0.9rem'
-      : '0.75rem',
+    props.size === 'sm' ? '0.6rem' : props.size === 'lg' ? '0.9rem' : '0.75rem',
   color: 'white',
   fill: 'currentColor',
 }));
@@ -138,11 +122,7 @@ export function Checkbox({
           css={{
             fontWeight: 'normal',
             fontSize:
-              size === 'sm'
-                ? '0.875rem'
-                : size === 'lg'
-                ? '1.125rem'
-                : '1rem',
+              size === 'sm' ? '0.875rem' : size === 'lg' ? '1.125rem' : '1rem',
           }}
         >
           {children}

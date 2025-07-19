@@ -90,7 +90,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
       <Divider orientation="vertical" />
       {selectedProfile && (
         <Box
-          _hover={{ bg: 'brand.50' }}
+          _hover={{ bg: 'theme.50' }}
           borderRadius="lg"
           cursor="pointer"
           maxH="480px"
@@ -120,7 +120,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
               <Divider my="2" />
 
               {selectedProfile.bio && (
-                <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
+                <Box borderLeft="4px solid" borderColor="theme.500" pl="2">
                   {HTMLReactParser(selectedProfile.bio)}
                 </Box>
               )}

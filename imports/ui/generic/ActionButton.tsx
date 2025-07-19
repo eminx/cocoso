@@ -14,7 +14,7 @@ export default function ActionButton({ label, onClick }: ActionButtonProps) {
     <Button
       size={isDesktop ? 'lg' : 'md'}
       css={{
-        borderColor: 'brand.100',
+        borderColor: 'theme.100',
         borderWidth: '2px',
         colorScheme: 'brand',
         height: '48px',
