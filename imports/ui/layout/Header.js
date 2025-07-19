@@ -188,7 +188,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
   return (
     <Box w="100%">
       <Center mb="10">
-        <Link to="/">
+        <Link to="/" style={{ zIndex: '1600' }}>
           {currentHost.logo ? (
             <Box maxH={isLogoSmall ? '48px' : '96px'} p="2">
               <Image

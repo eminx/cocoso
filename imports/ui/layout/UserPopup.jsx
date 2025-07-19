@@ -82,8 +82,8 @@ export function UserThumb({ isNotification = false }) {
       <Flex
         align="flex-start"
         direction="column"
+        gap="0"
         px="2"
-        noOfLines={1}
         css={{ lineHeight: isDesktop ? '1.2' : '0.8' }}
       >
         <Text fontSize={isDesktop ? 'md' : 'sm'} fontWeight="bold">

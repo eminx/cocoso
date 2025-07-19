@@ -197,17 +197,6 @@ export default function CocosoCSSProvider({
             height: auto;
             border-style: none;
           }
-          
-          /* Focus styles */
-          :focus {
-            outline: 2px solid var(--chakra-colors-brand-500);
-            outline-offset: 2px;
-          }
-          
-          /* Remove focus outline for mouse users */
-          :focus:not(:focus-visible) {
-            outline: none;
-          }
         `}
       </style>
       {children}

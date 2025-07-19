@@ -40,6 +40,9 @@ const Accordion = ({ options, ...props }: AccordionProps) => {
     <>
       <GlobalStyles>
         {{
+          '.szh-accordion': {
+            width: '100%',
+          },
           '.szh-accordion__item-btn': {
             backgroundColor: 'var(--cocoso-colors-theme-100)',
             borderRadius: 'var(--cocoso-border-radius)',

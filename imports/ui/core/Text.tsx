@@ -39,12 +39,11 @@ interface TextProps {
   _focus?: any;
 }
 
-export const Text = styled('p', (props: TextProps) => {
+export const Text = styled('span', (props: TextProps) => {
   const color = props.color?.split('.');
   const fontSize = props.size || props.fontSize;
 
   return {
-    ...getPropStyles(props),
     color: color
       ? `var(--cocoso-colors-${color[0]}-${color[1]})`
       : 'var(--cocoso-colors-gray-900)',
@@ -55,6 +54,8 @@ export const Text = styled('p', (props: TextProps) => {
     ':hover': props._hover || {},
     ':active': props._active || {},
     ':focus': props._focus || {},
+    // marginBottom: props.mb || '0',
+    ...getPropStyles(props),
   };
 });
 

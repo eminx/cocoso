@@ -10,12 +10,11 @@ import {
   Input,
   Select,
   Text,
-  Wrap,
 } from '/imports/ui/core';
 
 function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
   return (
-    <Wrap justify="space-around">
+    <Flex justify="space-between" w="100">
       <Box>
         <Text fontSize="xs">
           <Trans i18nKey="labels.filter" ns="common">
@@ -56,7 +55,7 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
           {/* <option value="random">{tc('labels.sortBy.random')}</option> */}
         </Select>
       </Box>
-    </Wrap>
+    </Flex>
   );
 }
 
@@ -72,6 +71,14 @@ export default function FiltrerSorter(props) {
 
   return (
     <Flex justify="flex-end" my="2" w="300px">
+      <style>
+        {`
+        .szh-accordion__item-heading .szh-accordion__item-btn, 
+        .szh-accordion__item .szh-accordion__item-content {
+          padding: 0.5rem;
+        }
+        `}
+      </style>
       <Accordion
         options={[
           {
