@@ -28,8 +28,7 @@ export default function WorksHybrid({ works, Host }) {
       return works;
     }
     return works.filter(
-      (work) =>
-        work.category && work.category.label === category.toLowerCase()
+      (work) => work.category && work.category.label === category.toLowerCase()
     );
   };
 
@@ -66,6 +65,7 @@ export default function WorksHybrid({ works, Host }) {
         <Flex justify="center" wrap="wrap">
           <Tag
             key="all"
+            filterColor="var(--cocoso-colors-gray-800)"
             label={t('all')}
             checkable
             checked={Boolean(category) === false || category === 'all'}
@@ -102,9 +102,8 @@ export default function WorksHybrid({ works, Host }) {
                   }
                 }
                 color={
-                  categories.find(
-                    (cat) => cat?.label === work.category?.label
-                  )?.color
+                  categories.find((cat) => cat?.label === work.category?.label)
+                    ?.color
                 }
                 host={Host?.isPortalHost ? work.host : null}
                 imageUrl={work?.images && work.images[0]}
