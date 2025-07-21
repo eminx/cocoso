@@ -60,6 +60,7 @@ organization:
 
 users:
   title: Användare
+  description: Hantera dina användare. Verifiera eller avverifiera dem, eller ställ in dem som administratörer
   shortcutHelper: Hantera dina användare. Verifiera eller verifiera dem, eller ställ in dem som administratörer.
   usersListed: användare
   userListed: användare
@@ -102,6 +103,7 @@ categories:
 # ADMIN EMAILS PAGE
 emails:
   title: Automatiserade e-postmeddelanden
+  description: Konfigurera automatiserade e-postmeddelanden som användare får när de registrerar sig, verifieras eller blir administratörer
   shortcutHelper: Konfigurera automatiserade e-postmeddelanden som användare får när de registrerar sig, verifieras eller blir administratörer
   form:
     subject:
@@ -128,6 +130,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Skicka ett nyhetsbrev
+  description: Skicka ett e-postnyhetsbrev till alla dina användare samtidigt
   shortcutHelper: Skicka ett e-postnyhetsbrev till alla dina användare samtidigt
   subtitle: Här kan du skapa ett nyhetsbrev som går ut till alla medlemmar i er community. Du kan enkelt komponera brevet med egen text och bifoga material som är publicerade på er sida.
   subtitle2: 'För att skriva e-postmeddelandet nedan måste du ange minst en av: brödtext, en bild och/eller valda innehållsobjekt som listas i community-appen.'

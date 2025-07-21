@@ -60,6 +60,7 @@ organization:
 
 users:
   title: Users
+  description: Manage your users. Verify or unverify them, or set them as admin
   shortcutHelper: Manege your users. Verify or unverify them, or set them as admin
   usersListed: users
   userListed: user
@@ -102,6 +103,7 @@ categories:
 # ADMIN EMAILS PAGE
 emails:
   title: Automated Emails
+  description: Setup automated emails that users receive when they signup, or become verified or admin
   shortcutHelper: Setup automated emails that users receive when they signup, or become verified or admin
   form:
     subject:
@@ -128,6 +130,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Send a Newsletter
+  description: Send an email newsletter to all your users at once
   shortcutHelper: Send an email newsletter to all your users at once.
   subtitle: Here you can compose an email and easily attach published content from the website, and then send out to all members of your community.
   subtitle2: 'To compose the email below, you have to enter at least one of: body text, an image and/or selected content items listed in the community app.'

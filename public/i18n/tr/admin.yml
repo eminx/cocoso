@@ -60,6 +60,7 @@ organization:
 
 users:
   title: Kullanıcılar
+  description: Kullanıcıları yönet, onları doğrula/onayla veya yönetici olarak tayin et
   shortcutHelper: Kullanıcılarınızı yönet, onları doğrula/onayla veya yönetici olarak tayin et
   usersListed: kullanıcı
   userListed: kullanıcı
@@ -102,6 +103,7 @@ categories:
 # ADMIN EMAILS PAGE
 emails:
   title: Otomatik E-postalar
+  description: Kullanıcıların kaydolduklarında, doğrulandıklarında veya yönetici olduklarında aldıkları otomatik e-postaları ayarla
   shortcutHelper: Kullanıcıların kaydolduklarında veya doğrulandıklarında veya yönetici olduklarında aldıkları otomatik e-postaları ayarla
   form:
     subject:
@@ -128,6 +130,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: E-posta Bülteni Yolla
+  description: Tüm kullanıcılara aynı anda bir e-posta bülteni gönder
   shortcutHelper: Tüm kullanıcılarınıza aynı anda bir e-posta bülteni gönder
   subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsin.
   subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik ögeleri.'
