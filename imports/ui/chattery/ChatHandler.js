@@ -4,7 +4,7 @@ import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
 import {
   Badge,
-  Button,
+  Box,
   Center,
   Drawer,
   IconButton,
@@ -107,7 +107,7 @@ export function ChatButton({
   };
 
   return (
-    <>
+    <Box css={{ flexGrow: '0' }}>
       <Center>
         <VStack
           style={{
@@ -152,6 +152,6 @@ export function ChatButton({
       </Center>
 
       <ChatUI {...props} />
-    </>
+    </Box>
   );
 }

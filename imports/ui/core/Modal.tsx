@@ -122,11 +122,7 @@ export const Overlay: React.FC<OverlayProps> = ({
   visible = false,
 }) => {
   return (
-    <BaseOverlay
-      centered={centered}
-      onClick={onClick}
-      visible={visible}
-    >
+    <BaseOverlay centered={centered} onClick={onClick} visible={visible}>
       {children}
     </BaseOverlay>
   );
@@ -219,9 +215,7 @@ const DrawerContent = styled(
         left: 0,
         maxWidth: maxSize,
         top: 0,
-        transform: props.visible
-          ? 'translateX(0)'
-          : 'translateX(-100%)',
+        transform: props.visible ? 'translateX(0)' : 'translateX(-100%)',
         width: size,
       };
     }
@@ -234,9 +228,7 @@ const DrawerContent = styled(
         maxHeight: maxHeight,
         right: 0,
         top: 0,
-        transform: props.visible
-          ? 'translateY(0)'
-          : 'translateY(-100%)',
+        transform: props.visible ? 'translateY(0)' : 'translateY(-100%)',
       };
     }
 
@@ -273,13 +265,10 @@ const CloseIcon: React.FC = () => (
 );
 
 // Shared hook for portal and keyboard handling
-const usePortal = (
-  open: boolean,
-  onClose: () => void,
-  portalId: string
-) => {
-  const [portalContainer, setPortalContainer] =
-    useState<HTMLElement | null>(null);
+const usePortal = (open: boolean, onClose: () => void, portalId: string) => {
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
+    null
+  );
 
   // Create portal container
   useEffect(() => {

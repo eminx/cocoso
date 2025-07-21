@@ -38,15 +38,17 @@ function useThrottle(callback, delay) {
 }
 
 const flexProps = {
-  align: 'flex-start',
+  align: 'center',
   bg: 'theme.900',
-  borderTop: '1px solid',
-  borderTopColor: 'gray.400',
   justify: 'center',
-  minH: '86px',
   p: '4',
   pb: '2',
-  width: '100%',
+  css: {
+    borderTop: '1px solid',
+    borderTopColor: 'var(--cocoso-colors-gray-400)',
+    width: '100%',
+    minHeight: '86px',
+  },
 };
 
 const slideProps = (slideStart) => ({

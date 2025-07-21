@@ -100,12 +100,12 @@ function SubInfo({ occurrence }) {
 
   return (
     <Center>
-      <Flex color="gray.100" mt="2">
-        <Text fontSize="sm" mr="2" mt="-1px">
+      <Flex mt="2">
+        <Text color="gray.100" mr="2" mt="-1px" size="sm">
           {t('label.next')}:
         </Text>
 
-        <Text fontSize="sm" fontWeight="bold">
+        <Text color="gray.100" fontWeight="bold" size="sm">
           {dayjs(occurrence?.startDate).format('DD')}{' '}
           {dayjs(occurrence?.startDate).format('MMM')}
         </Text>
