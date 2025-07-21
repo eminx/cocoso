@@ -4,9 +4,11 @@ panel: Admin Paneli
 menulabel: Admin Menü
 site: Site
 home: Anasayfa
+description: Web sitesini yapılandır, tasarla ve yönet
 
 settings:
   title: Ayarlar
+  description: Organizasyon detayları
   tabs:
     design: Tasarım
     general: Genel
@@ -64,6 +66,7 @@ users:
 
 menu:
   title: Menü
+  description: Ana menüyü oluştur, ayarla ve tasarla
   tabs:
     menuitems:
       label: Görünürlük, İsimlendirme ve Açıklama
@@ -297,7 +300,7 @@ design:
     pick: Renk seç
     select: Paletten istediğin rengi seç
     revert: Varsayılana Dön
-    info: Topluluk web siteniz için istediğiniz rengi seçmek üzere kaydırıcıyı ayarlayın. Seçilen renk tonunun açık ve koyu varyasyonları, tüm kullanıcı arayüzünün farklı bölümlerinde kullanılacaktır.
+    info: Topluluk web siteniz için istediğiniz rengi seçmek üzere kaydırıcıyı ayarla. Seçilen renk tonunun açık ve koyu varyasyonları, tüm kullanıcı arayüzünün farklı bölümlerinde kullanılacaktır.
     alert1: Artık sitede dolaşabilir ve bu rengi test edebilir, ardından buraya geri dönüp beğenirseniz onaylayabilirsiniz.
     alert2: Sayfayı yenilerseniz veya pencereyi/sekmeyi kapatırsanız, orijinal renge geri döner.
   text:

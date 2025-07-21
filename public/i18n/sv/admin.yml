@@ -4,9 +4,11 @@ panel: Adminpanel
 menulabel: Adminmenu
 site: Sidan
 home: Hem
+description: Konfigurera, designa och hantera din webbplats
 
 settings:
   title: Inställningar
+  description: Organisation och layout detaljer
   tabs:
     design: Design
     general: Allmänt
@@ -64,6 +66,7 @@ users:
 
 menu:
   title: Meny
+  description: Bygg, konfigurera och designa huvudmenyn
   tabs:
     menuitems:
       label: Synlighet, benämning och beskrivning

@@ -4,9 +4,11 @@ panel: Admin Panel
 menulabel: Admin Menu
 site: Site
 home: Home
+description: Configure, design and manage your website
 
 settings:
   title: Settings
+  description: Organization and layout details
   tabs:
     color: Color
     design: Design
@@ -64,6 +66,7 @@ users:
 
 menu:
   title: Menu
+  description: Build, configure and design the main menu
   tabs:
     menuitems:
       label: Visibility, Labels & Description

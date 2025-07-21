@@ -117,8 +117,7 @@ export default function MenuSettings() {
 
     const options = composablePageTitles.filter(
       (item) =>
-        item.isPublished &&
-        !existingComposableIdsInlocalMenu.includes(item._id)
+        item.isPublished && !existingComposableIdsInlocalMenu.includes(item._id)
     );
     return options;
   };
@@ -147,22 +146,22 @@ export default function MenuSettings() {
 
   const settings = currentHost?.settings;
   const isOptionsSubmitButtonDisabled =
-    settings.isBurgerMenuOnDesktop ===
-      localSettings.isBurgerMenuOnDesktop &&
-    settings.isBurgerMenuOnMobile ===
-      localSettings.isBurgerMenuOnMobile;
+    settings.isBurgerMenuOnDesktop === localSettings.isBurgerMenuOnDesktop &&
+    settings.isBurgerMenuOnMobile === localSettings.isBurgerMenuOnMobile;
 
   const tabs = [
     {
       title: t('settings.tabs.menuOrder'),
       path: 'order',
       content: (
-        <Box py="8">
-          <Heading as="h4" fontSize="18px" mb="2">
+        <Box py="6">
+          <Heading as="h4" size="sm">
             {t('settings.tabs.menuOrder')}
           </Heading>
 
-          <Text mb="4">{t('menu.tabs.order.info')}</Text>
+          <Box mb="6">
+            <Text fontSize="sm">{t('menu.tabs.order.info')}</Text>
+          </Box>
 
           <Boxling
             style={{
@@ -204,8 +203,7 @@ export default function MenuSettings() {
                           }}
                         >
                           <Flex align="center">
-                            <DragHandleIcon />{' '}
-                            <Text ml="2">{value.label}</Text>
+                            <DragHandleIcon /> <Text ml="2">{value.label}</Text>
                           </Flex>
                           {value.isComposablePage ? (
                             <IconButton
@@ -213,9 +211,7 @@ export default function MenuSettings() {
                               icon={
                                 <XIcon
                                   size="18px"
-                                  onClick={() =>
-                                    removeComposablePage(index)
-                                  }
+                                  onClick={() => removeComposablePage(index)}
                                 />
                               }
                               size="xs"
@@ -241,18 +237,16 @@ export default function MenuSettings() {
       title: t('menu.options.label'),
       path: 'options',
       content: (
-        <Box my="8">
+        <Box py="6">
+          <Heading as="h4" size="sm">
+            {t('menu.burgermenu.title')}
+          </Heading>
+
+          <Box mb="6">
+            <Text fontSize="sm">{t('menu.burgermenu.text')}</Text>
+          </Box>
+
           <Boxling mb="4">
-            <Box mb="2">
-              <Heading as="h4" fontSize="18px">
-                {t('menu.burgermenu.title')}
-              </Heading>
-            </Box>
-
-            <Text fontSize="sm" mb="4">
-              {t('menu.burgermenu.text')}
-            </Text>
-
             <Flex py="4">
               <Checkbox
                 checked={Boolean(localSettings.isBurgerMenuOnMobile)}

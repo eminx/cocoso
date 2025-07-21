@@ -21,15 +21,5 @@ export default function DesignOptions() {
     },
   ];
 
-  return (
-    <Box>
-      <Heading css={{ fontWeight: '300' }} mb="6" size="sm">
-        <Trans i18nKey="admin:design.description" />
-      </Heading>
-
-      <Box my="8">
-        <TablyRouter tabs={tabs} />
-      </Box>
-    </Box>
-  );
+  return <TablyRouter tabs={tabs} />;
 }

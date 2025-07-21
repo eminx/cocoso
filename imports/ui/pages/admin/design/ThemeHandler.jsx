@@ -7,9 +7,7 @@ import Menu from '/imports/ui/generic/Menu';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import Boxling, {
-  BoxlingColumn,
-} from '/imports/ui/pages/admin/Boxling';
+import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
 import {
   borderRadiusOptions,
   themeOptions,
@@ -215,20 +213,20 @@ export default function ThemeHandler() {
 
   return (
     <>
-      <Text my="8" size="lg" css={{ fontWeight: '300' }}>
-        <Trans i18nKey="admin:design.color.description" />
-      </Text>
+      <Box py="4">
+        <Text size="lg" css={{ fontWeight: '300' }}>
+          <Trans i18nKey="admin:design.color.description" />
+        </Text>
+      </Box>
 
-      <Box mb="8">
+      <Box mb="12">
         <RadioGroup
           value={currentTheme?.variant}
           onChange={(selectedValue) => handleThemeChange(selectedValue)}
         >
           {themeOptions.map((option) => (
             <Radio key={option.value} value={option.value}>
-              <Trans
-                i18nKey={`admin:design.theme.options.${option.value}`}
-              />
+              <Trans i18nKey={`admin:design.theme.options.${option.value}`} />
             </Radio>
           ))}
         </RadioGroup>
@@ -238,7 +236,7 @@ export default function ThemeHandler() {
         <Trans i18nKey="admin:design.theme.demo" />
       </Text>
 
-      <Boxling mb="8">
+      <Boxling mb="8" mt="4">
         <Flex align="center" justify="center">
           <Button size="lg">
             <Trans i18nKey="admin:design.theme.button" />
@@ -254,10 +252,10 @@ export default function ThemeHandler() {
 
       {currentTheme?.variant === 'custom' && (
         <>
-          <Text fontWeight="bold" mb="4">
+          <Text fontWeight="bold">
             <Trans i18nKey="admin:design.theme.color" />
           </Text>
-          <Boxling mb="8">
+          <Boxling mb="8" mt="4">
             <HuePicker onChange={handleHueChange} />
           </Boxling>
         </>
@@ -267,11 +265,9 @@ export default function ThemeHandler() {
         <Trans i18nKey="admin:design.border.title" />
       </Text>
 
-      <Boxling mb="8">
+      <Boxling mb="8" mt="4">
         <Center>
-          <BoxlingColumn
-            title={<Trans i18nKey="admin:design.border.radius" />}
-          >
+          <BoxlingColumn title={<Trans i18nKey="admin:design.border.radius" />}>
             <Menu
               buttonLabel={
                 <Trans

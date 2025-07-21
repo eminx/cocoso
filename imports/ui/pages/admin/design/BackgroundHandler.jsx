@@ -1,17 +1,8 @@
 import React, { useContext } from 'react';
 import { Trans } from 'react-i18next';
 
-import {
-  Box,
-  Button,
-  Center,
-  Checkbox,
-  VStack,
-  Text,
-} from '/imports/ui/core';
-import Boxling, {
-  BoxlingColumn,
-} from '/imports/ui/pages/admin/Boxling';
+import { Box, Button, Center, Checkbox, VStack, Text } from '/imports/ui/core';
+import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
@@ -35,11 +26,11 @@ export default function BackgroundHandler({
 
   return (
     <>
-      <Text fontWeight="bold" mb="4">
+      <Text fontWeight="bold">
         <Trans i18nKey="admin:design.background.color" />
       </Text>
 
-      <Boxling mb="8">
+      <Boxling mb="8" mt="4">
         <VStack align="center" gap="1">
           <GenericColorPicker
             color={backgroundColor}
@@ -51,19 +42,18 @@ export default function BackgroundHandler({
             colorScheme="red"
             size="sm"
             variant="ghost"
-            onClick={() =>
-              handleStyleChange('backgroundColor', '#f0ebe6')
-            }
+            onClick={() => handleStyleChange('backgroundColor', '#f0ebe6')}
           >
             <Trans i18nKey="admin:design.color.revert" />
           </Button>
         </VStack>
       </Boxling>
 
-      <Text fontWeight="bold" mb="4">
+      <Text fontWeight="bold">
         <Trans i18nKey="admin:design.background.image" />
       </Text>
-      <Boxling mb="8">
+
+      <Boxling mb="8" mt="4">
         <ImageUploader
           isMultiple={false}
           ping={uploadingBackgroundImage}

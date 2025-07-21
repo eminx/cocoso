@@ -78,8 +78,7 @@ export default function MenuDesign() {
 
   const { theme } = state;
 
-  const fontStyle =
-    theme?.menu?.fontStyle || defaultMenuStyle.fontStyle;
+  const fontStyle = theme?.menu?.fontStyle || defaultMenuStyle.fontStyle;
   const textTransform =
     theme?.menu?.textTransform || defaultMenuStyle.textTransform;
 
@@ -98,15 +97,16 @@ export default function MenuDesign() {
     borderRadiusOptions.find((option) => option.value === borderRadius)
       ?.label || borderRadius;
   const borderWidthLabel =
-    borderWidthOptions.find((option) => option.value === borderWidth)
-      ?.label || borderWidth;
+    borderWidthOptions.find((option) => option.value === borderWidth)?.label ||
+    borderWidth;
 
   return (
     <>
-      <Text fontWeight="bold" mb="4" mt="6">
-        Demo
-      </Text>
-      <Box mb="8" w="100%">
+      <Box pt="4">
+        <Text fontWeight="bold">Demo</Text>
+      </Box>
+
+      <Box mb="8" mt="4" w="100%">
         <Flex
           css={{
             alignItems: 'center',
@@ -137,10 +137,13 @@ export default function MenuDesign() {
         </Flex>
       </Box>
 
-      <Text fontWeight="bold" mb="4">
-        <Trans i18nKey="admin:design.color.colors" />
-      </Text>
-      <Boxling mb="8" w="100%">
+      <Box>
+        <Text fontWeight="bold">
+          <Trans i18nKey="admin:design.color.colors" />
+        </Text>
+      </Box>
+
+      <Boxling mb="8" mt="4" w="100%">
         <Flex justify="space-around">
           <Center>
             <BoxlingColumn
@@ -149,19 +152,14 @@ export default function MenuDesign() {
               <GenericColorPicker
                 color={backgroundColor}
                 onChange={(selectedOption) =>
-                  handleStyleChange(
-                    'backgroundColor',
-                    selectedOption.hex
-                  )
+                  handleStyleChange('backgroundColor', selectedOption.hex)
                 }
               />
 
               <Button
                 size="xs"
                 variant="ghost"
-                onClick={() =>
-                  handleStyleChange('backgroundColor', '#faf7f5')
-                }
+                onClick={() => handleStyleChange('backgroundColor', '#faf7f5')}
               >
                 <Trans i18nKey="common:actions.reset" />
               </Button>
@@ -169,9 +167,7 @@ export default function MenuDesign() {
           </Center>
 
           <Center>
-            <BoxlingColumn
-              title={<Trans i18nKey="admin:design.color.text" />}
-            >
+            <BoxlingColumn title={<Trans i18nKey="admin:design.color.text" />}>
               <GenericColorPicker
                 color={color}
                 onChange={(selectedOption) =>
@@ -193,9 +189,11 @@ export default function MenuDesign() {
         </Flex>
       </Boxling>
 
-      <Text fontWeight="bold" mb="4">
-        <Trans i18nKey="admin:design.text.title" />
-      </Text>
+      <Box py="4">
+        <Text fontWeight="bold">
+          <Trans i18nKey="admin:design.text.title" />
+        </Text>
+      </Box>
       <Boxling mb="8" w="100%">
         <Flex justify="space-around">
           <Center>
@@ -224,9 +222,7 @@ export default function MenuDesign() {
 
           <Center>
             <BoxlingColumn
-              title={
-                <Trans i18nKey="admin:design.text.textTransform" />
-              }
+              title={<Trans i18nKey="admin:design.text.textTransform" />}
             >
               <Menu
                 buttonLabel={
@@ -236,10 +232,7 @@ export default function MenuDesign() {
                 }
                 options={textTransformOptions}
                 onSelect={(selectedOption) =>
-                  handleStyleChange(
-                    'textTransform',
-                    selectedOption.value
-                  )
+                  handleStyleChange('textTransform', selectedOption.value)
                 }
               >
                 {(item) => (
@@ -253,9 +246,11 @@ export default function MenuDesign() {
         </Flex>
       </Boxling>
 
-      <Text fontWeight="bold" mb="4">
-        <Trans i18nKey="admin:design.border.title" />
-      </Text>
+      <Box py="4">
+        <Text fontWeight="bold">
+          <Trans i18nKey="admin:design.border.title" />
+        </Text>
+      </Box>
       <Boxling mb="8" w="100%">
         <Flex justify="space-around">
           <Center>
@@ -283,10 +278,7 @@ export default function MenuDesign() {
                 }
                 options={borderRadiusOptions}
                 onSelect={(selectedOption) =>
-                  handleStyleChange(
-                    'borderRadius',
-                    selectedOption.value
-                  )
+                  handleStyleChange('borderRadius', selectedOption.value)
                 }
               >
                 {(item) => (

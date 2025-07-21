@@ -25,17 +25,19 @@ export function AdminMenuHeader({ currentHost }) {
         py="2"
         css={{
           ':hover': {
-            backgroundColor: 'var(--cocoso-colors-bluegray-800)',
-            color: 'white',
+            backgroundColor: 'var(--cocoso-colors-bluegray-200)',
           },
           ':focus': {
             backgroundColor: 'var(--cocoso-colors-bluegray-300)',
           },
         }}
       >
-        <Flex align="center">
+        <Flex
+          align="center"
+          css={{ color: 'var(--cocoso-colors-bluegray-900)' }}
+        >
           <Eye />
-          <Text fontWeight="bold" fontSize="lg" ml="2" mt="-0.5">
+          <Text color="bluegray.900" fontWeight="bold" fontSize="lg">
             {currentHost.settings?.name}
           </Text>
         </Flex>
@@ -79,13 +81,17 @@ export function AdminUserThumb({ currentUser }) {
           }}
         />
 
-        <Box align="flex-start" px="2" pb="1" css={{ textAlign: 'left' }}>
-          <Text fontSize="lg" fontWeight="bold" css={{ color: 'white' }}>
-            {currentUser.username}
-          </Text>
-          <Text fontWeight="light" css={{ color: 'white' }}>
-            {getFullName(currentUser)}
-          </Text>
+        <Box p="2">
+          <Box>
+            <Text fontSize="lg" fontWeight="bold" color="white">
+              {currentUser.username}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontWeight="light" color="white">
+              {getFullName(currentUser)}
+            </Text>
+          </Box>
         </Box>
       </Flex>
     </Box>
@@ -113,8 +119,9 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
       cursor="pointer"
       p="2.5"
       css={{
-        borderRightWidth: isCurrentRoute && !item.isMulti ? '3px' : '0',
         borderRightColor: 'var(--cocoso-colors-bluegray-500)',
+        borderRightStyle: 'solid',
+        borderRightWidth: isCurrentRoute && !item.isMulti ? '3px' : '0',
         marginLeft: isSub ? '1rem' : '0',
         ':hover': {
           backgroundColor: 'var(--cocoso-colors-bluegray-100)',

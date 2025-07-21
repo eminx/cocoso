@@ -2,14 +2,7 @@ import React, { useContext, useState } from 'react';
 import { HuePicker as HuePickerComponent } from 'react-color';
 import { Trans } from 'react-i18next';
 
-import {
-  Box,
-  Button,
-  Center,
-  Code,
-  Flex,
-  Text,
-} from '/imports/ui/core';
+import { Box, Button, Center, Code, Flex, Text } from '/imports/ui/core';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 
@@ -57,12 +50,16 @@ export default function HuePicker({ onChange }) {
 
   return (
     <>
-      <Text mb="2" css={{ fontWeight: 'bold' }}>
-        <Trans i18nKey="admin:design.color.select" />
-      </Text>
-      <Text mb="4" size="sm">
-        <Trans i18nKey="admin:design.color.info" />
-      </Text>
+      <Box pb="4">
+        <p>
+          <Text mb="2" css={{ fontWeight: 'bold' }}>
+            <Trans i18nKey="admin:design.color.select" />
+          </Text>
+        </p>
+        <Text mb="4" size="sm">
+          <Trans i18nKey="admin:design.color.info" />
+        </Text>
+      </Box>
 
       <Center css={{ paddingBottom: '1rem', position: 'relative' }}>
         <HuePickerComponent
@@ -75,7 +72,7 @@ export default function HuePicker({ onChange }) {
 
       {hue !== color?.hsl?.h && (
         <>
-          <Center bg={parseHue(hue, 90)} p="4">
+          <Center p="4" css={{ backgroundColor: parseHue(hue, 90) }}>
             <Flex
               css={{
                 alignItems: 'center',
@@ -87,18 +84,13 @@ export default function HuePicker({ onChange }) {
                 width: '120px',
               }}
             >
-              <Code
-                css={{ color: 'white', fontWeight: 'bold' }}
-                size="sm"
-              >
+              <Code fontWeight="bold" size="sm">
                 hue: {hue}
               </Code>
             </Flex>
           </Center>
 
-          <Center
-            style={{ justifyContent: 'center', padding: '1rem 0' }}
-          >
+          <Center style={{ justifyContent: 'center', padding: '1rem 0' }}>
             <Flex align="center" flexDirection="column">
               <Button
                 colorScheme="red"

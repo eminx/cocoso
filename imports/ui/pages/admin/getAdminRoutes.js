@@ -36,7 +36,7 @@ const getAdminRoutes = (menuItems) => [
     label: <Trans i18nKey="admin:home" />,
     value: 'home',
     content: <AdminHome />,
-    description: 'ISte hom',
+    description: <Trans i18nKey="admin:description" />,
   },
   {
     label: <Trans i18nKey="admin:settings.title" />,
@@ -47,16 +47,19 @@ const getAdminRoutes = (menuItems) => [
         label: <Trans i18nKey="admin:info.label" />,
         value: 'settings/organization/*',
         content: <Settings />,
+        description: <Trans i18nKey="admin:settings.description" />,
       },
       {
         label: <Trans i18nKey="admin:menu.title" />,
         value: 'settings/menu/*',
         content: <MenuSettings />,
+        description: <Trans i18nKey="admin:menu.description" />,
       },
       {
         label: <Trans i18nKey="admin:settings.tabs.design" />,
         value: 'settings/design/*',
         content: <DesignOptions />,
+        description: <Trans i18nKey="admin:design.description" />,
       },
     ],
   },
@@ -76,7 +79,7 @@ const getAdminRoutes = (menuItems) => [
         label: getMenuLabel(menuItems, 'activities'),
         value: 'features/activities/*',
         content: <ActivitiesAdmin />,
-        description: <Trans i18nKey="admin:menu.info.activities" />,
+        description: <Trans i18nKey="admin:menu.info" />,
       },
       {
         label: getMenuLabel(menuItems, 'calendar'),

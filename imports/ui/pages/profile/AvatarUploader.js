@@ -59,16 +59,11 @@ export default function AvatarUploader({
       </Box>
       {!uploadableAvatarLocal && (
         <Box px="6">
-          <Text fontSize="sm">
-            {t('profile.form.avatar.changeHelper')}
-          </Text>
+          <Box>
+            <Text fontSize="sm">{t('profile.form.avatar.changeHelper')}</Text>
+          </Box>
           {imageUrl && (
-            <Button
-              colorScheme="red"
-              my="4"
-              size="sm"
-              onClick={removeAvatar}
-            >
+            <Button colorScheme="red" my="4" size="sm" onClick={removeAvatar}>
               {t('profile.form.avatar.remove')}
             </Button>
           )}
