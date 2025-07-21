@@ -194,7 +194,7 @@ function ImageContent({ value, ping, onChange }) {
 
       <Box bg="gray.50" borderRadius="md" p="4" pt="0">
         <Checkbox
-          isChecked={value.isLink}
+          checked={value.isLink}
           mt="4"
           size="lg"
           onChange={handleCheckboxChange}

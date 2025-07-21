@@ -100,7 +100,7 @@ export default function ComposablePageSettings() {
 
           <Box>
             <Checkbox
-              isChecked={settings?.hideTitle}
+              checked={settings?.hideTitle}
               onChange={(e) => updateSettings({ hideTitle: e.target.checked })}
             >
               <FormField
@@ -111,7 +111,7 @@ export default function ComposablePageSettings() {
 
           <Box>
             <Checkbox
-              isChecked={settings?.hideMenu}
+              checked={settings?.hideMenu}
               onChange={(e) => updateSettings({ hideMenu: e.target.checked })}
             >
               <FormField

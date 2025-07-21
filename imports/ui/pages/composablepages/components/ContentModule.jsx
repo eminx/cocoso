@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { Trans } from 'react-i18next';
 import { Box, Button, Center, Code, Flex, IconButton } from '/imports/ui/core';
 import { SortableKnob } from 'react-easy-sort';
-import GripHorizontal from 'lucide-react/dist/esm/icons/grip-horizontal';
-import EditIcon from 'lucide-react/dist/esm/icons/edit';
-import TrashIcon from 'lucide-react/dist/esm/icons/trash';
 import { useDrag } from 'react-dnd';
 import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
+import GripHorizontal from 'lucide-react/dist/esm/icons/grip-horizontal';
+import EditIcon from 'lucide-react/dist/esm/icons/edit';
+import TrashIcon from 'lucide-react/dist/esm/icons/trash';
 
 import { ComposablePageContext } from '../ComposablePageForm';
 import { Divider } from '/imports/ui/core';
@@ -85,61 +85,67 @@ export default function ContentModule(props) {
   const { content, contentIndex, columnIndex, rowIndex } = props;
 
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%' }} ref={dragRef}>
       <Flex
         align="center"
         direction="column"
-        ref={dragRef}
-        css={{
-          cursor: 'grab',
-          opacity: isDragging ? 0.5 : 1,
-        }}
         w="100%"
+        css={{
+          borderRadius: '1rem',
+          cursor: 'grab',
+          opacity: isDragging ? 0.9 : 1,
+        }}
       >
-        <Flex justify="space-between" w="100%">
-          <div />
-          <Center
-            css={{
-              flexGrow: '1',
-            }}
-          >
-            <Button
-              colorScheme="blue"
-              rightIcon={<EditIcon size="16px" />}
-              size="sm"
-              variant="ghost"
-              onClick={() => handleOpenContentModal(content, contentIndex)}
+        <div style={{ width: '100%' }}>
+          <Flex justify="space-between" w="100%">
+            <div />
+            <Center
+              css={{
+                flexGrow: '1',
+              }}
             >
-              <Trans i18nKey={`admin:composable.form.types.${content.type}`} />
-            </Button>
+              <Button
+                colorScheme="blue"
+                rightIcon={<EditIcon size="16px" />}
+                size="sm"
+                variant="ghost"
+                onClick={() => handleOpenContentModal(content, contentIndex)}
+              >
+                <Trans
+                  i18nKey={`admin:composable.form.types.${content.type}`}
+                />
+              </Button>
+            </Center>
+
+            <IconButton
+              colorScheme="red"
+              icon={<TrashIcon size="16px" />}
+              size="xs"
+              variant="ghost"
+              css={{
+                flexGrow: '0',
+              }}
+              onClick={() =>
+                setDeleteModuleModal({
+                  contentIndex,
+                  columnIndex,
+                  rowIndex,
+                  visible: true,
+                  moduleType: 'content',
+                })
+              }
+            />
+          </Flex>
+
+          <ModulePreview content={content} />
+
+          <Center>
+            <GripHorizontal
+              size="20px"
+              style={{ transform: 'translateX(-14px)' }}
+            />
           </Center>
-
-          <IconButton
-            colorScheme="red"
-            icon={<TrashIcon size="16px" />}
-            size="xs"
-            variant="ghost"
-            css={{
-              flexGrow: '0',
-            }}
-            onClick={() =>
-              setDeleteModuleModal({
-                contentIndex,
-                columnIndex,
-                rowIndex,
-                visible: true,
-                moduleType: 'content',
-              })
-            }
-          />
-        </Flex>
-
-        <ModulePreview content={content} />
-
-        <GripHorizontal
-          size="20px"
-          style={{ transform: 'translateX(-14px)' }}
-        />
+        </div>
       </Flex>
     </div>
   );

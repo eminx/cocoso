@@ -330,6 +330,7 @@ export default function ComposablePageForm({
                     </Box>
                     <Box style={{ flexGrow: 1 }} mb="4" p="2">
                       <Row row={row} rowIndex={rowIndex} />
+
                       <Center py="4">
                         <Button
                           colorScheme="red"

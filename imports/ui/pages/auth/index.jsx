@@ -129,7 +129,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
               <Flex>
                 <Box pr="2" pt="1">
                   <Checkbox
-                    isChecked={termsChecked}
+                    checked={termsChecked}
                     size="lg"
                     onChange={() => setTermsChecked(!termsChecked)}
                   />

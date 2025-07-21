@@ -176,7 +176,10 @@ export default function Settings() {
               {t('settings.tabs.footer')}
             </Text>
           </Center>
-          <Text mb="4">{t('info.platform.footer.description')}</Text>
+          <Box mb="4">
+            <Text>{t('info.platform.footer.description')}</Text>
+          </Box>
+
           <Boxling>
             <ReactQuill
               className="ql-editor-text-align-center"
