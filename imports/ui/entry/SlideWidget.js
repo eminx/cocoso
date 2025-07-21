@@ -108,7 +108,13 @@ export default function SlideWidget({ slideStart, children, ...otherProps }) {
 
   return (
     <>
-      <Slide id="slide-widget" {...slideProps(slideStart)}>
+      <Slide
+        id="slide-widget"
+        {...slideProps(slideStart)}
+        style={{
+          position,
+        }}
+      >
         <Flex {...flexProps} {...otherProps}>
           {children}
         </Flex>
