@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 import { styled } from 'restyle';
 import { Trans } from 'react-i18next';
-import SortableList, { SortableItem } from 'react-easy-sort';
+import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
 import { arrayMoveImmutable } from 'array-move';
-import { SortableKnob } from 'react-easy-sort';
 
 import { Box, Center, Flex, IconButton } from '/imports/ui/core';
 import Boxling from '/imports/ui/pages/admin/Boxling';
@@ -16,9 +15,7 @@ import DropTarget from './DropTarget';
 import Menu from '/imports/ui/generic/Menu';
 
 export function Column({ column, columnIndex, rowIndex }) {
-  const { setCurrentPage, setContentModal } = useContext(
-    ComposablePageContext
-  );
+  const { setCurrentPage, setContentModal } = useContext(ComposablePageContext);
 
   const handleSelectContent = (content) => {
     const newContent = {
@@ -93,7 +90,7 @@ export function Column({ column, columnIndex, rowIndex }) {
     <Boxling
       style={{
         backgroundColor: 'white',
-        borderRadius: 'var(--cocoso-border-radius)',
+        borderRadius: '0.5rem',
         minHeight: '120px',
         padding: '0.5rem',
       }}
@@ -108,12 +105,16 @@ export function Column({ column, columnIndex, rowIndex }) {
               >
                 <div>
                   <Flex
-                    _hover={{ bg: 'bluegray.50' }}
                     bg="bluegray.200"
-                    borderRadius="md"
                     mb="2"
-                    p="1"
+                    p="2"
                     w="100%"
+                    css={{
+                      borderRadius: '0.5rem',
+                      '&:hover': {
+                        backgroundColor: 'bluegray.50',
+                      },
+                    }}
                   >
                     <SortableKnob>
                       {/* <IconButton
@@ -125,16 +126,20 @@ export function Column({ column, columnIndex, rowIndex }) {
                         cursor: 'ns-resize',
                       }}
                     /> */}
-                      <button>
-                        <ArrowUpDownIcon />
+                      <button
+                        style={{ cursor: 'ns-resize', padding: '0.25rem' }}
+                      >
+                        <ArrowUpDownIcon size="16px" />
                       </button>
                     </SortableKnob>
-                    <ContentModule
-                      content={content}
-                      contentIndex={contentIndex}
-                      columnIndex={columnIndex}
-                      rowIndex={rowIndex}
-                    />
+                    <div style={{ flexGrow: '1' }}>
+                      <ContentModule
+                        content={content}
+                        contentIndex={contentIndex}
+                        columnIndex={columnIndex}
+                        rowIndex={rowIndex}
+                      />
+                    </div>
                   </Flex>
                 </div>
               </SortableItem>
@@ -144,25 +149,23 @@ export function Column({ column, columnIndex, rowIndex }) {
       </Center>
 
       <DropTarget columnIndex={columnIndex} rowIndex={rowIndex}>
-        <Center>
-          <Menu
-            buttonLabel={
-              <Trans i18nKey="admin:composable.form.addContent" />
-            }
-            leftIcon={<AddIcon size="18px" />}
-            options={contentTypes.map((content) => ({
-              ...content,
-              key: content.type,
-            }))}
-            onSelect={handleSelectContent}
-          >
-            {(item) => (
-              <Trans
-                i18nKey={`admin:composable.form.types.${item.type}`}
-              />
-            )}
-          </Menu>
-        </Center>
+        <div style={{ width: '100%' }}>
+          <Center>
+            <Menu
+              buttonLabel={<Trans i18nKey="admin:composable.form.addContent" />}
+              leftIcon={<AddIcon size="18px" />}
+              options={contentTypes.map((content) => ({
+                ...content,
+                key: content.type,
+              }))}
+              onSelect={handleSelectContent}
+            >
+              {(item) => (
+                <Trans i18nKey={`admin:composable.form.types.${item.type}`} />
+              )}
+            </Menu>
+          </Center>
+        </div>
       </DropTarget>
     </Boxling>
   );
@@ -170,7 +173,7 @@ export function Column({ column, columnIndex, rowIndex }) {
 
 const GridRow = styled('div', (props) => ({
   backgroundColor: 'var(--cocoso-colors-bluegray-300)',
-  borderRadius: 'var(--cocoso-border-radius)',
+  borderRadius: '0.5rem',
   display: 'grid',
   gridTemplateRows: '1fr',
   gap: '0.5rem',

@@ -15,6 +15,7 @@ export const Center = styled('div', (props: any) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'center',
+  width: props.width || '100%',
   ...getPropStyles(props),
 }));
 

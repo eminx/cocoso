@@ -34,26 +34,20 @@ function getItemFootnote(composablePage) {
   );
 }
 
-export default function ComposablePagesListing({
-  composablePageTitles,
-}) {
+export default function ComposablePagesListing({ composablePageTitles }) {
   return (
     <Box flexGrow={1}>
-      {composablePageTitles.length > 0 ? (
-        <Text
-          size="lg"
-          css={{ marginBottom: '1rem', fontWeight: 'bold' }}
-        >
-          <Trans i18nKey="admin:composable.existing" />:
-        </Text>
-      ) : (
-        <Text
-          size="lg"
-          css={{ marginBottom: '1rem', fontWeight: 'bold' }}
-        >
-          <Trans i18nKey="admin:composable.none" />
-        </Text>
-      )}
+      <Box py="4">
+        {composablePageTitles.length > 0 ? (
+          <Text size="lg" css={{ marginBottom: '1rem', fontWeight: 'bold' }}>
+            <Trans i18nKey="admin:composable.existing" />:
+          </Text>
+        ) : (
+          <Text size="lg" css={{ marginBottom: '1rem', fontWeight: 'bold' }}>
+            <Trans i18nKey="admin:composable.none" />
+          </Text>
+        )}
+      </Box>
 
       {composablePageTitles.map((composablePage) => (
         <Link
@@ -72,18 +66,14 @@ export default function ComposablePagesListing({
               </Box>
               <Box>
                 <Tag
-                  colorScheme={
-                    composablePage.isPublished ? 'green' : 'orange'
-                  }
+                  colorScheme={composablePage.isPublished ? 'green' : 'orange'}
                   ml="4"
                   size="sm"
                   variant="solid"
                 >
                   <Trans
                     i18nKey={`admin:composable.toolbar.${
-                      composablePage.isPublished
-                        ? 'published'
-                        : 'unpublished'
+                      composablePage.isPublished ? 'published' : 'unpublished'
                     }`}
                   />
                 </Tag>

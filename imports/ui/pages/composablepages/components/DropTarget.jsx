@@ -96,16 +96,16 @@ export default function DropTarget({ columnIndex, rowIndex, children }) {
     <div ref={dropRef}>
       <Center
         bg={bg}
-        minH="102px"
         mb="2"
         p="0"
-        w="100%"
         css={{
           border: canDrop && !isSameColumn ? '1px dashed' : 'none',
           borderWidth: '2px',
           borderColor: canDrop && !isSameColumn ? 'green.500' : 'none',
-          borderRadius: 'var(--cocoso-border-radius)',
+          borderRadius: '0.5rem',
+          minHeight: '102px',
           transition: 'all 0.2s ease-in-out',
+          width: '100%',
         }}
       >
         {canDrop ? null : children}

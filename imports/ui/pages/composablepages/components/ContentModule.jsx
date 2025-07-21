@@ -85,53 +85,62 @@ export default function ContentModule(props) {
   const { content, contentIndex, columnIndex, rowIndex } = props;
 
   return (
-    <Flex
-      align="center"
-      cursor="grab"
-      direction="column"
-      ref={dragRef}
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-      }}
-      w="100%"
-    >
-      <Flex justify="space-between" w="100%">
-        <Button
-          _hover={{ bg: 'bluegray.200' }}
-          colorScheme="blue"
-          cursor="pointer"
-          flexGrow="1"
-          fontWeight="bold"
-          px="2"
-          rightIcon={<EditIcon size="16px" />}
-          size="sm"
-          variant="ghost"
-          onClick={() => handleOpenContentModal(content, contentIndex)}
-        >
-          <Trans i18nKey={`admin:composable.form.types.${content.type}`} />
-        </Button>
-        <IconButton
-          colorScheme="red"
-          flexGrow="0"
-          icon={<TrashIcon size="16px" />}
-          p="2"
-          size="sm"
-          variant="ghost"
-          onClick={() =>
-            setDeleteModuleModal({
-              contentIndex,
-              columnIndex,
-              rowIndex,
-              visible: true,
-              moduleType: 'content',
-            })
-          }
+    <div style={{ width: '100%' }}>
+      <Flex
+        align="center"
+        direction="column"
+        ref={dragRef}
+        css={{
+          cursor: 'grab',
+          opacity: isDragging ? 0.5 : 1,
+        }}
+        w="100%"
+      >
+        <Flex justify="space-between" w="100%">
+          <div />
+          <Center
+            css={{
+              flexGrow: '1',
+            }}
+          >
+            <Button
+              colorScheme="blue"
+              rightIcon={<EditIcon size="16px" />}
+              size="sm"
+              variant="ghost"
+              onClick={() => handleOpenContentModal(content, contentIndex)}
+            >
+              <Trans i18nKey={`admin:composable.form.types.${content.type}`} />
+            </Button>
+          </Center>
+
+          <IconButton
+            colorScheme="red"
+            icon={<TrashIcon size="16px" />}
+            size="xs"
+            variant="ghost"
+            css={{
+              flexGrow: '0',
+            }}
+            onClick={() =>
+              setDeleteModuleModal({
+                contentIndex,
+                columnIndex,
+                rowIndex,
+                visible: true,
+                moduleType: 'content',
+              })
+            }
+          />
+        </Flex>
+
+        <ModulePreview content={content} />
+
+        <GripHorizontal
+          size="20px"
+          style={{ transform: 'translateX(-14px)' }}
         />
       </Flex>
-
-      <ModulePreview content={content} />
-
-      <GripHorizontal size="20px" style={{ transform: 'translateX(-14px)' }} />
-    </Flex>
+    </div>
   );
 }

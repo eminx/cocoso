@@ -2,10 +2,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
-import SortableList, {
-  SortableItem,
-  SortableKnob,
-} from 'react-easy-sort';
+import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -35,9 +32,7 @@ import Row from './components/Row';
 import BottomToolbar from './components/BottomToolbar';
 
 const getNewRow = (rowType) => {
-  const selectedRowType = rowTypes.find(
-    (type) => type.value === rowType
-  );
+  const selectedRowType = rowTypes.find((type) => type.value === rowType);
   return {
     gridType: selectedRowType.value,
     columns: selectedRowType.columns,
@@ -63,10 +58,8 @@ export default function ComposablePageForm({
     open: false,
     content: null,
   });
-  const [deleteModuleModal, setDeleteModuleModal] =
-    useState(emptyModuleModal);
-  const [deleteWholePageModal, setDeleteWholePageModal] =
-    useState(false);
+  const [deleteModuleModal, setDeleteModuleModal] = useState(emptyModuleModal);
+  const [deleteWholePageModal, setDeleteWholePageModal] = useState(false);
   const { composablePageId } = useParams();
   const navigate = useNavigate();
 
@@ -76,10 +69,7 @@ export default function ComposablePageForm({
     }
 
     try {
-      const response = await call(
-        'getComposablePageById',
-        composablePageId
-      );
+      const response = await call('getComposablePageById', composablePageId);
       setCurrentPage(response);
     } catch (error) {
       message.error(error.reason || error.error);
@@ -125,11 +115,7 @@ export default function ComposablePageForm({
   const handleSortRows = (oldIndex, newIndex) => {
     setCurrentPage((prevPage) => ({
       ...prevPage,
-      contentRows: arrayMoveImmutable(
-        prevPage.contentRows,
-        oldIndex,
-        newIndex
-      ),
+      contentRows: arrayMoveImmutable(prevPage.contentRows, oldIndex, newIndex),
       pingSave: true,
     }));
   };
@@ -163,9 +149,7 @@ export default function ComposablePageForm({
             ...row,
             columns: row.columns.map((column, colIndex) => {
               if (colIndex === columnIndex) {
-                return column.filter(
-                  (_, index) => index !== contentIndex
-                );
+                return column.filter((_, index) => index !== contentIndex);
               }
               return column;
             }),
@@ -202,8 +186,7 @@ export default function ComposablePageForm({
       return;
     }
 
-    const { content, contentIndex, columnIndex, rowIndex } =
-      contentModal;
+    const { content, contentIndex, columnIndex, rowIndex } = contentModal;
 
     setCurrentPage((prevPage) => ({
       ...prevPage,
@@ -276,9 +259,7 @@ export default function ComposablePageForm({
       await call('deleteComposablePage', currentPage._id);
       await getComposablePageTitles();
       setDeleteWholePageModal(false);
-      message.success(
-        <Trans i18nKey="common:message.success.remove" />
-      );
+      message.success(<Trans i18nKey="common:message.success.remove" />);
       navigate('/admin/composable-pages/*');
     } catch (error) {
       message.error(error.reason || error.error);
@@ -295,9 +276,7 @@ export default function ComposablePageForm({
         <ComposablePageCreator
           getComposablePageTitles={getComposablePageTitles}
         />
-        <ComposablePagesListing
-          composablePageTitles={composablePageTitles}
-        />
+        <ComposablePagesListing composablePageTitles={composablePageTitles} />
       </>
     );
   }
@@ -375,12 +354,10 @@ export default function ComposablePageForm({
           </SortableList>
 
           <Flex>
-            <Box w="40px" style={{ flexGrow: 0, flexShrink: 0 }} />
-            <Center mt="4" mb="12" flexGrow={1}>
+            <Box css={{ flexGrow: 0, flexShrink: 0, width: '40px' }} />
+            <Center mt="4" mb="12" css={{ flexGrow: '1' }}>
               <Menu
-                buttonLabel={
-                  <Trans i18nKey="admin:composable.form.addRow" />
-                }
+                buttonLabel={<Trans i18nKey="admin:composable.form.addRow" />}
                 leftIcon={<PlusIcon size="18px" />}
                 options={rowTypes}
                 onSelect={handleAddRow}
@@ -411,9 +388,7 @@ export default function ComposablePageForm({
           <Modal
             confirmButtonProps={{ colorScheme: 'red' }}
             open={deleteModuleModal.visible}
-            title={
-              <Trans i18nKey="admin:composable.confirmDelete.title" />
-            }
+            title={<Trans i18nKey="admin:composable.confirmDelete.title" />}
             onConfirm={() => handleDeleteModule()}
             onClose={() => setDeleteModuleModal(emptyModuleModal)}
           >
@@ -441,9 +416,7 @@ export default function ComposablePageForm({
           confirmButtonProps={{ colorScheme: 'red' }}
           confirmText={<Trans i18nKey="admin:pages.actions.delete" />}
           open={deleteWholePageModal}
-          title={
-            <Trans i18nKey="admin:composable.confirmDelete.title" />
-          }
+          title={<Trans i18nKey="admin:composable.confirmDelete.title" />}
           onConfirm={deleteComposablePage}
           onClose={() => setDeleteWholePageModal(false)}
         >

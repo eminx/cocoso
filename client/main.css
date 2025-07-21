@@ -350,7 +350,7 @@ ul.ant-cascader-menu::-webkit-scrollbar-thumb,
 }
 
 .bottom-toolbar {
-  color: #aaa;
+  color: var(--cocoso-colors-blue-100);
 }
 
 .bottom-toolbar:not(.updated) {

@@ -14,11 +14,8 @@ export default function BottomToolbar() {
     updated: false,
     publishModalVisible: false,
   });
-  const {
-    currentPage,
-    getComposablePageById,
-    getComposablePageTitles,
-  } = useContext(ComposablePageContext);
+  const { currentPage, getComposablePageById, getComposablePageTitles } =
+    useContext(ComposablePageContext);
 
   useEffect(() => {
     if (currentPage.pingSave === false) {
@@ -72,37 +69,53 @@ export default function BottomToolbar() {
   return (
     <>
       <Flex
+        align="center"
         bg="gray.900"
-        borderRadius="md"
-        bottom="12px"
         justify="space-between"
         p="2"
-        position="fixed"
-        zIndex={99}
+        css={{
+          borderRadius: 'var(--cocoso-border-radius)',
+          bottom: '12px',
+          position: 'fixed',
+          zIndex: '99',
+        }}
       >
-        <Flex align="center" color="green.200" mx="4">
-          {state.updated ? <CheckIcon size="16" /> : null}
+        <Flex
+          align="center"
+          mx="4"
+          css={{
+            color: 'var(--cocoso-colors-green-200)',
+          }}
+        >
+          {state.updated ? (
+            <CheckIcon color="var(--cocoso-colors-green-200)" size="20" />
+          ) : null}
           <Text
             className={updatedClassName}
+            color="gray.300"
             fontSize="sm"
             fontWeight="bold"
-            ml="1"
           >
             <Trans i18nKey="admin:composable.toolbar.updated" />
           </Text>
         </Flex>
-        <Flex align="center" color="blue.200" mx="2">
+        <Flex align="center" mx="2">
           <Link
-            color="blue.200"
-            fontSize="sm"
-            fontWeight="bold"
+            size="sm"
             href={`http://${currentPage.host}/cp/${currentPage._id}`}
-            mr="1"
             target="_blank"
+            css={{
+              color: 'var(--cocoso-colors-blue-300)',
+              fontWeight: 'bold',
+            }}
           >
             <Trans i18nKey="admin:composable.toolbar.preview" />
+            <ExternalLinkIcon
+              color="var(--cocoso-colors-blue-400)"
+              size="18"
+              style={{ marginLeft: '0.25rem' }}
+            />
           </Link>
-          <ExternalLinkIcon size="16" />
         </Flex>
         <Button
           colorScheme={isPublished ? 'orange' : 'green'}
