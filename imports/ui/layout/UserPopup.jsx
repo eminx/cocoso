@@ -89,7 +89,7 @@ export function UserThumb({ isNotification = false }) {
         <Text fontSize={isDesktop ? 'md' : 'sm'} fontWeight="bold">
           {currentUser.username}
         </Text>
-        <Text fontSize={isDesktop ? 'sm' : 'xs'} fontWeight="light" isTruncated>
+        <Text fontSize={isDesktop ? 'sm' : 'xs'} fontWeight="light" truncated>
           {getFullName(currentUser)}
         </Text>
       </Flex>

@@ -18,7 +18,7 @@ export default function ChangeLanguage({
   return (
     <Box
       bg="theme.50"
-      p="2"
+      p="4"
       css={{ borderRadius: 'var(--cocoso-border-radius)' }}
     >
       {!hideHelper && (

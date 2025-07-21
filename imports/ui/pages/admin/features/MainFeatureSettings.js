@@ -27,7 +27,7 @@ function Tablish({ rowItem }) {
   return (
     <Flex w="100%">
       <Text {...keyProps}>{rowItem.key}</Text>
-      <Box flexGrow="1">{rowItem.value}</Box>
+      <Box css={{ flexGrow: '1' }}>{rowItem.value}</Box>
     </Flex>
   );
 }
@@ -114,7 +114,6 @@ export default function MainFeatureSettings({ itemName }) {
       value: (
         <Input
           disabled={!localItem.isVisible}
-          maxW="320px"
           value={localItem.label}
           onChange={(event) => handleMenuItemLabelChange(event.target.value)}
         />

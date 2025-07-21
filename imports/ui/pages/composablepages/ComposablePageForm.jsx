@@ -313,7 +313,7 @@ export default function ComposablePageForm({
               <SortableItem key={row.id || row.gridType + rowIndex}>
                 <div>
                   <Flex gap="0">
-                    <Box style={{ flexGrow: 0, flexShrink: 0 }}>
+                    <Box>
                       <SortableKnob>
                         <button>
                           <ArrowUpDownIcon />
@@ -354,7 +354,7 @@ export default function ComposablePageForm({
           </SortableList>
 
           <Flex>
-            <Box css={{ flexGrow: 0, flexShrink: 0, width: '40px' }} />
+            <Box w="40px" />
             <Center mt="4" mb="12" css={{ flexGrow: '1' }}>
               <Menu
                 buttonLabel={<Trans i18nKey="admin:composable.form.addRow" />}

@@ -18,6 +18,16 @@ const shortCuts = [
     link: '/admin/settings/organization/info',
   },
   {
+    label: <Trans i18nKey="admin:design.title" />,
+    helper: <Trans i18nKey="admin:design.description" />,
+    link: '/admin/settings/design',
+  },
+  {
+    label: <Trans i18nKey="admin:composable.title" />,
+    helper: <Trans i18nKey="admin:composable.description" />,
+    link: '/admin/composable-pages/*',
+  },
+  {
     label: <Trans i18nKey="admin:settings.tabs.footer" />,
     helper: <Trans i18nKey="admin:settings.tabs.footerHelper" />,
     link: '/admin/settings/organization/footer',
@@ -57,9 +67,10 @@ export default function AdminHome() {
       {shortCuts.map((item) => (
         <Boxling
           key={item.link}
-          flex="1 1 200px"
           css={{
             cursor: 'pointer',
+            flex: '1 1 200px',
+            height: '100%',
             ':hover': {
               backgroundColor: 'white',
             },

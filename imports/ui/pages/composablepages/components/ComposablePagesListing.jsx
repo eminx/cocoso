@@ -36,7 +36,7 @@ function getItemFootnote(composablePage) {
 
 export default function ComposablePagesListing({ composablePageTitles }) {
   return (
-    <Box flexGrow={1}>
+    <Box css={{ flexGrow: '1' }}>
       <Box py="4">
         {composablePageTitles.length > 0 ? (
           <Text size="lg" css={{ marginBottom: '1rem', fontWeight: 'bold' }}>

@@ -26,8 +26,8 @@ interface ButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   variant?: 'solid' | 'ghost' | 'outline';
   onClick?: () => void;
-  css?: React.CSSProperties;
-  style?: React.CSSProperties;
+  css?: any;
+  style?: any;
 }
 
 const ButtonComponent = styled('button', (props: ButtonProps) => {

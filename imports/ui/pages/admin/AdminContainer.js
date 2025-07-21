@@ -164,7 +164,7 @@ export default function AdminContainer() {
 
   if (!isDesktop) {
     return (
-      <Box bg="bluegray.100" minH="100vh">
+      <Box bg="bluegray.100" css={{ minHeight: '100vh' }}>
         <Drawer
           open={drawerMenuOpen}
           noPadding
@@ -191,10 +191,12 @@ export default function AdminContainer() {
               <Text fontSize="xs">{t('menu.title')}</Text>
             </Flex>
             <Heading
-              flexGrow="1"
               color="bluegray.900"
               size="md"
               textAlign="center"
+              css={{
+                flexGrow: '1',
+              }}
             >
               {isAdmin ? t('panel') : ta('profile.settings')}
             </Heading>
@@ -213,7 +215,7 @@ export default function AdminContainer() {
   }
 
   return (
-    <Box bg="bluegray.100" minH="100vh">
+    <Box bg="bluegray.100" css={{ minHeight: '100vh' }}>
       <Grid h="100%" templateColumns="320px 50%">
         <Box>
           <AdminMenu routes={routes} onItemClick={handleItemClick} />

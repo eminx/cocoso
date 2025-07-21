@@ -246,6 +246,7 @@ composable:
     unpublishSuccess: Sayfa yayından kaldırıldı
 
 design:
+  title: Tasarım
   description: Web sitenin görünümünü istediğin şekilde özelleştirmek için tema ve menüyü tercihlerine göre ayarla
   tabs:
     theme: Tema

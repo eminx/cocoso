@@ -1,10 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Controller,
-  useForm,
-  Control,
-  UseFormRegister,
-} from 'react-hook-form';
+import { Controller, useForm, Control, UseFormRegister } from 'react-hook-form';
 import { Trans } from 'react-i18next';
 
 import {
@@ -29,13 +24,7 @@ interface Option {
 }
 
 interface FormFieldItem {
-  type:
-    | 'input'
-    | 'textarea'
-    | 'checkbox'
-    | 'select'
-    | 'quill'
-    | 'number';
+  type: 'input' | 'textarea' | 'checkbox' | 'select' | 'quill' | 'number';
   value: string;
   props?: Record<string, any>;
   placeholder?: string | undefined;
@@ -59,11 +48,7 @@ interface GenericEntryFormProps {
   onSubmit: () => void;
 }
 
-function FieldItemHandler({
-  control,
-  item,
-  register,
-}: FieldItemHandlerProps) {
+function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
   const props = {
     ...register(item.value, item.props),
     placeholder: item.placeholder,
@@ -138,8 +123,8 @@ export default function GenericEntryForm({
 
         <Flex justify="flex-end" mt="8" mb="12">
           <Button
-            isDisabled={isSubmitButtonDisabled}
-            isLoading={loaders?.isCreating}
+            disabled={isSubmitButtonDisabled}
+            loading={loaders?.isCreating}
             type="submit"
           >
             <Trans i18nKey="common:actions.submit">Submit</Trans>

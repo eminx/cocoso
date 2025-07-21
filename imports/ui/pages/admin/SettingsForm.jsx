@@ -38,7 +38,7 @@ function SettingsForm({ initialValues, onSubmit }) {
           <ChangeLanguage hideHelper select register={register} />
         </FormField>
         <Flex justify="flex-end" py="4">
-          <Button isDisabled={!isDirty || isSubmitting} type="submit">
+          <Button disabled={!isDirty || isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>

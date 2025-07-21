@@ -246,6 +246,7 @@ composable:
     unpublishSuccess: Sidan har återställts som utkast
 
 design:
+  title: Design
   description: Anpassa din webbplats utseende genom att justera temat och menyn för att passa dina behov
   tabs:
     theme: Tema

@@ -43,7 +43,6 @@ export default function GroupMembers({ group }) {
             key={member.memberId}
             name={member.username}
             size="lg"
-            showBorder
             src={member.avatar}
           />
         ))}

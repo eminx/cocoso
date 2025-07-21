@@ -378,7 +378,7 @@ export default function EditProfile() {
 
   return (
     <>
-      <Box mb="8" minHeight="100vh">
+      <Box mb="8" css={{ minHeight: '100vh' }}>
         <Box w="100%">
           <Heading size="md" mb="4">
             {platform?.name}{' '}
@@ -386,7 +386,7 @@ export default function EditProfile() {
           </Heading>
 
           <Box mb="4">
-            <Alert bg="bluegray.50" borderRadius="lg" mb="8" type="info">
+            <Alert bg="bluegray.50" mb="8" type="info">
               <Text fontSize="sm" mr="4">
                 {t('profile.message.platform', {
                   platform: platform?.name,

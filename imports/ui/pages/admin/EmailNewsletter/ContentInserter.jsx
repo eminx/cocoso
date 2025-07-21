@@ -65,7 +65,6 @@ function ListItemCheckbox({ item, children, onSelect }) {
           css={{
             border: 'white 2px solid',
             borderRadius: 'md',
-            flexShrink: 0,
           }}
         >
           <CheckIcon color="white" size="20px" />

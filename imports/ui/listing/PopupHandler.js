@@ -44,7 +44,7 @@ function PopupHeader({ subTitle, tags, title }) {
         </Heading>
       )}
       {tags && tags.length > 0 && (
-        <Flex flexGrow="0" justify="center" pt="2">
+        <Flex justify="center" pt="2">
           {tags.map(
             (tag) =>
               tag && (
@@ -68,7 +68,7 @@ function PopupContent({
   tags,
 }) {
   return (
-    <>
+    <Box css={{ overflowY: 'hidden' }}>
       <PopupHeader subTitle={subTitle} tags={tags} title={title} />
       <Center mb="4" mx="4">
         {action}
@@ -78,7 +78,7 @@ function PopupContent({
       </Center>
 
       <Box className="text-content">{content}</Box>
-    </>
+    </Box>
   );
 }
 

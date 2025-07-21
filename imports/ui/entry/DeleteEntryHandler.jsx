@@ -30,8 +30,7 @@ export default function DeleteEntryHandler({ item, context }) {
   const navigate = useNavigate();
   const [tc] = useTranslation('common');
 
-  const { canCreateContent, currentUser, role } =
-    useContext(StateContext);
+  const { canCreateContent, currentUser, role } = useContext(StateContext);
 
   const deleteEntry = async () => {
     const deleteMethod = getDeleteMethod(context);
@@ -82,14 +81,14 @@ export default function DeleteEntryHandler({ item, context }) {
       </Text>
       <Center
         bg="red.200"
-        borderRadius="lg"
-        color="red.900"
         p="2"
-        textAlign="center"
+        css={{
+          borderRadius: '1rem',
+          color: 'var(--cocoso-colors-red-900)',
+          textAlign: 'center',
+        }}
       >
-        <Text fontSize="lg">
-          {tc('modals.confirm.delete.cantundo')}
-        </Text>
+        <Text size="lg">{tc('modals.confirm.delete.cantundo')}</Text>
       </Center>
     </Modal>
   );

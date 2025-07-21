@@ -17,8 +17,14 @@ import ChangeLanguageMenu from './ChangeLanguageMenu';
 
 export function OldFooter({ host, settings }) {
   return (
-    <Box textAlign="center" p="4" fontSize="85%">
-      <Text fontSize="sm">
+    <Box
+      p="4"
+      css={{
+        textAlign: 'center',
+        fontSize: '85%',
+      }}
+    >
+      <Text size="sm">
         {settings?.address}
         {', '} {settings?.city}
       </Text>
@@ -56,7 +62,7 @@ export function Footer({ currentHost, isFederationFooter }) {
                     : `/${item.name}`
                 }
               >
-                <CLink as="span">{item.label}</CLink>{' '}
+                <Text color="theme.50">{item.label}</Text>{' '}
               </Link>
             </Box>
           ))}
@@ -65,17 +71,27 @@ export function Footer({ currentHost, isFederationFooter }) {
 
       {!currentHost.isPortalHost && (
         <Center pt="2">
-          <Flex direction="column" justify="center" textAlign="center">
-            <Heading size="md">{settings.name}</Heading>
+          <Flex
+            direction="column"
+            justify="center"
+            css={{
+              textAlign: 'center',
+            }}
+          >
+            <Center>
+              <Heading size="md">{settings.name}</Heading>
+            </Center>
             <Center>
               {settings.footer ? (
                 <Box
                   className="text-content dark"
-                  fontSize="85%"
-                  maxWidth="480px"
                   mt="4"
-                  textAlign="center"
                   w="100%"
+                  css={{
+                    fontSize: '85%',
+                    textAlign: 'center',
+                    maxWidth: '480px',
+                  }}
                 >
                   {HTMLReactParser(settings?.footer)}
                 </Box>
@@ -85,13 +101,13 @@ export function Footer({ currentHost, isFederationFooter }) {
             </Center>
             {!isFederationFooter && (
               <>
-                <Box>
+                <Center>
                   <Link to="/terms-&-privacy-policy">
-                    <CLink as="span" fontSize="xs">
+                    <Text color="blue.100" fontSize="xs">
                       {tc('terms.title')}{' '}
-                    </CLink>
+                    </Text>
                   </Link>
-                </Box>
+                </Center>
                 <FeedbackForm />
               </>
             )}
@@ -112,10 +128,18 @@ export function PlatformFooter({ platform, children }) {
   }
   return (
     <Center bg="gray.900" className="platform-footer">
-      <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
+      <Box
+        color="white"
+        py="4"
+        css={{
+          fontSize: '85%',
+          maxWidth: '480px',
+          textAlign: 'center',
+        }}
+      >
         <Box p="4">
           <a href={`https://${platform?.portalHost}`}>
-            <Heading color="white" size="md">
+            <Heading color="white" size="md" textAlign="center">
               {platform.name}
             </Heading>
           </a>
@@ -126,13 +150,22 @@ export function PlatformFooter({ platform, children }) {
         </Box>
         <Box p="2">{children}</Box>
 
-        <Box>
+        <Center>
           <Link to="/terms-&-privacy-policy">
-            <CLink as="span" color="theme.50" fontSize="xs">
+            <Text
+              color="theme.50"
+              fontSize="xs"
+              css={{
+                textAlign: 'center',
+                ':hover': {
+                  textDecoration: 'underline',
+                },
+              }}
+            >
               {tc('terms.title')}{' '}
-            </CLink>
+            </Text>
           </Link>
-        </Box>
+        </Center>
         <FeedbackForm isDarkText={false} />
       </Box>
     </Center>

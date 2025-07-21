@@ -98,8 +98,7 @@ export default function DatesAndTimes({
           ...occurrence,
           conflict,
           isConflictHard:
-            conflict &&
-            (isExclusiveActivity || conflict?.isExclusiveActivity),
+            conflict && (isExclusiveActivity || conflict?.isExclusiveActivity),
         };
       })
     );
@@ -131,8 +130,7 @@ export default function DatesAndTimes({
           ...occurrence,
           conflict,
           isConflictHard:
-            conflict &&
-            (isExclusiveActivity || conflict?.isExclusiveActivity),
+            conflict && (isExclusiveActivity || conflict?.isExclusiveActivity),
         };
       }
       return item;
@@ -145,18 +143,13 @@ export default function DatesAndTimes({
     event.preventDefault();
     event.stopPropagation();
 
-    const newDatesAndTimes = [
-      ...datesAndTimes,
-      { ...emptyDateAndTime },
-    ];
+    const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
 
     onDatesAndTimesChange(newDatesAndTimes);
   };
 
   const removeOccurrence = (index) => {
-    const newDatesAndTimes = datesAndTimes.filter(
-      (item, i) => i !== index
-    );
+    const newDatesAndTimes = datesAndTimes.filter((item, i) => i !== index);
 
     onDatesAndTimesChange(newDatesAndTimes);
   };
@@ -225,12 +218,7 @@ export default function DatesAndTimes({
             }}
           >
             <Flex mb="2">
-              <FormControl
-                w="auto"
-                alignItems="center"
-                display="flex"
-                flexGrow="1"
-              >
+              <FormControl>
                 <Checkbox
                   checked={
                     occurrence?.isRange ||
@@ -274,11 +262,7 @@ export default function DatesAndTimes({
         p="6"
         style={{ borderRadius: 'var(--cocoso-border-radius)' }}
       >
-        <IconButton
-          icon={<AddIcon />}
-          size="lg"
-          onClick={addOccurrence}
-        />
+        <IconButton icon={<AddIcon />} size="lg" onClick={addOccurrence} />
       </Center>
     </Box>
   );

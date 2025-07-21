@@ -70,9 +70,7 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
           spacing="0"
         >
           <Avatar borderRadius="lg" name={author.username} src={author.src} />
-          <CLink as="span" color="theme.500">
-            {author.username}
-          </CLink>
+          <CLink color="theme.500">{author.username}</CLink>
         </VStack>
       </Link>
     </Box>
@@ -130,11 +128,7 @@ const Header: React.FC<HeaderProps> = ({
             </Heading>
           )}
           {tags && tags.length > 0 && (
-            <Wrap
-              flexGrow="0"
-              justify={author ? 'flex-start' : 'center'}
-              mt="2"
-            >
+            <Wrap justify={author ? 'flex-start' : 'center'} mt="2">
               {tags.map((tag, i) => (
                 <Tag colorScheme="gray" key={tag + i}>
                   {tag}
@@ -151,12 +145,12 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <Box mb="4" w="100%">
       <Flex alignContent="flex-start" justify="space-between">
-        <Box flexGrow={0} flexShrink={0} pl="2" width="150px">
+        <Box pl="2" width="150px">
           {backLink && <BackLink backLink={backLink} />}
         </Box>
 
         <Button
-          leftIcon={<LinkIcon size={18} />}
+          leftIcon={<LinkIcon />}
           size="lg"
           variant="ghost"
           css={{

@@ -46,11 +46,14 @@ interface TextProps {
   _hover?: any;
   _active?: any;
   _focus?: any;
+  isTruncated?: boolean;
+  truncated?: boolean;
 }
 
 export const Text = styled('span', (props: TextProps) => {
   const color = props.color?.split('.');
   const fontSize = props.size || props.fontSize;
+  const truncated = props.isTruncated || props.truncated;
 
   return {
     color: color
@@ -60,6 +63,9 @@ export const Text = styled('span', (props: TextProps) => {
       ? fontSizes[fontSize as keyof typeof fontSizes]
       : fontSizes.md,
     fontWeight: props.fontWeight || 'normal',
+    textOverflow: truncated ? 'ellipsis' : 'clip',
+    overflow: truncated ? 'hidden' : 'visible',
+    whiteSpace: truncated ? 'nowrap' : 'normal',
     ':hover': props._hover || {},
     ':active': props._active || {},
     ':focus': props._focus || {},

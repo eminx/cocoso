@@ -246,6 +246,7 @@ composable:
     unpublishSuccess: Page reverted as a draft
 
 design:
+  title: Design
   description: Customize your website's visual appearance by adjusting the theme and menu to match your preferences
   tabs:
     theme: Theme

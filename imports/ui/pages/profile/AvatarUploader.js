@@ -20,7 +20,7 @@ export default function AvatarUploader({
   return (
     <Flex mb="4">
       <Box>
-        <Box h="120px" w="120px" flexShrink="0">
+        <Box h="120px" w="120px">
           <FileDropper
             imageUrl={imageUrl}
             label={t('profile.form.avatar.fileDropper')}

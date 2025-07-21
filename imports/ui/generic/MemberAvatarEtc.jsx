@@ -27,7 +27,6 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
           borderRadius="lg"
           maxW={350}
           name={user?.username}
-          showBorder
           size={!avatarSrc || isThumb ? '2xl' : '6xl'}
           src={avatarSrc}
         />
