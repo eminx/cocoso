@@ -23,22 +23,22 @@
 
 .quill-megacontainer .ql-container.ql-snow .ql-editor {
   background-color: #fff;
-  border-width: 2px;
   border-color: var(--cocoso-colors-theme-200);
   border-radius: var(--cocoso-border-radius);
+  border-style: solid;
+  border-width: 2px;
 }
 
 .quill-megacontainer .ql-container.ql-snow .ql-editor {
   transition: all 0.2s;
 }
 
-.quill-megacontainer:not(.is-focused)
-  .ql-container.ql-snow
-  .ql-editor:hover {
+.quill-megacontainer:not(.is-focused) .ql-container.ql-snow .ql-editor:hover {
   background-color: #fff;
   border-color: var(--cocoso-colors-theme-300);
 }
 
+.quill-megacontainer:focus-within .ql-container.ql-snow .ql-editor,
 .quill-megacontainer.is-focused .ql-container.ql-snow .ql-editor {
   border-color: var(--cocoso-colors-theme-400);
 }

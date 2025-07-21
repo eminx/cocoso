@@ -7,18 +7,20 @@ import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 
 export default function Quill(props) {
   const [focused, setFocused] = useState(false);
+
   let megaContainer = 'quill-megacontainer';
   if (focused) {
     megaContainer += ' is-focused';
   }
 
   return (
-    <div
-      className={megaContainer}
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
-    >
-      <ReactQuill modules={editorModules} {...props} />
+    <div className={megaContainer}>
+      <ReactQuill
+        modules={editorModules}
+        {...props}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+      />
     </div>
   );
 }
