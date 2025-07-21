@@ -4,7 +4,7 @@ import { arrayMoveImmutable } from 'array-move';
 import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Button, Flex, Heading, Text } from '/imports/ui/core';
+import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -29,14 +29,12 @@ export default function PagesAdminOrder() {
   const handleSortEnd = (oldIndex, newIndex) => {
     setState((prevState) => ({
       ...prevState,
-      pages: arrayMoveImmutable(
-        prevState.pages,
-        oldIndex,
-        newIndex
-      ).map((page, index) => ({
-        ...page,
-        order: index + 1,
-      })),
+      pages: arrayMoveImmutable(prevState.pages, oldIndex, newIndex).map(
+        (page, index) => ({
+          ...page,
+          order: index + 1,
+        })
+      ),
     }));
   };
 
@@ -69,16 +67,16 @@ export default function PagesAdminOrder() {
 
   return (
     <>
-      <Heading as="h3" size="sm" mt="6" mb="2">
-        <Trans i18nKey="admin:pages.order.label" />
-      </Heading>
-      <Text fontSize="sm" mb="4">
-        <Trans i18nKey="admin:pages.order.info" />
-      </Text>
+      <Box pb="4">
+        <Heading as="h3" size="sm" mt="6" mb="2">
+          <Trans i18nKey="admin:pages.order.label" />
+        </Heading>
+        <Text size="sm">
+          <Trans i18nKey="admin:pages.order.info" />
+        </Text>
+      </Box>
 
-      <Boxling
-        style={{ backgroundColor: 'var(--cocoso-colors-bluegray-50)' }}
-      >
+      <Boxling style={{ backgroundColor: 'var(--cocoso-colors-bluegray-50)' }}>
         <SortableList onSortEnd={handleSortEnd}>
           {pages
             .sort((a, b) => a.order - b.order)
@@ -88,21 +86,19 @@ export default function PagesAdminOrder() {
                   <Flex
                     align="center"
                     bg="white"
-                    borderRadius="lg"
-                    boxShadow="md"
-                    cursor="move"
+                    borderRadius="md"
                     mb="4"
                     px="4"
                     py="2"
-                    style={{ fontFamily: 'Sarabun, sans-serif' }}
+                    css={{
+                      boxShadow: 'var(--cocoso-box-shadow)',
+                      cursor: 'ns-resize',
+                      fontFamily: 'Sarabun, sans-serif',
+                    }}
                   >
-                    <Text fontWeight="bold" mr="4">
-                      {page.order}
-                    </Text>
+                    <Text fontWeight="bold">{page.order}</Text>
                     <DragHandleIcon />
-                    <Text isTruncated ml="2">
-                      {page.title}
-                    </Text>
+                    <Text isTruncated>{page.title}</Text>
                   </Flex>
                 </div>
               </SortableItem>

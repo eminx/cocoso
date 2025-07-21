@@ -104,9 +104,7 @@ export default function MainFeatureSettings({ itemName }) {
         <Box pt="2">
           <Checkbox
             checked={localItem.isVisible}
-            onChange={(event) =>
-              handleMenuItemCheck(event.target.checked)
-            }
+            onChange={(event) => handleMenuItemCheck(event.target.checked)}
           />
         </Box>
       ),
@@ -116,12 +114,9 @@ export default function MainFeatureSettings({ itemName }) {
       value: (
         <Input
           disabled={!localItem.isVisible}
-          maxW="240px"
-          size="sm"
+          maxW="320px"
           value={localItem.label}
-          onChange={(event) =>
-            handleMenuItemLabelChange(event.target.value)
-          }
+          onChange={(event) => handleMenuItemLabelChange(event.target.value)}
         />
       ),
     },
@@ -130,7 +125,6 @@ export default function MainFeatureSettings({ itemName }) {
       value: (
         <Textarea
           disabled={!localItem.isVisible}
-          size="sm"
           value={localItem.description}
           onChange={(event) =>
             handleMenuItemDescriptionChange(event.target.value)
@@ -145,10 +139,9 @@ export default function MainFeatureSettings({ itemName }) {
       <Heading as="h3" size="sm" mt="6" mb="2">
         {t('menu.tabs.menuitems.label')}
       </Heading>
-
-      <Text fontSize="sm" mb="4">
-        {t('menu.tabs.menuitems.info')}
-      </Text>
+      <Box pb="4">
+        <Text size="sm">{t('menu.tabs.menuitems.info')}</Text>
+      </Box>
 
       <Boxling>
         <VStack align="flex-start" spacing="6">
