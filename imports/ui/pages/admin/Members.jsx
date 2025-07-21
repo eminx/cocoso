@@ -4,7 +4,9 @@ import dayjs from 'dayjs';
 import { Trans, useTranslation } from 'react-i18next';
 import {
   Alert,
+  Badge,
   Box,
+  Code,
   Flex,
   Heading,
   Input,
@@ -29,19 +31,20 @@ const compareUsersByDate = (a, b) => {
 
 function MemberItem({ member, t }) {
   return (
-    <Box p="4">
-      <Heading size="md" fontWeight="bold">
+    <Box p="6">
+      <Heading size="md" fontWeight="bold" mb="1">
         {member.username}
+        <Badge size="sm" css={{ marginTop: '-1rem', marginLeft: '0.5rem' }}>
+          {t(`roles.${member.role}`).toLowerCase()}
+        </Badge>
       </Heading>
-      <Text>{member && member.email}</Text>
-      <Text fontSize="sm" fontStyle="italic">
-        {t(`roles.${member.role}`).toLowerCase()}
-      </Text>
-      <Text fontSize="xs" color="gray.500">
+      <Code size="sm">{member && member.email}</Code>
+      <br />
+      <br />
+      <Text size="xs" color="gray.500" fontStyle="italic">
         {t('joinedAt', {
           date: dayjs(member.date).format('D MMM YYYY'),
         })}
-        <br />
       </Text>
     </Box>
   );
@@ -55,9 +58,7 @@ function MemberList({ members, t }) {
       keySelector="email"
       list={members}
     >
-      {(member) => (
-        <MemberItem key={member.username} t={t} member={member} />
-      )}
+      {(member) => <MemberItem key={member.username} t={t} member={member} />}
     </NiceList>
   );
 }
@@ -124,9 +125,7 @@ export default function Members() {
     try {
       await call('setAsAdmin', user.id);
       getMembers();
-      message.success(
-        t('message.success.admin', { username: user.username })
-      );
+      message.success(t('message.success.admin', { username: user.username }));
     } catch (error) {
       console.log(error);
       message.error({
@@ -163,8 +162,7 @@ export default function Members() {
         content: t('actions.participant'),
         handleClick: () => setAsParticipant(member),
         isDisabled:
-          !['contributor'].includes(member.role) ||
-          !['admin'].includes(role),
+          !['contributor'].includes(member.role) || !['admin'].includes(role),
       },
       {
         content: t('actions.usageReport'),
@@ -205,15 +203,12 @@ export default function Members() {
   ];
 
   const membersFilteredWithType = membersList.filter((member) => {
-    const lowerCaseFilterWord = filterWord
-      ? filterWord.toLowerCase()
-      : '';
+    const lowerCaseFilterWord = filterWord ? filterWord.toLowerCase() : '';
     if (!member.username || !member.email) {
       return false;
     }
     return (
-      member.username.toLowerCase().indexOf(lowerCaseFilterWord) !==
-        -1 ||
+      member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
       member.email.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
     );
   });
@@ -261,9 +256,7 @@ export default function Members() {
             </span>{' '}
             <Trans
               i18nKey={`admin:users.${
-                membersRendered.length > 1
-                  ? 'usersListed'
-                  : 'userListed'
+                membersRendered.length > 1 ? 'usersListed' : 'userListed'
               }`}
             />
           </Heading>
