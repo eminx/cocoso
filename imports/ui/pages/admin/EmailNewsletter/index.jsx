@@ -231,9 +231,9 @@ export default function EmailNewsletter() {
           </Link>
         </Center>
 
-        <Text mb="4">{t('newsletter.subtitle')}</Text>
+        <Text>{t('newsletter.subtitle')}</Text>
 
-        <Boxling>
+        <Boxling mt="4">
           <EmailForm
             currentHost={currentHost}
             email={state.email}

@@ -35,7 +35,7 @@ function EmailForm({ defaultValues, key, onSubmit }) {
   return (
     <>
       {key && <Heading>{defaultValues.title}</Heading>}
-      <Boxling noHoverEffect>
+      <Boxling>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <VStack>
             <FormField label={t('emails.form.subject.label')}>
@@ -141,7 +141,7 @@ export default function Emails() {
       title,
       path: key,
       content: (
-        <Box py="4" mb="4">
+        <Box py="8" mb="4">
           <Heading size="md" mb="4">
             {title}
           </Heading>
