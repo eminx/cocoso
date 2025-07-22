@@ -131,8 +131,18 @@ export const Code = styled('span', (props: CodeProps) => {
   };
 });
 
-export const Link = styled('a', () => ({
-  color: 'inherit',
-  cursor: 'pointer',
-  textDecoration: 'none',
-}));
+export const Link = styled('a', (props: TextProps) => {
+  const color = props.color?.split('.') || ['blue', '500'];
+  const truncated = props.isTruncated || props.truncated || false;
+
+  return {
+    color: `var(--cocoso-colors-${color[0]}-${color[1]})`,
+    cursor: 'pointer',
+    overflow: truncated ? 'hidden' : 'visible',
+    textOverflow: truncated ? 'ellipsis' : 'clip',
+    whiteSpace: truncated ? 'nowrap' : 'normal',
+    ':hover': {
+      textDecoration: 'underline',
+    },
+  };
+});

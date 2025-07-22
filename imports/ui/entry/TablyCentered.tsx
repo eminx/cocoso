@@ -64,12 +64,8 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
   return (
     <Box mt="2">
       <Link to={`/@${author.username}/`}>
-        <VStack
-          _hover={{ textDecoration: 'underline' }}
-          justify="center"
-          spacing="0"
-        >
-          <Avatar borderRadius="lg" name={author.username} src={author.src} />
+        <VStack align="center" justify="center" gap="0">
+          <Avatar name={author.username} src={author.src} />
           <CLink color="theme.500">{author.username}</CLink>
         </VStack>
       </Link>
