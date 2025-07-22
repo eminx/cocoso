@@ -24,10 +24,7 @@ export default function ThemeHandler() {
     useContext(StateContext);
 
   const [state, setState] = useState({
-    hasChanges: false,
-    hasBackgroundImageChange: false,
     uploadingBackgroundImage: false,
-    uploadedBackgroundImage: false,
     updating: false,
   });
 
@@ -54,11 +51,6 @@ export default function ThemeHandler() {
       ...prevState,
       theme: newTheme,
     }));
-
-    setState((prevState) => ({
-      ...prevState,
-      hasChanges: true,
-    }));
   };
 
   const handleStyleChange = (key, value) => {
@@ -75,63 +67,6 @@ export default function ThemeHandler() {
         },
       },
     }));
-    setState((prevState) => ({
-      ...prevState,
-      hasChanges: true,
-    }));
-  };
-
-  const handleBackgroundImageChange = (images) => {
-    if (!images || images.length === 0) {
-      return;
-    }
-
-    const selectedImage = images?.[0]?.src;
-    if (!selectedImage) {
-      return;
-    }
-
-    if (selectedImage === currentHost?.theme?.body?.backgroundImage) {
-      return;
-    }
-
-    setCurrentHost((prevState) => ({
-      ...prevState,
-      theme: {
-        ...prevState.theme,
-        body: {
-          ...prevState.theme.body,
-          backgroundImage: selectedImage,
-        },
-      },
-    }));
-
-    setState((prevState) => ({
-      ...prevState,
-      hasChanges: true,
-      hasBackgroundImageChange: true,
-    }));
-  };
-
-  const handleUploadedBackgroundImage = (images) => {
-    if (!images?.[0]) {
-      return;
-    }
-
-    setCurrentHost((prevState) => ({
-      ...prevState,
-      theme: {
-        ...prevState.theme,
-        body: {
-          ...prevState.theme.body,
-          backgroundImage: images[0],
-        },
-      },
-    }));
-    setState((prevState) => ({
-      ...prevState,
-      uploadedBackgroundImage: true,
-    }));
   };
 
   const updateHostTheme = async () => {
@@ -143,11 +78,9 @@ export default function ThemeHandler() {
       ...currentHost.theme,
     };
 
+    console.log('updatehost trigger back');
+
     try {
-      setState((prevState) => ({
-        ...prevState,
-        updating: true,
-      }));
       await call('updateHostTheme', newTheme);
       await getCurrentHost();
       message.success(<Trans i18nKey="admin:design.message.success" />);
@@ -160,38 +93,18 @@ export default function ThemeHandler() {
     } finally {
       setState((prevState) => ({
         ...prevState,
-        hasChanges: false,
         updating: false,
-        hasBackgroundImageChange: false,
         uploadingBackgroundImage: false,
-        uploadedBackgroundImage: false,
       }));
     }
   };
 
-  useEffect(() => {
-    if (
-      state.uploadedBackgroundImage &&
-      currentHost?.theme?.body?.backgroundImage
-    ) {
-      updateHostTheme();
-    }
-  }, [state.uploadedBackgroundImage]);
-
   const confirmUpdate = () => {
-    if (!state.hasChanges) {
-      return;
-    }
-
-    if (state.hasBackgroundImageChange) {
-      setState((prevState) => ({
-        ...prevState,
-        uploadingBackgroundImage: true,
-      }));
-      return;
-    }
-
-    updateHostTheme();
+    setState((prevState) => ({
+      ...prevState,
+      uploadingBackgroundImage: true,
+      updating: true,
+    }));
   };
 
   const handleHueChange = (hue) => {
@@ -202,13 +115,7 @@ export default function ThemeHandler() {
   };
 
   if (!currentHost) {
-    return (
-      <Box>
-        <Center>
-          <Loader />
-        </Center>
-      </Box>
-    );
+    return <Loader />;
   }
 
   return (
@@ -291,17 +198,16 @@ export default function ThemeHandler() {
 
       {currentTheme?.variant === 'custom' && (
         <BackgroundHandler
-          uploadingBackgroundImage={state.uploadingBackgroundImage}
-          handleStyleChange={handleStyleChange}
-          onBackgroundImageChange={handleBackgroundImageChange}
-          onUploadedBackgroundImage={handleUploadedBackgroundImage}
+          uploadPing={state.uploadingBackgroundImage}
+          onStyleChange={handleStyleChange}
+          onUploadFinish={updateHostTheme}
         />
       )}
 
       <Flex justify="flex-end" mb="12">
         <Button
-          disabled={!state.hasChanges}
-          isLoading={state.updating}
+          // disabled={!state.hasChanges}
+          loading={state.updating}
           onClick={confirmUpdate}
         >
           <Trans i18nKey="common:actions.submit" />

@@ -18,10 +18,7 @@ import {
   UserList,
   User,
 } from './components';
-
-function LoaderSSR() {
-  return <Loader />;
-}
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
 const AppRoutesSSR = (host, sink) => {
   const props = {
@@ -44,7 +41,7 @@ const AppRoutesSSR = (host, sink) => {
     },
     {
       path: '/calendar',
-      element: <LoaderSSR />,
+      element: <Loader />,
     },
     {
       path: '/communities',
@@ -97,7 +94,7 @@ const AppRoutesSSR = (host, sink) => {
     },
     {
       path: '/*',
-      element: <LoaderSSR />,
+      element: <NotFoundPage />,
     },
   ];
 };

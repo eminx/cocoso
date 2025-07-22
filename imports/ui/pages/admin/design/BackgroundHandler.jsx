@@ -1,28 +1,129 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 
 import { Box, Button, Center, Checkbox, VStack, Text } from '/imports/ui/core';
 import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
-import ImageUploader from '/imports/ui/forms/ImageUploader';
+import FileDropper from '/imports/ui/forms/FileDropper';
 import { StateContext } from '/imports/ui/LayoutContainer';
-import { call } from '/imports/ui/utils/shared';
+import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';
-import ColorPicker from './HuePicker';
 import Menu from '/imports/ui/generic/Menu';
 
+import ColorPicker from './HuePicker';
+
 export default function BackgroundHandler({
-  uploadingBackgroundImage,
-  handleStyleChange,
-  onBackgroundImageChange,
-  onUploadedBackgroundImage,
+  uploadPing,
+  onStyleChange,
+  onUploadFinish,
 }) {
-  const { currentHost } = useContext(StateContext);
+  const { currentHost, setCurrentHost } = useContext(StateContext);
+  const [state, setState] = useState({
+    uploadingBgImage: false,
+    uploadableBgImage: null,
+    uploadableBgImageLocal: null,
+  });
 
   const backgroundColor = currentHost?.theme?.body?.backgroundColor;
   const backgroundImage = currentHost?.theme?.body?.backgroundImage;
+  const existingBackgroundImage =
+    (backgroundImage !== 'none' && backgroundImage) || null;
   const backgroundRepeat =
     currentHost?.theme?.body?.backgroundRepeat === 'repeat';
+
+  useEffect(() => {
+    if (!uploadPing) {
+      return;
+    }
+    if (state.uploadingBgImage) {
+      return;
+    }
+
+    setState((prevState) => ({
+      ...prevState,
+      uploadingBgImage: true,
+    }));
+    uploadBgImage();
+  }, [uploadPing]);
+
+  const setUploadableImage = (files) => {
+    if (files.length > 1) {
+      message.error(<Trans i18nKey="admin:logo.message.fileDropper" />);
+      return;
+    }
+    const uploadableImage = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadableImage);
+    reader.addEventListener(
+      'load',
+      () => {
+        setState((prevState) => ({
+          ...prevState,
+          uploadableBgImage: uploadableImage,
+          uploadableBgImageLocal: reader.result,
+        }));
+
+        setCurrentHost((prevState) => ({
+          ...prevState,
+          theme: {
+            ...prevState.theme,
+            body: {
+              ...prevState.theme.body,
+              backgroundImage: reader.result,
+            },
+          },
+        }));
+      },
+      false
+    );
+  };
+
+  const uploadBgImage = async () => {
+    if (
+      !backgroundImage ||
+      backgroundImage.substring(0, 4) === 'http' ||
+      backgroundImage.substring(0, 5) !== 'data:'
+    ) {
+      onUploadFinish();
+      return;
+    }
+
+    try {
+      const resizedImage = await resizeImage(state.uploadableBgImage, 1200);
+      const uploadedImage = await uploadImage(
+        resizedImage,
+        'genericEntryImageUpload'
+      );
+      onStyleChange('backgroundImage', uploadedImage);
+      setTimeout(() => {
+        onUploadFinish();
+      }, 500);
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+    }
+  };
+
+  const handleUploadedBackgroundImage = (images) => {
+    if (!images?.[0]) {
+      return;
+    }
+
+    setCurrentHost((prevState) => ({
+      ...prevState,
+      theme: {
+        ...prevState.theme,
+        body: {
+          ...prevState.theme.body,
+          backgroundImage: images[0],
+        },
+      },
+    }));
+    setState((prevState) => ({
+      ...prevState,
+      uploadedBackgroundImage: true,
+    }));
+  };
 
   return (
     <>
@@ -35,14 +136,14 @@ export default function BackgroundHandler({
           <GenericColorPicker
             color={backgroundColor}
             onChange={(selectedOption) =>
-              handleStyleChange('backgroundColor', selectedOption?.hex)
+              onStyleChange('backgroundColor', selectedOption?.hex)
             }
           />
           <Button
             colorScheme="red"
             size="sm"
             variant="ghost"
-            onClick={() => handleStyleChange('backgroundColor', '#f0ebe6')}
+            onClick={() => onStyleChange('backgroundColor', '#f0ebe6')}
           >
             <Trans i18nKey="admin:design.color.revert" />
           </Button>
@@ -54,13 +155,15 @@ export default function BackgroundHandler({
       </Text>
 
       <Boxling mb="8" mt="4">
-        <ImageUploader
-          isMultiple={false}
-          ping={uploadingBackgroundImage}
-          preExistingImages={[backgroundImage]}
-          onSelectImages={onBackgroundImageChange}
-          onUploadedImages={onUploadedBackgroundImage}
-        />
+        <Center>
+          <FileDropper
+            imageUrl={existingBackgroundImage}
+            height="180px"
+            setUploadableImage={setUploadableImage}
+            uploadableImageLocal={state.uploadableBgImageLocal}
+          />
+        </Center>
+
         <Center>
           <Button
             bg="white"
@@ -68,7 +171,7 @@ export default function BackgroundHandler({
             mt="2"
             size="xs"
             variant="ghost"
-            onClick={() => handleStyleChange('backgroundImage', 'none')}
+            onClick={() => onStyleChange('backgroundImage', 'none')}
           >
             <Trans i18nKey="common:actions.remove" />
           </Button>
@@ -81,7 +184,7 @@ export default function BackgroundHandler({
               id="background-repeat"
               onChange={(event) => {
                 const checked = event.target.checked;
-                handleStyleChange(
+                onStyleChange(
                   'backgroundRepeat',
                   checked ? 'repeat' : 'no-repeat'
                 );

@@ -50,10 +50,6 @@ export default function Settings() {
     );
   }
 
-  if (loading) {
-    return <Loader />;
-  }
-
   const updateHostSettings = async (values) => {
     if (!currentUser || role !== 'admin') {
       message.error(tc('message.access.deny'));
@@ -207,6 +203,10 @@ export default function Settings() {
 
   if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
+  }
+
+  if (loading) {
+    return <Loader />;
   }
 
   return (

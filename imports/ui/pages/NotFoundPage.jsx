@@ -12,17 +12,20 @@ export default function NotFoundPage() {
   return (
     <Template>
       <Box m="4" p="2">
-        <Text textAlign="center" size="large" margin="2">
+        <Text textAlign="center" size="xl">
           404
         </Text>
         <Text textAlign="center" fontWeight="bold">
           {t('labels.notfound.info')}
         </Text>
-        <Text textAlign="center" mt="6">
-          <Link to="/">
-            <CLink>{t('labels.notfound.gohome')}</CLink>
-          </Link>
-        </Text>
+
+        <Box mt="6">
+          <Text textAlign="center">
+            <Link to="/">
+              <CLink>{t('labels.notfound.gohome')}</CLink>
+            </Link>
+          </Text>
+        </Box>
       </Box>
     </Template>
   );

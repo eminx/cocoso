@@ -54,7 +54,7 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
         imageUrl={Host?.logo}
         url={url}
       />
-      <Center pb="4">
+      <Center>
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
       </Center>
 

@@ -25,9 +25,9 @@ export default function DummyWrapper({
       <Box
         className={wrapperClass}
         id="main-content-container"
-        style={{
+        css={{
           backgroundColor: theme?.body?.backgroundColor,
-          backgroundImage: theme?.body?.backgroundImage,
+          backgroundImage: `url("${theme?.body?.backgroundImage}")`,
           backgroundRepeat: theme?.body?.backgroundRepeat,
         }}
         {...otherProps}
