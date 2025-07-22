@@ -94,10 +94,10 @@ export default function BackgroundHandler({
         resizedImage,
         'genericEntryImageUpload'
       );
+
+      console.log('uploadedImage', uploadedImage);
       onStyleChange('backgroundImage', uploadedImage);
-      setTimeout(() => {
-        onUploadFinish();
-      }, 500);
+      onUploadFinish(uploadedImage);
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);

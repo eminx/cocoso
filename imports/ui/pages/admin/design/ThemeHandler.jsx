@@ -57,6 +57,7 @@ export default function ThemeHandler() {
     if (currentHost?.theme?.body?.[key] === value) {
       return;
     }
+
     setCurrentHost((prevState) => ({
       ...prevState,
       theme: {
@@ -69,7 +70,7 @@ export default function ThemeHandler() {
     }));
   };
 
-  const updateHostTheme = async () => {
+  const updateHostTheme = async (uploadedImage = null) => {
     if (!currentHost?.theme) {
       return;
     }
@@ -78,7 +79,9 @@ export default function ThemeHandler() {
       ...currentHost.theme,
     };
 
-    console.log('updatehost trigger back');
+    if (uploadedImage) {
+      newTheme.body.backgroundImage = uploadedImage;
+    }
 
     try {
       await call('updateHostTheme', newTheme);
