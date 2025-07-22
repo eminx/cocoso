@@ -3,53 +3,61 @@ import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
 
 import { Box, Button, Checkbox, Input } from '/imports/ui/core';
-
 import Modal from '/imports/ui/core/Modal';
 import FormField from '/imports/ui/forms/FormField';
 import { call } from '/imports/ui/utils/shared';
-import { ComposablePageContext } from '../ComposablePageForm';
 import { message } from '/imports/ui/generic/message';
 
+import { ComposablePageContext } from '../ComposablePageForm';
+
 export default function ComposablePageSettings() {
-  const { currentPage, setCurrentPage, updateComposablePage } = useContext(
+  const { currentPage, getComposablePageById } = useContext(
     ComposablePageContext
   );
 
-  const [state, setState] = useState({
-    settingsModalOpen: false,
-  });
-
-  const updateSettings = (field) => {
-    setCurrentPage((prevPage) => ({
-      ...prevPage,
-      settings: {
-        ...prevPage.settings,
-        ...field,
-      },
-    }));
+  const defaultState = {
+    hideTitle: currentPage?.settings?.hideTitle,
+    hideMenu: currentPage?.settings?.hideMenu,
+    modalOpen: false,
+    title: currentPage?.title,
   };
 
-  const renameTitle = (e) => {
-    setCurrentPage((prevPage) => ({
-      ...prevPage,
-      title: e.target.value,
+  const [state, setState] = useState(defaultState);
+
+  const updateSettings = (field) => {
+    setState((prevState) => ({
+      ...prevState,
+      ...field,
     }));
   };
 
   const confirmChange = async () => {
-    if (currentPage.title === '') {
+    if (state.title === '') {
       message.error(<Trans i18nKey="admin:composable.messages.titleEmpty" />);
       return;
     }
-    if (currentPage.title.length > 50) {
+    if (state.title.length > 50) {
       message.error(<Trans i18nKey="admin:composable.messages.titleTooLong" />);
       return;
     }
+
+    const newPage = {
+      ...currentPage,
+      title: state.title,
+      settings: {
+        ...currentPage.settings,
+        hideTitle: state.hideTitle,
+        hideMenu: state.hideMenu,
+      },
+    };
+
     try {
-      await updateComposablePage(true);
+      await call('updateComposablePage', newPage);
+      await getComposablePageById();
+      message.success(<Trans i18nKey="common:message.success.save" />);
       setState((prevState) => ({
         ...prevState,
-        settingsModalOpen: false,
+        modalOpen: false,
       }));
     } catch (error) {
       console.log(error);
@@ -57,7 +65,9 @@ export default function ComposablePageSettings() {
     }
   };
 
-  const settings = currentPage?.settings || {};
+  const handleCloseModal = () => {
+    setState({ ...defaultState, modalOpen: false });
+  };
 
   return (
     <div style={{ flexGrow: '0' }}>
@@ -69,7 +79,7 @@ export default function ComposablePageSettings() {
         onClick={() =>
           setState((prevState) => ({
             ...prevState,
-            settingsModalOpen: true,
+            modalOpen: true,
           }))
         }
       >
@@ -77,30 +87,25 @@ export default function ComposablePageSettings() {
       </Button>
 
       <Modal
-        open={state.settingsModalOpen}
+        open={state.modalOpen}
         title={<Trans i18nKey="admin:composable.settings.title" />}
         onConfirm={confirmChange}
-        onClose={() =>
-          setState((prevState) => ({
-            ...prevState,
-            settingsModalOpen: false,
-          }))
-        }
+        onClose={handleCloseModal}
       >
         <Box borderRadius="md">
           <Box pb="2">
             <FormField label={<Trans i18nKey="admin:composable.form.title" />}>
               <Input
                 type="text"
-                value={currentPage?.title}
-                onChange={renameTitle}
+                value={state.title}
+                onChange={(e) => updateSettings({ title: e.target.value })}
               />
             </FormField>
           </Box>
 
           <Box>
             <Checkbox
-              checked={settings?.hideTitle}
+              checked={state.hideTitle}
               onChange={(e) => updateSettings({ hideTitle: e.target.checked })}
             >
               <FormField
@@ -111,7 +116,7 @@ export default function ComposablePageSettings() {
 
           <Box>
             <Checkbox
-              checked={settings?.hideMenu}
+              checked={state.hideMenu}
               onChange={(e) => updateSettings({ hideMenu: e.target.checked })}
             >
               <FormField

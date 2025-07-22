@@ -100,9 +100,12 @@ export default function DropTarget({ columnIndex, rowIndex, children }) {
         p="0"
         css={{
           border: canDrop && !isSameColumn ? '1px dashed' : 'none',
-          borderWidth: '2px',
-          borderColor: canDrop && !isSameColumn ? 'green.500' : 'none',
+          borderColor:
+            canDrop && !isSameColumn
+              ? 'var(--cocoso-colors-green-500)'
+              : 'none',
           borderRadius: '0.5rem',
+          borderWidth: '2px',
           minHeight: '102px',
           transition: 'all 0.2s ease-in-out',
           width: '100%',
