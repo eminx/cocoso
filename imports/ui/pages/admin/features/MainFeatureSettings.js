@@ -104,6 +104,7 @@ export default function MainFeatureSettings({ itemName }) {
         <Box pt="2">
           <Checkbox
             checked={localItem.isVisible}
+            id="is-item-active"
             onChange={(event) => handleMenuItemCheck(event.target.checked)}
           />
         </Box>

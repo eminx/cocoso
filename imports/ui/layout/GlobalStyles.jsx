@@ -18,6 +18,7 @@ export default function GlobalStyles({ theme }) {
             colorScheme is handled by CSS variables (set on :root or body)
           */
           ':root': {
+            '--cocoso-colors-theme-': 'white',
             '--cocoso-colors-theme-50': isGray
               ? 'rgb(250, 247, 245)'
               : getColor(hue, '97'),

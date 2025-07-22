@@ -56,6 +56,7 @@ export const Text = styled('span', (props: TextProps) => {
   const truncated = props.isTruncated || props.truncated;
 
   return {
+    ...getPropStyles(props),
     color: color
       ? `var(--cocoso-colors-${color[0]}-${color[1]})`
       : 'var(--cocoso-colors-gray-900)',
@@ -66,16 +67,16 @@ export const Text = styled('span', (props: TextProps) => {
     textOverflow: truncated ? 'ellipsis' : 'clip',
     overflow: truncated ? 'hidden' : 'visible',
     whiteSpace: truncated ? 'nowrap' : 'normal',
+    lineHeight: props.lineHeight || 'normal',
+    textAlign: props.textAlign || 'left',
     ':hover': props._hover || {},
     ':active': props._active || {},
     ':focus': props._focus || {},
-    // marginBottom: props.mb || '0',
-    ...getPropStyles(props),
   };
 });
 
 // Heading
-interface HeadingProps {
+interface HeadingProps extends TextProps {
   color?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -92,13 +93,19 @@ const headingSizes = {
 
 export const Heading = styled('h2', (props: HeadingProps) => {
   const color = props.color?.split('.');
+  const truncated = props.isTruncated || props.truncated;
+
   return {
     ...getPropStyles(props),
     color: color ? `var(--cocoso-colors-${color[0]}-${color[1]})` : 'inherit',
-    fontWeight: 700,
     fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
-    lineHeight: 1.2,
     fontFamily: 'Raleway, sans-serif',
+    fontWeight: props.fontWeight || 'bold',
+    overflow: truncated ? 'hidden' : 'visible',
+    lineHeight: props.lineHeight || '1.2',
+    textAlign: props.textAlign || 'left',
+    textOverflow: truncated ? 'ellipsis' : 'clip',
+    whiteSpace: truncated ? 'nowrap' : 'normal',
   };
 });
 

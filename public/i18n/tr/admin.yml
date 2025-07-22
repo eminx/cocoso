@@ -207,6 +207,7 @@ composable:
     line: Çizgi
     link: Bağlantı adresi
     linkHelper: Lütfen bağlantı adresini gir. Bu bağlantı, butona tıklandığında açılır
+    imageAsLink: İmaj link mi?
     video: Video-URL
     videoHelper: Lütfen bir video URL'si gir, genellikle bir YouTube veya Vimeo video sayfasının bağlantı adresi olur..
     removeRow: Satırı kaldır

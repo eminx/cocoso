@@ -83,12 +83,12 @@ export function AdminUserThumb({ currentUser }) {
 
         <Box p="2">
           <Box>
-            <Text fontSize="lg" fontWeight="bold" color="white">
+            <Text fontSize="lg" fontWeight="bold" css={{ color: 'white' }}>
               {currentUser.username}
             </Text>
           </Box>
           <Box>
-            <Text fontWeight="light" color="white">
+            <Text fontWeight="light" css={{ color: 'white' }}>
               {getFullName(currentUser)}
             </Text>
           </Box>

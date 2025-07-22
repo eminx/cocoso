@@ -10,13 +10,6 @@ const resourceFormFields = (t) => [
     },
   },
   {
-    helper: t('form.bookable.helper'),
-    label: t('form.bookable.label'),
-    placeholder: t('form.select'),
-    type: 'checkbox',
-    value: 'isBookable',
-  },
-  {
     helper: t('form.description.helper'),
     label: t('form.description.label'),
     placeholder: t('form.description.holder'),

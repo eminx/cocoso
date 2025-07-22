@@ -207,6 +207,7 @@ composable:
     line: Rad
     link: Länkadressen
     linkHelper: Ange länkadressen. Denna länk öppnas när knappen klickas
+    imageAsLink: Bild som länk?
     video: Video-URL
     videoHelper: Ange en video-URL, vanligtvis länkadressen till en YouTube- eller Vimeo-videosida..
     removeRow: Ta bort rad

@@ -24,9 +24,7 @@ export const emptyFormValues = {
 
 export default function CalendarActivityForm({ activity, onFinalize }) {
   const [state, setState] = useState({
-    datesAndTimes: activity
-      ? activity.datesAndTimes
-      : [emptyDateAndTime],
+    datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
     selectedResource: activity
       ? { label: activity.resource, value: activity.resourceId }
@@ -34,8 +32,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
     resources: [],
   });
-  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] =
-    useState(false);
+  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
 
   const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('activities');
@@ -80,8 +77,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   const isFormValid = () => {
     const { datesAndTimes } = state;
     const isConflictHard = datesAndTimes.some(
-      (occurrence) =>
-        Boolean(occurrence.conflict) && occurrence.isConflictHard
+      (occurrence) => Boolean(occurrence.conflict) && occurrence.isConflictHard
     );
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -95,11 +91,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
 
   useEffect(() => {
     isFormValid();
-  }, [
-    state.datesAndTimes,
-    state.selectedResource,
-    state.isExclusiveActivity,
-  ]);
+  }, [state.datesAndTimes, state.selectedResource, state.isExclusiveActivity]);
 
   const parseActivity = async () => {
     const sortedDatesAndTimes = state.datesAndTimes.sort((a, b) => {
@@ -190,10 +182,11 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
         <Box bg="white" borderRadius="lg" display="inline" p="2">
           <Checkbox
             checked={state.isExclusiveActivity}
+            id="is-exclusive-activity"
             size="lg"
             onChange={handleExclusiveSwitch}
           >
-            <label>{t('form.exclusive.holder')}</label>
+            {t('form.exclusive.holder')}
           </Checkbox>
         </Box>
       </FormField>

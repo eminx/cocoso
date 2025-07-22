@@ -203,10 +203,11 @@ composable:
     emptySpace: Empty Space
     emptySpaceHelper: Please enter the height of the empty space in pixels
     label: Label
-    labelHelper: Pleae enter the label for the button. This label will be displayed on the button
+    labelHelper: Please enter the label for the button. This label will be displayed on the button
     line: Line
     link: Link address
     linkHelper: Please enter the link address. This link will be opened when the button is clicked
+    imageAsLink: Image as link?
     video: Video URL
     videoHelper: Please enter a video URL, typically the link address for a YouTube or Vimeo video page..
     removeRow: Remove row

@@ -250,8 +250,7 @@ export default function MenuSettings() {
             <Flex py="4">
               <Checkbox
                 checked={Boolean(localSettings.isBurgerMenuOnMobile)}
-                mr="2"
-                mt="1"
+                id="is-burger-menu-mobile"
                 name="isBurgerMenuOnMobile"
                 onChange={(event) =>
                   handleSwitchBurgerMenuMobile(event.target.checked)
@@ -265,8 +264,7 @@ export default function MenuSettings() {
               <Checkbox
                 checked={Boolean(localSettings.isBurgerMenuOnDesktop)}
                 disabled={!localSettings.isBurgerMenuOnMobile}
-                mr="2"
-                mt="1"
+                id="is-burger-menu-desktop"
                 name="isBurgerMenuOnDesktop"
                 onChange={(event) =>
                   handleSwitchBurgerMenuDesktop(event.target.checked)
@@ -279,7 +277,7 @@ export default function MenuSettings() {
 
           <Flex justify="flex-end" pt="2">
             <Button
-              isDisabled={isOptionsSubmitButtonDisabled}
+              disabled={isOptionsSubmitButtonDisabled}
               onClick={() => handleMenuSave()}
             >
               {tc('actions.submit')}

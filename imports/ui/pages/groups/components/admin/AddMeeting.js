@@ -57,9 +57,7 @@ function AddMeetingForm({
             checked={isLocal}
             onChange={({ target: { checked } }) => setIsLocal(checked)}
           >
-            <label htmlFor="is-local-switch">
-              {t('meeting.form.switch', { place: hostname })}
-            </label>
+            {t('meeting.form.switch', { place: hostname })}
           </Checkbox>
         </FormControl>
 

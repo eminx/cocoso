@@ -193,10 +193,14 @@ export default function DatesAndTimes({
     borderRadius: 'var(--cocoso-border-radius)',
     marginBottom: '1rem',
     padding: '1rem',
+    position: 'relative',
   };
 
   const iconStyle = {
     flexGrow: 0,
+    position: 'absolute',
+    right: '0.5rem',
+    top: '0.5rem',
   };
 
   if (!datesAndTimes || datesAndTimes.length === 0) {
@@ -218,20 +222,17 @@ export default function DatesAndTimes({
             }}
           >
             <Flex mb="2">
-              <FormControl>
-                <Checkbox
-                  checked={
-                    occurrence?.isRange ||
-                    occurrence.startDate !== occurrence.endDate
-                  }
-                  id={id}
-                  onChange={(event) => handleRangeSwitch(event, index)}
-                  py="2"
-                />
-                <FormLabel htmlFor={id} mb="1" ml="2">
-                  {t('form.days.multiple')}
-                </FormLabel>
-              </FormControl>
+              <Checkbox
+                checked={
+                  occurrence?.isRange ||
+                  occurrence.startDate !== occurrence.endDate
+                }
+                id={id}
+                onChange={(event) => handleRangeSwitch(event, index)}
+                py="2"
+              >
+                {t('form.days.multiple')}
+              </Checkbox>
 
               {isDeletable && (
                 <IconButton
@@ -244,12 +245,10 @@ export default function DatesAndTimes({
               )}
             </Flex>
 
-            <Wrap>
-              <DateTimePicker
-                value={occurrence}
-                onChange={(value) => handleDateTimeChange(value, index)}
-              />
-            </Wrap>
+            <DateTimePicker
+              value={occurrence}
+              onChange={(value) => handleDateTimeChange(value, index)}
+            />
 
             {occurrence?.conflict && (
               <ConflictMarker occurrence={occurrence} t={t} />

@@ -21,8 +21,8 @@ function FeedbackForm({ isDarkText = false }) {
     <>
       <Center p="2">
         <Button
-          size="xs"
-          variant="outline"
+          size="sm"
+          variant="ghost"
           onClick={() => setShowFeedbackModal(true)}
         >
           {tc('modals.feedback.label')}

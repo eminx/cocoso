@@ -82,6 +82,7 @@ export function Checkbox({
   onChange,
   size = 'md',
   children,
+  id,
   ...props
 }) {
   const [focused, setFocused] = React.useState(false);
@@ -98,6 +99,7 @@ export function Checkbox({
         aria-checked={indeterminate ? 'mixed' : checked}
         aria-disabled={disabled}
         checked={checked}
+        id={id}
         disabled={disabled}
         onBlur={() => setFocused(false)}
         onChange={handleChange}
@@ -118,15 +120,17 @@ export function Checkbox({
         )}
       </CheckboxBox>
       {children && (
-        <Text
-          css={{
-            fontWeight: 'normal',
+        <label
+          htmlFor={id}
+          style={{
+            cursor: 'pointer',
+            fontWeight: 'bold',
             fontSize:
               size === 'sm' ? '0.875rem' : size === 'lg' ? '1.125rem' : '1rem',
           }}
         >
           {children}
-        </Text>
+        </label>
       )}
     </CheckboxContainer>
   );

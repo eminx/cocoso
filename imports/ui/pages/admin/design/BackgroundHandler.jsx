@@ -78,6 +78,7 @@ export default function BackgroundHandler({
           <Center pt="8">
             <Checkbox
               checked={backgroundRepeat}
+              id="background-repeat"
               onChange={(event) => {
                 const checked = event.target.checked;
                 handleStyleChange(

@@ -23,7 +23,6 @@ export default function DummyWrapper({
     <HydrationProvider>
       <GlobalStyles theme={theme} />
       <Box
-        boxShadow="md"
         className={wrapperClass}
         id="main-content-container"
         style={{

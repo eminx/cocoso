@@ -130,20 +130,24 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
                 <Box pr="2" pt="1">
                   <Checkbox
                     checked={termsChecked}
+                    id="is-terms-checked"
                     size="lg"
                     onChange={() => setTermsChecked(!termsChecked)}
-                  />
+                  >
+                    <Link
+                      css={{
+                        color: 'var(--cocoso-colors-blue-500)',
+                        fontSize: '0.875rem',
+                        textDecoration: 'underline',
+                      }}
+                      onClick={() => setModalOpen(true)}
+                    >
+                      {t('signup.form.terms.label', {
+                        terms: t('signup.form.terms.terms'),
+                      })}
+                    </Link>
+                  </Checkbox>
                 </Box>
-                <Link
-                  as="span"
-                  color="theme.600"
-                  textDecoration="underline"
-                  onClick={() => setModalOpen(true)}
-                >
-                  {t('signup.form.terms.label', {
-                    terms: t('signup.form.terms.terms'),
-                  })}
-                </Link>
               </Flex>
             </FormField>
           )}

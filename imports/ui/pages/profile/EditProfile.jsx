@@ -303,6 +303,7 @@ export default function EditProfile() {
             </Heading>
             <Checkbox
               checked={isUserPublicGlobally}
+              id="is-user-public-globally"
               onChange={({ target: { checked } }) =>
                 setProfilePublicGlobally(checked)
               }
@@ -341,6 +342,7 @@ export default function EditProfile() {
               <Checkbox
                 checked={isUserPublic}
                 disabled={!isUserPublicGlobally || currentHost.isPortalHost}
+                id="is-user-public-locally"
                 onChange={({ target: { checked } }) =>
                   setProfilePublic(checked)
                 }

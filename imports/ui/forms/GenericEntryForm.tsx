@@ -25,12 +25,15 @@ interface Option {
 
 interface FormFieldItem {
   type: 'input' | 'textarea' | 'checkbox' | 'select' | 'quill' | 'number';
-  value: string;
+  value?: string | boolean;
+  checked?: boolean;
+  id?: string;
   props?: Record<string, any>;
   placeholder?: string | undefined;
   options?: Option[];
   helper?: string;
   label?: string;
+  children?: string | React.ReactNode;
 }
 
 interface FieldItemHandlerProps {
@@ -60,7 +63,20 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
     case 'textarea':
       return <Textarea {...props} />;
     case 'checkbox':
-      return <Checkbox {...props} />;
+      return (
+        <Box
+          bg="white"
+          p="2"
+          css={{
+            borderRadius: 'var(--cocoso-border-radius)',
+            display: 'inline',
+          }}
+        >
+          <Checkbox id={item.id} size="lg" {...props}>
+            {item.label}
+          </Checkbox>
+        </Box>
+      );
     case 'select':
       return (
         <Select {...props}>
@@ -82,7 +98,7 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
         />
       );
     default:
-      return <Input placeholder={item.placeholder} />;
+      return <Input {...props} />;
   }
 }
 

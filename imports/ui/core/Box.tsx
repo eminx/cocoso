@@ -45,15 +45,13 @@ export const Flex = styled('div', (props: any) => ({
   ...getPropStyles(props),
 }));
 
-export const FormControl = (props: any) => (
-  <Box direction="column" {...props} />
-);
+export const FormControl = (props: any) => <Flex {...props} />;
 
 export const FormLabel = styled('label', (props: any) => ({
   display: 'block',
   fontSize: '0.875rem',
   fontWeight: 'bold',
-  marginBottom: '0.5rem',
+  // marginBottom: '0.5rem',
   ...getPropStyles(props),
 }));
 

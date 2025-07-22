@@ -106,22 +106,20 @@ export default function ComposablePageSettings() {
           <Box>
             <Checkbox
               checked={state.hideTitle}
+              id="hide-title"
               onChange={(e) => updateSettings({ hideTitle: e.target.checked })}
             >
-              <FormField
-                label={<Trans i18nKey="admin:composable.settings.hideTitle" />}
-              />
+              <Trans i18nKey="admin:composable.settings.hideTitle" />
             </Checkbox>
           </Box>
 
           <Box>
             <Checkbox
               checked={state.hideMenu}
+              id="hide-menu"
               onChange={(e) => updateSettings({ hideMenu: e.target.checked })}
             >
-              <FormField
-                label={<Trans i18nKey="admin:composable.settings.hideMenu" />}
-              />
+              <Trans i18nKey="admin:composable.settings.hideMenu" />
             </Checkbox>
           </Box>
         </Box>

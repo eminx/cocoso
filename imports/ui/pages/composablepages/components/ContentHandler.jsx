@@ -195,11 +195,12 @@ function ImageContent({ value, ping, onChange }) {
       <Box bg="gray.50" borderRadius="md" p="4" pt="0">
         <Checkbox
           checked={value.isLink}
+          id="is-image-link"
           mt="4"
           size="lg"
           onChange={handleCheckboxChange}
         >
-          <FormLabel mb="0">Image as link?</FormLabel>
+          <Trans i18nKey="admin:composable.form.imageAsLink" />
         </Checkbox>
 
         {value.isLink ? (

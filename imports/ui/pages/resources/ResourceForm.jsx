@@ -23,6 +23,7 @@ const animatedComponents = makeAnimated();
 export default function ResourceForm({ resource, onFinalize }) {
   const [state, setState] = useState({
     formValues: resource || emptyFormValues,
+    isBookable: resource ? resource.isBookable : true,
     isCombo: resource ? resource.isCombo : false,
     resourcesForCombo: resource ? resource.resourcesForCombo : [],
     resources: [],
@@ -72,6 +73,7 @@ export default function ResourceForm({ resource, onFinalize }) {
     const newResource = {
       ...state.formValues,
       images,
+      isBookable: state.isBookable,
       isCombo: state.isCombo,
       resourcesForCombo: state.resourcesForCombo,
     };
@@ -129,6 +131,7 @@ export default function ResourceForm({ resource, onFinalize }) {
         <Box bg="white" borderRadius="lg" display="inline" p="2">
           <Checkbox
             checked={state.isCombo}
+            id="is-combo"
             size="lg"
             onChange={(e) =>
               setState((prevState) => ({
@@ -137,9 +140,7 @@ export default function ResourceForm({ resource, onFinalize }) {
               }))
             }
           >
-            <label style={{ cursor: 'pointer' }}>
-              {tc('labels.select')}
-            </label>
+            {t('form.combo.switch.label')}
           </Checkbox>
         </Box>
         {state.isCombo && (
@@ -160,6 +161,29 @@ export default function ResourceForm({ resource, onFinalize }) {
             />
           </Box>
         )}
+      </FormField>
+
+      <FormField
+        helperText={t('form.bookable.helper')}
+        label={t('form.bookable.label')}
+        mt="6"
+        mb="12"
+      >
+        <Box bg="white" borderRadius="lg" display="inline" p="2">
+          <Checkbox
+            checked={state.isBookable}
+            id="is-bookable"
+            size="lg"
+            onChange={(e) =>
+              setState((prevState) => ({
+                ...prevState,
+                isBookable: e.target.checked,
+              }))
+            }
+          >
+            {t('form.bookable.label')}
+          </Checkbox>
+        </Box>
       </FormField>
     </GenericEntryForm>
   );

@@ -9,9 +9,7 @@ import { call } from '../../utils/shared';
 import GenericEntryForm from '../../forms/GenericEntryForm';
 import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
-import DatesAndTimes, {
-  emptyDateAndTime,
-} from '../../forms/DatesAndTimes';
+import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
 import publicActivityFormFields from './publicActivityFormFields';
 import { LoaderContext } from '../../listing/NewEntryHandler';
 import { message } from '../../generic/message';
@@ -31,24 +29,20 @@ export const emptyFormValues = {
 export default function PublicActivityForm({ activity, onFinalize }) {
   const [state, setState] = useState({
     capacity: activity ? activity.capacity : defaultCapacity,
-    datesAndTimes: activity
-      ? activity.datesAndTimes
-      : [emptyDateAndTime],
+    datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
     selectedResource: activity
       ? { label: activity.resource, _id: activity.resourceId }
       : null,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
     isRegistrationEnabled: activity
-      ? !activity.isRegistrationDisabled ||
-        activity.isRegistrationEnabled
+      ? !activity.isRegistrationDisabled || activity.isRegistrationEnabled
       : true,
     resources: [],
   });
   const { loaders, setLoaders } = useContext(LoaderContext);
   const [t] = useTranslation('activities');
-  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] =
-    useState(false);
+  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
 
   const getResources = async () => {
     try {
@@ -69,8 +63,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   const isFormValid = () => {
     const { datesAndTimes } = state;
     const isConflictHard = datesAndTimes.some(
-      (occurrence) =>
-        Boolean(occurrence.conflict) && occurrence.isConflictHard
+      (occurrence) => Boolean(occurrence.conflict) && occurrence.isConflictHard
     );
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -84,11 +77,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
 
   useEffect(() => {
     isFormValid();
-  }, [
-    state.datesAndTimes,
-    state.selectedResource,
-    state.isExclusiveActivity,
-  ]);
+  }, [state.datesAndTimes, state.selectedResource, state.isExclusiveActivity]);
 
   useEffect(() => {
     if (!loaders.isCreating) {
@@ -229,6 +218,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         >
           <Checkbox
             checked={state.isExclusiveActivity}
+            id="is-exclusive"
             size="lg"
             onChange={handleExclusiveSwitch}
           >
@@ -292,6 +282,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         >
           <Checkbox
             checked={state.isRegistrationEnabled}
+            id="is-registration-disabled"
             size="lg"
             onChange={handleRsvpSwitch}
           >
@@ -300,8 +291,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         </Box>
       </FormField>
 
-      {(!state.isRegistrationDisabled ||
-        state.isRegistrationEnabled) && (
+      {(!state.isRegistrationDisabled || state.isRegistrationEnabled) && (
         <FormField
           helperText={t('form.capacity.helper')}
           label={t('form.capacity.label')}
