@@ -13,14 +13,14 @@ export default function FormField(props) {
   } = props;
   return (
     <Box my="4" w="100%" {...otherProps}>
-      <Box>
+      <Box mb="1">
         <Text color="gray.800" fontWeight="bold">
           {label}
           {required && ' *'}
         </Text>
       </Box>
       {helperText && (
-        <Box mb="2">
+        <Box mb="1">
           <Text color="gray.600" fontSize="sm">
             {helperText}
           </Text>

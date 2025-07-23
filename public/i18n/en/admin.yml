@@ -323,3 +323,8 @@ design:
   message:
     success: Theme successfully saved!
     error: Failed to save theme
+
+messages:
+  upload:
+    helper: Please select an image that is assigned the size you want it to appear with, and make sure it's less than 400 kb
+    imageTooLarge: Image is too large. Please select an image less than 400kb

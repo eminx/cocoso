@@ -88,14 +88,17 @@ export default function BackgroundHandler({
       return;
     }
 
+    if (state.uploadableBgImage.size > 400000) {
+      message.error(<Trans i18nKey="admin:messages.upload.imageTooLarge" />);
+      return;
+    }
+
     try {
       const resizedImage = await resizeImage(state.uploadableBgImage, 1200);
       const uploadedImage = await uploadImage(
         resizedImage,
         'genericEntryImageUpload'
       );
-
-      console.log('uploadedImage', uploadedImage);
       onStyleChange('backgroundImage', uploadedImage);
       onUploadFinish(uploadedImage);
     } catch (error) {
@@ -152,6 +155,10 @@ export default function BackgroundHandler({
 
       <Text fontWeight="bold">
         <Trans i18nKey="admin:design.background.image" />
+      </Text>
+      <br />
+      <Text fontWeight="light" size="sm">
+        <Trans i18nKey="admin:messages.upload.helper" />
       </Text>
 
       <Boxling mb="8" mt="4">

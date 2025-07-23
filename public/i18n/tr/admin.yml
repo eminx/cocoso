@@ -323,3 +323,7 @@ design:
   message:
     success: Tema başarıyla kaydedildi!
     error: Tema kaydedilemedi
+
+messages:
+  upload: Lütfen görünmesini istediğin boyutta bir imaj seç ve boyutunun 400kb'tan küçük olduğundan emin ol
+    imageTooLarge: İmaj çok büyük. Lütfen 400 KB'den küçük bir imaj seçin

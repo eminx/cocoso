@@ -323,3 +323,8 @@ design:
   message:
     success: Tema har sparats!
     error: Tema kunde inte sparas
+
+messages:
+  upload:
+    helper: Välj en bild som har tilldelats den storlek du vill att den ska visas med och se till att den är mindre än 400 kb
+    imageTooLarge: Bilden är för stor. Välj en bild som är mindre än 400 kb.
