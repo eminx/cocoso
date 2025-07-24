@@ -150,6 +150,7 @@ function HeaderMenu({ Host, pageTitles }) {
                     borderBottomColor: isCurrentContext(item, index)
                       ? borderColor
                       : 'transparent',
+                    color: menuStyles?.color,
                   }}
                 >
                   {item.label}
@@ -166,6 +167,7 @@ function HeaderMenu({ Host, pageTitles }) {
                   ...baseTextStyles,
                   borderBottomColor:
                     pathname === '/communities' ? borderColor : 'transparent',
+                  color: menuStyles?.color,
                 }}
               >
                 <Trans i18nKey="common:platform.communities">Communities</Trans>
