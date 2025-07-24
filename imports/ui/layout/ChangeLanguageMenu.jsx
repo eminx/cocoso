@@ -15,6 +15,15 @@ export default function ChangeLanguage({
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
 
+  const handleChange = (e) => {
+    const value = e.target.value;
+    if (onChange) {
+      onChange(value);
+    } else {
+      i18n.changeLanguage(value);
+    }
+  };
+
   return (
     <Box
       bg="theme.50"
@@ -37,9 +46,7 @@ export default function ChangeLanguage({
         name="lang"
         placeholder={t('common:langs.form.holder')}
         value={currentLang}
-        onChange={(e) => {
-          console.log('onChange', e.target.value);
-        }}
+        onChange={handleChange}
         {...(register && register('lang'))}
       >
         {allLangs.map((lang) => (

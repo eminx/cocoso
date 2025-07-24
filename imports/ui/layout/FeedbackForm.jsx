@@ -21,6 +21,7 @@ function FeedbackForm({ isDarkText = false }) {
     <>
       <Center p="2">
         <Button
+          colorScheme="gray"
           size="sm"
           variant="ghost"
           onClick={() => setShowFeedbackModal(true)}
