@@ -85,6 +85,10 @@ export default function BackgroundHandler({
       backgroundImage.substring(0, 4) === 'http' ||
       backgroundImage.substring(0, 5) !== 'data:'
     ) {
+      setState((prevState) => ({
+        ...prevState,
+        uploadingBgImage: false,
+      }));
       onUploadFinish();
       return;
     }

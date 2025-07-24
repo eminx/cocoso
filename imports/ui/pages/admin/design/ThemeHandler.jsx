@@ -77,11 +77,11 @@ export default function ThemeHandler() {
 
     const newTheme = {
       ...currentHost.theme,
+      body: {
+        ...currentHost.theme.body,
+        backgroundImage: uploadedImage,
+      },
     };
-
-    if (uploadedImage) {
-      newTheme.body.backgroundImage = uploadedImage;
-    }
 
     try {
       await call('updateHostTheme', newTheme);
@@ -105,8 +105,8 @@ export default function ThemeHandler() {
   const confirmUpdate = () => {
     setState((prevState) => ({
       ...prevState,
-      uploadingBackgroundImage: true,
       updating: true,
+      uploadingBackgroundImage: true,
     }));
   };
 

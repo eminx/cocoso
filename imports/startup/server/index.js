@@ -69,35 +69,41 @@ Meteor.startup(() => {
     sink.appendToHead(helmet.title.toString());
   });
 
-  Hosts.update(
-    { $or: [{ theme: { $exists: false } }, { theme: null }] },
-    {
-      $set: {
-        theme: {
-          hue: '$settings.hue',
-          body: {
-            backgroundColor: '#eee',
-            backgroundImage: 'none',
-            backgroundRepeat: 'no-repeat',
-            borderRadius: '0',
-            fontFamily: 'Sarabun',
+  Hosts.find({ $or: [{ theme: { $exists: false } }, { theme: null }] }).forEach(
+    (host) => {
+      const hue =
+        host.settings && host.settings.hue ? host.settings.hue : '222'; // fallback if needed
+      Hosts.update(
+        { _id: host._id },
+        {
+          $set: {
+            'theme.hue': hue,
+            //     theme: {
+            //       hue,
+            //       body: {
+            //         backgroundColor: "#eee",
+            //         backgroundImage: "none",
+            //         backgroundRepeat: "no-repeat",
+            //         borderRadius: "0",
+            //         fontFamily: "Sarabun"
+            //       },
+            //       menu: {
+            //         backgroundColor: "#f5f5f5",
+            //         borderColor: "#ddd",
+            //         borderRadius: "0",
+            //         borderStyle: "solid",
+            //         borderWidth: "2px",
+            //         color: "#090909",
+            //         fontStyle: "normal",
+            //         textTransform: "none"
+            //       },
+            //       variant: "custom"
+            //     }
+            //   } }
+            // );
           },
-          menu: {
-            backgroundColor: '#f5f5f5',
-            borderColor: '#ddd',
-            borderRadius: '0',
-            borderStyle: 'solid',
-            borderWidth: '2px',
-            color: '#090909',
-            fontStyle: 'normal',
-            textTransform: 'none',
-          },
-          variant: 'custom',
-        },
-      },
-    },
-    {
-      multi: true,
+        }
+      );
     }
   );
 });
