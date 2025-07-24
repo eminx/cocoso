@@ -6,7 +6,7 @@ const publicActivityFormFields = (t) => [
     type: 'input',
     value: 'title',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {
@@ -16,7 +16,7 @@ const publicActivityFormFields = (t) => [
     type: 'input',
     value: 'subTitle',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {
@@ -26,7 +26,7 @@ const publicActivityFormFields = (t) => [
     type: 'quill',
     value: 'longDescription',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {

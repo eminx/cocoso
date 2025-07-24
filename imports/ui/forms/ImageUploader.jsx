@@ -41,10 +41,7 @@ export default function ImageUploader({
             uploadableImage.resizableData,
             1600
           );
-          const uploadedImage = await uploadImage(
-            resizedImage,
-            uploadParam
-          );
+          const uploadedImage = await uploadImage(resizedImage, uploadParam);
           return uploadedImage;
         })
       );
@@ -137,9 +134,7 @@ export default function ImageUploader({
       <>
         <Center>
           <FileDropper
-            imageUrl={
-              localImages?.length > 0 ? localImages[0].src : null
-            }
+            imageUrl={localImages?.length > 0 ? localImages[0].src : null}
             setUploadableImage={setUploadableImages}
             isMultiple={false}
           />
@@ -166,37 +161,30 @@ export default function ImageUploader({
           >
             {localImages.map((image, index) => (
               <SortableItem key={image.src}>
-                <Box
-                  className="sortable-thumb"
-                  style={thumbStyle(image.src)}
-                >
-                  <IconButton
-                    className="sortable-thumb-icon"
-                    colorScheme="gray.900"
-                    icon={
-                      <SmallCloseIcon
-                        style={{ pointerEvents: 'none' }}
-                      />
-                    }
-                    size="xs"
-                    style={{
-                      position: 'absolute',
-                      top: 4,
-                      right: 4,
-                      zIndex: 1501,
-                    }}
-                    onClick={() => handleRemoveImage(index)}
-                  />
-                </Box>
+                <div>
+                  <Box className="sortable-thumb" style={thumbStyle(image.src)}>
+                    <IconButton
+                      className="sortable-thumb-icon"
+                      icon={
+                        <SmallCloseIcon style={{ pointerEvents: 'none' }} />
+                      }
+                      size="xs"
+                      css={{
+                        color: 'white',
+                        ':hover': {
+                          color: 'var(--cocoso-colors-gray-100)',
+                        },
+                      }}
+                      onClick={() => handleRemoveImage(index)}
+                    />
+                  </Box>
+                </div>
               </SortableItem>
             ))}
           </SortableList>
         </Box>
       </Center>
-      <FileDropper
-        setUploadableImage={setUploadableImages}
-        isMultiple
-      />
+      <FileDropper setUploadableImage={setUploadableImages} isMultiple />
     </>
   );
 }

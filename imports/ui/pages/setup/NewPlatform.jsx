@@ -25,20 +25,16 @@ export default function NewPlatform({ onSubmit }) {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing="6">
-          <FormField key="name" label="Name">
+          <FormField key="name" label="Name" required>
             <Input {...register('name')} />
           </FormField>
 
-          <FormField key="email" label="Email address">
+          <FormField key="email" label="Email address" required>
             <Input {...register('email')} defaultValue={email} />
           </FormField>
 
-          <FormField key="portalHost" label="Portal Host (Main url)">
-            <Input
-              {...register('portalHost')}
-              value={host}
-              isDisabled
-            />
+          <FormField key="portalHost" label="Portal Host (Main url)" required>
+            <Input {...register('portalHost')} value={host} isDisabled />
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">

@@ -15,11 +15,8 @@ const emptyPageModal = {
   visible: false,
 };
 
-export default function ComposablePageCreator({
-  getComposablePageTitles,
-}) {
-  const [createPageModal, setCreatePageModal] =
-    useState(emptyPageModal);
+export default function ComposablePageCreator({ getComposablePageTitles }) {
+  const [createPageModal, setCreatePageModal] = useState(emptyPageModal);
   const navigate = useNavigate();
 
   const createComposablePage = async () => {
@@ -65,12 +62,8 @@ export default function ComposablePageCreator({
         onClose={() => setCreatePageModal(emptyPageModal)}
       >
         <FormField
-          label={
-            <Trans i18nKey="admin:composable.newTitleInputLabel" />
-          }
-          helperText={
-            <Trans i18nKey="admin:composable.newTitleInputHelper" />
-          }
+          label={<Trans i18nKey="admin:composable.newTitleInputLabel" />}
+          helperText={<Trans i18nKey="admin:composable.newTitleInputHelper" />}
           required
         >
           <Input

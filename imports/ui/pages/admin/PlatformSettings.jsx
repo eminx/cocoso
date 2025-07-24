@@ -36,10 +36,10 @@ function PlatformSettingsForm({ initialValues, onSubmit }) {
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Stack spacing="4">
-        <FormField label={t('info.platform.name')}>
+        <FormField label={t('info.platform.name')} required>
           <Input {...register('name')} />
         </FormField>
-        <FormField label={t('info.platform.email')}>
+        <FormField label={t('info.platform.email')} required>
           <Input type="email" {...register('email')} />
         </FormField>
         <Flex justify="flex-end" py="4">

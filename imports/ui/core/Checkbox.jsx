@@ -77,7 +77,7 @@ const IndeterminateIcon = ({ size }) => (
 
 export function Checkbox({
   checked,
-  indeterminate,
+  indeterminate = false,
   disabled,
   onChange,
   size = 'md',

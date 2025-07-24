@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useHref, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'react-i18next';
@@ -73,6 +73,14 @@ export default function NewEntryHandler({ children }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [tc] = useTranslation('common');
 
+  useEffect(() => {
+    const justUpdated =
+      searchParams.get('edit') === 'true' ||
+      searchParams.get('edit') === 'false';
+
+    renderToasts(loaders, tc, justUpdated);
+  }, [searchParams.get('edit')]);
+
   const handleCancelAndClose = () => {
     setLoaders(initialLoader);
     setConfirmOpen(false);
@@ -84,9 +92,6 @@ export default function NewEntryHandler({ children }) {
   };
 
   const loaderProgress = getLoaderProgress(loaders);
-  const justUpdated =
-    searchParams.get('edit') === 'true' || searchParams.get('edit') === 'false';
-  renderToasts(loaders, tc, justUpdated);
 
   const href = useHref();
   let context = href.split('/')[1] || currentHost?.settings?.menu[0]?.name;
@@ -111,7 +116,7 @@ export default function NewEntryHandler({ children }) {
           left="0"
         />
       )}
-      {loaderProgress && (
+      {loaderProgress > 0 ? (
         <Progress
           colorScheme="brand"
           className="progress"
@@ -126,7 +131,7 @@ export default function NewEntryHandler({ children }) {
             zIndex: 99999,
           }}
         />
-      )}
+      ) : null}
 
       <Modal
         closeOnOverlayClick={false}

@@ -132,7 +132,7 @@ export default function WorkForm({ work, onFinalize }) {
         label={t('works.category.label')}
         mt="10"
         mb="12"
-        isRequired
+        required
       >
         <AutoCompleteSelect
           components={animatedComponents}

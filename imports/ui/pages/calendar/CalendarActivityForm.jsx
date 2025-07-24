@@ -219,7 +219,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
         helperText={t('form.occurrences.helper')}
         label={t('form.occurrences.label')}
         mb="14"
-        isRequired
+        required
       >
         <DatesAndTimes
           activityId={activity?._id}

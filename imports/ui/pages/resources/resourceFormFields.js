@@ -6,7 +6,7 @@ const resourceFormFields = (t) => [
     type: 'input',
     value: 'label',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {

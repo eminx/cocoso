@@ -27,6 +27,12 @@ export default function Group() {
   const { groupId } = useParams();
   const { currentHost, currentUser } = useContext(StateContext);
 
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
+  }, []);
+
   const getGroupById = async () => {
     try {
       const response = await call('getGroupWithMeetings', groupId);
@@ -40,20 +46,14 @@ export default function Group() {
     getGroupById();
   }, [groupId]);
 
-  useLayoutEffect(() => {
-    setTimeout(() => {
-      setRendered(true);
-    }, 1000);
-  }, []);
-
-  if (!group) {
-    return <Loader />;
-  }
-
   const contextValue = {
     group,
     getGroupById,
   };
+
+  if (!group) {
+    return <Loader />;
+  }
 
   return (
     <>

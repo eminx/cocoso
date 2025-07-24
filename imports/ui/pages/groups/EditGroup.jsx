@@ -42,8 +42,15 @@ export default function EditGroup() {
     title,
   }))(group);
 
+  if (!group) {
+    return null;
+  }
+
   return (
-    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
+    <SuccessRedirector
+      ping={updated}
+      onSuccess={() => setSearchParams({ edit: 'false' })}
+    >
       <GroupForm group={groupFields} onFinalize={updateGroup} />
     </SuccessRedirector>
   );

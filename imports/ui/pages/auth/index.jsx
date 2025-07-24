@@ -42,11 +42,11 @@ const Login = ({ isSubmitted, onSubmit }) => {
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <VStack spacing="6">
-        <FormField label={t('login.form.username.label')}>
+        <FormField label={t('login.form.username.label')} required>
           <Input {...register('username')} />
         </FormField>
 
-        <FormField label={t('login.form.password.label')}>
+        <FormField label={t('login.form.password.label')} required>
           <Input {...register('password')} type="password" />
         </FormField>
 
@@ -96,6 +96,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
             helperText={t('signup.form.username.helper')}
             isInvalid={errors.username}
             label={t('signup.form.username.label')}
+            required
           >
             <Input {...register('username')} />
           </FormField>
@@ -104,6 +105,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
             errorMessage={errors.email?.message}
             isInvalid={errors.email}
             label={t('signup.form.email.label')}
+            required
           >
             <Input {...register('email')} type="email" />
           </FormField>
@@ -113,6 +115,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
               helperText={passwordHelperText}
               isInvalid={errors.password}
               label={t('signup.form.password.label')}
+              required
             >
               <Input {...register('password')} type="password" />
             </FormField>
@@ -125,7 +128,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
           </Box>
 
           {!hideTermsCheck && (
-            <FormField>
+            <FormField required>
               <Flex>
                 <Box pr="2" pt="1">
                   <Checkbox
@@ -154,8 +157,8 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button
-              isDisabled={!isDirty || (!termsChecked && !hideTermsCheck)}
-              isLoading={isSubmitting}
+              disabled={!isDirty || (!termsChecked && !hideTermsCheck)}
+              loading={isSubmitting}
               type="submit"
             >
               {tc('actions.submit')}
@@ -167,10 +170,10 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
       <Modal
         confirmText={tc('actions.confirmRead')}
         cancelText={tc('actions.close')}
+        open={modalOpen}
         scrollBehavior="inside"
         size="full"
         title="Terms of Service & Privacy Policy"
-        open={modalOpen}
         onConfirm={confirmModal}
         onClose={() => setModalOpen(false)}
       >

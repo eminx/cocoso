@@ -53,7 +53,8 @@ interface GenericEntryFormProps {
 
 function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
   const props = {
-    ...register(item.value, item.props),
+    ...register(item.value as string),
+    ...item.props,
     placeholder: item.placeholder,
   };
 
@@ -64,18 +65,31 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
       return <Textarea {...props} />;
     case 'checkbox':
       return (
-        <Box
-          bg="white"
-          p="2"
-          css={{
-            borderRadius: 'var(--cocoso-border-radius)',
-            display: 'inline',
-          }}
-        >
-          <Checkbox id={item.id} size="lg" {...props}>
-            {item.label}
-          </Checkbox>
-        </Box>
+        <Controller
+          control={control}
+          name={item.value as string}
+          render={({ field }) => (
+            <Box
+              bg="white"
+              p="2"
+              pt="4"
+              css={{
+                borderRadius: 'var(--cocoso-border-radius)',
+                display: 'inline',
+              }}
+            >
+              <Checkbox
+                id={item.id}
+                size="lg"
+                checked={field.value}
+                onChange={field.onChange}
+                {...field}
+              >
+                {item.label}
+              </Checkbox>
+            </Box>
+          )}
+        />
       );
     case 'select':
       return (
@@ -93,7 +107,7 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
       return (
         <Controller
           control={control}
-          name={item.value}
+          name={item.value as string}
           render={({ field }) => <Quill {...field} />}
         />
       );

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useLayoutEffect, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useEffect,
+  useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 
 import { StateContext } from '../../LayoutContainer';
@@ -19,14 +25,9 @@ export default function Work() {
   const [work, setWork] = useState(initialWork);
   const [documents, setDocuments] = useState(initialDocuments);
   const [rendered, setRendered] = useState(false);
-
-  let { currentHost } = useContext(StateContext);
+  const { currentHost } = useContext(StateContext);
   const { usernameSlug, workId } = useParams();
   const [, username] = usernameSlug.split('@');
-
-  if (!currentHost) {
-    currentHost = Host;
-  }
 
   useLayoutEffect(() => {
     setTimeout(() => {
@@ -67,7 +68,11 @@ export default function Work() {
   }
   return (
     <>
-      <WorkHybrid documents={documents} work={work} Host={currentHost} />
+      <WorkHybrid
+        documents={documents}
+        work={work}
+        Host={currentHost || Host}
+      />
 
       {rendered && (
         <WorkContext.Provider value={contextValue}>

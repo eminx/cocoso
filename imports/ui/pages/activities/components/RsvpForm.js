@@ -46,14 +46,11 @@ export default function RsvpForm({
       <form onSubmit={handleSubmit((data) => console.log(data))}>
         <VStack>
           {fields.map((field) => (
-            <FormField key={field.name} label={field.label}>
-              <Input
-                {...register(field.name, { required: true })}
-                size="sm"
-              />
+            <FormField key={field.name} label={field.label} required>
+              <Input {...register(field.name, { required: true })} size="sm" />
             </FormField>
           ))}
-          <FormField label={t('public.register.form.people.number')}>
+          <FormField label={t('public.register.form.people.number')} required>
             <NumberInput
               size="sm"
               {...register('numberOfPeople', { required: true })}

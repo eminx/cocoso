@@ -47,9 +47,7 @@ export default function InviteManager() {
   const peopleInvited = group.peopleInvited;
 
   const isAlreadyInvited = () => {
-    const inviteEmailsList = peopleInvited.map(
-      (person) => person.email
-    );
+    const inviteEmailsList = peopleInvited.map((person) => person.email);
     const emailInput = state.emailInput;
     if (inviteEmailsList.indexOf(emailInput) !== -1) {
       message.error(t('invite.email.already'));
@@ -90,9 +88,7 @@ export default function InviteManager() {
     try {
       await call('invitePersonToPrivateGroup', group._id, person);
       await getGroupById();
-      message.success(
-        t('invite.success', { name: state.firstNameInput })
-      );
+      message.success(t('invite.success', { name: state.firstNameInput }));
       setState((prevState) => ({
         ...prevState,
         firstNameInput: '',
@@ -141,7 +137,7 @@ export default function InviteManager() {
         <VStack py="2" gap="2">
           <Text mb="2">{t('invite.info')}</Text>
 
-          <FormField label={t('invite.email.label')}>
+          <FormField label={t('invite.email.label')} required>
             <Input
               onChange={handleEmailInputChange}
               placeholder={t('invite.email.holder')}
@@ -149,7 +145,7 @@ export default function InviteManager() {
             />
           </FormField>
 
-          <FormField label={t('invite.firstName.label')}>
+          <FormField label={t('invite.firstName.label')} required>
             <Input
               onChange={handleFirstNameInputChange}
               placeholder={t('invite.firstName.holder')}
@@ -158,18 +154,13 @@ export default function InviteManager() {
           </FormField>
           <FormField>
             <Flex justify="flex-end">
-              <Button onClick={handleSendInvite}>
-                {t('invite.submit')}
-              </Button>
+              <Button onClick={handleSendInvite}>{t('invite.submit')}</Button>
             </Flex>
           </FormField>
         </VStack>
 
         <Box py="8">
-          <EmailsContainer
-            title="People Invited"
-            count={peopleInvited?.length}
-          >
+          <EmailsContainer title="People Invited" count={peopleInvited?.length}>
             {peopleInvited?.map((person) => (
               <Flex
                 key={person.email}

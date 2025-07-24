@@ -94,7 +94,10 @@ export default function ComposablePageSettings() {
       >
         <Box borderRadius="md">
           <Box pb="2">
-            <FormField label={<Trans i18nKey="admin:composable.form.title" />}>
+            <FormField
+              label={<Trans i18nKey="admin:composable.form.title" />}
+              required
+            >
               <Input
                 type="text"
                 value={state.title}

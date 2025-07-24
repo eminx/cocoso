@@ -38,14 +38,14 @@ function EmailForm({ defaultValues, key, onSubmit }) {
       <Boxling>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <VStack>
-            <FormField label={t('emails.form.subject.label')}>
+            <FormField label={t('emails.form.subject.label')} required>
               <Input
                 {...register('subject')}
                 placeholder={t('emails.form.subject.holder')}
               />
             </FormField>
 
-            <FormField label={t('emails.form.appeal.label')}>
+            <FormField label={t('emails.form.appeal.label')} required>
               <Flex align="center" w="280px">
                 <Input
                   {...register('appeal')}
@@ -55,7 +55,7 @@ function EmailForm({ defaultValues, key, onSubmit }) {
               </Flex>
             </FormField>
 
-            <FormField label={t('emails.form.body.label')}>
+            <FormField label={t('emails.form.body.label')} required>
               <Controller
                 control={control}
                 name="body"
@@ -64,11 +64,7 @@ function EmailForm({ defaultValues, key, onSubmit }) {
             </FormField>
 
             <Flex justify="flex-end" py="2" w="100%">
-              <Button
-                isDisabled={!isDirty}
-                isLoading={isSubmitting}
-                type="submit"
-              >
+              <Button disabled={!isDirty} loading={isSubmitting} type="submit">
                 {tc('actions.submit')}
               </Button>
             </Flex>

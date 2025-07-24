@@ -73,10 +73,10 @@ export default function GroupForm({ group, onFinalize }) {
     >
       <FormField
         helperText={t('form.image.helper')}
-        isRequired
         label={t('form.image.label')}
         mt="4"
         mb="12"
+        required
       >
         <ImageUploader
           isMultiple={false}

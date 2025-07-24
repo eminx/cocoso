@@ -183,7 +183,7 @@ function ImageContent({ value, ping, onChange }) {
 
   return (
     <>
-      <FormField label="Image">
+      <FormField label="Image" required>
         <ImageUploader
           isMultiple={false}
           ping={ping}
@@ -208,6 +208,7 @@ function ImageContent({ value, ping, onChange }) {
             helperText={<Trans i18nKey="admin:composable.form.linkHelper" />}
             label={<Trans i18nKey="admin:composable.form.link" />}
             my="4"
+            required
           >
             <Input
               size="sm"

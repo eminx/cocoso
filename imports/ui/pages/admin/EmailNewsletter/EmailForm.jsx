@@ -43,7 +43,7 @@ export default function EmailForm({
         <VStack spacing="4">
           <FormField
             helperText={t('newsletter.form.subject.helper')}
-            isRequired
+            required
             label={t('emails.form.subject.label')}
             mb="4"
           >
@@ -56,7 +56,7 @@ export default function EmailForm({
 
           <FormField
             helperText={t('newsletter.form.appeal.helper')}
-            isRequired
+            required
             label={t('emails.form.appeal.label')}
             mb="4"
           >

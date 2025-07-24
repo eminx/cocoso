@@ -175,7 +175,6 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   };
 
   const handleUploadedImages = (images) => {
-    console.log('handleUploadedImages', images);
     setLoaders((prevState) => ({
       ...prevState,
       isSendingForm: true,
