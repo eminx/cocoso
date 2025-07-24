@@ -43,7 +43,7 @@ export default function RsvpForm({
 
   return (
     <Box mb="8">
-      <form onSubmit={handleSubmit((data) => console.log(data))}>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack>
           {fields.map((field) => (
             <FormField key={field.name} label={field.label} required>
@@ -58,8 +58,8 @@ export default function RsvpForm({
           </FormField>
           <Flex justifyContent="flex-end" pt="2" w="100%">
             <Button
-              isDisabled={isUpdateMode && !isDirty}
-              isLoading={isSubmitting}
+              disabled={isUpdateMode && !isDirty}
+              loading={isSubmitting}
               size="sm"
               type="submit"
               variant="outline"
@@ -72,7 +72,7 @@ export default function RsvpForm({
           {isUpdateMode && (
             <Button
               colorScheme="red"
-              isLoading={deleteLoading}
+              loading={deleteLoading}
               size="sm"
               variant="ghost"
               onClick={() => {

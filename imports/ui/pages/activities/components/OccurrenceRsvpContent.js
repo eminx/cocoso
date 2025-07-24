@@ -7,8 +7,6 @@ import {
   Button,
   Center,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
   Input,
   Modal,
@@ -18,6 +16,7 @@ import { StateContext } from '/imports/ui/LayoutContainer';
 import FancyDate from '/imports/ui/entry/FancyDate';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
+import FormField from '/imports/ui/forms/FormField';
 
 import RsvpForm from './RsvpForm';
 import { ActivityContext } from '../Activity';
@@ -80,7 +79,6 @@ export default function RsvpContent({
   };
 
   const handleRsvpSubmit = async (values) => {
-    console.log('handleRsvpSubmit', values);
     let isAlreadyRegistered = false;
     occurrence.attendees?.forEach((attendee) => {
       if (!attendee) {
@@ -326,8 +324,7 @@ export default function RsvpContent({
           />
         ) : (
           <Box>
-            <FormControl id="lastname" mb="3" size="sm">
-              <FormLabel>{t('public.register.form.name.last')}</FormLabel>
+            <FormField label={t('public.register.form.name.last')}>
               <Input
                 value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
                 onChange={(e) =>
@@ -340,10 +337,9 @@ export default function RsvpContent({
                   })
                 }
               />
-            </FormControl>
+            </FormField>
 
-            <FormControl id="email" size="sm">
-              <FormLabel>{t('public.register.form.email')}</FormLabel>
+            <FormField label={t('public.register.form.email')}>
               <Input
                 value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
                 onChange={(e) =>
@@ -356,7 +352,7 @@ export default function RsvpContent({
                   })
                 }
               />
-            </FormControl>
+            </FormField>
 
             <Flex justify="flex-end" pt="6">
               <Button onClick={findRsvpInfo}>Confirm</Button>
