@@ -78,6 +78,8 @@ Meteor.startup(() => {
         {
           $set: {
             'theme.hue': hue,
+            'theme.body.borderRadius': '0.5rem',
+            'theme.menu.borderRadius': '0.5rem',
             //     theme: {
             //       hue,
             //       body: {
