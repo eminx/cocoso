@@ -44,7 +44,6 @@ Hosts.schema = new SimpleSchema({
   'settings.mainColor': { type: Object, optional: true },
   'settings.backgroundColor': { type: String, optional: true },
   'settings.backgroundImage': { type: String, optional: true },
-  'settings.hue': { type: String, optional: true },
   'settings.footer': { type: String, optional: true },
   'settings.isBurgerMenuOnDesktop': {
     type: Boolean,

@@ -122,6 +122,12 @@ body {
   padding-top: 48px;
 }
 
+@media (min-width: 960px) {
+  .logo-container {
+    z-index: 1400;
+  }
+}
+
 .logo {
   max-width: 360px;
   max-height: 120px;

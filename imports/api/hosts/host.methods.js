@@ -5,7 +5,11 @@ import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
 import Newsletters from '../newsletters/newsletter';
-import { defaultMenu, defaultEmails } from '../../startup/constants';
+import {
+  defaultEmails,
+  defaultMenu,
+  defaultTheme,
+} from '../../startup/constants';
 import { isAdmin } from '../users/user.roles';
 
 function getUsersRandomlyWithAvatarsFirst(users) {
@@ -13,9 +17,7 @@ function getUsersRandomlyWithAvatarsFirst(users) {
     return null;
   }
   const usersWithImage = users.filter((u) => u.avatar && u.avatar.src);
-  const usersWithoutImage = users.filter(
-    (u) => !u.avatar || !u.avatar.src
-  );
+  const usersWithoutImage = users.filter((u) => !u.avatar || !u.avatar.src);
 
   return [
     ...usersWithImage.sort(() => Math.random() - 0.5),
@@ -49,17 +51,8 @@ Meteor.methods({
 
     try {
       Hosts.insert({
+        emails: defaultEmails,
         host: values.host,
-        settings: {
-          name: values.name,
-          email: values.email,
-          address: values.address,
-          city: values.city,
-          country: values.country,
-          menu: defaultMenu,
-          lang: 'en',
-          hue: Math.ceil(Math.random() * 360).toString(),
-        },
         members: [
           {
             avatar: currentUser.avatar?.src,
@@ -71,7 +64,17 @@ Meteor.methods({
             isPublic: false,
           },
         ],
-        emails: defaultEmails,
+        settings: {
+          name: values.name,
+          email: values.email,
+          address: values.address,
+          city: values.city,
+          country: values.country,
+          menu: defaultMenu,
+          lang: 'en',
+          hue: Math.ceil(Math.random() * 360).toString(),
+        },
+        theme: defaultTheme,
         createdAt: new Date(),
       });
 
@@ -296,9 +299,7 @@ Meteor.methods({
     );
 
     const isPortalHost = currentHost.isPortalHost;
-    const members = isPortalHost
-      ? Meteor.users.find()
-      : currentHost.members;
+    const members = isPortalHost ? Meteor.users.find() : currentHost.members;
 
     try {
       members.forEach((member) => {
