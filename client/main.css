@@ -223,9 +223,13 @@ input::placeholder {
 /* Sexy Thumb */
 
 .thumb-cover-container {
+  border: 1px solid;
+  border-color: white;
+  border-radius: var(--cocoso-border-radius);
+  cursor: pointer;
+  font-weight: bold;
   position: relative;
   width: 100%;
-  cursor: pointer;
 }
 
 .thumb-cover-container:hover .thumb-cover {

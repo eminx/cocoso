@@ -71,14 +71,6 @@ export default function FiltrerSorter(props) {
 
   return (
     <Flex justify="flex-end" my="2" w="300px">
-      <style>
-        {`
-        .szh-accordion__item-heading .szh-accordion__item-btn, 
-        .szh-accordion__item .szh-accordion__item-content {
-          padding: 0.5rem;
-        }
-        `}
-      </style>
       <Accordion
         options={[
           {

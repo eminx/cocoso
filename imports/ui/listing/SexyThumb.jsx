@@ -28,7 +28,7 @@ const imageStyle = {
   maxWidth: '780px',
   objectFit: 'cover',
   width: '100%',
-  borderRadius: '8px',
+  borderRadius: 'var(--cocoso-border-radius)',
 };
 
 function ThumbDate({ occurrence }) {
@@ -91,12 +91,6 @@ export default function SexyThumb({
       className="thumb-cover-container"
       h={imageStyle.height}
       maxW={imageStyle.maxWidth}
-      css={{
-        border: '1px solid',
-        borderColor: 'white',
-        borderRadius: 'lg',
-        fontWeight: 'bold',
-      }}
     >
       <div className="thumb-cover">
         <LazyLoadImage
