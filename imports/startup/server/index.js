@@ -69,8 +69,7 @@ Meteor.startup(() => {
     sink.appendToHead(helmet.title.toString());
   });
 
-  Hosts.find().forEach(
-    // Hosts.find({ $or: [{ theme: { $exists: false } }, { theme: null }] }).forEach(
+  Hosts.find({ $or: [{ theme: { $exists: false } }, { theme: null }] }).forEach(
     (host) => {
       const hue =
         host.settings && host.settings.hue ? host.settings.hue : '222'; // fallback if needed
@@ -78,32 +77,27 @@ Meteor.startup(() => {
         { _id: host._id },
         {
           $set: {
-            'theme.hue': hue,
-            'theme.body.borderRadius': '0.5rem',
-            'theme.menu.borderRadius': '0.5rem',
-            //     theme: {
-            //       hue,
-            //       body: {
-            //         backgroundColor: "#eee",
-            //         backgroundImage: "none",
-            //         backgroundRepeat: "no-repeat",
-            //         borderRadius: "0",
-            //         fontFamily: "Sarabun"
-            //       },
-            //       menu: {
-            //         backgroundColor: "#f5f5f5",
-            //         borderColor: "#ddd",
-            //         borderRadius: "0",
-            //         borderStyle: "solid",
-            //         borderWidth: "2px",
-            //         color: "#090909",
-            //         fontStyle: "normal",
-            //         textTransform: "none"
-            //       },
-            //       variant: "custom"
-            //     }
-            //   } }
-            // );
+            theme: {
+              hue,
+              body: {
+                backgroundColor: '#eee',
+                backgroundImage: 'none',
+                backgroundRepeat: 'no-repeat',
+                borderRadius: '0.5rem',
+                fontFamily: 'Sarabun',
+              },
+              menu: {
+                backgroundColor: '#f5f5f5',
+                borderColor: '#ddd',
+                borderRadius: '0.5rem',
+                borderStyle: 'solid',
+                borderWidth: '2px',
+                color: '#090909',
+                fontStyle: 'normal',
+                textTransform: 'none',
+              },
+              variant: 'custom',
+            },
           },
         }
       );
