@@ -223,11 +223,11 @@ export default function GroupMeetingDates(props) {
           </Center>
           <Center>
             <Flex mt="2">
-              <Text fontSize="sm" mr="2" mt="-1px">
+              <Text color="gray.50" fontSize="sm" mr="2" mt="-1px">
                 {t('labels.next_meeting')}
               </Text>
 
-              <Text fontSize="sm" fontWeight="bold">
+              <Text color="gray.50" fontSize="sm" fontWeight="bold">
                 {dayjs(group.meetings[0]?.startDate).format('DD')}{' '}
                 {dayjs(group.meetings[0]?.startDate).format('MMM')}
               </Text>

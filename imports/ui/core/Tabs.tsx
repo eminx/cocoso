@@ -1,16 +1,37 @@
-import React, { useId } from 'react';
+import React, { useId, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'restyle';
 
 import { Badge, Box, Flex, Text } from '/imports/ui/core';
 
+// Tab type definition
+export interface TabType {
+  key?: string;
+  path?: string;
+  title: string;
+  badge?: ReactNode;
+  onClick?: () => void;
+}
+
 // Styled components
+type TabsListProps = {
+  alignItems?: string;
+  justify?: string;
+  children?: ReactNode;
+};
+
+type TabItemProps = {
+  isSelected?: boolean;
+  children?: ReactNode;
+  id?: string;
+};
+
 const TabsContainer = styled('div', {
   position: 'relative',
   top: '1px',
 });
 
-const TabsList = styled('div', (props) => ({
+const TabsList = styled('div', (props: TabsListProps) => ({
   display: 'flex',
   alignItems: props.alignItems || 'center',
   flexShrink: '0',
@@ -19,7 +40,7 @@ const TabsList = styled('div', (props) => ({
   borderBottom: '1px solid #e2e8f0',
 }));
 
-const TabItem = styled('div', (props) => ({
+const TabItem = styled('div', (props: TabItemProps) => ({
   borderBottom: `2px solid ${
     props.isSelected ? 'var(--cocoso-colors-theme-500)' : 'transparent'
   }`,
@@ -63,7 +84,12 @@ const TabButton = styled('button', {
   },
 });
 
-function CoTab({ tab, isSelected }) {
+interface CoTabProps {
+  tab: TabType;
+  isSelected: boolean;
+}
+
+const CoTab: React.FC<CoTabProps> = ({ tab, isSelected }) => {
   const instanceId = useId();
   if (!tab) {
     return null;
@@ -85,16 +111,27 @@ function CoTab({ tab, isSelected }) {
           {tab.title}
         </Text>
         {tab.badge && (
-          <Badge variant="solid" colorScheme="red" size="xs">
+          <Badge variant="solid" colorScheme="red" size="sm">
             {tab.badge}
           </Badge>
         )}
       </Flex>
     </TabItem>
   );
+};
+
+interface TabsProps extends TabsListProps {
+  index: number;
+  tabs: TabType[];
+  children?: ReactNode;
 }
 
-function Tabs({ index, tabs, children, ...otherProps }) {
+const Tabs: React.FC<TabsProps> = ({
+  index,
+  tabs,
+  children,
+  ...otherProps
+}) => {
   return (
     <TabsContainer>
       <TabsList {...otherProps}>
@@ -113,10 +150,7 @@ function Tabs({ index, tabs, children, ...otherProps }) {
             );
           } else {
             return (
-              <TabButton
-                key={tab.key || tab.title}
-                onClick={tab.onClick}
-              >
+              <TabButton key={tab.key || tab.title} onClick={tab.onClick}>
                 <CoTab tab={tab} isSelected={isSelected} />
               </TabButton>
             );
@@ -126,6 +160,6 @@ function Tabs({ index, tabs, children, ...otherProps }) {
       </TabsList>
     </TabsContainer>
   );
-}
+};
 
 export default Tabs;

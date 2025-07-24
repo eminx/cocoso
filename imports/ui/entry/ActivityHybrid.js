@@ -38,9 +38,7 @@ export default function ActivityHybrid({ activity, Host }) {
   if (activity?.isPublicActivity) {
     tabs.push({
       title: (
-        <Trans i18nKey="activities:public.labels.location">
-          Location
-        </Trans>
+        <Trans i18nKey="activities:public.labels.location">Location</Trans>
       ),
       content: (
         <Box bg="white" p="6">
@@ -81,11 +79,7 @@ export default function ActivityHybrid({ activity, Host }) {
 
   if (!activity.isPublicActivity) {
     tabs.push({
-      title: (
-        <Trans i18nKey="activities:public.labels.dates">
-          See Dates
-        </Trans>
-      ),
+      title: <Trans i18nKey="activities:public.labels.dates">See Dates</Trans>,
       content: (
         <Box>
           {activity.datesAndTimes?.map((occurrence) => (
@@ -113,20 +107,19 @@ export default function ActivityHybrid({ activity, Host }) {
   const { isPublicActivity } = activity;
   const backLink = {
     value: isPublicActivity ? '/activities' : '/calendar',
-    label: isPublicActivity
-      ? activitiesInMenu?.label
-      : calendarInMenu?.label,
+    label: isPublicActivity ? activitiesInMenu?.label : calendarInMenu?.label,
   };
 
   const url = `https://${activity.host}/activities/${activity._id}`;
 
   return (
     <TablyCentered
-      action={
-        <Center>
-          <ActionDates activity={activity} />
-        </Center>
-      }
+      // action={
+      //   <Center>
+      //     <ActionDates activity={activity} />
+      //   </Center>
+      // }
+      dates={<ActionDates activity={activity} />}
       backLink={backLink}
       images={
         activity?.isPublicActivity

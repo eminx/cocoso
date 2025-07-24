@@ -3,10 +3,11 @@ import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
 import { Box, Center } from '/imports/ui/core';
+import GroupDocuments from '/imports/ui/pages/groups/components/GroupDocuments';
+import GroupMembers from '/imports/ui/pages/groups/components/GroupMembers';
 
 import TablyCentered from './TablyCentered';
-import GroupDocuments from '../pages/groups/components/GroupDocuments';
-import GroupMembers from '../pages/groups/components/GroupMembers';
+import ActionDates from './ActionDates';
 
 export default function GroupHybrid({ group, Host }) {
   if (!group) {
@@ -45,8 +46,14 @@ export default function GroupHybrid({ group, Host }) {
 
   const url = `https://${group.host}/groups/${group._id}`;
 
+  const groupDatesParsed = {
+    ...group,
+    datesAndTimes: group.meetings,
+  };
+
   return (
     <TablyCentered
+      dates={<ActionDates activity={groupDatesParsed} />}
       action={
         <Center>
           <GroupMembers group={group} />

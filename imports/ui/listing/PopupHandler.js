@@ -77,7 +77,9 @@ function PopupContent({
         <NiceSlider alt={title} images={images} isFade={false} />
       </Center>
 
-      <Box className="text-content">{content}</Box>
+      <Box bg="white" className="text-content" p="4">
+        {content}
+      </Box>
     </Box>
   );
 }

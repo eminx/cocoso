@@ -31,8 +31,9 @@ interface AvatarHolderProps {
 }
 
 interface HeaderProps {
-  author: Author | null;
+  author?: Author | null;
   backLink?: string;
+  dates?: React.ReactNode;
   subTitle?: string;
   tags?: string[] | null;
   title: string;
@@ -44,16 +45,11 @@ interface Tab {
   content: React.ReactNode;
 }
 
-interface TablyCenteredProps {
+interface TablyCenteredProps extends HeaderProps {
   action?: React.ReactNode;
-  author?: Author | null;
-  backLink?: string;
   content?: React.ReactNode;
   images?: string[];
-  subTitle?: string;
   tabs?: Tab[];
-  tags?: string[];
-  title: string;
   url?: string;
 }
 
@@ -76,6 +72,7 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
 const Header: React.FC<HeaderProps> = ({
   author,
   backLink,
+  dates,
   subTitle,
   tags,
   title,
@@ -132,6 +129,7 @@ const Header: React.FC<HeaderProps> = ({
               ))}
             </Wrap>
           )}
+          {dates && <Center pt="2">{dates}</Center>}
         </Box>
         {author && <AvatarHolder author={author} />}
       </Flex>
@@ -140,7 +138,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <Box mb="4" w="100%">
-      <Flex alignContent="flex-start" justify="space-between">
+      <Flex align="flex-start" justify="space-between">
         <Box pl="2" width="150px">
           {backLink && <BackLink backLink={backLink} />}
         </Box>
@@ -175,6 +173,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
   action = null,
   author = null,
   backLink,
+  dates,
   content,
   images,
   subTitle,
@@ -216,13 +215,14 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
             <Header
               author={author}
               backLink={backLink}
+              dates={dates}
               subTitle={subTitle}
               tags={tags}
               title={title}
             />
 
             {images && (
-              <Center py="2">
+              <Center>
                 <NiceSlider alt={title} images={images} />
               </Center>
             )}
@@ -235,7 +235,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
               <Box w="100%">
                 {tabs && (
                   <Box mt="2">
-                    <Tabs justify="center" index={tabIndex} tabs={tabs} />
+                    <Tabs justify="center" index={tabIndex ?? 0} tabs={tabs} />
                   </Box>
                 )}
 
