@@ -69,7 +69,8 @@ Meteor.startup(() => {
     sink.appendToHead(helmet.title.toString());
   });
 
-  Hosts.find({ $or: [{ theme: { $exists: false } }, { theme: null }] }).forEach(
+  Hosts.find().forEach(
+    // Hosts.find({ $or: [{ theme: { $exists: false } }, { theme: null }] }).forEach(
     (host) => {
       const hue =
         host.settings && host.settings.hue ? host.settings.hue : '222'; // fallback if needed
