@@ -81,6 +81,7 @@ export default function BackgroundHandler({
   const uploadBgImage = async () => {
     if (
       !backgroundImage ||
+      backgroundImage === 'none' ||
       backgroundImage.substring(0, 4) === 'http' ||
       backgroundImage.substring(0, 5) !== 'data:'
     ) {

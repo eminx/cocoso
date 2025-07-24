@@ -208,11 +208,7 @@ export default function ThemeHandler() {
       )}
 
       <Flex justify="flex-end" mb="12">
-        <Button
-          // disabled={!state.hasChanges}
-          loading={state.updating}
-          onClick={confirmUpdate}
-        >
+        <Button loading={state.updating} onClick={confirmUpdate}>
           <Trans i18nKey="common:actions.submit" />
         </Button>
       </Flex>

@@ -72,4 +72,26 @@ const defaultEmails = [
   },
 ];
 
+const defaultTheme = {
+  hue: (Math.floor(Math.random() * 360) + 1).toString(),
+  body: {
+    backgroundColor: '#eee',
+    backgroundImage: 'none',
+    backgroundRepeat: 'no-repeat',
+    borderRadius: '0',
+    fontFamily: 'Sarabun',
+  },
+  menu: {
+    backgroundColor: '#f5f5f5',
+    borderColor: '#ddd',
+    borderRadius: '0',
+    borderStyle: 'solid',
+    borderWidth: '2px',
+    color: '#090909',
+    fontStyle: 'normal',
+    textTransform: 'none',
+  },
+  variant: 'custom',
+};
+
 export { defaultMenu, defaultMainColor, defaultEmails };
