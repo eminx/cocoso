@@ -120,7 +120,7 @@ function HeaderMenu({ Host, pageTitles }) {
   };
 
   return (
-    <Center className="main-menu" mb="4" px="4">
+    <Center id="main-menu" mb="4" px="4">
       <HStack
         align="center"
         justify="center"
@@ -188,7 +188,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
   }
 
   return (
-    <Box w="100%">
+    <Box id="header" w="100%">
       <Center mb="10">
         <Link className="logo-container" to="/">
           {currentHost.logo ? (

@@ -120,7 +120,7 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
       {hideMenu ? (
         <GlobalStyles>
           {{
-            '.main-menu': {
+            '#main-menu': {
               display: 'none',
             },
           }}
