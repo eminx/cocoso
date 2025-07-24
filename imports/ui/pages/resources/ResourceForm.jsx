@@ -128,21 +128,19 @@ export default function ResourceForm({ resource, onFinalize }) {
         mt="6"
         mb="12"
       >
-        <Box bg="white" borderRadius="lg" display="inline" p="2">
-          <Checkbox
-            checked={state.isCombo}
-            id="is-combo"
-            size="lg"
-            onChange={(e) =>
-              setState((prevState) => ({
-                ...prevState,
-                isCombo: e.target.checked,
-              }))
-            }
-          >
-            {t('form.combo.switch.label')}
-          </Checkbox>
-        </Box>
+        <Checkbox
+          checked={state.isCombo}
+          id="is-combo"
+          size="lg"
+          onChange={(e) =>
+            setState((prevState) => ({
+              ...prevState,
+              isCombo: e.target.checked,
+            }))
+          }
+        >
+          {t('form.combo.switch.label')}
+        </Checkbox>
         {state.isCombo && (
           <Box w="100%" pt="2">
             <Text fontSize="sm" mb="2">
@@ -169,21 +167,19 @@ export default function ResourceForm({ resource, onFinalize }) {
         mt="6"
         mb="12"
       >
-        <Box bg="white" borderRadius="lg" display="inline" p="2">
-          <Checkbox
-            checked={state.isBookable}
-            id="is-bookable"
-            size="lg"
-            onChange={(e) =>
-              setState((prevState) => ({
-                ...prevState,
-                isBookable: e.target.checked,
-              }))
-            }
-          >
-            {t('form.bookable.label')}
-          </Checkbox>
-        </Box>
+        <Checkbox
+          checked={state.isBookable}
+          id="is-bookable"
+          size="lg"
+          onChange={(e) =>
+            setState((prevState) => ({
+              ...prevState,
+              isBookable: e.target.checked,
+            }))
+          }
+        >
+          {t('form.bookable.label')}
+        </Checkbox>
       </FormField>
     </GenericEntryForm>
   );

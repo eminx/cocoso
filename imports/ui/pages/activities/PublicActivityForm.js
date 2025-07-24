@@ -210,20 +210,14 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         label={t('form.exclusive.label')}
         my="8"
       >
-        <Box
-          bg="white"
-          p="4"
-          css={{ borderRadius: 'var(--cocoso-border-radius)' }}
+        <Checkbox
+          checked={state.isExclusiveActivity}
+          id="is-exclusive"
+          size="lg"
+          onChange={handleExclusiveSwitch}
         >
-          <Checkbox
-            checked={state.isExclusiveActivity}
-            id="is-exclusive"
-            size="lg"
-            onChange={handleExclusiveSwitch}
-          >
-            {t('form.exclusive.holder')}
-          </Checkbox>
-        </Box>
+          {t('form.exclusive.holder')}
+        </Checkbox>
       </FormField>
 
       <FormField
@@ -274,20 +268,14 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         label={t('form.rsvp.label')}
         my="8"
       >
-        <Box
-          bg="white"
-          p="4"
-          css={{ borderRadius: 'var(--cocoso-border-radius)' }}
+        <Checkbox
+          checked={state.isRegistrationEnabled}
+          id="is-registration-disabled"
+          size="lg"
+          onChange={handleRsvpSwitch}
         >
-          <Checkbox
-            checked={state.isRegistrationEnabled}
-            id="is-registration-disabled"
-            size="lg"
-            onChange={handleRsvpSwitch}
-          >
-            {t('form.rsvp.holder')}
-          </Checkbox>
-        </Box>
+          {t('form.rsvp.holder')}
+        </Checkbox>
       </FormField>
 
       {(!state.isRegistrationDisabled || state.isRegistrationEnabled) && (

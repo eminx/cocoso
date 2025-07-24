@@ -24,7 +24,7 @@ interface ButtonProps {
   m?: string | number;
   rightIcon?: ReactNode;
   size?: 'xs' | 'sm' | 'md' | 'lg';
-  type?: HTMLAttributes<string>;
+  type?: 'button' | 'submit' | 'reset';
   variant?: 'solid' | 'ghost' | 'outline';
   onClick?: () => void;
   css?: any;

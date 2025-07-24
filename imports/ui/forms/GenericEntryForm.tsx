@@ -69,25 +69,15 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
           control={control}
           name={item.value as string}
           render={({ field }) => (
-            <Box
-              bg="white"
-              p="2"
-              pt="4"
-              css={{
-                borderRadius: 'var(--cocoso-border-radius)',
-                display: 'inline',
-              }}
+            <Checkbox
+              id={item.id}
+              size="lg"
+              checked={field.value}
+              onChange={field.onChange}
+              disabled={field.disabled ?? false}
             >
-              <Checkbox
-                id={item.id}
-                size="lg"
-                checked={field.value}
-                onChange={field.onChange}
-                {...field}
-              >
-                {item.label}
-              </Checkbox>
-            </Box>
+              {item.label}
+            </Checkbox>
           )}
         />
       );
@@ -102,7 +92,7 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
         </Select>
       );
     case 'number':
-      return <NumberInput {...props} />;
+      return <NumberInput {...props} min={1} max={20} step={1} />;
     case 'quill':
       return (
         <Controller

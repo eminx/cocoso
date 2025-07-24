@@ -120,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({
               {subTitle}
             </Heading>
           )}
-          {tags && tags.length > 0 && (
+          {tags && tags.length > 0 ? (
             <Wrap justify={author ? 'flex-start' : 'center'} mt="2">
               {tags.map((tag, i) => (
                 <Tag colorScheme="gray" key={tag + i}>
@@ -128,10 +128,10 @@ const Header: React.FC<HeaderProps> = ({
                 </Tag>
               ))}
             </Wrap>
-          )}
-          {dates && <Center pt="2">{dates}</Center>}
+          ) : null}
+          {dates ? <Center pt="2">{dates}</Center> : null}
         </Box>
-        {author && <AvatarHolder author={author} />}
+        {author ? <AvatarHolder author={author} /> : null}
       </Flex>
     </Center>
   );

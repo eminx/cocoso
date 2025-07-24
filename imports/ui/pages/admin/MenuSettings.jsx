@@ -169,9 +169,9 @@ export default function MenuSettings() {
             }}
           >
             <Box mb="8">
-              <Text fontSize="lg" mb="2">
-                {t('composable.form.addToMenu')}
-              </Text>
+              <Box mb="2">
+                <Text>{t('composable.form.addToMenu')}</Text>
+              </Box>
 
               <ReactSelect
                 options={getComposablePageOptions()}

@@ -60,6 +60,7 @@ export function UserThumb({ isNotification = false }) {
       p="1"
       css={{
         background: 'rgba(255, 252, 250, 0.9)',
+        border: '2px solid var(--cocoso-colors-theme-200)',
         borderRadius: 'var(--cocoso-border-radius)',
         ':hover': {
           background: 'rgba(255, 252, 250, 0.9)',
