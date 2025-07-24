@@ -68,6 +68,7 @@ export const Grid = styled('div', (props: GridProps) => ({
     props.gridTemplateColumns ||
     'repeat(auto-fit, minmax(200px, 1fr))',
   gap: props.gap ? getSpacing(props.gap) : '1rem',
+  width: '100%',
 }));
 
 // Divider
