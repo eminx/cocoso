@@ -55,7 +55,7 @@ export default function WorkForm({ work, onFinalize }) {
   }, []);
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders || !loaders.isCreating) {
       return;
     }
     setLoaders((prevState) => ({
@@ -115,7 +115,11 @@ export default function WorkForm({ work, onFinalize }) {
       formFields={workFormFields(t, tc)}
       onSubmit={handleSubmit}
     >
-      <FormField helperText={t('works.image.helper')} label={t('works.image.label')} my="4">
+      <FormField
+        helperText={t('works.image.helper')}
+        label={t('works.image.label')}
+        my="4"
+      >
         <ImageUploader
           ping={loaders?.isUploadingImages}
           preExistingImages={work ? work.images : []}

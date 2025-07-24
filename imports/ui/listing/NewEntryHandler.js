@@ -7,7 +7,7 @@ import { Box, Modal, Progress } from '/imports/ui/core';
 
 import { StateContext } from '../LayoutContainer';
 
-export const initialLoaderValues = {
+export const initialLoader = {
   isCreating: false,
   isUploadingImages: false,
   isSendingForm: false,
@@ -15,11 +15,14 @@ export const initialLoaderValues = {
 };
 
 export const LoaderContext = createContext({
-  loaders: initialLoaderValues,
+  loaders: initialLoader,
 });
 
-const getLoaderValue = (loaders) => {
+const getLoaderProgress = (loaders) => {
   let progress = 0;
+  if (!loaders) {
+    return progress;
+  }
   if (!loaders.isCreating) {
     progress = 0;
   } else if (loaders.isSuccess) {
@@ -35,6 +38,10 @@ const getLoaderValue = (loaders) => {
 };
 
 const renderToasts = (loaders, tc, justUpdated = false) => {
+  if (!loaders) {
+    return;
+  }
+
   const options = { id: 'loader' };
   if (loaders.isSuccess) {
     toast.success(tc(`message.success.${justUpdated ? 'update' : 'create'}`), {
@@ -62,12 +69,12 @@ export default function NewEntryHandler({ children }) {
   const forEdit = searchParams.get('edit') === 'true';
   const isOpen = forNew || forEdit;
   const { canCreateContent, currentHost } = useContext(StateContext);
-  const [loaders, setLoaders] = useState(initialLoaderValues);
+  const [loaders, setLoaders] = useState(initialLoader);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [tc] = useTranslation('common');
 
   const handleCancelAndClose = () => {
-    setLoaders(initialLoaderValues);
+    setLoaders(initialLoader);
     setConfirmOpen(false);
     if (forEdit) {
       setSearchParams((params) => ({ ...params, edit: 'false' }));
@@ -76,7 +83,7 @@ export default function NewEntryHandler({ children }) {
     setSearchParams((params) => ({ ...params, new: 'false' }));
   };
 
-  const loaderValue = getLoaderValue(loaders);
+  const loaderProgress = getLoaderProgress(loaders);
   const justUpdated =
     searchParams.get('edit') === 'true' || searchParams.get('edit') === 'false';
   renderToasts(loaders, tc, justUpdated);
@@ -86,27 +93,7 @@ export default function NewEntryHandler({ children }) {
   if (context[0] === '@') {
     context = 'works';
   }
-  const string = `common:labels.${forEdit ? 'update' : 'create'}.${context}`;
-
-  const entryHeader = (
-    <Box bg="transparent">
-      {loaderValue ? (
-        <Progress
-          colorScheme="brand"
-          hasStripe
-          size="md"
-          value={loaderValue}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-          }}
-        />
-      ) : null}
-      <Trans i18nKey={string} />
-    </Box>
-  );
+  const title = `common:labels.${forEdit ? 'update' : 'create'}.${context}`;
 
   if (!canCreateContent) {
     return null;
@@ -114,39 +101,50 @@ export default function NewEntryHandler({ children }) {
 
   return (
     <LoaderContext.Provider value={{ loaders, setLoaders }}>
+      {loaders?.isCreating && (
+        <Box
+          bg="rgba(0, 0, 0, 0.5)"
+          w="100%"
+          h="100%"
+          position="absolute"
+          top="12px"
+          left="0"
+        />
+      )}
+      {loaderProgress && (
+        <Progress
+          colorScheme="brand"
+          className="progress"
+          hasStripe
+          size="md"
+          value={loaderProgress}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            zIndex: 99999,
+          }}
+        />
+      )}
+
       <Modal
         closeOnOverlayClick={false}
         closeOnEsc={false}
         hideFooter
-        // contentProps={{
-        //   h: 'auto',
-        //   mt: '12',
-        // }}
         open={isOpen}
-        // motionPreset="slideInBottom"
-        // scrollBehavior="outside"
         size="2xl"
-        title={entryHeader}
+        title={<Trans i18nKey={title} />}
         onClose={() => setConfirmOpen(true)}
       >
         {children}
-        {loaders.isCreating && (
-          <Box
-            bg="rgba(0, 0, 0, 0.5)"
-            w="100%"
-            h="100%"
-            position="absolute"
-            top="12px"
-            left="0"
-          />
-        )}
       </Modal>
 
       <Modal
-        confirmText={tc('modals.confirm.newentry.yes')}
         cancelText={tc('modals.confirm.newentry.cancel')}
-        title={tc('modals.confirm.newentry.title')}
+        confirmText={tc('modals.confirm.newentry.yes')}
         open={confirmOpen}
+        title={tc('modals.confirm.newentry.title')}
         onConfirm={handleCancelAndClose}
         onClose={() => setConfirmOpen(false)}
       >

@@ -20,7 +20,7 @@ export default function NewGroup() {
   };
 
   const handleSuccess = () => {
-    navigate(`/groups/${newEntryId}`);
+    navigate(`/groups/${newEntryId}/info`);
   };
 
   return (

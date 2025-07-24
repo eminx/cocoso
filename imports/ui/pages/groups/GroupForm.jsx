@@ -23,7 +23,7 @@ export default function GroupForm({ group, onFinalize }) {
   const [t] = useTranslation('groups');
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders || !loaders.isCreating) {
       return;
     }
     setLoaders((prevState) => ({

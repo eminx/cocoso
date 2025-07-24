@@ -127,11 +127,11 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   };
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders?.isCreating) {
       return;
     }
     parseActivity();
-  }, [loaders.isCreating]);
+  }, [loaders?.isCreating]);
 
   const handleSubmit = (formValues) => {
     setState((prevState) => ({

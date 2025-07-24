@@ -15,7 +15,7 @@ export default function SuccessRedirector({ ping, onSuccess, children }) {
   }, [ping]);
 
   useEffect(() => {
-    if (loaders.isSuccess) {
+    if (loaders?.isSuccess) {
       onSuccess();
     }
   }, [loaders]);

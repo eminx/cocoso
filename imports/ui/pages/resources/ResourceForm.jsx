@@ -49,7 +49,7 @@ export default function ResourceForm({ resource, onFinalize }) {
   }, []);
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders || !loaders.isCreating) {
       return;
     }
     setLoaders((prevState) => ({

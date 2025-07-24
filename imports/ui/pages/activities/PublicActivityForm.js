@@ -80,7 +80,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   }, [state.datesAndTimes, state.selectedResource, state.isExclusiveActivity]);
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders || !loaders.isCreating) {
       return;
     }
     setLoaders((prevState) => ({
@@ -201,7 +201,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       >
         <ImageUploader
           preExistingImages={activity ? activity.images : []}
-          ping={loaders.isUploadingImages}
+          ping={loaders?.isUploadingImages}
           onUploadedImages={handleUploadedImages}
         />
       </FormField>

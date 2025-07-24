@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 import { styled, GlobalStyles } from 'restyle';
 
 import { Flex } from './Box';
@@ -24,6 +24,7 @@ interface ButtonProps {
   m?: string | number;
   rightIcon?: ReactNode;
   size?: 'xs' | 'sm' | 'md' | 'lg';
+  type: HTMLAttributes<string>;
   variant?: 'solid' | 'ghost' | 'outline';
   onClick?: () => void;
   css?: any;
