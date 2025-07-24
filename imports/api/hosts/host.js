@@ -59,7 +59,6 @@ Hosts.schema = new SimpleSchema({
 
   theme: { type: Object, optional: true },
   'theme.hue': { type: String, optional: true },
-  'theme.variant': { type: String, optional: true },
   'theme.body': { type: Object, optional: true },
   'theme.body.backgroundColor': { type: String, optional: true },
   'theme.body.backgroundImage': { type: String, optional: true },
@@ -75,6 +74,7 @@ Hosts.schema = new SimpleSchema({
   'theme.menu.color': { type: String, optional: true },
   'theme.menu.fontStyle': { type: String, optional: true },
   'theme.menu.textTransform': { type: String, optional: true },
+  'theme.variant': { type: String, optional: true },
 
   members: { type: Array },
   'members.$': { type: Object, optional: true },

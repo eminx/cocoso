@@ -13,6 +13,8 @@ import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
 
+import Hosts from '/imports/api/hosts/host';
+
 const { cdn_server } = Meteor.settings;
 
 Meteor.startup(() => {
@@ -66,4 +68,36 @@ Meteor.startup(() => {
     sink.appendToHead(helmet.meta.toString());
     sink.appendToHead(helmet.title.toString());
   });
+
+  Hosts.update(
+    { $or: [{ theme: { $exists: false } }, { theme: null }] },
+    {
+      $set: {
+        theme: {
+          hue: '$settings.hue',
+          body: {
+            backgroundColor: '#eee',
+            backgroundImage: 'none',
+            backgroundRepeat: 'no-repeat',
+            borderRadius: '0',
+            fontFamily: 'Sarabun',
+          },
+          menu: {
+            backgroundColor: '#f5f5f5',
+            borderColor: '#ddd',
+            borderRadius: '0',
+            borderStyle: 'solid',
+            borderWidth: '2px',
+            color: '#090909',
+            fontStyle: 'normal',
+            textTransform: 'none',
+          },
+          variant: 'custom',
+        },
+      },
+    },
+    {
+      multi: true,
+    }
+  );
 });
