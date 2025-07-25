@@ -63,6 +63,7 @@ export function InfoPagesMenu({ label, menuStyles, pageTitles, pathname }) {
         <Flex
           align="center"
           gap="1"
+          mt="1"
           css={{
             ...flexStyles,
             borderBottom: isCurrentContext ? `2px solid ${borderColor}` : '',

@@ -124,7 +124,7 @@ body {
 
 @media (min-width: 960px) {
   .logo-container {
-    z-index: 1400;
+    z-index: 1001;
   }
 }
 
@@ -770,6 +770,10 @@ body {
 
 .cocoso-fade-ping {
   opacity: 1;
+}
+
+.szh-menu-container {
+  z-index: 1002;
 }
 
 .szh-menu {
