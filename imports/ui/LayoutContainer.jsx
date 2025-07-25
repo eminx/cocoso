@@ -179,13 +179,13 @@ function LayoutPage({ currentUser, userLoading, children }) {
         </DummyWrapper>
 
         {rendered && !adminPage && (
-          <Box>
+          <>
             <Footer
               currentHost={currentHost}
               isFederationFooter={isFederationFooter}
             />
             {isFederationFooter && <PlatformFooter platform={platform} />}
-          </Box>
+          </>
         )}
       </StateContext.Provider>
 
