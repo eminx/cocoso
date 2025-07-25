@@ -59,7 +59,12 @@ export default function ContactInfo({ username }) {
         onClose={() => setModalOpen(false)}
       >
         {contactInfo ? (
-          <Box bg="white" className="text-content" p="4" textAlign="center">
+          <Box
+            bg="white"
+            className="text-content"
+            p="4"
+            css={{ textAlign: 'center' }}
+          >
             {HTMLReactParser(contactInfo)}
           </Box>
         ) : (

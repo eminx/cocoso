@@ -171,7 +171,7 @@ export default function NewGridThumb({
 
           {avatar && (
             <Box pt="2">
-              <Avatar name={avatar.name} src={avatar.url} />
+              <Avatar name={avatar.name} size="md" src={avatar.url} />
             </Box>
           )}
         </Flex>

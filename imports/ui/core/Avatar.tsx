@@ -14,12 +14,12 @@ export interface AvatarProps {
 // Size mapping
 const sizeMap = {
   xs: '1.5rem',
-  sm: '2rem',
-  md: '2.5rem',
-  lg: '3rem',
-  xl: '4rem',
-  '2xl': '6rem',
-  '4xl': '8rem',
+  sm: '2.5rem',
+  md: '3.5rem',
+  lg: '4.5rem',
+  xl: '5.5rem',
+  '2xl': '8rem',
+  '4xl': '12rem',
 };
 
 // Font size mapping for initials
