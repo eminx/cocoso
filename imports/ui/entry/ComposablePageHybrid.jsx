@@ -80,7 +80,7 @@ function ContentModule({ module, Host }) {
     case 'text':
       return (
         <Center>
-          <Box className="text-content" maxW="480px" py="4">
+          <Box className="text-content" maxW="480px" p="4">
             {value.html ? HTMLReactParser(value.html) : null}
           </Box>
         </Center>
