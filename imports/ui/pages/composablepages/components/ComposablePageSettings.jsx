@@ -22,6 +22,7 @@ export default function ComposablePageSettings() {
   };
 
   const [state, setState] = useState(initialState);
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     setState(initialState);
@@ -44,6 +45,8 @@ export default function ComposablePageSettings() {
       return;
     }
 
+    setUpdating(true);
+
     const newPage = {
       ...currentPage,
       title: state.title,
@@ -65,6 +68,8 @@ export default function ComposablePageSettings() {
       }));
     } catch (error) {
       message.error(error.reason || error.error);
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -90,6 +95,7 @@ export default function ComposablePageSettings() {
       </Button>
 
       <Modal
+        confirmButtonProps={{ loading: updating }}
         open={state.modalOpen}
         title={<Trans i18nKey="admin:composable.settings.title" />}
         onConfirm={confirmChange}

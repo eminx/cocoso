@@ -7,9 +7,11 @@ import { Button } from '/imports/ui/core';
 
 // Common props interface
 interface BaseProps {
+  cancelButtonProps?: object;
   cancelText?: string;
   children: React.ReactNode;
   closeOnOverlayClick?: boolean;
+  confirmButtonProps?: object;
   confirmText?: string;
   hideFooter?: boolean;
   hideHeader?: boolean;
@@ -311,8 +313,10 @@ const usePortal = (open: boolean, onClose: () => void, portalId: string) => {
 
 // Shared content component
 const Content: React.FC<{
+  cancelButtonProps?: object;
   cancelText?: string;
   children: React.ReactNode;
+  confirmButtonProps?: object;
   confirmText?: string;
   hideFooter?: boolean;
   hideHeader?: boolean;
@@ -323,8 +327,10 @@ const Content: React.FC<{
   onSecondaryButtonClick?: () => void;
   title?: string;
 }> = ({
+  cancelButtonProps,
   cancelText,
   children,
+  confirmButtonProps,
   confirmText,
   hideFooter = false,
   hideHeader = false,
@@ -375,10 +381,15 @@ const Content: React.FC<{
       {/* Footer */}
       {!hideFooter && (
         <Footer>
-          <Button size="sm" variant="outline" onClick={handleCancel}>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleCancel}
+            {...cancelButtonProps}
+          >
             {cancelText || tc('actions.cancel')}
           </Button>
-          <Button size="sm" onClick={handleConfirm}>
+          <Button size="sm" onClick={handleConfirm} {...confirmButtonProps}>
             {confirmText || tc('actions.submit')}
           </Button>
         </Footer>
@@ -389,9 +400,11 @@ const Content: React.FC<{
 
 // Modal component (default export)
 const Modal: React.FC<ModalProps> = ({
+  cancelButtonProps,
   cancelText,
   children,
   closeOnOverlayClick = true,
+  confirmButtonProps,
   confirmText,
   hideFooter = false,
   hideHeader = false,
@@ -426,7 +439,9 @@ const Modal: React.FC<ModalProps> = ({
         onClick={handleModalContentClick}
       >
         <Content
+          cancelButtonProps={cancelButtonProps}
           cancelText={cancelText}
+          confirmButtonProps={confirmButtonProps}
           confirmText={confirmText}
           hideFooter={hideFooter}
           hideHeader={hideHeader}
