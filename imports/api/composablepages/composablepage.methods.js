@@ -123,12 +123,6 @@ Meteor.methods({
       throw new Meteor.Error('Page not found');
     }
 
-    if (thePage.title.toLowerCase() === formValues.title.toLowerCase()) {
-      throw new Meteor.Error(
-        'A composable page with this title already exists'
-      );
-    }
-
     try {
       await ComposablePages.updateAsync(composablePageId, {
         $set: {
