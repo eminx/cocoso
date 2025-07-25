@@ -117,12 +117,16 @@ Meteor.methods({
     }
 
     const composablePageId = formValues._id;
-    const thePage = await ComposablePages.findOneAsync(
-      composablePageId
-    );
+    const thePage = await ComposablePages.findOneAsync(composablePageId);
 
     if (!thePage) {
       throw new Meteor.Error('Page not found');
+    }
+
+    if (thePage.title.toLowerCase() === formValues.title.toLowerCase()) {
+      throw new Meteor.Error(
+        'A composable page with this title already exists'
+      );
     }
 
     try {
@@ -191,9 +195,7 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    const thePage = await ComposablePages.findOneAsync(
-      composablePageId
-    );
+    const thePage = await ComposablePages.findOneAsync(composablePageId);
 
     if (!thePage) {
       throw new Meteor.Error('Page not found');

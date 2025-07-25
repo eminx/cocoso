@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
 
@@ -11,18 +11,21 @@ import { message } from '/imports/ui/generic/message';
 import { ComposablePageContext } from '../ComposablePageForm';
 
 export default function ComposablePageSettings() {
-  const { currentPage, getComposablePageById } = useContext(
-    ComposablePageContext
-  );
+  const { currentPage, getComposablePageById, getComposablePageTitles } =
+    useContext(ComposablePageContext);
 
-  const defaultState = {
+  const initialState = {
     hideTitle: currentPage?.settings?.hideTitle,
     hideMenu: currentPage?.settings?.hideMenu,
     modalOpen: false,
     title: currentPage?.title,
   };
 
-  const [state, setState] = useState(defaultState);
+  const [state, setState] = useState(initialState);
+
+  useEffect(() => {
+    setState(initialState);
+  }, [currentPage]);
 
   const updateSettings = (field) => {
     setState((prevState) => ({
@@ -54,19 +57,19 @@ export default function ComposablePageSettings() {
     try {
       await call('updateComposablePage', newPage);
       await getComposablePageById();
+      await getComposablePageTitles();
       message.success(<Trans i18nKey="common:message.success.save" />);
       setState((prevState) => ({
         ...prevState,
         modalOpen: false,
       }));
     } catch (error) {
-      console.log(error);
       message.error(error.reason || error.error);
     }
   };
 
   const handleCloseModal = () => {
-    setState({ ...defaultState, modalOpen: false });
+    setState({ ...initialState, modalOpen: false });
   };
 
   return (
@@ -106,7 +109,7 @@ export default function ComposablePageSettings() {
             </FormField>
           </Box>
 
-          <Box>
+          <Box pb="4">
             <Checkbox
               checked={state.hideTitle}
               id="hide-title"
