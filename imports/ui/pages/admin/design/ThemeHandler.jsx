@@ -129,7 +129,7 @@ export default function ThemeHandler() {
         </Text>
       </Box>
 
-      <Box mb="12">
+      <Boxling mb="12">
         <RadioGroup
           value={currentTheme?.variant}
           onChange={(selectedValue) => handleThemeChange(selectedValue)}
@@ -140,13 +140,13 @@ export default function ThemeHandler() {
             </Radio>
           ))}
         </RadioGroup>
-      </Box>
+      </Boxling>
 
       <Text fontWeight="bold" mb="4">
         <Trans i18nKey="admin:design.theme.demo" />
       </Text>
 
-      <Boxling mb="8" mt="4">
+      <Box mb="8" mt="4">
         <Flex align="center" justify="center">
           <Button size="lg">
             <Trans i18nKey="admin:design.theme.button" />
@@ -158,7 +158,7 @@ export default function ThemeHandler() {
             <Trans i18nKey="admin:design.theme.button" />
           </Button>
         </Flex>
-      </Boxling>
+      </Box>
 
       {currentTheme?.variant === 'custom' && (
         <>
