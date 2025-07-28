@@ -232,7 +232,7 @@ function ImageContent({ value, ping, onChange }) {
 }
 
 function SliderContent({ value, ping, onChange }) {
-  const handleUploadedImages = (event) => {
+  const handleUploadedImages = (images) => {
     onChange(
       {
         ...value,
