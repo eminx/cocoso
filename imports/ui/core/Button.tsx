@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { styled, GlobalStyles } from 'restyle';
 
 import { Flex } from './Box';
@@ -92,14 +92,14 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
         : '1rem',
     paddingTop:
       variant === 'ghost'
-        ? '0.20rem'
+        ? '0.30rem'
         : size === 'xs'
-        ? '0.35rem'
+        ? '0.50rem'
         : size === 'sm'
-        ? '0.35rem'
+        ? '0.50rem'
         : size === 'lg'
-        ? '0.55rem'
-        : '0.45rem',
+        ? '0.75rem'
+        : '0.65rem',
     paddingBottom:
       variant === 'ghost'
         ? '0.20rem'
