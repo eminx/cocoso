@@ -50,6 +50,7 @@ export function InfoPagesMenu({ label, menuStyles, pageTitles, pathname }) {
     ...baseTextStyles,
     color: menuStyles?.color || 'gray.600',
     fontStyle: menuStyles?.fontStyle || 'normal',
+    fontWeight: isCurrentContext ? 'bold' : 'normal',
     marginRight: '0.25rem',
     textTransform: menuStyles?.textTransform || 'none',
   };
@@ -66,6 +67,9 @@ export function InfoPagesMenu({ label, menuStyles, pageTitles, pathname }) {
           css={{
             ...flexStyles,
             borderBottom: isCurrentContext ? `2px solid ${borderColor}` : '',
+            ':hover': !isCurrentContext && {
+              textDecoration: 'underline',
+            },
           }}
         >
           <Text css={textStyles}>{label}</Text>
@@ -77,12 +81,11 @@ export function InfoPagesMenu({ label, menuStyles, pageTitles, pathname }) {
         css={{
           maxHeight: '480px',
           overflowY: 'scroll',
-          rootProps: { style: { zIndex: 1051 } },
         }}
       >
         {pageTitles.map((item) => (
           <Link key={item._id} to={`/info/${parseTitle(item.title)}`}>
-            <MenuItem as="span" color="gray.600" id={item._id}>
+            <MenuItem as="span" id={item._id}>
               {item.title}
             </MenuItem>
           </Link>

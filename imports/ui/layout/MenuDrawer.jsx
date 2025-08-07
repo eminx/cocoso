@@ -33,9 +33,10 @@ function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
         const isCurrentPageLabel = isCurrentPage(item);
         if (item.name === 'info') {
           return (
-            <Box py="2" key="info">
+            <Box key="info" p="2">
               <InfoPagesMenu
                 label={item.label}
+                menuStyles={styles}
                 pageTitles={pageTitles}
                 pathname={pathname}
               />
