@@ -19,19 +19,6 @@ import { call } from '/imports/ui/utils/shared';
 import NiceSlider from '/imports/ui/generic/NiceSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
 
-const buttonProps = {
-  color: 'gray.700',
-  fontFamily: "'Sarabun', sans-serif",
-  fontSize: '14px',
-  fontWeight: 'normal',
-  p: '2',
-  px: '0',
-  textAlign: 'left',
-  variant: 'link',
-  isTruncated: true,
-  noOfLines: 1,
-};
-
 export default function FederationIconMenu() {
   const [infoOpen, setInfoOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -114,7 +101,7 @@ export default function FederationIconMenu() {
           </Menu>
         ) : (
           <Link to="/communities">
-            <Button {...buttonProps} as="span">
+            <Button as="span" size="sm" variant="outline">
               {tc('labels.allCommunities')}
             </Button>
           </Link>
