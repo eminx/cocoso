@@ -42,6 +42,7 @@ const linkButtonProps = {
   bg: 'theme.50',
   color: 'theme.500',
   fontWeight: 'normal',
+  mt: '2',
   variant: 'ghost',
   size: 'sm',
 };
