@@ -81,9 +81,7 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
     margin: xToRem(props.m),
     opacity: disabled ? 0.6 : 1,
     paddingInline:
-      variant === 'ghost'
-        ? '0.75rem'
-        : size === 'xs'
+      size === 'xs'
         ? '0.65rem'
         : size === 'sm'
         ? '0.85rem'
@@ -91,19 +89,15 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
         ? '1.15rem'
         : '1rem',
     paddingTop:
-      variant === 'ghost'
-        ? '0.30rem'
-        : size === 'xs'
-        ? '0.50rem'
+      size === 'xs'
+        ? '0.35rem'
         : size === 'sm'
-        ? '0.50rem'
+        ? '0.35rem'
         : size === 'lg'
-        ? '0.75rem'
-        : '0.65rem',
+        ? '0.55rem'
+        : '0.45rem',
     paddingBottom:
-      variant === 'ghost'
-        ? '0.20rem'
-        : size === 'xs'
+      size === 'xs'
         ? '0.35rem'
         : size === 'sm'
         ? '0.35rem'

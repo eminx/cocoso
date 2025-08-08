@@ -101,7 +101,7 @@ export default function FederationIconMenu() {
           </Menu>
         ) : (
           <Link to="/communities">
-            <Button as="span" size="sm" variant="outline">
+            <Button as="span" size="sm" variant="ghost">
               {tc('labels.allCommunities')}
             </Button>
           </Link>

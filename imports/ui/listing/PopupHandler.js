@@ -70,7 +70,7 @@ function PopupContent({
   return (
     <Box css={{ overflowX: 'hidden' }}>
       <PopupHeader subTitle={subTitle} tags={tags} title={title} />
-      <Center mb="4" mx="4">
+      <Center mb="4" mx="4" w="auto">
         {action}
       </Center>
       <Center mb="4">

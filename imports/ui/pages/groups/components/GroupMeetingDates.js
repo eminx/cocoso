@@ -8,9 +8,10 @@ import {
   Button,
   Center,
   Flex,
-  Modal,
+  Link,
   List,
   ListItem,
+  Modal,
   Text,
 } from '/imports/ui/core';
 
@@ -233,16 +234,15 @@ export default function GroupMeetingDates(props) {
               </Text>
             </Flex>
           </Center>
-          <Center>
+          <Center py="1">
             {!isMember && (
-              <Button
-                color="theme.50"
-                fontSize="sm"
-                variant="link"
+              <Link
+                color="theme.200"
+                variant="outline"
                 onClick={() => setModalOpen(true)}
               >
                 {t('labels.meeting_dates')}
-              </Button>
+              </Link>
             )}
           </Center>
         </Box>
