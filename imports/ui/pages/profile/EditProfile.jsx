@@ -297,7 +297,7 @@ export default function EditProfile() {
       content: (
         <Boxling>
           <Box mb="4">
-            <Heading size="md" pb="4">
+            <Heading size="md" pb="2">
               {platform?.name}{' '}
               <span style={subSpanStyle}>{tc('domains.platform')}</span>
             </Heading>
@@ -310,20 +310,22 @@ export default function EditProfile() {
             >
               {t('profile.makePublic.labelGlobal')}
             </Checkbox>
-            <Text fontSize="sm" my="2">
-              {t('profile.makePublic.helperTextGlobal')}
-            </Text>
+            <p>
+              <Text fontSize="sm" my="2">
+                {t('profile.makePublic.helperTextGlobal')}
+              </Text>
+            </p>
           </Box>
 
           <Divider my="4" />
 
-          <Box pl="4">
-            <Heading size="md" pb="4">
+          <Box pt="2">
+            <Heading size="md" pb="2">
               {communityName}{' '}
               <span style={subSpanStyle}>{tc('domains.community')}</span>
             </Heading>
 
-            <Alert bg="white" type="info" p="0">
+            <Alert bg="white" type="info" css={{ marginBottom: '0.4rem' }}>
               <Text fontSize="sm">
                 <Trans
                   i18nKey="accounts:profile.message.role"
@@ -349,9 +351,11 @@ export default function EditProfile() {
               >
                 {t('profile.makePublic.label')}
               </Checkbox>
-              <Text fontSize="sm" my="2">
-                {t('profile.makePublic.helperText')}
-              </Text>
+              <p>
+                <Text fontSize="sm" my="2">
+                  {t('profile.makePublic.helperText')}
+                </Text>
+              </p>
             </Box>
 
             <Box py="2">

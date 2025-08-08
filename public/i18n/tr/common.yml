@@ -176,7 +176,7 @@ modals:
           bug: Problem
           compliment: İltifat
       details:
-        label: Detaylar
+        label: Mesaj
 
   toPortalApp: Portal Uygulamaya Devam et
 

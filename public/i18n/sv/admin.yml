@@ -80,7 +80,7 @@ menu:
   info:
     activities: Den här funktionen listar offentliga evenemang och gruppmöten. Om ni klickar bort funktionen kan ni inte skapa eller synliggöra publika evenemang
     calendar: Den här funktionen synliggör er kalender. Om ni klickar av funktionen blir kalendern inte synlig. Ni kan då inte göra bokningar av era resurser i kalendern
-    groups: Den här funktionen listar grupper eller grouper. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller grouper
+    groups: Den här funktionen listar grupper eller processer. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller processer
     info: Den här funktionen listar statiska informationssidorna
     people: Den här funktionen listar alla som gått med i er community. Om ni klickar bort funktionen blir listan inte synlig. Det går då heller inte att nå era medlemmars profilsidor
     resources: Den här funktionen listar resurserna i er community. Om ni klickar bort funktionen blir listan inte synlig, och ni kan inte lägga till nya resurser. Befintliga resurser fortfarande kan ses och bokas i er kalender

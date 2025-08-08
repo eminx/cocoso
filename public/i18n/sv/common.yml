@@ -176,7 +176,7 @@ modals:
           bug: Bugg
           compliment: Komplimang
       details:
-        label: Detaljer
+        label: Message
 
   toPortalApp: Fortsätt till portalappen
 

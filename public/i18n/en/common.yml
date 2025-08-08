@@ -178,7 +178,7 @@ modals:
           bug: Bug
           compliment: Compliment
       details:
-        label: Details
+        label: Message
 
   toPortalApp: Continue to the Portal App
 
