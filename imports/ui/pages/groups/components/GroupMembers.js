@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useHydrated } from 'react-hydration-provider';
 
+const maxShownAvatars = 6;
+
 import {
   Avatar,
   AvatarGroup,
@@ -44,13 +46,13 @@ export default function GroupMembers({ group }) {
               key={member.memberId}
               css={{ marginInlineEnd: '-1rem', zIndex: 100 - index }}
             >
-              {index < 1 ? (
+              {index < maxShownAvatars ? (
                 <Avatar
                   borderRadius="2rem"
                   name={member.username}
                   src={member.avatar}
                 />
-              ) : index === 1 ? (
+              ) : index === maxShownAvatars ? (
                 <Box
                   css={{
                     backgroundColor: 'var(--cocoso-colors-gray-50)',
@@ -63,7 +65,7 @@ export default function GroupMembers({ group }) {
                     width: '3.5rem',
                   }}
                 >
-                  +{group.members.length - 1}
+                  +{group.members.length - maxShownAvatars}
                 </Box>
               ) : null}
             </Box>
