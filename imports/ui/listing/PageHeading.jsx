@@ -48,18 +48,20 @@ export default function PageHeading({
             />
             <Center>{children}</Center>
             {description && (
-              <Text
-                size="lg"
-                css={{
-                  fontFamily: "'Sarabun', sans-serif",
-                  fontWeight: '300',
-                  lineHeight: '1.3',
-                  maxWidth: '520px',
-                  textAlign: 'center',
-                }}
-              >
-                {description}
-              </Text>
+              <Center>
+                <Text
+                  size="lg"
+                  css={{
+                    fontFamily: "'Sarabun', sans-serif",
+                    fontWeight: '300',
+                    lineHeight: '1.3',
+                    maxWidth: '520px',
+                    textAlign: 'center',
+                  }}
+                >
+                  {description}
+                </Text>
+              </Center>
             )}
           </Box>
         </Box>

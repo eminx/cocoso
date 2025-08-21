@@ -57,8 +57,6 @@ export function UserThumb({ isNotification = false }) {
   return (
     <Flex
       gap="0"
-      mr="1"
-      p="1"
       css={{
         background: 'rgba(255, 252, 250, 0.9)',
         border: '2px solid var(--cocoso-colors-theme-200)',
@@ -86,6 +84,7 @@ export function UserThumb({ isNotification = false }) {
         direction="column"
         gap="0"
         px="2"
+        pt="1"
         css={{ lineHeight: isDesktop ? '1.2' : '0.8' }}
       >
         <Text fontSize={isDesktop ? 'md' : 'sm'} fontWeight="bold">
@@ -151,8 +150,8 @@ export default function UserPopup({ isOpen, setIsOpen }) {
         }
         open={isOpen}
       >
-        <Box pl="6" pt="1" pb="2" pr="2">
-          <Text fontWeight="bold" fontSize="xl">
+        <Box p="2">
+          <Text fontWeight="bold" fontSize="xl" css={{ marginLeft: '1rem' }}>
             {currentUser.username}{' '}
             <span
               style={{

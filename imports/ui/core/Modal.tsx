@@ -382,14 +382,13 @@ const Content: React.FC<{
       {!hideFooter && (
         <Footer>
           <Button
-            size="sm"
             variant="outline"
             onClick={handleCancel}
             {...cancelButtonProps}
           >
             {cancelText || tc('actions.cancel')}
           </Button>
-          <Button size="sm" onClick={handleConfirm} {...confirmButtonProps}>
+          <Button onClick={handleConfirm} {...confirmButtonProps}>
             {confirmText || tc('actions.submit')}
           </Button>
         </Footer>

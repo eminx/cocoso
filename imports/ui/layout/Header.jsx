@@ -86,6 +86,7 @@ export function InfoPagesMenu({
       <Box
         css={{
           maxHeight: '480px',
+          maxWidth: '320px',
           overflowY: 'scroll',
         }}
       >
