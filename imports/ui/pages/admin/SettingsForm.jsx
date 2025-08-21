@@ -6,7 +6,7 @@ import { Button, Flex, Input, VStack } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import ChangeLanguage from '/imports/ui/layout/ChangeLanguageMenu';
 
-function SettingsForm({ initialValues, onSubmit }) {
+export default function SettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
     defaultValues: initialValues,
   });
@@ -46,5 +46,3 @@ function SettingsForm({ initialValues, onSubmit }) {
     </form>
   );
 }
-
-export default SettingsForm;

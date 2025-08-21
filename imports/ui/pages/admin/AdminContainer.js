@@ -36,6 +36,7 @@ function RouteRenderer({ routes, currentRoute }) {
   const EditProfileRoute = currentUser && (
     <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
   );
+
   return (
     <Box p="6">
       <Box mb="8">
