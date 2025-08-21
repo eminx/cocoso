@@ -20,19 +20,23 @@ const fontSizes = {
 
 export const Tag = styled('span', (props: any) => {
   const colorScheme = props.colorScheme || 'theme';
-  const backgroundColor = `var(--cocoso-colors-${colorScheme}-600)`;
-  const color = `var(--cocoso-colors-${colorScheme}-50)`;
+  const borderColor = `var(--cocoso-colors-${colorScheme}-500)`;
+  const color = `var(--cocoso-colors-${colorScheme}-800)`;
 
   return {
     alignItems: 'center',
-    display: 'inline-flex',
-    backgroundColor,
+    backgroundColor: 'white',
+    borderColor,
     borderRadius: 'var(--cocoso-border-radius)',
+    borderWidth: '1px',
+    borderStyle: 'solid',
     color,
+    display: 'inline-flex',
     fontSize: '0.875rem',
     fontWeight: '400',
-    padding: '0.25rem 0.5rem',
-    textTransform: 'capitalize',
+    lineHeight: '1.35rem',
+    paddingInline: '0.55rem',
+    textTransform: 'lowercase',
   };
 });
 

@@ -14,7 +14,7 @@ const tagProps = {
   borderColor: 'theme.500',
 };
 
-function MemberAvatarEtc({ isThumb = true, user, role }) {
+export default function MemberAvatarEtc({ isThumb = true, user, role }) {
   if (!user) return null;
 
   const avatarSrc = user?.avatar?.src || user?.avatar;
@@ -24,8 +24,6 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
     <Box mb="6">
       <Center>
         <Avatar
-          borderRadius="lg"
-          maxW={350}
           name={user?.username}
           size={!avatarSrc || isThumb ? '2xl' : '6xl'}
           src={avatarSrc}
@@ -76,5 +74,3 @@ function MemberAvatarEtc({ isThumb = true, user, role }) {
     </Box>
   );
 }
-
-export default MemberAvatarEtc;
