@@ -26,27 +26,50 @@ export default function GroupMembers({ group }) {
 
   return (
     <Box>
-      <AvatarGroup
-        max={6}
+      <Box
         p="2"
+        mt="1"
         css={{
           cursor: 'pointer',
           ':hover': {
-            bg: 'var(--cocoso-colors-gray-200)',
+            backgroundColor: 'var(--cocoso-colors-gray-100)',
             borderRadius: '8px',
           },
         }}
         onClick={() => setModalOpen(true)}
       >
-        {group.members?.map((member) => (
-          <Avatar
-            key={member.memberId}
-            name={member.username}
-            size="lg"
-            src={member.avatar}
-          />
-        ))}
-      </AvatarGroup>
+        <AvatarGroup>
+          {group.members?.map((member, index) => (
+            <Box
+              key={member.memberId}
+              css={{ marginInlineEnd: '-1rem', zIndex: 100 - index }}
+            >
+              {index < 1 ? (
+                <Avatar
+                  borderRadius="2rem"
+                  name={member.username}
+                  src={member.avatar}
+                />
+              ) : index === 1 ? (
+                <Box
+                  css={{
+                    backgroundColor: 'var(--cocoso-colors-gray-50)',
+                    borderRadius: '2rem',
+                    border: '2px solid white',
+                    fontSize: '1.4rem',
+                    height: '3.5rem',
+                    paddingLeft: '1rem',
+                    paddingTop: '0.5rem',
+                    width: '3.5rem',
+                  }}
+                >
+                  +{group.members.length - 1}
+                </Box>
+              ) : null}
+            </Box>
+          ))}
+        </AvatarGroup>
+      </Box>
 
       {hydrated && (
         <Modal

@@ -21,9 +21,7 @@ export default function GroupInteractionHandler({
 
   const isMember =
     currentUser &&
-    group.members?.some(
-      (member) => member.memberId === currentUser._id
-    );
+    group.members?.some((member) => member.memberId === currentUser._id);
 
   const isAdmin =
     isMember &&
@@ -44,12 +42,6 @@ export default function GroupInteractionHandler({
   const notificationCount = currentUser?.notifications?.find(
     (n) => n?.contextId === group?._id
   )?.unSeenIndexes?.length;
-
-  console.log('currentUser', currentUser);
-  console.log(
-    'notificationCount groupNotes',
-    notificationCount?.length
-  );
 
   const chatProps = {
     context: 'groups',

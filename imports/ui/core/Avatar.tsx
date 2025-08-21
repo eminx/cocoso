@@ -98,8 +98,8 @@ const Avatar: React.FC<AvatarProps> = ({
   const initials = name?.charAt(0)?.toUpperCase() || '?';
 
   return (
-    <AvatarWrapper size={size} {...props}>
-      <AvatarContainer size={size}>
+    <AvatarWrapper size={size}>
+      <AvatarContainer size={size} {...props}>
         {src ? (
           <AvatarImage src={src} alt={name} />
         ) : (
@@ -112,7 +112,11 @@ const Avatar: React.FC<AvatarProps> = ({
 };
 
 export const AvatarGroup = (props: any) => (
-  <HStack gap={props.spacing || '-5rem'} {...props} />
+  <HStack
+    gap={props.spacing || '-2rem'}
+    css={{ paddingRight: '1rem' }}
+    {...props}
+  />
 );
 
 export default Avatar;

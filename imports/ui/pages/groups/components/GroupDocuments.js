@@ -10,7 +10,7 @@ export default function GroupDocuments({ documents }) {
   }
 
   return (
-    <Box bg="gray.50" p="2" mb="2">
+    <Box p="6" mb="2">
       <NiceList keySelector="downloadUrl" list={documents}>
         {(document) => (
           <Flex align="center" color="blue.500">
