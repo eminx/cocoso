@@ -37,7 +37,13 @@ const baseTextStyles = {
   },
 };
 
-export function InfoPagesMenu({ label, menuStyles, pageTitles, pathname }) {
+export function InfoPagesMenu({
+  label,
+  menuStyles,
+  pageTitles,
+  pathname,
+  onSelect,
+}) {
   const isCurrentContext = pathname.includes('info');
 
   const flexStyles = {
@@ -50,7 +56,7 @@ export function InfoPagesMenu({ label, menuStyles, pageTitles, pathname }) {
     ...baseTextStyles,
     color: menuStyles?.color || 'gray.600',
     fontStyle: menuStyles?.fontStyle || 'normal',
-    fontWeight: isCurrentContext ? 'bold' : 'normal',
+    marginTop: '0.25rem',
     marginRight: '0.25rem',
     textTransform: menuStyles?.textTransform || 'none',
   };
@@ -84,7 +90,11 @@ export function InfoPagesMenu({ label, menuStyles, pageTitles, pathname }) {
         }}
       >
         {pageTitles.map((item) => (
-          <Link key={item._id} to={`/info/${parseTitle(item.title)}`}>
+          <Link
+            key={item._id}
+            to={`/info/${parseTitle(item.title)}`}
+            onClick={onSelect}
+          >
             <MenuItem as="span" id={item._id}>
               {item.title}
             </MenuItem>
