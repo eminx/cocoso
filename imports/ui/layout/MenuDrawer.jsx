@@ -53,8 +53,13 @@ function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
           >
             <Box p="2">
               <Text
+                css={{
+                  color: styles.color,
+                  fontStyle: styles.fontStyle,
+                  fontWeight: isCurrentPageLabel ? 'bold' : 'normal',
+                  textTransform: styles.textTransform,
+                }}
                 _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
-                fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
               >
                 {item.label}
               </Text>
@@ -121,7 +126,7 @@ export default function MenuDrawer() {
 
   return (
     <Box>
-      <Flex align="center" flexDirection="column" px="2">
+      <Flex align="center" flexDirection="column" gap="1" px="2">
         <IconButton
           icon={<HamburgerIcon fontSize="24px" />}
           size={isDesktop ? 'md' : 'sm'}

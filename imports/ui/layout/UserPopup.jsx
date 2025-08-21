@@ -61,6 +61,8 @@ export function UserThumb({ isNotification = false }) {
         background: 'rgba(255, 252, 250, 0.9)',
         border: '2px solid var(--cocoso-colors-theme-200)',
         borderRadius: 'var(--cocoso-border-radius)',
+        marginTop: '-0.075rem',
+        marginRight: '-0.4rem',
         ':hover': {
           background: 'rgba(255, 252, 250, 0.9)',
         },
@@ -84,7 +86,6 @@ export function UserThumb({ isNotification = false }) {
         direction="column"
         gap="0"
         px="2"
-        pt="1"
         css={{ lineHeight: isDesktop ? '1.2' : '0.8' }}
       >
         <Text fontSize={isDesktop ? 'md' : 'sm'} fontWeight="bold">
