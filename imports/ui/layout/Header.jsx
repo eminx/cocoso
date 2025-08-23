@@ -25,16 +25,13 @@ if (isClient) {
   import '@szhsin/react-menu/dist/transitions/zoom.css';
 }
 
-const borderColor = 'var(--cocoso-colors-gray-600) !important';
 const baseTextStyles = {
-  borderBottom: '2px solid transparent',
+  borderBottomWidth: '2px',
+  borderBottomStyle: 'solid',
+  borderBottomColor: 'transparent',
   fontFamily: 'Raleway, Sarabun, sans-serif',
   fontSize: 16,
   fontWeight: '500',
-  ':hover': {
-    borderBottomColor: borderColor,
-    borderBottomWidth: '1px',
-  },
 };
 
 export function InfoPagesMenu({
@@ -61,6 +58,8 @@ export function InfoPagesMenu({
     textTransform: menuStyles?.textTransform || 'none',
   };
 
+  const borderColor = menuStyles?.color;
+
   return (
     <Menu
       align="end"
@@ -73,7 +72,9 @@ export function InfoPagesMenu({
           css={{
             ...flexStyles,
             borderBottom: isCurrentContext ? `2px solid ${borderColor}` : '',
+            color: menuStyles?.color,
             ':hover': !isCurrentContext && {
+              borderBottomColor: borderColor,
               textDecoration: 'underline',
             },
           }}
@@ -162,9 +163,13 @@ function HeaderMenu({ Host, pageTitles }) {
                   css={{
                     ...baseTextStyles,
                     borderBottomColor: isCurrentContext(item, index)
-                      ? borderColor
+                      ? menuStyles.color
                       : 'transparent',
                     color: menuStyles?.color,
+                    ':hover': {
+                      borderBottomColor: menuStyles?.color,
+                      borderBottomWidth: '1px',
+                    },
                   }}
                 >
                   {item.label}
@@ -180,8 +185,14 @@ function HeaderMenu({ Host, pageTitles }) {
                 css={{
                   ...baseTextStyles,
                   borderBottomColor:
-                    pathname === '/communities' ? borderColor : 'transparent',
+                    pathname === '/communities'
+                      ? menuStyles.color
+                      : 'transparent',
                   color: menuStyles?.color,
+                  ':hover': {
+                    borderBottomColor: menuStyles?.color,
+                    borderBottomWidth: '1px',
+                  },
                 }}
               >
                 <Trans i18nKey="common:platform.communities">Communities</Trans>
