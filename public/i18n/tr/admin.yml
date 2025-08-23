@@ -246,6 +246,7 @@ composable:
     publishSuccess: Sayfa yayınlandı
     unpublishSuccess: Sayfa yayından kaldırıldı
     unpublishErrorPageInMenu: Sayfa ana menüde bağlantılı, lütfen önce ordan kaldır
+    linkToMenu: Bu sayfayı ana menüye eklemek/kaldırmak için buraya tıklayın
 
 design:
   title: Tasarım

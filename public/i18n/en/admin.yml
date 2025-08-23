@@ -246,6 +246,7 @@ composable:
     publishSuccess: Page successfully published
     unpublishSuccess: Page reverted as a draft
     unpublishErrorPageInMenu: Page is linked in the main menu, please remove it first
+    linkToMenu: Click here to add/remove this page in the main menu
 
 design:
   title: Design

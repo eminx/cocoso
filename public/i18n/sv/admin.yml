@@ -246,6 +246,7 @@ composable:
     publishSuccess: Sidan har publicerats
     unpublishSuccess: Sidan har återställts som utkast
     unpublishErrorPageInMenu: Sidan är länkad i huvudmenyn, vänligen ta bort den först
+    linkToMenu: Klicka här för att lägga till/ta bort den här sidan i huvudmenyn
 
 design:
   title: Design

@@ -1,9 +1,9 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ReactSelect from 'react-select';
 import { Trans } from 'react-i18next';
 
-import { Box, Flex, Tag } from '/imports/ui/core';
+import { Box, Center, Flex, Link as CLink, Tag } from '/imports/ui/core';
 
 import ComposablePageSettings from './ComposablePageSettings';
 
@@ -18,39 +18,49 @@ export default function TopToolBar({ composablePageTitles }) {
   const isPublished = selectedPage?.isPublished;
 
   return (
-    <Flex align="center" justify="space-between" my="8">
-      <Box css={{ flexGrow: 1 }}>
-        <ReactSelect
-          options={composablePageTitles}
-          placeholder={<Trans i18nKey="common:labels.select" />}
-          value={selectedPage}
-          styles={{
-            option: (styles, { data }) => ({
-              ...styles,
-              borderLeft: `8px solid ${data.color}`,
-              paddingLeft: 6,
-              fontSize: 14,
-            }),
-          }}
-          onChange={(option) =>
-            navigate(`/admin/composable-pages/${option._id}`)
-          }
-          getOptionValue={(option) => option._id}
-          getOptionLabel={(option) => option.title}
-        />
-      </Box>
-
-      <Box pl="4">
-        <Tag colorScheme={isPublished ? 'green' : 'orange'} variant="solid">
-          <Trans
-            i18nKey={`admin:composable.toolbar.${
-              isPublished ? 'published' : 'unpublished'
-            }`}
+    <>
+      <Flex align="center" justify="space-between" my="4">
+        <Box css={{ flexGrow: 1 }}>
+          <ReactSelect
+            options={composablePageTitles}
+            placeholder={<Trans i18nKey="common:labels.select" />}
+            value={selectedPage}
+            styles={{
+              option: (styles, { data }) => ({
+                ...styles,
+                borderLeft: `8px solid ${data.color}`,
+                paddingLeft: 6,
+                fontSize: 14,
+              }),
+            }}
+            onChange={(option) =>
+              navigate(`/admin/composable-pages/${option._id}`)
+            }
+            getOptionValue={(option) => option._id}
+            getOptionLabel={(option) => option.title}
           />
-        </Tag>
-      </Box>
+        </Box>
 
-      <ComposablePageSettings />
-    </Flex>
+        <Box pl="4">
+          <Tag colorScheme={isPublished ? 'green' : 'orange'} variant="solid">
+            <Trans
+              i18nKey={`admin:composable.toolbar.${
+                isPublished ? 'published' : 'unpublished'
+              }`}
+            />
+          </Tag>
+        </Box>
+
+        <ComposablePageSettings />
+      </Flex>
+
+      <Center pt="2">
+        <Link to="/admin/settings/menu/order">
+          <CLink css={{ textAlign: 'center' }}>
+            <Trans i18nKey="admin:composable.toolbar.linkToMenu" />
+          </CLink>
+        </Link>
+      </Center>
+    </>
   );
 }
