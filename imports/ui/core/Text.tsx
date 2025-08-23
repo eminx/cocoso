@@ -36,7 +36,7 @@ export const Tag = styled('span', (props: any) => {
     fontWeight: '400',
     lineHeight: '1.35rem',
     paddingInline: '0.55rem',
-    textTransform: 'lowercase',
+    textTransform: 'capitalize',
   };
 });
 
