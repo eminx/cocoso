@@ -245,6 +245,7 @@ composable:
     unpublishText: Bu sayfayı yayından kaldırmak istediğinden emin misin?
     publishSuccess: Sayfa yayınlandı
     unpublishSuccess: Sayfa yayından kaldırıldı
+    unpublishErrorPageInMenu: Sayfa ana menüde bağlantılı, lütfen önce ordan kaldır
 
 design:
   title: Tasarım

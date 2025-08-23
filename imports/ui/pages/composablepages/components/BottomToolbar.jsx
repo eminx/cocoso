@@ -6,6 +6,7 @@ import CheckIcon from 'lucide-react/dist/esm/icons/check';
 import { Button, Flex, Link, Modal, Text } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
+import { StateContext } from '/imports/ui/LayoutContainer';
 
 import { ComposablePageContext } from '../ComposablePageForm';
 
@@ -16,6 +17,7 @@ export default function BottomToolbar() {
   });
   const { currentPage, getComposablePageById, getComposablePageTitles } =
     useContext(ComposablePageContext);
+  const { currentHost } = useContext(StateContext);
 
   useEffect(() => {
     if (currentPage.pingSave === false) {
@@ -37,7 +39,17 @@ export default function BottomToolbar() {
     };
     try {
       if (currentPage.isPublished) {
-        await call('UnpublishComposablePage', currentPage._id);
+        if (
+          currentHost?.settings?.menu.find(
+            (item) => item.name === currentPage._id
+          )
+        ) {
+          message.error(
+            <Trans i18nKey="admin:composable.toolbar.unpublishErrorPageInMenu" />
+          );
+          return;
+        }
+        await call('unpublishComposablePage', currentPage._id);
         await getPageAndCloseModal();
         message.success(
           <Trans i18nKey="admin:composable.toolbar.unpublishSuccess" />

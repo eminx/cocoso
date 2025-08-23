@@ -245,6 +245,7 @@ composable:
     unpublishText: Are you sure you want to revert this page as a draft?
     publishSuccess: Page successfully published
     unpublishSuccess: Page reverted as a draft
+    unpublishErrorPageInMenu: Page is linked in the main menu, please remove it first
 
 design:
   title: Design

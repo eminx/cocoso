@@ -245,6 +245,7 @@ composable:
     unpublishText: Är du säker på att du vill avpublicera den här sidan?
     publishSuccess: Sidan har publicerats
     unpublishSuccess: Sidan har återställts som utkast
+    unpublishErrorPageInMenu: Sidan är länkad i huvudmenyn, vänligen ta bort den först
 
 design:
   title: Design

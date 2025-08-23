@@ -160,7 +160,7 @@ Meteor.methods({
     }
   },
 
-  async UnpublishComposablePage(composablePageId) {
+  async unpublishComposablePage(composablePageId) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
