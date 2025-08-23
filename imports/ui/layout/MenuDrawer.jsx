@@ -80,6 +80,9 @@ function MenuFooter() {
 }
 
 const getRoute = (item) => {
+  if (item.isComposablePage) {
+    return `/cp/${item.name}`;
+  }
   if (item.name === 'info') {
     return '/info/about';
   }
