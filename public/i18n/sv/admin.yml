@@ -204,17 +204,17 @@ composable:
     emptySpaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
     label: Etikett
     labelHelper: Ange etiketten för knappen. Denna etikett kommer att visas på knappen
-    line: Rad
+    line: Linje
     link: Länkadressen
     linkHelper: Ange länkadressen. Denna länk öppnas när knappen klickas
     imageAsLink: Bild som länk?
     video: Video-URL
     videoHelper: Ange en video-URL, vanligtvis länkadressen till en YouTube- eller Vimeo-videosida..
-    removeRow: Ta bort rad
+    removeRow: Ta bort linjen
     title: Titel
     types:
       button: Knapp
-      divider: Delare
+      divider: Avdelare
       image: Bild
       image-slider: Bildspel
       text: Text
