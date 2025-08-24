@@ -89,7 +89,10 @@ export function UserThumb({ isNotification = false }) {
         pt="1"
         css={{ lineHeight: isDesktop ? '1.2' : '0.8' }}
       >
-        <Text fontSize={isDesktop ? 'md' : 'sm'} css={{ fontWeight: 'bold' }}>
+        <Text
+          fontSize={isDesktop ? 'md' : 'sm'}
+          css={{ fontWeight: 'bold', margin: '0.25rem 0' }}
+        >
           {currentUser.username}
         </Text>
         <Text fontSize={isDesktop ? 'sm' : 'xs'} fontWeight="light" truncated>

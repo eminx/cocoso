@@ -325,6 +325,10 @@ design:
   message:
     success: Theme successfully saved!
     error: Failed to save theme
+  fonts:
+    body:
+      title: Body Font
+      select: Select Font
 
 messages:
   upload:

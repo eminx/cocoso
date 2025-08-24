@@ -84,7 +84,7 @@ Meteor.startup(() => {
                 backgroundImage: 'none',
                 backgroundRepeat: 'no-repeat',
                 borderRadius: '0.5rem',
-                fontFamily: 'Sarabun',
+                fontFamily: 'sans-serif',
               },
               menu: {
                 backgroundColor: '#f5f5f5',

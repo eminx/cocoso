@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700&display=swap');
 /* @import 'react-slideshow-image/dist/styles.css';
 @import 'react-lazy-load-image-component/src/effects/black-and-white.css'; */
 
@@ -24,7 +23,6 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Sarabun', sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -65,7 +63,7 @@ button {
 
 /* Links */
 a {
-  color: inherit;
+  color: var(--cocoso-colors-blue-600);
   text-decoration: none;
 }
 
@@ -558,8 +556,6 @@ a,
   --cocoso-colors-blue-700: #1d4ed8;
   --cocoso-colors-blue-800: #1e40af;
   --cocoso-colors-blue-900: #1e3a8a;
-
-  font-family: 'Sarabun', sans-serif;
 }
 
 body {

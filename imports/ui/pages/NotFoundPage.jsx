@@ -15,6 +15,8 @@ export default function NotFoundPage() {
         <Text textAlign="center" size="xl">
           404
         </Text>
+      </Box>
+      <Box m="4" p="2">
         <Text textAlign="center" fontWeight="bold">
           {t('labels.notfound.info')}
         </Text>

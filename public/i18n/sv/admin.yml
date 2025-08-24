@@ -325,6 +325,10 @@ design:
   message:
     success: Tema har sparats!
     error: Tema kunde inte sparas
+  fonts:
+    body:
+      title: Typsnitt
+      select: Välj typsnitt
 
 messages:
   upload:

@@ -25,6 +25,49 @@ export const borderWidthOptions = [
   { label: 'thick', value: '4px' },
 ];
 
+export const fontOptions = [
+  {
+    label: 'Cascadia Mono', // mono
+    value: 'Cascadia+Mono',
+  },
+  {
+    label: 'Inconsolata', // mono
+    value: 'Inconsolata',
+  },
+  {
+    label: 'Inter',
+    value: 'Inter',
+  },
+  {
+    label: 'Literata',
+    value: 'Literata',
+  },
+  {
+    label: 'Noto Sans',
+    value: 'Noto+Sans',
+  },
+  {
+    label: 'Open Sans',
+    value: 'Open+Sans',
+  },
+  {
+    label: 'Raleway',
+    value: 'Raleway',
+  },
+  {
+    label: 'Roboto',
+    value: 'Roboto',
+  },
+  {
+    label: 'Ubuntu Sans',
+    value: 'Ubuntu+Sans',
+  },
+  {
+    label: 'Ubuntu Sans Mono', // mono
+    value: 'Ubuntu+Sans+Mono',
+  },
+];
+
 export const fontStyleOptions = [
   { label: 'Normal', value: 'normal' },
   { label: 'Italic', value: 'italic' },

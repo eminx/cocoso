@@ -29,7 +29,7 @@ const baseTextStyles = {
   borderBottomWidth: '2px',
   borderBottomStyle: 'solid',
   borderBottomColor: 'transparent',
-  fontFamily: 'Raleway, Sarabun, sans-serif',
+  fontFamily: 'Raleway, sans-serif',
   fontSize: 16,
   fontWeight: '500',
 };
@@ -71,7 +71,9 @@ export function InfoPagesMenu({
           gap="1"
           css={{
             ...flexStyles,
-            borderBottom: isCurrentContext ? `2px solid ${borderColor}` : '',
+            borderBottom: isCurrentContext
+              ? `2px solid ${borderColor}`
+              : '2px solid transparent',
             color: menuStyles?.color,
             ':hover': !isCurrentContext && {
               borderBottomColor: borderColor,
@@ -98,7 +100,7 @@ export function InfoPagesMenu({
             onClick={onSelect}
           >
             <MenuItem as="span" id={item._id}>
-              {item.title}
+              <Text css={textStyles}>{item.title}</Text>
             </MenuItem>
           </Link>
         ))}
@@ -156,6 +158,7 @@ function HeaderMenu({ Host, pageTitles }) {
           ) : (
             <Link
               key={item.name}
+              className="main-menu-item"
               to={item.isComposablePage ? `/cp/${item.name}` : `/${item.name}`}
             >
               <Box as="span" px="2">
@@ -179,7 +182,7 @@ function HeaderMenu({ Host, pageTitles }) {
           )
         )}
         {Host.isPortalHost && (
-          <Link to="/communities">
+          <Link className="main-menu-item" to="/communities">
             <Box as="span" px="2">
               <Text
                 css={{
@@ -233,7 +236,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
               <Heading
                 color="theme.800"
                 fontWeight="400"
-                fontFamily="Raleway, Sarabun, sans-serif"
+                fontFamily="Raleway, sans-serif"
               >
                 {currentHost.settings?.name}
               </Heading>

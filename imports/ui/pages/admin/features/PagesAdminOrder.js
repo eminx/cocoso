@@ -93,7 +93,7 @@ export default function PagesAdminOrder() {
                     css={{
                       boxShadow: 'var(--cocoso-box-shadow)',
                       cursor: 'ns-resize',
-                      fontFamily: 'Sarabun, sans-serif',
+                      fontFamily: 'sans-serif',
                     }}
                   >
                     <Text fontWeight="bold">{page.order}</Text>

@@ -79,7 +79,7 @@ const defaultTheme = {
     backgroundImage: 'none',
     backgroundRepeat: 'no-repeat',
     borderRadius: '0.25rem',
-    fontFamily: 'Sarabun',
+    fontFamily: 'sans-serif',
   },
   menu: {
     backgroundColor: 'var(--cocoso-colors-theme-50)',

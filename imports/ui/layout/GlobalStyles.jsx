@@ -59,6 +59,9 @@ export default function GlobalStyles({ theme }) {
               theme?.body?.boxShadow ||
               '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
           },
+          body: {
+            fontFamily: theme?.body?.fontFamily?.replace(/\+/g, ' '),
+          },
         }}
       </GlobalStylesRestyle>
     </>

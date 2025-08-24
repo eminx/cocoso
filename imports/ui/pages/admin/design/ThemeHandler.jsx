@@ -1,8 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Trans } from 'react-i18next';
 
-import { Box, Button, Center, Flex, Text } from '/imports/ui/core';
-import { RadioGroup, Radio } from '/imports/ui/core';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Loader,
+  RadioGroup,
+  Radio,
+  Text,
+} from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
@@ -17,7 +25,7 @@ import {
 
 import HuePicker from './HuePicker';
 import BackgroundHandler from './BackgroundHandler';
-import Loader from '../../../core/Loader';
+import FontSelector from './FontSelector';
 
 export default function ThemeHandler() {
   const { currentHost, getCurrentHost, setCurrentHost } =
@@ -141,6 +149,11 @@ export default function ThemeHandler() {
           ))}
         </RadioGroup>
       </Boxling>
+
+      <FontSelector
+        handleStyleChange={handleStyleChange}
+        selectedFont={currentTheme.body.fontFamily}
+      />
 
       <Text fontWeight="bold" mb="4">
         <Trans i18nKey="admin:design.theme.demo" />

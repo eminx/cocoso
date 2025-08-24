@@ -52,7 +52,6 @@ export default function PageHeading({
                 <Text
                   size="lg"
                   css={{
-                    fontFamily: "'Sarabun', sans-serif",
                     fontWeight: '300',
                     lineHeight: '1.3',
                     maxWidth: '520px',
