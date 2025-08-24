@@ -58,7 +58,7 @@ const CloseButton = styled('button', {
   borderRadius: '9999px',
   color: 'var(--cocoso-colors-gray-600)',
   cursor: 'pointer',
-  padding: '0.25rem',
+  padding: '0.5rem',
   transition: 'all 0.3s',
   '&:hover': {
     backgroundColor: '#f3f4f6',
@@ -369,7 +369,7 @@ const Content: React.FC<{
       {!hideHeader ? (
         <Header>
           {title ? <Title>{title}</Title> : <div></div>}
-          <CloseButton onClick={onClose} aria-label="Close">
+          <CloseButton aria-label="Close" onClick={onClose}>
             <CloseIcon />
           </CloseButton>
         </Header>
@@ -378,7 +378,6 @@ const Content: React.FC<{
           <CloseButton
             aria-label="Close"
             css={{
-              padding: '0.5rem',
               position: 'absolute',
               right: '0.5rem',
               top: '0.5rem',
