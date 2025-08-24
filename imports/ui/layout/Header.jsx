@@ -88,6 +88,7 @@ export function InfoPagesMenu({
     >
       <Box
         css={{
+          backgroundColor: menuStyles?.backgroundColor,
           maxHeight: '480px',
           maxWidth: '320px',
           overflowY: 'scroll',
