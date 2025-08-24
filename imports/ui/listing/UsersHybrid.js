@@ -110,7 +110,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
                 />
               </Center>
               <Center pt="2">
-                <Button variant="link">
+                <Button variant="ghost">
                   <Text textAlign="center" fontSize="xl">
                     {selectedProfile.username}
                   </Text>
