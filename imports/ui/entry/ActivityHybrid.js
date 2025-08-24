@@ -43,17 +43,18 @@ export default function ActivityHybrid({ activity, Host }) {
       content: (
         <Box bg="white" p="6">
           {activity?.place && (
-            <Text
-              mb="2"
-              css={{
-                fontWeight: 'bold',
-                fontSize: 'lg',
-                textAlign: 'center',
-                fontWeight: 'bold',
-              }}
-            >
-              {activity?.place}
-            </Text>
+            <Center mb="4">
+              <Text
+                css={{
+                  fontWeight: 'bold',
+                  fontSize: 'lg',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}
+              >
+                {activity?.place}
+              </Text>
+            </Center>
           )}
           {activity.resource && (
             <Center mb="2">

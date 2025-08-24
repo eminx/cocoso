@@ -33,7 +33,7 @@ function SimplePage({ description, images, imageUrl, title, url }) {
       </Center>
 
       {images && (
-        <Center py="2" mb="0">
+        <Center py="6" mb="0">
           <NiceSlider alt={title} images={images} />
         </Center>
       )}
