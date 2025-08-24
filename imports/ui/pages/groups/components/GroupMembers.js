@@ -27,10 +27,10 @@ export default function GroupMembers({ group }) {
   }
 
   return (
-    <Box>
+    <>
       <Box
         p="2"
-        mt="1"
+        mt="2"
         css={{
           cursor: 'pointer',
           ':hover': {
@@ -44,7 +44,7 @@ export default function GroupMembers({ group }) {
           {group.members?.map((member, index) => (
             <Box
               key={member.memberId}
-              css={{ marginInlineEnd: '-1rem', zIndex: 100 - index }}
+              css={{ marginInline: '-0.5rem', zIndex: 100 - index }}
             >
               {index < maxShownAvatars ? (
                 <Avatar
@@ -100,6 +100,6 @@ export default function GroupMembers({ group }) {
           </NiceList>
         </Modal>
       )}
-    </Box>
+    </>
   );
 }
