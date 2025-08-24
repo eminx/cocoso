@@ -91,7 +91,7 @@ export function UserThumb({ isNotification = false }) {
       >
         <Text
           fontSize={isDesktop ? 'md' : 'sm'}
-          css={{ fontWeight: 'bold', margin: '0.25rem 0' }}
+          css={{ fontWeight: 'bold', margin: '0.125rem 0' }}
         >
           {currentUser.username}
         </Text>
