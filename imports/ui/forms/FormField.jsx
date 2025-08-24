@@ -20,13 +20,15 @@ export default function FormField(props) {
         </Text>
       </Box>
       {helperText && (
-        <Box mb="2">
+        <Box>
           <Text color="gray.600" fontSize="sm">
             {helperText}
           </Text>
         </Box>
       )}
-      {children}
+
+      <Box pt="2">{children}</Box>
+
       {errorMessage && (
         <Box mt="1">
           <Text color="red.500">{errorMessage}</Text>
