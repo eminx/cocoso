@@ -34,6 +34,7 @@ export default function GroupsHybrid({ groups, Host }) {
             <Center
               key={item._id}
               flex="1 1 355px"
+              p="1"
               onClick={() => setModalItem(item)}
             >
               <SexyThumb

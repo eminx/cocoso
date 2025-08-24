@@ -64,6 +64,7 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
             <Center
               key={item._id}
               flex="1 1 355px"
+              p="1"
               onClick={() => setModalItem(item)}
             >
               <SexyThumb
