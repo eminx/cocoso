@@ -33,7 +33,7 @@ export default function LeaveButton() {
       <Center mb="8">
         <Button
           colorScheme="red"
-          variant="link"
+          variant="outline"
           onClick={() => setModalOpen(true)}
         >
           {t('actions.leave')}
