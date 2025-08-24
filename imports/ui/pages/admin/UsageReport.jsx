@@ -81,7 +81,7 @@ export default function UsageReport({ user, onClose }) {
           ...d,
           title: (
             <Link target="_blank" to={`/activities/${a._id}`}>
-              <Button colorScheme="blue" variant="link" as="span">
+              <Button colorScheme="blue" variant="ghost" as="span">
                 {a.title}
               </Button>
             </Link>
