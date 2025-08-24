@@ -54,11 +54,7 @@ export default function GroupHybrid({ group, Host }) {
   return (
     <TablyCentered
       dates={<ActionDates activity={groupDatesParsed} />}
-      action={
-        <Center>
-          <GroupMembers group={group} />
-        </Center>
-      }
+      action={<GroupMembers group={group} />}
       backLink={{ value: '/groups', label: groupsInMenu?.label }}
       images={[group.imageUrl]}
       subTitle={group.readingMaterial}

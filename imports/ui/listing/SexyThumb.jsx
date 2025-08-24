@@ -43,6 +43,7 @@ function ThumbDate({ occurrence }) {
       key={occurrence.startDate + occurrence.startTime}
       align="center"
       color={isPast ? 'gray.400' : 'white'}
+      gap="0"
     >
       <DateJust>{occurrence.startDate}</DateJust>
       {occurrence.startDate !== occurrence.endDate && (
@@ -142,7 +143,7 @@ export default function SexyThumb({
               }}
             >
               {!showPast && futureDates && (
-                <HStack align="center" color="theme.50" mb="4" spacing="4">
+                <HStack align="center" color="theme.50" mb="4">
                   {futureDates.slice(0, 3).map((occurrence) => (
                     <ThumbDate
                       key={occurrence?.startDate + occurrence?.startTime}
@@ -158,7 +159,7 @@ export default function SexyThumb({
                 </HStack>
               )}
               {showPast && (
-                <HStack color="gray.400" spacing="4" mb="4">
+                <HStack color="gray.400" mb="4">
                   {pastDates.slice(0, 1).map((occurrence) => (
                     <ThumbDate
                       key={occurrence?.startDate + occurrence?.startTime}

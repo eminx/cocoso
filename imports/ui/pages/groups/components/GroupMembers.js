@@ -80,12 +80,7 @@ export default function GroupMembers({ group }) {
           title={t('labels.member')}
           onClose={() => setModalOpen(false)}
         >
-          <NiceList
-            keySelector="username"
-            list={group.members}
-            py="4"
-            spacing="4"
-          >
+          <NiceList keySelector="username" list={group.members}>
             {(member) => (
               <Link to={`/@${member.username}/bio`}>
                 <Flex align="center">
