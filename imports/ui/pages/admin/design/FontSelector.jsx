@@ -31,6 +31,24 @@ export default function FontSelector({ handleStyleChange, selectedFont }) {
             >
               {(item) => item.label}
             </Menu>
+
+            <Box p="2" mt="2">
+              <Center>
+                <p>
+                  <Text fontSize="sm" textAlign="center">
+                    <b>Demo:</b>
+                  </Text>
+                </p>
+              </Center>
+              <Text>
+                Cocoso doesn't feature tools for spying on users for tracking
+                their data. Each member of any community owns their data, and
+                are free to share only as much as they wish. No information is
+                shared with any third party service or organisation, the data is
+                owned by the community. You run projects of your community and
+                their data on your own terms.
+              </Text>
+            </Box>
           </BoxlingColumn>
         </Center>
       </Boxling>

@@ -9,17 +9,20 @@ export default function HelmetHybrid({ Host }) {
     return null;
   }
   const lang = Host.settings?.lang;
-  const fontFamily = Host.theme?.body?.fontFamily;
-  const fontHref = `https://fonts.googleapis.com/css2?family=${fontFamily}:ital,wght@0,300;0,400;0,700;1,400&display=swap`;
+  const fontFamily = Host?.theme?.body?.fontFamily;
+  const fontHref = fontFamily
+    ? `https://fonts.googleapis.com/css2?family=${fontFamily}:ital,wght@0,300;0,400;0,700;1,400&display=swap`
+    : null;
 
   return (
     <Helmet htmlAttributes={{ lang }}>
       <title>{Host.settings?.name}</title>
       <link rel="canonical" href={Host.host} />
 
+      {/* Font preconnect and loading */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
-      <link href={fontHref} rel="stylesheet" />
+      {fontHref && <link href={fontHref} rel="stylesheet" />}
 
       <link
         rel="android-chrome-192x192"

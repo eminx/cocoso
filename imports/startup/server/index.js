@@ -67,6 +67,7 @@ Meteor.startup(() => {
     const helmet = Helmet.renderStatic();
     sink.appendToHead(helmet.meta.toString());
     sink.appendToHead(helmet.title.toString());
+    sink.appendToHead(helmet.link.toString());
   });
 
   Hosts.find({ $or: [{ theme: { $exists: false } }, { theme: null }] }).forEach(
@@ -84,7 +85,7 @@ Meteor.startup(() => {
                 backgroundImage: 'none',
                 backgroundRepeat: 'no-repeat',
                 borderRadius: '0.5rem',
-                fontFamily: 'sans-serif',
+                fontFamily: 'Sarabun',
               },
               menu: {
                 backgroundColor: '#f5f5f5',

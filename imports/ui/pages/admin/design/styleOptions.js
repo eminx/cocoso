@@ -59,6 +59,10 @@ export const fontOptions = [
     value: 'Roboto',
   },
   {
+    label: 'Sarabun',
+    value: 'Sarabun',
+  },
+  {
     label: 'Ubuntu Sans',
     value: 'Ubuntu+Sans',
   },

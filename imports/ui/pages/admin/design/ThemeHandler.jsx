@@ -150,11 +150,6 @@ export default function ThemeHandler() {
         </RadioGroup>
       </Boxling>
 
-      <FontSelector
-        handleStyleChange={handleStyleChange}
-        selectedFont={currentTheme.body.fontFamily}
-      />
-
       <Text fontWeight="bold" mb="4">
         <Trans i18nKey="admin:design.theme.demo" />
       </Text>
@@ -172,6 +167,11 @@ export default function ThemeHandler() {
           </Button>
         </Flex>
       </Box>
+
+      <FontSelector
+        handleStyleChange={handleStyleChange}
+        selectedFont={currentTheme.body.fontFamily}
+      />
 
       {currentTheme?.variant === 'custom' && (
         <>
