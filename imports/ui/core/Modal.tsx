@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { styled } from 'restyle';
 import { useTranslation } from 'react-i18next';
 
-import { Button } from '/imports/ui/core';
+import { Box, Button } from '/imports/ui/core';
 
 // Common props interface
 interface BaseProps {
@@ -366,13 +366,28 @@ const Content: React.FC<{
   return (
     <>
       {/* Header */}
-      {!hideHeader && (
+      {!hideHeader ? (
         <Header>
           {title ? <Title>{title}</Title> : <div></div>}
           <CloseButton onClick={onClose} aria-label="Close">
             <CloseIcon />
           </CloseButton>
         </Header>
+      ) : (
+        <Box css={{ position: 'relative' }}>
+          <CloseButton
+            aria-label="Close"
+            css={{
+              padding: '0.5rem',
+              position: 'absolute',
+              right: '0.5rem',
+              top: '0.5rem',
+            }}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </CloseButton>
+        </Box>
       )}
 
       {/* Body */}
