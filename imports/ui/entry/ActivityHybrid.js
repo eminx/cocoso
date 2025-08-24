@@ -114,11 +114,14 @@ export default function ActivityHybrid({ activity, Host }) {
 
   return (
     <TablyCentered
-      // action={
-      //   <Center>
-      //     <ActionDates activity={activity} />
-      //   </Center>
-      // }
+      action={
+        !isPublicActivity &&
+        activity?.resource && (
+          <Center>
+            <Tag>{activity?.resource}</Tag>
+          </Center>
+        )
+      }
       dates={<ActionDates activity={activity} />}
       backLink={backLink}
       images={
