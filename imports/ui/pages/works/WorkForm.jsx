@@ -110,7 +110,7 @@ export default function WorkForm({ work, onFinalize }) {
 
   return (
     <GenericEntryForm
-      childrenIndex={1}
+      childrenIndex={2}
       defaultValues={work || emptyFormValues}
       formFields={workFormFields(t, tc)}
       onSubmit={handleSubmit}

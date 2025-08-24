@@ -43,8 +43,8 @@ labels:
   contact: Contact
   content: Content
   create:
-    activities: New Activity
-    calendar: New Activity
+    activities: New Event
+    calendar: New Booking
     groups: New Process/Group
     info: New Info Page
     resources: New Resource

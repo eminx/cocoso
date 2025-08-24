@@ -98,6 +98,7 @@ export default function NewEntryHandler({ children }) {
   if (context[0] === '@') {
     context = 'works';
   }
+
   const title = `common:labels.${forEdit ? 'update' : 'create'}.${context}`;
 
   if (!canCreateContent) {

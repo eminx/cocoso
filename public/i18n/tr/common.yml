@@ -43,8 +43,8 @@ labels:
   contact: İletişim
   content: İçerik
   create:
-    activities: Yeni aktivite
-    calendar: Yeni aktivite
+    activities: Yeni etkinlik
+    calendar: Yeni rezervasyon
     groups: Yeni grup/süreç
     info: Yeni bilgi sayfası
     resources: Yeni kaynak

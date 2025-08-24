@@ -43,8 +43,8 @@ labels:
   contact: Kontakt
   content: Innehåll
   create:
-    activities: Nytt aktivitet
-    calendar: Nytt aktivitet
+    activities: Nytt evenemang
+    calendar: Nytt bokning
     groups: Nytt grupp/process
     info: Nytt infosida
     resources: Ny resurs
@@ -86,7 +86,7 @@ labels:
     info: Det du letade efter kunde inte hittas
     gohome: Gå tillbaka till startsidan
   newPopupLabel: Skapa ett nytt inlägg
-  newFormEntry: Ny inlägg i {{ context }}
+  newFormEntry: Nytt inlägg i {{ context }}
   editFormEntry: Redigera inlägget i {{ context }}
   thislisting: denna lista
   newsletters: Tidigare nyhetsbrev

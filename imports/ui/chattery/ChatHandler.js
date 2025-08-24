@@ -116,11 +116,13 @@ export function ChatButton({
             position: 'relative',
           }}
         >
-          <IconButton
-            icon={<MessagesSquare />}
-            variant="outline"
-            onClick={() => setOpen(true)}
-          />
+          <Box mb="1">
+            <IconButton
+              icon={<MessagesSquare />}
+              variant="outline"
+              onClick={() => setOpen(true)}
+            />
+          </Box>
           {notificationCount && (
             <Badge
               style={{

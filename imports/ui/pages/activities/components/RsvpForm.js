@@ -44,23 +44,19 @@ export default function RsvpForm({
   return (
     <Box mb="8">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <VStack>
+        <VStack gap="0">
           {fields.map((field) => (
             <FormField key={field.name} label={field.label} required>
-              <Input {...register(field.name, { required: true })} size="sm" />
+              <Input {...register(field.name, { required: true })} />
             </FormField>
           ))}
           <FormField label={t('public.register.form.people.number')} required>
-            <NumberInput
-              size="sm"
-              {...register('numberOfPeople', { required: true })}
-            />
+            <NumberInput {...register('numberOfPeople', { required: true })} />
           </FormField>
           <Flex justifyContent="flex-end" pt="2" w="100%">
             <Button
               disabled={isUpdateMode && !isDirty}
               loading={isSubmitting}
-              size="sm"
               type="submit"
               variant="outline"
             >

@@ -230,7 +230,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
             {action && <Box>{action}</Box>}
           </Box>
 
-          <Center mb="8">
+          <Center mb="8" mt="4">
             <Box maxW="540px" w="100%">
               <Box w="100%">
                 {tabs && (
