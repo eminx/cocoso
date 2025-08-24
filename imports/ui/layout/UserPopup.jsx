@@ -175,10 +175,12 @@ export default function UserPopup({ isOpen, setIsOpen }) {
         {isAdmin && (
           <Link to="/admin/home">
             <MenuItem>
-              <Flex align="center">
-                <BoltIcon size="18" />
-                <Trans i18nKey="members:dashboard">Admin Panel</Trans>
-              </Flex>
+              <Text>
+                <Flex align="center">
+                  <BoltIcon size="18" />
+                  <Trans i18nKey="members:dashboard">Admin Panel</Trans>
+                </Flex>
+              </Text>
             </MenuItem>
           </Link>
         )}
@@ -220,22 +222,28 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
         <Link to={currentUser && `/@${currentUser?.username}`}>
           <MenuItem>
-            <Trans i18nKey="common:menu.member.profile">My Profile</Trans>
+            <Text>
+              <Trans i18nKey="common:menu.member.profile">My Profile</Trans>
+            </Text>
           </MenuItem>
         </Link>
         <Link to={'/admin/my-profile'}>
           <MenuItem as="span">
-            <Trans i18nKey="common:menu.member.settings">
-              Profile Settings
-            </Trans>
+            <Text>
+              <Trans i18nKey="common:menu.member.settings">
+                Profile Settings
+              </Trans>
+            </Text>
           </MenuItem>
         </Link>
         {canCreateContent && (
           <Link to="/my-activities">
             <MenuItem as="span">
-              <Trans i18nKey="common:menu.member.activities">
-                My Activities
-              </Trans>
+              <Text>
+                <Trans i18nKey="common:menu.member.activities">
+                  My Activities
+                </Trans>
+              </Text>
             </MenuItem>
           </Link>
         )}
