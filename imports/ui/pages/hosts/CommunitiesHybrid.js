@@ -109,11 +109,11 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
       <Box px="2" mt="4">
         <InfiniteScroller hideFiltrerSorter items={hostsRendered}>
           {(host) => (
-            <Box key={host.host} alignSelf="center" m="2" width={300}>
-              <Box onClick={() => handleSetModalHost(host)}>
+            <Box key={host.host} m="2" w={300}>
+              <Box maxW="" onClick={() => handleSetModalHost(host)}>
                 <NewGridThumb
                   coverText={host.host}
-                  // fixedImageHeight
+                  fixedImageHeight
                   imageUrl={host.logo}
                   title={host.name || host.hostname}
                 />
