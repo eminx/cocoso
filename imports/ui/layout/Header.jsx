@@ -41,7 +41,7 @@ export function InfoPagesMenu({
   pathname,
   onSelect,
 }) {
-  const isCurrentContext = pathname.includes('info');
+  const isCurrentContext = pathname.split('/')?.[1] === 'info';
 
   const flexStyles = {
     align: 'center',
@@ -162,7 +162,7 @@ function HeaderMenu({ Host, pageTitles }) {
               className="main-menu-item"
               to={item.isComposablePage ? `/cp/${item.name}` : `/${item.name}`}
             >
-              <Box as="span" px="2">
+              <Box as="span" px="2" css={{ marginTop: '-2px' }}>
                 <Text
                   css={{
                     ...baseTextStyles,
