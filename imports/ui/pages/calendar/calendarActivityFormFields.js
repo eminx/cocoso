@@ -6,7 +6,7 @@ const calendarActivityFormFields = (t) => [
     type: 'input',
     value: 'title',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {

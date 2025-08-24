@@ -1,15 +1,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Button, Center, Flex, Image } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
+import { GlobalStyles } from 'restyle';
 
-import { getResponsiveGridColumns } from '/imports/ui/pages/composablepages/constants';
+import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
-import { GlobalStyles } from 'restyle';
 
 function ContentModule({ module, Host }) {
   const currentHost = Host;
@@ -81,7 +80,7 @@ function ContentModule({ module, Host }) {
     case 'text':
       return (
         <Center>
-          <Box className="text-content" maxW="480px" py="4">
+          <Box className="text-content" maxW="480px" p="4">
             {value.html ? HTMLReactParser(value.html) : null}
           </Box>
         </Center>
@@ -117,11 +116,11 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
   const hideTitle = composablePage.settings?.hideTitle;
 
   return (
-    <>
+    <Box mt="4">
       {hideMenu ? (
         <GlobalStyles>
           {{
-            '.main-menu': {
+            '#main-menu': {
               display: 'none',
             },
           }}
@@ -129,20 +128,18 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
       ) : null}
       {hideTitle ? null : (
         <Heading
+          css={{ textAlign: 'center', margin: '1.5rem 0 0.5rem' }}
           size="xl"
-          css={{ textAlign: 'center', margin: '1rem 0' }}
         >
           {composablePage.title}
         </Heading>
       )}
       <Flex flexDirection="column">
         {composablePage.contentRows.map((row, rowIndex) => (
-          <Box
+          <Grid
             key={row.id || row.gridType + rowIndex}
-            display="grid"
-            gridTemplateColumns={getResponsiveGridColumns(row.gridType)}
-            gap={{ base: 2, md: 4 }}
             p="4"
+            templateColumns="repeat(auto-fit, minmax(250px, 1fr))"
           >
             {row.columns.map((column, columnIndex) => (
               <Box key={columnIndex}>
@@ -153,9 +150,9 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
                 ))}
               </Box>
             ))}
-          </Box>
+          </Grid>
         ))}
       </Flex>
-    </>
+    </Box>
   );
 }

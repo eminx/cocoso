@@ -26,7 +26,7 @@ export default function NewWork() {
       navigate('/login');
       return;
     }
-    navigate(`/@${currentUser.username}/works/${newEntryId}`);
+    navigate(`/@${currentUser.username}/works/${newEntryId}/info`);
   };
 
   return (

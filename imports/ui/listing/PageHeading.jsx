@@ -1,11 +1,18 @@
 import React from 'react';
-import { Box, Center, Heading, Divider } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { Client } from 'react-hydration-provider';
 
+import { Box, Center, Divider, Heading, Text } from '/imports/ui/core';
+
 import NewButton from './NewButton';
 
-export default function PageHeading({ description, heading, imageUrl, url, children }) {
+export default function PageHeading({
+  description,
+  heading,
+  imageUrl,
+  url,
+  children,
+}) {
   return (
     <>
       <Helmet>
@@ -16,10 +23,13 @@ export default function PageHeading({ description, heading, imageUrl, url, child
         <meta property="og:title" content={heading?.substring(0, 40)} />
         <meta property="og:url" content={url} />
         <meta property="og:image" content={imageUrl} />
-        <meta property="og:description" content={description?.substring(0, 150)} />
+        <meta
+          property="og:description"
+          content={description?.substring(0, 150)}
+        />
         <meta property="og:type" content="website" />
       </Helmet>
-      <Center>
+      <Center mb="4">
         <Box px="2">
           <Center position="relative">
             <Heading as="h1" size="lg" textAlign="center">
@@ -30,21 +40,27 @@ export default function PageHeading({ description, heading, imageUrl, url, child
             </Client>
           </Center>
           <Box py="2">
-            <Divider borderColor="brand.500" minW="280px" />
+            <Divider
+              css={{
+                borderColor: 'var(--cocoso-colors-theme-500)',
+                minWidth: '280px',
+              }}
+            />
             <Center>{children}</Center>
             {description && (
-              <Heading
-                as="h2"
-                fontFamily="'Sarabun', sans-serif"
-                fontSize="1.17em"
-                fontWeight="300"
-                lineHeight="1.3"
-                maxW="520px"
-                my="2"
-                textAlign="center"
-              >
-                {description}
-              </Heading>
+              <Center>
+                <Text
+                  size="lg"
+                  css={{
+                    fontWeight: '300',
+                    lineHeight: '1.3',
+                    maxWidth: '520px',
+                    textAlign: 'center',
+                  }}
+                >
+                  {description}
+                </Text>
+              </Center>
             )}
           </Box>
         </Box>

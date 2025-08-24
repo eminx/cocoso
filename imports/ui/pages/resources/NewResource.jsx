@@ -20,7 +20,7 @@ export default function NewResource() {
   };
 
   const handleSuccess = () => {
-    navigate(`/resources/${newEntryId}`);
+    navigate(`/resources/${newEntryId}/info`);
   };
 
   return (

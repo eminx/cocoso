@@ -2,12 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import {
-  Box,
-  ChakraProvider,
-  ColorModeProvider,
-  useMediaQuery,
-} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -16,8 +10,10 @@ import 'dayjs/locale/sv';
 import 'dayjs/locale/tr';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
+import { Box } from '/imports/ui/core';
+import useMediaQuery from '/imports/api/_utils/useMediaQuery';
+
 import { call } from './utils/shared';
-import generateTheme from './utils/constants/theme';
 import Header from './layout/Header';
 import HelmetHybrid from './layout/HelmetHybrid';
 import { Footer, PlatformFooter } from './layout/Footers';
@@ -38,10 +34,8 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [hue, setHue] = useState('233');
   const [rendered, setRendered] = useState(false);
   const [, i18n] = useTranslation();
-  const [isDesktop, isMobile] = useMediaQuery([
-    '(min-width: 960px)',
-    '(max-width: 480px)',
-  ]);
+  const isDesktop = useMediaQuery('(min-width: 960px)');
+  const isMobile = useMediaQuery('(max-width: 480px)');
   const location = useLocation();
   const { pathname } = location;
   const [tc] = useTranslation('common');
@@ -128,8 +122,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
     }
   };
 
-  const chakraTheme = generateTheme(hue);
-
   const hostWithinUser =
     currentUser &&
     currentUser.memberships &&
@@ -138,11 +130,9 @@ function LayoutPage({ currentUser, userLoading, children }) {
     );
 
   const role = hostWithinUser && hostWithinUser.role;
-  const canCreateContent =
-    role && ['admin', 'contributor'].includes(role);
+  const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
-  const isFederationFooter =
-    platform?.isFederationLayout && platform.footer;
+  const isFederationFooter = platform?.isFederationLayout && platform.footer;
   const isLogoSmall =
     !['pages', 'cp'].includes(pathnameSplitted[1]) &&
     Boolean(pathnameSplitted[2]);
@@ -152,64 +142,55 @@ function LayoutPage({ currentUser, userLoading, children }) {
   return (
     <>
       <HelmetHybrid Host={currentHost} />
-      <ChakraProvider theme={chakraTheme}>
-        <ColorModeProvider>
-          <StateContext.Provider
-            value={{
-              allHosts,
-              canCreateContent,
-              currentUser,
-              currentHost,
-              hue,
-              isDesktop,
-              isMobile,
-              pageTitles,
-              platform,
-              role,
-              userLoading,
-              getCurrentHost,
-              getPageTitles,
-              getPlatform,
-              setHue,
-              setSelectedHue,
-            }}
-          >
-            <DummyWrapper animate={rendered && !isDesktop}>
-              {rendered && !adminPage && (
-                <TopBarHandler
-                  currentUser={currentUser}
-                  slideStart={rendered}
-                />
-              )}
-              {!adminPage && (
-                <Header
-                  Host={currentHost}
-                  isLogoSmall={isLogoSmall}
-                  pageTitles={pageTitles}
-                />
-              )}
-              {children}
-            </DummyWrapper>
+      <StateContext.Provider
+        value={{
+          allHosts,
+          canCreateContent,
+          currentUser,
+          currentHost,
+          hue,
+          isDesktop,
+          isMobile,
+          pageTitles,
+          platform,
+          role,
+          userLoading,
+          getCurrentHost,
+          getPageTitles,
+          getPlatform,
+          setHue,
+          setSelectedHue,
+          setCurrentHost,
+        }}
+      >
+        <DummyWrapper
+          animate={rendered && !isDesktop}
+          theme={currentHost?.theme}
+        >
+          {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
+          {!adminPage && (
+            <Header
+              Host={currentHost}
+              isLogoSmall={isLogoSmall}
+              pageTitles={pageTitles}
+            />
+          )}
+          {children}
+        </DummyWrapper>
 
-            {rendered && !adminPage && (
-              <Box>
-                <Footer
-                  currentHost={currentHost}
-                  isFederationFooter={isFederationFooter}
-                />
-                {isFederationFooter && (
-                  <PlatformFooter platform={platform} />
-                )}
-              </Box>
-            )}
-          </StateContext.Provider>
-        </ColorModeProvider>
-      </ChakraProvider>
+        {rendered && !adminPage && (
+          <>
+            <Footer
+              currentHost={currentHost}
+              isFederationFooter={isFederationFooter}
+            />
+            {isFederationFooter && <PlatformFooter platform={platform} />}
+          </>
+        )}
+      </StateContext.Provider>
 
       {rendered && (
-        <Toaster
-          containerStyle={{ minWidth: '120px', zIndex: 999999 }}
-        />
+        <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />
       )}
     </>
   );

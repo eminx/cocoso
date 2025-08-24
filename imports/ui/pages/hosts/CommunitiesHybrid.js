@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Center, Code, Img, Link as CLink, Text } from '@chakra-ui/react';
 import HTMLReactParser from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
 
+import {
+  Box,
+  Button,
+  Center,
+  Code,
+  Image,
+  Link as CLink,
+  Modal,
+  Text,
+} from '/imports/ui/core';
+
 import PageHeading from '../../listing/PageHeading';
 import InfiniteScroller from '../../listing/InfiniteScroller';
 import NewGridThumb from '../../listing/NewGridThumb';
-import ConfirmModal from '../../generic/ConfirmModal';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 
-export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
+export default function CommunitiesHybrid({
+  currentUser,
+  hosts,
+  Host,
+}) {
   const [modalItem, setModalItem] = useState(null);
   const [tc] = useTranslation('common');
   const navigate = useNavigate();
@@ -63,7 +76,9 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
         logo: hostsSorted.find((h) => mh.host === h.host)?.logo,
         isMember: true,
       })),
-      ...hostsSorted.filter((h) => !myHosts.some((mh) => h.host === mh.host)),
+      ...hostsSorted.filter(
+        (h) => !myHosts.some((mh) => h.host === mh.host)
+      ),
     ];
   };
 
@@ -77,7 +92,9 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
 
     try {
       await call('setSelfAsParticipant', host);
-      message.success(tc('communities.success', { community: modalItem.name }));
+      message.success(
+        tc('communities.success', { community: modalItem.name })
+      );
       setModalItem(null);
     } catch (error) {
       message.error(error.reason || error.error);
@@ -89,7 +106,9 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
   };
 
   const hostsSorted = getHostsSorted();
-  const hostsRendered = getHostsDivided(hostsSorted).filter((h) => h.host !== Host.host);
+  const hostsRendered = getHostsDivided(hostsSorted).filter(
+    (h) => h.host !== Host.host
+  );
 
   return (
     <>
@@ -111,7 +130,12 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
               <Box p="2">
                 {host.isMember ? (
                   <Text textAlign="center" my="1">
-                    {tc('communities.member')} <CheckIcon color="green.100" fontSize="md" mt="-1" />
+                    {tc('communities.member')}{' '}
+                    <CheckIcon
+                      color="green.100"
+                      fontSize="md"
+                      mt="-1"
+                    />
                   </Text>
                 ) : (
                   <Center>
@@ -146,15 +170,21 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
         </InfiniteScroller>
 
         {modalItem && (
-          <ConfirmModal
-            confirmText={modalItem.isMember ? tc('actions.toHost') : tc('communities.join')}
-            isCentered
-            scrollBehavior="inside"
+          <Modal
+            confirmText={
+              modalItem.isMember
+                ? tc('actions.toHost')
+                : tc('communities.join')
+            }
             size="lg"
-            title={modalItem.name}
-            visible
-            onConfirm={modalItem.isMember ? handleActionButtonClick : joinCommunity}
-            onCancel={() => setModalItem(null)}
+            title={modalItem.hostname}
+            open={Boolean(modalItem)}
+            onConfirm={
+              modalItem.isMember
+                ? handleActionButtonClick
+                : joinCommunity
+            }
+            onClose={() => setModalItem(null)}
           >
             <Center bg="gray.100" p="2">
               <Box>
@@ -162,15 +192,28 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
                   <Text as="span" fontSize="sm">
                     {tc('actions.toHost')}:
                   </Text>
-                  <Code fontSize="sm" linebreak="anywhere" mb="-3px" noOfLines={1}>
-                    <CLink as="span" color="blue.600" onClick={handleActionButtonClick}>
+                  <Code
+                    fontSize="sm"
+                    linebreak="anywhere"
+                    mb="-3px"
+                    noOfLines={1}
+                  >
+                    <CLink
+                      as="span"
+                      color="blue.600"
+                      onClick={handleActionButtonClick}
+                    >
                       {modalItem.host}
                     </CLink>
                   </Code>
                 </Center>
                 {modalItem.logo && (
                   <Center p="2">
-                    <Img fit="contain" w="160px" src={modalItem.logo} />
+                    <Image
+                      fit="contain"
+                      width="160px"
+                      src={modalItem.logo}
+                    />
                   </Center>
                 )}
               </Box>
@@ -184,10 +227,12 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
 
             <Box py="4" maxW="520px">
               {modalItem.info && (
-                <div className="text-content">{HTMLReactParser(modalItem?.info)}</div>
+                <div className="text-content">
+                  {HTMLReactParser(modalItem?.info)}
+                </div>
               )}
             </Box>
-          </ConfirmModal>
+          </Modal>
         )}
       </Box>
     </>

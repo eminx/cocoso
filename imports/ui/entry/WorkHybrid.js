@@ -1,10 +1,10 @@
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
+import { Box, Text } from '/imports/ui/core';
 import TablyCentered from './TablyCentered';
-import DocumentsField from '../pages/resources/components/DocumentsField';
+import DocumentsField from '/imports/ui/pages/resources/components/DocumentsField';
 
 export default function WorkHybrid({ documents, work, Host }) {
   if (!work) {
@@ -16,7 +16,8 @@ export default function WorkHybrid({ documents, work, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {work?.longDescription && HTMLReactParser(work?.longDescription)}
+          {work?.longDescription &&
+            HTMLReactParser(work?.longDescription)}
         </Box>
       ),
       path: 'info',
@@ -51,7 +52,12 @@ export default function WorkHybrid({ documents, work, Host }) {
     tabs.push({
       title: <Trans i18nKey="common:labels.contact">Contact</Trans>,
       content: (
-        <Box bg="white" className="text-content" p="4" textAlign="center">
+        <Box
+          bg="white"
+          className="text-content"
+          p="4"
+          textAlign="center"
+        >
           {work?.contactInfo && HTMLReactParser(work.contactInfo)}
         </Box>
       ),
@@ -60,14 +66,14 @@ export default function WorkHybrid({ documents, work, Host }) {
   }
 
   const tags = work && [work.category?.label];
-  const worksInMenu = Host?.settings?.menu.find((item) => item.name === 'works');
+  const worksInMenu = Host?.settings?.menu.find(
+    (item) => item.name === 'works'
+  );
 
   const url = `https://${work.host}/@${work.authorUsername}/works/${work._id}`;
 
   return (
     <TablyCentered
-      action={null}
-      adminMenu={null}
       author={
         work.showAvatar && {
           src: work.authorAvatar,

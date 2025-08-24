@@ -1,10 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Flex, Input, Textarea, VStack } from '@chakra-ui/react';
+import { Button, Flex, Input, VStack } from '/imports/ui/core';
 
 import FormField from '../../forms/FormField';
-import { platformFields } from '../../utils/constants/general';
 
 export default function NewPlatform({ onSubmit }) {
   const currentUser = Meteor.user();
@@ -26,15 +25,15 @@ export default function NewPlatform({ onSubmit }) {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing="6">
-          <FormField key="name" label="Name">
+          <FormField key="name" label="Name" required>
             <Input {...register('name')} />
           </FormField>
 
-          <FormField key="email" label="Email address">
+          <FormField key="email" label="Email address" required>
             <Input {...register('email')} defaultValue={email} />
           </FormField>
 
-          <FormField key="portalHost" label="Portal Host (Main url)">
+          <FormField key="portalHost" label="Portal Host (Main url)" required>
             <Input {...register('portalHost')} value={host} isDisabled />
           </FormField>
 

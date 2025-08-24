@@ -1,35 +1,37 @@
 import React, { useContext, useState } from 'react';
+import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
+
 import {
   Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Box,
   Button,
   Center,
   Flex,
+  Link,
   List,
   ListItem,
+  Modal,
   Text,
-} from '@chakra-ui/react';
-import dayjs from 'dayjs';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
 
-import FancyDate from '../../../entry/FancyDate';
-import Modal from '../../../generic/Modal';
-import { accordionProps } from '../../../utils/constants/general';
-import { message } from '../../../generic/message';
-import { call } from '../../../utils/shared';
+import FancyDate from '/imports/ui/entry/FancyDate';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/ui/utils/shared';
+import ActionButton from '/imports/ui/generic/ActionButton';
+
 import { GroupContext } from '../Group';
-import ActionButton from '../../../generic/ActionButton';
-
-const { buttonProps, itemProps, panelProps } = accordionProps;
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 const isFutureMeeting = (meeting) => dayjs(meeting.endDate).isAfter(yesterday);
 
-function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose }) {
+function MeetingDatesContent({
+  currentUser,
+  group,
+  isAdmin,
+  isMember,
+  onClose,
+}) {
   const [regButtonDisabled, setRegButtonDisabled] = useState(false);
   const [delButtonDisabled, setDelButtonDisabled] = useState(false);
   const { getGroupById } = useContext(GroupContext);
@@ -114,80 +116,73 @@ function MeetingDatesContent({ currentUser, group, isAdmin, isMember, onClose })
     }
   };
 
-  return (
-    <Accordion allowToggle>
-      {group.meetings?.map((meeting, meetingIndex) => {
+  const getAccordionOptions = () => {
+    return group.meetings
+      ?.filter((m) => isFutureMeeting(m))
+      .map((meeting, meetingIndex) => {
         const isAttending =
           currentUser &&
           meeting.attendees &&
-          meeting.attendees.map((attendee) => attendee.username).includes(currentUser.username);
+          meeting.attendees
+            .map((attendee) => attendee.username)
+            .includes(currentUser.username);
+        return {
+          key: meeting._id,
+          header: <FancyDate occurrence={meeting} />,
+          content: isAdmin ? (
+            <Box>
+              <Text fontWeight="bold" mt="1">
+                {t('labels.attendees')}
+              </Text>
+              <List>
+                {meeting?.attendees?.map(
+                  (attendee) =>
+                    attendee && (
+                      <ListItem key={attendee.username} mt="2">
+                        <Text as="span" fontWeight="bold">
+                          {attendee.username}
+                        </Text>
+                        {(attendee.firstName || attendee.lastName) && (
+                          <Text as="span">{` (${attendee.firstName} ${attendee.lastName})`}</Text>
+                        )}
+                      </ListItem>
+                    )
+                )}
+              </List>
 
-        return (
-          <AccordionItem
-            key={meeting._id}
-            {...itemProps}
-            style={{
-              display: isFutureMeeting(meeting) ? 'block' : 'none',
-            }}
-          >
-            <AccordionButton {...buttonProps}>
-              <Box flex="1" textAlign="left">
-                <FancyDate occurrence={meeting} />
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel {...panelProps}>
-              {isAdmin ? (
-                <Box>
-                  <Text fontWeight="bold" mt="1">
-                    {t('labels.attendees')}
-                  </Text>
-                  <List>
-                    {meeting?.attendees?.map(
-                      (attendee) =>
-                        attendee && (
-                          <ListItem key={attendee.username} mt="2">
-                            <Text as="span" fontWeight="bold">
-                              {attendee.username}
-                            </Text>
-                            {(attendee.firstName || attendee.lastName) && (
-                              <Text as="span">{` (${attendee.firstName} ${attendee.lastName})`}</Text>
-                            )}
-                          </ListItem>
-                        )
-                    )}
-                  </List>
+              <Center py="2" mt="2">
+                <Button
+                  colorScheme="red"
+                  loading={delButtonDisabled}
+                  size="xs"
+                  variant="outline"
+                  onClick={() => deleteActivity(meeting.meetingId)}
+                >
+                  {t('meeting.actions.remove')}
+                </Button>
+              </Center>
+            </Box>
+          ) : (
+            <Center p="2">
+              <Button
+                size="sm"
+                colorScheme={isAttending ? 'red' : 'green'}
+                loading={regButtonDisabled}
+                onClick={() =>
+                  toggleAttendance(meeting.meetingId, meetingIndex)
+                }
+              >
+                {isAttending
+                  ? t('meeting.isAttending.false')
+                  : t('meeting.isAttending.true')}
+              </Button>
+            </Center>
+          ),
+        };
+      });
+  };
 
-                  <Center py="2" mt="2">
-                    <Button
-                      colorScheme="red"
-                      isLoading={delButtonDisabled}
-                      size="xs"
-                      variant="link"
-                      onClick={() => deleteActivity(meeting.meetingId)}
-                    >
-                      {t('meeting.actions.remove')}
-                    </Button>
-                  </Center>
-                </Box>
-              ) : (
-                <Center p="2">
-                  <Button
-                    size="sm"
-                    colorScheme={isAttending ? 'red' : 'green'}
-                    isLoading={regButtonDisabled}
-                    onClick={() => toggleAttendance(meeting.meetingId, meetingIndex)}
-                  >
-                    {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}
-                  </Button>
-                </Center>
-              )}
-            </AccordionPanel>
-          </AccordionItem>
-        );
-      })}
-    </Accordion>
-  );
+  return <Accordion options={getAccordionOptions()} />;
 }
 
 export default function GroupMeetingDates(props) {
@@ -203,7 +198,9 @@ export default function GroupMeetingDates(props) {
   const isFutureMeetings =
     group.meetings &&
     group.meetings.length > 0 &&
-    group.meetings.filter((meeting) => dayjs(meeting.endDate).isAfter(yesterday)).length > 0;
+    group.meetings.filter((meeting) =>
+      dayjs(meeting.endDate).isAfter(yesterday)
+    ).length > 0;
 
   if (!isFutureMeetings) {
     return (
@@ -219,42 +216,42 @@ export default function GroupMeetingDates(props) {
         <Box>
           <Center>
             {isMember && (
-              <ActionButton label={t('actions.register')} onClick={() => setModalOpen(true)} />
+              <ActionButton
+                label={t('actions.register')}
+                onClick={() => setModalOpen(true)}
+              />
             )}
           </Center>
           <Center>
             <Flex mt="2">
-              <Text fontSize="sm" mr="2" mt="-1px">
+              <Text color="gray.50" fontSize="sm" mr="2" mt="-1px">
                 {t('labels.next_meeting')}
               </Text>
 
-              <Text fontSize="sm" fontWeight="bold">
+              <Text color="gray.50" fontSize="sm" fontWeight="bold">
                 {dayjs(group.meetings[0]?.startDate).format('DD')}{' '}
                 {dayjs(group.meetings[0]?.startDate).format('MMM')}
               </Text>
             </Flex>
           </Center>
-          <Center>
+          <Center py="1">
             {!isMember && (
-              <Button
-                color="brand.50"
-                fontSize="sm"
-                variant="link"
+              <Link
+                color="theme.200"
+                variant="outline"
                 onClick={() => setModalOpen(true)}
               >
                 {t('labels.meeting_dates')}
-              </Button>
+              </Link>
             )}
           </Center>
         </Box>
       </Center>
 
       <Modal
-        h="80%"
-        isCentered
-        isOpen={modalOpen}
+        hideFooter
+        open={modalOpen}
         title={t('labels.meetings')}
-        onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >
         {isMember && (

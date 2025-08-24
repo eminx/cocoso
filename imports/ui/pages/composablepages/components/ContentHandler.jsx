@@ -7,9 +7,9 @@ import {
   FormLabel,
   Input,
   NumberInput,
-  NumberInputField,
   Text,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
+
 import ReactPlayer from 'react-player';
 import { Trans } from 'react-i18next';
 
@@ -40,9 +40,7 @@ function ButtonContent({ value, onChange }) {
     <Center>
       <Box maxW="md">
         <FormField
-          helperText={
-            <Trans i18nKey="admin:composable.form.labelHelper" />
-          }
+          helperText={<Trans i18nKey="admin:composable.form.labelHelper" />}
           label={<Trans i18nKey="admin:composable.form.label" />}
           mb="8"
           required
@@ -54,9 +52,7 @@ function ButtonContent({ value, onChange }) {
         </FormField>
 
         <FormField
-          helperText={
-            <Trans i18nKey="admin:composable.form.linkHelper" />
-          }
+          helperText={<Trans i18nKey="admin:composable.form.linkHelper" />}
           label={<Trans i18nKey="admin:composable.form.link" />}
           required
         >
@@ -70,20 +66,20 @@ function ButtonContent({ value, onChange }) {
   );
 }
 
-function Divider({ value, onChange }) {
-  const options = [
-    {
-      key: 'line',
-      label: <Trans i18nKey="admin:composable.form.line" />,
-      kind: 'line',
-    },
-    {
-      key: 'empty-space',
-      label: <Trans i18nKey="admin:composable.form.emptySpace" />,
-      kind: 'emptySpace',
-    },
-  ];
+const dividerMenuOptions = [
+  {
+    label: <Trans i18nKey="admin:composable.form.line" />,
+    kind: 'line',
+    key: 'line',
+  },
+  {
+    label: <Trans i18nKey="admin:composable.form.emptySpace" />,
+    kind: 'emptySpace',
+    key: 'emptySpace',
+  },
+];
 
+function Divider({ value, onChange }) {
   const handleSelect = (item) => {
     onChange({
       ...value,
@@ -91,7 +87,8 @@ function Divider({ value, onChange }) {
     });
   };
 
-  const handleEmptySpaceHeightChange = (height) => {
+  const handleEmptySpaceHeightChange = (e) => {
+    const height = e.target.value;
     onChange({
       ...value,
       height,
@@ -108,13 +105,9 @@ function Divider({ value, onChange }) {
             </Text>
             <Menu
               buttonLabel={
-                (
-                  <Trans
-                    i18nKey={`admin:composable.form.${value.kind}`}
-                  />
-                ) || 'Select'
+                <Trans i18nKey={`admin:composable.form.${value.kind}`} />
               }
-              options={options}
+              options={dividerMenuOptions}
               rightIcon={<ChevronDownIcon size="18px" />}
               onSelect={onChange}
             >
@@ -128,9 +121,7 @@ function Divider({ value, onChange }) {
                 helperText={
                   <Trans i18nKey="admin:composable.form.emptySpaceHelper" />
                 }
-                label={
-                  <Trans i18nKey="admin:composable.form.emptySpace" />
-                }
+                label={<Trans i18nKey="admin:composable.form.emptySpace" />}
                 required
               >
                 <NumberInput
@@ -140,9 +131,7 @@ function Divider({ value, onChange }) {
                   step={1}
                   value={value.height}
                   onChange={handleEmptySpaceHeightChange}
-                >
-                  <NumberInputField />
-                </NumberInput>
+                />
               </FormField>
             </Box>
           )}
@@ -194,7 +183,7 @@ function ImageContent({ value, ping, onChange }) {
 
   return (
     <>
-      <FormField label="Image">
+      <FormField label="Image" required>
         <ImageUploader
           isMultiple={false}
           ping={ping}
@@ -205,31 +194,34 @@ function ImageContent({ value, ping, onChange }) {
 
       <Box bg="gray.50" borderRadius="md" p="4" pt="0">
         <Checkbox
-          isChecked={value.isLink}
+          checked={value.isLink}
+          id="is-image-link"
           mt="4"
           size="lg"
           onChange={handleCheckboxChange}
         >
-          <FormLabel mb="0">Image as link?</FormLabel>
+          <Trans i18nKey="admin:composable.form.imageAsLink" />
         </Checkbox>
 
         {value.isLink ? (
           <FormField
-            helperText={
-              <Text>
-                Should start with <code>http://</code> or{' '}
-                <code>https://</code>
-              </Text>
-            }
-            label="Link Value"
+            helperText={<Trans i18nKey="admin:composable.form.linkHelper" />}
+            label={<Trans i18nKey="admin:composable.form.link" />}
             my="4"
+            required
           >
             <Input
-              _hover={{ borderColor }}
-              _focus={{ borderColor }}
-              borderColor={borderColor}
               size="sm"
               value={value.linkValue}
+              css={{
+                borderColor,
+                ':hover': {
+                  borderColor,
+                },
+                ':focus': {
+                  borderColor,
+                },
+              }}
               onChange={handleInputChange}
             />
           </FormField>
@@ -240,7 +232,7 @@ function ImageContent({ value, ping, onChange }) {
 }
 
 function SliderContent({ value, ping, onChange }) {
-  const handleUploadedImages = (event) => {
+  const handleUploadedImages = (images) => {
     onChange(
       {
         ...value,
@@ -286,9 +278,7 @@ function VideoContent({ value, onChange }) {
       <Box maxW="md">
         <FormField
           label={<Trans i18nKey="admin:composable.form.video" />}
-          helperText={
-            <Trans i18nKey="admin:composable.form.videoHelper" />
-          }
+          helperText={<Trans i18nKey="admin:composable.form.videoHelper" />}
           required
         >
           <Input
@@ -320,9 +310,7 @@ function VideoContent({ value, onChange }) {
 }
 
 export default function ContentHandler() {
-  const { contentModal, setContentModal } = useContext(
-    ComposablePageContext
-  );
+  const { contentModal, setContentModal } = useContext(ComposablePageContext);
 
   if (!contentModal) {
     return null;
@@ -361,15 +349,11 @@ export default function ContentHandler() {
   }
 
   if (type === 'image') {
-    return (
-      <ImageContent {...genericProps} ping={contentModal?.uploading} />
-    );
+    return <ImageContent {...genericProps} ping={contentModal?.uploading} />;
   }
 
   if (type === 'image-slider') {
-    return (
-      <SliderContent {...genericProps} ping={contentModal?.uploading} />
-    );
+    return <SliderContent {...genericProps} ping={contentModal?.uploading} />;
   }
 
   if (type === 'text') {

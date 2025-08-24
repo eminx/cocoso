@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
+import i18next from 'i18next';
+
 import {
   Box,
   Button,
@@ -11,15 +14,12 @@ import {
   Heading,
   Input,
   Link,
+  Modal,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import { z } from 'zod';
-import i18next from 'i18next';
-
-import FormField from '../../forms/FormField';
-import ConfirmModal from '../../generic/ConfirmModal';
-import Terms from '../../entry/Terms';
+} from '/imports/ui/core';
+import FormField from '/imports/ui/forms/FormField';
+import Terms from '/imports/ui/entry/Terms';
 
 import {
   loginModel,
@@ -42,11 +42,11 @@ const Login = ({ isSubmitted, onSubmit }) => {
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <VStack spacing="6">
-        <FormField label={t('login.form.username.label')}>
+        <FormField label={t('login.form.username.label')} required>
           <Input {...register('username')} />
         </FormField>
 
-        <FormField label={t('login.form.password.label')}>
+        <FormField label={t('login.form.password.label')} required>
           <Input {...register('password')} type="password" />
         </FormField>
 
@@ -96,6 +96,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
             helperText={t('signup.form.username.helper')}
             isInvalid={errors.username}
             label={t('signup.form.username.label')}
+            required
           >
             <Input {...register('username')} />
           </FormField>
@@ -104,6 +105,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
             errorMessage={errors.email?.message}
             isInvalid={errors.email}
             label={t('signup.form.email.label')}
+            required
           >
             <Input {...register('email')} type="email" />
           </FormField>
@@ -113,6 +115,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
               helperText={passwordHelperText}
               isInvalid={errors.password}
               label={t('signup.form.password.label')}
+              required
             >
               <Input {...register('password')} type="password" />
             </FormField>
@@ -125,31 +128,37 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
           </Box>
 
           {!hideTermsCheck && (
-            <FormField>
+            <FormField required>
               <Flex>
                 <Box pr="2" pt="1">
                   <Checkbox
-                    isChecked={termsChecked}
+                    checked={termsChecked}
+                    id="is-terms-checked"
                     size="lg"
                     onChange={() => setTermsChecked(!termsChecked)}
-                  />
+                  >
+                    <Link
+                      css={{
+                        color: 'var(--cocoso-colors-blue-500)',
+                        fontSize: '0.875rem',
+                        textDecoration: 'underline',
+                      }}
+                      onClick={() => setModalOpen(true)}
+                    >
+                      {t('signup.form.terms.label', {
+                        terms: t('signup.form.terms.terms'),
+                      })}
+                    </Link>
+                  </Checkbox>
                 </Box>
-                <Link
-                  as="span"
-                  color="brand.600"
-                  textDecoration="underline"
-                  onClick={() => setModalOpen(true)}
-                >
-                  {t('signup.form.terms.label', { terms: t('signup.form.terms.terms') })}
-                </Link>
               </Flex>
             </FormField>
           )}
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button
-              isDisabled={!isDirty || (!termsChecked && !hideTermsCheck)}
-              isLoading={isSubmitting}
+              disabled={!isDirty || (!termsChecked && !hideTermsCheck)}
+              loading={isSubmitting}
               type="submit"
             >
               {tc('actions.submit')}
@@ -158,19 +167,18 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
         </VStack>
       </form>
 
-      <ConfirmModal
+      <Modal
         confirmText={tc('actions.confirmRead')}
         cancelText={tc('actions.close')}
+        open={modalOpen}
         scrollBehavior="inside"
         size="full"
         title="Terms of Service & Privacy Policy"
-        visible={modalOpen}
         onConfirm={confirmModal}
-        onCancel={() => setModalOpen(false)}
-        onClickOutside={() => setModalOpen(false)}
+        onClose={() => setModalOpen(false)}
       >
         <Terms />
-      </ConfirmModal>
+      </Modal>
     </Box>
   );
 };

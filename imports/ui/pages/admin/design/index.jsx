@@ -1,44 +1,25 @@
 import React from 'react';
-import { Box, Heading } from '@chakra-ui/react';
-
-import TablyRouter from '/imports/ui/generic/TablyRouter';
-import ColorPicker from './ColorPicker';
 import { Trans } from 'react-i18next';
+
+import { Box, Heading } from '/imports/ui/core';
+import TablyRouter from '/imports/ui/generic/TablyRouter';
+
+import MenuDesign from './MenuDesign';
+import ThemeHandler from './ThemeHandler';
 
 export default function DesignOptions() {
   const tabs = [
     {
-      // title: <Trans i18nKey="admin:settings.tabs.color" />,
-      title: 'General',
-      path: 'general',
-      content: <div>General</div>,
+      title: <Trans i18nKey="admin:design.tabs.theme" />,
+      path: 'theme',
+      content: <ThemeHandler />,
     },
     {
-      // title: <Trans i18nKey="admin:settings.tabs.color" />,
-      title: 'Header',
-      path: 'header',
-      content: <div>Header</div>,
-    },
-    {
-      // title: <Trans i18nKey="admin:settings.tabs.color" />,
-      title: 'Elements',
-      path: 'elements',
-      content: <div>Elements</div>,
-    },
-    {
-      title: <Trans i18nKey="admin:settings.tabs.color" />,
-      path: 'color',
-      content: <ColorPicker />,
+      title: <Trans i18nKey="admin:design.tabs.menu" />,
+      path: 'navigation',
+      content: <MenuDesign />,
     },
   ];
 
-  return (
-    <Box>
-      <Heading size="md" mb="4">
-        Design Options
-      </Heading>
-
-      <TablyRouter tabs={tabs} />
-    </Box>
-  );
+  return <TablyRouter tabs={tabs} />;
 }

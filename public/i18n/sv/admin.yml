@@ -4,9 +4,11 @@ panel: Adminpanel
 menulabel: Adminmenu
 site: Sidan
 home: Hem
+description: Konfigurera, designa och hantera din webbplats
 
 settings:
   title: Inställningar
+  description: Organisation och layout detaljer
   tabs:
     design: Design
     general: Allmänt
@@ -58,12 +60,14 @@ organization:
 
 users:
   title: Användare
+  description: Hantera dina användare. Verifiera eller avverifiera dem, eller ställ in dem som administratörer
   shortcutHelper: Hantera dina användare. Verifiera eller verifiera dem, eller ställ in dem som administratörer.
   usersListed: användare
   userListed: användare
 
 menu:
   title: Meny
+  description: Bygg, konfigurera och designa huvudmenyn
   tabs:
     menuitems:
       label: Synlighet, benämning och beskrivning
@@ -76,7 +80,7 @@ menu:
   info:
     activities: Den här funktionen listar offentliga evenemang och gruppmöten. Om ni klickar bort funktionen kan ni inte skapa eller synliggöra publika evenemang
     calendar: Den här funktionen synliggör er kalender. Om ni klickar av funktionen blir kalendern inte synlig. Ni kan då inte göra bokningar av era resurser i kalendern
-    groups: Den här funktionen listar grupper eller grouper. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller grouper
+    groups: Den här funktionen listar grupper eller processer. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller processer
     info: Den här funktionen listar statiska informationssidorna
     people: Den här funktionen listar alla som gått med i er community. Om ni klickar bort funktionen blir listan inte synlig. Det går då heller inte att nå era medlemmars profilsidor
     resources: Den här funktionen listar resurserna i er community. Om ni klickar bort funktionen blir listan inte synlig, och ni kan inte lägga till nya resurser. Befintliga resurser fortfarande kan ses och bokas i er kalender
@@ -96,15 +100,10 @@ categories:
   message:
     denySpecialChars: Specialtecken, förutom bindestreck (-), är inte tillåtna
 
-color:
-  revert: Revert
-  info: Dra i reglaget för att välja önskad färg för din community. Den valda nyansen kommer att användas i olika delar av hela användargränssnittet.
-  alert1: Nu kan du surfa runt på sidan och testa den här färgen, och sedan komma tillbaka hit och bekräfta om du gillar den.
-  alert2: Om du uppdaterar sidan eller stänger fönstret/fliken kommer den att återgå till den ursprungliga färgen.
-
 # ADMIN EMAILS PAGE
 emails:
   title: Automatiserade e-postmeddelanden
+  description: Konfigurera automatiserade e-postmeddelanden som användare får när de registrerar sig, verifieras eller blir administratörer
   shortcutHelper: Konfigurera automatiserade e-postmeddelanden som användare får när de registrerar sig, verifieras eller blir administratörer
   form:
     subject:
@@ -131,6 +130,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Skicka ett nyhetsbrev
+  description: Skicka ett e-postnyhetsbrev till alla dina användare samtidigt
   shortcutHelper: Skicka ett e-postnyhetsbrev till alla dina användare samtidigt
   subtitle: Här kan du skapa ett nyhetsbrev som går ut till alla medlemmar i er community. Du kan enkelt komponera brevet med egen text och bifoga material som är publicerade på er sida.
   subtitle2: 'För att skriva e-postmeddelandet nedan måste du ange minst en av: brödtext, en bild och/eller valda innehållsobjekt som listas i community-appen.'
@@ -143,6 +143,7 @@ newsletter:
     title: Bekräfta sändning till alla personer
     body: Du är på väg att skicka detta e-postmeddelande till alla medlemmar i din community. Du kan inte återställa denna åtgärd när du har skickat detta e-postmeddelande till dina medlemmar.
     yes: Ja, skicka gärna
+    send: Skicka e-post
   error:
     required: Du kan inte skicka ett tomt e-postmeddelande. Du måste ange antingen brödtext eller bild, eller infoga innehållsobjekt för att e-postmeddelandet ska skickas.
   form:
@@ -189,6 +190,7 @@ pages:
 composable:
   title: Komponerbara sidor
   existing: Befintliga
+  none: Inga komponerbara sidor ännu
   new: Skapa ny
   create: Skapa
   newTitleInputLabel: Titel
@@ -196,21 +198,23 @@ composable:
   description: Komponera en sida och gör den till startsida, kampanjsida eller till vad du behöver
   form:
     addContent: Lägg till innehåll
+    addToMenu: Lägg till en komponerbara sida
     addRow: Lägg till en rad
     emptySpace: Tomt utrymme
     emptySpaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
     label: Etikett
     labelHelper: Ange etiketten för knappen. Denna etikett kommer att visas på knappen
-    line: Rad
+    line: Linje
     link: Länkadressen
     linkHelper: Ange länkadressen. Denna länk öppnas när knappen klickas
+    imageAsLink: Bild som länk?
     video: Video-URL
     videoHelper: Ange en video-URL, vanligtvis länkadressen till en YouTube- eller Vimeo-videosida..
-    removeRow: Ta bort rad
+    removeRow: Ta bort linjen
     title: Titel
     types:
       button: Knapp
-      divider: Delare
+      divider: Avdelare
       image: Bild
       image-slider: Bildspel
       text: Text
@@ -241,3 +245,92 @@ composable:
     unpublishText: Är du säker på att du vill avpublicera den här sidan?
     publishSuccess: Sidan har publicerats
     unpublishSuccess: Sidan har återställts som utkast
+    unpublishErrorPageInMenu: Sidan är länkad i huvudmenyn, vänligen ta bort den först
+    linkToMenu: Klicka här för att lägga till/ta bort den här sidan i huvudmenyn
+
+design:
+  title: Design
+  description: Anpassa din webbplats utseende genom att justera temat och menyn för att passa dina behov
+  tabs:
+    theme: Tema
+    menu: Meny
+  theme:
+    title: Tema
+    color: Temafärg
+    demo: Demo
+    button: Knapp
+    options:
+      gray: Gråskala
+      custom: Anpassad
+  background:
+    title: Bakgrund
+    color: Bakgrundsfärg
+    image: Bakgrundsbild
+    repeat: Upprepa bakgrundsbild
+  border:
+    title: Kantlinjer
+    color: Kantlinjefärg
+    radius: Kantlinjeradius
+    width: Kantlinjebredd
+    style: Kantlinjestil
+    radiusOptions:
+      none: Ingen
+      tiny: Mycket liten
+      small: Liten
+      medium: Medel
+      large: Stor
+      xlarge: Mycket stor
+    styleOptions:
+      solid: Solid
+      dotted: Punktad
+      dashed: Streckad
+      double: Dubbel
+      groove: Ränna
+      ridge: Kammar
+      inset: Inskjuten
+      outset: Utskjuten
+    widthOptions:
+      none: Ingen
+      thin: Tunn
+      medium: Medel
+      thick: Tjock
+  menu:
+    title: Meny
+    color: Textfärg
+    border: Kantlinje
+    background: Bakgrundsfärg
+    demo: Demo
+  color:
+    colors: Färger
+    text: Textfärg
+    description: Tema påverkar många av UI-elementen såsom knappar
+    pick: Välj färg
+    select: Välj önskad färg från paletten
+    revert: Återställ
+    info: Justera reglaget för att välja önskad färg för din communitys webbplats. De ljusa och mörka variationerna av den valda färgnyansen kommer att användas i olika delar av hela användargränssnittet.
+    alert1: Nu kan du surfa runt på sidan och testa den här färgen, och sedan komma tillbaka hit och bekräfta om du gillar den.
+    alert2: Om du uppdaterar sidan eller stänger fönstret/fliken kommer den att återgå till den ursprungliga färgen.
+  text:
+    title: Text
+    fontStyle: Typsnitt
+    textTransform: Texttransform
+    fontStyleOptions:
+      normal: Normal
+      italic: Italic
+    textTransformOptions:
+      none: Ingen
+      uppercase: Uppslagning
+      lowercase: Nedslagning
+      capitalize: Kapitalisering
+  message:
+    success: Tema har sparats!
+    error: Tema kunde inte sparas
+  fonts:
+    body:
+      title: Typsnitt
+      select: Välj typsnitt
+
+messages:
+  upload:
+    helper: Välj en bild som har tilldelats den storlek du vill att den ska visas med och se till att den är mindre än 400 kb
+    imageTooLarge: Bilden är för stor. Välj en bild som är mindre än 400 kb.

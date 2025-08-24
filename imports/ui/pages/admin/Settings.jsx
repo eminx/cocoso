@@ -1,17 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Text } from '@chakra-ui/react';
+import {
+  Alert,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Loader,
+  Text,
+} from '/imports/ui/core';
 
 import ReactQuill from '../../forms/Quill';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
 import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../forms/FileDropper';
-import Tabs from '../../entry/Tabs';
+import Tabs from '../../core/Tabs';
 import Boxling from './Boxling';
 
 export default function Settings() {
@@ -20,7 +26,8 @@ export default function Settings() {
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
   const location = useLocation();
-  const { currentUser, currentHost, role, getCurrentHost } = useContext(StateContext);
+  const { currentUser, currentHost, role, getCurrentHost } =
+    useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -41,10 +48,6 @@ export default function Settings() {
         <Alert>{tc('message.access.deny')}</Alert>
       </Center>
     );
-  }
-
-  if (loading) {
-    return <Loader />;
   }
 
   const updateHostSettings = async (values) => {
@@ -100,7 +103,8 @@ export default function Settings() {
   };
 
   const isImage =
-    (localImage && localImage.uploadableImageLocal) || (currentHost && currentHost.logo);
+    (localImage && localImage.uploadableImageLocal) ||
+    (currentHost && currentHost.logo);
 
   const tabs = [
     {
@@ -109,7 +113,7 @@ export default function Settings() {
       content: (
         <>
           <Center>
-            <Text fontWeight="bold" mb="3" textAlign="center">
+            <Text fontWeight="bold" mb="4" textAlign="center">
               {t('logo.info')}
             </Text>
           </Center>
@@ -122,7 +126,9 @@ export default function Settings() {
                 width={isImage && '280px'}
                 round={false}
                 setUploadableImage={setUploadableImage}
-                uploadableImageLocal={localImage && localImage.uploadableImageLocal}
+                uploadableImageLocal={
+                  localImage && localImage.uploadableImageLocal
+                }
               />
             </Center>
             {localImage && localImage.uploadableImageLocal && (
@@ -142,13 +148,16 @@ export default function Settings() {
       content: (
         <>
           <Center>
-            <Text mb="3" fontWeight="bold">
+            <Text mb="4" fontWeight="bold">
               {t('info.info')}
             </Text>
           </Center>
 
           <Boxling>
-            <SettingsForm initialValues={localSettings} onSubmit={updateHostSettings} />
+            <SettingsForm
+              initialValues={localSettings}
+              onSubmit={updateHostSettings}
+            />
           </Boxling>
         </>
       ),
@@ -158,13 +167,23 @@ export default function Settings() {
       path: 'footer',
       content: (
         <>
-          <Text mb="4">{t('info.platform.footer.description')}</Text>
+          <Center>
+            <Text mb="4" fontWeight="bold">
+              {t('settings.tabs.footer')}
+            </Text>
+          </Center>
+          <Box mb="4">
+            <Text>{t('info.platform.footer.description')}</Text>
+          </Box>
+
           <Boxling>
             <ReactQuill
               className="ql-editor-text-align-center"
               placeholder={t('pages.form.description.holder')}
               value={localSettings?.footer}
-              onChange={(value) => setLocalSettings({ ...localSettings, footer: value })}
+              onChange={(value) =>
+                setLocalSettings({ ...localSettings, footer: value })
+              }
             />
 
             <Flex justify="flex-end" pt="4">
@@ -179,20 +198,29 @@ export default function Settings() {
   ];
   const pathname = location?.pathname;
   const pathnameLastPart = pathname.split('/').pop();
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
+  const tabIndex =
+    tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
   if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
+  }
+
+  if (loading) {
+    return <Loader />;
   }
 
   return (
     <Box>
       <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
-      <Box mb="24">
+      <Box mb="24" py="4">
         <Routes>
           {tabs.map((tab) => (
-            <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+            <Route
+              key={tab.title}
+              path={tab.path}
+              element={<Box pt="2">{tab.content}</Box>}
+            />
           ))}
         </Routes>
       </Box>

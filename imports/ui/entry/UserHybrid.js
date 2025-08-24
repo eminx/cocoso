@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, Routes, useLocation, useParams } from 'react-router-dom';
-import { Box, Center, Flex } from '@chakra-ui/react';
 import HTMLReactParser from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 
+import { Box, Center, Flex } from '/imports/ui/core';
 import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 import MemberWorks from '../pages/works/MemberWorks';
 import MemberActivities from '../pages/activities/MemberActivities';
 import MemberGroups from '../pages/groups/MemberGroups';
-import Tabs from './Tabs';
+import Tabs from '../core/Tabs';
 import BackLink from './BackLink';
 import { stripHtml, getFullName } from '/imports/ui/utils/shared';
 
@@ -21,12 +21,14 @@ export function Bio({ user }) {
     <Flex justifyContent="center" mb="4">
       <Box
         bg="white"
-        borderLeft="4px solid"
-        borderColor="brand.500"
         className="text-content"
-        maxW="480px"
         p="4"
         w="100%"
+        css={{
+          borderColor: 'var(--cocoso-colors-theme-500)',
+          borderLeft: '4px solid',
+          maxWidth: '480px',
+        }}
       >
         {HTMLReactParser(user.bio)}
       </Box>
@@ -51,7 +53,10 @@ export default function UserHybrid({ user, Host }) {
   const tabs = [];
 
   menu
-    ?.filter((item) => ['activities', 'groups', 'works'].includes(item.name) && item.isVisible)
+    ?.filter(
+      (item) =>
+        ['activities', 'groups', 'works'].includes(item.name) && item.isVisible
+    )
     ?.forEach((item) => {
       tabs.push({
         path: `${item.name}`,
@@ -63,7 +68,9 @@ export default function UserHybrid({ user, Host }) {
   const tabIndex = tabs.findIndex((tab) => tab.path === pathnameLastPart);
   const isPortalHost = Host?.isPortalHost;
   const members = menu?.find((item) => item.name === 'people');
-  const title = `${getFullName(user)} | ${user.username} | ${Host?.settings?.name}`;
+  const title = `${getFullName(user)} | ${user.username} | ${
+    Host?.settings?.name
+  }`;
   const url = `https://${Host.host}/@${user.username}`;
   const imageUrl = user?.avatar?.src || user?.avatar || Host.logo;
   const tags = user.keywords?.map((k) => k.keywordLabel);
@@ -80,7 +87,10 @@ export default function UserHybrid({ user, Host }) {
         <meta property="og:title" content={title?.substring(0, 40)} />
         <meta property="og:url" content={url} />
         <meta property="og:image" content={imageUrl} />
-        <meta property="og:description" content={description?.substring(0, 150)} />
+        <meta
+          property="og:description"
+          content={description?.substring(0, 150)}
+        />
         <meta property="og:type" content="article" />
       </Helmet>
 
@@ -108,18 +118,32 @@ export default function UserHybrid({ user, Host }) {
               <Route
                 path="activities"
                 element={
-                  <MemberActivities currentHost={Host} isPortalHost={isPortalHost} user={user} />
+                  <MemberActivities
+                    currentHost={Host}
+                    isPortalHost={isPortalHost}
+                    user={user}
+                  />
                 }
               />
               <Route
                 path="groups"
                 element={
-                  <MemberGroups currentHost={Host} isPortalHost={isPortalHost} user={user} />
+                  <MemberGroups
+                    currentHost={Host}
+                    isPortalHost={isPortalHost}
+                    user={user}
+                  />
                 }
               />
               <Route
                 path="works"
-                element={<MemberWorks currentHost={Host} isPortalHost={isPortalHost} user={user} />}
+                element={
+                  <MemberWorks
+                    currentHost={Host}
+                    isPortalHost={isPortalHost}
+                    user={user}
+                  />
+                }
               />
             </Routes>
           </Box>

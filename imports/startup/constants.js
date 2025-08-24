@@ -72,4 +72,26 @@ const defaultEmails = [
   },
 ];
 
-export { defaultMenu, defaultMainColor, defaultEmails };
+const defaultTheme = {
+  hue: (Math.floor(Math.random() * 360) + 1).toString(),
+  body: {
+    backgroundColor: 'var(--cocoso-colors-theme-100)',
+    backgroundImage: 'none',
+    backgroundRepeat: 'no-repeat',
+    borderRadius: '0.25rem',
+    fontFamily: 'sans-serif',
+  },
+  menu: {
+    backgroundColor: 'var(--cocoso-colors-theme-50)',
+    borderColor: 'var(--cocoso-colors-theme-200)',
+    borderRadius: '0.25rem',
+    borderStyle: 'solid',
+    borderWidth: '0',
+    color: 'var(--cocoso-colors-theme-800)',
+    fontStyle: 'normal',
+    textTransform: 'none',
+  },
+  variant: 'custom',
+};
+
+export { defaultEmails, defaultMainColor, defaultMenu, defaultTheme };

@@ -15,7 +15,9 @@ export default function Users() {
   const [keywords, setKeywords] = useState(initialKeywords);
   let { currentHost } = useContext(StateContext);
   const [searchParams] = useSearchParams();
-  const showKeywordSearch = Boolean(searchParams.get('showKeywordSearch'));
+  const showKeywordSearch = Boolean(
+    searchParams.get('showKeywordSearch')
+  );
 
   if (!currentHost) {
     currentHost = Host;
@@ -45,9 +47,13 @@ export default function Users() {
     try {
       const respond = await call('getKeywords');
       const selectedKeywords = respond.filter((k) =>
-        users.some((m) => m?.keywords?.map((kw) => kw.keywordId).includes(k._id))
+        users.some((m) =>
+          m?.keywords?.map((kw) => kw.keywordId).includes(k._id)
+        )
       );
-      setKeywords(selectedKeywords.sort((a, b) => a.label.localeCompare(b.label)));
+      setKeywords(
+        selectedKeywords.sort((a, b) => a.label.localeCompare(b.label))
+      );
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -71,5 +77,7 @@ export default function Users() {
     return null;
   }
 
-  return <UsersHybrid Host={Host} keywords={keywords} users={users} />;
+  return (
+    <UsersHybrid Host={currentHost} keywords={keywords} users={users} />
+  );
 }

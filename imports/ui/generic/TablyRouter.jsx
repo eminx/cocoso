@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
 import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
 
-import Tabs from '../entry/Tabs';
+import { Box } from '/imports/ui/core';
+
+import Tabs from '../core/Tabs';
 
 export default function TablyRouter({ tabs, children }) {
   const location = useLocation();

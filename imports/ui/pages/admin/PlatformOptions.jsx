@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Flex, Stack, Switch as CSwitch, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
+
+import { Button, Checkbox, Flex, Stack, Text } from '/imports/ui/core';
 
 export function PlatformOptions({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
@@ -17,16 +18,16 @@ export function PlatformOptions({ initialValues, onSubmit }) {
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Stack spacing="4">
         <Flex align="center">
-          <CSwitch mr="2" {...register('isFederationLayout')} />
+          <Checkbox mr="2" {...register('isFederationLayout')} />
           <Text fontSize="md">{t('info.platform.federationLabel')}</Text>
           <Text fontSize="sm">{t('info.platform.federationText')}</Text>
         </Flex>
         <Flex align="center">
-          <CSwitch mr="2" {...register('showFooterInAllCommunities')} />
+          <Checkbox mr="2" {...register('showFooterInAllCommunities')} />
           <Text fontSize="sm">{t('info.platform.showfooter')}</Text>
         </Flex>
         <Flex align="center">
-          <CSwitch mr="2" {...register('showCommunitiesInMenu')} />
+          <Checkbox mr="2" {...register('showCommunitiesInMenu')} />
           <Text fontSize="sm">{t('info.platform.showCommunities')}</Text>
         </Flex>
         <Flex justify="flex-end" py="4">

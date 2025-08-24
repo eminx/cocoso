@@ -9,7 +9,7 @@
     line-height: 1.5;
     margin-bottom: 1em;
     font-size: 16px;
-    font-family: 'Sarabun', sans-serif;
+    font-family: var(--cocoso-body-font-family);
   }
 }
 
@@ -23,9 +23,10 @@
 
 .quill-megacontainer .ql-container.ql-snow .ql-editor {
   background-color: #fff;
+  border-color: var(--cocoso-colors-theme-200);
+  border-radius: var(--cocoso-border-radius);
+  border-style: solid;
   border-width: 2px;
-  border-color: var(--chakra-colors-gray-300);
-  border-radius: 8px;
 }
 
 .quill-megacontainer .ql-container.ql-snow .ql-editor {
@@ -34,11 +35,12 @@
 
 .quill-megacontainer:not(.is-focused) .ql-container.ql-snow .ql-editor:hover {
   background-color: #fff;
-  border-color: var(--chakra-colors-gray-500);
+  border-color: var(--cocoso-colors-theme-300);
 }
 
+.quill-megacontainer:focus-within .ql-container.ql-snow .ql-editor,
 .quill-megacontainer.is-focused .ql-container.ql-snow .ql-editor {
-  border-color: var(--chakra-colors-gray-600);
+  border-color: var(--cocoso-colors-theme-400);
 }
 
 .quill.ql-editor-text-align-center .ql-editor {

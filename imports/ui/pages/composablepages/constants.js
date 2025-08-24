@@ -104,10 +104,19 @@ export const getGridTemplateColumns = (gridType) => {
   }
 };
 
-export const getResponsiveGridColumns = (gridType) => ({
-  base: '1fr',
-  md: ['1+1', '1+2', '2+1', '1+1+1'].includes(gridType)
-    ? 'repeat(2, 1fr)'
-    : '1fr',
-  lg: getGridTemplateColumns(gridType),
-});
+const midRangeColumns = ['1+1', '1+2', '2+1', '1+1+1'];
+
+export const getResponsiveGridColumns = (
+  gridType,
+  isDesktop = true,
+  isMobile = false
+) => {
+  if (isMobile) {
+    return '1fr';
+  }
+  if (isDesktop) {
+    return getGridTemplateColumns(gridType);
+  }
+
+  return midRangeColumns.includes(gridType) ? 'repeat(2, 1fr)' : '1fr';
+};

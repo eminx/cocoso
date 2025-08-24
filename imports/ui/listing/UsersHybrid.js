@@ -1,17 +1,26 @@
 import React, { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Avatar, Box, Button, Center, Divider, Flex, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
-import parseHtml from 'html-react-parser';
+import HTMLReactParser from 'html-react-parser';
 import Cascader from 'antd/lib/cascader';
 import { parse } from 'query-string';
 
+import {
+  Avatar,
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Modal,
+  Text,
+} from '/imports/ui/core';
+import Tabs from '../core/Tabs';
+
 import PageHeading from './PageHeading';
 import InfiniteScroller from './InfiniteScroller';
-import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 import { Bio } from '../entry/UserHybrid';
-import Tabs from '../entry/Tabs';
-import Modal from '../generic/Modal';
+import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 
 export default function UsersHybrid({ users, keywords, Host }) {
   const [modalItem, setModalItem] = useState(null);
@@ -30,7 +39,9 @@ export default function UsersHybrid({ users, keywords, Host }) {
           label: kw.label,
           value: kw._id,
           children: users
-            .filter((m) => m?.keywords?.map((k) => k.keywordId)?.includes(kw._id))
+            .filter((m) =>
+              m?.keywords?.map((k) => k.keywordId)?.includes(kw._id)
+            )
             ?.map((mx) => ({
               label: mx.username,
               value: mx.username,
@@ -48,7 +59,10 @@ export default function UsersHybrid({ users, keywords, Host }) {
       [users?.length, keywords?.length]
     );
 
-  const usersInMenu = Host?.settings?.menu?.find((item) => item.name === 'people');
+  const usersInMenu = Host?.settings?.menu?.find((item) =>
+    ['people', 'members'].includes(item.name)
+  );
+
   const description = usersInMenu?.description;
   const heading = usersInMenu?.label;
   const url = `${Host?.host}/${usersInMenu?.name}`;
@@ -76,7 +90,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
       <Divider orientation="vertical" />
       {selectedProfile && (
         <Box
-          _hover={{ bg: 'brand.50' }}
+          _hover={{ bg: 'theme.50' }}
           borderRadius="lg"
           cursor="pointer"
           maxH="480px"
@@ -106,8 +120,14 @@ export default function UsersHybrid({ users, keywords, Host }) {
               <Divider my="2" />
 
               {selectedProfile.bio && (
-                <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
-                  {parseHtml(selectedProfile.bio)}
+                <Box
+                  pl="2"
+                  css={{
+                    borderLeft: '4px solid',
+                    borderColor: 'var(--cocoso-colors-theme-500)',
+                  }}
+                >
+                  {HTMLReactParser(selectedProfile.bio)}
                 </Box>
               )}
             </Box>
@@ -118,7 +138,10 @@ export default function UsersHybrid({ users, keywords, Host }) {
   );
 
   const filterCascaderOptions = (inputValue, path) =>
-    path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+    path.some(
+      (option) =>
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+    );
 
   const handleCascaderSelect = (value) => {
     const username = value[1];
@@ -130,10 +153,15 @@ export default function UsersHybrid({ users, keywords, Host }) {
 
   return (
     <>
-      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
+      <PageHeading
+        description={description}
+        heading={heading}
+        imageUrl={Host?.logo}
+        url={url}
+      />
 
-      <Center>
-        <Tabs index={showKeywordSearch ? 1 : 0} mb="4" tabs={tabs} />
+      <Center mb="4">
+        <Tabs index={showKeywordSearch ? 1 : 0} tabs={tabs} />
       </Center>
 
       {showKeywordSearch ? (
@@ -157,17 +185,21 @@ export default function UsersHybrid({ users, keywords, Host }) {
         <Box>
           <Center mb="4">
             <Text fontSize="sm">
-              <Trans i18nKey="members:message.sortedRandomly">Sorted randomly</Trans>
+              <Trans i18nKey="members:message.sortedRandomly">
+                Sorted randomly
+              </Trans>
             </Text>
           </Center>
 
-          <InfiniteScroller hideFiltrerSorter items={users}>
+          <InfiniteScroller hideFiltrerSorter items={users} itemsPerPage={20}>
             {(user) => (
               <Box
                 key={user.username}
-                cursor="pointer"
-                flexBasis="240px"
                 m="4"
+                css={{
+                  cursor: 'pointer',
+                  flexBasis: '240px',
+                }}
                 onClick={() => setModalItem(user)}
               >
                 <MemberAvatarEtc user={user} />
@@ -178,11 +210,11 @@ export default function UsersHybrid({ users, keywords, Host }) {
       )}
 
       <Modal
-        actionButtonLabel={'Visit Profile'}
-        bg="gray.100"
-        isOpen={Boolean(modalItem)}
+        confirmText={<Trans i18nKey="members:actions.visit" />}
+        hideHeader
+        open={Boolean(modalItem)}
         size="xl"
-        onActionButtonClick={() => navigate(`/@${modalItem.username}`)}
+        onConfirm={() => navigate(`/@${modalItem.username}`)}
         onClose={() => setModalItem(null)}
       >
         <Box pt="8">

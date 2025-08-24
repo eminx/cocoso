@@ -1,13 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
 import PlusSquareIcon from 'lucide-react/dist/esm/icons/plus-square';
 import parseHtml from 'html-react-parser';
 
+import {
+  Alert,
+  Box,
+  Button,
+  Center,
+  Heading,
+  IconButton,
+  Text,
+  VStack,
+} from '/imports/ui/core';
+
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
 import { call } from '../../utils/shared';
 import ReactQuill from '../../forms/Quill';
 import Template from '../../layout/Template';
@@ -75,7 +84,9 @@ export default function PlatformRegistrationIntro() {
     try {
       await call('updatePlatformRegistrationIntro', registrationIntro);
       await getPlatformNow();
-      message.success(tc('message.success.update', { domain: 'Platform settings' }));
+      message.success(
+        tc('message.success.update', { domain: 'Platform settings' })
+      );
     } catch (error) {
       message.error(error.reason);
       console.log(error);
@@ -86,24 +97,31 @@ export default function PlatformRegistrationIntro() {
 
   return (
     <Box>
-      <Template heading={tc('menu.superadmin.intro')} leftContent={<AdminMenu />}>
+      <Template heading={tc('menu.superadmin.intro')}>
         <Text mb="2">
-          {parseHtml(tc('platform.registrationIntro.notice1', { platform: platform.name }))}
+          {parseHtml(
+            tc('platform.registrationIntro.notice1', {
+              platform: platform.name,
+            })
+          )}
         </Text>
 
         <Text mb="4">
           {tc('platform.registrationIntro.notice2')}:
           <Button
-            as="a"
-            href={`https://${platform.portalHost}/intro`}
+            variant="ghost"
             ml="2"
-            target="_blank"
-            variant="link"
+            onClick={() => {
+              window.open(
+                `https://${platform.portalHost}/intro`,
+                '_blank'
+              );
+            }}
           >
             {tc('platform.registrationIntro.linkLabel')}
           </Button>
         </Text>
-        <VStack spacing="4">
+        <VStack alignItems="center" gap="4">
           {registrationIntro.map((slide, index) => (
             <Box key={index} py="2" w="100%">
               <Heading mb="2" size="sm">
@@ -111,16 +129,20 @@ export default function PlatformRegistrationIntro() {
               </Heading>
               <ReactQuill
                 value={slide}
-                onChange={(value) => handleChangeRegistrationIntro(value, index)}
+                onChange={(value) =>
+                  handleChangeRegistrationIntro(value, index)
+                }
               />
               {registrationIntro.length > 1 && (
                 <Center p="1">
                   <Button
-                    variant="link"
+                    variant="ghost"
                     colorScheme="red"
                     size="sm"
                     onClick={() =>
-                      setRegistrationIntro(registrationIntro.filter((s, i) => i !== index))
+                      setRegistrationIntro(
+                        registrationIntro.filter((s, i) => i !== index)
+                      )
                     }
                   >
                     {tc('actions.remove')}
@@ -131,12 +153,18 @@ export default function PlatformRegistrationIntro() {
           ))}
 
           <Center bg="white" p="4" mb="8" w="100%">
-            <IconButton icon={<PlusSquareIcon fontSize="xl" />} onClick={() => handleAddSlide()} />
+            <IconButton
+              icon={<PlusSquareIcon fontSize="xl" />}
+              onClick={() => handleAddSlide()}
+            />
           </Center>
         </VStack>
 
         <Center mb="8">
-          <Button isLoading={saving} onClick={() => updatePlatformRegistrationIntro()}>
+          <Button
+            loading={saving}
+            onClick={() => updatePlatformRegistrationIntro()}
+          >
             {tc('actions.submit')}
           </Button>
         </Center>

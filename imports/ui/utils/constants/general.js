@@ -126,7 +126,13 @@ const platformFields = [
   },
 ];
 
-const acceptedImageFormatsForUploads = ['.jpeg', '.jpg', '.png'];
+const acceptedImageFormatsForUploads = [
+  '.jpeg',
+  '.jpg',
+  '.png',
+  '.webp',
+  '.svg',
+];
 
 const acceptedDocumentFormatsForUploads = [
   '.doc',
@@ -140,32 +146,9 @@ const acceptedDocumentFormatsForUploads = [
 
 const maximumDocumentSizeForUploads = '30 MB';
 
-const accordionProps = {
-  buttonProps: {
-    _hover: { bg: 'brand.400', color: 'white' },
-    _expanded: { bg: 'brand.500', color: 'white' },
-    bg: 'white',
-    borderWidth: '0',
-    borderRadius: 'lg',
-    boxShadow: 'sm',
-    color: 'gray.900',
-    cursor: 'pointer',
-  },
-  itemProps: {
-    borderTopWidth: '0',
-    mb: '4',
-  },
-  panelProps: {
-    bg: 'white',
-    borderRadius: 'lg',
-    mt: '2',
-  },
-};
-
 export {
   acceptedImageFormatsForUploads,
   acceptedDocumentFormatsForUploads,
-  accordionProps,
   adminMenu,
   hostFields,
   platformFields,

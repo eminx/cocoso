@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { Box, Center } from '/imports/ui/core';
 
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
@@ -11,19 +12,31 @@ export default function GroupsHybrid({ groups, Host }) {
   const [modalItem, setModalItem] = useState(null);
   const [tc] = useTranslation('common');
 
-  const groupsInMenu = Host?.settings?.menu?.find((item) => item.name === 'groups');
+  const groupsInMenu = Host?.settings?.menu?.find(
+    (item) => item.name === 'groups'
+  );
   const description = groupsInMenu?.description;
   const heading = groupsInMenu?.label;
   const url = `${Host?.host}/${groupsInMenu?.name}`;
 
   return (
     <>
-      <PageHeading description={description} heading={heading} imageUrl={Host?.logo} url={url} />
+      <PageHeading
+        description={description}
+        heading={heading}
+        imageUrl={Host?.logo}
+        url={url}
+      />
 
       <Box px="2" pb="8">
         <InfiniteScroller items={groups}>
           {(item, index) => (
-            <Center key={item._id} flex="1 1 355px" onClick={() => setModalItem(item)}>
+            <Center
+              key={item._id}
+              flex="1 1 355px"
+              p="1"
+              onClick={() => setModalItem(item)}
+            >
               <SexyThumb
                 activity={item}
                 host={Host?.isPortalHost ? item.host : null}
@@ -35,7 +48,11 @@ export default function GroupsHybrid({ groups, Host }) {
         </InfiniteScroller>
 
         {modalItem && (
-          <PopupHandler item={modalItem} kind="groups" onClose={() => setModalItem(null)} />
+          <PopupHandler
+            item={modalItem}
+            kind="groups"
+            onClose={() => setModalItem(null)}
+          />
         )}
       </Box>
     </>

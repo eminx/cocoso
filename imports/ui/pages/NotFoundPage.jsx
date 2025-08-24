@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { Box, Link as CLink, Text } from '/imports/ui/core';
 
 import Template from '../layout/Template';
 
@@ -11,17 +12,22 @@ export default function NotFoundPage() {
   return (
     <Template>
       <Box m="4" p="2">
-        <Text textAlign="center" size="large" margin="2">
+        <Text textAlign="center" size="xl">
           404
         </Text>
+      </Box>
+      <Box m="4" p="2">
         <Text textAlign="center" fontWeight="bold">
           {t('labels.notfound.info')}
         </Text>
-        <Text textAlign="center" mt="6">
-          <Link to="/">
-            <CLink>{t('labels.notfound.gohome')}</CLink>
-          </Link>
-        </Text>
+
+        <Box mt="6">
+          <Text textAlign="center">
+            <Link to="/">
+              <CLink>{t('labels.notfound.gohome')}</CLink>
+            </Link>
+          </Text>
+        </Box>
       </Box>
     </Template>
   );

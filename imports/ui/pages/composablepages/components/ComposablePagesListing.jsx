@@ -1,16 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Link as CLink,
-  Tag,
-} from '@chakra-ui/react';
 import PlusIcon from 'lucide-react/dist/esm/icons/plus';
 import { Trans } from 'react-i18next';
 import dayjs from 'dayjs';
+
+import { Box, Flex, Link as CLink, Tag } from '/imports/ui/core';
 
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { Heading, Text } from '/imports/ui/core';
@@ -40,17 +34,20 @@ function getItemFootnote(composablePage) {
   );
 }
 
-export default function ComposablePagesListing({
-  composablePageTitles,
-}) {
+export default function ComposablePagesListing({ composablePageTitles }) {
   return (
-    <Box flexGrow={1}>
-      <Text
-        size="lg"
-        css={{ marginBottom: '1rem', fontWeight: 'bold' }}
-      >
-        <Trans i18nKey="admin:composable.existing" />:
-      </Text>
+    <Box css={{ flexGrow: '1' }}>
+      <Box py="4">
+        {composablePageTitles.length > 0 ? (
+          <Text size="lg" css={{ marginBottom: '1rem', fontWeight: 'bold' }}>
+            <Trans i18nKey="admin:composable.existing" />:
+          </Text>
+        ) : (
+          <Text size="lg" css={{ marginBottom: '1rem', fontWeight: 'bold' }}>
+            <Trans i18nKey="admin:composable.none" />
+          </Text>
+        )}
+      </Box>
 
       {composablePageTitles.map((composablePage) => (
         <Link
@@ -69,18 +66,14 @@ export default function ComposablePagesListing({
               </Box>
               <Box>
                 <Tag
-                  colorScheme={
-                    composablePage.isPublished ? 'green' : 'orange'
-                  }
+                  colorScheme={composablePage.isPublished ? 'green' : 'orange'}
                   ml="4"
                   size="sm"
                   variant="solid"
                 >
                   <Trans
                     i18nKey={`admin:composable.toolbar.${
-                      composablePage.isPublished
-                        ? 'published'
-                        : 'unpublished'
+                      composablePage.isPublished ? 'published' : 'unpublished'
                     }`}
                   />
                 </Tag>

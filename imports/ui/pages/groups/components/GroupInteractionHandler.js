@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Flex, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
+
+import { Box, Flex, Text } from '/imports/ui/core';
 
 import GroupMeetingDates from './GroupMeetingDates';
 import GroupJoinButton from './GroupJoinButton';
@@ -9,17 +10,24 @@ import GroupAdminFunctions from './GroupAdminFunctions';
 import SlideWidget from '../../../entry/SlideWidget';
 import { ChatButton } from '../../../chattery/ChatHandler';
 
-export default function GroupInteractionHandler({ currentUser, group, slideStart }) {
+export default function GroupInteractionHandler({
+  currentUser,
+  group,
+  slideStart,
+}) {
   if (!group) {
     return null;
   }
 
   const isMember =
-    currentUser && group.members?.some((member) => member.memberId === currentUser._id);
+    currentUser &&
+    group.members?.some((member) => member.memberId === currentUser._id);
 
   const isAdmin =
     isMember &&
-    group.members?.some((member) => member.memberId === currentUser._id && member.isAdmin);
+    group.members?.some(
+      (member) => member.memberId === currentUser._id && member.isAdmin
+    );
 
   const title = (
     <Flex align="center">
@@ -31,8 +39,9 @@ export default function GroupInteractionHandler({ currentUser, group, slideStart
   );
 
   const memberProps = { currentUser, group, isAdmin, isMember };
-  const notificationCount = currentUser?.notifications?.find((n) => n.contextId === group._id)
-    ?.unSeenIndexes?.length;
+  const notificationCount = currentUser?.notifications?.find(
+    (n) => n?.contextId === group?._id
+  )?.unSeenIndexes?.length;
 
   const chatProps = {
     context: 'groups',

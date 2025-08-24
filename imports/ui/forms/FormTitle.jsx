@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Box, Flex, Heading } from '@chakra-ui/react';
 
+import { Box, Flex, Heading } from '/imports/ui/core';
 import { StateContext } from '../LayoutContainer';
 import BackLink from '../entry/BackLink';
 
@@ -14,7 +14,10 @@ export default function FormTitle({ context, children }) {
     <Box>
       <Flex px="2" mb="2">
         <BackLink
-          backLink={{ label: currentContext?.label, value: `/${currentContext?.name}` }}
+          backLink={{
+            label: currentContext?.label,
+            value: `/${currentContext?.name}`,
+          }}
           isSmall={false}
         />
       </Flex>

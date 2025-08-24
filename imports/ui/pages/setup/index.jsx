@@ -1,13 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { Box, Button, Center } from '@chakra-ui/react';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 
+import { Alert, Box, Button, Center } from '/imports/ui/core';
 import { Signup } from '../auth';
 import NewPlatform from './NewPlatform';
 import Stepper from '../../generic/Stepper';
 import { call } from '../../utils/shared';
-import { Alert, message } from '../../generic/message';
+import { message } from '../../generic/message';
 import NewHost from './NewHost';
 
 const defaultSteps = [
@@ -65,12 +70,16 @@ export default function SetupHome({ children }) {
   const onCreateUser = async (data) => {
     try {
       const userId = await call('createAccount', data);
-      Meteor.loginWithPassword(data.username, data.password, (error, respond) => {
-        if (!error) {
-          userId && call('setUserSuperAdmin', userId);
-          setActiveStep('1');
+      Meteor.loginWithPassword(
+        data.username,
+        data.password,
+        (error, respond) => {
+          if (!error) {
+            userId && call('setUserSuperAdmin', userId);
+            setActiveStep('1');
+          }
         }
-      });
+      );
     } catch (error) {
       console.log(error.error);
       message.error(error.error.reason);
@@ -107,7 +116,9 @@ export default function SetupHome({ children }) {
       <Box bg="gray.100" pb="4">
         <Center p="4">
           <Box>
-            <Alert type="success">You have successfully finished the installation</Alert>
+            <Alert type="success">
+              You have successfully finished the installation
+            </Alert>
             <Button my="4" onClick={() => goHomeAndReload()}>
               Go to the home page
             </Button>
@@ -129,7 +140,9 @@ export default function SetupHome({ children }) {
               <Route
                 exact
                 path="/setup/user"
-                element={<Signup hideTermsCheck onSubmit={onCreateUser} />}
+                element={
+                  <Signup hideTermsCheck onSubmit={onCreateUser} />
+                }
               />
               <Route
                 exact

@@ -2,9 +2,10 @@ import React, { Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import loadable from '@loadable/component';
 
+import Terms from '/imports/ui/entry/Terms';
+import Loader from '/imports/ui/core/Loader';
+
 import LayoutContainer, { StateContext } from '../LayoutContainer';
-import Terms from '../entry/Terms';
-import Loader from '../generic/Loader';
 import ComposablePageView from './composablepages/ComposablePageView';
 
 const Communities = loadable(() =>

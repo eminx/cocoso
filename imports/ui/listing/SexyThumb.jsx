@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import dayjs from 'dayjs';
-import { Box, Flex, HStack, Tag as CTag } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+import { Box, Flex, HStack, Tag } from '/imports/ui/core';
 
 import { DateJust } from '../entry/FancyDate';
 import { StateContext } from '../LayoutContainer';
@@ -27,7 +28,7 @@ const imageStyle = {
   maxWidth: '780px',
   objectFit: 'cover',
   width: '100%',
-  borderRadius: '8px',
+  borderRadius: 'var(--cocoso-border-radius)',
 };
 
 function ThumbDate({ occurrence }) {
@@ -44,39 +45,50 @@ function ThumbDate({ occurrence }) {
       color={isPast ? 'gray.400' : 'white'}
     >
       <DateJust>{occurrence.startDate}</DateJust>
-      {occurrence.startDate !== occurrence.endDate && <span style={{ margin: '0 2px' }}>–</span>}
-      {occurrence.startDate !== occurrence.endDate && <DateJust>{occurrence.endDate}</DateJust>}
+      {occurrence.startDate !== occurrence.endDate && (
+        <span style={{ margin: '0 2px' }}>–</span>
+      )}
+      {occurrence.startDate !== occurrence.endDate && (
+        <DateJust>{occurrence.endDate}</DateJust>
+      )}
     </Flex>
   );
 }
 
-export default function SexyThumb({ activity, host, index, showPast = false, tags }) {
+export default function SexyThumb({
+  activity,
+  host,
+  index,
+  showPast = false,
+  tags,
+}) {
   const { allHosts } = isClient && useContext(StateContext);
 
   if (!activity) {
     return null;
   }
 
-  const { datesAndTimes, hostName, readingMaterial, subTitle, tag, title } = activity;
+  const { datesAndTimes, hostName, readingMaterial, subTitle, tag, title } =
+    activity;
   const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
 
   const dates = datesAndTimes;
-  const futureDates = dates.filter((date) => dayjs(date.endDate, 'YYYY-MM-DD').isAfter(yesterday));
-  const pastDates = dates.filter((date) => dayjs(date.endDate, 'YYYY-MM-DD').isBefore(tomorrow));
+  const futureDates = dates.filter((date) =>
+    dayjs(date.endDate, 'YYYY-MM-DD').isAfter(yesterday)
+  );
+  const pastDates = dates.filter((date) =>
+    dayjs(date.endDate, 'YYYY-MM-DD').isBefore(tomorrow)
+  );
   const remainingFuture = futureDates && futureDates.length - 3;
   const remainingPast = futureDates && pastDates.length - 1;
 
-  const hostValue = host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
+  const hostValue =
+    host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
 
   return (
     <Box
-      bg="brand.500"
-      border="1px solid"
-      borderColor="white"
-      borderRadius="lg"
-      boxShadow="xl"
+      bg="theme.500"
       className="thumb-cover-container"
-      fontWeight="bold"
       h={imageStyle.height}
       maxW={imageStyle.maxWidth}
     >
@@ -91,10 +103,17 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
       </div>
 
       {host && (
-        <Box p="1" position="absolute" right="12px" bottom="8px">
-          <CTag bg="rgba(255, 255, 255, 0.7)" size="sm">
+        <Box
+          p="1"
+          css={{
+            bottom: '8px',
+            position: 'absolute',
+            right: '12px',
+          }}
+        >
+          <Tag colorScheme="gray" size="sm">
             {hostValue}
-          </CTag>
+          </Tag>
         </Box>
       )}
 
@@ -106,9 +125,9 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
             {tags && (
               <Flex my="2">
                 {tags.map((t) => (
-                  <CTag bg="gray.700" color="white" key={t} size="sm">
+                  <Tag colorScheme="gray" key={t} size="sm">
                     {t}
-                  </CTag>
+                  </Tag>
                 ))}
               </Flex>
             )}
@@ -123,7 +142,7 @@ export default function SexyThumb({ activity, host, index, showPast = false, tag
               }}
             >
               {!showPast && futureDates && (
-                <HStack align="center" color="brand.50" mb="4" spacing="4">
+                <HStack align="center" color="theme.50" mb="4" spacing="4">
                   {futureDates.slice(0, 3).map((occurrence) => (
                     <ThumbDate
                       key={occurrence?.startDate + occurrence?.startTime}

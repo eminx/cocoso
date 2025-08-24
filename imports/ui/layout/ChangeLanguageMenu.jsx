@@ -1,12 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Menu, MenuButton, MenuList, MenuItem, Select, Text } from '@chakra-ui/react';
 
-import { allLangs } from '../../startup/i18n';
+import { Box, Select, Text } from '/imports/ui/core';
+import { allLangs } from '/imports/startup/i18n';
+import Menu from '/imports/ui/generic/Menu';
 
 export default function ChangeLanguage({
   hideHelper = false,
-  isCentered = false,
+  centered = false,
   register,
   select,
   onChange,
@@ -14,43 +15,47 @@ export default function ChangeLanguage({
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
 
-  if (!select)
-    return (
-      <Box textAlign={isCentered ? 'center' : 'initial'}>
-        {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
-        <Menu placement="top">
-          <MenuButton fontWeight="bold" textDecoration="underline">
-            {t(`common:langs.${i18n.language}`)}
-          </MenuButton>
-          <MenuList>
-            {allLangs.map((lang) => (
-              <MenuItem
-                key={lang.value}
-                color="gray.700"
-                fontWeight={lang.value === currentLang ? 'bold' : 'normal'}
-                onClick={() => i18n.changeLanguage(lang.value)}
-              >
-                {lang.label}
-              </MenuItem>
-            ))}
-          </MenuList>
-        </Menu>
-      </Box>
-    );
+  const handleChange = (e) => {
+    const value = e.target.value;
+    if (onChange) {
+      onChange(value);
+    } else {
+      i18n.changeLanguage(value);
+    }
+  };
 
   return (
-    <Box>
-      {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
+    <Box
+      bg="theme.50"
+      p="4"
+      css={{ borderRadius: 'var(--cocoso-border-radius)' }}
+    >
+      {!hideHelper && (
+        <Text
+          fontSize="sm"
+          mb="2"
+          css={{
+            marginBottom: '0.5rem',
+            textAlign: 'center',
+          }}
+        >
+          {t('common:langs.form.label')}:
+        </Text>
+      )}
       <Select
         name="lang"
         placeholder={t('common:langs.form.holder')}
-        onChange={(e) => onChange(e.target.value)}
+        value={currentLang}
+        onChange={handleChange}
         {...(register && register('lang'))}
       >
         {allLangs.map((lang) => (
-          <option key={lang.value} selected={lang.value === currentLang} value={lang.value}>
+          <option
+            key={lang.value}
+            // selected={lang.value === currentLang}
+            value={lang.value}
+          >
             {lang.label}
-            {/* {t(`common:langs.${lang}`)} */}
           </option>
         ))}
       </Select>

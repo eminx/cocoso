@@ -1,12 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { Box, Center, Flex, Heading, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { StateContext } from '../../LayoutContainer';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Link as CLink,
+  Text,
+} from '/imports/ui/core';
+
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/ui/utils/shared';
+import { StateContext } from '/imports/ui/LayoutContainer';
+
 import { ForgotPassword } from './index';
-import { call } from '../../utils/shared';
-import { message } from '../../generic/message';
 
 function ForgotPasswordPage() {
   const [t] = useTranslation('accounts');
@@ -40,7 +49,14 @@ function ForgotPasswordPage() {
             </Text>
           </Center>
 
-          <Box bg="brand.50" borderColor="brand.100" borderWidth={1} p="6">
+          <Box
+            bg="theme.50"
+            p="6"
+            css={{
+              border: '1px solid',
+              borderColor: 'var(--cocoso-colors-theme-100)',
+            }}
+          >
             {emailSent ? (
               <Text>{t('password.message.linkSend')}</Text>
             ) : (

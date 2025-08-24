@@ -1,23 +1,33 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Box, Button, Center, Flex, Link as CLink, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import parseHtml from 'html-react-parser';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { useTranslation } from 'react-i18next';
 
-import CalendarView from './CalendarView';
-import ConfirmModal from '../../generic/ConfirmModal';
-import Tag from '../../generic/Tag';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Link as CLink,
+  Text,
+  Wrap,
+} from '/imports/ui/core';
+
+import Modal from '/imports/ui/core/Modal';
 import {
   call,
   getNonComboResourcesWithColor,
   getComboResourcesWithColor,
   parseAllBookingsWithResources,
-} from '../../utils/shared';
-import { StateContext } from '../../LayoutContainer';
-import PageHeading from '../../listing/PageHeading';
+} from '/imports/ui/utils/shared';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import PageHeading from '/imports/ui/listing/PageHeading';
+import Tag from '/imports/ui/generic/Tag';
+
+import CalendarView from './CalendarView';
 
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;
@@ -45,7 +55,8 @@ export default function Calendar() {
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [calendarFilter, setCalendarFilter] = useState(null);
 
-  const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, role } =
+    useContext(StateContext);
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
   const [tc] = useTranslation('common');
@@ -116,17 +127,19 @@ export default function Calendar() {
       return '';
     }
     if (activity.startDate === activity.endDate) {
-      return `${activity.startTime}–${activity.endTime} ${dayjs(activity.startDate).format(
-        'DD MMMM'
-      )}`;
+      return `${activity.startTime}–${activity.endTime} ${dayjs(
+        activity.startDate
+      ).format('DD MMMM')}`;
     }
-    return `${dayjs(activity.startDate).format('DD MMM')} ${activity.startTime} – ${dayjs(
-      activity.endDate
-    ).format('DD MMM')} ${activity.endTime}`;
+    return `${dayjs(activity.startDate).format('DD MMM')} ${
+      activity.startTime
+    } – ${dayjs(activity.endDate).format('DD MMM')} ${activity.endTime}`;
   };
 
   const isCreatorOrAdmin = () =>
-    (selectedActivity && currentUser && currentUser.username === selectedActivity.authorName) ||
+    (selectedActivity &&
+      currentUser &&
+      currentUser.username === selectedActivity.authorName) ||
     role === 'admin';
 
   const handlePrimaryButtonClick = () => {
@@ -141,7 +154,9 @@ export default function Calendar() {
       return;
     }
 
-    const listing = selectedActivity.isPublicActivity ? 'activities' : 'calendar';
+    const listing = selectedActivity.isPublicActivity
+      ? 'activities'
+      : 'calendar';
     if (isSameHost) {
       navigate(`/${listing}/${selectedActivity.activityId}/info`);
       return;
@@ -170,7 +185,8 @@ export default function Calendar() {
   );
 
   const nonComboResources = resources.filter((resource) => !resource.isCombo);
-  const nonComboResourcesWithColor = getNonComboResourcesWithColor(nonComboResources);
+  const nonComboResourcesWithColor =
+    getNonComboResourcesWithColor(nonComboResources);
 
   const comboResources = resources.filter((resource) => resource.isCombo);
   const comboResourcesWithColor = getComboResourcesWithColor(
@@ -179,7 +195,9 @@ export default function Calendar() {
   );
 
   const allFilteredActsWithColors = filteredActivities.map((act) => {
-    const resource = nonComboResourcesWithColor.find((res) => res._id === act.resourceId);
+    const resource = nonComboResourcesWithColor.find(
+      (res) => res._id === act.resourceId
+    );
     const resourceColor = (resource && resource.color) || '#484848';
 
     return {
@@ -189,18 +207,22 @@ export default function Calendar() {
   });
 
   const selectFilterView =
-    nonComboResourcesWithColor.filter((r) => r.isBookable)?.length >= maxResourceLabelsToShow;
+    nonComboResourcesWithColor.filter((r) => r.isBookable)?.length >=
+    maxResourceLabelsToShow;
 
-  const allResourcesForSelect = [...comboResourcesWithColor, ...nonComboResourcesWithColor].filter(
-    (r) => r.isBookable
-  );
+  const allResourcesForSelect = [
+    ...comboResourcesWithColor,
+    ...nonComboResourcesWithColor,
+  ].filter((r) => r.isBookable);
 
   if (!currentHost) {
     return null;
   }
 
   const { settings } = currentHost;
-  const calendarInMenu = settings?.menu.find((item) => item.name === 'calendar');
+  const calendarInMenu = settings?.menu.find(
+    (item) => item.name === 'calendar'
+  );
   const heading = calendarInMenu?.label;
   const description = calendarInMenu?.description;
   const url = `${currentHost?.host}/${calendarInMenu?.name}`;
@@ -219,7 +241,7 @@ export default function Calendar() {
           {!selectFilterView ? (
             <Box>
               <Wrap justify="center" px="1" pb="1" mb="3">
-                <WrapItem>
+                <Box>
                   <Tag
                     alignSelf="center"
                     checkable
@@ -229,12 +251,12 @@ export default function Calendar() {
                     checked={!calendarFilter}
                     onClick={() => setCalendarFilter(null)}
                   />
-                </WrapItem>
+                </Box>
 
                 {nonComboResourcesWithColor
                   .filter((r) => r.isBookable)
                   .map((resource) => (
-                    <WrapItem key={resource._id}>
+                    <Box key={resource._id}>
                       <Tag
                         checkable
                         label={resource.label}
@@ -242,14 +264,14 @@ export default function Calendar() {
                         checked={calendarFilter?._id === resource._id}
                         onClick={() => setCalendarFilter(resource)}
                       />
-                    </WrapItem>
+                    </Box>
                   ))}
               </Wrap>
               <Wrap justify="center" mb="2" px="1">
                 {comboResourcesWithColor
                   .filter((r) => r.isBookable)
                   .map((resource) => (
-                    <WrapItem key={resource._id}>
+                    <Box key={resource._id}>
                       <Tag
                         checkable
                         label={resource.label}
@@ -258,7 +280,7 @@ export default function Calendar() {
                         checked={calendarFilter?._id === resource._id}
                         onClick={() => setCalendarFilter(resource)}
                       />
-                    </WrapItem>
+                    </Box>
                   ))}
               </Wrap>
             </Box>
@@ -308,16 +330,23 @@ export default function Calendar() {
         </Box>
       </Box>
 
-      <ConfirmModal
-        visible={Boolean(selectedActivity)}
+      <Modal
+        open={Boolean(selectedActivity)}
         title={selectedActivity && selectedActivity.title}
         confirmText={tc('actions.entryPage')}
-        cancelText={isCreatorOrAdmin() ? tc('actions.update') : tc('actions.close')}
+        cancelText={
+          isCreatorOrAdmin() ? tc('actions.update') : tc('actions.close')
+        }
+        onClose={() => setSelectedActivity(null)}
         onConfirm={() => handlePrimaryButtonClick()}
         onCancel={() => handleSecondaryButtonClick()}
-        onOverlayClick={() => setSelectedActivity(null)}
       >
-        <Box bg="gray.100" style={{ fontFamily: 'Courier, monospace' }} p="2" my="1">
+        <Box
+          bg="theme.50"
+          style={{ fontFamily: 'Courier, monospace' }}
+          p="2"
+          my="1"
+        >
           <div>
             <Link to={`/@${selectedActivity?.authorName}`}>
               <CLink as="span" fontWeight="bold">
@@ -336,20 +365,11 @@ export default function Calendar() {
 
         <Text fontSize="sm" mt="2" p="1">
           {selectedActivity?.longDescription &&
-            (selectedActivity?.isGroupPrivate ? '' : parseHtml(selectedActivity?.longDescription))}
+            (selectedActivity?.isGroupPrivate
+              ? ''
+              : parseHtml(selectedActivity?.longDescription))}
         </Text>
-
-        {/* {!selectedActivity?.isGroupPrivate && (
-            <Center>
-              <Link to={selectedLinkForModal}>
-                <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
-                  {' '}
-                  {tc('actions.entryPage')}
-                </Button>
-              </Link>
-            </Center>
-          )} */}
-      </ConfirmModal>
+      </Modal>
     </Box>
   );
 }

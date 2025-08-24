@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Center, IconButton } from '@chakra-ui/react';
 import SmallCloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
+
+import { Box, Center, IconButton } from '/imports/ui/core';
 
 import FileDropper from './FileDropper';
 import { resizeImage, uploadImage } from '../utils/shared';
@@ -40,10 +41,7 @@ export default function ImageUploader({
             uploadableImage.resizableData,
             1600
           );
-          const uploadedImage = await uploadImage(
-            resizedImage,
-            uploadParam
-          );
+          const uploadedImage = await uploadImage(resizedImage, uploadParam);
           return uploadedImage;
         })
       );
@@ -136,9 +134,7 @@ export default function ImageUploader({
       <>
         <Center>
           <FileDropper
-            imageUrl={
-              localImages?.length > 0 ? localImages[0].src : null
-            }
+            imageUrl={localImages?.length > 0 ? localImages[0].src : null}
             setUploadableImage={setUploadableImages}
             isMultiple={false}
           />
@@ -149,7 +145,7 @@ export default function ImageUploader({
   }
 
   return (
-    <Box>
+    <>
       <Center>
         <Box w="100%">
           <SortableList
@@ -165,37 +161,30 @@ export default function ImageUploader({
           >
             {localImages.map((image, index) => (
               <SortableItem key={image.src}>
-                <Box
-                  className="sortable-thumb"
-                  style={thumbStyle(image.src)}
-                >
-                  <IconButton
-                    className="sortable-thumb-icon"
-                    colorScheme="gray.900"
-                    icon={
-                      <SmallCloseIcon
-                        style={{ pointerEvents: 'none' }}
-                      />
-                    }
-                    size="xs"
-                    style={{
-                      position: 'absolute',
-                      top: 4,
-                      right: 4,
-                      zIndex: 1501,
-                    }}
-                    onClick={() => handleRemoveImage(index)}
-                  />
-                </Box>
+                <div>
+                  <Box className="sortable-thumb" style={thumbStyle(image.src)}>
+                    <IconButton
+                      className="sortable-thumb-icon"
+                      icon={
+                        <SmallCloseIcon style={{ pointerEvents: 'none' }} />
+                      }
+                      size="xs"
+                      css={{
+                        color: 'white',
+                        ':hover': {
+                          color: 'var(--cocoso-colors-gray-100)',
+                        },
+                      }}
+                      onClick={() => handleRemoveImage(index)}
+                    />
+                  </Box>
+                </div>
               </SortableItem>
             ))}
           </SortableList>
         </Box>
       </Center>
-      <FileDropper
-        setUploadableImage={setUploadableImages}
-        isMultiple
-      />
-    </Box>
+      <FileDropper setUploadableImage={setUploadableImages} isMultiple />
+    </>
   );
 }

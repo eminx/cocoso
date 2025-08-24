@@ -6,7 +6,7 @@ const workFormFields = (t, tc) => [
     type: 'input',
     value: 'title',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {
@@ -23,7 +23,7 @@ const workFormFields = (t, tc) => [
     type: 'quill',
     value: 'longDescription',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {

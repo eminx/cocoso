@@ -43,8 +43,8 @@ labels:
   contact: Contact
   content: Content
   create:
-    activities: New Activity
-    calendar: New Activity
+    activities: New Event
+    calendar: New Booking
     groups: New Process/Group
     info: New Info Page
     resources: New Resource
@@ -178,7 +178,7 @@ modals:
           bug: Bug
           compliment: Compliment
       details:
-        label: Details
+        label: Message
 
   toPortalApp: Continue to the Portal App
 

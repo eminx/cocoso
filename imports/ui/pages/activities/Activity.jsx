@@ -1,11 +1,17 @@
-import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
 import ActivityHybrid from '../../entry/ActivityHybrid';
 import ActivityInteractionHandler from './components/ActivityInteractionHandler';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import NewEntryHandler from '../../listing/NewEntryHandler';
 import EditPublicActivity from './EditPublicActivity';
 import EditCalendarActivity from '../calendar/EditCalendarActivity';
@@ -64,7 +70,11 @@ export default function Activity() {
           <ActivityInteractionHandler slideStart={rendered} />
 
           <NewEntryHandler>
-            {activity.isPublicActivity ? <EditPublicActivity /> : <EditCalendarActivity />}
+            {activity.isPublicActivity ? (
+              <EditPublicActivity />
+            ) : (
+              <EditCalendarActivity />
+            )}
           </NewEntryHandler>
         </ActivityContext.Provider>
       )}

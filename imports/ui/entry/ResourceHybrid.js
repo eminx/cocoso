@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Text, VStack } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
+import { Box, Text, VStack } from '/imports/ui/core';
 import TablyCentered from './TablyCentered';
 import DocumentsField from '../pages/resources/components/DocumentsField';
 
@@ -32,12 +32,13 @@ export default function ResourceHybrid({ documents, resource, Host }) {
           {resource.resourcesForCombo.map((res) => (
             <Link key={res._id} to={`/resources/${res._id}/info`}>
               <Box
-                _hover={{ bg: 'white' }}
-                bg="gray.50"
-                borderRadius="lg"
-                color="blue.500"
-                p="2"
-                textAlign="left"
+                css={{
+                  ':hover': {
+                    backgroundColor: 'white',
+                  },
+                }}
+                px="4"
+                py="2"
               >
                 <Text fontSize="lg">{res.label}</Text>
               </Box>
@@ -78,7 +79,9 @@ export default function ResourceHybrid({ documents, resource, Host }) {
     tags.push(<Trans i18nKey="resources:cards.isBookable">Bookable</Trans>);
   }
 
-  const resourcesInMenu = Host?.settings?.menu?.find((item) => item.name === 'resources');
+  const resourcesInMenu = Host?.settings?.menu?.find(
+    (item) => item.name === 'resources'
+  );
   const backLink = {
     value: '/resources',
     label: resourcesInMenu?.label,
@@ -88,8 +91,6 @@ export default function ResourceHybrid({ documents, resource, Host }) {
 
   return (
     <TablyCentered
-      action={null}
-      adminMenu={null}
       backLink={backLink}
       images={resource?.images}
       tabs={tabs}

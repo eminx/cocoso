@@ -1,24 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  IconButton,
-  Switch,
-  Text,
-} from '@chakra-ui/react';
 import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
 import XIcon from 'lucide-react/dist/esm/icons/x';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
 import ReactSelect from 'react-select';
 
+import {
+  Alert,
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  Heading,
+  IconButton,
+  Loader,
+  Text,
+} from '/imports/ui/core';
+
 import { call } from '../../utils/shared';
-import Loader from '../../generic/Loader';
 import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
 import { StateContext } from '../../LayoutContainer';
 import TablyRouter from '../../generic/TablyRouter';
 import Boxling from './Boxling';
@@ -116,8 +117,7 @@ export default function MenuSettings() {
 
     const options = composablePageTitles.filter(
       (item) =>
-        item.isPublished &&
-        !existingComposableIdsInlocalMenu.includes(item._id)
+        item.isPublished && !existingComposableIdsInlocalMenu.includes(item._id)
     );
     return options;
   };
@@ -146,32 +146,35 @@ export default function MenuSettings() {
 
   const settings = currentHost?.settings;
   const isOptionsSubmitButtonDisabled =
-    settings.isBurgerMenuOnDesktop ===
-      localSettings.isBurgerMenuOnDesktop &&
-    settings.isBurgerMenuOnMobile ===
-      localSettings.isBurgerMenuOnMobile;
+    settings.isBurgerMenuOnDesktop === localSettings.isBurgerMenuOnDesktop &&
+    settings.isBurgerMenuOnMobile === localSettings.isBurgerMenuOnMobile;
 
   const tabs = [
     {
       title: t('settings.tabs.menuOrder'),
       path: 'order',
       content: (
-        <Box my="8">
-          <Heading as="h4" fontSize="18px" mb="2">
+        <Box py="6">
+          <Heading as="h4" size="sm">
             {t('settings.tabs.menuOrder')}
           </Heading>
 
-          <Text mb="4">{t('menu.tabs.order.info')}</Text>
+          <Box mb="6">
+            <Text fontSize="sm">{t('menu.tabs.order.info')}</Text>
+          </Box>
 
-          <Boxling>
-            <Box bg="gray.100" mb="8" p="4">
-              <Text fontSize="lg" mb="2">
-                Add a composable page
-              </Text>
+          <Boxling
+            style={{
+              backgroundColor: 'var(--cocoso-colors-bluegray-50)',
+            }}
+          >
+            <Box mb="8">
+              <Box mb="2">
+                <Text>{t('composable.form.addToMenu')}</Text>
+              </Box>
 
               <ReactSelect
                 options={getComposablePageOptions()}
-                placeholder="Select a page"
                 value={null}
                 onChange={addComposablePage}
                 getOptionValue={(option) => option._id}
@@ -185,37 +188,38 @@ export default function MenuSettings() {
                   .filter((item) => item.isVisible)
                   .map((value, index) => (
                     <SortableItem key={value.name}>
-                      <Flex
-                        align="center"
-                        bg="white"
-                        boxShadow="md"
-                        borderRadius="lg"
-                        cursor="move"
-                        justifyContent="space-between"
-                        mb="4"
-                        p="2"
-                        style={{ fontFamily: 'Sarabun, sans-serif' }}
-                      >
-                        <Flex align="center">
-                          <DragHandleIcon />{' '}
-                          <Text ml="2">{value.label}</Text>
+                      <div>
+                        <Flex
+                          align="center"
+                          justifyContent="space-between"
+                          mb="4"
+                          p="2"
+                          style={{
+                            backgroundColor: 'white',
+                            boxShadow: 'var(--cocoso-box-shadow)',
+                            borderRadius: 'var(--cocoso-border-radius)',
+                            cursor: 'move',
+                            fontFamily: 'sans-serif',
+                          }}
+                        >
+                          <Flex align="center">
+                            <DragHandleIcon /> <Text ml="2">{value.label}</Text>
+                          </Flex>
+                          {value.isComposablePage ? (
+                            <IconButton
+                              colorScheme="bluegray"
+                              icon={
+                                <XIcon
+                                  size="18px"
+                                  onClick={() => removeComposablePage(index)}
+                                />
+                              }
+                              size="xs"
+                              variant="ghost"
+                            />
+                          ) : null}
                         </Flex>
-                        {value.isComposablePage ? (
-                          <IconButton
-                            colorScheme="gray"
-                            icon={
-                              <XIcon
-                                size="18px"
-                                onClick={() =>
-                                  removeComposablePage(index)
-                                }
-                              />
-                            }
-                            size="xs"
-                            variant="ghost"
-                          />
-                        ) : null}
-                      </Flex>
+                      </div>
                     </SortableItem>
                   ))}
               </SortableList>
@@ -233,55 +237,47 @@ export default function MenuSettings() {
       title: t('menu.options.label'),
       path: 'options',
       content: (
-        <Box my="8">
+        <Box py="6">
+          <Heading as="h4" size="sm">
+            {t('menu.burgermenu.title')}
+          </Heading>
+
+          <Box mb="6">
+            <Text fontSize="sm">{t('menu.burgermenu.text')}</Text>
+          </Box>
+
           <Boxling mb="4">
-            <Heading as="h4" fontSize="18px" mb="2">
-              {t('menu.burgermenu.title')}
-            </Heading>
-
-            <Text mb="4">{t('menu.burgermenu.text')}</Text>
-
-            <Flex mb="4">
-              <Switch
-                isChecked={Boolean(localSettings.isBurgerMenuOnMobile)}
-                mr="2"
-                mt="1"
+            <Flex py="4">
+              <Checkbox
+                checked={Boolean(localSettings.isBurgerMenuOnMobile)}
+                id="is-burger-menu-mobile"
                 name="isBurgerMenuOnMobile"
                 onChange={(event) =>
                   handleSwitchBurgerMenuMobile(event.target.checked)
                 }
-              />
-
-              <Box>
-                <Text fontWeight="bold">
-                  {t('menu.burgermenu.mobile')}
-                </Text>
-              </Box>
+              >
+                {t('menu.burgermenu.mobile')}
+              </Checkbox>
             </Flex>
 
             <Flex mb="4">
-              <Switch
-                isChecked={Boolean(localSettings.isBurgerMenuOnDesktop)}
-                isDisabled={!localSettings.isBurgerMenuOnMobile}
-                mr="2"
-                mt="1"
+              <Checkbox
+                checked={Boolean(localSettings.isBurgerMenuOnDesktop)}
+                disabled={!localSettings.isBurgerMenuOnMobile}
+                id="is-burger-menu-desktop"
                 name="isBurgerMenuOnDesktop"
                 onChange={(event) =>
                   handleSwitchBurgerMenuDesktop(event.target.checked)
                 }
-              />
-
-              <Box>
-                <Text fontWeight="bold">
-                  {t('menu.burgermenu.desktop')}
-                </Text>
-              </Box>
+              >
+                {t('menu.burgermenu.desktop')}
+              </Checkbox>
             </Flex>
           </Boxling>
 
           <Flex justify="flex-end" pt="2">
             <Button
-              isDisabled={isOptionsSubmitButtonDisabled}
+              disabled={isOptionsSubmitButtonDisabled}
               onClick={() => handleMenuSave()}
             >
               {tc('actions.submit')}

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Button, Flex, Input, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import FormField from '../../forms/FormField';
-import ChangeLanguage from '../../layout/ChangeLanguageMenu';
+import { Button, Flex, Input, VStack } from '/imports/ui/core';
+import FormField from '/imports/ui/forms/FormField';
+import ChangeLanguage from '/imports/ui/layout/ChangeLanguageMenu';
 
-function SettingsForm({ initialValues, onSubmit }) {
+export default function SettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
     defaultValues: initialValues,
   });
@@ -18,7 +18,7 @@ function SettingsForm({ initialValues, onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Stack spacing="4">
+      <VStack>
         <FormField label={t('new.name.label')}>
           <Input {...register('name')} />
         </FormField>
@@ -38,13 +38,11 @@ function SettingsForm({ initialValues, onSubmit }) {
           <ChangeLanguage hideHelper select register={register} />
         </FormField>
         <Flex justify="flex-end" py="4">
-          <Button isDisabled={!isDirty || isSubmitting} type="submit">
+          <Button disabled={!isDirty || isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>
-      </Stack>
+      </VStack>
     </form>
   );
 }
-
-export default SettingsForm;

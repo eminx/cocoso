@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
-import { Box, Button, Input, NumberInput, NumberInputField, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import {
+  Box,
+  Button,
+  Flex,
+  Input,
+  NumberInput,
+  VStack,
+} from '/imports/ui/core';
+
 import FormField from '../../../forms/FormField';
 
-export default function RsvpForm({ isUpdateMode = false, defaultValues, onSubmit, onDelete }) {
+export default function RsvpForm({
+  isUpdateMode = false,
+  defaultValues,
+  onSubmit,
+  onDelete,
+}) {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const { handleSubmit, register, formState } = useForm({
     defaultValues,
@@ -31,36 +44,31 @@ export default function RsvpForm({ isUpdateMode = false, defaultValues, onSubmit
   return (
     <Box mb="8">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <Stack spacing={2}>
+        <VStack gap="0">
           {fields.map((field) => (
-            <FormField key={field.name} label={field.label}>
-              <Input {...register(field.name, { required: true })} size="sm" />
+            <FormField key={field.name} label={field.label} required>
+              <Input {...register(field.name, { required: true })} />
             </FormField>
           ))}
-          <FormField label={t('public.register.form.people.number')}>
-            <NumberInput size="sm">
-              <NumberInputField {...register('numberOfPeople', { required: true })} />
-            </NumberInput>
+          <FormField label={t('public.register.form.people.number')} required>
+            <NumberInput {...register('numberOfPeople', { required: true })} />
           </FormField>
-          <Box pt="2" w="100%">
+          <Flex justifyContent="flex-end" pt="2" w="100%">
             <Button
-              colorScheme="green"
-              isDisabled={isUpdateMode && !isDirty}
-              isLoading={isSubmitting}
-              loadingText={t('public.register.form.loading')}
-              size="sm"
+              disabled={isUpdateMode && !isDirty}
+              loading={isSubmitting}
               type="submit"
-              w="100%"
+              variant="outline"
             >
               {isUpdateMode
                 ? t('public.register.form.actions.update')
                 : t('public.register.form.actions.create')}
             </Button>
-          </Box>
+          </Flex>
           {isUpdateMode && (
             <Button
               colorScheme="red"
-              isLoading={deleteLoading}
+              loading={deleteLoading}
               size="sm"
               variant="ghost"
               onClick={() => {
@@ -71,7 +79,7 @@ export default function RsvpForm({ isUpdateMode = false, defaultValues, onSubmit
               {t('public.register.form.actions.remove')}
             </Button>
           )}
-        </Stack>
+        </VStack>
       </form>
     </Box>
   );

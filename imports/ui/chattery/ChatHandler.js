@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
-import { Badge, Button, Center, IconButton, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
-import { call } from '../utils/shared';
-import Drawer from '../generic/Drawer';
+import {
+  Badge,
+  Box,
+  Center,
+  Drawer,
+  IconButton,
+  Text,
+  VStack,
+} from '/imports/ui/core';
+import { call } from '/imports/ui/utils/shared';
+
 import { Chattery, useChattery } from '../chattery';
 
-export function ChatUI({ context, currentUser, item, open, title, withInput, setOpen }) {
+export function ChatUI({
+  context,
+  currentUser,
+  item,
+  open,
+  title,
+  withInput,
+  setOpen,
+}) {
   const [tc] = useTranslation('common');
   const { discussion } = item && useChattery(item._id);
 
@@ -34,7 +50,9 @@ export function ChatUI({ context, currentUser, item, open, title, withInput, set
       if (!notification.unSeenIndexes) {
         return false;
       }
-      return notification.unSeenIndexes.some((unSeenIndex) => unSeenIndex === messageIndex);
+      return notification.unSeenIndexes.some(
+        (unSeenIndex) => unSeenIndex === messageIndex
+      );
     });
 
     if (!shouldRun) {
@@ -50,65 +68,92 @@ export function ChatUI({ context, currentUser, item, open, title, withInput, set
 
   return (
     <Drawer
-      bg="gray.300"
-      bodyProps={{ paddingTop: 0, paddingBottom: 0 }}
-      isOpen={open}
+      open={open}
+      size="xl"
       title={title || tc('labels.discussion')}
       onClose={() => setOpen(false)}
     >
-      <Chattery
-        messages={discussion}
-        withInput={withInput}
-        onNewMessage={addNewChatMessage}
-        removeNotification={removeNotification}
-      />
+      {open && (
+        <Chattery
+          messages={discussion}
+          withInput={withInput}
+          onNewMessage={addNewChatMessage}
+          removeNotification={removeNotification}
+        />
+      )}
     </Drawer>
   );
 }
 
-export function ChatButton({ context, currentUser, item, notificationCount, title, withInput }) {
+export function ChatButton({
+  context,
+  currentUser,
+  item,
+  notificationCount,
+  title,
+  withInput,
+}) {
   const [open, setOpen] = useState(false);
   const [tc] = useTranslation('common');
 
-  const props = { context, currentUser, item, open, title, withInput, setOpen };
+  const props = {
+    context,
+    currentUser,
+    item,
+    open,
+    title,
+    withInput,
+    setOpen,
+  };
 
   return (
-    <>
+    <Box css={{ flexGrow: '0' }}>
       <Center>
-        <VStack spacing="0" position="relative">
-          <IconButton
-            _hover={{ bg: 'brand.100' }}
-            _active={{ bg: 'brand.200' }}
-            bg="brand.50"
-            border="1px solid"
-            color="brand.600"
-            fontSize="32px"
-            icon={<MessagesSquare />}
-            isRound
-            variant="ghost"
-            onClick={() => setOpen(true)}
-          />
+        <VStack
+          style={{
+            alignItems: 'center',
+            gap: '0',
+            position: 'relative',
+          }}
+        >
+          <Box mb="1">
+            <IconButton
+              icon={<MessagesSquare />}
+              variant="outline"
+              onClick={() => setOpen(true)}
+            />
+          </Box>
           {notificationCount && (
             <Badge
-              borderRadius="full"
-              border="2px solid white"
-              colorScheme="red"
-              position="absolute"
-              right="-6px"
-              size="md"
-              top="24px"
-              variant="solid"
+              style={{
+                border: '2px solid white',
+                borderRadius: '50%',
+                colorScheme: 'red',
+                fontSize: '0.75rem',
+                height: '1.5rem',
+                padding: '0.45rem',
+                position: 'absolute',
+                right: '-0.75rem',
+                top: '-0.5rem',
+                width: '1.5rem',
+              }}
             >
               {notificationCount}
             </Badge>
           )}
-          <Button color="brand.50" size="xs" variant="link" onClick={() => setOpen(true)}>
+          <Text
+            color="theme.50"
+            fontSize="xs"
+            fontWeight="bold"
+            textAlign="center"
+            onClick={() => setOpen(true)}
+          >
             {tc('labels.discussion')}
-          </Button>
+          </Text>
         </VStack>
       </Center>
 
       <ChatUI {...props} />
-    </>
+    </Box>
   );
 }

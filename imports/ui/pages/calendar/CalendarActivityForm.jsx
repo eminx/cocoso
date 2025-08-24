@@ -1,15 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Checkbox, FormLabel } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
-import { call } from '../../utils/shared';
-import GenericEntryForm from '../../forms/GenericEntryForm';
-import FormField from '../../forms/FormField';
-import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
+import { Box, Checkbox } from '/imports/ui/core';
+
+import { call } from '/imports/ui/utils/shared';
+import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
+import FormField from '/imports/ui/forms/FormField';
+import DatesAndTimes, {
+  emptyDateAndTime,
+} from '/imports/ui/forms/DatesAndTimes';
+import { LoaderContext } from '/imports/ui/listing/NewEntryHandler';
+
 import calendarActivityFormFields from './calendarActivityFormFields';
-import { LoaderContext } from '../../listing/NewEntryHandler';
 
 const animatedComponents = makeAnimated();
 
@@ -22,7 +26,9 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   const [state, setState] = useState({
     datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
-    selectedResource: activity ? { label: activity.resource, value: activity.resourceId } : null,
+    selectedResource: activity
+      ? { label: activity.resource, value: activity.resourceId }
+      : null,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
     resources: [],
   });
@@ -76,7 +82,8 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     const isTimesInValid = datesAndTimes.some(
-      (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
+      (dateTime) =>
+        !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
     );
 
     setIsSubmitButtonDisabled(isTimesInValid || isConflictHard);
@@ -120,11 +127,11 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   };
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders?.isCreating) {
       return;
     }
     parseActivity();
-  }, [loaders.isCreating]);
+  }, [loaders?.isCreating]);
 
   const handleSubmit = (formValues) => {
     setState((prevState) => ({
@@ -167,21 +174,28 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       isSubmitButtonDisabled={isSubmitButtonDisabled}
       onSubmit={handleSubmit}
     >
-      <FormField helperText={t('form.exclusive.helper')} label={t('form.exclusive.label')} my="4">
+      <FormField
+        helperText={t('form.exclusive.helper')}
+        label={t('form.exclusive.label')}
+        my="4"
+      >
         <Box bg="white" borderRadius="lg" display="inline" p="2">
           <Checkbox
-            isChecked={state.isExclusiveActivity}
+            checked={state.isExclusiveActivity}
+            id="is-exclusive-activity"
             size="lg"
             onChange={handleExclusiveSwitch}
           >
-            <FormLabel style={{ cursor: 'pointer' }} mb="0">
-              {t('form.exclusive.holder')}
-            </FormLabel>
+            {t('form.exclusive.holder')}
           </Checkbox>
         </Box>
       </FormField>
 
-      <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')} my="12">
+      <FormField
+        helperText={t('form.resource.helper')}
+        label={t('form.resource.label')}
+        my="12"
+      >
         <AutoCompleteSelect
           isClearable
           onChange={handleSelectResource}
@@ -205,7 +219,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
         helperText={t('form.occurrences.helper')}
         label={t('form.occurrences.label')}
         mb="14"
-        isRequired
+        required
       >
         <DatesAndTimes
           activityId={activity?._id}

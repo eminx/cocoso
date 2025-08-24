@@ -1,7 +1,6 @@
 import React from 'react';
-import { ChakraProvider, Progress } from '@chakra-ui/react';
 
-import generateTheme from '../ui/utils/constants/theme';
+import { Loader } from '/imports/ui/core';
 
 import {
   ActivityList,
@@ -19,16 +18,7 @@ import {
   UserList,
   User,
 } from './components';
-
-function LoaderSSR() {
-  const chakraTheme = generateTheme('233');
-
-  return (
-    <ChakraProvider theme={chakraTheme}>
-      <Progress size="xs" isIndeterminate colorScheme="blue" />
-    </ChakraProvider>
-  );
-}
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
 const AppRoutesSSR = (host, sink) => {
   const props = {
@@ -51,7 +41,7 @@ const AppRoutesSSR = (host, sink) => {
     },
     {
       path: '/calendar',
-      element: <LoaderSSR />,
+      element: <Loader />,
     },
     {
       path: '/communities',
@@ -104,7 +94,7 @@ const AppRoutesSSR = (host, sink) => {
     },
     {
       path: '/*',
-      element: <LoaderSSR />,
+      element: <NotFoundPage />,
     },
   ];
 };

@@ -1,14 +1,11 @@
 import React, { useContext } from 'react';
-import { Center } from '@chakra-ui/react';
 import { useDrop } from 'react-dnd';
+
+import { Center } from '/imports/ui/core';
 
 import { ComposablePageContext } from '../ComposablePageForm';
 
-export default function DropTarget({
-  columnIndex,
-  rowIndex,
-  children,
-}) {
+export default function DropTarget({ columnIndex, rowIndex, children }) {
   const { setCurrentPage } = useContext(ComposablePageContext);
 
   const handleMoveContent = ({ item }) => {
@@ -23,9 +20,7 @@ export default function DropTarget({
     setCurrentPage((prevPage) => {
       const { contentRows } = prevPage;
       const itemContent =
-        contentRows[oldRowIndex].columns[oldColumnIndex][
-          oldContentIndex
-        ];
+        contentRows[oldRowIndex].columns[oldColumnIndex][oldContentIndex];
 
       const newRowsContentRemoved = [
         ...contentRows.map((row, rIndex) => {
@@ -35,8 +30,7 @@ export default function DropTarget({
               columns: row.columns.map((column, colIndex) => {
                 if (colIndex === oldColumnIndex) {
                   return column.filter(
-                    (content, contentIndex) =>
-                      contentIndex !== oldContentIndex
+                    (content, contentIndex) => contentIndex !== oldContentIndex
                   );
                 }
                 return column;
@@ -96,27 +90,29 @@ export default function DropTarget({
     itemDroppable.rowIndex === rowIndex;
 
   const bg =
-    !canDrop || isSameColumn
-      ? 'green.50'
-      : isOver
-      ? 'green.300'
-      : 'green.100';
+    !canDrop || isSameColumn ? 'green.50' : isOver ? 'green.300' : 'green.100';
 
   return (
-    <Center
-      bg={bg}
-      borderRadius="md"
-      border={canDrop && !isSameColumn ? '1px dashed' : 'none'}
-      borderColor={canDrop && !isSameColumn ? 'green.500' : 'none'}
-      borderWidth="2px"
-      minH="102px"
-      mb="2"
-      p="0"
-      ref={dropRef}
-      transition="all 0.2s ease-in-out"
-      w="100%"
-    >
-      {canDrop ? null : children}
-    </Center>
+    <div ref={dropRef}>
+      <Center
+        bg={bg}
+        mb="2"
+        p="0"
+        css={{
+          border: canDrop && !isSameColumn ? '1px dashed' : 'none',
+          borderColor:
+            canDrop && !isSameColumn
+              ? 'var(--cocoso-colors-green-500)'
+              : 'none',
+          borderRadius: '0.5rem',
+          borderWidth: '2px',
+          minHeight: '102px',
+          transition: 'all 0.2s ease-in-out',
+          width: '100%',
+        }}
+      >
+        {canDrop ? null : children}
+      </Center>
+    </div>
   );
 }

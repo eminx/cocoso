@@ -1,18 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Routes, Navigate, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Input, Stack, Switch as CSwitch, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
-import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
-import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
-import { call, resizeImage, uploadImage } from '../../utils/shared';
-import FormField from '../../forms/FormField';
-import FileDropper from '../../forms/FileDropper';
-import Tabs from '../../entry/Tabs';
-import ReactQuill from '../../forms/Quill';
+import {
+  Alert,
+  Box,
+  Button,
+  Center,
+  Checkbox,
+  Flex,
+  Input,
+  Loader,
+  Stack,
+  Text,
+} from '/imports/ui/core';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import { message } from '/imports/ui/generic/message';
+import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
+import FormField from '/imports/ui/forms/FormField';
+import FileDropper from '/imports/ui/forms/FileDropper';
+import Tabs from '../../core/Tabs';
+import ReactQuill from '/imports/ui/forms/Quill';
 
 function PlatformSettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
@@ -27,10 +36,10 @@ function PlatformSettingsForm({ initialValues, onSubmit }) {
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Stack spacing="4">
-        <FormField label={t('info.platform.name')}>
+        <FormField label={t('info.platform.name')} required>
           <Input {...register('name')} />
         </FormField>
-        <FormField label={t('info.platform.email')}>
+        <FormField label={t('info.platform.email')} required>
           <Input type="email" {...register('email')} />
         </FormField>
         <Flex justify="flex-end" py="4">
@@ -57,7 +66,7 @@ function PlatformOptions({ initialValues, onSubmit }) {
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Stack spacing="4">
         <Flex>
-          <CSwitch mr="2" mt="2" {...register('isFederationLayout')} />
+          <Checkbox mr="2" mt="2" {...register('isFederationLayout')} />
           <Box>
             <Text fontSize="lg">{t('info.platform.federationLabel')}</Text>
             <Text fontSize="sm">{t('info.platform.federationText')}</Text>
@@ -117,7 +126,9 @@ export default function PlatformSettings() {
     try {
       await call('updatePlatformSettings', values);
       await getPlatformNow();
-      message.success(tc('message.success.update', { domain: 'Platform settings' }));
+      message.success(
+        tc('message.success.update', { domain: 'Platform settings' })
+      );
     } catch (error) {
       message.error(error.reason);
       console.log(error);
@@ -184,7 +195,10 @@ export default function PlatformSettings() {
     setUploading(true);
     try {
       const resizedImage = await resizeImage(localImage.uploadableImage, 800);
-      const uploadedImage = await uploadImage(resizedImage, 'platformLogoUpload');
+      const uploadedImage = await uploadImage(
+        resizedImage,
+        'platformLogoUpload'
+      );
       await call('updatePlatformSettings', { logo: uploadedImage });
       message.success(t('logo.message.success'));
     } catch (error) {
@@ -206,7 +220,10 @@ export default function PlatformSettings() {
           <Text mb="3" fontWeight="bold">
             {t('info.platform.info')}
           </Text>
-          <PlatformSettingsForm initialValues={platform} onSubmit={handleFormSubmit} />
+          <PlatformSettingsForm
+            initialValues={platform}
+            onSubmit={handleFormSubmit}
+          />
         </Box>
       ),
     },
@@ -220,7 +237,9 @@ export default function PlatformSettings() {
           </Text>
           <Box>
             <FileDropper
-              uploadableImageLocal={localImage && localImage.uploadableImageLocal}
+              uploadableImageLocal={
+                localImage && localImage.uploadableImageLocal
+              }
               imageUrl={platform?.logo}
               setUploadableImage={setUploadableImage}
               width={isImage && '120px'}
@@ -245,7 +264,10 @@ export default function PlatformSettings() {
           <Text mb="3" fontWeight="bold">
             {t('info.platform.options')}
           </Text>
-          <PlatformOptions initialValues={platform} onSubmit={handleOptionsSubmit} />
+          <PlatformOptions
+            initialValues={platform}
+            onSubmit={handleOptionsSubmit}
+          />
         </Box>
       ),
     },
@@ -261,9 +283,15 @@ export default function PlatformSettings() {
             {t('info.platform.footer.description')}
           </Text>
           <Box w="100%">
-            <ReactQuill value={platform.footer} onChange={(value) => handleFooterChange(value)} />
+            <ReactQuill
+              value={platform.footer}
+              onChange={(value) => handleFooterChange(value)}
+            />
             <Flex justify="flex-end" mt="4" w="100%">
-              <Button type="submit" onClick={() => handleFooterSubmit(platform)}>
+              <Button
+                type="submit"
+                onClick={() => handleFooterSubmit(platform)}
+              >
                 {tc('actions.submit')}
               </Button>
             </Flex>
@@ -275,7 +303,8 @@ export default function PlatformSettings() {
 
   const pathname = location?.pathname;
   const pathnameLastPart = pathname.split('/').pop();
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
+  const tabIndex =
+    tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
   if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
@@ -288,7 +317,11 @@ export default function PlatformSettings() {
       <Box pt="4">
         <Routes>
           {tabs.map((tab) => (
-            <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+            <Route
+              key={tab.title}
+              path={tab.path}
+              element={<Box pt="2">{tab.content}</Box>}
+            />
           ))}
         </Routes>
       </Box>

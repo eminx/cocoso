@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Flex } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 
+import { Box, Flex } from '../core';
 import { DateJust } from './FancyDate';
 
 const today = dayjs().format('YYYY-MM-DD');
@@ -13,7 +13,11 @@ const getFutureOccurrences = (dates) =>
 const getPastOccurrences = (dates) =>
   dates.filter((date) => dayjs(date.endTime, 'YYYY-MM-DD').isBefore(today));
 
-export default function ActionDates({ activity, showPast = false, showTime = false }) {
+export default function ActionDates({
+  activity,
+  showPast = false,
+  showTime = true,
+}) {
   if (!activity || !activity.datesAndTimes || !activity.datesAndTimes.length) {
     return null;
   }
@@ -33,10 +37,12 @@ export default function ActionDates({ activity, showPast = false, showTime = fal
           occurrence && (
             <Flex
               key={occurrence.startDate + occurrence.startTime}
-              color="gray.700"
               mx="2"
               ml={occurrenceIndex === 0 ? '0' : '2'}
-              textShadow="1px 1px 1px #fff"
+              css={{
+                color: 'var(--cocoso-colors-gray-700)',
+                textShadow: '1px 1px 1px #fff',
+              }}
             >
               <Box>
                 <DateJust time={showTime ? occurrence.startTime : null}>

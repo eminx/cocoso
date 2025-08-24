@@ -48,7 +48,10 @@ export default function EditWork() {
   }
 
   return (
-    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
+    <SuccessRedirector
+      ping={updated}
+      onSuccess={() => setSearchParams({ edit: 'false' })}
+    >
       <WorkForm work={workFields} onFinalize={updateWork} />
     </SuccessRedirector>
   );

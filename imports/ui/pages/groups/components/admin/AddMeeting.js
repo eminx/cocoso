@@ -1,30 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Select,
-  Switch,
-  Text,
-  Textarea,
-} from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-import DateTimePicker from '../../../../forms/DateTimePicker';
-import { ConflictMarker } from '../../../../forms/DatesAndTimes';
 import {
-  call,
-  checkAndSetBookingsWithConflict,
-  getAllBookingsWithSelectedResource,
-  parseAllBookingsWithResources,
-} from '../../../../utils/shared';
-import Modal from '../../../../generic/Modal';
-import { StateContext } from '../../../../LayoutContainer';
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  Modal,
+  Select,
+  Textarea,
+} from '/imports/ui/core';
+
+import DateTimePicker from '/imports/ui/forms/DateTimePicker';
+import { ConflictMarker } from '/imports/ui/forms/DatesAndTimes';
+import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+import { StateContext } from '/imports/ui/LayoutContainer';
+
 import { GroupContext } from '../../Group';
-import { message } from '../../../../generic/message';
 
 const today = dayjs();
 
@@ -53,19 +48,17 @@ function AddMeetingForm({
 
   return (
     <>
-      <Box bg="gray.100" borderRadius="lg" p="4">
-        <Text textAlign="center">{t('meeting.info.admin')}</Text>
+      <Box bg="theme.50" borderRadius="lg" p="4">
         <DateTimePicker value={newMeeting} onChange={handleDateChange} />
 
         <FormControl alignItems="center" display="flex" my="4">
-          <Switch
+          <Checkbox
             id="is-local-switch"
-            isChecked={isLocal}
+            checked={isLocal}
             onChange={({ target: { checked } }) => setIsLocal(checked)}
-          />
-          <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
+          >
             {t('meeting.form.switch', { place: hostname })}
-          </FormLabel>
+          </Checkbox>
         </FormControl>
 
         {isLocal ? (
@@ -87,7 +80,9 @@ function AddMeetingForm({
         )}
       </Box>
 
-      {conflictingBooking && <ConflictMarker occurrence={conflictingBooking} t={ta} />}
+      {conflictingBooking && (
+        <ConflictMarker occurrence={conflictingBooking} t={ta} />
+      )}
 
       <Flex justify="flex-end" pt="4">
         <Button isDisabled={buttonDisabled} onClick={handleSubmit}>
@@ -111,7 +106,8 @@ export default function AddMeeting({ onClose }) {
   const { currentHost } = useContext(StateContext);
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
-  const { activities, conflictingBooking, isFormValid, newMeeting, resources } = state;
+  const { activities, conflictingBooking, isFormValid, newMeeting, resources } =
+    state;
 
   const getData = async () => {
     try {
@@ -132,7 +128,8 @@ export default function AddMeeting({ onClose }) {
   }, []);
 
   const checkDatesForConflict = async () => {
-    const { resourceId, resource, startDate, startTime, endDate, endTime } = state.newMeeting;
+    const { resourceId, resource, startDate, startTime, endDate, endTime } =
+      state.newMeeting;
     if (!resourceId || !startDate || !startTime || !endTime) {
       if (resource) {
         setState((prevState) => ({
@@ -248,7 +245,7 @@ export default function AddMeeting({ onClose }) {
   };
 
   return (
-    <Modal bg="gray.100" isOpen title={t('meeting.form.label')} onClose={onClose}>
+    <Modal hideFooter open title={t('meeting.form.label')} onClose={onClose}>
       <AddMeetingForm
         buttonDisabled={!isFormValid}
         conflictingBooking={conflictingBooking}

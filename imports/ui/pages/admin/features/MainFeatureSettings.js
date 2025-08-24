@@ -1,20 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
   Box,
   Button,
+  Checkbox,
   Flex,
   Heading,
   Input,
-  Switch,
   Text,
   Textarea,
   VStack,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
 
-import { StateContext } from '../../../LayoutContainer';
-import { call } from '../../../utils/shared';
-import { message } from '../../../generic/message';
 import Boxling from '../Boxling';
 
 const keyProps = {
@@ -26,7 +27,7 @@ function Tablish({ rowItem }) {
   return (
     <Flex w="100%">
       <Text {...keyProps}>{rowItem.key}</Text>
-      <Box flexGrow="1">{rowItem.value}</Box>
+      <Box css={{ flexGrow: '1' }}>{rowItem.value}</Box>
     </Flex>
   );
 }
@@ -82,7 +83,9 @@ export default function MainFeatureSettings({ itemName }) {
     try {
       await call('updateHostSettings', localSettings);
       await getCurrentHost();
-      message.success(tc('message.success.save', { domain: tc('domains.settings') }));
+      message.success(
+        tc('message.success.save', { domain: tc('domains.settings') })
+      );
     } catch (error) {
       message.error(error.reason);
     } finally {
@@ -98,19 +101,20 @@ export default function MainFeatureSettings({ itemName }) {
     {
       key: 'Active',
       value: (
-        <Switch
-          isChecked={localItem.isVisible}
-          onChange={(event) => handleMenuItemCheck(event.target.checked)}
-        />
+        <Box pt="2">
+          <Checkbox
+            checked={localItem.isVisible}
+            id="is-item-active"
+            onChange={(event) => handleMenuItemCheck(event.target.checked)}
+          />
+        </Box>
       ),
     },
     {
       key: 'Label',
       value: (
         <Input
-          isDisabled={!localItem.isVisible}
-          maxW="240px"
-          size="sm"
+          disabled={!localItem.isVisible}
           value={localItem.label}
           onChange={(event) => handleMenuItemLabelChange(event.target.value)}
         />
@@ -120,14 +124,11 @@ export default function MainFeatureSettings({ itemName }) {
       key: 'Description',
       value: (
         <Textarea
-          _focus={{
-            borderColor: 'gray.600',
-          }}
-          border="2px solid"
-          borderColor="gray.300"
-          isDisabled={!localItem.isVisible}
+          disabled={!localItem.isVisible}
           value={localItem.description}
-          onChange={(event) => handleMenuItemDescriptionChange(event.target.value)}
+          onChange={(event) =>
+            handleMenuItemDescriptionChange(event.target.value)
+          }
         />
       ),
     },
@@ -138,10 +139,9 @@ export default function MainFeatureSettings({ itemName }) {
       <Heading as="h3" size="sm" mt="6" mb="2">
         {t('menu.tabs.menuitems.label')}
       </Heading>
-
-      <Text fontSize="sm" mb="4">
-        {t('menu.tabs.menuitems.info')}
-      </Text>
+      <Box pb="4">
+        <Text size="sm">{t('menu.tabs.menuitems.info')}</Text>
+      </Box>
 
       <Boxling>
         <VStack align="flex-start" spacing="6">

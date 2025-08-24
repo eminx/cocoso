@@ -1,5 +1,13 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Trans } from 'react-i18next';
+import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
+import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
+import { arrayMoveImmutable } from 'array-move';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import PlusIcon from 'lucide-react/dist/esm/icons/plus';
+
 import {
   Box,
   Button,
@@ -7,37 +15,24 @@ import {
   Flex,
   Heading,
   IconButton,
+  Modal,
   Text,
-} from '@chakra-ui/react';
-import { Trans } from 'react-i18next';
-import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
-import '@szhsin/react-menu/dist/index.css';
-import '@szhsin/react-menu/dist/transitions/zoom.css';
-import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
-import SortableList, {
-  SortableItem,
-  SortableKnob,
-} from 'react-easy-sort';
-import { arrayMoveImmutable } from 'array-move';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-
+} from '/imports/ui/core';
+import Menu from '/imports/ui/generic/Menu';
+import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
 import Boxling from '/imports/ui/pages/admin/Boxling';
-import { message } from '/imports/ui/generic/message';
-import Row from './components/Row';
+
+import TopToolBar from './components/TopToolbar';
 import { rowTypes } from './constants';
-import ConfirmModal from '/imports/ui/generic/ConfirmModal';
-import ContentHandler from './components/ContentHandler';
-import BottomToolbar from './components/BottomToolbar';
-import TopToolBar from '/imports/ui/pages/composablepages/components/TopToolbar';
 import ComposablePageCreator from './components/ComposablePageCreator';
 import ComposablePagesListing from './components/ComposablePagesListing';
+import ContentHandler from './components/ContentHandler';
+import Row from './components/Row';
+import BottomToolbar from './components/BottomToolbar';
 
 const getNewRow = (rowType) => {
-  const selectedRowType = rowTypes.find(
-    (type) => type.value === rowType
-  );
+  const selectedRowType = rowTypes.find((type) => type.value === rowType);
   return {
     gridType: selectedRowType.value,
     columns: selectedRowType.columns,
@@ -63,10 +58,8 @@ export default function ComposablePageForm({
     open: false,
     content: null,
   });
-  const [deleteModuleModal, setDeleteModuleModal] =
-    useState(emptyModuleModal);
-  const [deleteWholePageModal, setDeleteWholePageModal] =
-    useState(false);
+  const [deleteModuleModal, setDeleteModuleModal] = useState(emptyModuleModal);
+  const [deleteWholePageModal, setDeleteWholePageModal] = useState(false);
   const { composablePageId } = useParams();
   const navigate = useNavigate();
 
@@ -76,10 +69,7 @@ export default function ComposablePageForm({
     }
 
     try {
-      const response = await call(
-        'getComposablePageById',
-        composablePageId
-      );
+      const response = await call('getComposablePageById', composablePageId);
       setCurrentPage(response);
     } catch (error) {
       message.error(error.reason || error.error);
@@ -110,8 +100,8 @@ export default function ComposablePageForm({
     }
   }, [contentModal.uploaded]);
 
-  const handleAddRow = (rowType) => {
-    const newRow = getNewRow(rowType);
+  const handleAddRow = (selectedRow) => {
+    const newRow = getNewRow(selectedRow.value);
     setCurrentPage((prevPage) => ({
       ...prevPage,
       contentRows: [
@@ -125,11 +115,7 @@ export default function ComposablePageForm({
   const handleSortRows = (oldIndex, newIndex) => {
     setCurrentPage((prevPage) => ({
       ...prevPage,
-      contentRows: arrayMoveImmutable(
-        prevPage.contentRows,
-        oldIndex,
-        newIndex
-      ),
+      contentRows: arrayMoveImmutable(prevPage.contentRows, oldIndex, newIndex),
       pingSave: true,
     }));
   };
@@ -163,9 +149,7 @@ export default function ComposablePageForm({
             ...row,
             columns: row.columns.map((column, colIndex) => {
               if (colIndex === columnIndex) {
-                return column.filter(
-                  (_, index) => index !== contentIndex
-                );
+                return column.filter((_, index) => index !== contentIndex);
               }
               return column;
             }),
@@ -202,8 +186,7 @@ export default function ComposablePageForm({
       return;
     }
 
-    const { content, contentIndex, columnIndex, rowIndex } =
-      contentModal;
+    const { content, contentIndex, columnIndex, rowIndex } = contentModal;
 
     setCurrentPage((prevPage) => ({
       ...prevPage,
@@ -260,7 +243,12 @@ export default function ComposablePageForm({
       }
       setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
       setContentModal({ open: false, content: null });
-      message.success(<Trans i18nKey="common:message.success.save" />);
+      // message.success(
+      //   <Trans
+      //     i18nKey="common:message.success.save"
+      //     tOptions={{ domain: 'page' }}
+      //   />
+      // );
     } catch (error) {
       message.error(error.reason || error.error);
     }
@@ -271,12 +259,9 @@ export default function ComposablePageForm({
       await call('deleteComposablePage', currentPage._id);
       await getComposablePageTitles();
       setDeleteWholePageModal(false);
-      message.success(
-        <Trans i18nKey="common:message.success.remove" />
-      );
+      message.success(<Trans i18nKey="common:message.success.remove" />);
       navigate('/admin/composable-pages/*');
     } catch (error) {
-      console.log(error);
       message.error(error.reason || error.error);
     }
   };
@@ -291,9 +276,7 @@ export default function ComposablePageForm({
         <ComposablePageCreator
           getComposablePageTitles={getComposablePageTitles}
         />
-        <ComposablePagesListing
-          composablePageTitles={composablePageTitles}
-        />
+        <ComposablePagesListing composablePageTitles={composablePageTitles} />
       </>
     );
   }
@@ -328,64 +311,59 @@ export default function ComposablePageForm({
           <SortableList onSortEnd={handleSortRows}>
             {currentPage.contentRows?.map((row, rowIndex) => (
               <SortableItem key={row.id || row.gridType + rowIndex}>
-                <Flex>
-                  <Box style={{ flexGrow: 0, flexShrink: 0 }}>
-                    <SortableKnob>
-                      <IconButton
-                        colorScheme="gray"
-                        cursor="move"
-                        icon={<ArrowUpDownIcon />}
-                        p="2"
-                        size="sm"
-                        variant="ghost"
-                      />
-                    </SortableKnob>
-                  </Box>
-                  <Boxling bg="blueGray.300" flexGrow={1} mb="4" p="2">
-                    <Row row={row} rowIndex={rowIndex} />
-                    <Center>
-                      <Button
-                        colorScheme="red"
-                        my="2"
-                        size="xs"
-                        variant="link"
-                        onClick={() =>
-                          setDeleteModuleModal({
-                            moduleType: 'row',
-                            rowIndex,
-                            visible: true,
-                          })
-                        }
-                      >
-                        <Trans i18nKey="admin:composable.form.removeRow" />
-                      </Button>
-                    </Center>
-                  </Boxling>
-                </Flex>
+                <div>
+                  <Flex gap="0">
+                    <Box>
+                      <SortableKnob>
+                        <button>
+                          <ArrowUpDownIcon />
+                          {/* <IconButton
+                          aria-label="Move row"
+                          cursor="move"
+                          icon={<ArrowUpDownIcon />}
+                          p="2"
+                          size="sm"
+                          variant="ghost"
+                        /> */}
+                        </button>
+                      </SortableKnob>
+                    </Box>
+                    <Box style={{ flexGrow: 1 }} mb="4" p="2">
+                      <Row row={row} rowIndex={rowIndex} />
+
+                      <Center py="4">
+                        <Button
+                          colorScheme="red"
+                          size="xs"
+                          variant="ghost"
+                          onClick={() =>
+                            setDeleteModuleModal({
+                              moduleType: 'row',
+                              rowIndex,
+                              visible: true,
+                            })
+                          }
+                        >
+                          <Trans i18nKey="admin:composable.form.removeRow" />
+                        </Button>
+                      </Center>
+                    </Box>
+                  </Flex>
+                </div>
               </SortableItem>
             ))}
           </SortableList>
 
           <Flex>
-            <Box w="40px" style={{ flexGrow: 0, flexShrink: 0 }} />
-            <Center mt="4" mb="12" flexGrow={1}>
+            <Box w="40px" />
+            <Center mt="4" mb="12" css={{ flexGrow: '1' }}>
               <Menu
-                placement="bottom"
-                menuButton={
-                  <Button size="sm" variant="outline">
-                    <Trans i18nKey="admin:composable.form.addRow" />
-                  </Button>
-                }
-                transition
-                onItemClick={(event) => {
-                  handleAddRow(event.value);
-                }}
+                buttonLabel={<Trans i18nKey="admin:composable.form.addRow" />}
+                leftIcon={<PlusIcon size="18px" />}
+                options={rowTypes}
+                onSelect={handleAddRow}
               >
-                {rowTypes.map((rowType) => (
-                  <MenuItem key={rowType.value} value={rowType.value}>
-                    {rowType.label}
-                  </MenuItem>
-                ))}
+                {(rowType) => rowType.label}
               </Menu>
             </Center>
           </Flex>
@@ -394,30 +372,26 @@ export default function ComposablePageForm({
             <BottomToolbar />
           </Center>
 
-          <ConfirmModal
+          <Modal
+            closeOnOverlayClick={false}
             confirmButtonProps={{ isLoading: contentModal?.uploading }}
-            size="4xl"
+            open={contentModal?.open}
+            size="3xl"
             title={<Trans i18nKey="admin:composable.form.addContent" />}
-            visible={contentModal?.open}
             onConfirm={confirmContentModal}
-            onCancel={(prevState) =>
-              setContentModal({ open: false, content: null })
-            }
-            onOverlayClick={(prevState) =>
+            onClose={(prevState) =>
               setContentModal({ open: false, content: null })
             }
           >
             <ContentHandler />
-          </ConfirmModal>
+          </Modal>
 
-          <ConfirmModal
+          <Modal
             confirmButtonProps={{ colorScheme: 'red' }}
-            title={
-              <Trans i18nKey="admin:composable.confirmDelete.title" />
-            }
-            visible={deleteModuleModal.visible}
+            open={deleteModuleModal.visible}
+            title={<Trans i18nKey="admin:composable.confirmDelete.title" />}
             onConfirm={() => handleDeleteModule()}
-            onCancel={() => setDeleteModuleModal(emptyModuleModal)}
+            onClose={() => setDeleteModuleModal(emptyModuleModal)}
           >
             <Text fontWeight="bold" mb="2">
               <Trans i18nKey="admin:composable.confirmDelete.text1" />
@@ -425,7 +399,7 @@ export default function ComposablePageForm({
             <Text>
               <Trans i18nKey="admin:composable.confirmDelete.text2" />
             </Text>
-          </ConfirmModal>
+          </Modal>
         </ComposablePageContext.Provider>
       </DndProvider>
 
@@ -436,18 +410,16 @@ export default function ComposablePageForm({
           variant="outline"
           onClick={() => setDeleteWholePageModal(true)}
         >
-          Delete
+          <Trans i18nKey="common:actions.remove" />
         </Button>
 
-        <ConfirmModal
+        <Modal
           confirmButtonProps={{ colorScheme: 'red' }}
           confirmText={<Trans i18nKey="admin:pages.actions.delete" />}
-          title={
-            <Trans i18nKey="admin:composable.confirmDelete.title" />
-          }
-          visible={deleteWholePageModal}
+          open={deleteWholePageModal}
+          title={<Trans i18nKey="admin:composable.confirmDelete.title" />}
           onConfirm={deleteComposablePage}
-          onCancel={() => setDeleteWholePageModal(false)}
+          onClose={() => setDeleteWholePageModal(false)}
         >
           <Text fontWeight="bold" mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage" />
@@ -455,7 +427,7 @@ export default function ComposablePageForm({
           <Text mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage2" />
           </Text>
-        </ConfirmModal>
+        </Modal>
       </Center>
     </div>
   );

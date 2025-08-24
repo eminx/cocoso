@@ -1,30 +1,26 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  Center,
-  Flex,
-  Text,
-} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
-import FancyDate from '../../../entry/FancyDate';
-import Modal from '../../../generic/Modal';
+import { Accordion, Box, Center, Flex, Modal, Text } from '/imports/ui/core';
+import FancyDate from '/imports/ui/entry/FancyDate';
+import ActionButton from '/imports/ui/generic/ActionButton';
+
 import OccurrenceRsvpContent from './OccurrenceRsvpContent';
-import { accordionProps } from '../../../utils/constants/general';
-import ActionButton from '../../../generic/ActionButton';
 
 if (Meteor.isClient) {
   import 'react-table/react-table.css';
 }
 
-const { buttonProps, itemProps, panelProps } = accordionProps;
+const buttonStyle = {
+  backgroundColor: 'var(--cocoso-colors-theme-100)',
+  borderRadius: 'var(--cocoso-border-radius)',
+  color: 'var(--cocoso-colors-gray-900)',
+  margin: '0.5rem 0',
+  padding: '1rem',
+  width: '100%',
+};
 
 function AccordionDates({ activity, onCloseModal }) {
   const [t] = useTranslation('activities');
@@ -50,8 +46,13 @@ function AccordionDates({ activity, onCloseModal }) {
         </Text>
 
         <Box>
-          {items.map((occurrence) => (
-            <Box key={occurrence.startDate + occurrence.startTime} {...buttonProps} p="2" mb="4">
+          {items.map((occurrence, occurrenceIndex) => (
+            <Box
+              key={
+                occurrence.startDate + occurrence.startTime + occurrenceIndex
+              }
+              style={buttonStyle}
+            >
               <FancyDate occurrence={occurrence} />
             </Box>
           ))}
@@ -67,21 +68,14 @@ function AccordionDates({ activity, onCloseModal }) {
           {t('public.register.disabled.false')}
         </Text>
       )}
-      <Accordion allowToggle>
-        {items.map((occurrence, occurrenceIndex) => (
-          <AccordionItem key={occurrence.startDate + occurrence.startTime} {...itemProps}>
-            <AccordionButton {...buttonProps}>
-              <Box flex="1" textAlign="left">
-                <FancyDate occurrence={occurrence} />
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-
-            <AccordionPanel {...panelProps}>
-              <Text m="2" fontWeight="bold">
-                {t('public.register.label')}
-              </Text>
-              <Box px="2">
+      <Accordion
+        options={items.map((occurrence, occurrenceIndex) => ({
+          key: occurrence.startDate + occurrence.startTime + occurrenceIndex,
+          header: <FancyDate occurrence={occurrence} />,
+          content: (
+            <Box>
+              <Text fontWeight="bold">{t('public.register.label')}</Text>
+              <Box>
                 <OccurrenceRsvpContent
                   activity={activity}
                   occurrence={occurrence}
@@ -89,10 +83,10 @@ function AccordionDates({ activity, onCloseModal }) {
                   onCloseModal={onCloseModal}
                 />
               </Box>
-            </AccordionPanel>
-          </AccordionItem>
-        ))}
-      </Accordion>
+            </Box>
+          ),
+        }))}
+      />
     </Box>
   );
 }
@@ -106,13 +100,14 @@ function SubInfo({ occurrence }) {
 
   return (
     <Center>
-      <Flex color="gray.100" mt="2">
-        <Text fontSize="sm" mr="2" mt="-1px">
+      <Flex mt="2">
+        <Text color="gray.100" mr="2" mt="-1px" size="sm">
           {t('label.next')}:
         </Text>
 
-        <Text fontSize="sm" fontWeight="bold">
-          {dayjs(occurrence?.startDate).format('DD')} {dayjs(occurrence?.startDate).format('MMM')}
+        <Text color="gray.100" fontWeight="bold" size="sm">
+          {dayjs(occurrence?.startDate).format('DD')}{' '}
+          {dayjs(occurrence?.startDate).format('MMM')}
         </Text>
       </Flex>
     </Center>
@@ -151,15 +146,20 @@ export default function RsvpHandler({ activity }) {
       </Box>
 
       <Modal
-        isOpen={modalOpen}
+        hideFooter
+        open={modalOpen}
         size="lg"
         title={
-          isRegistrationEnabled ? t('public.labels.datesAndRegistration') : t('public.labels.dates')
+          isRegistrationEnabled
+            ? t('public.labels.datesAndRegistration')
+            : t('public.labels.dates')
         }
-        onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >
-        <AccordionDates activity={activity} onCloseModal={() => setModalOpen(false)} />
+        <AccordionDates
+          activity={activity}
+          onCloseModal={() => setModalOpen(false)}
+        />
       </Modal>
     </>
   );

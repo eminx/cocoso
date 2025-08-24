@@ -104,7 +104,7 @@ report:
   title: '{{username}} için Kullanım Raporu'
   table:
     title: Başlık
-    resource: Kaynank
+    resource: Kaynak
     start: Başlangıç
     end: Bitiş
     consumption: Kullanım

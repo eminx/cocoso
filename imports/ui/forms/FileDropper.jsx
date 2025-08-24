@@ -1,10 +1,17 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import { Center, Flex, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
+import { Center, Flex, Image, Text } from '/imports/ui/core';
+
 const containerStyle = {
-  borderRadius: 8,
+  borderRadius: 'var(--cocoso-border-radius)',
+  border: '2px dashed',
+  cursor: 'grab',
+  ':hover': {
+    bg: 'var(--cocoso-colors-gray-50)',
+    borderColor: 'var(--cocoso-colors-theme-300)',
+  },
 };
 
 export default function FileDropper({
@@ -28,17 +35,18 @@ export default function FileDropper({
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Flex
           {...getRootProps()}
-          _hover={{ bg: 'gray.50', borderColor: 'gray.500' }}
           align="center"
           bg={isDragActive ? 'gray.300' : 'white'}
-          border="2px dashed"
-          borderColor={isDragActive ? 'gray.600' : 'gray.300'}
-          cursor="grab"
           direction="column"
           justify="center"
           h={height}
           w="100%"
-          {...containerStyle}
+          css={{
+            ...containerStyle,
+            borderColor: isDragActive
+              ? 'var(--cocoso-colors-theme-500)'
+              : 'var(--cocoso-colors-theme-200)',
+          }}
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (

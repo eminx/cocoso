@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box, Flex, Text } from '@chakra-ui/react';
 import AntTimePicker from 'antd/lib/time-picker';
 import AntDatePicker from 'antd/lib/date-picker';
 import ConfigProvider from 'antd/lib/config-provider';
@@ -9,6 +8,8 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import en from 'antd/locale/en_GB';
 import sv from 'antd/locale/sv_SE';
 import tr from 'antd/locale/tr_TR';
+
+import { Box, Flex, Text } from '/imports/ui/core';
 
 dayjs.extend(customParseFormat);
 
@@ -28,7 +29,9 @@ function DatePicker({ disabledDate, label, value, onChange }) {
     <Box mb="4">
       <Text mb="2">{label}</Text>
       <AntDatePicker
-        disabledDate={disabledDate ? (date) => date && date < dayjs(disabledDate) : null}
+        disabledDate={
+          disabledDate ? (date) => date && date < dayjs(disabledDate) : null
+        }
         size="large"
         value={dayjs(value, 'YYYY-MM-DD')}
         onChange={onChange}
@@ -101,7 +104,10 @@ export default function DateTimePicker({ value, onChange }) {
     };
 
     parsedValue[entity] = time.format('HH:mm');
-    if (!isRange && dayjs(parsedValue.startTime).isAfter(dayjs(parsedValue.endTime))) {
+    if (
+      !isRange &&
+      dayjs(parsedValue.startTime).isAfter(dayjs(parsedValue.endTime))
+    ) {
       parsedValue.endTime = time.format('HH:mm');
     }
 
@@ -121,17 +127,19 @@ export default function DateTimePicker({ value, onChange }) {
           </Box>
 
           {isRange && (
-            <DatePicker
-              disabledDate={value.startDate}
-              label={t('form.date.finish')}
-              value={value?.endDate}
-              onChange={(date) => handleDateChange(date, 'endDate')}
-            />
+            <Box w="170px" mr="2">
+              <DatePicker
+                disabledDate={value.startDate}
+                label={t('form.date.finish')}
+                value={value?.endDate}
+                onChange={(date) => handleDateChange(date, 'endDate')}
+              />
+            </Box>
           )}
         </Flex>
 
         <Flex>
-          <Box w="170px">
+          <Box w="170px" mr="2">
             <TimePicker
               label={t('form.time.start')}
               value={value?.startTime}
@@ -139,11 +147,13 @@ export default function DateTimePicker({ value, onChange }) {
             />
           </Box>
 
-          <TimePicker
-            label={t('form.time.finish')}
-            value={value?.endTime}
-            onChange={(time) => handleTimeChange(time, 'endTime')}
-          />
+          <Box w="170px">
+            <TimePicker
+              label={t('form.time.finish')}
+              value={value?.endTime}
+              onChange={(time) => handleTimeChange(time, 'endTime')}
+            />
+          </Box>
         </Flex>
       </ConfigProvider>
     </Box>

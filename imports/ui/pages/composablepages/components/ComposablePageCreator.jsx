@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Center, Input } from '@chakra-ui/react';
 import FilePlusIcon from 'lucide-react/dist/esm/icons/file-plus';
 import { Trans } from 'react-i18next';
 
-import ConfirmModal from '/imports/ui/generic/ConfirmModal';
+import { Button, Center, Input, Modal } from '/imports/ui/core';
+
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
@@ -15,11 +15,8 @@ const emptyPageModal = {
   visible: false,
 };
 
-export default function ComposablePageCreator({
-  getComposablePageTitles,
-}) {
-  const [createPageModal, setCreatePageModal] =
-    useState(emptyPageModal);
+export default function ComposablePageCreator({ getComposablePageTitles }) {
+  const [createPageModal, setCreatePageModal] = useState(emptyPageModal);
   const navigate = useNavigate();
 
   const createComposablePage = async () => {
@@ -57,20 +54,16 @@ export default function ComposablePageCreator({
         </Button>
       </Center>
 
-      <ConfirmModal
+      <Modal
         confirmText={<Trans i18nKey="admin:composable.create" />}
+        open={createPageModal.visible}
         title={<Trans i18nKey="admin:composable.title" />}
-        visible={createPageModal.visible}
         onConfirm={createComposablePage}
-        onCancel={() => setCreatePageModal(emptyPageModal)}
+        onClose={() => setCreatePageModal(emptyPageModal)}
       >
         <FormField
-          label={
-            <Trans i18nKey="admin:composable.newTitleInputLabel" />
-          }
-          helperText={
-            <Trans i18nKey="admin:composable.newTitleInputHelper" />
-          }
+          label={<Trans i18nKey="admin:composable.newTitleInputLabel" />}
+          helperText={<Trans i18nKey="admin:composable.newTitleInputHelper" />}
           required
         >
           <Input
@@ -84,7 +77,7 @@ export default function ComposablePageCreator({
             }
           />
         </FormField>
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }

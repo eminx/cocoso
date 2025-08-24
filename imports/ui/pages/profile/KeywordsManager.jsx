@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
-import { useTranslation } from 'react-i18next';
+
+import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
+
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 

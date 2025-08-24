@@ -4,9 +4,11 @@ panel: Admin Paneli
 menulabel: Admin Menü
 site: Site
 home: Anasayfa
+description: Web sitesini yapılandır, tasarla ve yönet
 
 settings:
   title: Ayarlar
+  description: Organizasyon detayları
   tabs:
     design: Tasarım
     general: Genel
@@ -58,12 +60,14 @@ organization:
 
 users:
   title: Kullanıcılar
+  description: Kullanıcıları yönet, onları doğrula/onayla veya yönetici olarak tayin et
   shortcutHelper: Kullanıcılarınızı yönet, onları doğrula/onayla veya yönetici olarak tayin et
   usersListed: kullanıcı
   userListed: kullanıcı
 
 menu:
   title: Menü
+  description: Ana menüyü oluştur, ayarla ve tasarla
   tabs:
     menuitems:
       label: Görünürlük, İsimlendirme ve Açıklama
@@ -96,22 +100,17 @@ categories:
   message:
     denySpecialChars: Kısa çizgi (-) dışındaki özel karakterlere izin verilmez
 
-color:
-  revert: Önceki renge dön
-  info: Web sitenizin teması olarak istediğin rengi seçmek için kaydırıcıyı kullan. Seçilen renk tonunun açık ve koyu varyasyonları, tüm kullanıcı arayüzünün farklı bölümlerinde kullanılacaktır.
-  alert1: Şimdi sitede dolaşıp bu rengi test edebilir ve ardından, beğenirsen, buraya geri gelip seçtiğin rengi onaylayabilirsin.
-  alert2: Sayfayı yenilersen veya pencereyi/sekmeyi kapatırsan, önceki renge geri döner.
-
 # ADMIN EMAILS PAGE
 emails:
   title: Otomatik E-postalar
+  description: Kullanıcıların kaydolduklarında, doğrulandıklarında veya yönetici olduklarında aldıkları otomatik e-postaları ayarla
   shortcutHelper: Kullanıcıların kaydolduklarında veya doğrulandıklarında veya yönetici olduklarında aldıkları otomatik e-postaları ayarla
   form:
     subject:
       label: Konu
       holder: Hoşgeldin
     appeal:
-      label: Çağrış
+      label: Hitap
       holder: Sevgili
       addon: '@username'
     body:
@@ -131,6 +130,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: E-posta Bülteni Yolla
+  description: Tüm kullanıcılara aynı anda bir e-posta bülteni gönder
   shortcutHelper: Tüm kullanıcılarınıza aynı anda bir e-posta bülteni gönder
   subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsin.
   subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik ögeleri.'
@@ -143,6 +143,7 @@ newsletter:
     title: Herkese göndermeyi onayla
     body: Bu e-postayı topluluğunuzun tüm üyelerine göndermek üzeresin. Bu e-postayı üyelerinize gönderdikten sonra bu işlemi geri alamazsın.
     yes: Evet, lütfen gönder
+    send: E-postayı gönder
   error:
     required: Boş bir e-posta gönderemezsin. Gönderilecek e-posta için gövde metni veya resim girmen ya da içerik ögeleri eklemen gerekir.
   form:
@@ -189,6 +190,7 @@ pages:
 composable:
   title: Özelleştirilebilir sayfalar
   existing: Mevcut olanlar
+  none: Henüz özelleştirilebilir sayfa yok
   new: Yeni oluştur
   create: Oluştur
   newTitleInputLabel: Başlık
@@ -196,6 +198,7 @@ composable:
   description: Özel bir sayfa oluştur ve bunu açılış sayfası, kampanya sayfası veya istediğin herhangi bir sayfa olarak düzenle
   form:
     addContent: İçerik ekle
+    addToMenu: Özelleştirilebilir sayfa ekle
     addRow: Satır ekle
     emptySpace: Boşluk
     emptySpaceHelper: Lütfen boşluk için piksel bazlı bir yükseklik gir
@@ -204,6 +207,7 @@ composable:
     line: Çizgi
     link: Bağlantı adresi
     linkHelper: Lütfen bağlantı adresini gir. Bu bağlantı, butona tıklandığında açılır
+    imageAsLink: İmaj link mi?
     video: Video-URL
     videoHelper: Lütfen bir video URL'si gir, genellikle bir YouTube veya Vimeo video sayfasının bağlantı adresi olur..
     removeRow: Satırı kaldır
@@ -215,7 +219,7 @@ composable:
       image-slider: Slayt
       text: Metin
       video: Video
-  confirmedDelete:
+  confirmDelete:
     title: Silmeyi onayla
     text1: Bu modülü silmek istediğinden emin misin?
     text2: Onaylarsan, seçili modül silinecek ve geri alınamayacaktır.
@@ -241,3 +245,92 @@ composable:
     unpublishText: Bu sayfayı yayından kaldırmak istediğinden emin misin?
     publishSuccess: Sayfa yayınlandı
     unpublishSuccess: Sayfa yayından kaldırıldı
+    unpublishErrorPageInMenu: Sayfa ana menüde bağlantılı, lütfen önce ordan kaldır
+    linkToMenu: Bu sayfayı ana menüye eklemek/kaldırmak için buraya tıklayın
+
+design:
+  title: Tasarım
+  description: Web sitenin görünümünü istediğin şekilde özelleştirmek için tema ve menüyü tercihlerine göre ayarla
+  tabs:
+    theme: Tema
+    menu: Menü
+  theme:
+    title: Tema
+    color: Tema rengi
+    demo: Önizleme
+    button: Buton
+    options:
+      gray: Gri tonları
+      custom: Özelleştirilmiş
+  background:
+    title: Arka plan
+    color: Arka plan rengi
+    image: Arka plan görseli
+    repeat: Arka plan görselini tekrarla
+  border:
+    title: Kenarlıklar
+    color: Kenarlık rengi
+    radius: Kenarlık yuvarlaklığı
+    width: Kenarlık kalınlığı
+    style: Kenarlık stili
+    radiusOptions:
+      none: Yok
+      tiny: Çok küçük
+      small: Küçük
+      medium: Orta
+      large: Büyük
+      xlarge: Çok büyük
+    styleOptions:
+      solid: Düz
+      dotted: Noktalı
+      dashed: Kesikli
+      double: Çift
+      groove: Oluk
+      ridge: Sırt
+      inset: İçe dönük
+      outset: Dışa dönük
+    widthOptions:
+      none: Yok
+      thin: İnce
+      medium: Orta
+      thick: Kalın
+  menu:
+    title: Menü
+    color: Metin rengi
+    border: Kenarlık
+    background: Arka plan rengi
+    demo: Önizleme
+  color:
+    colors: Renkler
+    text: Metin rengi
+    description: Tema, butonlar gibi birçok arayüz ögesinin görünümünü etkiler
+    pick: Renk seç
+    select: Paletten istediğin rengi seç
+    revert: Varsayılana Dön
+    info: Topluluk web siteniz için istediğiniz rengi seçmek üzere kaydırıcıyı ayarla. Seçilen renk tonunun açık ve koyu varyasyonları, tüm kullanıcı arayüzünün farklı bölümlerinde kullanılacaktır.
+    alert1: Artık sitede dolaşabilir ve bu rengi test edebilir, ardından buraya geri dönüp beğenirseniz onaylayabilirsiniz.
+    alert2: Sayfayı yenilerseniz veya pencereyi/sekmeyi kapatırsanız, orijinal renge geri döner.
+  text:
+    title: Metin
+    fontStyle: Yazı tipi
+    textTransform: Metin dönüşümü
+    fontStyleOptions:
+      normal: Normal
+      italic: Italik
+    textTransformOptions:
+      none: Olduğu gibi
+      uppercase: Hepsi büyük harf
+      lowercase: Hepsi küçük harf
+      capitalize: İlk harf büyük
+  message:
+    success: Tema başarıyla kaydedildi!
+    error: Tema kaydedilemedi
+  fonts:
+    body: 
+      title: Fontlar
+      select: Font seç
+  
+
+messages:
+  upload: Lütfen görünmesini istediğin boyutta bir imaj seç ve boyutunun 400kb'tan küçük olduğundan emin ol
+    imageTooLarge: İmaj çok büyük. Lütfen 400 KB'den küçük bir imaj seçin

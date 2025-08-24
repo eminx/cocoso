@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+
 import {
+  Alert,
   Box,
   Button,
   Flex,
   Heading,
   Input,
-  InputGroup,
-  InputRightAddon,
+  Loader,
+  Text,
   VStack,
-} from '@chakra-ui/react';
-import { Controller, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
+import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import FormField from '/imports/ui/forms/FormField';
+import { defaultEmails } from '/imports/startup/constants';
+import ReactQuill from '/imports/ui/forms/Quill';
+import TablyRouter from '/imports/ui/generic/TablyRouter';
 
-import { call } from '../../utils/shared';
-import Loader from '../../generic/Loader';
-import { message } from '../../generic/message';
-import Alert from '../../generic/Alert';
-import { StateContext } from '../../LayoutContainer';
-import FormField from '../../forms/FormField';
-import { defaultEmails } from '../../../startup/constants';
-import ReactQuill from '../../forms/Quill';
 import Boxling from './Boxling';
-import TablyRouter from '../../generic/TablyRouter';
 
 function EmailForm({ defaultValues, key, onSubmit }) {
   const { control, handleSubmit, register, formState } = useForm({
@@ -37,19 +37,25 @@ function EmailForm({ defaultValues, key, onSubmit }) {
       {key && <Heading>{defaultValues.title}</Heading>}
       <Boxling>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-          <VStack spacing="4">
-            <FormField label={t('emails.form.subject.label')}>
-              <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
+          <VStack>
+            <FormField label={t('emails.form.subject.label')} required>
+              <Input
+                {...register('subject')}
+                placeholder={t('emails.form.subject.holder')}
+              />
             </FormField>
 
-            <FormField label={t('emails.form.appeal.label')}>
-              <InputGroup w="280px">
-                <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
-                <InputRightAddon>{t('emails.form.appeal.addon')}</InputRightAddon>
-              </InputGroup>
+            <FormField label={t('emails.form.appeal.label')} required>
+              <Flex align="center" w="280px">
+                <Input
+                  {...register('appeal')}
+                  placeholder={t('emails.form.appeal.holder')}
+                />
+                <Text>{t('emails.form.appeal.addon')}</Text>
+              </Flex>
             </FormField>
 
-            <FormField label={t('emails.form.body.label')}>
+            <FormField label={t('emails.form.body.label')} required>
               <Controller
                 control={control}
                 name="body"
@@ -58,7 +64,7 @@ function EmailForm({ defaultValues, key, onSubmit }) {
             </FormField>
 
             <Flex justify="flex-end" py="2" w="100%">
-              <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+              <Button disabled={!isDirty} loading={isSubmitting} type="submit">
                 {tc('actions.submit')}
               </Button>
             </Flex>
@@ -131,7 +137,7 @@ export default function Emails() {
       title,
       path: key,
       content: (
-        <Box py="4" mb="4">
+        <Box py="8" mb="4">
           <Heading size="md" mb="4">
             {title}
           </Heading>

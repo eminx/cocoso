@@ -1,29 +1,47 @@
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Box, Code, Flex, Heading, List, ListItem, Text } from '@chakra-ui/react';
 import Eye from 'lucide-react/dist/esm/icons/eye';
 
-import { StateContext } from '../../LayoutContainer';
-import { getFullName } from '../../utils/shared';
+import {
+  Avatar,
+  Box,
+  Code,
+  Flex,
+  Heading,
+  List,
+  ListItem,
+  Text,
+} from '/imports/ui/core';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import { getFullName } from '/imports/ui/utils/shared';
 
 export function AdminMenuHeader({ currentHost }) {
   return (
-    <Link to="/">
+    <Link to="/" style={{ width: '100%' }}>
       <Box
-        _hover={{ bg: 'blueGray.800', color: 'white' }}
-        _focus={{ bg: 'blueGray.300' }}
         bg="white"
         px="4"
         py="2"
+        css={{
+          ':hover': {
+            backgroundColor: 'var(--cocoso-colors-bluegray-200)',
+          },
+          ':focus': {
+            backgroundColor: 'var(--cocoso-colors-bluegray-300)',
+          },
+        }}
       >
-        <Flex align="center">
+        <Flex
+          align="center"
+          css={{ color: 'var(--cocoso-colors-bluegray-900)' }}
+        >
           <Eye />
-          <Text fontWeight="bold" fontSize="lg" ml="2" mt="-0.5">
+          <Text color="bluegray.900" fontWeight="bold" fontSize="lg">
             {currentHost.settings?.name}
           </Text>
         </Flex>
-        <Code bg="blueGray.50" color="blueGray.900" fontSize="xs">
+        <Code bg="bluegray.50" color="bluegray.900" fontSize="xs">
           {currentHost.host}
         </Code>
       </Box>
@@ -42,26 +60,38 @@ export function AdminUserThumb({ currentUser }) {
 
   return (
     <Box
-      _hover={{ bg: 'blueGray.800' }}
-      bg={isCurrentRoute ? 'blueGray.900' : 'blueGray.700'}
-      color="white"
+      bg={isCurrentRoute ? 'bluegray.900' : 'bluegray.700'}
       p="4"
+      css={{
+        ':hover': {
+          backgroundColor: 'var(--cocoso-colors-bluegray-800)',
+        },
+      }}
     >
-      <Flex>
+      <Flex align="center">
         <Avatar
-          _hover={{ bg: 'brand.200' }}
-          bg="brand.100"
-          borderRadius="8px"
-          showBorder
           size="lg"
           src={currentUser.avatar && currentUser.avatar.src}
+          css={{
+            backgroundColor: 'var(--cocoso-colors-theme-100)',
+            borderRadius: 'var(--cocoso-border-radius)',
+            ':hover': {
+              backgroundColor: 'var(--cocoso-colors-theme-200)',
+            },
+          }}
         />
 
-        <Box align="flex-start" textAlign="left" px="3">
-          <Text fontSize="lg" fontWeight="bold">
-            {currentUser.username}
-          </Text>
-          <Text fontWeight="light">{getFullName(currentUser)}</Text>
+        <Box p="2">
+          <Box>
+            <Text fontSize="lg" fontWeight="bold" css={{ color: 'white' }}>
+              {currentUser.username}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontWeight="light" css={{ color: 'white' }}>
+              {getFullName(currentUser)}
+            </Text>
+          </Box>
         </Box>
       </Flex>
     </Box>
@@ -76,7 +106,9 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
   const pathname = location?.pathname;
 
   const itemSplitted = item.value.split('/');
-  const isCurrentRoute = pathname.includes(isSub ? itemSplitted[1] : itemSplitted[0]);
+  const isCurrentRoute = pathname.includes(
+    isSub ? itemSplitted[1] : itemSplitted[0]
+  );
 
   if (isSub && !pathname.includes(parentValue)) {
     return null;
@@ -84,16 +116,28 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
 
   return (
     <Box
-      _hover={{ bg: 'blueGray.100' }}
-      // bg={isCurrentRoute && !item.isMulti ? 'blueGray.100' : 'inherit'}
-      borderRightWidth={isCurrentRoute && !item.isMulti ? '3px' : '0'}
-      borderRightColor="blueGray.500"
       cursor="pointer"
-      ml={isSub ? '4' : '0'}
       p="2.5"
+      css={{
+        borderRightColor: 'var(--cocoso-colors-bluegray-500)',
+        borderRightStyle: 'solid',
+        borderRightWidth: isCurrentRoute && !item.isMulti ? '3px' : '0',
+        marginLeft: isSub ? '1rem' : '0',
+        ':hover': {
+          backgroundColor: 'var(--cocoso-colors-bluegray-100)',
+        },
+      }}
       onClick={() => onItemClick(item)}
     >
-      <Text fontWeight={isCurrentRoute ? 'bold' : 'normal'} isTruncated textOverflow="ellipsis">
+      <Text
+        fontWeight={isCurrentRoute ? 'bold' : 'normal'}
+        css={{
+          color: 'var(--cocoso-colors-bluegray-800)',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
         {item.label}
       </Text>
     </Box>
@@ -101,7 +145,8 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
 }
 
 export default function AdminMenu({ routes, onItemClick }) {
-  const { currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const { currentHost, currentUser, isDesktop, role } =
+    useContext(StateContext);
   const [t] = useTranslation('admin');
 
   const isAdmin = role === 'admin';
@@ -115,25 +160,41 @@ export default function AdminMenu({ routes, onItemClick }) {
 
   return (
     <Flex
-      bg="blueGray.50"
-      color="blueGray.800"
-      direction="column"
-      justify="space-between"
+      bg="bluegray.50"
       h={isDesktop ? '100%' : 'calc(100% - 60px)'}
-      position="fixed"
       w={isDesktop ? '320px' : '100%'}
+      css={{
+        position: 'fixed',
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+      }}
     >
       {isDesktop && <AdminMenuHeader currentHost={currentHost} />}
 
-      <Flex direction="column" h="100%" overflowY="auto">
+      <Flex
+        direction="column"
+        justifyContent="space-between"
+        h="100%"
+        w="100%"
+        css={{ overflowY: 'auto' }}
+      >
         {isDesktop && isAdmin && (
-          <Heading flexGrow="0" color="blueGray.800" p="4" pb="0" size="md" textAlign="center">
+          <Heading
+            p="2"
+            css={{
+              color: 'var(--cocoso-colors-bluegray-800)',
+              flexGrow: '0',
+              fontSize: '1.25rem',
+              textAlign: 'center',
+              width: '100%',
+            }}
+          >
             {t('panel')}
           </Heading>
         )}
 
-        <Box h="100%" flexGrow="1" p="4">
-          <List>
+        <Box h="100%" p="4" w="100%" css={{ flexGrow: '1', overflowY: 'auto' }}>
+          <List w="100%">
             {routes?.map((item) => (
               <ListItem key={item.value} p="0">
                 <AdminMenuItem item={item} onItemClick={onItemClick} />
@@ -153,21 +214,20 @@ export default function AdminMenu({ routes, onItemClick }) {
         </Box>
 
         <Box
-          cursor="pointer"
-          flexGrow="0"
-          onClick={() => onItemClick({ label: 'My Profile', value: '/admin/my-profile' })}
+          w="100%"
+          css={{
+            cursor: 'pointer',
+            flexGrow: '0',
+          }}
+          onClick={() =>
+            onItemClick({
+              label: 'My Profile',
+              value: '/admin/my-profile',
+            })
+          }
         >
           <AdminUserThumb currentUser={currentUser} />
         </Box>
-
-        {/* {isSuperAdmin && isPortalHost && platform && (
-          <Box mb="2" mt="6">
-            <Heading color="blueGray.50" size="sm">
-              {`${platform.name} ${tc('domains.platform')}`}
-            </Heading>
-            <ListMenu list={superadminMenu} />
-          </Box>
-        )} */}
       </Flex>
     </Flex>
   );

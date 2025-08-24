@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Checkbox, FormLabel, NumberInput, NumberInputField } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
+
+import { Box, Checkbox, NumberInput } from '/imports/ui/core';
 
 import { call } from '../../utils/shared';
 import GenericEntryForm from '../../forms/GenericEntryForm';
@@ -30,7 +31,9 @@ export default function PublicActivityForm({ activity, onFinalize }) {
     capacity: activity ? activity.capacity : defaultCapacity,
     datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
-    selectedResource: activity ? { label: activity.resource, _id: activity.resourceId } : null,
+    selectedResource: activity
+      ? { label: activity.resource, _id: activity.resourceId }
+      : null,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
     isRegistrationEnabled: activity
       ? !activity.isRegistrationDisabled || activity.isRegistrationEnabled
@@ -65,7 +68,8 @@ export default function PublicActivityForm({ activity, onFinalize }) {
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     const isTimesInValid = datesAndTimes.some(
-      (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
+      (dateTime) =>
+        !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
     );
 
     setIsSubmitButtonDisabled(isTimesInValid || isConflictHard);
@@ -76,7 +80,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
   }, [state.datesAndTimes, state.selectedResource, state.isExclusiveActivity]);
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders || !loaders.isCreating) {
       return;
     }
     setLoaders((prevState) => ({
@@ -125,7 +129,8 @@ export default function PublicActivityForm({ activity, onFinalize }) {
     }));
   };
 
-  const handleCapacityChange = (value) => {
+  const handleCapacityChange = (event) => {
+    const value = event.target.value;
     setState((prevState) => ({
       ...prevState,
       capacity: value,
@@ -188,14 +193,14 @@ export default function PublicActivityForm({ activity, onFinalize }) {
     >
       <FormField
         helperText={t('form.image.helper')}
-        isRequired
         label={t('form.image.label')}
         mt="4"
         mb="8"
+        required
       >
         <ImageUploader
           preExistingImages={activity ? activity.images : []}
-          ping={loaders.isUploadingImages}
+          ping={loaders?.isUploadingImages}
           onUploadedImages={handleUploadedImages}
         />
       </FormField>
@@ -203,30 +208,34 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       <FormField
         helperText={t('form.exclusive.helper')}
         label={t('form.exclusive.label')}
-        mt="8"
-        mb="4"
+        my="8"
       >
-        <Box bg="white" borderRadius="lg" display="inline" p="2">
-          <Checkbox
-            isChecked={state.isExclusiveActivity}
-            size="lg"
-            onChange={handleExclusiveSwitch}
-          >
-            <FormLabel style={{ cursor: 'pointer' }} mb="0">
-              {t('form.exclusive.holder')}
-            </FormLabel>
-          </Checkbox>
-        </Box>
+        <Checkbox
+          checked={state.isExclusiveActivity}
+          id="is-exclusive"
+          size="lg"
+          onChange={handleExclusiveSwitch}
+        >
+          {t('form.exclusive.holder')}
+        </Checkbox>
       </FormField>
 
-      <FormField helperText={t('form.resource.helper')} label={t('form.resource.label')} my="12">
+      <FormField
+        helperText={t('form.resource.helper')}
+        label={t('form.resource.label')}
+        my="8"
+      >
         <AutoCompleteSelect
           isClearable
           onChange={handleSelectResource}
           components={animatedComponents}
           options={state.resources}
           placeholder={t('form.resource.holder')}
-          style={{ width: '100%', marginTop: '1rem' }}
+          style={{
+            borderRadius: 'var(--cocoso-border-radius)',
+            marginTop: '1rem',
+            width: '100%',
+          }}
           styles={{
             option: (styles, { data }) => ({
               ...styles,
@@ -242,8 +251,8 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       <FormField
         helperText={t('form.occurrences.helper')}
         label={t('form.occurrences.label')}
-        mb="14"
-        isRequired
+        my="8"
+        required
       >
         <DatesAndTimes
           activityId={activity?._id}
@@ -254,31 +263,34 @@ export default function PublicActivityForm({ activity, onFinalize }) {
         />
       </FormField>
 
-      <FormField helperText={t('form.rsvp.helper')} label={t('form.rsvp.label')} mt="4" mb="10">
-        <Box bg="white" borderRadius="lg" display="inline" p="2">
-          <Checkbox isChecked={state.isRegistrationEnabled} size="lg" onChange={handleRsvpSwitch}>
-            <FormLabel cursor="pointer" mb="0">
-              {t('form.rsvp.holder')}
-            </FormLabel>
-          </Checkbox>
-        </Box>
+      <FormField
+        helperText={t('form.rsvp.helper')}
+        label={t('form.rsvp.label')}
+        my="8"
+      >
+        <Checkbox
+          checked={state.isRegistrationEnabled}
+          id="is-registration-disabled"
+          size="lg"
+          onChange={handleRsvpSwitch}
+        >
+          {t('form.rsvp.holder')}
+        </Checkbox>
       </FormField>
 
       {(!state.isRegistrationDisabled || state.isRegistrationEnabled) && (
         <FormField
           helperText={t('form.capacity.helper')}
           label={t('form.capacity.label')}
-          mt="4"
-          mb="12"
+          my="8"
         >
           <NumberInput
             min={1}
             max={maxAttendees}
+            placeholder={t('form.capacity.label')}
             value={state.capacity}
             onChange={handleCapacityChange}
-          >
-            <NumberInputField placeholder={t('form.capacity.label')} />
-          </NumberInput>
+          />
         </FormField>
       )}
     </GenericEntryForm>

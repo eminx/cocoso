@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Text } from '@chakra-ui/react';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
+import { Box, Text } from '/imports/ui/core';
+
 const animatedComponents = makeAnimated();
 
-export default function HostFiltrer({ allHosts, hostFilterValue, onHostFilterValueChange }) {
+export default function HostFiltrer({
+  allHosts,
+  hostFilterValue,
+  onHostFilterValueChange,
+}) {
   const [selectedHost, setSelectedHost] = useState(null);
   const [t] = useTranslation('hosts');
 
@@ -39,7 +44,9 @@ export default function HostFiltrer({ allHosts, hostFilterValue, onHostFilterVal
       <Box>
         <Text fontSize="sm" mt="2">
           {t('portalHost.renderInfo', {
-            hostName: selectedHost ? selectedHost.name : t('portalHost.allHosts'),
+            hostName: selectedHost
+              ? selectedHost.name
+              : t('portalHost.allHosts'),
           })}
         </Text>
       </Box>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heading, Text, Wrap } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
+
+import { Flex, Heading, Text } from '/imports/ui/core';
 
 import Boxling from './Boxling';
 
@@ -15,6 +16,16 @@ const shortCuts = [
     label: <Trans i18nKey="admin:settings.tabs.info" />,
     helper: <Trans i18nKey="admin:settings.tabs.infoHelper" />,
     link: '/admin/settings/organization/info',
+  },
+  {
+    label: <Trans i18nKey="admin:design.title" />,
+    helper: <Trans i18nKey="admin:design.description" />,
+    link: '/admin/settings/design',
+  },
+  {
+    label: <Trans i18nKey="admin:composable.title" />,
+    helper: <Trans i18nKey="admin:composable.description" />,
+    link: '/admin/composable-pages/*',
   },
   {
     label: <Trans i18nKey="admin:settings.tabs.footer" />,
@@ -52,20 +63,26 @@ export default function AdminHome() {
   const navigate = useNavigate();
 
   return (
-    <Wrap spacing="4">
+    <Flex wrap="wrap" gap="1rem">
       {shortCuts.map((item) => (
         <Boxling
-          key={item.label}
-          _hover={{ bg: 'white' }}
-          style={{ flex: '1 1 200px', cursor: 'pointer' }}
+          key={item.link}
+          css={{
+            cursor: 'pointer',
+            flex: '1 1 200px',
+            height: '100%',
+            ':hover': {
+              backgroundColor: 'white',
+            },
+          }}
           onClick={() => navigate(item.link)}
         >
-          <Heading color="blue.700" mb="2" size="md">
+          <Heading color="blue.700" mb="2" size="sm">
             {item.label}
           </Heading>
           <Text>{item.helper}</Text>
         </Boxling>
       ))}
-    </Wrap>
+    </Flex>
   );
 }

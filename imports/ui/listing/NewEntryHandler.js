@@ -1,24 +1,28 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useHref, useSearchParams } from 'react-router-dom';
-import { Box, Progress } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { StateContext } from '../LayoutContainer';
-import Modal from '../generic/Modal';
-import ConfirmModal from '../generic/ConfirmModal';
+import { Box, Modal, Progress } from '/imports/ui/core';
 
-export const initialLoaderValues = {
+import { StateContext } from '../LayoutContainer';
+
+export const initialLoader = {
   isCreating: false,
   isUploadingImages: false,
   isSendingForm: false,
   isSuccess: false,
 };
 
-export const LoaderContext = createContext({ loaders: initialLoaderValues });
+export const LoaderContext = createContext({
+  loaders: initialLoader,
+});
 
-const getLoaderValue = (loaders) => {
+const getLoaderProgress = (loaders) => {
   let progress = 0;
+  if (!loaders) {
+    return progress;
+  }
   if (!loaders.isCreating) {
     progress = 0;
   } else if (loaders.isSuccess) {
@@ -34,6 +38,10 @@ const getLoaderValue = (loaders) => {
 };
 
 const renderToasts = (loaders, tc, justUpdated = false) => {
+  if (!loaders) {
+    return;
+  }
+
   const options = { id: 'loader' };
   if (loaders.isSuccess) {
     toast.success(tc(`message.success.${justUpdated ? 'update' : 'create'}`), {
@@ -61,12 +69,20 @@ export default function NewEntryHandler({ children }) {
   const forEdit = searchParams.get('edit') === 'true';
   const isOpen = forNew || forEdit;
   const { canCreateContent, currentHost } = useContext(StateContext);
-  const [loaders, setLoaders] = useState(initialLoaderValues);
+  const [loaders, setLoaders] = useState(initialLoader);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [tc] = useTranslation('common');
 
+  useEffect(() => {
+    const justUpdated =
+      searchParams.get('edit') === 'true' ||
+      searchParams.get('edit') === 'false';
+
+    renderToasts(loaders, tc, justUpdated);
+  }, [searchParams.get('edit')]);
+
   const handleCancelAndClose = () => {
-    setLoaders(initialLoaderValues);
+    setLoaders(initialLoader);
     setConfirmOpen(false);
     if (forEdit) {
       setSearchParams((params) => ({ ...params, edit: 'false' }));
@@ -75,31 +91,15 @@ export default function NewEntryHandler({ children }) {
     setSearchParams((params) => ({ ...params, new: 'false' }));
   };
 
-  const loaderValue = getLoaderValue(loaders);
-  const justUpdated = searchParams.get('edit') === 'true' || searchParams.get('edit') === 'false';
-  renderToasts(loaders, tc, justUpdated);
+  const loaderProgress = getLoaderProgress(loaders);
 
   const href = useHref();
   let context = href.split('/')[1] || currentHost?.settings?.menu[0]?.name;
   if (context[0] === '@') {
     context = 'works';
   }
-  const string = `common:labels.${forEdit ? 'update' : 'create'}.${context}`;
 
-  const entryHeader = (
-    <Box bg="transparent">
-      {loaderValue ? (
-        <Progress
-          colorScheme="brand"
-          hasStripe
-          size="md"
-          value={loaderValue}
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}
-        />
-      ) : null}
-      <Trans i18nKey={string} />
-    </Box>
-  );
+  const title = `common:labels.${forEdit ? 'update' : 'create'}.${context}`;
 
   if (!canCreateContent) {
     return null;
@@ -107,36 +107,55 @@ export default function NewEntryHandler({ children }) {
 
   return (
     <LoaderContext.Provider value={{ loaders, setLoaders }}>
+      {loaders?.isCreating && (
+        <Box
+          bg="rgba(0, 0, 0, 0.5)"
+          w="100%"
+          h="100%"
+          position="absolute"
+          top="12px"
+          left="0"
+        />
+      )}
+      {loaderProgress > 0 ? (
+        <Progress
+          colorScheme="brand"
+          className="progress"
+          hasStripe
+          size="md"
+          value={loaderProgress}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            zIndex: 99999,
+          }}
+        />
+      ) : null}
+
       <Modal
+        closeOnOverlayClick={false}
         closeOnEsc={false}
-        contentProps={{
-          bg: 'gray.50',
-          h: 'auto',
-          mt: '12',
-        }}
-        isOpen={isOpen}
-        motionPreset="slideInBottom"
-        scrollBehavior="outside"
+        hideFooter
+        open={isOpen}
         size="2xl"
-        title={entryHeader}
+        title={<Trans i18nKey={title} />}
         onClose={() => setConfirmOpen(true)}
       >
         {children}
-        {loaders.isCreating && (
-          <Box bg="rgba(0, 0, 0, 0.5)" w="100%" h="100%" position="absolute" top="12px" left="0" />
-        )}
       </Modal>
 
-      <ConfirmModal
-        confirmText={tc('modals.confirm.newentry.yes')}
+      <Modal
         cancelText={tc('modals.confirm.newentry.cancel')}
+        confirmText={tc('modals.confirm.newentry.yes')}
+        open={confirmOpen}
         title={tc('modals.confirm.newentry.title')}
-        visible={confirmOpen}
         onConfirm={handleCancelAndClose}
-        onCancel={() => setConfirmOpen(false)}
+        onClose={() => setConfirmOpen(false)}
       >
         {tc('modals.confirm.newentry.body')}
-      </ConfirmModal>
+      </Modal>
     </LoaderContext.Provider>
   );
 }

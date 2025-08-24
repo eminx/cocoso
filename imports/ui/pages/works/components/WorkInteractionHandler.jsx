@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Box } from '@chakra-ui/react';
 
+import { Box } from '/imports/ui/core';
 import { StateContext } from '../../../LayoutContainer';
 import { WorkContext } from '../Work';
 import SlideWidget from '../../../entry/SlideWidget';

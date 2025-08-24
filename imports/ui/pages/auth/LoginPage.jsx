@@ -1,15 +1,22 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { StateContext } from '../../LayoutContainer';
-import ConfirmModal from '../../generic/ConfirmModal';
+import {
+  Box,
+  Center,
+  Heading,
+  Image,
+  Link as CLink,
+  Modal,
+  Text,
+} from '/imports/ui/core';
+
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/ui/utils/shared';
+import { StateContext } from '/imports/ui/LayoutContainer';
 import { Login } from './index';
-import { message } from '../../generic/message';
-import { call } from '../../utils/shared';
-import Modal from '../../generic/Modal';
 
 export default function LoginPage() {
   const [t] = useTranslation('accounts');
@@ -59,12 +66,14 @@ export default function LoginPage() {
     <Box pb="8">
       <Modal
         contentProps={{ h: 'auto' }}
-        isOpen
-        scrollBehavior="outside"
+        hideHeader
+        hideFooter
+        open
+        // scrollBehavior="outside"
         size="2xl"
         onClose={() => navigate('/')}
       >
-        <Center>
+        <Center mb="8">
           <Box w="xs">
             {platform && (
               <Center p="4">
@@ -87,7 +96,15 @@ export default function LoginPage() {
               </Text>
             </Center>
 
-            <Box bg="gray.50" borderColor="gray.300" borderWidth={1} mb="4" p="6">
+            <Box
+              bg="gray.50"
+              mb="4"
+              p="6"
+              css={{
+                border: '1px solid',
+                borderColor: 'var(--cocoso-colors-gray-300)',
+              }}
+            >
               <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
             </Box>
             <Center>
@@ -105,18 +122,20 @@ export default function LoginPage() {
         </Center>
       </Modal>
 
-      <ConfirmModal
-        title={t('profile.joinHost', { host: currentHost?.settings?.name })}
-        visible={isJoinModal}
+      <Modal
+        open={isJoinModal}
+        title={t('profile.joinHost', {
+          host: currentHost?.settings?.name,
+        })}
         onConfirm={() => confirmJoin()}
-        onCancel={() => cancelJoin()}
+        onClose={() => cancelJoin()}
         confirmText={t('profile.join')}
       >
         <Center>
           <Image src={currentHost?.logo} m="4" width="4xs" />
         </Center>
         <Text fontSize="lg">{t('profile.joinAsParticipantQuestion')}</Text>
-      </ConfirmModal>
+      </Modal>
     </Box>
   );
 }

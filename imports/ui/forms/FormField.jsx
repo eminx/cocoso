@@ -1,40 +1,39 @@
 import React from 'react';
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-} from '@chakra-ui/react';
 
-function FormField(props) {
+import { Box, Text } from '/imports/ui/core';
+
+export default function FormField(props) {
   const {
     children,
     errorMessage = null,
     helperText,
     label,
+    required = false,
     ...otherProps
   } = props;
   return (
-    <FormControl my="2" {...otherProps}>
-      <FormLabel
-        color="gray.800"
-        fontWeight="bold"
-        mb="1"
-        requiredIndicator={'*'}
-      >
-        {label}
-      </FormLabel>
+    <Box my="4" w="100%" {...otherProps}>
+      <Box>
+        <Text color="gray.800" fontWeight="bold">
+          {label}
+          {required && ' *'}
+        </Text>
+      </Box>
       {helperText && (
-        <FormHelperText color="gray.600" mt="0" mb="2">
-          {helperText}
-        </FormHelperText>
+        <Box>
+          <Text color="gray.600" fontSize="sm">
+            {helperText}
+          </Text>
+        </Box>
       )}
-      {children}
+
+      <Box pt="2">{children}</Box>
+
       {errorMessage && (
-        <FormErrorMessage>{errorMessage}</FormErrorMessage>
+        <Box mt="1">
+          <Text color="red.500">{errorMessage}</Text>
+        </Box>
       )}
-    </FormControl>
+    </Box>
   );
 }
-
-export default FormField;

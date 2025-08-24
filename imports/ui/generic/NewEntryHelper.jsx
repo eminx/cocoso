@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Alert, AlertTitle, AlertDescription, Box, Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
+
+import { Box } from '/imports/ui/core';
 
 import { StateContext } from '../LayoutContainer';
 
@@ -24,7 +25,9 @@ function NewEntryHelper({
 
   const titleGeneric = isEmptyListing
     ? parseHtml(tc('message.newentryhelper.emptylisting.title'))
-    : parseHtml(tc('message.newentryhelper.title', { listing: activeMenuItem?.label }));
+    : parseHtml(
+        tc('message.newentryhelper.title', { listing: activeMenuItem?.label })
+      );
 
   const descriptionGeneric = isEmptyListing
     ? tc('message.newentryhelper.emptylisting.description')
@@ -38,21 +41,33 @@ function NewEntryHelper({
   return (
     <Link className="sexy-thumb-container" to={buttonLink}>
       <Box
-        _hover={{ bg: 'brand.100' }}
-        _active={{ bg: 'brand.200' }}
-        bg="brand.50"
-        border="1px solid"
-        borderColor="brand.500"
-        fontWeight="bold"
+        bg="theme.50"
         h={h}
         px="4"
         py="8"
         w={w}
+        css={{
+          border: '1px solid',
+          borderColor: 'var(--cocoso-colors-theme-500)',
+          fontWeight: 'bold',
+          ':hover': {
+            bg: 'var(--cocoso-colors-theme-100)',
+          },
+          ':active': {
+            bg: 'var(--cocoso-colors-theme-200)',
+          },
+        }}
       >
-        <h3 className="thumb-title" style={{ color: 'var(--chakra-colors-brand-500)' }}>
+        <h3
+          className="thumb-title"
+          style={{ color: 'var(--cocoso-colors-theme-500)' }}
+        >
           {titleGeneric}
         </h3>
-        <h4 className="thumb-subtitle" style={{ color: 'var(--chakra-colors-brand-500)' }}>
+        <h4
+          className="thumb-subtitle"
+          style={{ color: 'var(--cocoso-colors-theme-500)' }}
+        >
           {descriptionGeneric}
         </h4>
       </Box>

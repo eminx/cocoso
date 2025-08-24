@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
-import { Code, Text } from '@chakra-ui/react';
+
+import { Code, Text } from '/imports/ui/core';
 
 import Settings from './Settings';
 import MenuSettings from './MenuSettings';
@@ -22,12 +23,12 @@ import {
 import ComposablePages from '/imports/ui/pages/composablepages';
 
 const getMenuLabel = (menuItems, key) => (
-  <Text as="span">
+  <>
     {menuItems?.find((item) => item.name === key)?.label}
-    <Code bg="gray.50" fontSize="xs" ml="2">
+    <Code bg="gray.50" size="xs" ml="2">
       /{key}
     </Code>
-  </Text>
+  </>
 );
 
 const getAdminRoutes = (menuItems) => [
@@ -35,6 +36,7 @@ const getAdminRoutes = (menuItems) => [
     label: <Trans i18nKey="admin:home" />,
     value: 'home',
     content: <AdminHome />,
+    description: <Trans i18nKey="admin:description" />,
   },
   {
     label: <Trans i18nKey="admin:settings.title" />,
@@ -45,16 +47,19 @@ const getAdminRoutes = (menuItems) => [
         label: <Trans i18nKey="admin:info.label" />,
         value: 'settings/organization/*',
         content: <Settings />,
+        description: <Trans i18nKey="admin:settings.description" />,
       },
       {
         label: <Trans i18nKey="admin:menu.title" />,
         value: 'settings/menu/*',
         content: <MenuSettings />,
+        description: <Trans i18nKey="admin:menu.description" />,
       },
       {
         label: <Trans i18nKey="admin:settings.tabs.design" />,
         value: 'settings/design/*',
         content: <DesignOptions />,
+        description: <Trans i18nKey="admin:design.description" />,
       },
     ],
   },
@@ -63,6 +68,7 @@ const getAdminRoutes = (menuItems) => [
     value: 'composable-pages/*',
     isMulti: false,
     content: <ComposablePages />,
+    description: <Trans i18nKey="admin:composable.description" />,
   },
   {
     label: <Trans i18nKey="admin:listings.title" />,
@@ -73,21 +79,16 @@ const getAdminRoutes = (menuItems) => [
         label: getMenuLabel(menuItems, 'activities'),
         value: 'features/activities/*',
         content: <ActivitiesAdmin />,
+        description: <Trans i18nKey="admin:menu.info.activities" />,
       },
       {
         label: getMenuLabel(menuItems, 'calendar'),
         value: 'features/calendar/*',
         content: <CalendarAdmin />,
+        description: <Trans i18nKey="admin:menu.info.calendar" />,
       },
       // {
-      //   label: (
-      //     <Text as="span">
-      //       <Trans i18nKey="common:platform.communities" />
-      //       <Code bg="gray.50" fontSize="xs" ml="2">
-      //         /communities
-      //       </Code>
-      //     </Text>
-      //   ),
+      //   label: getMenuLabel(menuItems, 'communities'),
       //   value: 'features/communities/*',
       //   content: <CommunitiesAdmin />,
       // },
@@ -95,26 +96,31 @@ const getAdminRoutes = (menuItems) => [
         label: getMenuLabel(menuItems, 'groups'),
         value: 'features/groups/*',
         content: <GroupsAdmin />,
+        description: <Trans i18nKey="admin:menu.info.groups" />,
       },
       {
         label: getMenuLabel(menuItems, 'info'),
         value: 'features/pages/*',
         content: <PagesAdmin />,
+        description: <Trans i18nKey="admin:menu.info.info" />,
       },
       {
         label: getMenuLabel(menuItems, 'people'),
         value: 'features/people/*',
         content: <PeopleAdmin />,
+        description: <Trans i18nKey="admin:menu.info.people" />,
       },
       {
         label: getMenuLabel(menuItems, 'resources'),
         value: 'features/resources/*',
         content: <ResourcesAdmin />,
+        description: <Trans i18nKey="admin:menu.info.resources" />,
       },
       {
         label: getMenuLabel(menuItems, 'works'),
         value: 'features/works/*',
         content: <WorksAdmin />,
+        description: <Trans i18nKey="admin:menu.info.works" />,
       },
     ],
   },
@@ -122,16 +128,19 @@ const getAdminRoutes = (menuItems) => [
     label: <Trans i18nKey="admin:users.title" />,
     value: 'users/*',
     content: <Members />,
+    description: <Trans i18nKey="admin:users.description" />,
   },
   {
     label: <Trans i18nKey="admin:emails.title" />,
     value: 'emails/*',
     content: <Emails />,
+    description: <Trans i18nKey="admin:emails.description" />,
   },
   {
     label: <Trans i18nKey="admin:newsletter.title" />,
     value: 'email-newsletter',
     content: <EmailNewsletter />,
+    description: <Trans i18nKey="admin:newsletter.description" />,
   },
 ];
 

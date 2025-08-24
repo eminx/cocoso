@@ -1,7 +1,8 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Flex, Input, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { Button, Flex, Input, VStack } from '/imports/ui/core';
 
 import FormField from '../../forms/FormField';
 import ReactQuill from '../../forms/Quill';
@@ -44,7 +45,7 @@ function ProfileForm({ defaultValues, onSubmit }) {
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+            <Button disabled={!isDirty} loading={isSubmitting} type="submit">
               {tc('actions.submit')}
             </Button>
           </Flex>

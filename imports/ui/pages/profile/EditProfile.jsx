@@ -1,34 +1,44 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useLayoutEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
+
 import {
   Alert,
-  AlertIcon,
-  AlertTitle,
   Box,
   Button,
   Center,
+  Checkbox,
   Divider,
   Flex,
   Heading,
+  Modal,
+  Tabs,
   Text,
-  VStack,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
+import { message } from '/imports/ui/generic/message';
+import ChangeLanguage from '/imports/ui/layout/ChangeLanguageMenu';
+import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
+import { StateContext } from '/imports/ui/LayoutContainer';
 
-import ProfileForm from './ProfileForm';
-import ConfirmModal from '../../generic/ConfirmModal';
-import { message } from '../../generic/message';
-import { call, resizeImage, uploadImage } from '../../utils/shared';
-import FormSwitch from '../../forms/FormSwitch';
-import { StateContext } from '../../LayoutContainer';
 import AvatarUploader from './AvatarUploader';
-import Tabs from '../../entry/Tabs';
-import ChangeLanguage from '../../layout/ChangeLanguageMenu';
-import KeywordsManager from './KeywordsManager';
 import Boxling from '../admin/Boxling';
+import KeywordsManager from './KeywordsManager';
+import ProfileForm from './ProfileForm';
 
-function EditProfile() {
+const subSpanStyle = {
+  fontSize: '0.875rem',
+  fontWeight: 300,
+  textTransform: 'lowercase',
+};
+
+export default function EditProfile() {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
   const [isLeaveModalOn, setIsLeaveModalOn] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -77,7 +87,10 @@ function EditProfile() {
 
     try {
       const resizedAvatar = await resizeImage(uploadableAvatar, 1200);
-      const uploadedAvatar = await uploadImage(resizedAvatar, 'avatarImageUpload');
+      const uploadedAvatar = await uploadImage(
+        resizedAvatar,
+        'avatarImageUpload'
+      );
       await call('setAvatar', uploadedAvatar);
       message.success(
         tc('message.success.save', {
@@ -194,7 +207,9 @@ function EditProfile() {
   };
 
   const isMember = ['admin', 'contributor', 'participant'].includes(role);
-  const currentMembership = currentUser.memberships.find((m) => m.host === currentHost.host);
+  const currentMembership = currentUser.memberships.find(
+    (m) => m.host === currentHost.host
+  );
   const isUserPublic = Boolean(currentMembership?.isPublic);
   const isUserPublicGlobally = currentUser?.isPublic;
   const communityName = currentHost?.settings?.name;
@@ -202,10 +217,7 @@ function EditProfile() {
   if (!isMember) {
     return (
       <Center p="8">
-        <Alert status="error">
-          <AlertIcon />
-          <AlertTitle>{t('profile.message.deny')}</AlertTitle>
-        </Alert>
+        <Alert type="error">{t('profile.message.deny')}</Alert>
       </Center>
     );
   }
@@ -223,7 +235,10 @@ function EditProfile() {
               {t('profile.image')}
             </Heading>
             <AvatarUploader
-              imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
+              imageUrl={
+                uploadableAvatarLocal ||
+                (currentUser.avatar && currentUser.avatar.src)
+              }
               isUploading={isUploading}
               uploadableAvatarLocal={uploadableAvatarLocal}
               removeAvatar={removeAvatar}
@@ -238,7 +253,10 @@ function EditProfile() {
               {t('profile.label')}
             </Heading>
             <Box mb="4">
-              <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
+              <ProfileForm
+                defaultValues={currentUser}
+                onSubmit={handleSubmitInfo}
+              />
             </Box>
           </Boxling>
 
@@ -256,10 +274,17 @@ function EditProfile() {
           <Heading mb="4" size="md">
             {tc('langs.form.label')}
           </Heading>
-          <ChangeLanguage hideHelper select onChange={(selectedLang) => setLang(selectedLang)} />
+          <ChangeLanguage
+            hideHelper
+            select
+            onChange={(selectedLang) => setLang(selectedLang)}
+          />
 
           <Flex justify="flex-end" mt="4">
-            <Button disabled={lang === currentUser.lang} onClick={handleSetLanguage}>
+            <Button
+              disabled={lang === currentUser.lang}
+              onClick={handleSetLanguage}
+            >
               {tc('actions.submit')}
             </Button>
           </Flex>
@@ -272,35 +297,35 @@ function EditProfile() {
       content: (
         <Boxling>
           <Box mb="4">
-            <Heading size="md" pb="4">
+            <Heading size="md" pb="2">
               {platform?.name}{' '}
-              <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
-                {tc('domains.platform')}
-              </Text>
+              <span style={subSpanStyle}>{tc('domains.platform')}</span>
             </Heading>
-            <FormSwitch
-              colorScheme="green"
-              isChecked={isUserPublicGlobally}
-              label={t('profile.makePublic.labelGlobal')}
-              onChange={({ target: { checked } }) => setProfilePublicGlobally(checked)}
-            />
-            <Text fontSize="sm" my="2">
-              {t('profile.makePublic.helperTextGlobal')}
-            </Text>
+            <Checkbox
+              checked={isUserPublicGlobally}
+              id="is-user-public-globally"
+              onChange={({ target: { checked } }) =>
+                setProfilePublicGlobally(checked)
+              }
+            >
+              {t('profile.makePublic.labelGlobal')}
+            </Checkbox>
+            <p>
+              <Text fontSize="sm" my="2">
+                {t('profile.makePublic.helperTextGlobal')}
+              </Text>
+            </p>
           </Box>
 
           <Divider my="4" />
 
-          <Box pl="4">
-            <Heading size="md" pb="4">
+          <Box pt="2">
+            <Heading size="md" pb="2">
               {communityName}{' '}
-              <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
-                {tc('domains.community')}
-              </Text>
+              <span style={subSpanStyle}>{tc('domains.community')}</span>
             </Heading>
 
-            <Alert bg="white" status="info" p="0">
-              <AlertIcon color="gray.800" />
+            <Alert bg="white" type="info" css={{ marginBottom: '0.4rem' }}>
               <Text fontSize="sm">
                 <Trans
                   i18nKey="accounts:profile.message.role"
@@ -316,20 +341,29 @@ function EditProfile() {
             </Alert>
 
             <Box py="4">
-              <FormSwitch
-                colorScheme="green"
-                isChecked={isUserPublic}
-                isDisabled={!isUserPublicGlobally || currentHost.isPortalHost}
-                label={t('profile.makePublic.label')}
-                onChange={({ target: { checked } }) => setProfilePublic(checked)}
-              />
-              <Text fontSize="sm" my="2">
-                {t('profile.makePublic.helperText')}
-              </Text>
+              <Checkbox
+                checked={isUserPublic}
+                disabled={!isUserPublicGlobally || currentHost.isPortalHost}
+                id="is-user-public-locally"
+                onChange={({ target: { checked } }) =>
+                  setProfilePublic(checked)
+                }
+              >
+                {t('profile.makePublic.label')}
+              </Checkbox>
+              <p>
+                <Text fontSize="sm" my="2">
+                  {t('profile.makePublic.helperText')}
+                </Text>
+              </p>
             </Box>
 
             <Box py="2">
-              <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
+              <Button
+                colorScheme="red"
+                size="sm"
+                onClick={() => setIsLeaveModalOn(true)}
+              >
                 {t('actions.leave', { host: communityName })}
               </Button>
             </Box>
@@ -341,7 +375,8 @@ function EditProfile() {
 
   const pathname = location?.pathname;
   const pathnameLastPart = pathname.split('/').pop();
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
+  const tabIndex =
+    tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
   if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
@@ -349,45 +384,54 @@ function EditProfile() {
 
   return (
     <>
-      <Box mb="8" minHeight="100vh">
-        <Box>
-          <Heading mb="4" size="md">
+      <Box mb="8" css={{ minHeight: '100vh' }}>
+        <Box w="100%">
+          <Heading size="md" mb="4">
             {platform?.name}{' '}
-            <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
-              {tc('domains.platform')}
-            </Text>
+            <span style={subSpanStyle}>{tc('domains.platform')}</span>
           </Heading>
 
-          <Alert bg="blueGray.50" borderRadius="lg" mb="8" status="info">
-            <AlertIcon color="gray.800" />
-            <Text fontSize="sm" mr="4">
-              {t('profile.message.platform', { platform: platform?.name })}
-            </Text>
-          </Alert>
+          <Box mb="4">
+            <Alert bg="bluegray.50" mb="8" type="info">
+              <Text fontSize="sm" mr="4">
+                {t('profile.message.platform', {
+                  platform: platform?.name,
+                })}
+              </Text>
+            </Alert>
+          </Box>
 
-          <Tabs align="center" index={tabIndex} mb="4" tabs={tabs} />
+          <Tabs align="center" index={tabIndex} tabs={tabs} />
 
           <Box>
             <Routes>
               {tabs.map((tab) => (
-                <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
+                <Route
+                  key={tab.title}
+                  path={tab.path}
+                  element={<Box pt="2">{tab.content}</Box>}
+                />
               ))}
             </Routes>
           </Box>
-
-          <Divider my="4" />
         </Box>
+
+        <Divider my="4" />
 
         <Box bg="red.100" mt="24">
-          <VStack spacing="4" p="4">
-            <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
+          <Center p="4">
+            <Button
+              colorScheme="red"
+              size="sm"
+              onClick={() => setIsDeleteModalOn(true)}
+            >
               {t('delete.action')}
             </Button>
-          </VStack>
+          </Center>
         </Box>
 
-        <ConfirmModal
-          visible={isLeaveModalOn}
+        <Modal
+          open={isLeaveModalOn}
           title={t('leave.title')}
           confirmText={t('leave.label')}
           confirmButtonProps={{
@@ -395,13 +439,13 @@ function EditProfile() {
             isLoading: isLeaving,
           }}
           onConfirm={leaveHost}
-          onCancel={() => setIsLeaveModalOn(false)}
+          onClose={() => setIsLeaveModalOn(false)}
         >
           <Text>{t('leave.body')}</Text>
-        </ConfirmModal>
+        </Modal>
 
-        <ConfirmModal
-          visible={isDeleteModalOn}
+        <Modal
+          open={isDeleteModalOn}
           title={t('delete.title')}
           confirmText={t('delete.label')}
           confirmButtonProps={{
@@ -410,13 +454,11 @@ function EditProfile() {
             isDisabled: isDeleting,
           }}
           onConfirm={deleteAccount}
-          onCancel={() => setIsDeleteModalOn(false)}
+          onClose={() => setIsDeleteModalOn(false)}
         >
           <Text>{t('delete.body')}</Text>
-        </ConfirmModal>
+        </Modal>
       </Box>
     </>
   );
 }
-
-export default EditProfile;

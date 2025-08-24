@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Center } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
-import ConfirmModal from '../../generic/ConfirmModal';
+import { Box, Button, Center, Modal, Loader } from '/imports/ui/core';
+
 import { call } from '../../utils/shared';
-import { StateContext } from '../../LayoutContainer';
 import { message } from '../../generic/message';
-import Loader from '../../generic/Loader';
+import { StateContext } from '../../LayoutContainer';
 
 export default function ContactInfo({ username }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -35,19 +34,20 @@ export default function ContactInfo({ username }) {
     <>
       <Center>
         <Button
-          borderColor="brand.200"
-          borderWidth="2px"
-          colorScheme="brand"
-          height="48px"
-          width={isDesktop ? '240px' : '180px'}
+          h="48px"
+          w={isDesktop ? '240px' : '180px'}
+          css={{
+            borderColor: 'var(--cocoso-colors-theme-200)',
+            borderWidth: '2px',
+          }}
           onClick={() => setModalOpen(true)}
         >
           <Trans i18nKey="common:labels.contact">Contact</Trans>
         </Button>
       </Center>
 
-      <ConfirmModal
-        visible={modalOpen}
+      <Modal
+        open={modalOpen}
         title={
           <>
             <Trans i18nKey="common:labels.contact">Contact</Trans>
@@ -59,13 +59,18 @@ export default function ContactInfo({ username }) {
         onClose={() => setModalOpen(false)}
       >
         {contactInfo ? (
-          <Box bg="white" className="text-content" p="4" textAlign="center">
+          <Box
+            bg="white"
+            className="text-content"
+            p="4"
+            css={{ textAlign: 'center' }}
+          >
             {HTMLReactParser(contactInfo)}
           </Box>
         ) : (
           <Loader />
         )}
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }

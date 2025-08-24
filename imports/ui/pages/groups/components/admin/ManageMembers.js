@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { Avatar, Flex, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import Modal from '../../../../generic/Modal';
-import NiceList from '../../../../generic/NiceList';
-import { call } from '../../../../utils/shared';
-import { message } from '../../../../generic/message';
+import { Avatar, Flex, Link as CLink, Text } from '/imports/ui/core';
+
+import Modal from '/imports/ui/core/Modal';
+import NiceList from '/imports/ui/generic/NiceList';
+import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
 import { GroupContext } from '../../Group';
 
 export default function ManageMembers({ onClose }) {
@@ -36,11 +37,23 @@ export default function ManageMembers({ onClose }) {
   }));
 
   return (
-    <Modal bg="gray.100" isOpen title={t('labels.member')} onClose={onClose}>
-      <NiceList actionsDisabled={false} keySelector="username" list={members} py="4" spacing="4">
+    <Modal hideFooter open title={t('labels.member')} onClose={onClose}>
+      <NiceList
+        actionsDisabled={false}
+        keySelector="username"
+        list={members}
+        py="4"
+        spacing="4"
+      >
         {(member) => (
           <Flex align="center">
-            <Avatar borderRadius="lg" mr="2" name={member.username} size="md" src={member.avatar} />
+            <Avatar
+              borderRadius="lg"
+              mr="2"
+              name={member.username}
+              size="md"
+              src={member.avatar}
+            />
             <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
               {member.username}
             </CLink>

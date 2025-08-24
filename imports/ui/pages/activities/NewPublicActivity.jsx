@@ -20,7 +20,7 @@ export default function NewPublicActivity() {
   };
 
   const handleSuccess = () => {
-    navigate(`/activities/${newEntryId}`);
+    navigate(`/activities/${newEntryId}/info`);
   };
 
   return (

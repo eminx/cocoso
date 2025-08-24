@@ -1,23 +1,29 @@
 import React, { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import XIcon from 'lucide-react/dist/esm/icons/x';
+
 import {
   Box,
   Button,
+  Drawer,
   Flex,
+  HStack,
   Heading,
+  IconButton,
   Input,
-  Tag,
-  TagCloseButton,
-  TagLabel,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+} from '/imports/ui/core';
 
-import FormField from '../../forms/FormField';
-import { call, emailIsValid, includesSpecialCharacters } from '../../utils/shared';
-import { message } from '../../generic/message';
-import Drawer from '../../generic/Drawer';
+import FormField from '/imports/ui/forms/FormField';
+import {
+  call,
+  emailIsValid,
+  includesSpecialCharacters,
+} from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+
 import { GroupContext } from './Group';
 
 const EmailsContainer = (props) => (
@@ -25,7 +31,7 @@ const EmailsContainer = (props) => (
     <Heading size="md" mb="4">
       {props.title} ({props.count})
     </Heading>
-    <Box>{props.children}</Box>
+    <HStack wrap="wrap">{props.children}</HStack>
   </Box>
 );
 
@@ -58,7 +64,10 @@ export default function InviteManager() {
     }
 
     const firstNameInput = state.firstNameInput;
-    if (firstNameInput.length < 2 || includesSpecialCharacters(firstNameInput)) {
+    if (
+      firstNameInput.length < 2 ||
+      includesSpecialCharacters(firstNameInput)
+    ) {
       message.error(t('invite.firstName.valid'));
       return true;
     }
@@ -120,14 +129,15 @@ export default function InviteManager() {
 
   return (
     <Drawer
-      isOpen={isOpen}
+      open={isOpen}
       title={t('actions.invite')}
       onClose={() => setSearchParams({ invite: 'false' })}
     >
       <Box>
-        <VStack py="6">
-          <Text>{t('invite.info')}</Text>
-          <FormField label={t('invite.email.label')}>
+        <VStack py="2" gap="2">
+          <Text mb="2">{t('invite.info')}</Text>
+
+          <FormField label={t('invite.email.label')} required>
             <Input
               onChange={handleEmailInputChange}
               placeholder={t('invite.email.holder')}
@@ -135,7 +145,7 @@ export default function InviteManager() {
             />
           </FormField>
 
-          <FormField label={t('invite.firstName.label')}>
+          <FormField label={t('invite.firstName.label')} required>
             <Input
               onChange={handleFirstNameInputChange}
               placeholder={t('invite.firstName.holder')}
@@ -143,7 +153,7 @@ export default function InviteManager() {
             />
           </FormField>
           <FormField>
-            <Flex justifyContent="flex-end">
+            <Flex justify="flex-end">
               <Button onClick={handleSendInvite}>{t('invite.submit')}</Button>
             </Flex>
           </FormField>
@@ -152,22 +162,27 @@ export default function InviteManager() {
         <Box py="8">
           <EmailsContainer title="People Invited" count={peopleInvited?.length}>
             {peopleInvited?.map((person) => (
-              <Tag
+              <Flex
                 key={person.email}
-                borderRadius="full"
-                colorScheme="green"
-                mb="2"
-                mr="2"
-                px="4"
-                py="2"
-                variant="solid"
+                align="center"
+                bg="green.50"
+                gap="0"
+                pl="2"
+                css={{
+                  border: '1px solid',
+                  borderColor: 'var(--cocoso-colors-green-400)',
+                  borderRadius: 'var(--cocoso-border-radius)',
+                }}
               >
-                <TagLabel fontWeight="bold" mr="2">
-                  {person?.firstName}
-                </TagLabel>
-                <Text>{person?.email}</Text>
-                <TagCloseButton onClick={() => handleRemoveInvite(person)} />
-              </Tag>
+                <Box px="1">{`${person?.firstName} <${person?.email}>`}</Box>
+                <IconButton
+                  color="var(--cocoso-colors-red-300)"
+                  icon={<XIcon size={12} />}
+                  variant="ghost"
+                  size="xs"
+                  onClick={() => handleRemoveInvite(person)}
+                />
+              </Flex>
             ))}
           </EmailsContainer>
         </Box>

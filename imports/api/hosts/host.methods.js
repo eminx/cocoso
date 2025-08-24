@@ -5,7 +5,11 @@ import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
 import Newsletters from '../newsletters/newsletter';
-import { defaultMenu, defaultEmails } from '../../startup/constants';
+import {
+  defaultEmails,
+  defaultMenu,
+  defaultTheme,
+} from '../../startup/constants';
 import { isAdmin } from '../users/user.roles';
 
 function getUsersRandomlyWithAvatarsFirst(users) {
@@ -47,17 +51,8 @@ Meteor.methods({
 
     try {
       Hosts.insert({
+        emails: defaultEmails,
         host: values.host,
-        settings: {
-          name: values.name,
-          email: values.email,
-          address: values.address,
-          city: values.city,
-          country: values.country,
-          menu: defaultMenu,
-          lang: 'en',
-          hue: Math.ceil(Math.random() * 360).toString(),
-        },
         members: [
           {
             avatar: currentUser.avatar?.src,
@@ -69,7 +64,17 @@ Meteor.methods({
             isPublic: false,
           },
         ],
-        emails: defaultEmails,
+        settings: {
+          name: values.name,
+          email: values.email,
+          address: values.address,
+          city: values.city,
+          country: values.country,
+          menu: defaultMenu,
+          lang: 'en',
+          hue: Math.ceil(Math.random() * 360).toString(),
+        },
+        theme: defaultTheme,
         createdAt: new Date(),
       });
 
@@ -96,7 +101,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -118,9 +122,10 @@ Meteor.methods({
         {
           fields: {
             host: 1,
-            settings: 1,
-            logo: 1,
             isPortalHost: 1,
+            logo: 1,
+            settings: 1,
+            theme: 1,
           },
         }
       );
@@ -136,9 +141,10 @@ Meteor.methods({
       {
         fields: {
           host: 1,
-          settings: 1,
-          logo: 1,
           isPortalHost: 1,
+          logo: 1,
+          settings: 1,
+          theme: 1,
         },
       }
     );
@@ -189,7 +195,9 @@ Meteor.methods({
       )
       .fetch();
 
-    const usersFiltered = users.filter((u) => u.memberships.find((m) => m.host === host)?.isPublic);
+    const usersFiltered = users.filter(
+      (u) => u.memberships.find((m) => m.host === host)?.isPublic
+    );
 
     return getUsersRandomlyWithAvatarsFirst(usersFiltered);
   },
@@ -285,7 +293,10 @@ Meteor.methods({
       hostId: currentHost._id.toString(),
     });
 
-    const emailHtmlWithBrowserLink = emailHtml.replace('[newsletter-id]', newEmailId);
+    const emailHtmlWithBrowserLink = emailHtml.replace(
+      '[newsletter-id]',
+      newEmailId
+    );
 
     const isPortalHost = currentHost.isPortalHost;
     const members = isPortalHost ? Meteor.users.find() : currentHost.members;
@@ -297,13 +308,21 @@ Meteor.methods({
           member.username
         );
 
-        const emailAddress = isPortalHost ? member.emails[0].address : member.email;
+        const emailAddress = isPortalHost
+          ? member.emails[0].address
+          : member.email;
 
-        Meteor.call('sendEmail', emailAddress, email.subject, emailHtmlWithUsername, (error) => {
-          if (error) {
-            console.log(error);
+        Meteor.call(
+          'sendEmail',
+          emailAddress,
+          email.subject,
+          emailHtmlWithUsername,
+          (error) => {
+            if (error) {
+              console.log(error);
+            }
           }
-        });
+        );
       });
     } catch (error) {
       throw new Meteor.Error(error);
@@ -313,5 +332,25 @@ Meteor.methods({
   getHostValue() {
     const host = getHost(this);
     return host;
+  },
+
+  async updateHostTheme(theme) {
+    const host = getHost(this);
+    const currentHost = await Hosts.findOneAsync({ host });
+    const currentUser = Meteor.user();
+
+    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    try {
+      await Hosts.updateAsync(currentHost._id, {
+        $set: {
+          theme,
+        },
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 });

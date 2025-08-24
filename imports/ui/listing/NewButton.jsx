@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { IconButton } from '@chakra-ui/react';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
+
+import { IconButton } from '/imports/ui/core';
+
 import { StateContext } from '../LayoutContainer';
 
 const getRoute = (item) => {
@@ -12,7 +14,8 @@ const getRoute = (item) => {
 };
 
 export default function NewButton() {
-  const { canCreateContent, currentHost, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, role } =
+    useContext(StateContext);
   const location = useLocation();
   const [, setSearchParams] = useSearchParams();
 
@@ -29,7 +32,9 @@ export default function NewButton() {
       if (isAdmin) {
         return item.isVisible;
       }
-      return item.isVisible && !['info', 'resources'].includes(item.name);
+      return (
+        item.isVisible && !['info', 'resources'].includes(item.name)
+      );
     })
     .map((item, index) => ({
       ...item,
@@ -45,24 +50,20 @@ export default function NewButton() {
     return pathname.includes(item?.name);
   });
 
-  if (!activeMenuItem || ['members', 'people'].includes(activeMenuItem.name)) {
+  if (
+    !activeMenuItem ||
+    ['members', 'people'].includes(activeMenuItem.name)
+  ) {
     return null;
   }
 
   return (
     <IconButton
-      _hover={{ bg: 'gray.300' }}
-      _focus={{ bg: 'gray.400' }}
-      as="span"
-      bg="gray.200"
-      // borderColor="blueGray.400"
-      // borderWidth="2px"
-      borderRadius="lg"
-      color="gray.600"
-      cursor="pointer"
+      css={{ margin: '0 1rem' }}
       icon={<AddIcon />}
       mx="2"
       size="sm"
+      variant="outline"
       onClick={() => setSearchParams({ new: 'true' })}
     />
   );

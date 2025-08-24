@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Flex, Slide } from '@chakra-ui/react';
+
+import { Flex, Slide } from '/imports/ui/core';
 
 // Custom throttle hook
 function useThrottle(callback, delay) {
@@ -37,21 +38,22 @@ function useThrottle(callback, delay) {
 }
 
 const flexProps = {
-  align: 'flex-start',
-  bg: 'brand.900',
-  borderTop: '1px solid',
-  borderTopColor: 'gray.400',
+  align: 'center',
+  bg: 'theme.900',
   justify: 'center',
-  minH: '86px',
   p: '4',
   pb: '2',
-  width: '100%',
+  css: {
+    borderTop: '1px solid',
+    borderTopColor: 'var(--cocoso-colors-gray-400)',
+    width: '100%',
+    minHeight: '86px',
+  },
 };
 
 const slideProps = (slideStart) => ({
   direction: 'bottom',
-  in: slideStart,
-  unmountOnExit: true,
+  ping: slideStart,
 });
 
 export default function SlideWidget({ slideStart, children, ...otherProps }) {
@@ -66,12 +68,16 @@ export default function SlideWidget({ slideStart, children, ...otherProps }) {
   }, [position]);
 
   useEffect(() => {
-    const newWidgetHeight = document?.getElementById('slide-widget')?.offsetHeight || 0;
+    const newWidgetHeight =
+      document?.getElementById('slide-widget')?.offsetHeight || 0;
     setWidgetHeight(newWidgetHeight);
 
     // Get initial container height (adjust selector as needed)
-    const containerHeight = document.getElementById('main-content-container')?.offsetHeight;
-    containerRef.current = containerHeight - (window.innerHeight - newWidgetHeight);
+    const containerHeight = document.getElementById(
+      'main-content-container'
+    )?.offsetHeight;
+    containerRef.current =
+      containerHeight - (window.innerHeight - newWidgetHeight);
   }, []);
 
   // Memoize scroll handler with useCallback
@@ -105,13 +111,17 @@ export default function SlideWidget({ slideStart, children, ...otherProps }) {
       <Slide
         id="slide-widget"
         {...slideProps(slideStart)}
-        style={{ zIndex: 10, position, transition: 'position 0.5s ease-in-out' }}
+        style={{
+          position,
+        }}
       >
         <Flex {...flexProps} {...otherProps}>
           {children}
         </Flex>
       </Slide>
-      {position === 'fixed' ? <div style={{ height: `${widgetHeight}px`, width: '100%' }} /> : null}
+      {position === 'fixed' ? (
+        <div style={{ height: `${widgetHeight}px`, width: '100%' }} />
+      ) : null}
     </>
   );
 }

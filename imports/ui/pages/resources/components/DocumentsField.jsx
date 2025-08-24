@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { Box, Code, Flex, Link as CLink, Text, Skeleton } from '@chakra-ui/react';
+import { Box, Code, Flex, Link as CLink, Loader, Text } from '/imports/ui/core';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
@@ -11,7 +11,11 @@ import NiceList from '../../../generic/NiceList';
 import DocumentUploadHelper from '../../../forms/UploadHelpers';
 import { StateContext } from '../../../LayoutContainer';
 
-export default function DocumentsField({ contextType, contextId, isAllowed = false }) {
+export default function DocumentsField({
+  contextType,
+  contextId,
+  isAllowed = false,
+}) {
   const [documents, setDocuments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +42,13 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
 
   const createDocument = async (uploadableFile, downloadUrl) => {
     try {
-      await call('createDocument', uploadableFile.name, downloadUrl, contextType, contextId);
+      await call(
+        'createDocument',
+        uploadableFile.name,
+        downloadUrl,
+        contextType,
+        contextId
+      );
       getDocuments();
       message.success(`${uploadableFile.name} ${tc('documents.fileDropper')}`);
     } catch (error) {
@@ -88,7 +98,7 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
   };
 
   if (isLoading) {
-    return <Skeleton w="100%" h="100%" startColor="brand.100" endColor="brand.200" />;
+    return <Loader relative />;
   }
 
   if (!documents) {
@@ -120,7 +130,8 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
                     rel="noreferrer"
                     target="_blank"
                   >
-                    {document.documentLabel} <ExternalLinkIcon mr="2px" fontSize="sm" />
+                    {document.documentLabel}{' '}
+                    <ExternalLinkIcon mr="2px" fontSize="sm" />
                   </CLink>
                 </Code>
               </Box>
@@ -138,21 +149,30 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
             <ReactDropzone onDrop={handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
                 <Flex
-                  _hover={{ bg: 'brand.50' }}
                   align="center"
                   bg={isDragActive ? 'gray.300' : 'white'}
-                  border="2px dashed"
-                  borderColor="brand.500"
-                  cursor="grab"
                   direction="column"
                   h="120px"
                   justify="center"
                   p="4"
                   w="100%"
+                  css={{
+                    border: '2px dashed',
+                    borderColor: 'var(--cocoso-colors-theme-500)',
+                    cursor: 'grab',
+                    ':hover': {
+                      bg: 'var(--cocoso-colors-theme-50)',
+                    },
+                  }}
                   {...getRootProps()}
                 >
                   {isUploading ? (
-                    <Skeleton w="100%" h="100%" startColor="brand.100" endColor="brand.200" />
+                    <Skeleton
+                      w="100%"
+                      h="100%"
+                      startColor="theme.100"
+                      endColor="theme.200"
+                    />
                   ) : (
                     <Text textAlign="center" fontSize="sm">
                       {tc('documents.drop')}

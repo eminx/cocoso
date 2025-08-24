@@ -23,13 +23,14 @@
 
     /* Module Resolution Options */
     "baseUrl": ".",
+    "jsxImportSource": "restyle",
     "paths": {
       /* Support absolute /imports/* with a leading '/' */
       "/*": ["*"]
     },
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["node", "mocha"],
+    "types": [],
     "esModuleInterop": true,
     "preserveSymlinks": true
   },

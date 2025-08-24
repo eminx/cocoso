@@ -68,7 +68,7 @@
 
 .talk-bubble.right-in {
   float: right;
-  background-color: var(--chakra-colors-brand-500);
+  background-color: var(--cocoso-colors-theme-500);
   color: #fff;
 }
 
@@ -209,8 +209,8 @@
   right: 30px;
   bottom: -40px;
   border: 20px solid;
-  border-color: var(--chakra-colors-brand-500) transparent transparent
-    var(--chakra-colors-brand-500);
+  border-color: var(--cocoso-colors-theme-500) transparent transparent
+    var(--cocoso-colors-theme-500);
 }
 .tri-right.btm-right-in:after {
   content: ' ';
@@ -221,8 +221,8 @@
   right: 38px;
   bottom: -20px;
   border: 12px solid;
-  border-color: var(--chakra-colors-brand-500) transparent transparent
-    var(--chakra-colors-brand-500);
+  border-color: var(--cocoso-colors-theme-500) transparent transparent
+    var(--cocoso-colors-theme-500);
 }
 /*
 	left: -8px;
@@ -285,8 +285,8 @@
   top: 10px;
   bottom: auto;
   border: 12px solid;
-  border-color: var(--chakra-colors-brand-500) transparent transparent
-    var(--chakra-colors-brand-500);
+  border-color: var(--cocoso-colors-theme-500) transparent transparent
+    var(--cocoso-colors-theme-500);
 }
 
 /* Right triangle placed top right flush. */

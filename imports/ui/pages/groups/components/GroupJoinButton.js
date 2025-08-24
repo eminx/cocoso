@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Center, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import ConfirmModal from '../../../generic/ConfirmModal';
+import { Button, Center, Modal, Text } from '/imports/ui/core';
+
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
 import { StateContext } from '../../../LayoutContainer';
@@ -40,22 +40,22 @@ export default function GroupJoinButton() {
     <>
       <Center>
         <Button
-          borderColor="brand.200"
-          borderWidth="2px"
-          colorScheme="brand"
-          height="48px"
-          width={isDesktop ? '240px' : '180px'}
+          h="48px"
+          w={isDesktop ? '240px' : '180px'}
+          css={{
+            borderColor: 'var(--cocoso-colors-theme-200)',
+            borderWidth: '2px',
+          }}
           onClick={() => setModalOpen(true)}
         >
           {t('actions.join')}
         </Button>
       </Center>
 
-      <ConfirmModal
-        visible={modalOpen}
+      <Modal
+        open={modalOpen}
         title={t('modal.join.title')}
         onConfirm={joinGroup}
-        onCancel={() => setModalOpen(false)}
         onClose={() => setModalOpen(false)}
       >
         <Text>
@@ -63,7 +63,7 @@ export default function GroupJoinButton() {
             title: group?.title,
           })}
         </Text>
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }

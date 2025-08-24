@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Button, Center } from '@chakra-ui/react';
 import ReactTable from 'react-table';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
+
+import { Box, Button, Center } from '/imports/ui/core';
 
 const getFileName = (occurrence, title) => {
   if (occurrence.startDate !== occurrence.endDate) {
@@ -24,7 +25,11 @@ export default function RsvpList({ occurrence, title }) {
   return (
     <Box>
       <Center p="2">
-        <CSVLink data={attendees} filename={getFileName(occurrence, title)} target="_blank">
+        <CSVLink
+          data={attendees}
+          filename={getFileName(occurrence, title)}
+          target="_blank"
+        >
           <Button as="span" size="sm">
             {tc('actions.downloadCSV')}
           </Button>

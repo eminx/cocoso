@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import { Box, Button, Center, Code, Flex, Heading, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import 'react-table/react-table.css';
 import Select from 'react-select';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
-import Drawer from '../../generic/Drawer';
-import { call } from '../../utils/shared';
-import { message } from '../../generic/message';
+import {
+  Box,
+  Button,
+  Center,
+  Code,
+  Flex,
+  Heading,
+  Modal,
+  Text,
+} from '/imports/ui/core';
+import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
 
 function compareDatesForSort(a, b) {
   const dateA = new Date(`${a.startDate}T${a.startTime}:00Z`);
@@ -22,7 +30,7 @@ function Title({ username, resources, onChange, value }) {
   const [t] = useTranslation('members');
 
   return (
-    <Flex align="center" w="100%" wrap="wrap">
+    <Flex align="center" justify="center" mb="8" w="100%" wrap="wrap">
       <Heading size="md" mr="4" mb="2">
         {t('report.title', { username })}
       </Heading>
@@ -90,7 +98,9 @@ export default function UsageReport({ user, onClose }) {
     setResources(usedResources);
 
     const allParsedActivitiesSorted = allParsedActivities
-      .filter((a) => (selectedResource ? a.resourceId === selectedResource.value : true))
+      .filter((a) =>
+        selectedResource ? a.resourceId === selectedResource.value : true
+      )
       .sort(compareDatesForSort);
 
     const allParsedActivitiesSortedInMonths = [[]];
@@ -99,7 +109,10 @@ export default function UsageReport({ user, onClose }) {
     let total = 0;
     allParsedActivitiesSorted.forEach((a, i) => {
       const previous = allParsedActivitiesSorted[i - 1];
-      if (i === 0 || a?.startDate?.substring(0, 7) === previous?.startDate?.substring(0, 7)) {
+      if (
+        i === 0 ||
+        a?.startDate?.substring(0, 7) === previous?.startDate?.substring(0, 7)
+      ) {
         total += a.consumption;
         allParsedActivitiesSortedInMonths[monthCounter].push(a);
       } else {
@@ -150,18 +163,11 @@ export default function UsageReport({ user, onClose }) {
   }
 
   return (
-    <Drawer
-      bg="gray.100"
-      isOpen={Boolean(activities)}
-      size="xl"
-      title={
-        <Title
-          resources={resources}
-          username={user.username}
-          value={selectedResource}
-          onChange={handleSelectResource}
-        />
-      }
+    <Modal
+      hideHeader
+      hideFooter
+      open={Boolean(activities)}
+      size="2xl"
       onClose={onCloseDrawer}
     >
       {activities.map((activitiesPerMonth, index) => {
@@ -174,10 +180,18 @@ export default function UsageReport({ user, onClose }) {
           firstAct?.resourceId +
           index;
         return (
-          <Box key={key} mt="8" pb="8">
+          <Box key={key} pb="8">
+            <Title
+              resources={resources}
+              username={user.username}
+              value={selectedResource}
+              onChange={handleSelectResource}
+            />
             <Heading size="md" mb="2">
               {dayjs(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}:{' '}
-              <Code fontSize="xl" fontWeight="bold">{`${totalHours && totalHours[index]} `}</Code>{' '}
+              <Code fontSize="xl" fontWeight="bold">{`${
+                totalHours && totalHours[index]
+              } `}</Code>{' '}
               {t('report.table.total')}
             </Heading>
             <ReactTable
@@ -209,7 +223,9 @@ export default function UsageReport({ user, onClose }) {
             <Center p="2">
               <CSVLink
                 data={activitiesPerMonth}
-                filename={`${user.username}_${activitiesPerMonth[0]?.startDate.substring(0, 7)}_${
+                filename={`${
+                  user.username
+                }_${activitiesPerMonth[0]?.startDate.substring(0, 7)}_${
                   selectedResource ? selectedResource.label : 'all-resources'
                 }`}
                 target="_blank"
@@ -222,6 +238,6 @@ export default function UsageReport({ user, onClose }) {
           </Box>
         );
       })}
-    </Drawer>
+    </Modal>
   );
 }

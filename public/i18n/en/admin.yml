@@ -4,9 +4,11 @@ panel: Admin Panel
 menulabel: Admin Menu
 site: Site
 home: Home
+description: Configure, design and manage your website
 
 settings:
   title: Settings
+  description: Organization and layout details
   tabs:
     color: Color
     design: Design
@@ -58,12 +60,14 @@ organization:
 
 users:
   title: Users
+  description: Manage your users. Verify or unverify them, or set them as admin
   shortcutHelper: Manege your users. Verify or unverify them, or set them as admin
   usersListed: users
   userListed: user
 
 menu:
   title: Menu
+  description: Build, configure and design the main menu
   tabs:
     menuitems:
       label: Visibility, Labels & Description
@@ -96,15 +100,10 @@ categories:
   message:
     denySpecialChars: Special characters, except dash (-), are not allowed
 
-color:
-  revert: Revert
-  info: Adjust the slider to select your desired color for your community website. The light and dark variations of the hue color selected will be used in different parts of the entire user interface.
-  alert1: Now you can surf around the site and test this color, and then come back here and confirm if you like it.
-  alert2: If you refresh the page or close the window/tab, it will revert to the original color.
-
 # ADMIN EMAILS PAGE
 emails:
   title: Automated Emails
+  description: Setup automated emails that users receive when they signup, or become verified or admin
   shortcutHelper: Setup automated emails that users receive when they signup, or become verified or admin
   form:
     subject:
@@ -131,6 +130,7 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Send a Newsletter
+  description: Send an email newsletter to all your users at once
   shortcutHelper: Send an email newsletter to all your users at once.
   subtitle: Here you can compose an email and easily attach published content from the website, and then send out to all members of your community.
   subtitle2: 'To compose the email below, you have to enter at least one of: body text, an image and/or selected content items listed in the community app.'
@@ -143,6 +143,7 @@ newsletter:
     title: Confirm Sending to everyone
     body: You are about to send this email to all members of your community. You cannot revert this action once you have sent this email to your members.
     yes: Yes, send please
+    send: Send email
   error:
     required: You can not send an empty email. You have to enter either body text or image, or insert content items for the email to be sent.
   form:
@@ -189,6 +190,7 @@ pages:
 composable:
   title: Composable Pages
   existing: Existing ones
+  none: No composable pages yet
   new: Create new
   create: Create
   newTitleInputLabel: Title
@@ -196,14 +198,16 @@ composable:
   description: Compose a page and assign it as a landing page, campaign page, or just about any page you like
   form:
     addContent: Add Content
+    addToMenu: Add a composable page
     addRow: Add a row
     emptySpace: Empty Space
     emptySpaceHelper: Please enter the height of the empty space in pixels
     label: Label
-    labelHelper: Pleae enter the label for the button. This label will be displayed on the button
+    labelHelper: Please enter the label for the button. This label will be displayed on the button
     line: Line
     link: Link address
     linkHelper: Please enter the link address. This link will be opened when the button is clicked
+    imageAsLink: Image as link?
     video: Video URL
     videoHelper: Please enter a video URL, typically the link address for a YouTube or Vimeo video page..
     removeRow: Remove row
@@ -241,3 +245,92 @@ composable:
     unpublishText: Are you sure you want to revert this page as a draft?
     publishSuccess: Page successfully published
     unpublishSuccess: Page reverted as a draft
+    unpublishErrorPageInMenu: Page is linked in the main menu, please remove it first
+    linkToMenu: Click here to add/remove this page in the main menu
+
+design:
+  title: Design
+  description: Customize your website's visual appearance by adjusting the theme and menu to match your preferences
+  tabs:
+    theme: Theme
+    menu: Menu
+  theme:
+    title: Theme
+    color: Theme Color
+    demo: Demo
+    button: Button
+    options:
+      gray: Gray Scale
+      custom: Custom
+  background:
+    title: Background
+    color: Background Color
+    image: Background Image
+    repeat: Repeat Background Image
+  border:
+    title: Borders
+    color: Border Color
+    radius: Border Radius
+    width: Border Width
+    style: Border Style
+    radiusOptions:
+      none: None
+      tiny: Tiny
+      small: Small
+      medium: Medium
+      large: Large
+      xlarge: X-Large
+    styleOptions:
+      solid: Solid
+      dotted: Dotted
+      dashed: Dashed
+      double: Double
+      groove: Groove
+      ridge: Ridge
+      inset: Inset
+      outset: Outset
+    widthOptions:
+      none: None
+      thin: Thin
+      medium: Medium
+      thick: Thick
+  menu:
+    title: Menu
+    color: Text Color
+    border: Border
+    background: Background Color
+    demo: Demo
+  color:
+    colors: Colors
+    text: Text Color
+    description: Theme affects many of the UI elements such as buttons
+    pick: Pick color
+    select: Select desired color from palette
+    revert: Revert
+    info: Adjust the slider to select your desired color for your community website. The light and dark variations of the hue color selected will be used in different parts of the entire user interface.
+    alert1: Now you can surf around the site and test this color, and then come back here and confirm if you like it.
+    alert2: If you refresh the page or close the window/tab, it will revert to the original color.
+  text:
+    title: Text
+    fontStyle: Font Style
+    textTransform: Text Transform
+    fontStyleOptions:
+      normal: Normal
+      italic: Italic
+    textTransformOptions:
+      none: None
+      uppercase: Uppercase
+      lowercase: Lowercase
+      capitalize: Capitalize
+  message:
+    success: Theme successfully saved!
+    error: Failed to save theme
+  fonts:
+    body:
+      title: Body Font
+      select: Select Font
+
+messages:
+  upload:
+    helper: Please select an image that is assigned the size you want it to appear with, and make sure it's less than 400 kb
+    imageTooLarge: Image is too large. Please select an image less than 400kb

@@ -6,15 +6,8 @@ const resourceFormFields = (t) => [
     type: 'input',
     value: 'label',
     props: {
-      isRequired: true,
+      required: true,
     },
-  },
-  {
-    helper: t('form.bookable.helper'),
-    label: t('form.bookable.label'),
-    placeholder: t('form.select'),
-    type: 'checkbox',
-    value: 'isBookable',
   },
   {
     helper: t('form.description.helper'),

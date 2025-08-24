@@ -117,9 +117,7 @@ Meteor.methods({
     }
 
     const composablePageId = formValues._id;
-    const thePage = await ComposablePages.findOneAsync(
-      composablePageId
-    );
+    const thePage = await ComposablePages.findOneAsync(composablePageId);
 
     if (!thePage) {
       throw new Meteor.Error('Page not found');
@@ -162,7 +160,7 @@ Meteor.methods({
     }
   },
 
-  async UnpublishComposablePage(composablePageId) {
+  async unpublishComposablePage(composablePageId) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
@@ -191,9 +189,7 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    const thePage = await ComposablePages.findOneAsync(
-      composablePageId
-    );
+    const thePage = await ComposablePages.findOneAsync(composablePageId);
 
     if (!thePage) {
       throw new Meteor.Error('Page not found');

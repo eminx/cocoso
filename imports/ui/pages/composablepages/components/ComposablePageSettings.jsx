@@ -1,77 +1,85 @@
-import React, { useContext, useState } from 'react';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Input,
-  VStack,
-} from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
 
-import ConfirmModal from '/imports/ui/generic/ConfirmModal';
+import { Box, Button, Checkbox, Input } from '/imports/ui/core';
+import Modal from '/imports/ui/core/Modal';
 import FormField from '/imports/ui/forms/FormField';
 import { call } from '/imports/ui/utils/shared';
-import { ComposablePageContext } from '../ComposablePageForm';
 import { message } from '/imports/ui/generic/message';
 
+import { ComposablePageContext } from '../ComposablePageForm';
+
 export default function ComposablePageSettings() {
-  const { currentPage, setCurrentPage, updateComposablePage } =
+  const { currentPage, getComposablePageById, getComposablePageTitles } =
     useContext(ComposablePageContext);
 
-  const [state, setState] = useState({
-    settingsModalOpen: false,
-  });
-
-  const updateSettings = (field) => {
-    setCurrentPage((prevPage) => ({
-      ...prevPage,
-      settings: {
-        ...prevPage.settings,
-        ...field,
-      },
-    }));
+  const initialState = {
+    hideTitle: currentPage?.settings?.hideTitle,
+    hideMenu: currentPage?.settings?.hideMenu,
+    modalOpen: false,
+    title: currentPage?.title,
   };
 
-  const renameTitle = (e) => {
-    setCurrentPage((prevPage) => ({
-      ...prevPage,
-      title: e.target.value,
+  const [state, setState] = useState(initialState);
+  const [updating, setUpdating] = useState(false);
+
+  useEffect(() => {
+    setState(initialState);
+  }, [currentPage]);
+
+  const updateSettings = (field) => {
+    setState((prevState) => ({
+      ...prevState,
+      ...field,
     }));
   };
 
   const confirmChange = async () => {
-    if (currentPage.title === '') {
-      message.error(
-        <Trans i18nKey="admin:composable.messages.titleEmpty" />
-      );
+    if (state.title === '') {
+      message.error(<Trans i18nKey="admin:composable.messages.titleEmpty" />);
       return;
     }
-    if (currentPage.title.length > 50) {
-      message.error(
-        <Trans i18nKey="admin:composable.messages.titleTooLong" />
-      );
+    if (state.title.length > 50) {
+      message.error(<Trans i18nKey="admin:composable.messages.titleTooLong" />);
       return;
     }
+
+    setUpdating(true);
+
+    const newPage = {
+      ...currentPage,
+      title: state.title,
+      settings: {
+        ...currentPage.settings,
+        hideTitle: state.hideTitle,
+        hideMenu: state.hideMenu,
+      },
+    };
+
     try {
-      await updateComposablePage(true);
+      await call('updateComposablePage', newPage);
+      await getComposablePageById();
+      await getComposablePageTitles();
+      message.success(<Trans i18nKey="common:message.success.save" />);
       setState((prevState) => ({
         ...prevState,
-        settingsModalOpen: false,
+        modalOpen: false,
       }));
     } catch (error) {
-      console.log(error);
       message.error(error.reason || error.error);
+    } finally {
+      setUpdating(false);
     }
   };
 
-  const settings = currentPage?.settings || {};
+  const handleCloseModal = () => {
+    setState({ ...initialState, modalOpen: false });
+  };
 
   return (
-    <div>
+    <div style={{ flexGrow: '0' }}>
       <Button
-        flexGrow={0}
         ml="4"
         rightIcon={<SettingsIcon size="16px" />}
         size="sm"
@@ -79,68 +87,55 @@ export default function ComposablePageSettings() {
         onClick={() =>
           setState((prevState) => ({
             ...prevState,
-            settingsModalOpen: true,
+            modalOpen: true,
           }))
         }
       >
         <Trans i18nKey="admin:composable.settings.title" />
       </Button>
 
-      <ConfirmModal
+      <Modal
+        confirmButtonProps={{ loading: updating }}
+        open={state.modalOpen}
         title={<Trans i18nKey="admin:composable.settings.title" />}
-        visible={state.settingsModalOpen}
         onConfirm={confirmChange}
-        onCancel={() =>
-          setState((prevState) => ({
-            ...prevState,
-            settingsModalOpen: false,
-          }))
-        }
+        onClose={handleCloseModal}
       >
-        <Box bg="gray.50" borderRadius="md">
+        <Box borderRadius="md">
           <Box pb="2">
             <FormField
               label={<Trans i18nKey="admin:composable.form.title" />}
+              required
             >
               <Input
                 type="text"
-                value={currentPage?.title}
-                onChange={renameTitle}
+                value={state.title}
+                onChange={(e) => updateSettings({ title: e.target.value })}
               />
             </FormField>
           </Box>
 
-          <Box>
+          <Box pb="4">
             <Checkbox
-              isChecked={settings?.hideTitle}
-              onChange={(e) =>
-                updateSettings({ hideTitle: e.target.checked })
-              }
+              checked={state.hideTitle}
+              id="hide-title"
+              onChange={(e) => updateSettings({ hideTitle: e.target.checked })}
             >
-              <FormField
-                label={
-                  <Trans i18nKey="admin:composable.settings.hideTitle" />
-                }
-              />
+              <Trans i18nKey="admin:composable.settings.hideTitle" />
             </Checkbox>
           </Box>
 
           <Box>
             <Checkbox
-              isChecked={settings?.hideMenu}
-              onChange={(e) =>
-                updateSettings({ hideMenu: e.target.checked })
-              }
+              checked={state.hideMenu}
+              id="hide-menu"
+              onChange={(e) => updateSettings({ hideMenu: e.target.checked })}
             >
-              <FormField
-                label={
-                  <Trans i18nKey="admin:composable.settings.hideMenu" />
-                }
-              />
+              <Trans i18nKey="admin:composable.settings.hideMenu" />
             </Checkbox>
           </Box>
         </Box>
-      </ConfirmModal>
+      </Modal>
     </div>
   );
 }

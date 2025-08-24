@@ -1,9 +1,15 @@
-import React, { createContext, useState, useEffect, useContext, useLayoutEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useLayoutEffect,
+} from 'react';
 import { useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../generic/Loader';
+import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import GroupHybrid from '../../entry/GroupHybrid';
 import GroupInteractionHandler from './components/GroupInteractionHandler';
@@ -21,6 +27,12 @@ export default function Group() {
   const { groupId } = useParams();
   const { currentHost, currentUser } = useContext(StateContext);
 
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
+  }, []);
+
   const getGroupById = async () => {
     try {
       const response = await call('getGroupWithMeetings', groupId);
@@ -34,27 +46,25 @@ export default function Group() {
     getGroupById();
   }, [groupId]);
 
-  useLayoutEffect(() => {
-    setTimeout(() => {
-      setRendered(true);
-    }, 1000);
-  }, []);
-
-  if (!group) {
-    return <Loader />;
-  }
-
   const contextValue = {
     group,
     getGroupById,
   };
+
+  if (!group) {
+    return <Loader />;
+  }
 
   return (
     <>
       <GroupHybrid group={group} Host={currentHost || Host} />
       {rendered && (
         <GroupContext.Provider value={contextValue}>
-          <GroupInteractionHandler currentUser={currentUser} group={group} slideStart={rendered} />
+          <GroupInteractionHandler
+            currentUser={currentUser}
+            group={group}
+            slideStart={rendered}
+          />
 
           <NewEntryHandler>
             <EditGroup />

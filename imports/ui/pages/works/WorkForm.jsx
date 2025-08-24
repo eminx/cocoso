@@ -55,7 +55,7 @@ export default function WorkForm({ work, onFinalize }) {
   }, []);
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders || !loaders.isCreating) {
       return;
     }
     setLoaders((prevState) => ({
@@ -110,12 +110,16 @@ export default function WorkForm({ work, onFinalize }) {
 
   return (
     <GenericEntryForm
-      childrenIndex={1}
+      childrenIndex={2}
       defaultValues={work || emptyFormValues}
       formFields={workFormFields(t, tc)}
       onSubmit={handleSubmit}
     >
-      <FormField helperText={t('works.image.helper')} label={t('works.image.label')} my="4">
+      <FormField
+        helperText={t('works.image.helper')}
+        label={t('works.image.label')}
+        my="4"
+      >
         <ImageUploader
           ping={loaders?.isUploadingImages}
           preExistingImages={work ? work.images : []}
@@ -128,7 +132,7 @@ export default function WorkForm({ work, onFinalize }) {
         label={t('works.category.label')}
         mt="10"
         mb="12"
-        isRequired
+        required
       >
         <AutoCompleteSelect
           components={animatedComponents}

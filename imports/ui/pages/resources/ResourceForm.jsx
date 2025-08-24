@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Checkbox, FormLabel, Text } from '@chakra-ui/react';
+import { Box, Checkbox, Text } from '/imports/ui/core';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -23,6 +23,7 @@ const animatedComponents = makeAnimated();
 export default function ResourceForm({ resource, onFinalize }) {
   const [state, setState] = useState({
     formValues: resource || emptyFormValues,
+    isBookable: resource ? resource.isBookable : true,
     isCombo: resource ? resource.isCombo : false,
     resourcesForCombo: resource ? resource.resourcesForCombo : [],
     resources: [],
@@ -48,7 +49,7 @@ export default function ResourceForm({ resource, onFinalize }) {
   }, []);
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders || !loaders.isCreating) {
       return;
     }
     setLoaders((prevState) => ({
@@ -72,6 +73,7 @@ export default function ResourceForm({ resource, onFinalize }) {
     const newResource = {
       ...state.formValues,
       images,
+      isBookable: state.isBookable,
       isCombo: state.isCombo,
       resourcesForCombo: state.resourcesForCombo,
     };
@@ -108,7 +110,11 @@ export default function ResourceForm({ resource, onFinalize }) {
       formFields={resourceFormFields(t)}
       onSubmit={handleSubmit}
     >
-      <FormField helperText={t('form.image.helper')} label={t('form.image.label')} mb="12">
+      <FormField
+        helperText={t('form.image.helper')}
+        label={t('form.image.label')}
+        mb="12"
+      >
         <ImageUploader
           ping={loaders?.isUploadingImages}
           preExistingImages={resource ? resource.images : []}
@@ -122,17 +128,19 @@ export default function ResourceForm({ resource, onFinalize }) {
         mt="6"
         mb="12"
       >
-        <Box bg="white" borderRadius="lg" display="inline" p="2">
-          <Checkbox
-            isChecked={state.isCombo}
-            size="lg"
-            onChange={(e) => setState((prevState) => ({ ...prevState, isCombo: e.target.checked }))}
-          >
-            <FormLabel style={{ cursor: 'pointer' }} mb="0">
-              {tc('labels.select')}
-            </FormLabel>
-          </Checkbox>
-        </Box>
+        <Checkbox
+          checked={state.isCombo}
+          id="is-combo"
+          size="lg"
+          onChange={(e) =>
+            setState((prevState) => ({
+              ...prevState,
+              isCombo: e.target.checked,
+            }))
+          }
+        >
+          {t('form.combo.switch.label')}
+        </Checkbox>
         {state.isCombo && (
           <Box w="100%" pt="2">
             <Text fontSize="sm" mb="2">
@@ -151,6 +159,27 @@ export default function ResourceForm({ resource, onFinalize }) {
             />
           </Box>
         )}
+      </FormField>
+
+      <FormField
+        helperText={t('form.bookable.helper')}
+        label={t('form.bookable.label')}
+        mt="6"
+        mb="12"
+      >
+        <Checkbox
+          checked={state.isBookable}
+          id="is-bookable"
+          size="lg"
+          onChange={(e) =>
+            setState((prevState) => ({
+              ...prevState,
+              isBookable: e.target.checked,
+            }))
+          }
+        >
+          {t('form.bookable.label')}
+        </Checkbox>
       </FormField>
     </GenericEntryForm>
   );

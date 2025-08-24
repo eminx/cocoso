@@ -4,17 +4,35 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 const s3Settings = Meteor.settings.AWSs3;
 
 Slingshot.fileRestrictions('genericEntryImageUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: [
+    'image/png',
+    'image/jpeg',
+    'image/jpg',
+    'image/svg',
+    'image/svg+xml',
+  ],
   maxSize: 30 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('hostLogoUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: [
+    'image/png',
+    'image/jpeg',
+    'image/jpg',
+    'image/svg',
+    'image/svg+xml',
+  ],
   maxSize: 10 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('platformLogoUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: [
+    'image/png',
+    'image/jpeg',
+    'image/jpg',
+    'image/svg',
+    'image/svg+xml',
+  ],
   maxSize: 10 * 1024 * 1024,
 });
 

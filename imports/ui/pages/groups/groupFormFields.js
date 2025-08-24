@@ -13,7 +13,7 @@ const groupFormFields = (t) => [
     type: 'input',
     value: 'title',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {
@@ -23,7 +23,7 @@ const groupFormFields = (t) => [
     type: 'input',
     value: 'readingMaterial',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {
@@ -33,7 +33,7 @@ const groupFormFields = (t) => [
     type: 'quill',
     value: 'description',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {

@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
-import { Box, Flex, Text } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 
-import { StateContext } from '../../../LayoutContainer';
+import { Box, Flex, Text } from '/imports/ui/core';
+
+import { StateContext } from '/imports/ui/LayoutContainer';
+import SlideWidget from '/imports/ui/entry/SlideWidget';
+import { ChatButton } from '/imports/ui/chattery/ChatHandler';
+
 import { ActivityContext } from '../Activity';
-import RsvpHandler from './RsvpHandler';
-import SlideWidget from '../../../entry/SlideWidget';
 import ActivityAdminFunctions from './ActivityAdminFunctions';
-import { ChatButton } from '../../../chattery/ChatHandler';
+import RsvpHandler from './RsvpHandler';
 
 export default function ActivityInteractionHandler({ slideStart }) {
   const { canCreateContent, currentUser, role } = useContext(StateContext);
@@ -37,7 +39,10 @@ export default function ActivityInteractionHandler({ slideStart }) {
     withInput: true,
   };
 
-  if (currentUser && (role === 'admin' || activity.authorId === currentUser._id)) {
+  if (
+    currentUser &&
+    (role === 'admin' || activity.authorId === currentUser._id)
+  ) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <ActivityAdminFunctions />

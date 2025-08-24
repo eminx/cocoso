@@ -1,32 +1,25 @@
 import React, { useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import LinkIcon from 'lucide-react/dist/esm/icons/link';
-import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Center,
   Flex,
   Heading,
   Link as CLink,
-  Menu,
-  MenuList,
-  MenuItem,
-  MenuButton,
+  Tag,
   VStack,
   Wrap,
-  Image,
-} from '@chakra-ui/react';
+} from '/imports/ui/core';
 
 import NiceSlider from '../generic/NiceSlider';
-import Tabs from './Tabs';
+import Tabs from '../core/Tabs';
 import BackLink from './BackLink';
-import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 interface Author {
   username: string;
@@ -38,24 +31,12 @@ interface AvatarHolderProps {
 }
 
 interface HeaderProps {
-  author: Author | null;
+  author?: Author | null;
   backLink?: string;
+  dates?: React.ReactNode;
   subTitle?: string;
   tags?: string[] | null;
   title: string;
-}
-
-interface AdminMenuItem {
-  label: string;
-  link?: string;
-  onClick?: () => void;
-}
-
-interface AdminMenuProps {
-  adminMenu: {
-    label: string;
-    items: AdminMenuItem[];
-  } | null;
 }
 
 interface Tab {
@@ -64,20 +45,11 @@ interface Tab {
   content: React.ReactNode;
 }
 
-interface TablyCenteredProps {
+interface TablyCenteredProps extends HeaderProps {
   action?: React.ReactNode;
-  adminMenu?: {
-    label: string;
-    items: AdminMenuItem[];
-  } | null;
-  author?: Author | null;
-  backLink?: string;
   content?: React.ReactNode;
   images?: string[];
-  subTitle?: string;
   tabs?: Tab[];
-  tags?: string[];
-  title: string;
   url?: string;
 }
 
@@ -88,20 +60,9 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
   return (
     <Box mt="2">
       <Link to={`/@${author.username}/`}>
-        <VStack
-          _hover={{ textDecoration: 'underline' }}
-          justify="center"
-          spacing="0"
-        >
-          <Avatar
-            borderRadius="lg"
-            name={author.username}
-            showBorder
-            src={author.src}
-          />
-          <CLink as="span" color="brand.500">
-            {author.username}
-          </CLink>
+        <VStack align="center" justify="center" gap="0">
+          <Avatar name={author.username} size="lg" src={author.src} />
+          <CLink color="theme.500">{author.username}</CLink>
         </VStack>
       </Link>
     </Box>
@@ -111,6 +72,7 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
 const Header: React.FC<HeaderProps> = ({
   author,
   backLink,
+  dates,
   subTitle,
   tags,
   title,
@@ -120,9 +82,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const handleCopyLink = async (): Promise<void> => {
     const host = window?.location?.host;
-    await navigator.clipboard.writeText(
-      `https://${host}${location.pathname}`
-    );
+    await navigator.clipboard.writeText(`https://${host}${location.pathname}`);
     setCopied(true);
   };
 
@@ -136,68 +96,61 @@ const Header: React.FC<HeaderProps> = ({
       >
         <Box px="2">
           <Heading
-            as="h1"
-            lineHeight={1}
-            my="2"
             size="lg"
-            textAlign={author ? 'left' : 'center'}
-            textShadow="1px 1px 1px #fff"
+            css={{
+              lineHeight: 1,
+              margin: '0.5rem 0',
+              textAlign: author ? 'left' : 'center',
+              textShadow: '1px 1px 1px #fff',
+            }}
           >
             {title}
           </Heading>
           {subTitle && (
             <Heading
-              as="h2"
-              size="md"
-              fontWeight="400"
-              lineHeight={1}
-              my="2"
-              textAlign={author ? 'left' : 'center'}
+              size="sm"
+              css={{
+                lineHeight: 1,
+                fontWeight: 'normal',
+                margin: '0.5rem 0',
+                textAlign: author ? 'left' : 'center',
+                textShadow: '1px 1px 1px #fff',
+              }}
             >
               {subTitle}
             </Heading>
           )}
-          {tags && tags.length > 0 && (
-            <Wrap
-              flexGrow="0"
-              justify={author ? 'flex-start' : 'center'}
-              mt="2"
-            >
+          {tags && tags.length > 0 ? (
+            <Wrap justify={author ? 'flex-start' : 'center'} mt="2">
               {tags.map((tag, i) => (
-                <Badge
-                  key={tag + i}
-                  bg="gray.50"
-                  borderRadius="lg"
-                  color="gray.800"
-                  fontSize="14px"
-                  px="2"
-                  py="1"
-                  textTransform="capitalize"
-                >
+                <Tag colorScheme="gray" key={tag + i}>
                   {tag}
-                </Badge>
+                </Tag>
               ))}
             </Wrap>
-          )}
+          ) : null}
+          {dates ? <Center pt="2">{dates}</Center> : null}
         </Box>
-        {author && <AvatarHolder author={author} />}
+        {author ? <AvatarHolder author={author} /> : null}
       </Flex>
     </Center>
   );
 
   return (
     <Box mb="4" w="100%">
-      <Flex alignContent="flex-start" justify="space-between">
-        <Box flexGrow={0} flexShrink={0} pl="2" width="150px">
+      <Flex align="flex-start" justify="space-between">
+        <Box pl="2" width="150px">
           {backLink && <BackLink backLink={backLink} />}
         </Box>
 
         <Button
-          color="blue.700"
-          fontWeight="normal"
-          leftIcon={<LinkIcon size={18} />}
-          mr="4"
-          variant="link"
+          leftIcon={<LinkIcon />}
+          size="lg"
+          variant="ghost"
+          css={{
+            fontWeight: 'normal',
+            marginRight: '1rem',
+          }}
           onClick={() => handleCopyLink()}
         >
           {copied ? (
@@ -216,38 +169,11 @@ const Header: React.FC<HeaderProps> = ({
   );
 };
 
-const AdminMenu: React.FC<AdminMenuProps> = ({ adminMenu }) => {
-  if (!adminMenu || !adminMenu.label || !adminMenu.items) {
-    return null;
-  }
-
-  return (
-    <Menu direction="rtl" placement="bottom-end">
-      <MenuButton color="brand.500" fontSize="md" px="4" pb="2">
-        <SettingsIcon />
-      </MenuButton>
-      <MenuList>
-        {adminMenu.items.map((item) =>
-          item.link ? (
-            <Link key={item.label} to={item.link}>
-              <MenuItem>{item.label}</MenuItem>
-            </Link>
-          ) : (
-            <MenuItem key={item.label} onClick={item.onClick}>
-              {item.label}
-            </MenuItem>
-          )
-        )}
-      </MenuList>
-    </Menu>
-  );
-};
-
 const TablyCentered: React.FC<TablyCenteredProps> = ({
   action = null,
-  adminMenu = null,
   author = null,
   backLink,
+  dates,
   content,
   images,
   subTitle,
@@ -262,8 +188,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
   const tabIndex =
     tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  const description =
-    subTitle || content?.toString() || author?.username;
+  const description = subTitle || content?.toString() || author?.username;
   const imageUrl = images && images[0];
 
   return (
@@ -290,13 +215,14 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
             <Header
               author={author}
               backLink={backLink}
+              dates={dates}
               subTitle={subTitle}
               tags={tags}
               title={title}
             />
 
             {images && (
-              <Center py="2">
+              <Center>
                 <NiceSlider alt={title} images={images} />
               </Center>
             )}
@@ -304,20 +230,13 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
             {action && <Box>{action}</Box>}
           </Box>
 
-          <Center mb="8">
+          <Center mb="8" mt="4">
             <Box maxW="540px" w="100%">
               <Box w="100%">
                 {tabs && (
-                  <Tabs
-                    align="center"
-                    colorScheme="gray.800"
-                    index={tabIndex}
-                    mt="2"
-                    mb="1"
-                    tabs={tabs}
-                  >
-                    {adminMenu && <AdminMenu adminMenu={adminMenu} />}
-                  </Tabs>
+                  <Box mt="2">
+                    <Tabs justify="center" index={tabIndex ?? 0} tabs={tabs} />
+                  </Box>
                 )}
 
                 <Box mb="24">

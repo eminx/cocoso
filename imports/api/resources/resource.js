@@ -23,8 +23,8 @@ Resources.schema = new SimpleSchema({
   images: { type: Array, optional: true },
   'images.$': { type: String },
 
-  isCombo: { type: Boolean, defaultValue: false },
   isBookable: { type: Boolean, defaultValue: true },
+  isCombo: { type: Boolean, defaultValue: false },
 
   resourcesForCombo: { type: Array, defaultValue: [] },
   'resourcesForCombo.$': {

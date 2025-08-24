@@ -1,19 +1,25 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Center, Link as CLink, Text } from '@chakra-ui/react';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
 
-import { call, resizeImage, uploadImage } from '../../../utils/shared';
-import Loader from '../../../generic/Loader';
-import { message } from '../../../generic/message';
-import Alert from '../../../generic/Alert';
-import { StateContext } from '../../../LayoutContainer';
-import Modal from '../../../generic/Modal';
+import {
+  Alert,
+  Box,
+  Button,
+  Center,
+  Link as CLink,
+  Loader,
+  Modal,
+  Text,
+} from '/imports/ui/core';
+import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+import { StateContext } from '/imports/ui/LayoutContainer';
+
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';
-import ConfirmModal from '../../../generic/ConfirmModal';
 import Boxling from '../Boxling';
 
 const emailModel = {
@@ -102,7 +108,11 @@ export default function EmailNewsletter() {
     const { email } = state;
 
     const emailHtml = renderEmail(
-      <EmailPreview currentHost={currentHost} email={email} imageUrl={imageUrl} />
+      <EmailPreview
+        currentHost={currentHost}
+        email={email}
+        imageUrl={imageUrl}
+      />
     );
 
     const emailValues = {
@@ -144,7 +154,10 @@ export default function EmailNewsletter() {
 
     try {
       const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(resizedImage, 'genericEntryImageUpload');
+      const uploadedImage = await uploadImage(
+        resizedImage,
+        'genericEntryImageUpload'
+      );
       sendEmail(uploadedImage);
     } catch (error) {
       message.error(error.reason);
@@ -198,23 +211,29 @@ export default function EmailNewsletter() {
         {currentHost?.isPortalHost && (
           <Box mb="4">
             <Alert
-              message={t('newsletter.portalHost.info', { platform: platform.name })}
+              message={t('newsletter.portalHost.info', {
+                platform: platform.name,
+              })}
               type="info"
             />
           </Box>
         )}
 
-        <Box mb="4">
+        <Center p="4" mb="4">
           <Link target="_blank" to="/newsletters">
-            <CLink as="span" color="blue.500" display="flex">
+            <Button
+              colorScheme="blue"
+              leftIcon={<ExternalLinkIcon />}
+              variant="ghost"
+            >
               {t('newsletter.labels.previouslink')}{' '}
-              <ExternalLinkIcon size="16px" style={{ marginLeft: '4px', marginTop: '4px' }} />
-            </CLink>
+            </Button>
           </Link>
-        </Box>
-        <Text mb="4">{t('newsletter.subtitle')}</Text>
+        </Center>
 
-        <Boxling>
+        <Text>{t('newsletter.subtitle')}</Text>
+
+        <Boxling mt="4">
           <EmailForm
             currentHost={currentHost}
             email={state.email}
@@ -227,13 +246,13 @@ export default function EmailNewsletter() {
       </Box>
 
       <Modal
-        actionButtonLabel="Send email"
-        isOpen={state.preview}
-        motionPreset="slideInBottom"
-        scrollBehavior="inside"
-        size="2xl"
+        confirmButtonLabel={t('newsletter.modals.send')}
+        open={state.preview}
+        // motionPreset="slideInBottom"
+        // scrollBehavior="inside"
+        size="3xl"
         title={state?.email?.subject}
-        onActionButtonClick={() => {
+        onConfirm={() => {
           setState((prevState) => ({
             ...prevState,
             preview: false,
@@ -252,16 +271,16 @@ export default function EmailNewsletter() {
         </Center>
       </Modal>
 
-      <ConfirmModal
+      <Modal
         confirmButtonProps={{
           isLoading: state.sending,
         }}
         confirmText={t('newsletter.modals.yes')}
+        open={state.lastConfirm}
         title={t('newsletter.modals.title')}
-        visible={state.lastConfirm}
-        zIndex={99999}
+        // style={{ zIndex: 99999 }}
         onConfirm={() => handleConfirmSendingEmail()}
-        onCancel={() =>
+        onClose={() =>
           setState((prevState) => ({
             ...prevState,
             lastConfirm: false,
@@ -269,7 +288,7 @@ export default function EmailNewsletter() {
         }
       >
         {t('newsletter.modals.body')}
-      </ConfirmModal>
+      </Modal>
     </>
   );
 }

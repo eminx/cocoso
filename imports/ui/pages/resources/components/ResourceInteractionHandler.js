@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button } from '@chakra-ui/react';
 import { Trans } from 'react-i18next';
 
+import { Box, Button } from '/imports/ui/core';
 import { StateContext } from '../../../LayoutContainer';
 import { ResourceContext } from '../Resource';
 import { ChatButton } from '../../../chattery/ChatHandler';
@@ -24,11 +24,12 @@ function ReserveButton({ resource }) {
     <Link to={link}>
       <Button
         as="span"
-        borderColor="brand.200"
-        borderWidth="2px"
-        colorScheme="brand"
-        height="48px"
-        width={isDesktop ? '240px' : '180px'}
+        h="48px"
+        w={isDesktop ? '240px' : '180px'}
+        css={{
+          borderColor: 'var(--cocoso-colors-theme-200)',
+          borderWidth: '2px',
+        }}
       >
         <Trans i18nKey="common:labels.book">Reserve</Trans>
       </Button>
@@ -48,7 +49,12 @@ export default function ResourceInteractionHandler({ slideStart }) {
         </Box>
         {resource.isBookable ? <ReserveButton resource={resource} /> : null}
         <Box>
-          <ChatButton context="resources" currentUser={currentUser} item={resource} withInput />
+          <ChatButton
+            context="resources"
+            currentUser={currentUser}
+            item={resource}
+            withInput
+          />
         </Box>
       </SlideWidget>
     );
@@ -60,7 +66,12 @@ export default function ResourceInteractionHandler({ slideStart }) {
         <Box w="40px" />
         <ReserveButton resource={resource} />
         <Box>
-          <ChatButton context="resources" currentUser={currentUser} item={resource} withInput />
+          <ChatButton
+            context="resources"
+            currentUser={currentUser}
+            item={resource}
+            withInput
+          />
         </Box>
       </SlideWidget>
     );

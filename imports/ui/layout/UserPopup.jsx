@@ -2,27 +2,23 @@ import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trans } from 'react-i18next';
+import BoltIcon from 'lucide-react/dist/esm/icons/bolt';
+import CheckCircleIcon from 'lucide-react/dist/esm/icons/check-circle';
+import CircleIcon from 'lucide-react/dist/esm/icons/circle';
+
 import {
   Avatar,
-  AvatarBadge,
   Badge,
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   Link as CLink,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuGroup,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalOverlay,
   Text,
-} from '@chakra-ui/react';
-import Bolt from 'lucide-react/dist/esm/icons/bolt';
-import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
+  Modal,
+} from '/imports/ui/core';
+import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 
 import { StateContext } from '../LayoutContainer';
 import { getFullName } from '../utils/shared';
@@ -33,7 +29,9 @@ function NotificationLinkItem({ host, item, children }) {
   }
 
   return (
-    <CLink href={`https://${item.host || host}/${item.context}/${item.contextId}`}>
+    <CLink
+      href={`https://${item.host || host}/${item.context}/${item.contextId}`}
+    >
       {children}
     </CLink>
   );
@@ -41,9 +39,10 @@ function NotificationLinkItem({ host, item, children }) {
 
 const linkButtonProps = {
   as: 'span',
-  bg: 'brand.50',
-  color: 'brand.500',
+  bg: 'theme.50',
+  color: 'theme.500',
   fontWeight: 'normal',
+  mt: '1',
   variant: 'ghost',
   size: 'sm',
 };
@@ -56,48 +55,57 @@ export function UserThumb({ isNotification = false }) {
   }
 
   return (
-    <Flex>
+    <Flex
+      gap="0"
+      css={{
+        background: 'rgba(255, 252, 250, 0.9)',
+        border: '2px solid var(--cocoso-colors-theme-200)',
+        borderRadius: 'var(--cocoso-border-radius)',
+        marginTop: '-0.075rem',
+        marginRight: '-0.4rem',
+        ':hover': {
+          background: 'rgba(255, 252, 250, 0.9)',
+        },
+      }}
+    >
       <Avatar
-        _hover={{ bg: 'brand.500' }}
-        bg="brand.600"
-        borderRadius="lg"
-        showBorder
         size={isDesktop ? 'md' : 'sm'}
         src={currentUser.avatar && currentUser.avatar.src}
       >
-        {role === 'admin' && (
-          <AvatarBadge bg="brand.50" borderWidth="2px">
-            <Bolt color="#010101" size="16" />
-          </AvatarBadge>
-        )}
-        {role === 'contributor' && (
-          <AvatarBadge bg="brand.50" borderWidth="2px">
-            <CheckCircle color="#010101" size="16" />
-          </AvatarBadge>
-        )}
-        {isNotification && <AvatarBadge bg="tomato" borderColor="white" boxSize="1em" />}
+        {isNotification ? (
+          <CircleIcon color="red" fill="red" size="16" />
+        ) : role === 'admin' ? (
+          <BoltIcon color="#010101" size="16" />
+        ) : role === 'contributor' ? (
+          <CheckCircleIcon color="#010101" size="16" />
+        ) : null}
       </Avatar>
 
-      <Box
+      <Flex
         align="flex-start"
-        lineHeight={isDesktop ? '1.5' : '1.2'}
+        direction="column"
+        gap="0"
         px="2"
-        textAlign="left"
-        noOfLines={1}
+        pt="1"
+        css={{ lineHeight: isDesktop ? '1.2' : '0.8' }}
       >
-        <Text fontSize={isDesktop ? 'md' : 'sm'} fontWeight="bold">
+        <Text
+          fontSize={isDesktop ? 'md' : 'sm'}
+          css={{ fontWeight: 'bold', margin: isDesktop ? '0.125rem 0' : '0' }}
+        >
           {currentUser.username}
         </Text>
-        <Text fontSize={isDesktop ? 'sm' : 'xs'} fontWeight="light" isTruncated>
+        <Text fontSize={isDesktop ? 'sm' : 'xs'} fontWeight="light" truncated>
           {getFullName(currentUser)}
         </Text>
-      </Box>
+      </Flex>
     </Flex>
   );
 }
 
 export default function UserPopup({ isOpen, setIsOpen }) {
-  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop, role } =
+    useContext(StateContext);
   const navigate = useNavigate();
 
   if (!currentHost) {
@@ -136,111 +144,117 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
   return (
     <Box>
-      <Modal isOpen={isOpen}>
-        <ModalOverlay
-          zIndex={1}
-          onClick={() => {
-            setIsOpen(false);
-          }}
-        />
-      </Modal>
-
       <Menu
-        isOpen={isOpen}
-        placement="bottom-end"
-        onOpen={() => setIsOpen(true)}
-        onClose={() => setIsOpen(false)}
-      >
-        <MenuButton
-          _hover={{ bg: 'white' }}
-          bg="rgba(255, 252, 250, 0.9)"
-          borderRadius="lg"
-          maxW="180px"
-          mr="1"
-          p="1"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        align="end"
+        button={
           <UserThumb
             currentUser={currentUser}
             isDesktop={isDesktop}
             isNotification={isNotification}
           />
-        </MenuButton>
+        }
+        open={isOpen}
+      >
+        <Box p="2">
+          <Text fontWeight="bold" fontSize="xl" css={{ marginLeft: '1rem' }}>
+            {currentUser.username}{' '}
+            <span
+              style={{
+                fontSize: '0.75rem',
+                fontWeight: '300',
+                textTransform: 'lowercase',
+              }}
+            >
+              {roleTranslated}
+            </span>
+          </Text>
+        </Box>
 
-        <MenuList>
-          <MenuGroup>
-            <Box px="4" py="1">
-              <Text fontWeight="bold" fontSize="xl">
-                {currentUser.username}{' '}
-                <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">
-                  {roleTranslated}
-                </Text>
+        {isAdmin && <Divider />}
+
+        {isAdmin && (
+          <Link to="/admin/home">
+            <MenuItem>
+              <Text>
+                <Flex align="center">
+                  <BoltIcon size="18" />
+                  <Trans i18nKey="members:dashboard">Admin Panel</Trans>
+                </Flex>
+              </Text>
+            </MenuItem>
+          </Link>
+        )}
+
+        {isAdmin && <Divider />}
+
+        {isNotification && (
+          <>
+            <Box pl="6" pt="2">
+              <Text color="gray.600" size="xs">
+                <Trans i18nKey="common:menu.notifications.label">
+                  Notifications
+                </Trans>
               </Text>
             </Box>
-          </MenuGroup>
-
-          {isAdmin && <MenuDivider />}
-          {isAdmin && (
-            <Link to="/admin/home">
-              <MenuItem px="4">
-                <Bolt size="20" style={{ marginRight: '6px' }} />
-                <Trans i18nKey="members:dashboard">Admin Dashboard</Trans>
-              </MenuItem>
-            </Link>
-          )}
-          {isAdmin && <MenuDivider />}
-
-          {isNotification && (
-            <MenuGroup title={<Trans i18nKey="common:menu.notifications.label">Login</Trans>}>
-              <Box px="1">
-                {notifications.map((item) => (
-                  <NotificationLinkItem key={item.contextId + item.count} host={host} item={item}>
-                    <MenuItem>
-                      <Text>{item.title} </Text>
-                      <Badge colorScheme="red" size="xs">
-                        {' '}
-                        {item.count}
-                      </Badge>
-                    </MenuItem>
-                  </NotificationLinkItem>
-                ))}
-              </Box>
-            </MenuGroup>
-          )}
-          {isNotification && <MenuDivider />}
-
-          <MenuGroup>
-            <Box px="1">
-              <Link to={currentUser && `/@${currentUser?.username}`}>
-                <MenuItem as="span">
-                  <Trans i18nKey="common:menu.member.profile">My Profile</Trans>
+            {notifications.map((item) => (
+              <NotificationLinkItem
+                key={item.contextId + item.count}
+                host={host}
+                item={item}
+              >
+                <MenuItem>
+                  <Text>
+                    <em>{item.title}</em>{' '}
+                  </Text>
+                  <Box pl="2">
+                    <Badge colorScheme="red" size="xs">
+                      {' '}
+                      {item.count}
+                    </Badge>
+                  </Box>
                 </MenuItem>
-              </Link>
-              <Link to={'/admin/my-profile'}>
-                <MenuItem as="span">
-                  <Trans i18nKey="common:menu.member.settings">Profile Settings</Trans>
-                </MenuItem>
-              </Link>
-              {canCreateContent && (
-                <Link to="/my-activities">
-                  <MenuItem as="span">
-                    <Trans i18nKey="common:menu.member.activities">My Activities</Trans>
-                  </MenuItem>
-                </Link>
-              )}
-            </Box>
-          </MenuGroup>
+              </NotificationLinkItem>
+            ))}
+          </>
+        )}
 
-          <MenuDivider />
+        {isNotification && <Divider />}
 
-          <MenuGroup>
-            <Center py="2">
-              <Button size="sm" variant="ghost" onClick={() => handleLogout()}>
-                <Trans i18nKey="common:actions.logout">Logout</Trans>
-              </Button>
-            </Center>
-          </MenuGroup>
-        </MenuList>
+        <Link to={currentUser && `/@${currentUser?.username}`}>
+          <MenuItem>
+            <Text>
+              <Trans i18nKey="common:menu.member.profile">My Profile</Trans>
+            </Text>
+          </MenuItem>
+        </Link>
+        <Link to={'/admin/my-profile'}>
+          <MenuItem as="span">
+            <Text>
+              <Trans i18nKey="common:menu.member.settings">
+                Profile Settings
+              </Trans>
+            </Text>
+          </MenuItem>
+        </Link>
+        {canCreateContent && (
+          <Link to="/my-activities">
+            <MenuItem as="span">
+              <Text>
+                <Trans i18nKey="common:menu.member.activities">
+                  My Activities
+                </Trans>
+              </Text>
+            </MenuItem>
+          </Link>
+        )}
+
+        <Divider />
+
+        <Center py="2">
+          <Button size="sm" variant="ghost" onClick={() => handleLogout()}>
+            <Trans i18nKey="common:actions.logout">Logout</Trans>
+          </Button>
+        </Center>
       </Menu>
     </Box>
   );

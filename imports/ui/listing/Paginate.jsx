@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Center, Wrap } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
 import Masonry from 'react-masonry-css';
+
+import { Center, Wrap } from '/imports/ui/core';
 
 import NewEntryHelper from '../generic/NewEntryHelper';
 

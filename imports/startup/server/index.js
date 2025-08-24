@@ -13,14 +13,16 @@ import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
 
+import Hosts from '/imports/api/hosts/host';
+
 const { cdn_server } = Meteor.settings;
 
 Meteor.startup(() => {
   const smtp = Meteor.settings?.mailCredentials?.smtp;
 
-  process.env.MAIL_URL = `smtps://${encodeURIComponent(
-    smtp.userName
-  )}:${smtp.password}@${smtp.host}:${smtp.port}`;
+  process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${
+    smtp.password
+  }@${smtp.host}:${smtp.port}`;
   Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
   Accounts.emailTemplates.from = () => smtp.fromEmail;
   Accounts.emailTemplates.resetPassword.text = function (user, url) {
@@ -35,6 +37,10 @@ Meteor.startup(() => {
   onPageLoad((sink) => {
     const host = sink.request.headers['host'];
     const context = {};
+
+    if (typeof document === 'undefined') {
+      React.useLayoutEffect = React.useEffect;
+    }
 
     const App = (props) => (
       <I18nextProvider i18n={i18n}>
@@ -61,5 +67,41 @@ Meteor.startup(() => {
     const helmet = Helmet.renderStatic();
     sink.appendToHead(helmet.meta.toString());
     sink.appendToHead(helmet.title.toString());
+    sink.appendToHead(helmet.link.toString());
   });
+
+  Hosts.find({ $or: [{ theme: { $exists: false } }, { theme: null }] }).forEach(
+    (host) => {
+      const hue =
+        host.settings && host.settings.hue ? host.settings.hue : '222'; // fallback if needed
+      Hosts.update(
+        { _id: host._id },
+        {
+          $set: {
+            theme: {
+              hue,
+              body: {
+                backgroundColor: '#eee',
+                backgroundImage: 'none',
+                backgroundRepeat: 'no-repeat',
+                borderRadius: '0.5rem',
+                fontFamily: 'Sarabun',
+              },
+              menu: {
+                backgroundColor: '#f5f5f5',
+                borderColor: '#ddd',
+                borderRadius: '0.5rem',
+                borderStyle: 'solid',
+                borderWidth: '2px',
+                color: '#090909',
+                fontStyle: 'normal',
+                textTransform: 'none',
+              },
+              variant: 'custom',
+            },
+          },
+        }
+      );
+    }
+  );
 });
