@@ -26,6 +26,13 @@ export default function GroupMembers({ group }) {
     return null;
   }
 
+  const getAvatarContainerWidth = () => {
+    if (group?.members.length < 6) {
+      return 'auto';
+    }
+    return '17.5rem';
+  };
+
   return (
     <>
       <Box
@@ -40,7 +47,7 @@ export default function GroupMembers({ group }) {
         }}
         onClick={() => setModalOpen(true)}
       >
-        <AvatarGroup>
+        <AvatarGroup css={{ width: getAvatarContainerWidth() }}>
           {group.members?.map((member, index) => (
             <Box
               key={member.memberId}
@@ -58,10 +65,10 @@ export default function GroupMembers({ group }) {
                     backgroundColor: 'var(--cocoso-colors-gray-50)',
                     borderRadius: '2rem',
                     border: '2px solid white',
-                    fontSize: '1.4rem',
+                    fontSize: '1.2rem',
                     height: '3.5rem',
                     paddingLeft: '1rem',
-                    paddingTop: '0.5rem',
+                    paddingTop: '0.58rem',
                     width: '3.5rem',
                   }}
                 >
