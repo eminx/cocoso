@@ -144,7 +144,7 @@ export default function MainFeatureSettings({ itemName }) {
       </Box>
 
       <Boxling>
-        <VStack align="flex-start" spacing="6">
+        <VStack align="flex-start">
           {rowItems.map((rowItem) => (
             <Tablish key={rowItem.key} rowItem={rowItem} />
           ))}

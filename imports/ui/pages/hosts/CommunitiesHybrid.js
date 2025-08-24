@@ -21,11 +21,7 @@ import NewGridThumb from '../../listing/NewGridThumb';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 
-export default function CommunitiesHybrid({
-  currentUser,
-  hosts,
-  Host,
-}) {
+export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
   const [modalItem, setModalItem] = useState(null);
   const [tc] = useTranslation('common');
   const navigate = useNavigate();
@@ -76,9 +72,7 @@ export default function CommunitiesHybrid({
         logo: hostsSorted.find((h) => mh.host === h.host)?.logo,
         isMember: true,
       })),
-      ...hostsSorted.filter(
-        (h) => !myHosts.some((mh) => h.host === mh.host)
-      ),
+      ...hostsSorted.filter((h) => !myHosts.some((mh) => h.host === mh.host)),
     ];
   };
 
@@ -92,9 +86,7 @@ export default function CommunitiesHybrid({
 
     try {
       await call('setSelfAsParticipant', host);
-      message.success(
-        tc('communities.success', { community: modalItem.name })
-      );
+      message.success(tc('communities.success', { community: modalItem.name }));
       setModalItem(null);
     } catch (error) {
       message.error(error.reason || error.error);
@@ -121,7 +113,7 @@ export default function CommunitiesHybrid({
               <Box onClick={() => handleSetModalHost(host)}>
                 <NewGridThumb
                   coverText={host.host}
-                  fixedImageHeight
+                  // fixedImageHeight
                   imageUrl={host.logo}
                   title={host.name || host.hostname}
                 />
@@ -131,11 +123,7 @@ export default function CommunitiesHybrid({
                 {host.isMember ? (
                   <Text textAlign="center" my="1">
                     {tc('communities.member')}{' '}
-                    <CheckIcon
-                      color="green.100"
-                      fontSize="md"
-                      mt="-1"
-                    />
+                    <CheckIcon color="green.100" fontSize="md" mt="-1" />
                   </Text>
                 ) : (
                   <Center>
@@ -172,17 +160,13 @@ export default function CommunitiesHybrid({
         {modalItem && (
           <Modal
             confirmText={
-              modalItem.isMember
-                ? tc('actions.toHost')
-                : tc('communities.join')
+              modalItem.isMember ? tc('actions.toHost') : tc('communities.join')
             }
             size="lg"
             title={modalItem.hostname}
             open={Boolean(modalItem)}
             onConfirm={
-              modalItem.isMember
-                ? handleActionButtonClick
-                : joinCommunity
+              modalItem.isMember ? handleActionButtonClick : joinCommunity
             }
             onClose={() => setModalItem(null)}
           >
@@ -209,11 +193,7 @@ export default function CommunitiesHybrid({
                 </Center>
                 {modalItem.logo && (
                   <Center p="2">
-                    <Image
-                      fit="contain"
-                      width="160px"
-                      src={modalItem.logo}
-                    />
+                    <Image fit="contain" width="160px" src={modalItem.logo} />
                   </Center>
                 )}
               </Box>
