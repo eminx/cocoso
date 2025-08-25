@@ -27,7 +27,7 @@ export default function GroupMembers({ group }) {
   }
 
   const getAvatarContainerWidth = () => {
-    if (group?.members.length < 6) {
+    if (group?.members.length <= maxShownAvatars) {
       return 'auto';
     }
     return '17.5rem';
