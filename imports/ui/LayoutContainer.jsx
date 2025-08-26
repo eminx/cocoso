@@ -134,7 +134,8 @@ function LayoutPage({ currentUser, userLoading, children }) {
 
   const isFederationFooter = platform?.isFederationLayout && platform.footer;
   const isLogoSmall =
-    !['pages', 'cp'].includes(pathnameSplitted[1]) &&
+    pathnameSplitted &&
+    !['pages', 'info', 'cp'].includes(pathnameSplitted[1]) &&
     Boolean(pathnameSplitted[2]);
 
   const adminPage = pathnameSplitted[1] === 'admin';

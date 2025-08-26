@@ -162,7 +162,7 @@ function HeaderMenu({ Host, pageTitles }) {
               className="main-menu-item"
               to={item.isComposablePage ? `/cp/${item.name}` : `/${item.name}`}
             >
-              <Box as="span" px="2" css={{ marginTop: '-2px' }}>
+              <Box as="span" px="2">
                 <Text
                   css={{
                     ...baseTextStyles,

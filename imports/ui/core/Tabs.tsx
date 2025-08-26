@@ -2,7 +2,7 @@ import React, { useId, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'restyle';
 
-import { Badge, Box, Flex, Text } from '/imports/ui/core';
+import { Badge, Flex, Text } from '/imports/ui/core';
 
 // Tab type definition
 export interface TabType {
@@ -37,7 +37,7 @@ const TabsList = styled('div', (props: TabsListProps) => ({
   flexShrink: '0',
   justifyContent: props.justify || 'flex-start',
   flexDirection: 'row',
-  borderBottom: '1px solid #e2e8f0',
+  // borderBottom: '1px solid #e2e8f0',
 }));
 
 const TabItem = styled('div', (props: TabItemProps) => ({
