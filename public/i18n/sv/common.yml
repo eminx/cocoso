@@ -121,7 +121,7 @@ message:
     imageRequired: Bild krävs
 
   access:
-    deny: Du har inte behörighe
+    deny: Du har inte behörighet
     admin: Du måste vara admin för att skapa en {{ domain }}
     contributor: Du måste bli verifierad för att skapa {{ domain }}
     register: Du måste registrera dig för att skapa {{ domain }}
