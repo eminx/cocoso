@@ -34,10 +34,7 @@ export function ActivityList({ host, sink }) {
 
   const Host = Meteor.call('getHost', host);
   const activities = Host.isPortalHost
-    ? Meteor.call(
-        'getAllPublicActivitiesFromAllHosts',
-        Boolean(showPast)
-      )
+    ? Meteor.call('getAllPublicActivitiesFromAllHosts', Boolean(showPast))
     : Meteor.call('getAllPublicActivities', Boolean(showPast), host);
 
   sink.appendToBody(parsePreloadedState({ activities, Host }));
@@ -97,10 +94,7 @@ export function ComposablePage({ host, sink }) {
     composablePageId = Host?.settings?.menu[0]?.name;
   }
 
-  const composablePage = Meteor.call(
-    'getComposablePageById',
-    composablePageId
-  );
+  const composablePage = Meteor.call('getComposablePageById', composablePageId);
 
   sink.appendToBody(parsePreloadedState({ Host }));
 
@@ -114,21 +108,14 @@ export function ComposablePage({ host, sink }) {
 
   return (
     <WrapperSSR Host={Host} sink={sink}>
-      <ComposablePageHybrid
-        composablePage={composablePage}
-        Host={Host}
-      />
+      <ComposablePageHybrid composablePage={composablePage} Host={Host} />
     </WrapperSSR>
   );
 }
 
 export function GroupList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
-  const groups = Meteor.call(
-    'getGroupsWithMeetings',
-    Host?.isPortalHost,
-    host
-  );
+  const groups = Meteor.call('getGroupsWithMeetings', Host?.isPortalHost, host);
 
   sink.appendToBody(parsePreloadedState({ groups, Host }));
 
@@ -175,10 +162,7 @@ export function ResourceList({ host, sink }) {
 export function Resource({ host, sink }) {
   const { resourceId } = useParams();
   const resource = Meteor.call('getResourceById', resourceId);
-  const documents = Meteor.call(
-    'getDocumentsByAttachments',
-    resourceId
-  );
+  const documents = Meteor.call('getDocumentsByAttachments', resourceId);
   const Host = Meteor.call('getHost', host);
 
   sink.appendToBody(parsePreloadedState({ documents, resource, Host }));
@@ -189,11 +173,7 @@ export function Resource({ host, sink }) {
 
   return (
     <WrapperSSR isEntryPage Host={Host}>
-      <ResourceHybrid
-        documents={documents}
-        resource={resource}
-        Host={Host}
-      />
+      <ResourceHybrid documents={documents} resource={resource} Host={Host} />
     </WrapperSSR>
   );
 }
@@ -244,7 +224,7 @@ export function Page({ host, sink }) {
   sink.appendToBody(parsePreloadedState({ pages, Host }));
 
   return (
-    <WrapperSSR isEntryPage Host={Host}>
+    <WrapperSSR Host={Host}>
       <PageHybrid pages={pages} Host={Host} />
     </WrapperSSR>
   );
