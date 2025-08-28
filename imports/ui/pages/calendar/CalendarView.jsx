@@ -16,10 +16,13 @@ const weekday = require('dayjs/plugin/weekday');
 dayjs.extend(weekday);
 dayjs().weekday(1);
 
-export default function CalendarView(props) {
-  const { activities, resources } = props;
+export default function CalendarView({
+  activities,
+  resources,
+  onSelect,
+  onSelectSlot,
+}) {
   const [t] = useTranslation('calendar');
-
   const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
 
   let culture = 'en-GB';
@@ -45,7 +48,7 @@ export default function CalendarView(props) {
   };
 
   const loading =
-    !activities || !activities.length < 1 || !resources || resources.length < 1;
+    !activities || activities.length < 1 || !resources || resources.length < 1;
 
   return (
     <>
@@ -67,8 +70,8 @@ export default function CalendarView(props) {
         eventPropGetter={(event) => ({
           style: { backgroundColor: event.resourceColor },
         })}
-        onSelectEvent={props.onSelect}
-        onSelectSlot={props.onSelectSlot}
+        onSelectEvent={onSelect}
+        onSelectSlot={onSelectSlot}
       />
       <NewEntryHandler>
         <NewCalendarActivity resources={resources} />
