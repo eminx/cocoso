@@ -1,14 +1,11 @@
 import React from 'react';
+import List from 'rc-virtual-list';
+import EllipsisVertical from 'lucide-react/dist/esm/icons/ellipsis-vertical';
 
 import { Box, Flex, IconButton, VStack } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
-import EllipsisVertical from 'lucide-react/dist/esm/icons/ellipsis-vertical';
 
-function ListItemWithActions({
-  listItem,
-  actionsDisabled,
-  renderChildren,
-}) {
+function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
   if (!listItem) {
     return null;
   }
@@ -28,9 +25,7 @@ function ListItemWithActions({
       {actions && (
         <Menu
           align="end"
-          button={
-            <IconButton icon={<EllipsisVertical size="16px" />} />
-          }
+          button={<IconButton icon={<EllipsisVertical size="16px" />} />}
           options={actions}
           onSelect={(action) => {
             if (action.isDisabled) {
@@ -50,12 +45,13 @@ export default function NiceList({
   keySelector = '_id',
   list,
   spacing = '2',
+  virtual = false,
   children,
   ...otherProps
 }) {
-  return (
-    <VStack gap={spacing} {...otherProps} w="100%">
-      {list.map((listItem) => (
+  const renderChildren = (listItem) => {
+    return (
+      <div style={{ width: '100%' }}>
         <Box
           key={listItem[keySelector]}
           bg={itemBg}
@@ -72,7 +68,21 @@ export default function NiceList({
             renderChildren={children}
           />
         </Box>
-      ))}
+      </div>
+    );
+  };
+
+  if (virtual) {
+    return (
+      <List data={list} height={1200} itemHeight={152} itemKey={keySelector}>
+        {renderChildren}
+      </List>
+    );
+  }
+
+  return (
+    <VStack gap={spacing} {...otherProps} w="100%">
+      {list.map(renderChildren)}
     </VStack>
   );
 }
