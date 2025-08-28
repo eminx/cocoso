@@ -87,7 +87,9 @@ export default function UsersHybrid({ users, keywords, Host }) {
       }}
     >
       <div>{menus}</div>
+
       <Divider orientation="vertical" />
+
       {selectedProfile && (
         <Box
           _hover={{ bg: 'theme.50' }}
