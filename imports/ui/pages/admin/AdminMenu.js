@@ -70,6 +70,7 @@ export function AdminUserThumb({ currentUser }) {
     >
       <Flex align="center">
         <Avatar
+          name={currentUser.username}
           size="lg"
           src={currentUser.avatar && currentUser.avatar.src}
           css={{

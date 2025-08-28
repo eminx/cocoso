@@ -69,6 +69,7 @@ export function UserThumb({ isNotification = false }) {
       }}
     >
       <Avatar
+        name={currentUser.username}
         size={isDesktop ? 'md' : 'sm'}
         src={currentUser.avatar && currentUser.avatar.src}
       >
