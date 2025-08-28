@@ -14,6 +14,7 @@ import {
   Link as CLink,
   Text,
   Wrap,
+  Loader,
 } from '/imports/ui/core';
 
 import Modal from '/imports/ui/core/Modal';
@@ -215,10 +216,6 @@ export default function Calendar() {
     ...nonComboResourcesWithColor,
   ].filter((r) => r.isBookable);
 
-  if (!currentHost) {
-    return null;
-  }
-
   const { settings } = currentHost;
   const calendarInMenu = settings?.menu.find(
     (item) => item.name === 'calendar'
@@ -227,8 +224,12 @@ export default function Calendar() {
   const description = calendarInMenu?.description;
   const url = `${currentHost?.host}/${calendarInMenu?.name}`;
 
+  if (!currentHost) {
+    return <Loader />;
+  }
+
   return (
-    <Box>
+    <>
       <PageHeading
         description={description}
         heading={heading}
@@ -370,6 +371,6 @@ export default function Calendar() {
               : parseHtml(selectedActivity?.longDescription))}
         </Text>
       </Modal>
-    </Box>
+    </>
   );
 }

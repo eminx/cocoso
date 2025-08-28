@@ -5,6 +5,8 @@ import i18n from 'i18next';
 import dayjs from 'dayjs';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { Loader } from '/imports/ui/core';
+
 import '../../utils/styles/bigcalendar-custom.css';
 import NewEntryHandler from '../../listing/NewEntryHandler';
 import NewCalendarActivity from './NewCalendarActivity';
@@ -42,8 +44,12 @@ export default function CalendarView(props) {
     showMore: (total) => t('bigCal.showMore', { total }),
   };
 
+  const loading =
+    !activities || !activities.length < 1 || !resources || resources.length < 1;
+
   return (
     <>
+      {loading && <Loader />}
       <Calendar
         allDayAccessor="isMultipleDay"
         culture={culture}
