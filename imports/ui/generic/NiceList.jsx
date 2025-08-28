@@ -74,7 +74,7 @@ export default function NiceList({
 
   if (virtual) {
     return (
-      <List data={list} height={1200} itemHeight={152}>
+      <List data={list} height={1200} itemHeight={152} itemKey={keySelector}>
         {renderChildren}
       </List>
     );
