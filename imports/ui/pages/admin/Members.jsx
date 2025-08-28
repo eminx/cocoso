@@ -87,9 +87,7 @@ export default function Members() {
     getMembers();
   }, []);
 
-  if (!members) {
-    return <Loader />;
-  }
+  // Keep hooks order stable; avoid early returns. Use conditional rendering below.
 
   const setAsParticipant = async (user) => {
     try {
@@ -137,17 +135,11 @@ export default function Members() {
     }
   };
 
-  if (!currentUser || role !== 'admin') {
-    return (
-      <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        <Alert message={tc('message.access.deny')} type="warning" />
-      </div>
-    );
-  }
+  const safeMembers = members || [];
 
   const membersList = useMemo(
     () =>
-      members.map((member) => ({
+      safeMembers.map((member) => ({
         ...member,
         actions: [
           {
@@ -176,7 +168,7 @@ export default function Members() {
           },
         ],
       })),
-    [members, role, t]
+    [safeMembers, role, t]
   );
 
   const filterOptions = [
@@ -258,55 +250,63 @@ export default function Members() {
 
   return (
     <>
-      <TablyRouter tabs={tabs}>
-        <Boxling mb="4" mt="8">
-          <Heading color="gray.600" mb="2" size="md">
-            <span
-              style={{
-                fontSize: '150%',
-              }}
-            >
-              {membersRendered.length}
-            </span>{' '}
-            <Trans
-              i18nKey={`admin:users.${
-                membersRendered.length > 1 ? 'usersListed' : 'userListed'
-              }`}
-            />
-          </Heading>
-
-          <Box mb="2">
-            <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
-          </Box>
-
-          <Flex flexDirection={isDesktop ? 'row' : 'column'} w="100%">
-            <Box
-              pr={isDesktop ? '4' : '0'}
-              pb={isDesktop ? '0' : '2'}
-              flexBasis="60%"
-            >
-              <Input
-                placeholder={t('form.holder')}
-                value={filterWord}
-                onChange={(event) => setFilterWord(event.target.value)}
-              />
-            </Box>
-            <Box flexBasis="40%">
-              <Select
-                name="sorter"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+      {!currentUser || role !== 'admin' ? (
+        <div style={{ maxWidth: 600, margin: '0 auto' }}>
+          <Alert message={tc('message.access.deny')} type="warning" />
+        </div>
+      ) : !members ? (
+        <Loader />
+      ) : (
+        <TablyRouter tabs={tabs}>
+          <Boxling mb="4" mt="8">
+            <Heading color="gray.600" mb="2" size="md">
+              <span
+                style={{
+                  fontSize: '150%',
+                }}
               >
-                {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </Select>
+                {membersRendered.length}
+              </span>{' '}
+              <Trans
+                i18nKey={`admin:users.${
+                  membersRendered.length > 1 ? 'usersListed' : 'userListed'
+                }`}
+              />
+            </Heading>
+
+            <Box mb="2">
+              <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
             </Box>
-          </Flex>
-        </Boxling>
-      </TablyRouter>
+
+            <Flex flexDirection={isDesktop ? 'row' : 'column'} w="100%">
+              <Box
+                pr={isDesktop ? '4' : '0'}
+                pb={isDesktop ? '0' : '2'}
+                flexBasis="60%"
+              >
+                <Input
+                  placeholder={t('form.holder')}
+                  value={filterWord}
+                  onChange={(event) => setFilterWord(event.target.value)}
+                />
+              </Box>
+              <Box flexBasis="40%">
+                <Select
+                  name="sorter"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  {sortOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+              </Box>
+            </Flex>
+          </Boxling>
+        </TablyRouter>
+      )}
 
       <UsageReport
         isOpen={Boolean(userForUsageReport)}
