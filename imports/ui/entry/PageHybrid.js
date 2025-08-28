@@ -27,13 +27,13 @@ function SimplePage({ description, images, imageUrl, title, url }) {
       </Helmet>
 
       <Center>
-        <Heading css={{ margin: '1rem 0.5rem 0.5rem' }} size="lg">
+        <Heading css={{ margin: '1rem 0.5rem 0' }} size="lg">
           {title}
         </Heading>
       </Center>
 
       {images && (
-        <Center py="6" mb="0">
+        <Center pt="4" pb="2" mb="0">
           <NiceSlider alt={title} images={images} />
         </Center>
       )}
