@@ -214,14 +214,6 @@ export default function EditProfile() {
   const isUserPublicGlobally = currentUser?.isPublic;
   const communityName = currentHost?.settings?.name;
 
-  if (!isMember) {
-    return (
-      <Center p="8">
-        <Alert type="error">{t('profile.message.deny')}</Alert>
-      </Center>
-    );
-  }
-
   const { username } = currentUser;
 
   const tabs = [
@@ -377,6 +369,14 @@ export default function EditProfile() {
   const pathnameLastPart = pathname.split('/').pop();
   const tabIndex =
     tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
+
+  if (!isMember) {
+    return (
+      <Center p="8">
+        <Alert type="error">{t('profile.message.deny')}</Alert>
+      </Center>
+    );
+  }
 
   if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;

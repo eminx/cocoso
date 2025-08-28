@@ -29,13 +29,10 @@ import getAdminRoutes from './getAdminRoutes';
 
 function RouteRenderer({ routes, currentRoute }) {
   const { currentUser } = useContext(StateContext);
-  if (!routes) {
+
+  if (!routes || !currentUser) {
     return null;
   }
-
-  const EditProfileRoute = currentUser && (
-    <Route key="my-profile" path="/my-profile/*" element={<EditProfile />} />
-  );
 
   return (
     <Box p="6">
@@ -68,7 +65,12 @@ function RouteRenderer({ routes, currentRoute }) {
             />
           )
         )}
-        {EditProfileRoute}
+
+        <Route
+          key="my-profile"
+          path="/my-profile/*"
+          element={<EditProfile />}
+        />
       </Routes>
     </Box>
   );
@@ -96,7 +98,7 @@ export default function AdminContainer() {
 
   const menuItems = currentHost?.settings?.menu;
   const isAdmin = role === 'admin';
-  const routes = isAdmin ? getAdminRoutes(menuItems) : null;
+  const routes = isAdmin ? getAdminRoutes(menuItems) : [];
 
   const pathname = location?.pathname;
 
@@ -155,7 +157,7 @@ export default function AdminContainer() {
     return <Loader />;
   }
 
-  if (!currentUser) {
+  if (!currentUser || (!isAdmin && !pathname.includes('/admin/my-profile'))) {
     return (
       <Center p="12">
         <Alert>{tc('message.access.deny')}</Alert>
