@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Trans, useTranslation } from 'react-i18next';
@@ -24,8 +24,10 @@ import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 
 const compareUsersByDate = (a, b) => {
-  const dateA = new Date(a.createdAt);
-  const dateB = new Date(b.createdAt);
+  const rawA = a.date || a.createdAt;
+  const rawB = b.date || b.createdAt;
+  const dateA = rawA ? new Date(rawA) : new Date(0);
+  const dateB = rawB ? new Date(rawB) : new Date(0);
   return dateA - dateB;
 };
 
@@ -143,34 +145,39 @@ export default function Members() {
     );
   }
 
-  const membersList = members.map((member) => ({
-    ...member,
-    actions: [
-      {
-        content: t('actions.contributor'),
-        handleClick: () => setAsContributor(member),
-        isDisabled:
-          ['admin', 'contributor'].includes(member.role) ||
-          !['admin', 'contributor'].includes(role),
-      },
-      {
-        content: t('actions.admin'),
-        handleClick: () => setAsAdmin(member),
-        isDisabled: member.role === 'admin',
-      },
-      {
-        content: t('actions.participant'),
-        handleClick: () => setAsParticipant(member),
-        isDisabled:
-          !['contributor'].includes(member.role) || !['admin'].includes(role),
-      },
-      {
-        content: t('actions.usageReport'),
-        handleClick: () => setUserForUsageReport(member),
-        isDisabled: member.role === 'participant',
-      },
-    ],
-  }));
+  const membersList = useMemo(
+    () =>
+      members.map((member) => ({
+        ...member,
+        actions: [
+          {
+            content: t('actions.contributor'),
+            handleClick: () => setAsContributor(member),
+            isDisabled:
+              ['admin', 'contributor'].includes(member.role) ||
+              !['admin', 'contributor'].includes(role),
+          },
+          {
+            content: t('actions.admin'),
+            handleClick: () => setAsAdmin(member),
+            isDisabled: member.role === 'admin',
+          },
+          {
+            content: t('actions.participant'),
+            handleClick: () => setAsParticipant(member),
+            isDisabled:
+              !['contributor'].includes(member.role) ||
+              !['admin'].includes(role),
+          },
+          {
+            content: t('actions.usageReport'),
+            handleClick: () => setUserForUsageReport(member),
+            isDisabled: member.role === 'participant',
+          },
+        ],
+      })),
+    [members, role, t]
+  );
 
   const filterOptions = [
     {
@@ -202,45 +209,52 @@ export default function Members() {
     },
   ];
 
-  const membersFilteredWithType = membersList.filter((member) => {
+  const membersFilteredWithType = useMemo(() => {
     const lowerCaseFilterWord = filterWord ? filterWord.toLowerCase() : '';
-    if (!member.username || !member.email) {
-      return false;
-    }
-    return (
-      member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
-      member.email.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
-    );
-  });
-
-  let membersSorted;
-  switch (sortBy) {
-    case 'username':
-      membersSorted = membersFilteredWithType.sort((a, b) =>
-        a.username.localeCompare(b.username)
+    if (!lowerCaseFilterWord) return membersList;
+    return membersList.filter((member) => {
+      if (!member.username || !member.email) {
+        return false;
+      }
+      return (
+        member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+        member.email.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
       );
-      break;
-    case 'join-date':
-    default:
-      membersSorted = membersFilteredWithType
-        .sort(compareUsersByDate)
-        .reverse();
-      break;
-  }
+    });
+  }, [membersList, filterWord]);
+
+  const membersSorted = useMemo(() => {
+    const copy = [...membersFilteredWithType];
+    switch (sortBy) {
+      case 'username':
+        return copy.sort((a, b) => a.username.localeCompare(b.username));
+      case 'join-date':
+      default:
+        return copy.sort(compareUsersByDate).reverse();
+    }
+  }, [membersFilteredWithType, sortBy]);
 
   const { pathname } = location;
   const pathParts = pathname.split('/');
   const filterInPath = pathParts[pathParts.length - 1];
 
-  const membersRendered = membersSorted.filter(
-    (m) => filterInPath === 'all' || filterInPath === m.role
+  const membersRendered = useMemo(
+    () =>
+      membersSorted.filter(
+        (m) => filterInPath === 'all' || filterInPath === m.role
+      ),
+    [membersSorted, filterInPath]
   );
 
-  const tabs = filterOptions.map((item) => ({
-    title: item.label,
-    path: item.value,
-    content: <MemberList members={membersRendered} t={t} />,
-  }));
+  const tabs = useMemo(
+    () =>
+      filterOptions.map((item) => ({
+        title: item.label,
+        path: item.value,
+        content: <MemberList members={membersRendered} t={t} />,
+      })),
+    [filterOptions, membersRendered, t]
+  );
 
   return (
     <>
