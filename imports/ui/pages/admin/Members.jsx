@@ -59,6 +59,7 @@ function MemberList({ members, t }) {
       itemBg="white"
       keySelector="email"
       list={members}
+      virtual
     >
       {(member) => <MemberItem key={member.username} t={t} member={member} />}
     </NiceList>
