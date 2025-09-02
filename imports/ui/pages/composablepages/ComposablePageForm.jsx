@@ -100,7 +100,7 @@ export default function ComposablePageForm({
     updateComposablePage();
   }, [currentPage?.contentRows]);
 
-  const handleAddRow = (selectedRow) => {
+  const handleAddRow = useCallback((selectedRow) => {
     const newRow = getNewRow(selectedRow.value);
     setCurrentPage((prevPage) => ({
       ...prevPage,
@@ -110,17 +110,17 @@ export default function ComposablePageForm({
       ],
       pingSave: true,
     }));
-  };
+  });
 
-  const handleSortRows = (oldIndex, newIndex) => {
+  const handleSortRows = useCallback((oldIndex, newIndex) => {
     setCurrentPage((prevPage) => ({
       ...prevPage,
       contentRows: arrayMoveImmutable(prevPage.contentRows, oldIndex, newIndex),
       pingSave: true,
     }));
-  };
+  });
 
-  const handleDeleteRow = () => {
+  const handleDeleteRow = useCallback(() => {
     if (!deleteModuleModal || !deleteModuleModal.open) {
       return;
     }
@@ -133,9 +133,9 @@ export default function ComposablePageForm({
       pingSave: true,
     }));
     setDeleteModuleModal(emptyModuleModal);
-  };
+  });
 
-  const handleDeleteContent = () => {
+  const handleDeleteContent = useCallback(() => {
     if (!deleteModuleModal || !deleteModuleModal.open) {
       return;
     }
@@ -164,7 +164,7 @@ export default function ComposablePageForm({
       pingSave: true,
     }));
     setDeleteModuleModal(emptyModuleModal);
-  };
+  });
 
   const handleDeleteModule = () => {
     const { contentIndex, columnIndex, rowIndex, moduleType } =
@@ -181,7 +181,7 @@ export default function ComposablePageForm({
     }
   };
 
-  const saveContentModal = (content) => {
+  const saveContentModal = useCallback((content) => {
     if (!contentModal.open) {
       return;
     }
@@ -211,11 +211,11 @@ export default function ComposablePageForm({
       }),
       pingSave: true,
     }));
-  };
+  });
 
-  const cancelContentModal = () => {
+  const cancelContentModal = useCallback(() => {
     setContentModal(defaultEmptyContentModal);
-  };
+  });
 
   const updateComposablePage = useCallback(
     async (updateTitles = false) => {
@@ -232,7 +232,7 @@ export default function ComposablePageForm({
           await getComposablePageTitles();
         }
         setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
-        setContentModal({ open: false, content: null });
+        setContentModal(defaultEmptyContentModal);
       } catch (error) {
         message.error(error.reason || error.error);
       }
@@ -260,13 +260,7 @@ export default function ComposablePageForm({
       setCurrentPage,
       setDeleteModuleModal,
     }),
-    [
-      currentPage,
-      getComposablePageById,
-      setContentModal,
-      setCurrentPage,
-      setDeleteModuleModal,
-    ]
+    [currentPage]
   );
 
   if (!currentPage && !composablePageTitles) {

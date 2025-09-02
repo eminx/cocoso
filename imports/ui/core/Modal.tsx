@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { styled } from 'restyle';
 import { useTranslation } from 'react-i18next';
@@ -548,4 +548,4 @@ export const Drawer: React.FC<DrawerProps> = ({
   return drawerContent;
 };
 
-export default Modal;
+export default memo(Modal);
