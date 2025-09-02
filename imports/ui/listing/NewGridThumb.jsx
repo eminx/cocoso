@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import {
@@ -28,7 +28,7 @@ const imageStyle = {
   width: '100%',
 };
 
-export default function NewGridThumb({
+function NewGridThumb({
   avatar,
   color,
   coverText,
@@ -180,3 +180,5 @@ export default function NewGridThumb({
     </Box>
   );
 }
+
+export default memo(NewGridThumb);
