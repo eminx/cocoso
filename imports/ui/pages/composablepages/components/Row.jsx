@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { styled } from 'restyle';
 import { Trans } from 'react-i18next';
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
@@ -6,13 +6,15 @@ import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
 import { arrayMoveImmutable } from 'array-move';
 
+import Menu from '/imports/ui/generic/Menu';
 import { Box, Center, Flex, IconButton } from '/imports/ui/core';
 import Boxling from '/imports/ui/pages/admin/Boxling';
+
 import { contentTypes, getGridTemplateColumns } from '../constants';
 import { ComposablePageContext } from '../ComposablePageForm';
 import ContentModule from './ContentModule';
 import DropTarget from './DropTarget';
-import Menu from '/imports/ui/generic/Menu';
+import ContentHandler from './ContentHandler';
 
 export function Column({ column, columnIndex, rowIndex }) {
   const { setCurrentPage, setContentModal } = useContext(ComposablePageContext);
@@ -50,7 +52,6 @@ export function Column({ column, columnIndex, rowIndex }) {
 
     setContentModal({
       open: true,
-      content: newContent,
       contentIndex: column.length,
       columnIndex,
       rowIndex,
@@ -117,15 +118,6 @@ export function Column({ column, columnIndex, rowIndex }) {
                     }}
                   >
                     <SortableKnob>
-                      {/* <IconButton
-                      aria-label="Move content"
-                      icon={<ArrowUpDownIcon size="16px" />}
-                      size="sm"
-                      variant="ghost"
-                      style={{
-                        cursor: 'ns-resize',
-                      }}
-                    /> */}
                       <button
                         style={{ cursor: 'ns-resize', padding: '0.25rem' }}
                       >

@@ -141,5 +141,8 @@
   },
   "eslintConfig": {
     "extends": "@meteorjs/eslint-config-meteor"
-  }
+  },
+  "browserslist": [
+    "last 2 versions"
+  ]
 }

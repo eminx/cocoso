@@ -103,16 +103,6 @@ Cocoso requires a MongoDB database to work with, since Meteor JS provides first 
 
 **ReactJS** has been the main user interface framework chosen to build the UI for Cocoso. ReactJS is probably the most widespread used client framework that is currently used worldwide, along with _VueJS_. It's been developed and actively maintained by a dedicated team at Facebook; but doesn't necessarily have any affiliation with them. Its licenced with MIT licence.
 
-**Grommet**, a UI library for easily building and reusing React-based UI components is chosen for Cocoso. From more than a dozen of different options, Grommet was chosen due to these reasons outlined below:
-
-- Extensive coverage of required components in place, with configurable and fairly simple usage
-- Easily customisable theme (styles) for every component or globally by a global theme configuration setting
-- Although developed by an internal team at Hewlett Packard, it does not dominantly feature any styles associated by its founding company or another unlike, for example, Google's Material Design
-- The design works pretty well for different devices; i.e. mobile, tablet, desktop
-- Active development and maintenance by a dedicated team and support from a community
-- Modern and powerful tech-stack of its build such as Typescript and Styled Components
-- Dedicated Icons set
-
 ### Image Storage
 
 Images are currently stored in Amazon S3 buckets, because it has been the easiest way to make the solution. With some smart open source solution called Slingshot, clients get authorized and then can directly upload to S3 buckets without having to go through the server.
@@ -120,8 +110,6 @@ Images are currently stored in Amazon S3 buckets, because it has been the easies
 ## Documentation
 
 ### Main libraries used
-
-Grommet: https://v2.grommet.io
 
 React JS: https://reactjs.org/docs
 

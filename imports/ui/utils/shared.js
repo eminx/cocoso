@@ -145,30 +145,25 @@ function parseAllBookingsWithResources(activities, resources) {
     }
     activity.datesAndTimes.forEach((recurrence) => {
       if (resourceSelected.isCombo) {
-        resourceSelected.resourcesForCombo.forEach(
-          (resourceForCombo) => {
-            if (!resourceForCombo) {
-              return;
-            }
-            const resourceForComboReal = resources.find(
-              (r) => r._id === resourceForCombo._id
-            );
-            if (!resourceForComboReal?.isBookable) {
-              return;
-            }
-            allBookings.push({
-              ...helper_parseAllBookingsWithResources(
-                activity,
-                recurrence
-              ),
-              isWithComboResource: true,
-              resource: resourceForCombo.label,
-              resourceId: resourceForCombo._id,
-              comboResource: activity.resource,
-              comboResourceId: resourceSelected._id,
-            });
+        resourceSelected.resourcesForCombo.forEach((resourceForCombo) => {
+          if (!resourceForCombo) {
+            return;
           }
-        );
+          const resourceForComboReal = resources.find(
+            (r) => r._id === resourceForCombo._id
+          );
+          if (!resourceForComboReal?.isBookable) {
+            return;
+          }
+          allBookings.push({
+            ...helper_parseAllBookingsWithResources(activity, recurrence),
+            isWithComboResource: true,
+            resource: resourceForCombo.label,
+            resourceId: resourceForCombo._id,
+            comboResource: activity.resource,
+            comboResourceId: resourceSelected._id,
+          });
+        });
       } else {
         if (!resourceSelected.isBookable) {
           return;
@@ -190,8 +185,7 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
   if (!recurrence) {
     return;
   }
-  const { startDate, startTime, endDate, endTime, isMultipleDay } =
-    recurrence;
+  const { startDate, startTime, endDate, endTime, isMultipleDay } = recurrence;
 
   return {
     activityId: activity._id,
@@ -215,18 +209,14 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
   };
 }
 
-function getAllBookingsWithSelectedResource(
-  selectedResource,
-  allBookings
-) {
+function getAllBookingsWithSelectedResource(selectedResource, allBookings) {
   return allBookings.filter((booking) => {
     if (!selectedResource) {
       return true;
     }
     if (selectedResource.isCombo) {
       return selectedResource.resourcesForCombo.some(
-        (resourceForCombo) =>
-          resourceForCombo._id === booking.resourceId
+        (resourceForCombo) => resourceForCombo._id === booking.resourceId
       );
     }
     return booking.resourceId === selectedResource._id;
@@ -251,18 +241,12 @@ function isDatesInConflict(
       existingStart,
       existingEnd
     ) ||
-    dayjs(selectedEnd, dateTimeFormat).isBetween(
-      existingStart,
-      existingEnd
-    ) ||
+    dayjs(selectedEnd, dateTimeFormat).isBetween(existingStart, existingEnd) ||
     dayjs(existingStart, dateTimeFormat).isBetween(
       selectedStart,
       selectedEnd
     ) ||
-    dayjs(existingEnd, dateTimeFormat).isBetween(
-      selectedStart,
-      selectedEnd
-    )
+    dayjs(existingEnd, dateTimeFormat).isBetween(selectedStart, selectedEnd)
   );
 }
 
@@ -275,8 +259,7 @@ function checkAndSetBookingsWithConflict(
     const bookingWithConflict = allBookingsWithSelectedResource
       .filter(
         (item) =>
-          !selfBookingIdForEdit ||
-          item.activityId !== selfBookingIdForEdit
+          !selfBookingIdForEdit || item.activityId !== selfBookingIdForEdit
       )
       .find((occurence) => {
         const selectedStart = `${selectedBooking.startDate} ${selectedBooking.startTime}`;
@@ -433,17 +416,11 @@ const compareForSortFutureMeeting = (a, b) => {
   }
   const dateA = new Date(
     firstOccurenceA &&
-      firstOccurenceA.startDate +
-        'T' +
-        firstOccurenceA.startTime +
-        ':00Z'
+      firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
   );
   const dateB = new Date(
     firstOccurenceB &&
-      firstOccurenceB.startDate +
-        'T' +
-        firstOccurenceB.startTime +
-        ':00Z'
+      firstOccurenceB.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
   );
   return dateA - dateB;
 };
@@ -465,6 +442,16 @@ const getCategoriesAssignedToWorks = (works) => {
 const stripHtml = (html) => {
   return html.replace(/<[^>]*>?/gm, '');
 };
+
+function debounce(func, timeout = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
+}
 
 export {
   localeSort,
@@ -491,4 +478,5 @@ export {
   parseGroupsWithMeetings,
   getCategoriesAssignedToWorks,
   stripHtml,
+  debounce,
 };

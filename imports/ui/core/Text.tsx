@@ -120,28 +120,32 @@ interface CodeProps {
 }
 
 export const Code = styled('span', (props: CodeProps) => {
-  const fontSize = props.size || props.fontSize;
   const color = props.color?.split('.');
+  const fontSize = props.size || props.fontSize;
   return {
-    color: color ? `var(--cocoso-colors-${color[0]}-${color[1]})` : 'inherit',
-    padding: '0.25rem 0.5rem',
-    margin: '0 0.25rem',
     borderRadius: 'var(--cocoso-border-radius)',
     backgroundColor: 'var(--cocoso-colors-bluegray-50)',
+    color: color ? `var(--cocoso-colors-${color[0]}-${color[1]})` : 'inherit',
     fontFamily: 'monospace',
     fontSize: fontSize
       ? fontSizes[fontSize as keyof typeof fontSizes]
       : fontSizes.md,
+    padding: '0.25rem 0.5rem',
+    margin: '0 0.25rem',
   };
 });
 
 export const Link = styled('a', (props: TextProps) => {
   const color = props.color?.split('.') || ['blue', '500'];
+  const fontSize = props.size || props.fontSize;
   const truncated = props.isTruncated || props.truncated || false;
 
   return {
     color: `var(--cocoso-colors-${color[0]}-${color[1]})`,
     cursor: 'pointer',
+    fontSize: fontSize
+      ? fontSizes[fontSize as keyof typeof fontSizes]
+      : fontSizes.md,
     overflow: truncated ? 'hidden' : 'visible',
     textOverflow: truncated ? 'ellipsis' : 'clip',
     whiteSpace: truncated ? 'nowrap' : 'normal',
