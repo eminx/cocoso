@@ -218,10 +218,10 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
 
   return (
     <Box id="header" w="100%">
-      <Center mb="10">
+      <Center mb="6">
         <Link className="logo-container" to="/">
-          {currentHost.logo ? (
-            <Box maxH={isLogoSmall ? '48px' : '96px'} p="2">
+          <Box maxH={isLogoSmall ? '48px' : '96px'} p="4">
+            {currentHost.logo ? (
               <Image
                 src={Host.logo}
                 css={{
@@ -231,9 +231,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
                   width: '100%',
                 }}
               />
-            </Box>
-          ) : (
-            <Box>
+            ) : (
               <Heading
                 color="theme.800"
                 fontWeight="400"
@@ -241,8 +239,8 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
               >
                 {currentHost.settings?.name}
               </Heading>
-            </Box>
-          )}
+            )}
+          </Box>
         </Link>
       </Center>
 
