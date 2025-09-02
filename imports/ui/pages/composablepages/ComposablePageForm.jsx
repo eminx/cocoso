@@ -254,12 +254,14 @@ export default function ComposablePageForm({
 
   const contextValue = useMemo(
     () => ({
+      currentPage,
       getComposablePageById,
       setContentModal,
       setCurrentPage,
       setDeleteModuleModal,
     }),
     [
+      currentPage,
       getComposablePageById,
       setContentModal,
       setCurrentPage,
