@@ -60,48 +60,23 @@ Meteor.startup(() => {
       </I18nextProvider>
     );
 
-    sink.renderIntoElementById(
-      'root',
-      renderToString(<App location={sink.request.url} />)
-    );
-    const helmet = Helmet.renderStatic();
-    sink.appendToHead(helmet.meta.toString());
-    sink.appendToHead(helmet.title.toString());
-    sink.appendToHead(helmet.link.toString());
-  });
+    // const sheet = new ServerStyleSheet();
 
-  Hosts.find({ $or: [{ theme: { $exists: false } }, { theme: null }] }).forEach(
-    (host) => {
-      const hue =
-        host.settings && host.settings.hue ? host.settings.hue : '222'; // fallback if needed
-      Hosts.update(
-        { _id: host._id },
-        {
-          $set: {
-            theme: {
-              hue,
-              body: {
-                backgroundColor: '#eee',
-                backgroundImage: 'none',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '0.5rem',
-                fontFamily: 'Sarabun',
-              },
-              menu: {
-                backgroundColor: '#f5f5f5',
-                borderColor: '#ddd',
-                borderRadius: '0.5rem',
-                borderStyle: 'solid',
-                borderWidth: '2px',
-                color: '#090909',
-                fontStyle: 'normal',
-                textTransform: 'none',
-              },
-              variant: 'custom',
-            },
-          },
-        }
+    try {
+      // const styleTags = sheet.getStyleTags();
+      const helmet = Helmet.renderStatic();
+
+      // sink.appendToHead(styleTags);
+      sink.appendToHead(helmet.meta.toString());
+      sink.appendToHead(helmet.title.toString());
+      sink.appendToHead(helmet.link.toString());
+
+      sink.renderIntoElementById(
+        'root',
+        renderToString(<App location={sink.request.url} />)
       );
+    } catch (error) {
+      console.error(error);
     }
-  );
+  });
 });
