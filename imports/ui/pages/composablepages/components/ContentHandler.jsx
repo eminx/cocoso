@@ -311,23 +311,40 @@ const VideoContent = function VideoContent({ value, onChange }) {
   );
 };
 
+const initialState = {
+  content: null,
+  uploaded: false,
+  uploading: false,
+};
+
 export default function ContentHandler({
   initialContent,
+  open,
   onConfirm,
   onCancel,
 }) {
-  const [state, setState] = useState({
-    content: initialContent,
-    uploaded: false,
-    uploading: false,
-  });
+  const [state, setState] = useState(initialState);
 
   useEffect(() => {
+    if (!initialContent) {
+      setState(initialState);
+      return;
+    }
     setState((prevState) => ({
       ...prevState,
       content: initialContent,
     }));
   }, [initialContent]);
+
+  useEffect(() => {
+    if (!state.uploaded) {
+      return;
+    }
+    if (!['image', 'image-slider'].includes(state?.content?.type)) {
+      return;
+    }
+    onConfirm(state?.content);
+  }, [state?.uploaded]);
 
   const handleChange = (newValue, isImageUploaded = false) => {
     setState((prevState) => ({
@@ -341,11 +358,11 @@ export default function ContentHandler({
   };
 
   const handleConfirm = () => {
-    if (['image', 'image-slider'].includes(state.content?.type)) {
-      setState((prevState) => ({
-        ...prevState,
-        uploading: true,
-      }));
+    setState((prevState) => ({
+      ...prevState,
+      uploading: true,
+    }));
+    if (['image', 'image-slider'].includes(state?.content?.type)) {
       return;
     }
     onConfirm(state.content);
@@ -359,18 +376,6 @@ export default function ContentHandler({
     });
     onCancel();
   };
-
-  const content = state?.content;
-  const type = content?.type;
-  const value = content?.value;
-
-  const genericProps = useMemo(
-    () => ({
-      value,
-      onChange: handleChange,
-    }),
-    [value, handleChange]
-  );
 
   const renderContent = () => {
     if (type === 'button') {
@@ -398,6 +403,18 @@ export default function ContentHandler({
     }
   };
 
+  const content = state?.content;
+  const type = content?.type;
+  const value = content?.value;
+
+  const genericProps = useMemo(
+    () => ({
+      value,
+      onChange: handleChange,
+    }),
+    [value, handleChange]
+  );
+
   return (
     <Box css={{ position: 'relative', paddingBottom: '80px' }}>
       {renderContent()}
@@ -417,7 +434,7 @@ export default function ContentHandler({
         <Button variant="outline" onClick={handleCancel}>
           <Trans i18nKey="common:actions.cancel" />
         </Button>
-        <Button onClick={handleConfirm}>
+        <Button loading={state.uploading} onClick={handleConfirm}>
           <Trans i18nKey="common:actions.submit" />
         </Button>
       </Flex>

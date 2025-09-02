@@ -130,7 +130,7 @@ export default function ContentEditModule(props) {
                   contentIndex,
                   columnIndex,
                   rowIndex,
-                  visible: true,
+                  open: true,
                   moduleType: 'content',
                 })
               }

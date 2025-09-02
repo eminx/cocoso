@@ -213,7 +213,7 @@ export default function ComposablePageForm({
     }));
   };
 
-  const cancelModalContent = () => {
+  const cancelContentModal = () => {
     setContentModal(defaultEmptyContentModal);
   };
 
@@ -289,7 +289,7 @@ export default function ComposablePageForm({
   const contentIndex = contentModal?.contentIndex;
   const columnIndex = contentModal?.columnIndex;
   const rowIndex = contentModal?.rowIndex;
-  const initialContent = contentModal
+  const initialContent = contentModal?.open
     ? currentPage?.contentRows[rowIndex]?.columns[columnIndex][contentIndex]
     : null;
 
@@ -368,6 +368,7 @@ export default function ComposablePageForm({
             <Text fontWeight="bold" mb="2">
               <Trans i18nKey="admin:composable.confirmDelete.text1" />
             </Text>
+            <br />
             <Text>
               <Trans i18nKey="admin:composable.confirmDelete.text2" />
             </Text>
@@ -389,11 +390,12 @@ export default function ComposablePageForm({
         open={contentModal?.open}
         size="3xl"
         title={<Trans i18nKey="admin:composable.form.addContent" />}
+        onClose={cancelContentModal}
       >
         <ContentHandler
           initialContent={initialContent}
           onConfirm={saveContentModal}
-          onCancel={cancelModalContent}
+          onCancel={cancelContentModal}
         />
       </Modal>
 
@@ -418,6 +420,7 @@ export default function ComposablePageForm({
           <Text fontWeight="bold" mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage" />
           </Text>
+          <br />
           <Text mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage2" />
           </Text>

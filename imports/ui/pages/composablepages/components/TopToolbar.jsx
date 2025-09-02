@@ -22,7 +22,7 @@ export default function TopToolBar({
 
   return (
     <>
-      <Flex align="center" justify="space-between" my="4">
+      <Flex align="center" justify="space-between" pt="4" pb="6">
         <Box css={{ flexGrow: 1 }}>
           <ReactSelect
             options={composablePageTitles}
@@ -59,13 +59,15 @@ export default function TopToolBar({
         />
       </Flex>
 
-      <Center pt="2">
-        <Link to="/admin/settings/menu/order">
-          <CLink css={{ textAlign: 'center' }}>
-            <Trans i18nKey="admin:composable.toolbar.linkToMenu" />
-          </CLink>
-        </Link>
-      </Center>
+      {isPublished ? (
+        <Center>
+          <Link to="/admin/settings/menu/order">
+            <CLink css={{ textAlign: 'center' }}>
+              <Trans i18nKey="admin:composable.toolbar.linkToMenu" />
+            </CLink>
+          </Link>
+        </Center>
+      ) : null}
     </>
   );
 }
