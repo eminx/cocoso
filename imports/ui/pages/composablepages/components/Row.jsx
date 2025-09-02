@@ -12,7 +12,7 @@ import Boxling from '/imports/ui/pages/admin/Boxling';
 
 import { contentTypes, getGridTemplateColumns } from '../constants';
 import { ComposablePageContext } from '../ComposablePageForm';
-import ContentModule from './ContentModule';
+import ContentEditModule from './ContentEditModule';
 import DropTarget from './DropTarget';
 import ContentHandler from './ContentHandler';
 
@@ -125,7 +125,7 @@ export function Column({ column, columnIndex, rowIndex }) {
                       </button>
                     </SortableKnob>
                     <div style={{ flexGrow: '1' }}>
-                      <ContentModule
+                      <ContentEditModule
                         content={content}
                         contentIndex={contentIndex}
                         columnIndex={columnIndex}
