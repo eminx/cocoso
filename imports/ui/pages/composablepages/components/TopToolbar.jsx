@@ -7,7 +7,10 @@ import { Box, Center, Flex, Link as CLink, Tag } from '/imports/ui/core';
 
 import ComposablePageSettings from './ComposablePageSettings';
 
-export default function TopToolBar({ composablePageTitles }) {
+export default function TopToolBar({
+  composablePageTitles,
+  getComposablePageTitles,
+}) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -51,7 +54,9 @@ export default function TopToolBar({ composablePageTitles }) {
           </Tag>
         </Box>
 
-        <ComposablePageSettings />
+        <ComposablePageSettings
+          getComposablePageTitles={getComposablePageTitles}
+        />
       </Flex>
 
       <Center pt="2">

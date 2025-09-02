@@ -254,26 +254,16 @@ export default function ComposablePageForm({
 
   const contextValue = useMemo(
     () => ({
-      contentModal,
-      deleteModuleModal,
       getComposablePageById,
-      getComposablePageTitles,
-      saveContentModal,
       setContentModal,
       setCurrentPage,
       setDeleteModuleModal,
-      updateComposablePage,
     }),
     [
-      contentModal,
-      deleteModuleModal,
       getComposablePageById,
-      getComposablePageTitles,
-      saveContentModal,
       setContentModal,
       setCurrentPage,
       setDeleteModuleModal,
-      updateComposablePage,
     ]
   );
 
@@ -307,7 +297,10 @@ export default function ComposablePageForm({
     <div>
       <DndProvider backend={HTML5Backend}>
         <ComposablePageContext.Provider value={contextValue}>
-          <TopToolBar composablePageTitles={composablePageTitles} />
+          <TopToolBar
+            composablePageTitles={composablePageTitles}
+            getComposablePageTitles={getComposablePageTitles}
+          />
 
           <Heading size="lg" my="6" textAlign="center">
             {currentPage.title}

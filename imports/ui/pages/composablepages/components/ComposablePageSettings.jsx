@@ -11,8 +11,9 @@ import { message } from '/imports/ui/generic/message';
 import { ComposablePageContext } from '../ComposablePageForm';
 
 export default function ComposablePageSettings() {
-  const { currentPage, getComposablePageById, getComposablePageTitles } =
-    useContext(ComposablePageContext);
+  const { currentPage, getComposablePageById } = useContext(
+    ComposablePageContext
+  );
 
   const initialState = {
     hideTitle: currentPage?.settings?.hideTitle,

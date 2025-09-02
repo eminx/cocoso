@@ -10,7 +10,7 @@ import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import { StateContext } from '/imports/ui/LayoutContainer';
 
-function ContentModule({ module, Host }) {
+function ContentViewModule({ module, Host }) {
   const currentHost = Host;
   if (!module || !module.value || !module.type) {
     return null;
@@ -145,7 +145,7 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
               <Box key={columnIndex}>
                 {column.map((module, moduleIndex) => (
                   <Box key={module.id || module.type + moduleIndex}>
-                    <ContentModule module={module} Host={Host} />
+                    <ContentViewModule module={module} Host={Host} />
                   </Box>
                 ))}
               </Box>
