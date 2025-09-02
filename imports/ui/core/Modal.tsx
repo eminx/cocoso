@@ -379,8 +379,9 @@ const Content: React.FC<{
             aria-label="Close"
             css={{
               position: 'absolute',
-              right: '0.5rem',
-              top: '0.5rem',
+              right: '0.2rem',
+              top: '0.2rem',
+              zIndex: '1406',
             }}
             onClick={onClose}
           >
