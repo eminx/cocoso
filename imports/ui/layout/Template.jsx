@@ -15,7 +15,8 @@ function Template({
   titleCentered = false,
   children,
 }) {
-  const { isDesktop } = useContext(StateContext);
+  const context = useContext(StateContext);
+  const isDesktop = context?.isDesktop;
 
   return (
     <>
@@ -23,11 +24,7 @@ function Template({
         <title>{heading || publicSettings.name}</title>
       </Helmet>
       {isDesktop ? (
-        <Grid
-          columns={{ md: 1, lg: 3 }}
-          p="3"
-          templateColumns="30% 40% 30%"
-        >
+        <Grid columns={{ md: 1, lg: 3 }} p="3" templateColumns="30% 40% 30%">
           <Box>{leftContent}</Box>
 
           <Box>
