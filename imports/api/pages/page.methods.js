@@ -46,7 +46,10 @@ Meteor.methods({
 
   async getPortalHostPages() {
     const portalHost = await Hosts.findOneAsync({ isPortalHost: true });
-    return await Pages.find({ host: portalHost.host }, { sort: { creationDate: -1 } }).fetchAsync();
+    return await Pages.find(
+      { host: portalHost.host },
+      { sort: { creationDate: -1 } }
+    ).fetchAsync();
   },
 
   async createPage(formValues, hostPredefined) {
@@ -59,7 +62,7 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    const pageCount = Pages.find({ host }).countAsync();
+    const pageCount = await Pages.find({ host }).countAsync();
 
     try {
       await Pages.insertAsync({

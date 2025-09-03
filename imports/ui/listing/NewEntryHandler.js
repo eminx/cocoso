@@ -74,12 +74,15 @@ export default function NewEntryHandler({ children }) {
   const [tc] = useTranslation('common');
 
   useEffect(() => {
+    if (!loaders) {
+      return;
+    }
     const justUpdated =
       searchParams.get('edit') === 'true' ||
       searchParams.get('edit') === 'false';
 
     renderToasts(loaders, tc, justUpdated);
-  }, [searchParams.get('edit')]);
+  }, [searchParams.get('edit'), loaders]);
 
   const handleCancelAndClose = () => {
     setLoaders(initialLoader);

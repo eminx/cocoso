@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import List from 'rc-virtual-list';
 import EllipsisVertical from 'lucide-react/dist/esm/icons/ellipsis-vertical';
 
@@ -39,6 +39,23 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
   );
 }
 
+const ListItem = memo(function ({ bg, children }) {
+  return (
+    <div style={{ width: '100%' }}>
+      <Box
+        bg={bg}
+        mb="2"
+        w="100%"
+        css={{
+          borderRadius: 'var(--cocoso-border-radius)',
+        }}
+      >
+        {children}
+      </Box>
+    </div>
+  );
+});
+
 export default function NiceList({
   actionsDisabled = true,
   itemBg,
@@ -51,24 +68,13 @@ export default function NiceList({
 }) {
   const renderChildren = (listItem) => {
     return (
-      <div style={{ width: '100%' }}>
-        <Box
-          key={listItem[keySelector]}
-          bg={itemBg}
-          mb="2"
-          w="100%"
-          css={{
-            borderRadius: 'var(--cocoso-border-radius)',
-          }}
-        >
-          {' '}
-          <ListItemWithActions
-            listItem={listItem}
-            actionsDisabled={actionsDisabled}
-            renderChildren={children}
-          />
-        </Box>
-      </div>
+      <ListItem key={listItem[keySelector]} bg={itemBg}>
+        <ListItemWithActions
+          listItem={listItem}
+          actionsDisabled={actionsDisabled}
+          renderChildren={children}
+        />
+      </ListItem>
     );
   };
 

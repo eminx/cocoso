@@ -56,7 +56,7 @@ function ModulePreview({ content }) {
   );
 }
 
-export default function ContentModule(props) {
+export default function ContentEditModule(props) {
   const { setContentModal, setDeleteModuleModal } = useContext(
     ComposablePageContext
   );
@@ -130,7 +130,7 @@ export default function ContentModule(props) {
                   contentIndex,
                   columnIndex,
                   rowIndex,
-                  visible: true,
+                  open: true,
                   moduleType: 'content',
                 })
               }

@@ -20,7 +20,7 @@ export default function PageForm({ page, onFinalize }) {
   const [t] = useTranslation('admin');
 
   useEffect(() => {
-    if (!loaders.isCreating) {
+    if (!loaders?.isCreating) {
       return;
     }
     setLoaders((prevState) => ({

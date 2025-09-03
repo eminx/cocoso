@@ -1,6 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Trans } from 'react-i18next';
+import ReactPlayer from 'react-player';
+import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+
 import {
   Box,
+  Button,
   Center,
   Checkbox,
   Flex,
@@ -9,17 +14,13 @@ import {
   NumberInput,
   Text,
 } from '/imports/ui/core';
-
-import ReactPlayer from 'react-player';
-import { Trans } from 'react-i18next';
-
 import Quill from '/imports/ui/forms/Quill';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
-import { ComposablePageContext } from '../ComposablePageForm';
 import FormField from '/imports/ui/forms/FormField';
 import { message } from '/imports/ui/generic/message';
 import Menu from '/imports/ui/generic/Menu';
-import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+
+import { ComposablePageContext } from '../ComposablePageForm';
 
 function ButtonContent({ value, onChange }) {
   const handleLinkValueChange = (linkValue) => {
@@ -129,7 +130,7 @@ function Divider({ value, onChange }) {
                   max={100}
                   maxWidth="100px"
                   step={1}
-                  value={value.height}
+                  value={localHeight}
                   onChange={handleEmptySpaceHeightChange}
                 />
               </FormField>
@@ -165,6 +166,7 @@ function ImageContent({ value, ping, onChange }) {
   const handleInputChange = (event) => {
     event.preventDefault();
     const linkValue = event.target.value;
+
     if (
       linkValue.substr(0, 7) !== 'http://' &&
       linkValue.substr(0, 8) !== 'https://'
@@ -266,7 +268,7 @@ function TextContent({ value, onChange }) {
   );
 }
 
-function VideoContent({ value, onChange }) {
+const VideoContent = function VideoContent({ value, onChange }) {
   const handleEnterUrl = (videoUrl) => {
     onChange({
       src: videoUrl,
@@ -307,17 +309,45 @@ function VideoContent({ value, onChange }) {
       </Box>
     </Center>
   );
-}
+};
 
-export default function ContentHandler() {
-  const { contentModal, setContentModal } = useContext(ComposablePageContext);
+const initialState = {
+  content: null,
+  uploaded: false,
+  uploading: false,
+};
 
-  if (!contentModal) {
-    return null;
-  }
+export default function ContentHandler({
+  initialContent,
+  open,
+  onConfirm,
+  onCancel,
+}) {
+  const [state, setState] = useState(initialState);
+
+  useEffect(() => {
+    if (!initialContent) {
+      setState(initialState);
+      return;
+    }
+    setState((prevState) => ({
+      ...prevState,
+      content: initialContent,
+    }));
+  }, [initialContent]);
+
+  useEffect(() => {
+    if (!state.uploaded) {
+      return;
+    }
+    if (!['image', 'image-slider'].includes(state?.content?.type)) {
+      return;
+    }
+    onConfirm(state?.content);
+  }, [state?.uploaded]);
 
   const handleChange = (newValue, isImageUploaded = false) => {
-    setContentModal((prevState) => ({
+    setState((prevState) => ({
       ...prevState,
       content: {
         ...prevState.content,
@@ -327,40 +357,87 @@ export default function ContentHandler() {
     }));
   };
 
-  const content = contentModal?.content;
+  const handleConfirm = () => {
+    setState((prevState) => ({
+      ...prevState,
+      uploading: true,
+    }));
+    if (['image', 'image-slider'].includes(state?.content?.type)) {
+      return;
+    }
+    onConfirm(state.content);
+  };
+
+  const handleCancel = () => {
+    setState({
+      content: initialContent,
+      uploaded: false,
+      uploading: false,
+    });
+    onCancel();
+  };
+
+  const renderContent = () => {
+    if (type === 'button') {
+      return <ButtonContent {...genericProps} />;
+    }
+
+    if (type === 'divider') {
+      return <Divider {...genericProps} />;
+    }
+
+    if (type === 'image') {
+      return <ImageContent {...genericProps} ping={state?.uploading} />;
+    }
+
+    if (type === 'image-slider') {
+      return <SliderContent {...genericProps} ping={state?.uploading} />;
+    }
+
+    if (type === 'text') {
+      return <TextContent {...genericProps} />;
+    }
+
+    if (type === 'video') {
+      return <VideoContent {...genericProps} />;
+    }
+  };
+
+  const content = state?.content;
   const type = content?.type;
   const value = content?.value;
 
-  const genericProps = {
-    value,
-    onChange: handleChange,
-  };
+  const genericProps = useMemo(
+    () => ({
+      value,
+      onChange: handleChange,
+    }),
+    [value, handleChange]
+  );
 
-  if (!value) {
-    return null;
-  }
+  return (
+    <Box css={{ position: 'relative', paddingBottom: '80px' }}>
+      {renderContent()}
 
-  if (type === 'button') {
-    return <ButtonContent {...genericProps} />;
-  }
-
-  if (type === 'divider') {
-    return <Divider {...genericProps} />;
-  }
-
-  if (type === 'image') {
-    return <ImageContent {...genericProps} ping={contentModal?.uploading} />;
-  }
-
-  if (type === 'image-slider') {
-    return <SliderContent {...genericProps} ping={contentModal?.uploading} />;
-  }
-
-  if (type === 'text') {
-    return <TextContent {...genericProps} />;
-  }
-
-  if (type === 'video') {
-    return <VideoContent {...genericProps} />;
-  }
+      <Flex
+        bg="gray.50"
+        justify="end"
+        p="6"
+        w="100%"
+        css={{
+          borderTop: '1px solid #e5e7eb',
+          bottom: 0,
+          position: 'fixed',
+          right: 0,
+        }}
+      >
+        <Button variant="outline" onClick={handleCancel}>
+          <Trans i18nKey="common:actions.cancel" />
+        </Button>
+        <Button loading={state.uploading} onClick={handleConfirm}>
+          <Trans i18nKey="common:actions.submit" />
+        </Button>
+      </Flex>
+    </Box>
+  );
 }

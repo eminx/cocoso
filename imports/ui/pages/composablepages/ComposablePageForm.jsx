@@ -1,4 +1,10 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
@@ -42,11 +48,18 @@ const getNewRow = (rowType) => {
 export const ComposablePageContext = createContext(null);
 
 const emptyModuleModal = {
-  visible: false,
+  open: false,
   contentIndex: null,
   columnIndex: null,
   rowIndex: null,
   moduleType: null,
+};
+
+const defaultEmptyContentModal = {
+  open: false,
+  contentIndex: null,
+  columnIndex: null,
+  rowIndex: null,
 };
 
 export default function ComposablePageForm({
@@ -54,16 +67,13 @@ export default function ComposablePageForm({
   getComposablePageTitles,
 }) {
   const [currentPage, setCurrentPage] = useState(null);
-  const [contentModal, setContentModal] = useState({
-    open: false,
-    content: null,
-  });
+  const [contentModal, setContentModal] = useState(defaultEmptyContentModal);
   const [deleteModuleModal, setDeleteModuleModal] = useState(emptyModuleModal);
   const [deleteWholePageModal, setDeleteWholePageModal] = useState(false);
   const { composablePageId } = useParams();
   const navigate = useNavigate();
 
-  const getComposablePageById = async () => {
+  const getComposablePageById = useCallback(async () => {
     if (!composablePageId || composablePageId === '*') {
       return;
     }
@@ -74,7 +84,7 @@ export default function ComposablePageForm({
     } catch (error) {
       message.error(error.reason || error.error);
     }
-  };
+  }, [composablePageId]);
 
   useEffect(() => {
     if (!composablePageId) {
@@ -90,17 +100,7 @@ export default function ComposablePageForm({
     updateComposablePage();
   }, [currentPage?.contentRows]);
 
-  useEffect(() => {
-    if (
-      contentModal.open &&
-      ['image', 'image-slider'].includes(contentModal.content?.type) &&
-      contentModal.uploaded
-    ) {
-      saveContentModal();
-    }
-  }, [contentModal.uploaded]);
-
-  const handleAddRow = (selectedRow) => {
+  const handleAddRow = useCallback((selectedRow) => {
     const newRow = getNewRow(selectedRow.value);
     setCurrentPage((prevPage) => ({
       ...prevPage,
@@ -110,18 +110,18 @@ export default function ComposablePageForm({
       ],
       pingSave: true,
     }));
-  };
+  });
 
-  const handleSortRows = (oldIndex, newIndex) => {
+  const handleSortRows = useCallback((oldIndex, newIndex) => {
     setCurrentPage((prevPage) => ({
       ...prevPage,
       contentRows: arrayMoveImmutable(prevPage.contentRows, oldIndex, newIndex),
       pingSave: true,
     }));
-  };
+  });
 
-  const handleDeleteRow = () => {
-    if (!deleteModuleModal || !deleteModuleModal.visible) {
+  const handleDeleteRow = useCallback(() => {
+    if (!deleteModuleModal || !deleteModuleModal.open) {
       return;
     }
     const rowIndex = deleteModuleModal.rowIndex;
@@ -133,10 +133,10 @@ export default function ComposablePageForm({
       pingSave: true,
     }));
     setDeleteModuleModal(emptyModuleModal);
-  };
+  });
 
-  const handleDeleteContent = () => {
-    if (!deleteModuleModal || !deleteModuleModal.visible) {
+  const handleDeleteContent = useCallback(() => {
+    if (!deleteModuleModal || !deleteModuleModal.open) {
       return;
     }
 
@@ -164,7 +164,7 @@ export default function ComposablePageForm({
       pingSave: true,
     }));
     setDeleteModuleModal(emptyModuleModal);
-  };
+  });
 
   const handleDeleteModule = () => {
     const { contentIndex, columnIndex, rowIndex, moduleType } =
@@ -181,12 +181,12 @@ export default function ComposablePageForm({
     }
   };
 
-  const saveContentModal = () => {
-    if (!contentModal) {
+  const saveContentModal = useCallback((content) => {
+    if (!contentModal.open) {
       return;
     }
 
-    const { content, contentIndex, columnIndex, rowIndex } = contentModal;
+    const { contentIndex, columnIndex, rowIndex } = contentModal;
 
     setCurrentPage((prevPage) => ({
       ...prevPage,
@@ -211,48 +211,34 @@ export default function ComposablePageForm({
       }),
       pingSave: true,
     }));
-  };
+  });
 
-  const confirmContentModal = () => {
-    if (
-      contentModal.open &&
-      ['image', 'image-slider'].includes(contentModal.content?.type)
-    ) {
-      setContentModal((prevModal) => ({
-        ...prevModal,
-        uploading: true,
-        uploaded: false,
-      }));
-      return;
-    }
-    saveContentModal();
-  };
+  const cancelContentModal = useCallback(() => {
+    setContentModal(defaultEmptyContentModal);
+  });
 
-  const updateComposablePage = async (updateTitles = false) => {
-    const newPage = {
-      _id: currentPage._id,
-      title: currentPage.title,
-      contentRows: currentPage.contentRows,
-      settings: currentPage.settings,
-    };
+  const updateComposablePage = useCallback(
+    async (updateTitles = false) => {
+      const newPage = {
+        _id: currentPage._id,
+        title: currentPage.title,
+        contentRows: currentPage.contentRows,
+        settings: currentPage.settings,
+      };
 
-    try {
-      await call('updateComposablePage', newPage);
-      if (updateTitles) {
-        await getComposablePageTitles();
+      try {
+        await call('updateComposablePage', newPage);
+        if (updateTitles) {
+          await getComposablePageTitles();
+        }
+        setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
+        setContentModal(defaultEmptyContentModal);
+      } catch (error) {
+        message.error(error.reason || error.error);
       }
-      setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
-      setContentModal({ open: false, content: null });
-      // message.success(
-      //   <Trans
-      //     i18nKey="common:message.success.save"
-      //     tOptions={{ domain: 'page' }}
-      //   />
-      // );
-    } catch (error) {
-      message.error(error.reason || error.error);
-    }
-  };
+    },
+    [currentPage, getComposablePageTitles]
+  );
 
   const deleteComposablePage = async () => {
     try {
@@ -266,7 +252,18 @@ export default function ComposablePageForm({
     }
   };
 
-  if (!currentPage && !composablePageId) {
+  const contextValue = useMemo(
+    () => ({
+      currentPage,
+      getComposablePageById,
+      setContentModal,
+      setCurrentPage,
+      setDeleteModuleModal,
+    }),
+    [currentPage]
+  );
+
+  if (!currentPage && !composablePageTitles) {
     return null;
   }
 
@@ -285,24 +282,21 @@ export default function ComposablePageForm({
     return null;
   }
 
-  const contextValue = {
-    contentModal,
-    currentPage,
-    deleteModuleModal,
-    getComposablePageById,
-    getComposablePageTitles,
-    saveContentModal,
-    setContentModal,
-    setCurrentPage,
-    setDeleteModuleModal,
-    updateComposablePage,
-  };
+  const contentIndex = contentModal?.contentIndex;
+  const columnIndex = contentModal?.columnIndex;
+  const rowIndex = contentModal?.rowIndex;
+  const initialContent = contentModal?.open
+    ? currentPage?.contentRows[rowIndex]?.columns[columnIndex][contentIndex]
+    : null;
 
   return (
     <div>
       <DndProvider backend={HTML5Backend}>
         <ComposablePageContext.Provider value={contextValue}>
-          <TopToolBar composablePageTitles={composablePageTitles} />
+          <TopToolBar
+            composablePageTitles={composablePageTitles}
+            getComposablePageTitles={getComposablePageTitles}
+          />
 
           <Heading size="lg" my="6" textAlign="center">
             {currentPage.title}
@@ -317,14 +311,6 @@ export default function ComposablePageForm({
                       <SortableKnob>
                         <button>
                           <ArrowUpDownIcon />
-                          {/* <IconButton
-                          aria-label="Move row"
-                          cursor="move"
-                          icon={<ArrowUpDownIcon />}
-                          p="2"
-                          size="sm"
-                          variant="ghost"
-                        /> */}
                         </button>
                       </SortableKnob>
                     </Box>
@@ -340,7 +326,7 @@ export default function ComposablePageForm({
                             setDeleteModuleModal({
                               moduleType: 'row',
                               rowIndex,
-                              visible: true,
+                              open: true,
                             })
                           }
                         >
@@ -368,27 +354,9 @@ export default function ComposablePageForm({
             </Center>
           </Flex>
 
-          <Center boxShadow="2xl">
-            <BottomToolbar />
-          </Center>
-
-          <Modal
-            closeOnOverlayClick={false}
-            confirmButtonProps={{ isLoading: contentModal?.uploading }}
-            open={contentModal?.open}
-            size="3xl"
-            title={<Trans i18nKey="admin:composable.form.addContent" />}
-            onConfirm={confirmContentModal}
-            onClose={(prevState) =>
-              setContentModal({ open: false, content: null })
-            }
-          >
-            <ContentHandler />
-          </Modal>
-
           <Modal
             confirmButtonProps={{ colorScheme: 'red' }}
-            open={deleteModuleModal.visible}
+            open={deleteModuleModal.open}
             title={<Trans i18nKey="admin:composable.confirmDelete.title" />}
             onConfirm={() => handleDeleteModule()}
             onClose={() => setDeleteModuleModal(emptyModuleModal)}
@@ -396,12 +364,36 @@ export default function ComposablePageForm({
             <Text fontWeight="bold" mb="2">
               <Trans i18nKey="admin:composable.confirmDelete.text1" />
             </Text>
+            <br />
             <Text>
               <Trans i18nKey="admin:composable.confirmDelete.text2" />
             </Text>
           </Modal>
         </ComposablePageContext.Provider>
       </DndProvider>
+
+      <Center>
+        <BottomToolbar
+          currentPage={currentPage}
+          getComposablePageById={getComposablePageById}
+          getComposablePageTitles={getComposablePageTitles}
+        />
+      </Center>
+
+      <Modal
+        closeOnOverlayClick={false}
+        hideFooter
+        open={contentModal?.open}
+        size="3xl"
+        title={<Trans i18nKey="admin:composable.form.addContent" />}
+        onClose={cancelContentModal}
+      >
+        <ContentHandler
+          initialContent={initialContent}
+          onConfirm={saveContentModal}
+          onCancel={cancelContentModal}
+        />
+      </Modal>
 
       <Center bg="red.50" p="4" mb="8">
         <Button
@@ -424,6 +416,7 @@ export default function ComposablePageForm({
           <Text fontWeight="bold" mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage" />
           </Text>
+          <br />
           <Text mb="2">
             <Trans i18nKey="admin:composable.confirmDelete.textWholePage2" />
           </Text>

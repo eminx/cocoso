@@ -20,16 +20,21 @@ export function OldFooter({ host, settings }) {
     <Box
       p="4"
       css={{
-        textAlign: 'center',
         fontSize: '85%',
+        lineHeight: '2',
+        textAlign: 'center',
       }}
     >
-      <Text size="sm">
+      <Text color="gray.100" size="sm">
         {settings?.address}
         {', '} {settings?.city}
       </Text>
-      <Text fontSize="sm">{settings?.email}</Text>
-      <Text fontSize="sm" fontWeight="bold">
+      <br />
+      <Text color="gray.100" fontSize="sm">
+        {settings?.email}
+      </Text>
+      <br />
+      <Text color="gray.100" fontSize="sm" fontWeight="bold">
         {host}
       </Text>
     </Box>

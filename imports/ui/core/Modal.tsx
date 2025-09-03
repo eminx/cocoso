@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { styled } from 'restyle';
 import { useTranslation } from 'react-i18next';
@@ -379,8 +379,9 @@ const Content: React.FC<{
             aria-label="Close"
             css={{
               position: 'absolute',
-              right: '0.5rem',
-              top: '0.5rem',
+              right: '0.2rem',
+              top: '0.2rem',
+              zIndex: '1406',
             }}
             onClick={onClose}
           >
@@ -547,4 +548,4 @@ export const Drawer: React.FC<DrawerProps> = ({
   return drawerContent;
 };
 
-export default Modal;
+export default memo(Modal);

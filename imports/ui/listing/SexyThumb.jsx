@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import dayjs from 'dayjs';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
@@ -56,13 +56,7 @@ function ThumbDate({ occurrence }) {
   );
 }
 
-export default function SexyThumb({
-  activity,
-  host,
-  index,
-  showPast = false,
-  tags,
-}) {
+function SexyThumb({ activity, host, index, showPast = false, tags }) {
   const { allHosts } = isClient && useContext(StateContext);
 
   if (!activity) {
@@ -196,3 +190,5 @@ export default function SexyThumb({
     </Box>
   );
 }
+
+export default memo(SexyThumb);

@@ -7,7 +7,10 @@ import { Box, Center, Flex, Link as CLink, Tag } from '/imports/ui/core';
 
 import ComposablePageSettings from './ComposablePageSettings';
 
-export default function TopToolBar({ composablePageTitles }) {
+export default function TopToolBar({
+  composablePageTitles,
+  getComposablePageTitles,
+}) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,7 +22,7 @@ export default function TopToolBar({ composablePageTitles }) {
 
   return (
     <>
-      <Flex align="center" justify="space-between" my="4">
+      <Flex align="center" justify="space-between" pt="4" pb="6">
         <Box css={{ flexGrow: 1 }}>
           <ReactSelect
             options={composablePageTitles}
@@ -51,16 +54,20 @@ export default function TopToolBar({ composablePageTitles }) {
           </Tag>
         </Box>
 
-        <ComposablePageSettings />
+        <ComposablePageSettings
+          getComposablePageTitles={getComposablePageTitles}
+        />
       </Flex>
 
-      <Center pt="2">
-        <Link to="/admin/settings/menu/order">
-          <CLink css={{ textAlign: 'center' }}>
-            <Trans i18nKey="admin:composable.toolbar.linkToMenu" />
-          </CLink>
-        </Link>
-      </Center>
+      {isPublished ? (
+        <Center>
+          <Link to="/admin/settings/menu/order">
+            <CLink css={{ textAlign: 'center' }}>
+              <Trans i18nKey="admin:composable.toolbar.linkToMenu" />
+            </CLink>
+          </Link>
+        </Center>
+      ) : null}
     </>
   );
 }

@@ -8,7 +8,7 @@ interface LoaderProps {
 
 // Simple animated loader bar
 const LoaderBar = styled('div', (props: LoaderProps) => ({
-  position: props.relative ? 'relative' : 'absolute',
+  position: props.relative ? 'relative' : 'fixed',
   top: 0,
   left: 0,
   right: 0,

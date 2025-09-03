@@ -216,7 +216,7 @@ export default function Calendar() {
     ...nonComboResourcesWithColor,
   ].filter((r) => r.isBookable);
 
-  const { settings } = currentHost;
+  const settings = currentHost?.settings;
   const calendarInMenu = settings?.menu.find(
     (item) => item.name === 'calendar'
   );

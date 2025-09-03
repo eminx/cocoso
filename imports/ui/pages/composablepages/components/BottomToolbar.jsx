@@ -8,19 +8,19 @@ import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import { StateContext } from '/imports/ui/LayoutContainer';
 
-import { ComposablePageContext } from '../ComposablePageForm';
-
-export default function BottomToolbar() {
+export default function BottomToolbar({
+  currentPage,
+  getComposablePageById,
+  getComposablePageTitles,
+}) {
   const [state, setState] = useState({
     updated: false,
     publishModalVisible: false,
   });
-  const { currentPage, getComposablePageById, getComposablePageTitles } =
-    useContext(ComposablePageContext);
   const { currentHost } = useContext(StateContext);
 
   useEffect(() => {
-    if (currentPage.pingSave === false) {
+    if (currentPage?.pingSave === false) {
       setState((prevState) => ({ ...prevState, updated: true }));
     }
     setTimeout(() => {
@@ -62,7 +62,6 @@ export default function BottomToolbar() {
         <Trans i18nKey="admin:composable.toolbar.publishSuccess" />
       );
     } catch (error) {
-      console.log(error);
       message.error(error.reason || error.error);
     }
   };
@@ -84,17 +83,18 @@ export default function BottomToolbar() {
         align="center"
         bg="gray.900"
         justify="space-between"
-        p="2"
+        p="4"
         css={{
           borderRadius: 'var(--cocoso-border-radius)',
           bottom: '12px',
+          boxShadow: 'var(--cocoso-box-shadow)',
           position: 'fixed',
           zIndex: '99',
         }}
       >
         <Flex
           align="center"
-          mx="4"
+          px="4"
           css={{
             color: 'var(--cocoso-colors-green-200)',
           }}
@@ -111,14 +111,15 @@ export default function BottomToolbar() {
             <Trans i18nKey="admin:composable.toolbar.updated" />
           </Text>
         </Flex>
-        <Flex align="center" mx="2">
+        <Flex align="center" px="2">
           <Link
-            size="sm"
+            fontSize="sm"
             href={`http://${currentPage.host}/cp/${currentPage._id}`}
             target="_blank"
             css={{
               color: 'var(--cocoso-colors-blue-300)',
               fontWeight: 'bold',
+              marginTop: '-3px',
             }}
           >
             <Trans i18nKey="admin:composable.toolbar.preview" />
