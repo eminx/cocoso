@@ -62,7 +62,6 @@ export default function BottomToolbar({
         <Trans i18nKey="admin:composable.toolbar.publishSuccess" />
       );
     } catch (error) {
-      console.log(error);
       message.error(error.reason || error.error);
     }
   };

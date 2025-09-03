@@ -76,7 +76,7 @@ Meteor.startup(() => {
         renderToString(<App location={sink.request.url} />)
       );
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   });
 });
