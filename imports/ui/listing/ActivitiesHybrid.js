@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Trans } from 'react-i18next';
+import { Grid } from 'react-window';
 
 import { Box, Center } from '/imports/ui/core';
 
@@ -9,6 +10,28 @@ import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 import InfiniteScroller from './InfiniteScroller';
 import SexyThumb from './SexyThumb';
+
+function GridItem({ activities, columnIndex, rowIndex, style, setModalItem }) {
+  const item = activities[rowIndex * 3];
+
+  return (
+    <Center
+      key={item._id}
+      flex="1 1 355px"
+      p="1"
+      style={style}
+      onClick={() => setModalItem(item)}
+    >
+      <SexyThumb
+        activity={item}
+        // host={Host?.isPortalHost ? item.host : null}
+        index={rowIndex * columnIndex}
+        // showPast={showPast}
+        // tags={item.isGroupMeeting ? [groupsInMenu?.label] : null}
+      />
+    </Center>
+  );
+}
 
 export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const [modalItem, setModalItem] = useState(null);
@@ -59,7 +82,16 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
       </Center>
 
       <Box px="2" pb="8">
-        <InfiniteScroller items={activities}>
+        <Grid
+          cellComponent={GridItem}
+          cellProps={{ activities, setModalItem }}
+          columnCount={3}
+          columnWidth={350}
+          rowCount={parseInt(activities.length / 3)}
+          rowHeight={320}
+        />
+
+        {/* <InfiniteScroller items={activities}>
           {(item, index) => (
             <Center
               key={item._id}
@@ -76,7 +108,7 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
               />
             </Center>
           )}
-        </InfiniteScroller>
+        </InfiniteScroller> */}
 
         {modalItem && (
           <PopupHandler
