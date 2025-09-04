@@ -8,12 +8,13 @@ import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
 import { I18nextProvider, useSSR } from 'react-i18next';
 
+import Hosts from '/imports/api/hosts/host';
 import i18n from '/imports/startup/i18n';
+import { getCssText } from '/stitches.config';
+
 import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
-
-import Hosts from '/imports/api/hosts/host';
 
 const { cdn_server } = Meteor.settings;
 
@@ -70,6 +71,12 @@ Meteor.startup(() => {
       sink.appendToHead(helmet.meta.toString());
       sink.appendToHead(helmet.title.toString());
       sink.appendToHead(helmet.link.toString());
+      sink.appendToHead(
+        <style
+          id="stitches"
+          dangerouslySetInnerHTML={{ __html: getCssText() }}
+        />
+      );
 
       sink.renderIntoElementById(
         'root',

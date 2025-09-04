@@ -58,7 +58,7 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
       </Center>
 
-      <Box px="2" pb="8">
+      <Box id="a-box" bg="brand.300" px="2" pb="8">
         <InfiniteScroller items={activities}>
           {(item, index) => (
             <Center
