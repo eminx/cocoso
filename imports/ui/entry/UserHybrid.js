@@ -18,7 +18,7 @@ export function Bio({ user }) {
   }
 
   return (
-    <Flex justifyContent="center" mb="4">
+    <Flex justify="center" mb="4">
       <Box
         bg="white"
         className="text-content"

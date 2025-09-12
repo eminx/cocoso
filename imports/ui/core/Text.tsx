@@ -1,4 +1,5 @@
-import { styled } from 'restyle';
+import React from 'react';
+import { styled } from '@stitches/react';
 
 import { getPropStyles } from './functions';
 
@@ -18,27 +19,35 @@ const fontSizes = {
   '9xl': '8rem',
 };
 
-export const Tag = styled('span', (props: any) => {
+const TagStyled = styled('span', {
+  alignItems: 'center',
+  backgroundColor: 'white',
+  borderRadius: 'var(--cocoso-border-radius)',
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  display: 'inline-flex',
+  fontSize: '0.875rem',
+  fontWeight: '400',
+  lineHeight: '1.35rem',
+  paddingInline: '0.55rem',
+  textTransform: 'capitalize',
+});
+
+export const Tag = (props: any) => {
   const colorScheme = props.colorScheme || 'theme';
   const borderColor = `var(--cocoso-colors-${colorScheme}-500)`;
   const color = `var(--cocoso-colors-${colorScheme}-800)`;
 
-  return {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderColor,
-    borderRadius: 'var(--cocoso-border-radius)',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    color,
-    display: 'inline-flex',
-    fontSize: '0.875rem',
-    fontWeight: '400',
-    lineHeight: '1.35rem',
-    paddingInline: '0.55rem',
-    textTransform: 'capitalize',
-  };
-});
+  return (
+    <TagStyled
+      css={{
+        borderColor,
+        color,
+      }}
+      {...props}
+    />
+  );
+};
 
 interface TextProps {
   fontSize?: string;
@@ -52,32 +61,39 @@ interface TextProps {
   _focus?: any;
   isTruncated?: boolean;
   truncated?: boolean;
+  children: React.ReactNode;
 }
 
-export const Text = styled('span', (props: TextProps) => {
+const TextStyled = styled('p', {});
+
+export const Text = (props: TextProps) => {
   const color = props.color?.split('.');
   const fontSize = props.size || props.fontSize;
   const truncated = props.isTruncated || props.truncated;
-
-  return {
-    ...getPropStyles(props),
-    color: color
-      ? `var(--cocoso-colors-${color[0]}-${color[1]})`
-      : 'var(--cocoso-colors-gray-900)',
-    fontSize: fontSize
-      ? fontSizes[fontSize as keyof typeof fontSizes]
-      : fontSizes.md,
-    fontWeight: props.fontWeight || 'normal',
-    textOverflow: truncated ? 'ellipsis' : 'clip',
-    overflow: truncated ? 'hidden' : 'visible',
-    whiteSpace: truncated ? 'nowrap' : 'normal',
-    lineHeight: props.lineHeight || 'normal',
-    textAlign: props.textAlign || 'left',
-    ':hover': props._hover || {},
-    ':active': props._active || {},
-    ':focus': props._focus || {},
-  };
-});
+  return (
+    <TextStyled
+      css={{
+        color: color
+          ? `var(--cocoso-colors-${color[0]}-${color[1]})`
+          : 'var(--cocoso-colors-gray-900)',
+        fontSize: fontSize
+          ? fontSizes[fontSize as keyof typeof fontSizes]
+          : fontSizes.md,
+        fontWeight: props.fontWeight || 'normal',
+        textOverflow: truncated ? 'ellipsis' : 'clip',
+        overflow: truncated ? 'hidden' : 'visible',
+        whiteSpace: truncated ? 'nowrap' : 'normal',
+        lineHeight: props.lineHeight || 'normal',
+        textAlign: props.textAlign || 'left',
+        '&:hover': props._hover || {},
+        '&:active': props._active || {},
+        '&:focus': props._focus || {},
+        ...getPropStyles(props),
+      }}
+      {...props}
+    />
+  );
+};
 
 // Heading
 interface HeadingProps extends TextProps {
@@ -95,23 +111,32 @@ const headingSizes = {
   '2xl': '3rem',
 };
 
-export const Heading = styled('h2', (props: HeadingProps) => {
+const HeadingStyled = styled('h2', {});
+
+export const Heading = (props: HeadingProps) => {
   const color = props.color?.split('.');
   const truncated = props.isTruncated || props.truncated;
 
-  return {
-    ...getPropStyles(props),
-    color: color ? `var(--cocoso-colors-${color[0]}-${color[1]})` : 'inherit',
-    fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
-    fontFamily: 'Raleway, sans-serif',
-    fontWeight: props.fontWeight || 'bold',
-    overflow: truncated ? 'hidden' : 'visible',
-    lineHeight: props.lineHeight || '1.2',
-    textAlign: props.textAlign || 'left',
-    textOverflow: truncated ? 'ellipsis' : 'clip',
-    whiteSpace: truncated ? 'nowrap' : 'normal',
-  };
-});
+  return (
+    <HeadingStyled
+      css={{
+        color: color
+          ? `var(--cocoso-colors-${color[0]}-${color[1]})`
+          : 'inherit',
+        fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
+        fontFamily: 'Raleway, sans-serif',
+        fontWeight: props.fontWeight || 'bold',
+        overflow: truncated ? 'hidden' : 'visible',
+        lineHeight: props.lineHeight || '1.2',
+        textAlign: props.textAlign || 'left',
+        textOverflow: truncated ? 'ellipsis' : 'clip',
+        whiteSpace: truncated ? 'nowrap' : 'normal',
+        ...getPropStyles(props),
+      }}
+      {...props}
+    />
+  );
+};
 
 interface CodeProps {
   fontSize?: string;
@@ -119,38 +144,56 @@ interface CodeProps {
   color?: string;
 }
 
-export const Code = styled('span', (props: CodeProps) => {
-  const color = props.color?.split('.');
-  const fontSize = props.size || props.fontSize;
-  return {
-    borderRadius: 'var(--cocoso-border-radius)',
-    backgroundColor: 'var(--cocoso-colors-bluegray-50)',
-    color: color ? `var(--cocoso-colors-${color[0]}-${color[1]})` : 'inherit',
-    fontFamily: 'monospace',
-    fontSize: fontSize
-      ? fontSizes[fontSize as keyof typeof fontSizes]
-      : fontSizes.md,
-    padding: '0.25rem 0.5rem',
-    margin: '0 0.25rem',
-  };
+const CodeStyled = styled('span', {
+  borderRadius: 'var(--cocoso-border-radius)',
+  backgroundColor: 'var(--cocoso-colors-bluegray-50)',
+  fontFamily: 'monospace',
+  padding: '0.25rem 0.5rem',
+  margin: '0 0.25rem',
 });
 
-export const Link = styled('a', (props: TextProps) => {
+export const Code = (props: CodeProps) => {
+  const color = props.color?.split('.');
+  const fontSize = props.size || props.fontSize;
+
+  return (
+    <CodeStyled
+      css={{
+        color: color
+          ? `var(--cocoso-colors-${color[0]}-${color[1]})`
+          : 'inherit',
+        fontSize: fontSize
+          ? fontSizes[fontSize as keyof typeof fontSizes]
+          : fontSizes.md,
+      }}
+      {...props}
+    />
+  );
+};
+
+const LinkStyled = styled('a', {
+  cursor: 'pointer',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+});
+
+export const Link = (props: TextProps) => {
   const color = props.color?.split('.') || ['blue', '500'];
   const fontSize = props.size || props.fontSize;
   const truncated = props.isTruncated || props.truncated || false;
 
-  return {
-    color: `var(--cocoso-colors-${color[0]}-${color[1]})`,
-    cursor: 'pointer',
-    fontSize: fontSize
-      ? fontSizes[fontSize as keyof typeof fontSizes]
-      : fontSizes.md,
-    overflow: truncated ? 'hidden' : 'visible',
-    textOverflow: truncated ? 'ellipsis' : 'clip',
-    whiteSpace: truncated ? 'nowrap' : 'normal',
-    ':hover': {
-      textDecoration: 'underline',
-    },
-  };
-});
+  return (
+    <LinkStyled
+      css={{
+        color: `var(--cocoso-colors-${color[0]}-${color[1]})`,
+        fontSize: fontSize
+          ? fontSizes[fontSize as keyof typeof fontSizes]
+          : fontSizes.md,
+        overflow: truncated ? 'hidden' : 'visible',
+        textOverflow: truncated ? 'ellipsis' : 'clip',
+        whiteSpace: truncated ? 'nowrap' : 'normal',
+      }}
+    />
+  );
+};

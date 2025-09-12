@@ -16,13 +16,13 @@ function PopupHeader({ subTitle, tags, title }) {
     lineHeight: 1,
     textAlign: 'center',
     textShadow: '1px 1px 1px #fff',
+    margin: '0.5rem',
   };
 
   return (
     <Box mb="4">
       <Heading
         as="h1"
-        mb="2"
         css={{
           ...styles,
           fontFamily,

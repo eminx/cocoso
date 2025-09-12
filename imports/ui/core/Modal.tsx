@@ -126,7 +126,7 @@ const BaseOverlay = (props: {
   children?: React.ReactNode;
   onClick?: (event: React.MouseEvent) => void;
 }) => {
-  const { centered, visible, children, onClick } = props;
+  const { centered, visible, children, onClick, ...rest } = props;
   return (
     <BaseOverlayStyled
       css={{
@@ -140,6 +140,7 @@ const BaseOverlay = (props: {
         }),
       }}
       onClick={onClick}
+      {...rest}
     >
       {children}
     </BaseOverlayStyled>

@@ -1,18 +1,26 @@
 import React from 'react';
-import { styled } from 'restyle';
+import { styled } from '@stitches/react';
+
 import { Flex, Text } from '/imports/ui/core';
 
 // Styled components
-const RadioContainer = styled('label', (props) => ({
+const RadioContainerStyled = styled('label', {
   display: 'inline-flex',
   alignItems: 'center',
-  cursor: props.disabled ? 'not-allowed' : 'pointer',
-  opacity: props.disabled ? 0.6 : 1,
   position: 'relative',
   marginRight: '1.5rem',
   fontSize: '1rem',
   userSelect: 'none',
-}));
+});
+
+const RadioContainer = (props) => (
+  <RadioContainerStyled
+    css={{
+      cursor: props.disabled ? 'not-allowed' : 'pointer',
+      opacity: props.disabled ? 0.6 : 1,
+    }}
+  />
+);
 
 const HiddenInput = styled('input', {
   position: 'absolute',
@@ -23,11 +31,7 @@ const HiddenInput = styled('input', {
   padding: 0,
 });
 
-const RadioCircle = styled('span', (props) => ({
-  background: props.checked ? 'var(--cocoso-colors-theme-100)' : '#fff',
-  border: `2px solid ${
-    props.checked ? 'var(--cocoso-colors-theme-500)' : '#b3b3b3'
-  }`,
+const RadioCircleStyled = styled('span', {
   borderRadius: '50%',
   boxSizing: 'border-box',
   display: 'inline-block',
@@ -35,15 +39,25 @@ const RadioCircle = styled('span', (props) => ({
   marginRight: '0.5em',
   position: 'relative',
   transition: 'border-color 0.2s, box-shadow 0.2s',
-  ...(props.focused && {
+  width: '1.25em',
+  '&:focus': {
     boxShadow: '0 0 0 2px var(--cocoso-colors-theme-200)',
     borderColor: 'var(--cocoso-colors-theme-500)',
-  }),
-  width: '1.25em',
-}));
+  },
+});
 
-const RadioDot = styled('span', (props) => ({
-  display: props.checked ? 'block' : 'none',
+const RadioCircle = (props) => (
+  <RadioCircleStyled
+    css={{
+      background: props.checked ? 'var(--cocoso-colors-theme-100)' : '#fff',
+      border: `2px solid ${
+        props.checked ? 'var(--cocoso-colors-theme-500)' : '#b3b3b3'
+      }`,
+    }}
+  />
+);
+
+const RadioDotStyled = styled('span', {
   borderRadius: '50%',
   background: 'var(--cocoso-colors-theme-500)',
   height: '0.6em',
@@ -52,7 +66,15 @@ const RadioDot = styled('span', (props) => ({
   top: '50%',
   transform: 'translate(-50%, -50%)',
   width: '0.6em',
-}));
+});
+
+const RadioDot = (props) => (
+  <RadioDotStyled
+    css={{
+      display: props.checked ? 'block' : 'none',
+    }}
+  />
+);
 
 export function Radio({
   isChecked,

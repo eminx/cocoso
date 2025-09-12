@@ -1,6 +1,6 @@
 import React, { useId, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { styled } from 'restyle';
+import { styled } from '@stitches/react';
 
 import { Badge, Flex, Text } from '/imports/ui/core';
 
@@ -31,19 +31,23 @@ const TabsContainer = styled('div', {
   top: '1px',
 });
 
-const TabsList = styled('div', (props: TabsListProps) => ({
+const TabsListStyled = styled('div', {
   display: 'flex',
-  alignItems: props.alignItems || 'center',
   flexShrink: '0',
-  justifyContent: props.justify || 'flex-start',
   flexDirection: 'row',
   // borderBottom: '1px solid #e2e8f0',
-}));
+});
 
-const TabItem = styled('div', (props: TabItemProps) => ({
-  borderBottom: `2px solid ${
-    props.isSelected ? 'var(--cocoso-colors-theme-500)' : 'transparent'
-  }`,
+const TabsList = (props: TabsListProps) => (
+  <TabsListStyled
+    css={{
+      alignItems: props.alignItems || 'center',
+      justifyContent: props.justify || 'flex-start',
+    }}
+  />
+);
+
+const TabItemStyled = styled('div', {
   color: 'var(--cocoso-colors-gray-700)',
   cursor: 'pointer',
   display: 'inline-flex',
@@ -51,17 +55,27 @@ const TabItem = styled('div', (props: TabItemProps) => ({
   paddingInline: '1rem',
   paddingBlock: '0.5rem',
   transition: 'border-color 0.2s, color 0.2s',
-  ':hover': {
-    borderBottomColor: props.isSelected
-      ? 'var(--cocoso-colors-theme-500)'
-      : 'var(--cocoso-colors-theme-200)',
-    color: 'var(--cocoso-colors-theme-500)',
-  },
-  ':focus': {
+  '&:focus': {
     outline: 'none',
     boxShadow: '0 0 0 2px var(--cocoso-colors-theme-200)',
   },
-}));
+});
+
+const TabItem = (props: TabItemProps) => (
+  <TabItemStyled
+    css={{
+      borderBottom: `2px solid ${
+        props.isSelected ? 'var(--cocoso-colors-theme-500)' : 'transparent'
+      }`,
+      '&:hover': {
+        borderBottomColor: props.isSelected
+          ? 'var(--cocoso-colors-theme-500)'
+          : 'var(--cocoso-colors-theme-200)',
+        color: 'var(--cocoso-colors-theme-500)',
+      },
+    }}
+  />
+);
 
 const TabLink = styled(Link, {
   color: 'inherit',

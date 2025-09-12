@@ -73,7 +73,7 @@ export default function WorksHybrid({ works, Host }) {
       />
 
       <Center px="4">
-        <Flex justify="center" wrap="wrap">
+        <Flex gap="2" justify="center" wrap="wrap">
           <Tag
             key="all"
             filterColor="var(--cocoso-colors-gray-800)"

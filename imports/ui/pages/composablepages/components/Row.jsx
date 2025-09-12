@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { styled } from 'restyle';
+import { styled } from '@stitches/react';
 import { Trans } from 'react-i18next';
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
@@ -163,7 +163,7 @@ export function Column({ column, columnIndex, rowIndex }) {
   );
 }
 
-const GridRow = styled('div', (props) => ({
+const GridRowStyled = styled('div', {
   backgroundColor: 'var(--cocoso-colors-bluegray-300)',
   borderRadius: '0.5rem',
   display: 'grid',
@@ -171,8 +171,15 @@ const GridRow = styled('div', (props) => ({
   gap: '0.5rem',
   padding: '0.5rem',
   width: '100%',
-  gridTemplateColumns: props.gridTemplateColumns,
-}));
+});
+
+const GridRow = (props) => (
+  <GridRowStyled
+    css={{
+      gridTemplateColumns: props.gridTemplateColumns,
+    }}
+  />
+);
 
 export default function Row({ row, rowIndex }) {
   const { columns, gridType } = row;

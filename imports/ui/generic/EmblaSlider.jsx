@@ -3,7 +3,6 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Fade from 'embla-carousel-fade';
 import FsLightbox from 'fslightbox-react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { styled } from 'restyle';
 
 import { Flex, Center, Image } from '/imports/ui/core';
 
@@ -219,10 +218,7 @@ export default function EmblaSlider({
         justify="center"
         css={{ alignItems: 'center', padding: '8px' }}
       >
-        <button
-          className="embla__prev embla__button"
-          onClick={scrollPrev}
-        >
+        <button className="embla__prev embla__button" onClick={scrollPrev}>
           <svg className="embla__button__svg" viewBox="0 0 532 532">
             <path
               fill="currentColor"
@@ -231,15 +227,9 @@ export default function EmblaSlider({
           </svg>
         </button>
 
-        <Dots
-          currentSlideIndex={state.currentSlideIndex}
-          images={images}
-        />
+        <Dots currentSlideIndex={state.currentSlideIndex} images={images} />
 
-        <button
-          className="embla__next embla__button"
-          onClick={scrollNext}
-        >
+        <button className="embla__next embla__button" onClick={scrollNext}>
           <svg className="embla__button__svg" viewBox="0 0 532 532">
             <path
               fill="currentColor"
