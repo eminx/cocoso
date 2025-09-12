@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from 'restyle';
+import { styled } from '@stitches/react';
 
 const badgeBase = {
   display: 'inline-flex',
@@ -63,19 +63,26 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   colorScheme?: keyof typeof colorSchemes;
   variant?: 'solid' | 'subtle' | 'outline';
   children?: React.ReactNode;
+  ref?: any;
   style?: React.CSSProperties;
 }
 
-const StyledBadge = styled('span', (props: BadgeProps) => {
+const StyledBadgeStyled = styled('span', {});
+const StyledBadge = (props: BadgeProps) => {
   const { size = 'md', colorScheme = 'gray', variant = 'solid', style } = props;
   const colorSet = colorSchemes[colorScheme] || colorSchemes.red;
-  return {
-    ...badgeBase,
-    ...(sizeStyles[size] || sizeStyles.md),
-    ...(colorSet[variant] || colorSet.solid),
-    ...style,
-  };
-});
+
+  return (
+    <StyledBadgeStyled
+      css={{
+        ...badgeBase,
+        ...(sizeStyles[size] || sizeStyles.md),
+        ...(colorSet[variant] || colorSet.solid),
+        ...style,
+      }}
+    />
+  );
+};
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ children, ...rest }, ref) => (

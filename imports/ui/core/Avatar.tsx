@@ -1,6 +1,7 @@
 import React from 'react';
-import { styled } from 'restyle';
-import { HStack } from './Box';
+import { styled } from '@stitches/react';
+
+import { Flex } from './Box';
 
 // Avatar props interface
 export interface AvatarProps {
@@ -36,18 +37,28 @@ const fontSizeMap = {
 };
 
 // Styled wrapper for positioning badge
-const AvatarWrapper = styled('div', (props: AvatarProps) => ({
+const AvatarWrapperStyled = styled('div', {
   position: 'relative',
   display: 'inline-block',
-  width: sizeMap[props.size || 'md'],
-  height: sizeMap[props.size || 'md'],
-}));
+});
+
+const AvatarWrapper = (props: AvatarProps) => {
+  const { size, ...rest } = props;
+  return (
+    <AvatarWrapperStyled
+      css={{
+        width: sizeMap[size || 'md'],
+        height: sizeMap[size || 'md'],
+      }}
+      {...rest}
+    />
+  );
+};
 
 // Main avatar container
-const AvatarContainer = styled('div', (props: AvatarProps) => ({
+const AvatarContainerStyled = styled('div', {
   width: '100%',
   height: '100%',
-  borderRadius: props.borderRadius || 'var(--cocoso-border-radius)',
   border: '2px solid white',
   overflow: 'hidden',
   backgroundColor: '#e2e8f0',
@@ -55,7 +66,16 @@ const AvatarContainer = styled('div', (props: AvatarProps) => ({
   alignItems: 'center',
   justifyContent: 'center',
   position: 'relative',
-}));
+});
+
+const AvatarContainer = ({ borderRadius, ...rest }: AvatarProps) => (
+  <AvatarContainerStyled
+    css={{
+      borderRadius: borderRadius || 'var(--cocoso-border-radius)',
+    }}
+    {...rest}
+  />
+);
 
 // Avatar image
 const AvatarImage = styled('img', {
@@ -65,13 +85,21 @@ const AvatarImage = styled('img', {
 });
 
 // Avatar initials (fallback when no image)
-const AvatarInitials = styled('div', (props: AvatarProps) => ({
+const AvatarInitialsStyled = styled('div', {
   color: '#4A5568',
-  fontSize: fontSizeMap[props.size || 'md'],
   fontWeight: 'bold',
   textTransform: 'uppercase',
   userSelect: 'none',
-}));
+});
+
+const AvatarInitials = ({ size, ...rest }: AvatarProps) => (
+  <AvatarInitialsStyled
+    css={{
+      fontSize: fontSizeMap[size || 'md'],
+    }}
+    {...rest}
+  />
+);
 
 // Badge container
 const BadgeContainer = styled('div', {
@@ -112,7 +140,7 @@ const Avatar: React.FC<AvatarProps> = ({
 };
 
 export const AvatarGroup = (props: any) => (
-  <HStack
+  <Flex
     gap={props.spacing || '-2rem'}
     css={{ paddingRight: '1rem' }}
     {...props}

@@ -1,18 +1,27 @@
 import React from 'react';
-import { styled } from 'restyle';
+import { styled } from '@stitches/react';
+
 import { Box, Flex, Text } from '/imports/ui/core';
 
 // Styled components
-const CheckboxContainer = styled('label', (props) => ({
+const CheckboxContainerStyled = styled('label', {
   display: 'inline-flex',
   alignItems: 'center',
-  cursor: props.disabled ? 'not-allowed' : 'pointer',
-  opacity: props.disabled ? 0.6 : 1,
   position: 'relative',
   fontSize: '1rem',
   userSelect: 'none',
   gap: '0.5rem',
-}));
+});
+
+const CheckboxContainer = ({ disabled, ...rest }) => (
+  <CheckboxContainerStyled
+    css={{
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      opacity: disabled ? 0.6 : 1,
+    }}
+    {...rest}
+  />
+);
 
 const HiddenInput = styled('input', {
   position: 'absolute',
@@ -23,43 +32,55 @@ const HiddenInput = styled('input', {
   padding: 0,
 });
 
-const CheckboxBox = styled('span', (props) => ({
-  background: props.checked ? 'var(--cocoso-colors-theme-500)' : '#fff',
-  border: `2px solid ${
-    props.checked ? 'var(--cocoso-colors-theme-500)' : '#b3b3b3'
-  }`,
+const CheckboxBoxStyled = styled('span', {
   borderRadius: '0.25rem',
   boxSizing: 'border-box',
   display: 'inline-block',
-  height:
-    props.size === 'sm' ? '1rem' : props.size === 'lg' ? '1.5rem' : '1.25rem',
-  width:
-    props.size === 'sm' ? '1rem' : props.size === 'lg' ? '1.5rem' : '1.25rem',
   position: 'relative',
   transition: 'all 0.2s ease-in-out',
-  ...(props.focused && {
+  '&:focus': {
     boxShadow: '0 0 0 2px var(--cocoso-colors-theme-200)',
     borderColor: 'var(--cocoso-colors-theme-500)',
-  }),
-  ...(props.indeterminate && {
-    background: 'var(--cocoso-colors-theme-500)',
-    borderColor: 'var(--cocoso-colors-theme-500)',
-  }),
-}));
+  },
+});
 
-const CheckboxIcon = styled('svg', (props) => ({
-  display: props.checked || props.indeterminate ? 'block' : 'none',
+const CheckboxBox = ({ checked, indeterminate, size, ...rest }) => (
+  <CheckboxBoxStyled
+    css={{
+      background: checked ? 'var(--cocoso-colors-theme-500)' : '#fff',
+      border: `2px solid ${
+        checked ? 'var(--cocoso-colors-theme-500)' : '#b3b3b3'
+      }`,
+      height: size === 'sm' ? '1rem' : size === 'lg' ? '1.5rem' : '1.25rem',
+      width: size === 'sm' ? '1rem' : size === 'lg' ? '1.5rem' : '1.25rem',
+      ...(indeterminate && {
+        background: 'var(--cocoso-colors-theme-500)',
+        borderColor: 'var(--cocoso-colors-theme-500)',
+      }),
+    }}
+    {...rest}
+  />
+);
+
+const CheckboxIconStyled = styled('svg', {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width:
-    props.size === 'sm' ? '0.6rem' : props.size === 'lg' ? '0.9rem' : '0.75rem',
-  height:
-    props.size === 'sm' ? '0.6rem' : props.size === 'lg' ? '0.9rem' : '0.75rem',
   color: 'white',
   fill: 'currentColor',
-}));
+});
+
+const CheckboxIcon = ({ checked, indeterminate, size, ...rest }) => (
+  <CheckboxIconStyled
+    css={{
+      display: checked || indeterminate ? 'block' : 'none',
+      width: size === 'sm' ? '0.6rem' : size === 'lg' ? '0.9rem' : '0.75rem',
+      height: size === 'sm' ? '0.6rem' : size === 'lg' ? '0.9rem' : '0.75rem',
+    }}
+    {...rest}
+  />
+);
 
 // Checkmark SVG for checked state
 const CheckIcon = ({ size }) => (

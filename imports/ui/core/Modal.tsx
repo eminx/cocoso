@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { styled } from 'restyle';
+import { styled } from '@stitches/react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, Button } from '/imports/ui/core';
@@ -46,12 +46,25 @@ interface OverlayProps {
 }
 
 // Shared styled components
-const Body = styled('div', (props: any) => ({
+const BodyStyled = styled('div', {
   flex: '1 1 auto',
   minHeight: 0,
   overflowY: 'auto',
-  padding: props.noPadding ? '0px' : '1.5rem',
-}));
+});
+
+const Body = (props: any) => {
+  const { noPadding, children, ...rest } = props;
+  return (
+    <BodyStyled
+      css={{
+        padding: noPadding ? '0px' : '1.5rem',
+      }}
+      {...rest}
+    >
+      {children}
+    </BodyStyled>
+  );
+};
 
 const CloseButton = styled('button', {
   background: 'transparent',
@@ -95,28 +108,43 @@ const Title = styled('h2', {
 });
 
 // Overlay component
-const BaseOverlay = styled(
-  'div',
-  (props: { visible?: boolean; centered?: boolean }) => ({
-    backdropFilter: 'brightness(0.8)',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    bottom: 0,
-    left: 0,
-    opacity: props.visible ? 1 : 0,
-    position: 'fixed',
-    right: 0,
-    top: 0,
-    transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out',
-    visibility: props.visible ? 'visible' : 'hidden',
-    zIndex: 1405,
-    ...(props.centered && {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-      padding: '1rem',
-    }),
-  })
-);
+const BaseOverlayStyled = styled('div', {
+  backdropFilter: 'brightness(0.8)',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  bottom: 0,
+  left: 0,
+  position: 'fixed',
+  right: 0,
+  top: 0,
+  transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out',
+  zIndex: 1405,
+});
+
+const BaseOverlay = (props: {
+  visible?: boolean;
+  centered?: boolean;
+  children?: React.ReactNode;
+  onClick?: (event: React.MouseEvent) => void;
+}) => {
+  const { centered, visible, children, onClick } = props;
+  return (
+    <BaseOverlayStyled
+      css={{
+        opacity: visible ? 1 : 0,
+        visibility: visible ? 'visible' : 'hidden',
+        ...(centered && {
+          alignItems: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '1rem',
+        }),
+      }}
+      onClick={onClick}
+    >
+      {children}
+    </BaseOverlayStyled>
+  );
+};
 
 export const Overlay: React.FC<OverlayProps> = ({
   centered = false,
@@ -132,122 +160,162 @@ export const Overlay: React.FC<OverlayProps> = ({
 };
 
 // Modal content styling
-const ModalContent = styled(
-  'div',
-  (props: { size?: string; visible?: boolean }) => ({
-    backgroundColor: 'var(--cocoso-colors-gray-50)',
-    borderRadius: '0.5rem',
-    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-    display: 'flex',
-    flexDirection: 'column',
-    maxHeight: '90vh',
-    maxWidth:
-      props.size === 'sm'
-        ? '24rem'
-        : props.size === 'lg'
-        ? '32rem'
-        : props.size === 'xl'
-        ? '36rem'
-        : props.size === '2xl'
-        ? '42rem'
-        : props.size === '3xl'
-        ? '50rem'
-        : props.size === 'full'
-        ? '100vw'
-        : '28rem',
-    minHeight: '50vh',
-    opacity: props.visible ? 1 : 0,
-    overflow: 'hidden',
-    position: 'relative',
-    transform: props.visible
-      ? 'scale(1) translateY(0)'
-      : 'scale(0.95) translateY(20px)',
-    transition: 'all 0.3s ease-in-out',
-    width: '100%',
-  })
-);
+const ModalContent = styled('div', {
+  backgroundColor: 'var(--cocoso-colors-gray-50)',
+  borderRadius: '0.5rem',
+  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: '90vh',
+  minHeight: '50vh',
+  overflow: 'hidden',
+  position: 'relative',
+  transition: 'all 0.3s ease-in-out',
+  width: '100%',
+  variants: {
+    size: {
+      sm: { maxWidth: '24rem' },
+      md: { maxWidth: '28rem' },
+      lg: { maxWidth: '32rem' },
+      xl: { maxWidth: '36rem' },
+      '2xl': { maxWidth: '42rem' },
+      '3xl': { maxWidth: '50rem' },
+      full: { maxWidth: '100vw' },
+    },
+    visible: {
+      true: {
+        opacity: 1,
+        transform: 'scale(1) translateY(0)',
+      },
+      false: {
+        opacity: 0,
+        transform: 'scale(0.95) translateY(20px)',
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    visible: false,
+  },
+});
 
 // Drawer content styling
-const DrawerContent = styled(
-  'div',
-  (props: {
-    position?: string;
-    size?: string;
-    styles?: any;
-    visible?: boolean;
-  }) => {
-    const maxHeight = props.size === 'full' ? '100vh' : '90vh';
-    const maxSize = props.size === 'full' ? '100vw' : '90vw';
-    const size =
-      props.size === 'sm'
-        ? '20rem'
-        : props.size === 'lg'
-        ? '28rem'
-        : props.size === 'xl'
-        ? '32rem'
-        : props.size === 'full'
-        ? '100vw'
-        : '24rem';
-
-    const base = {
-      backgroundColor: 'var(--cocoso-colors-gray-50)',
-      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-      display: 'flex',
-      flexDirection: 'column' as const,
-      overflow: 'hidden',
-      position: 'fixed' as const,
-      transition: 'all 0.3s ease-in-out',
-    };
-
-    if (props.position === 'bottom') {
-      return {
-        ...base,
+const DrawerContent = styled('div', {
+  backgroundColor: 'var(--cocoso-colors-gray-50)',
+  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+  display: 'flex',
+  flexDirection: 'column',
+  overflow: 'hidden',
+  position: 'fixed',
+  transition: 'all 0.3s ease-in-out',
+  variants: {
+    size: {
+      sm: {
+        width: '20rem',
+        height: '20rem',
+        maxWidth: '90vw',
+        maxHeight: '90vh',
+      },
+      md: {
+        width: '24rem',
+        height: '24rem',
+        maxWidth: '90vw',
+        maxHeight: '90vh',
+      },
+      lg: {
+        width: '28rem',
+        height: '28rem',
+        maxWidth: '90vw',
+        maxHeight: '90vh',
+      },
+      xl: {
+        width: '32rem',
+        height: '32rem',
+        maxWidth: '90vw',
+        maxHeight: '90vh',
+      },
+      full: {
+        width: '100vw',
+        height: '100vh',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+      },
+    },
+    visible: {
+      true: {},
+      false: {},
+    },
+    position: {
+      bottom: {},
+      left: {},
+      right: {},
+      top: {},
+    },
+  },
+  compoundVariants: [
+    {
+      position: 'bottom',
+      css: {
         bottom: 0,
-        height: size,
         left: 0,
-        maxHeight: maxHeight,
         right: 0,
-        transform: props.visible ? 'translateY(0)' : 'translateY(100%)',
-      };
-    }
-
-    if (props.position === 'left') {
-      return {
-        ...base,
+        transform: 'translateY(100%)',
+      },
+    },
+    {
+      position: 'bottom',
+      visible: 'true',
+      css: { transform: 'translateY(0)' },
+    },
+    {
+      position: 'top',
+      css: {
+        left: 0,
+        right: 0,
+        top: 0,
+        transform: 'translateY(-100%)',
+      },
+    },
+    {
+      position: 'top',
+      visible: 'true',
+      css: { transform: 'translateY(0)' },
+    },
+    {
+      position: 'left',
+      css: {
         bottom: 0,
         left: 0,
-        maxWidth: maxSize,
         top: 0,
-        transform: props.visible ? 'translateX(0)' : 'translateX(-100%)',
-        width: size,
-      };
-    }
-
-    if (props.position === 'top') {
-      return {
-        ...base,
-        height: size,
-        left: 0,
-        maxHeight: maxHeight,
+        transform: 'translateX(-100%)',
+      },
+    },
+    {
+      position: 'left',
+      visible: 'true',
+      css: { transform: 'translateX(0)' },
+    },
+    {
+      position: 'right',
+      css: {
+        bottom: 0,
         right: 0,
         top: 0,
-        transform: props.visible ? 'translateY(0)' : 'translateY(-100%)',
-      };
-    }
-
-    // Default to right
-    return {
-      ...base,
-      bottom: 0,
-      maxWidth: maxSize,
-      right: 0,
-      top: 0,
-      transform: props.visible ? 'translateX(0)' : 'translateX(100%)',
-      width: size,
-      ...props.styles,
-    };
-  }
-);
+        transform: 'translateX(100%)',
+      },
+    },
+    {
+      position: 'right',
+      visible: 'true',
+      css: { transform: 'translateX(0)' },
+    },
+  ],
+  defaultVariants: {
+    size: 'md',
+    position: 'right',
+    visible: false,
+  },
+});
 
 // Close icon component
 const CloseIcon: React.FC = () => (
@@ -520,7 +588,7 @@ export const Drawer: React.FC<DrawerProps> = ({
       <DrawerContent
         position={position}
         size={size}
-        styles={styles}
+        css={styles}
         visible={open}
         onClick={handleDrawerContentClick}
       >
