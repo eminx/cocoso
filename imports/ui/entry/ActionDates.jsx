@@ -2,6 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 
 import { Box, Flex } from '../core';
+import { ThumbDate } from '../listing/SexyThumb';
 import { DateJust } from './FancyDate';
 
 const today = dayjs().format('YYYY-MM-DD');
@@ -31,18 +32,15 @@ export default function ActionDates({
   }
 
   return (
-    <Flex justify="center" wrap="wrap">
+    <Flex justify="center" gap="2" wrap="wrap">
       {dates.map(
         (occurrence, occurrenceIndex) =>
           occurrence && (
             <Flex
               key={occurrence.startDate + occurrence.startTime}
-              mx="2"
-              ml={occurrenceIndex === 0 ? '0' : '2'}
-              css={{
-                color: 'var(--cocoso-colors-gray-700)',
-                textShadow: '1px 1px 1px #fff',
-              }}
+              pl={occurrenceIndex === 0 ? '0' : '2'}
+              pr="2"
+              py="1"
             >
               <Box>
                 <DateJust time={showTime ? occurrence.startTime : null}>
@@ -51,7 +49,9 @@ export default function ActionDates({
               </Box>
               {occurrence.startDate !== occurrence.endDate && (
                 <Flex>
-                  {'-'}
+                  <span style={{ margin: '0 4px', fontSize: '200%' }}>
+                    {'-'}
+                  </span>
                   <DateJust time={showTime ? occurrence.endTime : null}>
                     {occurrence.endDate}
                   </DateJust>

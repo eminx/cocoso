@@ -58,7 +58,7 @@ export const Flex = (props: any) => (
       display: 'flex',
       gap: props.gap || props.spacing || '0.5rem',
       flexDirection: props.direction || props.flexDirection || 'row',
-      flexWrap: props.wrap || props.flexWrap || 'nowrap',
+      flexWrap: props.wrap || 'nowrap',
       justifyContent: props.justify || props.justifyContent || 'flex-start',
       ...getPropStyles(props),
     }}
@@ -70,13 +70,13 @@ export const FormControl = (props: any) => <Flex {...props} />;
 
 export const FormLabel = (props: any) => (
   <BaseLabel
+    {...props}
     css={{
       display: 'block',
       fontSize: '0.875rem',
       fontWeight: 'bold',
       ...getPropStyles(props),
     }}
-    {...props}
   />
 );
 
@@ -89,6 +89,7 @@ interface GridProps {
 
 export const Grid = (props: GridProps & any) => (
   <BaseDiv
+    {...props}
     css={{
       display: 'grid',
       gridTemplateColumns:
@@ -99,7 +100,6 @@ export const Grid = (props: GridProps & any) => (
       width: '100%',
       ...getPropStyles(props),
     }}
-    {...props}
   />
 );
 
@@ -116,6 +116,7 @@ export const Divider = (props: DividerProps & any) => {
 
   return (
     <BaseHr
+      {...props}
       css={{
         border: 'none',
         backgroundColor: props.color || 'var(--cocoso-colors-gray-300)',
@@ -127,22 +128,21 @@ export const Divider = (props: DividerProps & any) => {
         minHeight: vertical ? '1rem' : 'auto',
         alignSelf: vertical ? 'stretch' : 'auto',
       }}
-      {...props}
     />
   );
 };
 
 export const List = (props: any) => (
   <BaseUl
-    css={{ listStyleType: 'none', padding: 0, ...getPropStyles(props) }}
     {...props}
+    css={{ listStyleType: 'none', padding: 0, ...getPropStyles(props) }}
   />
 );
 
 export const ListItem = (props: any) => (
   <BaseLi
-    css={{ marginBottom: '0.5rem', ...getPropStyles(props) }}
     {...props}
+    css={{ marginBottom: '0.5rem', ...getPropStyles(props) }}
   />
 );
 

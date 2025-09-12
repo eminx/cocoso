@@ -9,7 +9,7 @@ import {
   Button,
   Center,
   Divider,
-  HStack,
+  Flex,
   Image,
   Modal,
 } from '/imports/ui/core';
@@ -39,15 +39,15 @@ export default function FederationIconMenu() {
     }
   };
 
+  const isPortalHost = currentHost?.isPortalHost;
+
   if (!platform || !platform.isFederationLayout) {
     return null;
   }
 
-  const isPortalHost = currentHost?.isPortalHost;
-
   return (
     <>
-      <HStack
+      <Flex
         align="center"
         className="federation-logo"
         mr="1"
@@ -106,7 +106,7 @@ export default function FederationIconMenu() {
             </Button>
           </Link>
         )}
-      </HStack>
+      </Flex>
 
       <Modal
         confirmText={tc('modals.toPortalApp')}

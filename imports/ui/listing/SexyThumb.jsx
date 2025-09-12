@@ -31,7 +31,7 @@ const imageStyle = {
   borderRadius: 'var(--cocoso-border-radius)',
 };
 
-function ThumbDate({ occurrence }) {
+export function ThumbDate({ occurrence }) {
   if (!occurrence) {
     return null;
   }
@@ -43,7 +43,6 @@ function ThumbDate({ occurrence }) {
       key={occurrence.startDate + occurrence.startTime}
       align="center"
       color={isPast ? 'gray.400' : 'white'}
-      gap="0"
     >
       <DateJust>{occurrence.startDate}</DateJust>
       {occurrence.startDate !== occurrence.endDate && (
@@ -129,15 +128,15 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
           </Box>
 
           {dates && (
-            <div
-              style={{
-                alignItems: 'center',
-                display: 'flex',
-                flexWrap: 'wrap',
-              }}
-            >
+            <div>
               {!showPast && futureDates && (
-                <HStack align="center" color="theme.50" mb="4">
+                <Flex
+                  align="center"
+                  color="theme.50"
+                  gap="2"
+                  mb="4"
+                  wrap="wrap"
+                >
                   {futureDates.slice(0, 3).map((occurrence) => (
                     <ThumbDate
                       key={occurrence?.startDate + occurrence?.startTime}
@@ -150,10 +149,10 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
                       <span>{remainingFuture}</span>
                     </span>
                   )}
-                </HStack>
+                </Flex>
               )}
               {showPast && (
-                <HStack color="gray.400" mb="4">
+                <Flex color="gray.400" mb="4" wrap="wrap">
                   {pastDates.slice(0, 1).map((occurrence) => (
                     <ThumbDate
                       key={occurrence?.startDate + occurrence?.startTime}
@@ -166,7 +165,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
                       <span>{remainingPast}</span>
                     </span>
                   )}
-                </HStack>
+                </Flex>
               )}
             </div>
           )}
