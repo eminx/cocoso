@@ -52,7 +52,9 @@ const BodyStyled = styled('div', {
   overflowY: 'auto',
 });
 
-const Body = (props: any) => {
+const Body = (
+  props: React.HTMLAttributes<HTMLDivElement> & { noPadding?: boolean }
+) => {
   const { noPadding, children, ...rest } = props;
   return (
     <BodyStyled
@@ -120,12 +122,13 @@ const BaseOverlayStyled = styled('div', {
   zIndex: 1405,
 });
 
-const BaseOverlay = (props: {
-  visible?: boolean;
-  centered?: boolean;
-  children?: React.ReactNode;
-  onClick?: (event: React.MouseEvent) => void;
-}) => {
+const BaseOverlay = (
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    visible?: boolean;
+    centered?: boolean;
+    children?: React.ReactNode;
+  }
+) => {
   const { centered, visible, children, onClick, ...rest } = props;
   return (
     <BaseOverlayStyled
