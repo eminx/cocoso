@@ -111,8 +111,8 @@ export default function FederationIconMenu() {
       <Modal
         confirmText={tc('modals.toPortalApp')}
         hideFooter={isPortalHost}
+        id="federation-icon-menu"
         open={infoOpen}
-        // scrollBehavior="inside"
         size="2xl"
         title={platform?.name}
         onConfirm={() =>

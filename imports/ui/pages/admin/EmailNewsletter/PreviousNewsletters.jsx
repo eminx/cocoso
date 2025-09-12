@@ -1,11 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Link,
-  Route,
-  Routes,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -59,21 +53,11 @@ export default function PreviousNewsletters() {
       >
         {tc('labels.newsletters')}
       </Heading>
-      <NiceList
-        actionsDisabled
-        list={emails}
-        keySelector="_id"
-        spacing="0"
-      >
+      <NiceList actionsDisabled list={emails} keySelector="_id" spacing="0">
         {(email) => (
           <Box>
             <Flex alignItems="flex-start" mb="4">
-              <Image
-                fit="contain"
-                mr="4"
-                src={email.imageUrl}
-                w="100px"
-              />
+              <Image fit="contain" mr="4" src={email.imageUrl} w="100px" />
               <Box>
                 <Link to={`/newsletters/${email._id}`}>
                   <CLink as="span">
@@ -97,10 +81,7 @@ export default function PreviousNewsletters() {
         <Route
           path="/:emailId"
           element={
-            <NewsletterEmail
-              currentHost={currentHost}
-              emails={emails}
-            />
+            <NewsletterEmail currentHost={currentHost} emails={emails} />
           }
         />
       </Routes>
@@ -123,6 +104,7 @@ function NewsletterEmail({ currentHost, emails }) {
     <Modal
       hideFooter
       hideHeader
+      id="previous-newsletters-item"
       open
       size="2xl"
       title={email.subject}
@@ -130,12 +112,7 @@ function NewsletterEmail({ currentHost, emails }) {
     >
       <Center p="8">
         <Box>
-          <Text
-            color="gray.600"
-            fontSize="sm"
-            mb="4"
-            textAlign="center"
-          >
+          <Text color="gray.600" fontSize="sm" mb="4" textAlign="center">
             {email.creationDate.toString()}
           </Text>
           <EmailPreview

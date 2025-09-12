@@ -431,6 +431,7 @@ export default function EditProfile() {
         </Box>
 
         <Modal
+          id="edit-profile-leave-confirm"
           open={isLeaveModalOn}
           title={t('leave.title')}
           confirmText={t('leave.label')}
@@ -445,6 +446,7 @@ export default function EditProfile() {
         </Modal>
 
         <Modal
+          id="edit-profile-delete-account-confirm"
           open={isDeleteModalOn}
           title={t('delete.title')}
           confirmText={t('delete.label')}

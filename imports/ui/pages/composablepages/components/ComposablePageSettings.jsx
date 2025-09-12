@@ -97,6 +97,7 @@ export default function ComposablePageSettings({ getComposablePageTitles }) {
 
       <Modal
         confirmButtonProps={{ loading: updating }}
+        id="composable-page-settings"
         open={state.modalOpen}
         title={<Trans i18nKey="admin:composable.settings.title" />}
         onConfirm={confirmChange}

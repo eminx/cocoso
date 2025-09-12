@@ -170,6 +170,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
       <Modal
         confirmText={tc('actions.confirmRead')}
         cancelText={tc('actions.close')}
+        id="terms-privacy"
         open={modalOpen}
         scrollBehavior="inside"
         size="full"

@@ -69,6 +69,7 @@ export default function DeleteEntryHandler({ item, context }) {
         colorScheme: 'red',
       }}
       confirmText={tc('modals.confirm.delete.yes')}
+      id="delete-entry-handler"
       title={tc('modals.confirm.delete.title')}
       open={isOpen}
       onConfirm={() => deleteEntry()}

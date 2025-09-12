@@ -3,10 +3,10 @@ import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { Box, Center, Flex } from '/imports/ui/core';
+
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
-import InfiniteScroller from './InfiniteScroller';
-import NewGridThumb from './NewGridThumb';
+import VirtualGridLister from './VirtualGridLister';
 import Tag from '../generic/Tag';
 import { getCategoriesAssignedToWorks } from '../utils/shared';
 
@@ -52,6 +52,17 @@ export default function WorksHybrid({ works, Host }) {
   const heading = worksInMenu?.label;
   const url = `${Host?.host}/${worksInMenu?.name}`;
 
+  const getAvatar = (work) =>
+    work.showAvatar && {
+      name: work.authorUsername,
+      url: work.authorAvatar,
+    };
+  const getColor = (work) =>
+    categories?.find((cat) => cat?.label === work.category?.label)?.color;
+  const getImageUrl = (work) => work?.images && work.images[0];
+  const getTag = (work) => work.category?.label;
+  const getTitle = (work) => work.title;
+
   return (
     <>
       <PageHeading
@@ -84,7 +95,23 @@ export default function WorksHybrid({ works, Host }) {
         </Flex>
       </Center>
 
-      <Box px="2" pb="8">
+      <Center>
+        <VirtualGridLister
+          cellProps={{
+            Host,
+            isMasonry: true,
+            getAvatar,
+            getColor,
+            getImageUrl,
+            getTag,
+            getTitle,
+            setModalItem,
+          }}
+          items={works}
+        />
+      </Center>
+
+      {/* <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={worksWithCategoryColors}>
           {(work, index) => (
             <Box
@@ -114,15 +141,15 @@ export default function WorksHybrid({ works, Host }) {
             </Box>
           )}
         </InfiniteScroller>
-
-        {modalItem && (
-          <PopupHandler
-            item={modalItem}
-            kind="works"
-            onClose={() => setModalItem(null)}
-          />
-        )}
       </Box>
+       */}
+      {modalItem && (
+        <PopupHandler
+          item={modalItem}
+          kind="works"
+          onClose={() => setModalItem(null)}
+        />
+      )}
     </>
   );
 }

@@ -83,6 +83,7 @@ export default function GroupMembers({ group }) {
       {hydrated && (
         <Modal
           hideFooter
+          id="group-members"
           open={modalOpen}
           title={t('labels.member')}
           onClose={() => setModalOpen(false)}

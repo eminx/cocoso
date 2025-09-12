@@ -32,6 +32,7 @@ function FeedbackForm({ isDarkText = false }) {
 
       <Modal
         hideFooter
+        id="feedback-form"
         open={showFeedbackModal}
         title={tc('modals.feedback.label')}
         onClose={() => setShowFeedbackModal(false)}

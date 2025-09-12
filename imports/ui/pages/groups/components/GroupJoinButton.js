@@ -53,6 +53,7 @@ export default function GroupJoinButton() {
       </Center>
 
       <Modal
+        id="group-join-button"
         open={modalOpen}
         title={t('modal.join.title')}
         onConfirm={joinGroup}

@@ -247,9 +247,8 @@ export default function EmailNewsletter() {
 
       <Modal
         confirmButtonLabel={t('newsletter.modals.send')}
+        id="email-newsletter-preview"
         open={state.preview}
-        // motionPreset="slideInBottom"
-        // scrollBehavior="inside"
         size="3xl"
         title={state?.email?.subject}
         onConfirm={() => {
@@ -276,6 +275,7 @@ export default function EmailNewsletter() {
           isLoading: state.sending,
         }}
         confirmText={t('newsletter.modals.yes')}
+        id="email-newsletter-confirm-sending"
         open={state.lastConfirm}
         title={t('newsletter.modals.title')}
         // style={{ zIndex: 99999 }}

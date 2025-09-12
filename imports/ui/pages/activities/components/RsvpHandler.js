@@ -147,6 +147,7 @@ export default function RsvpHandler({ activity }) {
 
       <Modal
         hideFooter
+        id="rsvp-handler"
         open={modalOpen}
         size="lg"
         title={

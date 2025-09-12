@@ -15,6 +15,7 @@ interface BaseProps {
   confirmText?: string;
   hideFooter?: boolean;
   hideHeader?: boolean;
+  id: string;
   noPadding?: boolean;
   onCancel?: () => void;
   onClose: () => void;
@@ -422,6 +423,7 @@ const Modal: React.FC<ModalProps> = ({
   confirmText,
   hideFooter = false,
   hideHeader = false,
+  id = 'modal-portal',
   noPadding,
   onCancel,
   onClose,
@@ -431,7 +433,7 @@ const Modal: React.FC<ModalProps> = ({
   size = 'md',
   title,
 }) => {
-  const portalContainer = usePortal(open, onClose, 'modal-portal');
+  const portalContainer = usePortal(open, onClose, id);
 
   // Handle overlay click
   const handleOverlayClick = (event: React.MouseEvent) => {

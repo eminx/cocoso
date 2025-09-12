@@ -4,11 +4,10 @@ import { Trans } from 'react-i18next';
 
 import { Box, Center } from '/imports/ui/core';
 
-import Tabs from '../core/Tabs';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
-import InfiniteScroller from './InfiniteScroller';
-import SexyThumb from './SexyThumb';
+import Tabs from '../core/Tabs';
+import VirtualGridLister from './VirtualGridLister';
 
 export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const [modalItem, setModalItem] = useState(null);
@@ -23,20 +22,12 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const tabs = [
     {
       key: 'past',
-      title: (
-        <Trans i18nKey="labels.past" ns="common">
-          Past
-        </Trans>
-      ),
+      title: <Trans i18nKey="common:labels.past">Past</Trans>,
       onClick: () => setSearchParams({ showPast: 'true' }),
     },
     {
       key: 'upcoming',
-      title: (
-        <Trans i18nKey="labels.upcoming" ns="common">
-          Upcoming
-        </Trans>
-      ),
+      title: <Trans i18nKey="common:labels.upcoming">Upcoming</Trans>,
       onClick: () => setSearchParams({ showPast: 'false' }),
     },
   ];
@@ -44,7 +35,9 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const groupsInMenu = Host?.settings?.menu?.find(
     (item) => item.name === 'groups'
   );
+  const groupsLabel = groupsInMenu?.label;
   const url = `${Host?.host}/${activitiesInMenu?.name}`;
+  const getTags = (item) => (item.isGroupMeeting ? [groupsLabel] : null);
 
   return (
     <>
@@ -54,39 +47,26 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
         imageUrl={Host?.logo}
         url={url}
       />
+
       <Center>
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
       </Center>
 
-      <Box id="a-box" bg="brand.300" px="2" pb="8">
-        <InfiniteScroller items={activities}>
-          {(item, index) => (
-            <Center
-              key={item._id}
-              flex="1 1 355px"
-              p="1"
-              onClick={() => setModalItem(item)}
-            >
-              <SexyThumb
-                activity={item}
-                host={Host?.isPortalHost ? item.host : null}
-                index={index}
-                showPast={showPast}
-                tags={item.isGroupMeeting ? [groupsInMenu?.label] : null}
-              />
-            </Center>
-          )}
-        </InfiniteScroller>
+      <Center>
+        <VirtualGridLister
+          cellProps={{ Host, showPast, getTags, setModalItem }}
+          items={activities}
+        />
+      </Center>
 
-        {modalItem && (
-          <PopupHandler
-            item={modalItem}
-            kind="activities"
-            showPast={showPast}
-            onClose={() => setModalItem(null)}
-          />
-        )}
-      </Box>
+      {modalItem && (
+        <PopupHandler
+          item={modalItem}
+          kind="activities"
+          showPast={showPast}
+          onClose={() => setModalItem(null)}
+        />
+      )}
     </>
   );
 }

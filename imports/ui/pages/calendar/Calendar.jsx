@@ -332,6 +332,7 @@ export default function Calendar() {
       </Box>
 
       <Modal
+        id="calendar-item"
         open={Boolean(selectedActivity)}
         title={selectedActivity && selectedActivity.title}
         confirmText={tc('actions.entryPage')}

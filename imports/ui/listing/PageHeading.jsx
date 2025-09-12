@@ -29,7 +29,7 @@ export default function PageHeading({
         />
         <meta property="og:type" content="website" />
       </Helmet>
-      <Center mb="4">
+      <Center>
         <Box px="2">
           <Center position="relative">
             <Heading as="h1" size="lg" textAlign="center">

@@ -154,6 +154,7 @@ export default function PopupHandler({ item, kind, showPast, onClose }) {
     <Modal
       confirmText={getButtonLabel()}
       hideHeader
+      id="popup-handler"
       open={item}
       cancelText={copied ? tc('actions.copied') : tc('actions.share')}
       size="xl"

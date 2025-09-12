@@ -68,8 +68,8 @@ export default function LoginPage() {
         contentProps={{ h: 'auto' }}
         hideHeader
         hideFooter
+        id="login-page"
         open
-        // scrollBehavior="outside"
         size="2xl"
         onClose={() => navigate('/')}
       >
@@ -124,6 +124,7 @@ export default function LoginPage() {
 
       <Modal
         open={isJoinModal}
+        id="login-page-join"
         title={t('profile.joinHost', {
           host: currentHost?.settings?.name,
         })}
