@@ -205,12 +205,10 @@ export default function Settings() {
     return <Navigate to={tabs[0].path} />;
   }
 
-  if (loading) {
-    return <Loader />;
-  }
-
   return (
-    <Box>
+    <>
+      {loading && <Loader />}
+
       <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
       <Box mb="24" py="4">
@@ -224,6 +222,6 @@ export default function Settings() {
           ))}
         </Routes>
       </Box>
-    </Box>
+    </>
   );
 }

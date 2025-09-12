@@ -23,22 +23,20 @@ export default function TopBarHandler({ slideStart }) {
   }, []);
 
   return (
-    <>
-      <Slide direction="top" ping={slideStart}>
-        <Fade ping={scrollTop < 120}>
-          <Flex justify="space-between" w="100%">
-            <Box p="1" pointerEvents="all">
-              <Suspense fallback={<Loader />}>
-                <FederationIconMenu />
-              </Suspense>
-            </Box>
-            <Flex p="1" pointerEvents="all">
-              <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
-              <MenuDrawer />
-            </Flex>
+    <Slide direction="top" ping={slideStart}>
+      <Fade ping={scrollTop < 120}>
+        <Flex justify="space-between" w="100%">
+          <Box p="1" pointerEvents="all">
+            <Suspense fallback={<Loader />}>
+              <FederationIconMenu />
+            </Suspense>
+          </Box>
+          <Flex p="1" pointerEvents="all">
+            <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />
+            <MenuDrawer />
           </Flex>
-        </Fade>
-      </Slide>
-    </>
+        </Flex>
+      </Fade>
+    </Slide>
   );
 }
