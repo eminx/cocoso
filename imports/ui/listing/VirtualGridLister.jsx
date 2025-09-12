@@ -4,9 +4,9 @@ import { Grid } from 'react-window';
 
 import { Box, Flex } from '/imports/ui/core';
 
-import SexyThumb from './SexyThumb';
 import FiltrerSorter from './FiltrerSorter';
-import NewGridThumb from '/imports/ui/listing/NewGridThumb';
+import NewGridThumb from './NewGridThumb';
+import SexyThumb from './SexyThumb';
 
 const defaultItemsPerPage = 12;
 const COLUMN_COUNT = 3;
@@ -77,14 +77,21 @@ const filterSortItems = (items, filterValue, sortValue) => {
 };
 
 function ThumbItem({
-  items,
+  color,
   columnCount,
   columnIndex,
   Host,
+  isMasonry,
+  items,
   rowIndex,
   showPast,
   style,
+  getAvatar,
+  getColor,
+  getImageUrl,
+  getTag,
   getTags,
+  getTitle,
   setModalItem,
 }) {
   const index = rowIndex * columnCount + columnIndex;
@@ -94,16 +101,33 @@ function ThumbItem({
   }
 
   const item = items && items[index];
+  const host = Host?.isPortalHost ? item.host : null;
 
   if (!item) {
     return null;
+  }
+
+  if (isMasonry) {
+    return (
+      <Box key={item._id} style={style} onClick={() => setModalItem(item)}>
+        <NewGridThumb
+          avatar={getAvatar(item)}
+          color={getColor(item)}
+          host={host}
+          imageUrl={getImageUrl}
+          index={index}
+          tag={getTag(item)}
+          title={getTitle(item)}
+        />
+      </Box>
+    );
   }
 
   return (
     <Box key={item._id} p="1" style={style} onClick={() => setModalItem(item)}>
       <SexyThumb
         activity={item}
-        host={Host?.isPortalHost ? item.host : null}
+        host={host}
         index={index}
         showPast={showPast}
         tags={getTags(item)}
@@ -139,8 +163,6 @@ export default function VirtualGridLister({
 
   const columnWidth = isClient ? window.screen?.width / COLUMN_COUNT - 18 : 355;
   const rowCount = Math.ceil(items.length / 3);
-
-  console.log(items, isClient);
 
   return (
     <div>
