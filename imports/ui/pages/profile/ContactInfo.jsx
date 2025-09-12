@@ -47,6 +47,7 @@ export default function ContactInfo({ username }) {
       </Center>
 
       <Modal
+        id="contact-info"
         open={modalOpen}
         title={
           <>

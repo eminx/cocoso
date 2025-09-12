@@ -101,6 +101,7 @@
     "react-table": "^6.8.6",
     "react-visibility-sensor": "^5.0.2",
     "react-window": "^2.0.2",
+    "react-window-infinite-loader": "^1.0.10",
     "restyle": "^3.4.2",
     "rooks": "^5.11.0",
     "simpl-schema": "^1.12.0",

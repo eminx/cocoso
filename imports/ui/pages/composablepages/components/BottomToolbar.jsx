@@ -14,8 +14,9 @@ export default function BottomToolbar({
   getComposablePageTitles,
 }) {
   const [state, setState] = useState({
-    updated: false,
     publishModalVisible: false,
+    updated: false,
+    updating: false,
   });
   const { currentHost } = useContext(StateContext);
 
@@ -29,14 +30,21 @@ export default function BottomToolbar({
   }, [currentPage?.pingSave]);
 
   const handlePublish = async () => {
+    setState((prevState) => ({
+      ...prevState,
+      updating: true,
+    }));
+
     const getPageAndCloseModal = async () => {
-      await getComposablePageById();
-      await getComposablePageTitles();
       setState((prevState) => ({
         ...prevState,
         publishModalVisible: false,
+        updating: false,
       }));
+      await getComposablePageById();
+      await getComposablePageTitles();
     };
+
     try {
       if (currentPage.isPublished) {
         if (
@@ -153,7 +161,9 @@ export default function BottomToolbar({
       <Modal
         confirmButtonProps={{
           colorScheme: isPublished ? 'orange' : 'green',
+          loading: state.updating,
         }}
+        id="composable-page-bottom-toolbar"
         open={state.publishModalVisible}
         title={
           <Trans

@@ -56,6 +56,7 @@ export default function ComposablePageCreator({ getComposablePageTitles }) {
 
       <Modal
         confirmText={<Trans i18nKey="admin:composable.create" />}
+        id="composable-page-creator"
         open={createPageModal.visible}
         title={<Trans i18nKey="admin:composable.title" />}
         onConfirm={createComposablePage}

@@ -214,6 +214,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
       <Modal
         confirmText={<Trans i18nKey="members:actions.visit" />}
         hideHeader
+        id="users-hybrid"
         open={Boolean(modalItem)}
         size="xl"
         onConfirm={() => navigate(`/@${modalItem.username}`)}

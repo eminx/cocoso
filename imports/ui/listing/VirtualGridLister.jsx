@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useMemo, useState } from 'react';
 import { Grid } from 'react-window';
 
@@ -10,6 +11,8 @@ import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 const defaultItemsPerPage = 12;
 const COLUMN_COUNT = 3;
 const ITEM_HEIGHT = 337;
+
+const isClient = Meteor.isClient;
 
 const filterHelper = (item, lowerCaseFilterValue) => {
   const { title, subTitle, shortDescription, label, readingMaterial } = item;
@@ -78,10 +81,10 @@ function ThumbItem({
   columnCount,
   columnIndex,
   Host,
-  groupsLabel,
   rowIndex,
   showPast,
   style,
+  getTags,
   setModalItem,
 }) {
   const index = rowIndex * columnCount + columnIndex;
@@ -103,7 +106,7 @@ function ThumbItem({
         host={Host?.isPortalHost ? item.host : null}
         index={index}
         showPast={showPast}
-        tags={item.isGroupMeeting ? [groupsLabel] : null}
+        tags={getTags(item)}
       />
     </Box>
   );
@@ -134,8 +137,10 @@ export default function VirtualGridLister({
     setSortValue: (v) => setSortValue(v),
   };
 
-  const columnWidth = window?.screen?.width / COLUMN_COUNT - 18 || 355;
+  const columnWidth = isClient ? window.screen?.width / COLUMN_COUNT - 18 : 355;
   const rowCount = Math.ceil(items.length / 3);
+
+  console.log(items, isClient);
 
   return (
     <div>

@@ -245,7 +245,13 @@ export default function AddMeeting({ onClose }) {
   };
 
   return (
-    <Modal hideFooter open title={t('meeting.form.label')} onClose={onClose}>
+    <Modal
+      hideFooter
+      id="group-add-meeting"
+      open
+      title={t('meeting.form.label')}
+      onClose={onClose}
+    >
       <AddMeetingForm
         buttonDisabled={!isFormValid}
         conflictingBooking={conflictingBooking}

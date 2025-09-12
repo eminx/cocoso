@@ -62,7 +62,7 @@ export default function TopToolBar({
       {isPublished ? (
         <Center>
           <Link to="/admin/settings/menu/order">
-            <CLink css={{ textAlign: 'center' }}>
+            <CLink as="span" css={{ textAlign: 'center' }}>
               <Trans i18nKey="admin:composable.toolbar.linkToMenu" />
             </CLink>
           </Link>

@@ -162,6 +162,7 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
             confirmText={
               modalItem.isMember ? tc('actions.toHost') : tc('communities.join')
             }
+            id="communities-hybrid"
             size="lg"
             title={modalItem.hostname}
             open={Boolean(modalItem)}

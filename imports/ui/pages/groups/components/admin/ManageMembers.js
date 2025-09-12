@@ -37,7 +37,13 @@ export default function ManageMembers({ onClose }) {
   }));
 
   return (
-    <Modal hideFooter open title={t('labels.member')} onClose={onClose}>
+    <Modal
+      hideFooter
+      open
+      id="group-manage-members"
+      title={t('labels.member')}
+      onClose={onClose}
+    >
       <NiceList
         actionsDisabled={false}
         keySelector="username"
