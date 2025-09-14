@@ -89,7 +89,7 @@ export function Column({ column, columnIndex, rowIndex }) {
 
   return (
     <Boxling
-      style={{
+      css={{
         backgroundColor: 'white',
         borderRadius: '0.5rem',
         minHeight: '120px',
@@ -173,11 +173,13 @@ const GridRowStyled = styled('div', {
   width: '100%',
 });
 
-const GridRow = (props) => (
+const GridRow = ({ css, gridTemplateColumns, ...rest }) => (
   <GridRowStyled
     css={{
-      gridTemplateColumns: props.gridTemplateColumns,
+      gridTemplateColumns,
+      ...css,
     }}
+    {...rest}
   />
 );
 
