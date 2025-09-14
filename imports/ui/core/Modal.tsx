@@ -268,7 +268,7 @@ const DrawerContent = styled('div', {
     },
     {
       position: 'bottom',
-      visible: 'true',
+      visible: true,
       css: { transform: 'translateY(0)' },
     },
     {
@@ -282,7 +282,7 @@ const DrawerContent = styled('div', {
     },
     {
       position: 'top',
-      visible: 'true',
+      visible: true,
       css: { transform: 'translateY(0)' },
     },
     {
@@ -296,7 +296,7 @@ const DrawerContent = styled('div', {
     },
     {
       position: 'left',
-      visible: 'true',
+      visible: true,
       css: { transform: 'translateX(0)' },
     },
     {
@@ -310,7 +310,7 @@ const DrawerContent = styled('div', {
     },
     {
       position: 'right',
-      visible: 'true',
+      visible: true,
       css: { transform: 'translateX(0)' },
     },
   ],

@@ -34,6 +34,7 @@ const TagStyled = styled('span', {
 });
 
 export const Tag = (props: any) => {
+  const { children, ...rest } = props;
   const colorScheme = props.colorScheme || 'theme';
   const borderColor = `var(--cocoso-colors-${colorScheme}-500)`;
   const color = `var(--cocoso-colors-${colorScheme}-800)`;
@@ -44,8 +45,10 @@ export const Tag = (props: any) => {
         borderColor,
         color,
       }}
-      {...props}
-    />
+      {...rest}
+    >
+      {children}
+    </TagStyled>
   );
 };
 
@@ -67,6 +70,7 @@ interface TextProps {
 const TextStyled = styled('p', {});
 
 export const Text = (props: TextProps) => {
+  const { children, ...rest } = props;
   const color = props.color?.split('.');
   const fontSize = props.size || props.fontSize;
   const truncated = props.isTruncated || props.truncated;
@@ -90,8 +94,10 @@ export const Text = (props: TextProps) => {
         '&:focus': props._focus || {},
         ...getPropStyles(props),
       }}
-      {...props}
-    />
+      {...rest}
+    >
+      {children}
+    </TextStyled>
   );
 };
 
@@ -114,6 +120,7 @@ const headingSizes = {
 const HeadingStyled = styled('h2', {});
 
 export const Heading = (props: HeadingProps) => {
+  const { children, ...rest } = props;
   const color = props.color?.split('.');
   const truncated = props.isTruncated || props.truncated;
 
@@ -133,8 +140,10 @@ export const Heading = (props: HeadingProps) => {
         whiteSpace: truncated ? 'nowrap' : 'normal',
         ...getPropStyles(props),
       }}
-      {...props}
-    />
+      {...rest}
+    >
+      {children}
+    </HeadingStyled>
   );
 };
 
@@ -152,7 +161,8 @@ const CodeStyled = styled('span', {
   margin: '0 0.25rem',
 });
 
-export const Code = (props: CodeProps) => {
+export const Code = (props: CodeProps & { children?: React.ReactNode }) => {
+  const { children, ...rest } = props;
   const color = props.color?.split('.');
   const fontSize = props.size || props.fontSize;
 
@@ -166,8 +176,10 @@ export const Code = (props: CodeProps) => {
           ? fontSizes[fontSize as keyof typeof fontSizes]
           : fontSizes.md,
       }}
-      {...props}
-    />
+      {...rest}
+    >
+      {children}
+    </CodeStyled>
   );
 };
 
@@ -179,6 +191,7 @@ const LinkStyled = styled('a', {
 });
 
 export const Link = (props: TextProps) => {
+  const { children, ...rest } = props;
   const color = props.color?.split('.') || ['blue', '500'];
   const fontSize = props.size || props.fontSize;
   const truncated = props.isTruncated || props.truncated || false;
@@ -194,6 +207,9 @@ export const Link = (props: TextProps) => {
         textOverflow: truncated ? 'ellipsis' : 'clip',
         whiteSpace: truncated ? 'nowrap' : 'normal',
       }}
-    />
+      {...rest}
+    >
+      {children}
+    </LinkStyled>
   );
 };

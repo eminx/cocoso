@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Fade, Flex, Loader, Slide } from '/imports/ui/core';
 
@@ -27,9 +27,7 @@ export default function TopBarHandler({ slideStart }) {
       <Fade ping={scrollTop < 120}>
         <Flex justify="space-between" w="100%">
           <Box p="1" pointerEvents="all">
-            <Suspense fallback={<Loader />}>
-              <FederationIconMenu />
-            </Suspense>
+            <FederationIconMenu />
           </Box>
           <Flex p="1" pointerEvents="all">
             <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import parseHtml from 'html-react-parser';
+import HTMLReactParser from 'html-react-parser';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 import {
@@ -32,6 +32,7 @@ export default function FederationIconMenu() {
   const handleSetHostInfo = async () => {
     try {
       const info = await call('getPortalHostInfoPage');
+      console.log('Host info received:', info);
       setHostInfo(info);
       setInfoOpen(true);
     } catch (error) {
@@ -56,7 +57,7 @@ export default function FederationIconMenu() {
         css={{
           borderRadius: 'var(--cocoso-border-radius)',
           backgroundColor: 'rgba(255, 252, 250, 0.9)',
-          ':hover': {
+          '&:hover': {
             backgroundColor: 'white',
           },
         }}
@@ -69,7 +70,7 @@ export default function FederationIconMenu() {
             width: isDesktop ? '44px' : '28px',
             height: isDesktop ? '44px' : '28px',
             borderRadius: 'var(--cocoso-border-radius)',
-            ':hover': {
+            '&:hover': {
               filter: 'invert(100%)',
               transition: 'all .2s ease-in-out',
             },
@@ -114,9 +115,9 @@ export default function FederationIconMenu() {
         id="federation-icon-menu"
         open={infoOpen}
         size="2xl"
-        title={platform?.name}
+        title={platform?.name || 'Platform'}
         onConfirm={() =>
-          (window.location.href = `https://${platform.portalHost}`)
+          (window.location.href = `https://${platform?.portalHost}`)
         }
         onClose={() => setInfoOpen(false)}
       >
@@ -134,7 +135,9 @@ export default function FederationIconMenu() {
 
             {hostInfo.longDescription && (
               <Box className="text-content">
-                {parseHtml(hostInfo?.longDescription)}
+                {typeof hostInfo.longDescription === 'string'
+                  ? HTMLReactParser(hostInfo.longDescription)
+                  : hostInfo.longDescription}
               </Box>
             )}
           </Box>

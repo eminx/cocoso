@@ -10,15 +10,17 @@ const BaseUl = styled('ul', {});
 const BaseLi = styled('li', {});
 
 // Box
-export const Box = ({ css, ...props }: any) => (
+export const Box = ({ css, children, ...props }: any) => (
   <BaseDiv
     css={{ ...css, display: 'block', ...getPropStyles(props) }}
     {...props}
-  />
+  >
+    {children}
+  </BaseDiv>
 );
 
 // Center
-export const Center = ({ css, ...props }: any) => (
+export const Center = ({ css, children, ...props }: any) => (
   <BaseDiv
     css={{
       ...css,
@@ -30,7 +32,9 @@ export const Center = ({ css, ...props }: any) => (
       ...getPropStyles(props),
     }}
     {...props}
-  />
+  >
+    {children}
+  </BaseDiv>
 );
 
 // Container
@@ -39,7 +43,11 @@ interface ContainerProps {
   px?: string | number;
 }
 
-export const Container = ({ css, ...props }: ContainerProps & any) => (
+export const Container = ({
+  css,
+  children,
+  ...props
+}: ContainerProps & any) => (
   <Box
     css={{
       ...css,
@@ -52,11 +60,13 @@ export const Container = ({ css, ...props }: ContainerProps & any) => (
       ...getPropStyles(props),
     }}
     {...props}
-  />
+  >
+    {children}
+  </Box>
 );
 
 // Flex
-export const Flex = ({ css, ...props }: any) => (
+export const Flex = ({ css, children, ...props }: any) => (
   <BaseDiv
     css={{
       ...css,
@@ -69,12 +79,16 @@ export const Flex = ({ css, ...props }: any) => (
       ...getPropStyles(props),
     }}
     {...props}
-  />
+  >
+    {children}
+  </BaseDiv>
 );
 
-export const FormControl = ({ css, ...props }: any) => <Flex {...props} />;
+export const FormControl = ({ css, children, ...props }: any) => (
+  <Flex {...props}>{children}</Flex>
+);
 
-export const FormLabel = ({ css, ...props }: any) => (
+export const FormLabel = ({ css, children, ...props }: any) => (
   <BaseLabel
     css={{
       ...css,
@@ -84,7 +98,9 @@ export const FormLabel = ({ css, ...props }: any) => (
       ...getPropStyles(props),
     }}
     {...props}
-  />
+  >
+    {children}
+  </BaseLabel>
 );
 
 // Grid
@@ -94,7 +110,7 @@ interface GridProps {
   gap?: string | number;
 }
 
-export const Grid = ({ css, ...props }: GridProps & any) => (
+export const Grid = ({ css, children, ...props }: GridProps & any) => (
   <BaseDiv
     css={{
       ...css,
@@ -108,7 +124,9 @@ export const Grid = ({ css, ...props }: GridProps & any) => (
       ...getPropStyles(props),
     }}
     {...props}
-  />
+  >
+    {children}
+  </BaseDiv>
 );
 
 // Divider
@@ -141,27 +159,43 @@ export const Divider = ({ css, ...props }: DividerProps & any) => {
   );
 };
 
-export const List = ({ css, ...props }: any) => (
+export const List = ({ css, children, ...props }: any) => (
   <BaseUl
     css={{ ...css, listStyleType: 'none', padding: 0, ...getPropStyles(props) }}
     {...props}
-  />
+  >
+    {children}
+  </BaseUl>
 );
 
-export const ListItem = ({ css, ...props }: any) => (
+export const ListItem = ({ css, children, ...props }: any) => (
   <BaseLi
     css={{ ...css, marginBottom: '0.5rem', ...css, ...getPropStyles(props) }}
     {...props}
-  />
+  >
+    {children}
+  </BaseLi>
 );
 
 // Stack, HStack, VStack, Wrap
-export const Stack = (props: any) => <Flex {...props} />;
-
-export const HStack = (props: any) => <Flex flexDirection="row" {...props} />;
-
-export const VStack = (props: any) => (
-  <Flex flexDirection="column" {...props} />
+export const Stack = ({ children, ...props }: any) => (
+  <Flex {...props}>{children}</Flex>
 );
 
-export const Wrap = (props: any) => <Flex flexWrap="wrap" {...props} />;
+export const HStack = ({ children, ...props }: any) => (
+  <Flex flexDirection="row" {...props}>
+    {children}
+  </Flex>
+);
+
+export const VStack = ({ children, ...props }: any) => (
+  <Flex flexDirection="column" {...props}>
+    {children}
+  </Flex>
+);
+
+export const Wrap = ({ children, ...props }: any) => (
+  <Flex flexWrap="wrap" {...props}>
+    {children}
+  </Flex>
+);

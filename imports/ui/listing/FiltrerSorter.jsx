@@ -24,7 +24,7 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
         <Input
           size="sm"
           value={filterValue}
-          css={{ margin: '0.5rem 0' }}
+          style={{ margin: '0.5rem 0' }}
           onChange={(event) => setFilterValue(event.target.value)}
         />
       </Box>
@@ -39,7 +39,7 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }) {
           name="sorter"
           size="sm"
           value={sortValue}
-          css={{ margin: '0.5rem 0' }}
+          style={{ margin: '0.5rem 0' }}
           onChange={(e) => setSortValue(e.target.value)}
         >
           <option value="date">

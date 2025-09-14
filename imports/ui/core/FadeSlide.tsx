@@ -33,7 +33,7 @@ export const Fade: React.FC<FadeProps> = ({
 };
 
 interface SlideProps extends FadeProps {
-  direction: boolean;
+  direction: string;
 }
 
 export const Slide: React.FC<SlideProps> = ({

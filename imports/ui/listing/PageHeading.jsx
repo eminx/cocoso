@@ -16,16 +16,19 @@ export default function PageHeading({
   return (
     <>
       <Helmet>
-        <title>{heading}</title>
+        <title>{String(heading || 'Page')}</title>
         <meta charSet="utf-8" />
-        <meta name="title" content={heading} />
-        <meta name="description" content={description} />
-        <meta property="og:title" content={heading?.substring(0, 40)} />
+        <meta name="title" content={String(heading || 'Page')} />
+        <meta name="description" content={String(description || '')} />
+        <meta
+          property="og:title"
+          content={String(heading || 'Page')?.substring(0, 40)}
+        />
         <meta property="og:url" content={url} />
         <meta property="og:image" content={imageUrl} />
         <meta
           property="og:description"
-          content={description?.substring(0, 150)}
+          content={String(description || '')?.substring(0, 150)}
         />
         <meta property="og:type" content="website" />
       </Helmet>
