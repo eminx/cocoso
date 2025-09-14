@@ -166,7 +166,7 @@ export default function AdminMenu({ routes, onItemClick }) {
   return (
     <Flex
       bg="bluegray.50"
-      h={isDesktop ? '100%' : 'calc(100% - 60px)'}
+      h={isDesktop ? '100%' : 'calc(100% - 80px)'}
       w={isDesktop ? '320px' : '100%'}
       css={{
         position: 'fixed',

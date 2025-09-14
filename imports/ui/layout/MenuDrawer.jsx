@@ -150,7 +150,12 @@ export default function MenuDrawer() {
         title={tc('menu.label')}
         onClose={onToggle}
       >
-        <Flex flexDirection="column" h="100%" justify="space-between">
+        <Flex
+          id="flex-menu"
+          flexDirection="column"
+          height="100%"
+          justify="space-between"
+        >
           <MenuContent
             menuItems={menuItems}
             styles={menuStyles}

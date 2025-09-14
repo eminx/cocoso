@@ -209,6 +209,7 @@ const DrawerContent = styled('div', {
   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
   display: 'flex',
   flexDirection: 'column',
+  height: '100vh',
   overflow: 'hidden',
   position: 'fixed',
   transition: 'all 0.3s ease-in-out',
@@ -216,33 +217,23 @@ const DrawerContent = styled('div', {
     size: {
       sm: {
         width: '20rem',
-        height: '20rem',
         maxWidth: '90vw',
-        maxHeight: '90vh',
       },
       md: {
         width: '24rem',
-        height: '24rem',
         maxWidth: '90vw',
-        maxHeight: '90vh',
       },
       lg: {
         width: '28rem',
-        height: '28rem',
         maxWidth: '90vw',
-        maxHeight: '90vh',
       },
       xl: {
         width: '32rem',
-        height: '32rem',
         maxWidth: '90vw',
-        maxHeight: '90vh',
       },
       full: {
         width: '100vw',
-        height: '100vh',
         maxWidth: '100vw',
-        maxHeight: '100vh',
       },
     },
     visible: {
