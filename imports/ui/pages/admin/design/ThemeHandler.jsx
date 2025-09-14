@@ -32,8 +32,9 @@ export default function ThemeHandler() {
     useContext(StateContext);
 
   const [state, setState] = useState({
-    uploadingBackgroundImage: false,
     updating: false,
+    uploadingBackgroundImage: false,
+    hasChanges: false,
   });
 
   const currentTheme = currentHost?.theme;
@@ -50,8 +51,6 @@ export default function ThemeHandler() {
         ? getGrayTheme(currentTheme)
         : null;
 
-    console.log(newTheme);
-
     if (!newTheme) {
       message.error(<Trans i18nKey="admin:design.message.error" />);
       return;
@@ -64,9 +63,9 @@ export default function ThemeHandler() {
   };
 
   const handleStyleChange = (key, value) => {
-    if (currentHost?.theme?.body?.[key] === value) {
-      return;
-    }
+    // if (currentHost?.theme?.body?.[key] === value) {
+    //   return;
+    // }
 
     setCurrentHost((prevState) => ({
       ...prevState,
@@ -143,7 +142,7 @@ export default function ThemeHandler() {
         <RadioGroup
           options={themeOptions}
           value={currentTheme?.variant}
-          onChange={(selectedValue) => handleThemeChange(selectedValue)}
+          onChange={handleThemeChange}
         />
       </Boxling>
 

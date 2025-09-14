@@ -116,7 +116,6 @@ export function RadioGroup({
   ...props
 }) {
   const handleChange = (event) => {
-    console.log('value:', event.target.value);
     if (!onChange) return;
     onChange(event.target.value);
   };
@@ -127,6 +126,7 @@ export function RadioGroup({
         <Radio
           key={option.value}
           checked={value === option.value}
+          disabled={option.disabled}
           label={option.label}
           value={option.value}
           onChange={handleChange}
