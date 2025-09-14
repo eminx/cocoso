@@ -191,10 +191,10 @@ export default function MenuSettings() {
                       <div>
                         <Flex
                           align="center"
-                          justifyContent="space-between"
+                          justify="space-between"
                           mb="4"
                           p="2"
-                          style={{
+                          css={{
                             backgroundColor: 'white',
                             boxShadow: 'var(--cocoso-box-shadow)',
                             borderRadius: 'var(--cocoso-border-radius)',

@@ -1,7 +1,6 @@
 import React from 'react';
-import { CSSProperties } from '@stitches/react';
+import { CSSProperties, styled } from '@stitches/react';
 
-import { styled } from '/stitches.config';
 import { getPropStyles } from './functions';
 
 const fontSizes = {
@@ -54,19 +53,19 @@ export const Tag = (props: any) => {
 };
 
 interface TextProps {
+  color?: string;
   css?: CSSProperties;
   fontSize?: string;
-  size?: string;
   fontWeight?: string;
-  color?: string;
+  isTruncated?: boolean;
   lineHeight?: string;
   textAlign?: string;
+  size?: string;
+  truncated?: boolean;
+  children: React.ReactNode;
   _hover?: any;
   _active?: any;
   _focus?: any;
-  isTruncated?: boolean;
-  truncated?: boolean;
-  children: React.ReactNode;
 }
 
 const TextStyled = styled('span', {});
@@ -76,9 +75,11 @@ export const Text = (props: TextProps) => {
   const color = props.color?.split('.');
   const fontSize = props.size || props.fontSize;
   const truncated = props.isTruncated || props.truncated;
+
   return (
     <TextStyled
       css={{
+        ...getPropStyles(props),
         color: color
           ? `var(--cocoso-colors-${color[0]}-${color[1]})`
           : 'var(--cocoso-colors-gray-900)',
@@ -94,7 +95,6 @@ export const Text = (props: TextProps) => {
         '&:hover': props._hover || {},
         '&:active': props._active || {},
         '&:focus': props._focus || {},
-        ...getPropStyles(props),
         ...props.css,
       }}
       {...rest}

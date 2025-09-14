@@ -17,10 +17,12 @@ export default function AdminFunctions({ menuItems, onSelect }) {
             <IconButton icon={<SettingsIcon />} variant="outline" />
           </Box>
           <Text
-            color="theme.50"
-            fontSize="xs"
-            fontWeight="bold"
-            textAlign="center"
+            css={{
+              color: 'var(--cocoso-colors-theme-50)',
+              fontSize: '0.8rem',
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
           >
             {t('label')}
           </Text>

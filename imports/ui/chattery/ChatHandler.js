@@ -143,10 +143,12 @@ export function ChatButton({
             </Badge>
           )}
           <Text
-            color="theme.50"
-            fontSize="xs"
-            fontWeight="bold"
-            textAlign="center"
+            css={{
+              color: 'var(--cocoso-colors-theme-50)',
+              fontSize: '0.8rem',
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
             onClick={() => setOpen(true)}
           >
             {tc('labels.discussion')}

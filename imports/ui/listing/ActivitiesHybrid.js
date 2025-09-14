@@ -59,14 +59,14 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
         />
       </Center>
 
-      {modalItem && (
+      {modalItem ? (
         <PopupHandler
           item={modalItem}
           kind="activities"
           showPast={showPast}
           onClose={() => setModalItem(null)}
         />
-      )}
+      ) : null}
     </>
   );
 }

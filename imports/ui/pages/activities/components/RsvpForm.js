@@ -46,7 +46,7 @@ export default function RsvpForm({
           <FormField label={t('public.register.form.people.number')} required>
             <NumberInput {...register('numberOfPeople', { required: true })} />
           </FormField>
-          <Flex justifyContent="flex-end" pt="2" w="100%">
+          <Flex justify="flex-end" pt="2" w="100%">
             <Button
               disabled={isUpdateMode && !isDirty}
               loading={isSubmitting}
