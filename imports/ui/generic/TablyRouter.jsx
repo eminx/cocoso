@@ -17,7 +17,7 @@ export default function TablyRouter({ tabs, children }) {
   }
 
   return (
-    <>
+    <Box>
       <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
       {children}
@@ -29,6 +29,6 @@ export default function TablyRouter({ tabs, children }) {
           ))}
         </Routes>
       </Box>
-    </>
+    </Box>
   );
 }

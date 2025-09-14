@@ -50,6 +50,8 @@ export default function ThemeHandler() {
         ? getGrayTheme(currentTheme)
         : null;
 
+    console.log(newTheme);
+
     if (!newTheme) {
       message.error(<Trans i18nKey="admin:design.message.error" />);
       return;
@@ -139,15 +141,10 @@ export default function ThemeHandler() {
 
       <Boxling mb="12">
         <RadioGroup
+          options={themeOptions}
           value={currentTheme?.variant}
           onChange={(selectedValue) => handleThemeChange(selectedValue)}
-        >
-          {themeOptions.map((option) => (
-            <Radio key={option.value} value={option.value}>
-              <Trans i18nKey={`admin:design.theme.options.${option.value}`} />
-            </Radio>
-          ))}
-        </RadioGroup>
+        />
       </Boxling>
 
       <Text fontWeight="bold" mb="4">

@@ -91,7 +91,7 @@ export default function HuePicker({ onChange }) {
           </Center>
 
           <Center style={{ justifyContent: 'center', padding: '1rem 0' }}>
-            <Flex align="center" flexDirection="column">
+            <Flex align="center" direction="column">
               <Button
                 colorScheme="red"
                 size="sm"

@@ -59,7 +59,7 @@ export default function FileDropper({
             />
           ) : (
             <Center p="8">
-              <Text textAlign="center" fontSize="sm">
+              <Text fontSize="sm" css={{ textAlign: 'center' }}>
                 {isMultiple
                   ? tc('plugins.fileDropper.helperMultiple')
                   : tc('plugins.fileDropper.helper')}

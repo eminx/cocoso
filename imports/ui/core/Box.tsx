@@ -114,16 +114,16 @@ export const Grid = ({ css, children, ...props }: GridProps & any) => (
   <BaseDiv
     css={{
       display: 'grid',
+      gap: props.gap ? getSpacing(props.gap) : '1rem',
       gridTemplateColumns:
         props.templateColumns ||
         props.gridTemplateColumns ||
         'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: props.gap ? getSpacing(props.gap) : '1rem',
       width: '100%',
       ...getPropStyles(props),
       ...css,
     }}
-    {...props}
+    // {...props}
   >
     {children}
   </BaseDiv>

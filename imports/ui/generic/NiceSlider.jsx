@@ -162,7 +162,7 @@ export default function NiceSlider({
       <ImageHandler height={height} images={images} width={width}>
         {(image, index) => (
           <Center key={image + index}>
-            <Flex flexDirection="column" justify="center">
+            <Flex direction="column" justify="center">
               <LazyLoadImage
                 alt={`${alt} ${image}`}
                 src={image}

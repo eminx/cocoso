@@ -178,7 +178,7 @@ export default function AdminMenu({ routes, onItemClick }) {
 
       <Flex
         direction="column"
-        justifyContent="space-between"
+        justify="space-between"
         h="100%"
         w="100%"
         css={{ overflowY: 'auto' }}

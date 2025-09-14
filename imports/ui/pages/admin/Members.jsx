@@ -279,11 +279,13 @@ export default function Members() {
               <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
             </Box>
 
-            <Flex flexDirection={isDesktop ? 'row' : 'column'} w="100%">
+            <Flex direction={isDesktop ? 'row' : 'column'} w="100%">
               <Box
                 pr={isDesktop ? '4' : '0'}
                 pb={isDesktop ? '0' : '2'}
-                flexBasis="60%"
+                css={{
+                  flexBasis: '60%',
+                }}
               >
                 <Input
                   placeholder={t('form.holder')}
@@ -291,7 +293,7 @@ export default function Members() {
                   onChange={(event) => setFilterWord(event.target.value)}
                 />
               </Box>
-              <Box flexBasis="40%">
+              <Box css={{ flexBasis: '40%' }}>
                 <Select
                   name="sorter"
                   value={sortBy}

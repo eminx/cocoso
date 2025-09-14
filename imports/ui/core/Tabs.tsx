@@ -21,7 +21,7 @@ type TabsListProps = {
 };
 
 type TabItemProps = {
-  isSelected?: boolean;
+  selected?: boolean;
   children?: ReactNode;
   id?: string;
 };
@@ -35,15 +35,16 @@ const TabsListStyled = styled('div', {
   display: 'flex',
   flexShrink: '0',
   flexDirection: 'row',
-  // borderBottom: '1px solid #e2e8f0',
+  marginBottom: '1px',
 });
 
-const TabsList = (props: TabsListProps) => (
+const TabsList = ({ alignItems, justify, ...rest }: TabsListProps) => (
   <TabsListStyled
     css={{
-      alignItems: props.alignItems || 'center',
-      justifyContent: props.justify || 'flex-start',
+      alignItems: alignItems || 'center',
+      justifyContent: justify || 'flex-start',
     }}
+    {...rest}
   />
 );
 
@@ -61,19 +62,20 @@ const TabItemStyled = styled('div', {
   },
 });
 
-const TabItem = (props: TabItemProps) => (
+const TabItem = ({ selected, ...rest }: TabItemProps) => (
   <TabItemStyled
     css={{
       borderBottom: `2px solid ${
-        props.isSelected ? 'var(--cocoso-colors-theme-500)' : 'transparent'
+        selected ? 'var(--cocoso-colors-theme-500)' : 'transparent'
       }`,
       '&:hover': {
-        borderBottomColor: props.isSelected
+        borderBottomColor: selected
           ? 'var(--cocoso-colors-theme-500)'
           : 'var(--cocoso-colors-theme-200)',
         color: 'var(--cocoso-colors-theme-500)',
       },
     }}
+    {...rest}
   />
 );
 
@@ -100,17 +102,17 @@ const TabButton = styled('button', {
 
 interface CoTabProps {
   tab: TabType;
-  isSelected: boolean;
+  selected: boolean;
 }
 
-const CoTab: React.FC<CoTabProps> = ({ tab, isSelected }) => {
+const CoTab: React.FC<CoTabProps> = ({ tab, selected }) => {
   const instanceId = useId();
   if (!tab) {
     return null;
   }
 
   return (
-    <TabItem isSelected={isSelected} id={instanceId}>
+    <TabItem selected={selected} id={instanceId}>
       <Flex
         css={{
           alignItems: 'center',
@@ -150,7 +152,7 @@ const Tabs: React.FC<TabsProps> = ({
     <TabsContainer>
       <TabsList {...otherProps}>
         {tabs?.map((tab, tabIndex) => {
-          const isSelected = tabIndex === index;
+          const selected = tabIndex === index;
 
           if (tab.path) {
             return (
@@ -159,16 +161,15 @@ const Tabs: React.FC<TabsProps> = ({
                 to={tab.path}
                 onClick={tab.onClick}
               >
-                <CoTab tab={tab} isSelected={isSelected} />
+                <CoTab tab={tab} selected={selected} />
               </TabLink>
             );
-          } else {
-            return (
-              <TabButton key={tab.key || tab.title} onClick={tab.onClick}>
-                <CoTab tab={tab} isSelected={isSelected} />
-              </TabButton>
-            );
           }
+          return (
+            <TabButton key={tab.key || tab.title} onClick={tab.onClick}>
+              <CoTab tab={tab} selected={selected} />
+            </TabButton>
+          );
         })}
         {children}
       </TabsList>

@@ -131,7 +131,7 @@ export default function MenuDrawer() {
 
   return (
     <Box>
-      <Flex align="center" flexDirection="column" gap="1" px="2">
+      <Flex align="center" direction="column" gap="1" px="2">
         <IconButton
           icon={<HamburgerIcon fontSize="24px" />}
           size={isDesktop ? 'md' : 'sm'}
@@ -152,7 +152,7 @@ export default function MenuDrawer() {
       >
         <Flex
           id="flex-menu"
-          flexDirection="column"
+          direction="column"
           height="100%"
           justify="space-between"
         >

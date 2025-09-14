@@ -133,7 +133,7 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
           {composablePage.title}
         </Heading>
       )}
-      <Flex flexDirection="column">
+      <Flex direction="column">
         {composablePage.contentRows.map((row, rowIndex) => (
           <Grid
             key={row.id || row.gridType + rowIndex}
