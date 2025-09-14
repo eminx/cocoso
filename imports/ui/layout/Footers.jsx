@@ -162,7 +162,7 @@ export function PlatformFooter({ platform, children }) {
               fontSize="xs"
               css={{
                 textAlign: 'center',
-                ':hover': {
+                '&:hover': {
                   textDecoration: 'underline',
                 },
               }}

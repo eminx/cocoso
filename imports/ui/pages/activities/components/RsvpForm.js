@@ -2,14 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  NumberInput,
-  VStack,
-} from '/imports/ui/core';
+import { Box, Button, Flex, Input, NumberInput } from '/imports/ui/core';
 
 import FormField from '../../../forms/FormField';
 
@@ -44,7 +37,7 @@ export default function RsvpForm({
   return (
     <Box mb="8">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <VStack gap="0">
+        <Flex direction="column" gap="0">
           {fields.map((field) => (
             <FormField key={field.name} label={field.label} required>
               <Input {...register(field.name, { required: true })} />
@@ -79,7 +72,7 @@ export default function RsvpForm({
               {t('public.register.form.actions.remove')}
             </Button>
           )}
-        </VStack>
+        </Flex>
       </form>
     </Box>
   );

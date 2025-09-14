@@ -8,9 +8,9 @@ import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
 import { I18nextProvider, useSSR } from 'react-i18next';
 
+import { getCssText } from '/stitches.config';
 import Hosts from '/imports/api/hosts/host';
 import i18n from '/imports/startup/i18n';
-import { getCssText } from '/stitches.config';
 
 import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
@@ -61,22 +61,12 @@ Meteor.startup(() => {
       </I18nextProvider>
     );
 
-    // const sheet = new ServerStyleSheet();
-
     try {
-      // const styleTags = sheet.getStyleTags();
       const helmet = Helmet.renderStatic();
 
-      // sink.appendToHead(styleTags);
       sink.appendToHead(helmet.meta.toString());
       sink.appendToHead(helmet.title.toString());
       sink.appendToHead(helmet.link.toString());
-      sink.appendToHead(
-        <style
-          id="stitches"
-          dangerouslySetInnerHTML={{ __html: getCssText() }}
-        />
-      );
 
       sink.renderIntoElementById(
         'root',

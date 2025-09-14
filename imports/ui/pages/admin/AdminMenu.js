@@ -24,7 +24,7 @@ export function AdminMenuHeader({ currentHost }) {
         px="4"
         py="2"
         css={{
-          ':hover': {
+          '&:hover': {
             backgroundColor: 'var(--cocoso-colors-bluegray-200)',
           },
           ':focus': {
@@ -63,7 +63,7 @@ export function AdminUserThumb({ currentUser }) {
       bg={isCurrentRoute ? 'bluegray.900' : 'bluegray.700'}
       p="4"
       css={{
-        ':hover': {
+        '&:hover': {
           backgroundColor: 'var(--cocoso-colors-bluegray-800)',
         },
       }}
@@ -76,15 +76,19 @@ export function AdminUserThumb({ currentUser }) {
           css={{
             backgroundColor: 'var(--cocoso-colors-theme-100)',
             borderRadius: 'var(--cocoso-border-radius)',
-            ':hover': {
+            '&:hover': {
               backgroundColor: 'var(--cocoso-colors-theme-200)',
             },
           }}
         />
 
-        <Box p="2">
+        <Flex direction="column" pl="2">
           <Box>
-            <Text fontSize="lg" fontWeight="bold" css={{ color: 'white' }}>
+            <Text
+              size="lg"
+              fontWeight="bold"
+              css={{ color: 'white', fontWeight: 'bold' }}
+            >
               {currentUser.username}
             </Text>
           </Box>
@@ -93,7 +97,7 @@ export function AdminUserThumb({ currentUser }) {
               {getFullName(currentUser)}
             </Text>
           </Box>
-        </Box>
+        </Flex>
       </Flex>
     </Box>
   );
@@ -124,7 +128,7 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
         borderRightStyle: 'solid',
         borderRightWidth: isCurrentRoute && !item.isMulti ? '3px' : '0',
         marginLeft: isSub ? '1rem' : '0',
-        ':hover': {
+        '&:hover': {
           backgroundColor: 'var(--cocoso-colors-bluegray-100)',
         },
       }}

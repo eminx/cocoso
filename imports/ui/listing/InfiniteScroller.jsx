@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
 
-import { Flex, Loader, Wrap } from '/imports/ui/core';
+import { Flex, Loader } from '/imports/ui/core';
 
 import NewEntryHelper from '../generic/NewEntryHelper';
 import FiltrerSorter from './FiltrerSorter';
@@ -149,7 +149,7 @@ export default function InfiniteScroller({
             )}
           </Masonry>
         ) : (
-          <Wrap align="center" justify="center" spacing="2">
+          <Flex align="center" justify="center" gap="2" wrap="wrap">
             {currentItems?.map((item, index) => children(item, index))}
             {hasMore && <Loader relative />}
             {!hasMore && canCreateContent && (
@@ -158,7 +158,7 @@ export default function InfiniteScroller({
                 small={smallThumb || isMasonry}
               />
             )}
-          </Wrap>
+          </Flex>
         )}
       </InfiniteScroll>
     </>

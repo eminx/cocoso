@@ -3,7 +3,7 @@ import React, { memo, useContext } from 'react';
 import dayjs from 'dayjs';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import { Box, Flex, HStack, Tag } from '/imports/ui/core';
+import { Box, Flex, Tag } from '/imports/ui/core';
 
 import { DateJust } from '../entry/FancyDate';
 import { StateContext } from '../LayoutContainer';

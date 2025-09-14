@@ -136,7 +136,7 @@ export default function MenuDesign() {
                 css={{
                   borderBottom: '1px solid transparent',
                   color: menuStyle.color,
-                  ':hover': {
+                  '&:hover': {
                     borderBottom: '1px solid',
                     cursor: 'pointer',
                   },

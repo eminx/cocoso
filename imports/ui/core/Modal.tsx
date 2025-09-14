@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { styled } from '@stitches/react';
 import { useTranslation } from 'react-i18next';
+import { styled } from '@stitches/react';
 
 import { Box, Button } from '/imports/ui/core';
 

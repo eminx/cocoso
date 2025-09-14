@@ -11,7 +11,6 @@ import {
   Input,
   Loader,
   Text,
-  VStack,
 } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
@@ -37,7 +36,7 @@ function EmailForm({ defaultValues, key, onSubmit }) {
       {key && <Heading>{defaultValues.title}</Heading>}
       <Boxling>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-          <VStack>
+          <Flex direction="column">
             <FormField label={t('emails.form.subject.label')} required>
               <Input
                 {...register('subject')}
@@ -68,7 +67,7 @@ function EmailForm({ defaultValues, key, onSubmit }) {
                 {tc('actions.submit')}
               </Button>
             </Flex>
-          </VStack>
+          </Flex>
         </form>
       </Boxling>
     </>

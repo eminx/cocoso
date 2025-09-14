@@ -40,7 +40,7 @@ export default function GroupMembers({ group }) {
         mt="2"
         css={{
           cursor: 'pointer',
-          ':hover': {
+          '&:hover': {
             backgroundColor: 'var(--cocoso-colors-gray-100)',
             borderRadius: '8px',
           },

@@ -13,8 +13,6 @@ import {
   Heading,
   Link as CLink,
   Tag,
-  VStack,
-  Wrap,
 } from '/imports/ui/core';
 
 import NiceSlider from '../generic/NiceSlider';
@@ -60,10 +58,10 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
   return (
     <Box mt="2">
       <Link to={`/@${author.username}/`}>
-        <VStack align="center" justify="center" gap="0">
+        <Flex align="center" direction="column" justify="center" gap="0">
           <Avatar name={author.username} size="lg" src={author.src} />
           <CLink color="theme.500">{author.username}</CLink>
-        </VStack>
+        </Flex>
       </Link>
     </Box>
   );
@@ -121,13 +119,13 @@ const Header: React.FC<HeaderProps> = ({
             </Heading>
           )}
           {tags && tags.length > 0 ? (
-            <Wrap justify={author ? 'flex-start' : 'center'} mt="2">
+            <Flex justify={author ? 'flex-start' : 'center'} mt="2" wrap="wrap">
               {tags.map((tag, i) => (
                 <Tag colorScheme="gray" key={tag + i}>
                   {tag}
                 </Tag>
               ))}
-            </Wrap>
+            </Flex>
           ) : null}
           {dates ? <Center pt="2">{dates}</Center> : null}
         </Box>

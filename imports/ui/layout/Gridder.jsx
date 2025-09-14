@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import { Center, Heading, Image, Text, VStack, Wrap } from '/imports/ui/core';
+import { Center, Flex, Heading, Image, Text } from '/imports/ui/core';
 
 export default function Gridder({ items }) {
   if (!items) {
@@ -25,9 +25,14 @@ export default function Gridder({ items }) {
       </Helmet>
 
       <Center>
-        <Wrap justify="center">
+        <Flex justify="center" wrap="wrap">
           {items.map((item) => (
-            <VStack key={item._id} w={360} mb="4">
+            <Flex
+              direction="column"
+              key={item._id}
+              mb="4"
+              css={{ width: '360px' }}
+            >
               <Image
                 w={360}
                 h={240}
@@ -39,9 +44,9 @@ export default function Gridder({ items }) {
                 {item.title || item.label || item.settings?.name}
               </Heading>
               <Text>{item._id}</Text>
-            </VStack>
+            </Flex>
           ))}
-        </Wrap>
+        </Flex>
       </Center>
     </>
   );

@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import {
   Button,
   Center,
+  Flex,
   Input,
   Modal,
   Select,
   Textarea,
-  VStack,
 } from '/imports/ui/core';
 
 import FormField from '/imports/ui/forms/FormField';
@@ -38,7 +38,7 @@ function FeedbackForm({ isDarkText = false }) {
         onClose={() => setShowFeedbackModal(false)}
       >
         <form action="https://formspree.io/f/xdopweon" method="POST">
-          <VStack mb="8" spacing="6">
+          <Flex direction="column" mb="8" gap="6">
             <FormField label={tc('modals.feedback.form.email.label')}>
               <Input type="email" name="_replyto" />
             </FormField>
@@ -66,7 +66,7 @@ function FeedbackForm({ isDarkText = false }) {
                 rows={10}
               />
             </FormField>
-          </VStack>
+          </Flex>
         </form>
       </Modal>
     </>

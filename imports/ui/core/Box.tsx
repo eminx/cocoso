@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '/stitches.config';
+import { styled } from '@stitches/react';
 import { getPropStyles, getSpacing } from '/imports/ui/core/functions';
 
 // Base primitives
@@ -12,7 +12,7 @@ const BaseLi = styled('li', {});
 // Box
 export const Box = ({ css, children, ...props }: any) => (
   <BaseDiv
-    css={{ ...css, display: 'block', ...getPropStyles(props) }}
+    css={{ display: 'block', ...getPropStyles(props), ...css }}
     {...props}
   >
     {children}
@@ -23,13 +23,13 @@ export const Box = ({ css, children, ...props }: any) => (
 export const Center = ({ css, children, ...props }: any) => (
   <BaseDiv
     css={{
-      ...css,
       alignItems: 'center',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
       width: props.w || props.width || '100%',
       ...getPropStyles(props),
+      ...css,
     }}
     {...props}
   >
@@ -50,7 +50,6 @@ export const Container = ({
 }: ContainerProps & any) => (
   <Box
     css={{
-      ...css,
       marginLeft: 'auto',
       marginRight: 'auto',
       maxWidth: props.maxW || '60rem',
@@ -58,6 +57,7 @@ export const Container = ({
       paddingRight: props.px ? getSpacing(props.px) : '1rem',
       width: '100%',
       ...getPropStyles(props),
+      ...css,
     }}
     {...props}
   >
@@ -69,7 +69,6 @@ export const Container = ({
 export const Flex = ({ css, children, ...props }: any) => (
   <BaseDiv
     css={{
-      ...css,
       alignItems: props.align || props.alignItems || 'flex-start',
       display: 'flex',
       gap: props.gap || props.spacing || '0.5rem',
@@ -77,6 +76,7 @@ export const Flex = ({ css, children, ...props }: any) => (
       flexWrap: props.wrap || 'nowrap',
       justifyContent: props.justify || props.justifyContent || 'flex-start',
       ...getPropStyles(props),
+      ...css,
     }}
     {...props}
   >
@@ -91,11 +91,11 @@ export const FormControl = ({ css, children, ...props }: any) => (
 export const FormLabel = ({ css, children, ...props }: any) => (
   <BaseLabel
     css={{
-      ...css,
       display: 'block',
       fontSize: '0.875rem',
       fontWeight: 'bold',
       ...getPropStyles(props),
+      ...css,
     }}
     {...props}
   >
@@ -113,7 +113,6 @@ interface GridProps {
 export const Grid = ({ css, children, ...props }: GridProps & any) => (
   <BaseDiv
     css={{
-      ...css,
       display: 'grid',
       gridTemplateColumns:
         props.templateColumns ||
@@ -122,6 +121,7 @@ export const Grid = ({ css, children, ...props }: GridProps & any) => (
       gap: props.gap ? getSpacing(props.gap) : '1rem',
       width: '100%',
       ...getPropStyles(props),
+      ...css,
     }}
     {...props}
   >
@@ -143,16 +143,16 @@ export const Divider = ({ css, ...props }: DividerProps & any) => {
   return (
     <BaseHr
       css={{
-        ...css,
+        alignSelf: vertical ? 'stretch' : 'auto',
         border: 'none',
         backgroundColor: props.color || 'var(--cocoso-colors-gray-300)',
+        height: vertical ? 'auto' : props.thickness || '1px',
         margin: props.margin || (vertical ? '0 0.5rem' : '0.5rem auto'),
         maxWidth: vertical ? 'none' : '980px',
+        minHeight: vertical ? '1rem' : 'auto',
         padding: '0',
         width: vertical ? props.thickness || '1px' : '100%',
-        height: vertical ? 'auto' : props.thickness || '1px',
-        minHeight: vertical ? '1rem' : 'auto',
-        alignSelf: vertical ? 'stretch' : 'auto',
+        ...css,
       }}
       {...props}
     />
@@ -161,7 +161,7 @@ export const Divider = ({ css, ...props }: DividerProps & any) => {
 
 export const List = ({ css, children, ...props }: any) => (
   <BaseUl
-    css={{ ...css, listStyleType: 'none', padding: 0, ...getPropStyles(props) }}
+    css={{ listStyleType: 'none', padding: 0, ...getPropStyles(props), ...css }}
     {...props}
   >
     {children}
@@ -170,32 +170,9 @@ export const List = ({ css, children, ...props }: any) => (
 
 export const ListItem = ({ css, children, ...props }: any) => (
   <BaseLi
-    css={{ ...css, marginBottom: '0.5rem', ...css, ...getPropStyles(props) }}
+    css={{ marginBottom: '0.5rem', ...getPropStyles(props), ...css }}
     {...props}
   >
     {children}
   </BaseLi>
-);
-
-// Stack, HStack, VStack, Wrap
-export const Stack = ({ children, ...props }: any) => (
-  <Flex {...props}>{children}</Flex>
-);
-
-export const HStack = ({ children, ...props }: any) => (
-  <Flex flexDirection="row" {...props}>
-    {children}
-  </Flex>
-);
-
-export const VStack = ({ children, ...props }: any) => (
-  <Flex flexDirection="column" {...props}>
-    {children}
-  </Flex>
-);
-
-export const Wrap = ({ children, ...props }: any) => (
-  <Flex flexWrap="wrap" {...props}>
-    {children}
-  </Flex>
 );

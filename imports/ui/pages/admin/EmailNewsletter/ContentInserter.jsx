@@ -6,7 +6,6 @@ import CheckIcon from 'lucide-react/dist/esm/icons/check';
 import {
   Box,
   Flex,
-  HStack,
   Image,
   Loader,
   Input,
@@ -49,7 +48,7 @@ function ListItemCheckbox({ item, children, onSelect }) {
           : 'white',
         cursor: 'pointer',
         padding: '1rem 0.5rem',
-        ':hover': {
+        '&:hover': {
           backgroundColor: item.isSelected
             ? 'var(--cocoso-colors-green-100)'
             : 'var(--cocoso-colors-green-50)',
@@ -57,7 +56,7 @@ function ListItemCheckbox({ item, children, onSelect }) {
       }}
       onClick={() => onSelect(item)}
     >
-      <HStack alignItems="center">
+      <Flex align="center">
         <Box
           bg={selectedBgCheck}
           h="24px"
@@ -84,7 +83,7 @@ function ListItemCheckbox({ item, children, onSelect }) {
           </Text>
           {children}
         </Box>
-      </HStack>
+      </Flex>
     </ListItem>
   );
 }

@@ -7,9 +7,9 @@ import {
   Box,
   Center,
   Drawer,
+  Flex,
   IconButton,
   Text,
-  VStack,
 } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 
@@ -109,10 +109,11 @@ export function ChatButton({
   return (
     <Box css={{ flexGrow: '0' }}>
       <Center>
-        <VStack
-          style={{
-            alignItems: 'center',
-            gap: '0',
+        <Flex
+          align="center"
+          direction="column"
+          gap="0"
+          css={{
             position: 'relative',
           }}
         >
@@ -150,7 +151,7 @@ export function ChatButton({
           >
             {tc('labels.discussion')}
           </Text>
-        </VStack>
+        </Flex>
       </Center>
 
       <ChatUI {...props} />

@@ -59,7 +59,7 @@ function NewGridThumb({
         borderRadius: 'var(--cocoso-border-radius)',
         cursor: 'pointer',
         overflow: 'hidden',
-        ':hover': { bg: 'theme.50' },
+        '&:hover': { bg: 'theme.50' },
       }}
     >
       <Box

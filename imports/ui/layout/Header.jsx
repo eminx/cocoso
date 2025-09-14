@@ -68,7 +68,7 @@ export function InfoPagesMenu({
               : '2px solid transparent',
             color: menuStyles?.color,
             wrap: 'wrap',
-            ':hover': !isCurrentContext && {
+            '&:hover': !isCurrentContext && {
               borderBottomColor: borderColor,
               textDecoration: 'underline',
             },
@@ -130,6 +130,8 @@ function HeaderMenu({ Host, pageTitles }) {
     return pathname.includes(item?.name);
   };
 
+  console.log(menuStyles);
+
   return (
     <Center id="main-menu" mb="4" px="4">
       <Flex
@@ -163,7 +165,7 @@ function HeaderMenu({ Host, pageTitles }) {
                       ? menuStyles.color
                       : 'transparent',
                     color: menuStyles?.color,
-                    ':hover': {
+                    '&:hover': {
                       borderBottomColor: menuStyles?.color,
                       borderBottomWidth: '1px',
                     },
@@ -186,7 +188,7 @@ function HeaderMenu({ Host, pageTitles }) {
                       ? menuStyles.color
                       : 'transparent',
                   color: menuStyles?.color,
-                  ':hover': {
+                  '&:hover': {
                     borderBottomColor: menuStyles?.color,
                     borderBottomWidth: '1px',
                   },

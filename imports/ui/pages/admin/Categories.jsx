@@ -5,11 +5,10 @@ import {
   Alert,
   Box,
   Button,
-  HStack,
+  Flex,
   Input,
   Loader,
   Text,
-  Wrap,
 } from '/imports/ui/core';
 import Tag from '/imports/ui/generic/Tag';
 import { message } from '/imports/ui/generic/message';
@@ -88,7 +87,7 @@ function Categories() {
 
       <Boxling mb="4">
         <form onSubmit={addNewCategory}>
-          <HStack align="center" maxWidth={240} py="2">
+          <Flex align="center" py="2" css={{ maxWidth: '240px' }}>
             <Input
               placeholder="PAJAMAS"
               value={categoryInput}
@@ -97,12 +96,12 @@ function Categories() {
               }
             />
             <Button type="submit">{tc('actions.add')}</Button>
-          </HStack>
+          </Flex>
         </form>
       </Boxling>
 
       <Boxling>
-        <Wrap p="1" gap="2" mb="2">
+        <Flex p="1" gap="2" mb="2" wrap="wrap">
           {categories.map((category) => (
             <Tag
               key={category._id}
@@ -112,7 +111,7 @@ function Categories() {
               onRemove={() => removeCategory(category._id)}
             />
           ))}
-        </Wrap>
+        </Flex>
       </Boxling>
     </Box>
   );

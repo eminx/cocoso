@@ -63,7 +63,7 @@ export default function AdminHome() {
   const navigate = useNavigate();
 
   return (
-    <Flex wrap="wrap" gap="1rem">
+    <Flex wrap="wrap">
       {shortCuts.map((item) => (
         <Boxling
           key={item.link}
@@ -71,7 +71,7 @@ export default function AdminHome() {
             cursor: 'pointer',
             flex: '1 1 200px',
             height: '100%',
-            ':hover': {
+            '&:hover': {
               backgroundColor: 'white',
             },
           }}

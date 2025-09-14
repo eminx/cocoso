@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
 
-import { Box, Drawer, Flex, IconButton, Text, VStack } from '/imports/ui/core';
+import { Box, Drawer, Flex, IconButton, Text } from '/imports/ui/core';
 
 import ChangeLanguageMenu from './ChangeLanguageMenu';
 import { StateContext } from '../LayoutContainer';
@@ -25,9 +25,11 @@ function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
   };
 
   return (
-    <VStack
+    <Flex
       align="flex-start"
-      style={{ ...styles, padding: '1rem', width: '100%' }}
+      direction="column"
+      p="2"
+      css={{ ...styles, width: '100%' }}
     >
       {menuItems.map((item) => {
         const isCurrentPageLabel = isCurrentPage(item);
@@ -67,7 +69,7 @@ function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
           </Link>
         );
       })}
-    </VStack>
+    </Flex>
   );
 }
 

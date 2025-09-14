@@ -81,7 +81,7 @@ const TabLink = styled(Link, {
   color: 'inherit',
   marginBottom: 0,
   textDecoration: 'none',
-  ':hover': {
+  '&:hover': {
     textDecoration: 'none',
   },
 });
@@ -93,7 +93,7 @@ const TabButton = styled('button', {
   cursor: 'pointer',
   marginBottom: 0,
   textDecoration: 'none',
-  ':hover': {
+  '&:hover': {
     textDecoration: 'none',
   },
 });

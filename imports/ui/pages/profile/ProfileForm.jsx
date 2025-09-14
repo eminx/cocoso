@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Flex, Input, VStack } from '/imports/ui/core';
+import { Button, Flex, Input } from '/imports/ui/core';
 
 import FormField from '../../forms/FormField';
 import ReactQuill from '../../forms/Quill';
@@ -19,7 +19,7 @@ function ProfileForm({ defaultValues, onSubmit }) {
   return (
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <VStack spacing="6">
+        <Flex direction="column" gap="6">
           <FormField label={t('profile.form.firstname.label')}>
             <Input {...register('firstName')} placeholder="" />
           </FormField>
@@ -49,7 +49,7 @@ function ProfileForm({ defaultValues, onSubmit }) {
               {tc('actions.submit')}
             </Button>
           </Flex>
-        </VStack>
+        </Flex>
       </form>
     </div>
   );

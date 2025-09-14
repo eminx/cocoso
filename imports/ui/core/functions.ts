@@ -129,7 +129,7 @@ export const getPropStyles = (props: any) => {
       marginBottom: xToRem(props.mb),
     }),
     ...(props._hover && {
-      ':hover': {
+      '&:hover': {
         ...props.hover,
       },
     }),

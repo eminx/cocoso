@@ -12,9 +12,8 @@ import {
   Center,
   Flex,
   Link as CLink,
-  Text,
-  Wrap,
   Loader,
+  Text,
 } from '/imports/ui/core';
 
 import Modal from '/imports/ui/core/Modal';
@@ -241,15 +240,15 @@ export default function Calendar() {
         <Center mb="2">
           {!selectFilterView ? (
             <Box>
-              <Wrap justify="center" px="1" pb="1" mb="3">
+              <Flex justify="center" px="1" pb="1" mb="3" wrap="wrap">
                 <Box>
                   <Tag
-                    alignSelf="center"
-                    checkable
                     key="All"
+                    checkable
                     label={tc('labels.all')}
                     filterColor="#484848"
                     checked={!calendarFilter}
+                    css={{ alignSelf: 'center' }}
                     onClick={() => setCalendarFilter(null)}
                   />
                 </Box>
@@ -267,8 +266,8 @@ export default function Calendar() {
                       />
                     </Box>
                   ))}
-              </Wrap>
-              <Wrap justify="center" mb="2" px="1">
+              </Flex>
+              <Flex justify="center" mb="2" px="1" wrap="wrap">
                 {comboResourcesWithColor
                   .filter((r) => r.isBookable)
                   .map((resource) => (
@@ -283,10 +282,10 @@ export default function Calendar() {
                       />
                     </Box>
                   ))}
-              </Wrap>
+              </Flex>
             </Box>
           ) : (
-            <Flex w="30rem" align="center">
+            <Flex w="30rem">
               <Button
                 colorScheme="green"
                 mr="2"
@@ -299,12 +298,9 @@ export default function Calendar() {
 
               <Box w="100%">
                 <AutoCompleteSelect
-                  isClearable
-                  onChange={(value) => setCalendarFilter(value)}
                   components={animatedComponents}
-                  value={calendarFilter}
+                  isClearable
                   options={allResourcesForSelect}
-                  getOptionValue={(option) => option._id}
                   style={{ width: '100%', marginTop: '1rem' }}
                   styles={{
                     option: (styles, { data }) => ({
@@ -315,6 +311,9 @@ export default function Calendar() {
                       fontWeight: data.isCombo ? 'bold' : 'normal',
                     }),
                   }}
+                  value={calendarFilter}
+                  getOptionValue={(option) => option._id}
+                  onChange={(value) => setCalendarFilter(value)}
                 />
               </Box>
             </Flex>

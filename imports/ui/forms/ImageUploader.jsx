@@ -171,7 +171,7 @@ export default function ImageUploader({
                       size="xs"
                       css={{
                         color: 'white',
-                        ':hover': {
+                        '&:hover': {
                           color: 'var(--cocoso-colors-gray-100)',
                         },
                       }}

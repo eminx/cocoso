@@ -13,10 +13,6 @@ import {
   Grid,
   List,
   ListItem,
-  Stack,
-  HStack,
-  VStack,
-  Wrap,
 } from './Box';
 import { Button, IconButton } from './Button';
 import Checkbox from './Checkbox';
@@ -55,7 +51,6 @@ export {
   FormLabel,
   Grid,
   Heading,
-  HStack,
   IconButton,
   Image,
   Input,
@@ -71,12 +66,9 @@ export {
   Select,
   Slide,
   Spinner,
-  Stack,
   Progress,
   Tabs,
   Tag,
   Text,
   Textarea,
-  VStack,
-  Wrap,
 };

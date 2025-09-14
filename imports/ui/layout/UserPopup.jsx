@@ -63,7 +63,7 @@ export function UserThumb({ isNotification = false }) {
         borderRadius: 'var(--cocoso-border-radius)',
         marginTop: '-0.075rem',
         marginRight: '-0.4rem',
-        ':hover': {
+        '&:hover': {
           background: 'rgba(255, 252, 250, 0.9)',
         },
       }}

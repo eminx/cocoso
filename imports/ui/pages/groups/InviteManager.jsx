@@ -8,12 +8,10 @@ import {
   Button,
   Drawer,
   Flex,
-  HStack,
   Heading,
   IconButton,
   Input,
   Text,
-  VStack,
 } from '/imports/ui/core';
 
 import FormField from '/imports/ui/forms/FormField';
@@ -31,7 +29,7 @@ const EmailsContainer = (props) => (
     <Heading size="md" mb="4">
       {props.title} ({props.count})
     </Heading>
-    <HStack wrap="wrap">{props.children}</HStack>
+    <Flex wrap="wrap">{props.children}</Flex>
   </Box>
 );
 
@@ -134,7 +132,7 @@ export default function InviteManager() {
       onClose={() => setSearchParams({ invite: 'false' })}
     >
       <Box>
-        <VStack py="2" gap="2">
+        <Flex direction="column" gap="2" py="2">
           <Text mb="2">{t('invite.info')}</Text>
 
           <FormField label={t('invite.email.label')} required>
@@ -157,7 +155,7 @@ export default function InviteManager() {
               <Button onClick={handleSendInvite}>{t('invite.submit')}</Button>
             </Flex>
           </FormField>
-        </VStack>
+        </Flex>
 
         <Box py="8">
           <EmailsContainer title="People Invited" count={peopleInvited?.length}>

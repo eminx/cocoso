@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import List from 'rc-virtual-list';
 import EllipsisVertical from 'lucide-react/dist/esm/icons/ellipsis-vertical';
 
-import { Box, Flex, IconButton, VStack } from '/imports/ui/core';
+import { Box, Flex, IconButton } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 
 function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
@@ -87,8 +87,8 @@ export default function NiceList({
   }
 
   return (
-    <VStack gap={spacing} {...otherProps} w="100%">
+    <Flex direction="column" gap={spacing} {...otherProps} w="100%">
       {list.map(renderChildren)}
-    </VStack>
+    </Flex>
   );
 }

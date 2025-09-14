@@ -1,6 +1,7 @@
 import React from 'react';
-import { styled } from '@stitches/react';
+import { CSSProperties } from '@stitches/react';
 
+import { styled } from '/stitches.config';
 import { getPropStyles } from './functions';
 
 const fontSizes = {
@@ -53,6 +54,7 @@ export const Tag = (props: any) => {
 };
 
 interface TextProps {
+  css?: CSSProperties;
   fontSize?: string;
   size?: string;
   fontWeight?: string;
@@ -67,7 +69,7 @@ interface TextProps {
   children: React.ReactNode;
 }
 
-const TextStyled = styled('p', {});
+const TextStyled = styled('span', {});
 
 export const Text = (props: TextProps) => {
   const { children, ...rest } = props;
@@ -93,6 +95,7 @@ export const Text = (props: TextProps) => {
         '&:active': props._active || {},
         '&:focus': props._focus || {},
         ...getPropStyles(props),
+        ...props.css,
       }}
       {...rest}
     >
@@ -103,9 +106,10 @@ export const Text = (props: TextProps) => {
 
 // Heading
 interface HeadingProps extends TextProps {
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  css: CSSProperties;
   color?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
 const headingSizes = {
@@ -120,7 +124,7 @@ const headingSizes = {
 const HeadingStyled = styled('h2', {});
 
 export const Heading = (props: HeadingProps) => {
-  const { children, ...rest } = props;
+  const { children, css, ...rest } = props;
   const color = props.color?.split('.');
   const truncated = props.isTruncated || props.truncated;
 
@@ -139,6 +143,7 @@ export const Heading = (props: HeadingProps) => {
         textOverflow: truncated ? 'ellipsis' : 'clip',
         whiteSpace: truncated ? 'nowrap' : 'normal',
         ...getPropStyles(props),
+        ...css,
       }}
       {...rest}
     >

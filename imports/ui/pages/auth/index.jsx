@@ -16,7 +16,6 @@ import {
   Link,
   Modal,
   Text,
-  VStack,
 } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import Terms from '/imports/ui/entry/Terms';
@@ -41,7 +40,7 @@ const Login = ({ isSubmitted, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <VStack spacing="6">
+      <Flex direction="column" gap="6">
         <FormField label={t('login.form.username.label')} required>
           <Input {...register('username')} />
         </FormField>
@@ -55,7 +54,7 @@ const Login = ({ isSubmitted, onSubmit }) => {
             {tc('actions.submit')}
           </Button>
         </Flex>
-      </VStack>
+      </Flex>
     </form>
   );
 };
@@ -90,7 +89,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
   return (
     <Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <VStack spacing="6">
+        <Flex direction="column" gap="6">
           <FormField
             errorMessage={errors.username?.message}
             helperText={t('signup.form.username.helper')}
@@ -164,7 +163,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
               {tc('actions.submit')}
             </Button>
           </Flex>
-        </VStack>
+        </Flex>
       </form>
 
       <Modal
@@ -201,7 +200,7 @@ const ForgotPassword = ({ onForgotPassword }) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onForgotPassword(data))}>
-      <VStack spacing="6">
+      <Flex direction="column" gap="6">
         <FormField
           errorMessage={errors.email?.message}
           isInvalid={errors.email}
@@ -215,7 +214,7 @@ const ForgotPassword = ({ onForgotPassword }) => {
             {tc('actions.submit')}
           </Button>
         </Flex>
-      </VStack>
+      </Flex>
     </form>
   );
 };
@@ -239,7 +238,7 @@ const ResetPassword = ({ onResetPassword }) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
-      <VStack spacing="6">
+      <Flex direction="column" gap="6">
         <FormField
           errorMessage={errors.password?.message}
           helperText={passwordHelperText}
@@ -254,7 +253,7 @@ const ResetPassword = ({ onResetPassword }) => {
             {tc('actions.submit')}
           </Button>
         </Flex>
-      </VStack>
+      </Flex>
     </form>
   );
 };

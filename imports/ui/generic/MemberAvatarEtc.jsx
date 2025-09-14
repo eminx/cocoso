@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import CircleCheck from 'lucide-react/dist/esm/icons/circle-check';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
 
-import { Avatar, Box, Center, HStack, Tag, Text, Wrap } from '/imports/ui/core';
+import { Avatar, Box, Center, Flex, Tag, Text } from '/imports/ui/core';
 
 // import Popover from './Popover';
 import { getFullName } from '../utils/shared';
@@ -32,7 +32,7 @@ export default function MemberAvatarEtc({ isThumb = true, user, role }) {
 
       <Box>
         <Center>
-          <HStack spacing="0.5">
+          <Flex spacing="0.5">
             <Text fontWeight="bold" fontSize="xl">
               {user.username}
             </Text>
@@ -55,20 +55,20 @@ export default function MemberAvatarEtc({ isThumb = true, user, role }) {
                 </Popover>
               </Box>
             )} */}
-          </HStack>
+          </Flex>
         </Center>
         <Center mb="4">
           <Text>{getFullName(user)}</Text>
         </Center>
 
         {!isThumb && user.keywords && (
-          <Wrap justify="center" py="2">
+          <Flex justify="center" py="2" wrap="wrap">
             {user.keywords?.map((k) => (
               <Box key={k.keywordId}>
                 <Tag {...tagProps}>{k.keywordLabel}</Tag>
               </Box>
             ))}
-          </Wrap>
+          </Flex>
         )}
       </Box>
     </Box>
