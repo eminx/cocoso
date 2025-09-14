@@ -130,8 +130,6 @@ function HeaderMenu({ Host, pageTitles }) {
     return pathname.includes(item?.name);
   };
 
-  console.log(menuStyles);
-
   return (
     <Center id="main-menu" mb="4" px="4">
       <Flex

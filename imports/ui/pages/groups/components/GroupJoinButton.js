@@ -40,12 +40,7 @@ export default function GroupJoinButton() {
     <>
       <Center>
         <Button
-          h="48px"
-          w={isDesktop ? '240px' : '180px'}
-          css={{
-            borderColor: 'var(--cocoso-colors-theme-200)',
-            borderWidth: '2px',
-          }}
+          size={isDesktop ? 'lg' : 'md'}
           onClick={() => setModalOpen(true)}
         >
           {t('actions.join')}

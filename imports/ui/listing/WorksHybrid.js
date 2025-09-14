@@ -4,11 +4,13 @@ import { useTranslation } from 'react-i18next';
 
 import { Box, Center, Flex } from '/imports/ui/core';
 
+import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 import VirtualGridLister from './VirtualGridLister';
 import Tag from '../generic/Tag';
 import { getCategoriesAssignedToWorks } from '../utils/shared';
+import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 
 export default function WorksHybrid({ works, Host }) {
   const [modalItem, setModalItem] = useState(null);
@@ -94,7 +96,7 @@ export default function WorksHybrid({ works, Host }) {
           ))}
         </Flex>
       </Center>
-
+      {/* 
       <Center>
         <VirtualGridLister
           cellProps={{
@@ -109,9 +111,9 @@ export default function WorksHybrid({ works, Host }) {
           }}
           items={works}
         />
-      </Center>
+      </Center> */}
 
-      {/* <Box px="2" pb="8">
+      <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={worksWithCategoryColors}>
           {(work, index) => (
             <Box
@@ -142,7 +144,7 @@ export default function WorksHybrid({ works, Host }) {
           )}
         </InfiniteScroller>
       </Box>
-       */}
+
       {modalItem && (
         <PopupHandler
           item={modalItem}

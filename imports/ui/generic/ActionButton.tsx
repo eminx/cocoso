@@ -11,17 +11,7 @@ export default function ActionButton({ label, onClick }: ActionButtonProps) {
   const isDesktop = useMediaQuery('(min-width: 960px)');
 
   return (
-    <Button
-      size={isDesktop ? 'lg' : 'md'}
-      css={{
-        borderColor: 'theme.100',
-        borderWidth: '2px',
-        colorScheme: 'brand',
-        height: '48px',
-        width: isDesktop ? '240px' : '180px',
-      }}
-      onClick={onClick}
-    >
+    <Button size={isDesktop ? 'lg' : 'md'} onClick={onClick}>
       {label}
     </Button>
   );

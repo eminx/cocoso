@@ -22,7 +22,7 @@ export default function MemberAvatarEtc({ isThumb = true, user, role }) {
 
   return (
     <Box mb="6">
-      <Center>
+      <Center mb="2">
         <Avatar
           name={user?.username}
           size={!avatarSrc || isThumb ? '2xl' : '6xl'}

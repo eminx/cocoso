@@ -38,7 +38,7 @@ function useThrottle(callback, delay) {
 }
 
 const flexProps = {
-  align: 'center',
+  align: 'flex-start',
   bg: 'theme.900',
   justify: 'center',
   p: '4',
