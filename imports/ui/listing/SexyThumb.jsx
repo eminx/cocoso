@@ -84,7 +84,9 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
       bg="theme.500"
       className="thumb-cover-container"
       h={imageStyle.height}
-      maxW={imageStyle.maxWidth}
+      css={{
+        maxWidth: imageStyle.maxWidth,
+      }}
     >
       <div className="thumb-cover">
         <LazyLoadImage
@@ -105,7 +107,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
             right: '12px',
           }}
         >
-          <Tag colorScheme="gray" size="sm">
+          <Tag color="gray" size="sm">
             {hostValue}
           </Tag>
         </Box>
