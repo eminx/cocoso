@@ -1,15 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useMemo, useState } from 'react';
 import { Grid } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 import { Box, Flex } from '/imports/ui/core';
+import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
 import FiltrerSorter from './FiltrerSorter';
 import NewGridThumb from './NewGridThumb';
 import SexyThumb from './SexyThumb';
 
 const defaultItemsPerPage = 12;
-const COLUMN_COUNT = 3;
 const ITEM_HEIGHT = 337;
 
 const isClient = Meteor.isClient;
@@ -152,7 +153,7 @@ export default function VirtualGridLister({
     [items, filterValue, sortValue]
   );
 
-  const cellComponent = useMemo(() => ThumbItem, [isMasonry]);
+  const CellComponent = useMemo(() => ThumbItem, [isMasonry]);
 
   const filtrerProps = {
     filterValue,
@@ -161,8 +162,18 @@ export default function VirtualGridLister({
     setSortValue: (v) => setSortValue(v),
   };
 
-  const columnWidth = isClient ? window.screen?.width / COLUMN_COUNT - 18 : 355;
-  const rowCount = Math.ceil(items.length / 3);
+  const isDesktop = isClient ? useMediaQuery('(min-width: 1280px)') : true;
+  const isMobile = isClient ? useMediaQuery('(max-width: 720px)') : false;
+  const columnCount = isDesktop ? 3 : isMobile ? 1 : 2;
+
+  const screenWidth =
+    window || document
+      ? window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth
+      : 1440;
+  const columnWidth = screenWidth / columnCount - columnCount * 2;
+  const rowCount = Math.ceil(items.length / columnCount);
 
   return (
     <div>
@@ -173,18 +184,18 @@ export default function VirtualGridLister({
       )}
 
       <Grid
-        cellComponent={cellComponent}
+        cellComponent={CellComponent}
         cellProps={{
           ...cellProps,
           items: currentItems,
-          columnCount: COLUMN_COUNT,
+          columnCount: columnCount,
         }}
-        columnCount={COLUMN_COUNT}
+        columnCount={columnCount}
         columnWidth={columnWidth}
         height={height}
         rowCount={rowCount}
         rowHeight={ITEM_HEIGHT}
-        width={columnWidth * COLUMN_COUNT}
+        width={screenWidth}
       />
     </div>
   );

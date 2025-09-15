@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Masonry, usePositioner, useResizeObserver } from 'masonic';
 
 import { Box, Center, Flex } from '/imports/ui/core';
 
@@ -17,6 +18,8 @@ export default function WorksHybrid({ works, Host }) {
   const [t] = useTranslation('members');
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category');
+  const positioner = usePositioner();
+  const resizeObserver = useResizeObserver(positioner);
 
   const setCategoryFilter = (categoryFilter) => {
     setSearchParams((params) => {
@@ -65,6 +68,29 @@ export default function WorksHybrid({ works, Host }) {
   const getTag = (work) => work.category?.label;
   const getTitle = (work) => work.title;
 
+  const WorkItem = ({ index, data }) => {
+    const work = data;
+
+    return (
+      <NewGridThumb
+        avatar={
+          work.showAvatar && {
+            name: work.authorUsername,
+            url: work.authorAvatar,
+          }
+        }
+        color={
+          categories.find((cat) => cat?.label === work.category?.label)?.color
+        }
+        host={Host?.isPortalHost ? work.host : null}
+        imageUrl={work?.images && work.images[0]}
+        index={index}
+        tag={work.category?.label}
+        title={work.title}
+      />
+    );
+  };
+
   return (
     <>
       <PageHeading
@@ -96,6 +122,13 @@ export default function WorksHybrid({ works, Host }) {
           ))}
         </Flex>
       </Center>
+
+      <Masonry
+        resizeObserver={resizeObserver}
+        items={worksWithCategoryColors}
+        render={WorkItem}
+      />
+
       {/* 
       <Center>
         <VirtualGridLister
@@ -113,7 +146,7 @@ export default function WorksHybrid({ works, Host }) {
         />
       </Center> */}
 
-      <Box px="2" pb="8">
+      {/* <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={worksWithCategoryColors}>
           {(work, index) => (
             <Box
@@ -143,7 +176,7 @@ export default function WorksHybrid({ works, Host }) {
             </Box>
           )}
         </InfiniteScroller>
-      </Box>
+      </Box> */}
 
       {modalItem && (
         <PopupHandler
