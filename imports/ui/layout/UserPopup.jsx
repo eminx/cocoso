@@ -15,6 +15,7 @@ import {
   Divider,
   Flex,
   Link as CLink,
+  NotificationBadge,
   Text,
   Modal,
 } from '/imports/ui/core';
@@ -47,12 +48,14 @@ const linkButtonProps = {
   size: 'sm',
 };
 
-export function UserThumb({ isNotification = false }) {
+export function UserThumb({ notificationsCounter = 0 }) {
   const { currentUser, isDesktop, role } = useContext(StateContext);
 
   if (!currentUser) {
     return null;
   }
+
+  const isNotification = notificationsCounter && notificationsCounter !== 0;
 
   return (
     <Flex
@@ -74,8 +77,19 @@ export function UserThumb({ isNotification = false }) {
         src={currentUser.avatar && currentUser.avatar.src}
       >
         {isNotification ? (
-          <CircleIcon color="red" fill="red" size="16" />
-        ) : role === 'admin' ? (
+          <NotificationBadge
+            colorScheme="red"
+            style={{
+              left: '-2px',
+              top: '-5px',
+              width: '1.5rem',
+              height: '1.5rem',
+            }}
+          >
+            {notificationsCounter?.toString()}
+          </NotificationBadge>
+        ) : // <CircleIcon color="red" fill="red" size="16" />
+        role === 'admin' ? (
           <BoltIcon color="#010101" size="16" />
         ) : role === 'contributor' ? (
           <CheckCircleIcon color="#010101" size="16" />
@@ -131,14 +145,14 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
   const notifications = currentUser?.notifications;
 
+  const isNotification = notifications && notifications.length > 0;
   let notificationsCounter = 0;
-  if (notifications && notifications.length > 0) {
+  if (isNotification) {
     notifications.forEach((notification) => {
       notificationsCounter = notification.count + notificationsCounter;
     });
   }
 
-  const isNotification = notifications && notifications.length > 0;
   const host = currentHost?.host;
   const roleTranslated = <Trans i18nKey={`roles.${role}`} ns="members" />;
 
@@ -148,13 +162,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
     <Box>
       <Menu
         align="end"
-        button={
-          <UserThumb
-            currentUser={currentUser}
-            isDesktop={isDesktop}
-            isNotification={isNotification}
-          />
-        }
+        button={<UserThumb notificationsCounter={notificationsCounter} />}
         open={isOpen}
       >
         <Box p="2">

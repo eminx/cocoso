@@ -9,6 +9,7 @@ import {
   Drawer,
   Flex,
   IconButton,
+  NotificationBadge,
   Text,
 } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
@@ -113,7 +114,7 @@ export function ChatButton({
           align="center"
           direction="column"
           gap="0"
-          css={{
+          style={{
             position: 'relative',
           }}
         >
@@ -124,23 +125,10 @@ export function ChatButton({
               onClick={() => setOpen(true)}
             />
           </Box>
-          {notificationCount && (
-            <Badge
-              style={{
-                border: '2px solid white',
-                borderRadius: '50%',
-                colorScheme: 'red',
-                fontSize: '0.75rem',
-                height: '1.5rem',
-                padding: '0.45rem',
-                position: 'absolute',
-                right: '-0.75rem',
-                top: '-0.5rem',
-                width: '1.5rem',
-              }}
-            >
-              {notificationCount}
-            </Badge>
+          {notificationCount && notificationCount !== 0 && (
+            <NotificationBadge colorScheme="red">
+              {notificationCount?.toString()}
+            </NotificationBadge>
           )}
           <Text
             css={{

@@ -60,27 +60,37 @@ const colorSchemes = {
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   size?: 'sm' | 'md' | 'lg';
+  css?: React.CSSProperties;
   colorScheme?: keyof typeof colorSchemes;
   variant?: 'solid' | 'subtle' | 'outline';
   children?: React.ReactNode;
   ref?: any;
-  style?: React.CSSProperties;
 }
 
-const StyledBadgeStyled = styled('span', {});
+const StyledBadgeBase = styled('span', {});
 const StyledBadge = (props: BadgeProps) => {
-  const { size = 'md', colorScheme = 'gray', variant = 'solid', style } = props;
+  const {
+    colorScheme = 'gray',
+    css,
+    variant = 'solid',
+    size = 'md',
+    children,
+    ...rest
+  } = props;
   const colorSet = colorSchemes[colorScheme] || colorSchemes.red;
 
   return (
-    <StyledBadgeStyled
+    <StyledBadgeBase
       css={{
         ...badgeBase,
         ...(sizeStyles[size] || sizeStyles.md),
         ...(colorSet[variant] || colorSet.solid),
-        ...style,
+        ...css,
       }}
-    />
+      {...rest}
+    >
+      {children}
+    </StyledBadgeBase>
   );
 };
 
@@ -92,4 +102,29 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   )
 );
 Badge.displayName = 'Badge';
+
+export const NotificationBadge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+  ({ children, ...rest }, ref) => (
+    <StyledBadge
+      ref={ref}
+      css={{
+        border: '2px solid white',
+        borderRadius: '50%',
+        color: 'white',
+        fontSize: '0.75rem',
+        fontWeight: 'bold',
+        height: '1.5rem',
+        padding: '0.45rem',
+        position: 'absolute',
+        right: '-0.75rem',
+        top: '-0.5rem',
+        width: '1.5rem',
+      }}
+      {...rest}
+    >
+      {children}
+    </StyledBadge>
+  )
+);
+
 export default Badge;

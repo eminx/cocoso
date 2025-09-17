@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '/stitches.config';
+import { styled, xToRem } from '/stitches.config';
 import { getPropStyles, getSpacing } from '/imports/ui/core/functions';
 
 // Base primitives
@@ -66,19 +66,29 @@ export const Container = ({
 );
 
 // Flex
-export const Flex = ({ css, children, ...props }: any) => (
+export const Flex = ({
+  align,
+  alignItems,
+  css,
+  direction,
+  gap,
+  justify,
+  wrap,
+  children,
+  ...rest
+}: any) => (
   <BaseDiv
     css={{
-      alignItems: props.align || props.alignItems || 'flex-start',
+      alignItems: align || alignItems || 'flex-start',
       display: 'flex',
-      gap: props.gap || props.spacing || '0.5rem',
-      flexDirection: props.direction || props.flexDirection || 'row',
-      flexWrap: props.wrap || 'nowrap',
-      justifyContent: props.justify || props.justifyContent || 'flex-start',
-      ...getPropStyles(props),
+      flexDirection: direction || 'row',
+      flexWrap: wrap || 'nowrap',
+      gap: xToRem(gap) || '0.5rem',
+      justifyContent: justify || 'flex-start',
+      ...getPropStyles(rest),
       ...css,
     }}
-    {...props}
+    {...rest}
   >
     {children}
   </BaseDiv>

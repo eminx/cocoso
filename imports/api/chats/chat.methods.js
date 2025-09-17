@@ -63,7 +63,11 @@ Meteor.methods({
         }
       );
       if (values.context === 'groups') {
-        const unSeenIndex = Chats.findOne({ contextId: values.contextId })?.messages?.length - 1;
+        const theGroup = Chats.findOne({ contextId: values.contextId });
+        if (!theGroup) {
+          return;
+        }
+        const unSeenIndex = theGroup?.messages?.length - 1;
         Meteor.call('createGroupNotification', host, values, unSeenIndex);
       }
     } catch (error) {
@@ -84,7 +88,11 @@ Meteor.methods({
       const theOthers = theGroup.members
         .filter((member) => member.memberId !== user._id)
         .map((other) => Meteor.users.findOne(other.memberId));
+
       theOthers.forEach((member) => {
+        if (!member) {
+          return;
+        }
         let contextIdIndex = -1;
         for (let i = 0; i < member.notifications.length; i += 1) {
           if (member.notifications[i].contextId === contextId) {
@@ -155,9 +163,9 @@ Meteor.methods({
           (notification, index) => index !== notificationIndex
         );
       } else {
-        const newUnSeenIndexes = notifications[notificationIndex].unSeenIndexes.filter(
-          (unSeenIndex) => unSeenIndex !== messageIndex
-        );
+        const newUnSeenIndexes = notifications[
+          notificationIndex
+        ].unSeenIndexes.filter((unSeenIndex) => unSeenIndex !== messageIndex);
         notifications[notificationIndex].unSeenIndexes = newUnSeenIndexes;
         newNotifications = notifications;
       }
