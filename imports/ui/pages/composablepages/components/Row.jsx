@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { styled } from '@stitches/react';
+import { styled } from '/stitches.config';
 import { Trans } from 'react-i18next';
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';

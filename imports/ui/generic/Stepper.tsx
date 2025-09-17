@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '@stitches/react';
+import { styled } from '/stitches.config';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
 import CircleIcon from 'lucide-react/dist/esm/icons/circle';
 import DotIcon from 'lucide-react/dist/esm/icons/dot';

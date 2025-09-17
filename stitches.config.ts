@@ -53,61 +53,63 @@ export const getColor = (color: string) => {
   return `var(--cocoso-colors-${colorParts[0]}-${colorParts[1]})`;
 };
 
+export const { styled, css, globalCss, getCssText } = createStitches();
+
 // --- stitches config
-export const { styled, css, getCssText } = createStitches({
-  utils: {
-    // colors
-    bg: (value: string) => ({ backgroundColor: getColor(value) }),
-    color: (value: string) => ({ color: getColor(value) }),
+// export const { styled, css, getCssText } = createStitches({
+//   utils: {
+//     // colors
+//     bg: (value: string) => ({ backgroundColor: getColor(value) }),
+//     color: (value: string) => ({ color: getColor(value) }),
 
-    // border radius
-    borderRadius: (value: keyof typeof borderRadiusScale) => ({
-      borderRadius: borderRadiusScale[value],
-    }),
+//     // border radius
+//     borderRadius: (value: keyof typeof borderRadiusScale) => ({
+//       borderRadius: borderRadiusScale[value],
+//     }),
 
-    // sizing
-    w: (value: any) => ({ width: value }),
-    h: (value: any) => ({ height: value }),
-    maxW: (value: any) => ({ maxWidth: value }),
-    maxH: (value: any) => ({ maxHeight: value }),
-    flex: (value: any) => ({ flex: value }),
+//     // sizing
+//     w: (value: any) => ({ width: value }),
+//     h: (value: any) => ({ height: value }),
+//     maxW: (value: any) => ({ maxWidth: value }),
+//     maxH: (value: any) => ({ maxHeight: value }),
+//     flex: (value: any) => ({ flex: value }),
 
-    // spacing (all go through xToRem)
-    p: (value: any) => ({ padding: xToRem(value) }),
-    px: (value: any) => ({ paddingInline: xToRem(value) }),
-    py: (value: any) => ({
-      paddingTop: xToRem(value),
-      paddingBottom: xToRem(value),
-    }),
-    pt: (value: any) => ({ paddingTop: xToRem(value) }),
-    pb: (value: any) => ({ paddingBottom: xToRem(value) }),
-    pl: (value: any) => ({ paddingInlineStart: xToRem(value) }),
-    pr: (value: any) => ({ paddingInlineEnd: xToRem(value) }),
+//     // spacing (all go through xToRem)
+//     p: (value: any) => ({ padding: xToRem(value) }),
+//     px: (value: any) => ({ paddingInline: xToRem(value) }),
+//     py: (value: any) => ({
+//       paddingTop: xToRem(value),
+//       paddingBottom: xToRem(value),
+//     }),
+//     pt: (value: any) => ({ paddingTop: xToRem(value) }),
+//     pb: (value: any) => ({ paddingBottom: xToRem(value) }),
+//     pl: (value: any) => ({ paddingInlineStart: xToRem(value) }),
+//     pr: (value: any) => ({ paddingInlineEnd: xToRem(value) }),
 
-    m: (value: any) => ({ margin: xToRem(value) }),
-    mx: (value: any) => ({
-      marginLeft: xToRem(value),
-      marginRight: xToRem(value),
-    }),
-    my: (value: any) => ({
-      marginTop: xToRem(value),
-      marginBottom: xToRem(value),
-    }),
-    mt: (value: any) => ({ marginTop: xToRem(value) }),
-    mb: (value: any) => ({ marginBottom: xToRem(value) }),
-    ml: (value: any) => ({ marginLeft: xToRem(value) }),
-    mr: (value: any) => ({ marginRight: xToRem(value) }),
+//     m: (value: any) => ({ margin: xToRem(value) }),
+//     mx: (value: any) => ({
+//       marginLeft: xToRem(value),
+//       marginRight: xToRem(value),
+//     }),
+//     my: (value: any) => ({
+//       marginTop: xToRem(value),
+//       marginBottom: xToRem(value),
+//     }),
+//     mt: (value: any) => ({ marginTop: xToRem(value) }),
+//     mb: (value: any) => ({ marginBottom: xToRem(value) }),
+//     ml: (value: any) => ({ marginLeft: xToRem(value) }),
+//     mr: (value: any) => ({ marginRight: xToRem(value) }),
 
-    // gap / spacing
-    gap: (value: any) => ({ gap: xToRem(value) }),
-    spacing: (value: any) => ({ gap: xToRem(value) }),
+//     // gap / spacing
+//     gap: (value: any) => ({ gap: xToRem(value) }),
+//     spacing: (value: any) => ({ gap: xToRem(value) }),
 
-    // cursor
-    cursor: (value: any) => ({ cursor: value }),
+//     // cursor
+//     cursor: (value: any) => ({ cursor: value }),
 
-    // pseudo states
-    _hover: (value: any) => ({ '&:hover': value }),
-    _focus: (value: any) => ({ '&:focus': value }),
-    _active: (value: any) => ({ '&:active': value }),
-  },
-});
+//     // pseudo states
+//     _hover: (value: any) => ({ '&:hover': value }),
+//     _focus: (value: any) => ({ '&:focus': value }),
+//     _active: (value: any) => ({ '&:active': value }),
+//   },
+// });

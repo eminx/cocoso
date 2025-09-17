@@ -6,7 +6,7 @@ import {
   AccordionItemProps,
 } from '@szhsin/react-accordion';
 import ChevronIcon from 'lucide-react/dist/esm/icons/chevron-down';
-import { styled } from '@stitches/react';
+import { styled } from '/stitches.config';
 
 import { Flex } from './Box';
 

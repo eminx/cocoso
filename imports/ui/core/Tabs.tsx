@@ -1,6 +1,6 @@
 import React, { useId, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { styled } from '@stitches/react';
+import { styled } from '/stitches.config';
 
 import { Badge, Flex, Text } from '/imports/ui/core';
 

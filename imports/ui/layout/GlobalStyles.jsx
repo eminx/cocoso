@@ -1,5 +1,5 @@
 import React from 'react';
-import { globalCss } from '@stitches/react';
+import { globalCss } from '/stitches.config';
 
 const getColor = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 

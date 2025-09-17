@@ -85,6 +85,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
       bg="theme.500"
       className="thumb-cover-container"
       h={imageStyle.height}
+      mb="0.6"
       css={{
         maxWidth: imageStyle.maxWidth,
       }}

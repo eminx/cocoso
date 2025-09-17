@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '@stitches/react';
+import { styled } from '/stitches.config';
 import AlertIcon from 'lucide-react/dist/esm/icons/alert-circle';
 import InfoIcon from 'lucide-react/dist/esm/icons/info';
 import WarningIcon from 'lucide-react/dist/esm/icons/alert-triangle';

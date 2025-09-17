@@ -1,5 +1,5 @@
 import React from 'react';
-import { CSSProperties, styled } from '@stitches/react';
+import { CSSProperties, styled } from '/stitches.config';
 
 import { getPropStyles } from './functions';
 

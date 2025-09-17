@@ -64,9 +64,12 @@ Meteor.startup(() => {
     try {
       const helmet = Helmet.renderStatic();
 
-      sink.appendToHead(helmet.meta.toString());
-      sink.appendToHead(helmet.title.toString());
-      sink.appendToHead(helmet.link.toString());
+      sink.appendToHead(`
+        ${helmet.title.toString()}
+        ${helmet.meta.toString()}
+        ${helmet.link.toString()}
+        <style id="stitches">${getCssText()}</style>
+      `);
 
       sink.renderIntoElementById(
         'root',

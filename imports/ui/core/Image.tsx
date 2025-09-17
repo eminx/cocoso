@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled } from '@stitches/react';
+import { styled } from '/stitches.config';
 
 const ImageStyled = styled('img', {});
 

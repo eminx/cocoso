@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '@stitches/react';
+import { styled } from '/stitches.config';
 
 export interface SpinnerProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';

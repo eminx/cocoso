@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { styled } from '@stitches/react';
+import { styled } from '/stitches.config';
 
 import { Flex } from './Box';
 import { xToRem } from './functions';
