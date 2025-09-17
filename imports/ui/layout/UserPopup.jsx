@@ -186,7 +186,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
           <Link to="/admin/home">
             <MenuItem>
               <Text>
-                <Flex align="center">
+                <Flex align="center" gap="2">
                   <BoltIcon size="18" />
                   <Trans i18nKey="members:dashboard">Admin Panel</Trans>
                 </Flex>
