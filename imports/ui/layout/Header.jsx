@@ -213,7 +213,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
     <Box id="header" w="100%">
       <Center mb="6">
         <Link className="logo-container" to="/">
-          <Box css={{ maxHeight: isLogoSmall ? '48px' : '96px' }} p="4">
+          <Box css={{ maxHeight: isLogoSmall ? '48px' : '96px' }} p="6">
             {currentHost.logo ? (
               <Image
                 src={Host.logo}

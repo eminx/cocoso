@@ -68,7 +68,6 @@
     "i18next-http-backend": "^2.1.1",
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.473.0",
-    "masonic": "^4.1.0",
     "meteor-node-stubs": "^1.2.1",
     "postcss-easy-import": "^4.0.0",
     "query-string": "^7.1.1",
@@ -103,8 +102,6 @@
     "react-table": "^6.8.6",
     "react-virtualized-auto-sizer": "^1.0.26",
     "react-visibility-sensor": "^5.0.2",
-    "react-window": "^2.0.2",
-    "react-window-infinite-loader": "^1.0.10",
     "rooks": "^5.11.0",
     "simpl-schema": "^1.12.0",
     "zod": "^3.24.1"
