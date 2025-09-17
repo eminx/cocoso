@@ -1,14 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { onPageLoad } from 'meteor/server-render';
-import React from 'react';
+import React, { memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { StaticRouter } from 'react-router-dom/server';
 import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
 import { I18nextProvider, useSSR } from 'react-i18next';
 
-import { getCssText } from '/stitches.config';
 import Hosts from '/imports/api/hosts/host';
 import i18n from '/imports/startup/i18n';
 import AppRoutesSSR from '/imports/ssr/AppRoutes';
@@ -17,6 +16,28 @@ import './api';
 import './migrations';
 
 const { cdn_server } = Meteor.settings;
+
+const App = memo(({ context = {}, sink }) => {
+  const host = sink.request.headers['host'];
+
+  return (
+    <I18nextProvider i18n={i18n}>
+      <StaticRouter location={sink.request.url} context={context}>
+        <Routes>
+          {AppRoutesSSR(host, sink).map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.element}
+              url={sink.request.url}
+              sink={sink}
+            />
+          ))}
+        </Routes>
+      </StaticRouter>
+    </I18nextProvider>
+  );
+});
 
 Meteor.startup(() => {
   const smtp = Meteor.settings?.mailCredentials?.smtp;
@@ -35,33 +56,16 @@ Meteor.startup(() => {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
   }
 
-  onPageLoad(async (sink) => {
-    await new Promise((resolve) => setTimeout(resolve, 10));
+  const { styled, getCssText } = require('/stitches.config');
 
-    const host = sink.request.headers['host'];
-    const context = {};
+  onPageLoad(async (sink) => {
+    const appHtml = renderToString(<App sink={sink} />);
+
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     if (typeof document === 'undefined') {
       React.useLayoutEffect = React.useEffect;
     }
-
-    const App = (props) => (
-      <I18nextProvider i18n={i18n}>
-        <StaticRouter location={sink.request.url} context={context}>
-          <Routes>
-            {AppRoutesSSR(host, sink).map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-                url={sink.request.url}
-                sink={sink}
-              />
-            ))}
-          </Routes>
-        </StaticRouter>
-      </I18nextProvider>
-    );
 
     try {
       const helmet = Helmet.renderStatic();
@@ -73,10 +77,7 @@ Meteor.startup(() => {
         <style id="stitches">${getCssText()}</style>
       `);
 
-      sink.renderIntoElementById(
-        'root',
-        renderToString(<App location={sink.request.url} />)
-      );
+      sink.renderIntoElementById('root', appHtml);
     } catch (error) {
       console.log(error);
     }
