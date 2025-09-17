@@ -83,7 +83,7 @@ export const Flex = ({
       display: 'flex',
       flexDirection: direction || 'row',
       flexWrap: wrap || 'nowrap',
-      gap: xToRem(gap) || '0.5rem',
+      gap: gap ? xToRem(gap) : '0.5rem',
       justifyContent: justify || 'flex-start',
       ...getPropStyles(rest),
       ...css,

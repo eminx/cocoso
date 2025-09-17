@@ -51,6 +51,7 @@ export default function FederationIconMenu() {
       <Flex
         align="center"
         className="federation-logo"
+        gap="0"
         mr="1"
         ml="2"
         p="1"
@@ -102,7 +103,7 @@ export default function FederationIconMenu() {
           </Menu>
         ) : (
           <Link to="/communities">
-            <Button as="span" size="sm" variant="ghost">
+            <Button as="div" ml="1" size="sm" variant="ghost">
               {tc('labels.allCommunities')}
             </Button>
           </Link>
