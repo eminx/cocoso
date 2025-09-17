@@ -34,6 +34,7 @@ export function AdminMenuHeader({ currentHost }) {
       >
         <Flex
           align="center"
+          gap="2"
           css={{ color: 'var(--cocoso-colors-bluegray-900)' }}
         >
           <Eye />
@@ -84,11 +85,7 @@ export function AdminUserThumb({ currentUser }) {
 
         <Flex direction="column" pl="2">
           <Box>
-            <Text
-              size="lg"
-              fontWeight="bold"
-              css={{ color: 'white', fontWeight: 'bold' }}
-            >
+            <Text fontSize="lg" css={{ color: 'white', fontWeight: 'bold' }}>
               {currentUser.username}
             </Text>
           </Box>
@@ -135,9 +132,9 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
       onClick={() => onItemClick(item)}
     >
       <Text
-        fontWeight={isCurrentRoute ? 'bold' : 'normal'}
         css={{
           color: 'var(--cocoso-colors-bluegray-800)',
+          fontWeight: isCurrentRoute ? 'bold' : 'normal',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',

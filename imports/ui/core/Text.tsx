@@ -73,6 +73,7 @@ export const Text = (props: TextProps) => {
   const {
     children,
     color,
+    css,
     fontSize,
     fontWeight = 'normal',
     lineHeight = 'normal',
@@ -91,7 +92,6 @@ export const Text = (props: TextProps) => {
   return (
     <TextStyled
       css={{
-        ...getPropStyles(props),
         color: colorValue
           ? `var(--cocoso-colors-${colorValue[0]}-${colorValue[1]})`
           : 'var(--cocoso-colors-gray-900)',
@@ -107,7 +107,8 @@ export const Text = (props: TextProps) => {
         '&:hover': _hover || {},
         '&:active': _active || {},
         '&:focus': _focus || {},
-        ...props.css,
+        ...getPropStyles(props),
+        ...css,
       }}
       {...rest}
     >

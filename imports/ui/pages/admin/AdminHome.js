@@ -63,13 +63,17 @@ export default function AdminHome() {
   const navigate = useNavigate();
 
   return (
-    <Flex wrap="wrap">
+    <Flex gap="2" wrap="wrap">
       {shortCuts.map((item) => (
         <Boxling
           key={item.link}
           css={{
+            alignItems: 'stretch',
             cursor: 'pointer',
+            display: 'flex',
             flex: '1 1 200px',
+            flexDirection: 'column',
+            justifyContent: 'stretch',
             height: '100%',
             '&:hover': {
               backgroundColor: 'white',
@@ -77,10 +81,12 @@ export default function AdminHome() {
           }}
           onClick={() => navigate(item.link)}
         >
-          <Heading color="blue.700" mb="2" size="sm">
-            {item.label}
-          </Heading>
-          <Text>{item.helper}</Text>
+          <div>
+            <Heading color="blue.700" mb="2" size="sm">
+              {item.label}
+            </Heading>
+            <Text>{item.helper}</Text>
+          </div>
         </Boxling>
       ))}
     </Flex>

@@ -60,7 +60,7 @@ export function InfoPagesMenu({
       button={
         <Flex
           align="center"
-          gap="1"
+          gap="0"
           css={{
             ...flexStyles,
             borderBottom: isCurrentContext

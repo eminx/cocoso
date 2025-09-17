@@ -153,7 +153,7 @@ export const Button = ({
       onClick={isDisabled ? undefined : onClick}
       {...rest}
     >
-      <Flex align="center" justify="center" gap="0.25rem">
+      <Flex align="center" justify="center" gap="1">
         {itsLoading && (
           <div
             style={{
