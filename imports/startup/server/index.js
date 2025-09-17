@@ -11,8 +11,8 @@ import { I18nextProvider, useSSR } from 'react-i18next';
 import { getCssText } from '/stitches.config';
 import Hosts from '/imports/api/hosts/host';
 import i18n from '/imports/startup/i18n';
+import AppRoutesSSR from '/imports/ssr/AppRoutes';
 
-import AppRoutesSSR from '../../ssr/AppRoutes';
 import './api';
 import './migrations';
 
@@ -35,7 +35,9 @@ Meteor.startup(() => {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
   }
 
-  onPageLoad((sink) => {
+  onPageLoad(async (sink) => {
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
     const host = sink.request.headers['host'];
     const context = {};
 
