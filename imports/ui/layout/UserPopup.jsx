@@ -38,7 +38,7 @@ function NotificationLinkItem({ host, item, children }) {
 }
 
 const linkButtonProps = {
-  as: 'span',
+  as: 'div',
   bg: 'theme.50',
   color: 'theme.500',
   fontWeight: 'normal',
@@ -86,13 +86,14 @@ export function UserThumb({ isNotification = false }) {
         align="flex-start"
         direction="column"
         gap="0"
-        px="2"
+        pl="2"
+        pr="4"
         pt="1"
         css={{ lineHeight: isDesktop ? '1.2' : '0.8' }}
       >
         <Text
           fontSize={isDesktop ? 'md' : 'sm'}
-          css={{ fontWeight: 'bold', margin: isDesktop ? '0.125rem 0' : '0' }}
+          css={{ fontWeight: 'bold', margin: '0.125rem 0' }}
         >
           {currentUser.username}
         </Text>

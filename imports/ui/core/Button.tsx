@@ -39,12 +39,13 @@ const ButtonComponentStyled = styled('button', {
 
 const ButtonComponent = (props: ButtonProps) => {
   const {
-    variant = 'solid',
-    size = 'md',
+    children,
+    colorScheme = 'theme',
     disabled: disabledProp,
     isDisabled,
-    colorScheme = 'theme',
-    children,
+    size = 'md',
+    variant = 'solid',
+    css,
     ...rest
   } = props;
   const disabled = disabledProp || isDisabled;
@@ -71,7 +72,6 @@ const ButtonComponent = (props: ButtonProps) => {
   return (
     <ButtonComponentStyled
       disabled={disabled}
-      {...rest}
       css={{
         backgroundColor: bg,
         borderWidth: variant === 'ghost' ? '0' : '2px',
@@ -124,7 +124,9 @@ const ButtonComponent = (props: ButtonProps) => {
         '&:focus': {
           backgroundColor: disabled ? undefined : focusBg,
         },
+        ...css,
       }}
+      {...rest}
     >
       {children}
     </ButtonComponentStyled>

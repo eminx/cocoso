@@ -41,6 +41,7 @@ signup:
       helper: Minst 8 tecken, inklusive minst en liten bokstav, en stor bokstav och en siffra
       info: Ditt lösenord är krypterat
     terms:
+      agreement: Avtal
       label: Jag läser och accepterar {{ terms }}
       terms: användarvillkoren och sekretesspolicyn
 
