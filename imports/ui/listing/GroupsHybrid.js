@@ -37,7 +37,7 @@ export default function GroupsHybrid({ groups, Host }) {
         />
       </Center> */}
 
-      <InfiniteScroller items={groups}>
+      <InfiniteScroller items={groups} filtrerMarginTop={-88}>
         {(item, index) => (
           <Center
             key={item._id}

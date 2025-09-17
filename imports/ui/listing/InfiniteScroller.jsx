@@ -90,6 +90,7 @@ const filterSortItems = (
 export default function InfiniteScroller({
   canCreateContent = false,
   hideFiltrerSorter = false,
+  filtrerMarginTop = 0,
   isMasonry = false,
   items,
   itemsPerPage = defaultItemsPerPage,
@@ -127,7 +128,12 @@ export default function InfiniteScroller({
   return (
     <>
       {!hideFiltrerSorter && (
-        <Flex justify="flex-end">
+        <Flex
+          justify="flex-end"
+          css={{
+            '@media(min-width: 960px)': { marginTop: `${filtrerMarginTop}px` },
+          }}
+        >
           <FiltrerSorter {...filtrerProps} />
         </Flex>
       )}

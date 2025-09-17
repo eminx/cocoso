@@ -61,7 +61,7 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
         />
       </Center> */}
 
-      <InfiniteScroller items={activities}>
+      <InfiniteScroller items={activities} filtrerMarginTop={-72}>
         {(item, index) => (
           <Center
             key={item._id}

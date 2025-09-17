@@ -842,3 +842,9 @@ body {
     transform: rotate(360deg);
   }
 }
+
+#filtrer-sorter {
+  @media (min-width: 960px) {
+    margin-top: -88px;
+  }
+}
