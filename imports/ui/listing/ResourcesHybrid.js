@@ -31,9 +31,11 @@ export default function ResourcesHybrid({ resources, Host }) {
           {(resource, index) => (
             <Box
               key={resource._id}
-              borderRadius="lg"
-              cursor="pointer"
               mb="2"
+              css={{
+                borderRadius: 'var(--cocoso-border-radius)',
+                cursor: 'pointer',
+              }}
               onClick={() => setModalItem(resource)}
             >
               <NewGridThumb

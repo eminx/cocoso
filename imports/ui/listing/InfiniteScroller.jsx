@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
 
-import { Flex, Loader } from '/imports/ui/core';
+import { Center, Flex, Loader } from '/imports/ui/core';
 
 import NewEntryHelper from '../generic/NewEntryHelper';
 import FiltrerSorter from './FiltrerSorter';
@@ -132,35 +132,37 @@ export default function InfiniteScroller({
         </Flex>
       )}
 
-      <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>
-        {isMasonry ? (
-          <Masonry
-            breakpointCols={breakpointColumnsObj(currentItems?.length > 3)}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column"
-          >
-            {currentItems?.map((item, index) => children(item, index))}
-            {hasMore && <Loader relative />}
-            {!hasMore && canCreateContent && (
-              <NewEntryHelper
-                buttonLink={newHelperLink}
-                small={isMasonry || smallThumb}
-              />
-            )}
-          </Masonry>
-        ) : (
-          <Flex align="center" justify="center" gap="2" wrap="wrap">
-            {currentItems?.map((item, index) => children(item, index))}
-            {hasMore && <Loader relative />}
-            {!hasMore && canCreateContent && (
-              <NewEntryHelper
-                buttonLink={newHelperLink}
-                small={smallThumb || isMasonry}
-              />
-            )}
-          </Flex>
-        )}
-      </InfiniteScroll>
+      <Center px="2" pb="8">
+        <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>
+          {isMasonry ? (
+            <Masonry
+              breakpointCols={breakpointColumnsObj(currentItems?.length > 3)}
+              className="my-masonry-grid"
+              columnClassName="my-masonry-grid_column"
+            >
+              {currentItems?.map((item, index) => children(item, index))}
+              {hasMore && <Loader relative />}
+              {!hasMore && canCreateContent && (
+                <NewEntryHelper
+                  buttonLink={newHelperLink}
+                  small={isMasonry || smallThumb}
+                />
+              )}
+            </Masonry>
+          ) : (
+            <Flex align="center" justify="center" gap="2" wrap="wrap">
+              {currentItems?.map((item, index) => children(item, index))}
+              {hasMore && <Loader relative />}
+              {!hasMore && canCreateContent && (
+                <NewEntryHelper
+                  buttonLink={newHelperLink}
+                  small={smallThumb || isMasonry}
+                />
+              )}
+            </Flex>
+          )}
+        </InfiniteScroll>
+      </Center>
     </>
   );
 }

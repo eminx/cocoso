@@ -1,25 +1,48 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Masonry, usePositioner, useResizeObserver } from 'masonic';
+// import { Masonry, usePositioner, useResizeObserver } from 'masonic';
 
 import { Box, Center, Flex } from '/imports/ui/core';
 
 import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
-import VirtualGridLister from './VirtualGridLister';
+// import VirtualGridLister from './VirtualGridLister';
 import Tag from '../generic/Tag';
 import { getCategoriesAssignedToWorks } from '../utils/shared';
 import NewGridThumb from '/imports/ui/listing/NewGridThumb';
+
+function WorkThumb({ index, categories, data, Host, onClick }) {
+  const work = { ...data };
+  return (
+    <Box onClick={onClick}>
+      <NewGridThumb
+        avatar={
+          work.showAvatar && {
+            name: work.authorUsername,
+            url: work.authorAvatar,
+          }
+        }
+        color={
+          categories.find((cat) => cat?.label === work.category?.label)?.color
+        }
+        host={Host?.isPortalHost ? work.host : null}
+        imageUrl={work?.images && work.images[0]}
+        index={index}
+        tag={work.category?.label}
+        title={work.title}
+      />
+    </Box>
+  );
+}
 
 export default function WorksHybrid({ works, Host }) {
   const [modalItem, setModalItem] = useState(null);
   const [t] = useTranslation('members');
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category');
-  const positioner = usePositioner();
-  const resizeObserver = useResizeObserver(positioner);
+  const containerRef = useRef(null);
 
   const setCategoryFilter = (categoryFilter) => {
     setSearchParams((params) => {
@@ -68,28 +91,18 @@ export default function WorksHybrid({ works, Host }) {
   const getTag = (work) => work.category?.label;
   const getTitle = (work) => work.title;
 
-  const WorkItem = ({ index, data }) => {
-    const work = data;
-
-    return (
-      <NewGridThumb
-        avatar={
-          work.showAvatar && {
-            name: work.authorUsername,
-            url: work.authorAvatar,
-          }
-        }
-        color={
-          categories.find((cat) => cat?.label === work.category?.label)?.color
-        }
-        host={Host?.isPortalHost ? work.host : null}
-        imageUrl={work?.images && work.images[0]}
-        index={index}
-        tag={work.category?.label}
-        title={work.title}
-      />
-    );
-  };
+  const WorkItem = useMemo(
+    () => (props) => {
+      const itemProps = {
+        ...props,
+        categories,
+        Host,
+        onClick: () => setModalItem(props?.data),
+      };
+      return <WorkThumb {...itemProps} />;
+    },
+    []
+  );
 
   return (
     <>
@@ -123,11 +136,17 @@ export default function WorksHybrid({ works, Host }) {
         </Flex>
       </Center>
 
-      <Masonry
-        resizeObserver={resizeObserver}
-        items={worksWithCategoryColors}
-        render={WorkItem}
-      />
+      {/* <Center p="2">
+        <Masonry
+          // containerRef={containerRef}
+          // resizeObserver={resizeObserver}
+          columnWidth={360}
+          columnGutter={8}
+          columnCount={4}
+          items={worksWithCategoryColors}
+          render={WorkItem}
+        />
+      </Center> */}
 
       {/* 
       <Center>
@@ -146,14 +165,16 @@ export default function WorksHybrid({ works, Host }) {
         />
       </Center> */}
 
-      {/* <Box px="2" pb="8">
+      <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={worksWithCategoryColors}>
           {(work, index) => (
             <Box
               key={work._id}
-              borderRadius="lg"
-              cursor="pointer"
               mb="2"
+              css={{
+                borderRadius: 'var(--cocoso-border-radius)',
+                cursor: 'pointer',
+              }}
               onClick={() => setModalItem(work)}
             >
               <NewGridThumb
@@ -176,7 +197,7 @@ export default function WorksHybrid({ works, Host }) {
             </Box>
           )}
         </InfiniteScroller>
-      </Box> */}
+      </Box>
 
       {modalItem && (
         <PopupHandler

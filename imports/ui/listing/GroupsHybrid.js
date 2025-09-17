@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 
 import { Box, Center } from '/imports/ui/core';
 
+import InfiniteScroller from './InfiniteScroller';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
-import VirtualGridLister from './VirtualGridLister';
+import SexyThumb from './SexyThumb';
+// import VirtualGridLister from './VirtualGridLister';
 
 export default function GroupsHybrid({ groups, Host }) {
   const [modalItem, setModalItem] = useState(null);
@@ -28,12 +30,29 @@ export default function GroupsHybrid({ groups, Host }) {
         url={url}
       />
 
-      <Center>
+      {/* <Center>
         <VirtualGridLister
           cellProps={{ Host, getTags, setModalItem }}
           items={groups}
         />
-      </Center>
+      </Center> */}
+
+      <InfiniteScroller items={groups}>
+        {(item, index) => (
+          <Center
+            key={item._id}
+            flex="1 1 355px"
+            onClick={() => setModalItem(item)}
+          >
+            <SexyThumb
+              activity={item}
+              host={Host?.isPortalHost ? item.host : null}
+              index={index}
+              tags={item.isPrivate ? [tc('labels.private')] : null}
+            />
+          </Center>
+        )}
+      </InfiniteScroller>
 
       {modalItem && (
         <PopupHandler

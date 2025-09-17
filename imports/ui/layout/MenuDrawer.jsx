@@ -61,7 +61,9 @@ function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
                   fontWeight: isCurrentPageLabel ? 'bold' : 'normal',
                   textTransform: styles.textTransform,
                 }}
-                _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
+                _hover={
+                  !isCurrentPageLabel ? { textDecoration: 'underline' } : null
+                }
               >
                 {item.label}
               </Text>

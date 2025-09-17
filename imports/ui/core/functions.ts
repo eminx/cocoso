@@ -73,6 +73,9 @@ export const getPropStyles = (props: any) => {
     ...(props.cursor && {
       cursor: props.cursor,
     }),
+    ...(props.gap && {
+      gap: xToRem(props.gap),
+    }),
     ...(props.h && {
       height: props.h,
     }),

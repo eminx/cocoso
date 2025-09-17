@@ -4,10 +4,12 @@ import { Trans } from 'react-i18next';
 
 import { Box, Center } from '/imports/ui/core';
 
+import InfiniteScroller from './InfiniteScroller';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
+import SexyThumb from './SexyThumb';
 import Tabs from '../core/Tabs';
-import VirtualGridLister from './VirtualGridLister';
+// import VirtualGridLister from './VirtualGridLister';
 
 export default function ActivitiesHybrid({ activities, Host, showPast }) {
   const [modalItem, setModalItem] = useState(null);
@@ -52,12 +54,30 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
       </Center>
 
-      <Center>
+      {/* <Center>
         <VirtualGridLister
           cellProps={{ Host, showPast, getTags, setModalItem }}
           items={activities}
         />
-      </Center>
+      </Center> */}
+
+      <InfiniteScroller items={activities}>
+        {(item, index) => (
+          <Center
+            key={item._id}
+            flex="1 1 355px"
+            onClick={() => setModalItem(item)}
+          >
+            <SexyThumb
+              activity={item}
+              host={Host?.isPortalHost ? item.host : null}
+              index={index}
+              showPast={showPast}
+              tags={item.isGroupMeeting ? [groupsInMenu?.label] : null}
+            />
+          </Center>
+        )}
+      </InfiniteScroller>
 
       {modalItem ? (
         <PopupHandler

@@ -43,6 +43,7 @@ export function ThumbDate({ occurrence }) {
       key={occurrence.startDate + occurrence.startTime}
       align="center"
       color={isPast ? 'gray.400' : 'white'}
+      gap="0"
     >
       <DateJust>{occurrence.startDate}</DateJust>
       {occurrence.startDate !== occurrence.endDate && (

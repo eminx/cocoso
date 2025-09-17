@@ -57,7 +57,6 @@ interface TextProps {
   css?: CSSProperties;
   fontSize?: string;
   fontWeight?: string;
-  isTruncated?: boolean;
   lineHeight?: string;
   textAlign?: string;
   size?: string;
@@ -71,30 +70,43 @@ interface TextProps {
 const TextStyled = styled('span', {});
 
 export const Text = (props: TextProps) => {
-  const { children, ...rest } = props;
-  const color = props.color?.split('.');
-  const fontSize = props.size || props.fontSize;
-  const truncated = props.isTruncated || props.truncated;
+  const {
+    children,
+    color,
+    fontSize,
+    fontWeight = 'normal',
+    lineHeight = 'normal',
+    size,
+    textAlign = 'left',
+    truncated,
+    _hover,
+    _active,
+    _focus,
+    ...rest
+  } = props;
+  const colorValue = color?.split('.');
+  const fontSizeValue = size || fontSize;
+  const truncatedValue = truncated || false;
 
   return (
     <TextStyled
       css={{
         ...getPropStyles(props),
-        color: color
-          ? `var(--cocoso-colors-${color[0]}-${color[1]})`
+        color: colorValue
+          ? `var(--cocoso-colors-${colorValue[0]}-${colorValue[1]})`
           : 'var(--cocoso-colors-gray-900)',
-        fontSize: fontSize
-          ? fontSizes[fontSize as keyof typeof fontSizes]
+        fontSize: fontSizeValue
+          ? fontSizes[fontSizeValue as keyof typeof fontSizes]
           : fontSizes.md,
-        fontWeight: props.fontWeight || 'normal',
-        textOverflow: truncated ? 'ellipsis' : 'clip',
-        overflow: truncated ? 'hidden' : 'visible',
-        whiteSpace: truncated ? 'nowrap' : 'normal',
-        lineHeight: props.lineHeight || 'normal',
-        textAlign: props.textAlign || 'left',
-        '&:hover': props._hover || {},
-        '&:active': props._active || {},
-        '&:focus': props._focus || {},
+        fontWeight,
+        textOverflow: truncatedValue ? 'ellipsis' : 'clip',
+        overflow: truncatedValue ? 'hidden' : 'visible',
+        whiteSpace: truncatedValue ? 'nowrap' : 'normal',
+        lineHeight,
+        textAlign,
+        '&:hover': _hover || {},
+        '&:active': _active || {},
+        '&:focus': _focus || {},
         ...props.css,
       }}
       {...rest}
@@ -124,9 +136,17 @@ const headingSizes = {
 const HeadingStyled = styled('h2', {});
 
 export const Heading = (props: HeadingProps) => {
-  const { children, css, ...rest } = props;
+  const {
+    children,
+    fontWeight,
+    lineHeight,
+    size,
+    textAlign,
+    truncated = false,
+    css,
+    ...rest
+  } = props;
   const color = props.color?.split('.');
-  const truncated = props.isTruncated || props.truncated;
 
   return (
     <HeadingStyled
@@ -134,12 +154,12 @@ export const Heading = (props: HeadingProps) => {
         color: color
           ? `var(--cocoso-colors-${color[0]}-${color[1]})`
           : 'inherit',
-        fontSize: props.size ? headingSizes[props.size] : headingSizes.lg,
+        fontSize: size ? headingSizes[size] : headingSizes.lg,
         fontFamily: 'Raleway, sans-serif',
-        fontWeight: props.fontWeight || 'bold',
+        fontWeight: fontWeight || 'bold',
         overflow: truncated ? 'hidden' : 'visible',
-        lineHeight: props.lineHeight || '1.2',
-        textAlign: props.textAlign || 'left',
+        lineHeight: lineHeight || '1.2',
+        textAlign: textAlign || 'left',
         textOverflow: truncated ? 'ellipsis' : 'clip',
         whiteSpace: truncated ? 'nowrap' : 'normal',
         ...getPropStyles(props),
@@ -199,7 +219,7 @@ export const Link = (props: TextProps) => {
   const { children, ...rest } = props;
   const color = props.color?.split('.') || ['blue', '500'];
   const fontSize = props.size || props.fontSize;
-  const truncated = props.isTruncated || props.truncated || false;
+  const truncated = props.truncated || false;
 
   return (
     <LinkStyled

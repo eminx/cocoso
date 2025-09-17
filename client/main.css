@@ -256,6 +256,7 @@ input::placeholder {
   height: 100%;
   padding: 24px;
   position: absolute;
+  text-align: left;
   top: 0;
   width: 100%;
 }
@@ -271,7 +272,7 @@ input::placeholder {
 .thumb-title {
   color: #fff;
   font-size: 24px;
-  /* margin-bottom: 6px; */
+  margin-bottom: 6px;
   line-height: 32px;
   overflow-wrap: anywhere;
   font-family: 'Raleway', sans-serif;
