@@ -12,7 +12,6 @@ import {
   Flex,
   Input,
   Loader,
-  Stack,
   Text,
 } from '/imports/ui/core';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -35,7 +34,7 @@ function PlatformSettingsForm({ initialValues, onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Stack spacing="4">
+      <Flex direction="column" gap="4">
         <FormField label={t('info.platform.name')} required>
           <Input {...register('name')} />
         </FormField>
@@ -47,7 +46,7 @@ function PlatformSettingsForm({ initialValues, onSubmit }) {
             {tc('actions.submit')}
           </Button>
         </Flex>
-      </Stack>
+      </Flex>
     </form>
   );
 }
@@ -64,7 +63,7 @@ function PlatformOptions({ initialValues, onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Stack spacing="4">
+      <Flex direction="column" gap="4">
         <Flex>
           <Checkbox mr="2" mt="2" {...register('isFederationLayout')} />
           <Box>
@@ -77,7 +76,7 @@ function PlatformOptions({ initialValues, onSubmit }) {
             {tc('actions.submit')}
           </Button>
         </Flex>
-      </Stack>
+      </Flex>
     </form>
   );
 }

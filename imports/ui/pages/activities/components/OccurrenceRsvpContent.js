@@ -306,6 +306,7 @@ export default function RsvpContent({
 
       <Modal
         hideFooter
+        id="occurrence-rsvp-content"
         open={isRsvpCancelModalOn}
         size="lg"
         title={
@@ -363,6 +364,7 @@ export default function RsvpContent({
 
       <Modal
         hideFooter
+        id="occurrence-rsvp-content-found-result"
         open={Boolean(selectedOccurrence)}
         size="2xl"
         title={

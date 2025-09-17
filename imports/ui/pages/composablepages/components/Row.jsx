@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { styled } from 'restyle';
+import { styled } from '/stitches.config';
 import { Trans } from 'react-i18next';
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
@@ -89,7 +89,7 @@ export function Column({ column, columnIndex, rowIndex }) {
 
   return (
     <Boxling
-      style={{
+      css={{
         backgroundColor: 'white',
         borderRadius: '0.5rem',
         minHeight: '120px',
@@ -163,7 +163,7 @@ export function Column({ column, columnIndex, rowIndex }) {
   );
 }
 
-const GridRow = styled('div', (props) => ({
+const GridRowStyled = styled('div', {
   backgroundColor: 'var(--cocoso-colors-bluegray-300)',
   borderRadius: '0.5rem',
   display: 'grid',
@@ -171,8 +171,17 @@ const GridRow = styled('div', (props) => ({
   gap: '0.5rem',
   padding: '0.5rem',
   width: '100%',
-  gridTemplateColumns: props.gridTemplateColumns,
-}));
+});
+
+const GridRow = ({ css, gridTemplateColumns, ...rest }) => (
+  <GridRowStyled
+    css={{
+      gridTemplateColumns,
+      ...css,
+    }}
+    {...rest}
+  />
+);
 
 export default function Row({ row, rowIndex }) {
   const { columns, gridType } = row;

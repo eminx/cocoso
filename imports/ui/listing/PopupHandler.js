@@ -16,13 +16,13 @@ function PopupHeader({ subTitle, tags, title }) {
     lineHeight: 1,
     textAlign: 'center',
     textShadow: '1px 1px 1px #fff',
+    margin: '0.5rem',
   };
 
   return (
     <Box mb="4">
       <Heading
         as="h1"
-        mb="2"
         css={{
           ...styles,
           fontFamily,
@@ -143,37 +143,46 @@ export default function PopupHandler({ item, kind, showPast, onClose }) {
 
   const tags = [];
   if (isPortalHost) {
+    if (!item) {
+      return;
+    }
     const hostName = allHosts?.find((h) => h.host === item.host)?.name;
     tags.push(hostName);
   }
-  if (item.isPrivate) {
+  if (item && item.isPrivate) {
     tags.push(tc('labels.private'));
   }
 
   return (
     <Modal
+      cancelText={copied ? tc('actions.copied') : tc('actions.share')}
       confirmText={getButtonLabel()}
       hideHeader
-      open={item}
-      cancelText={copied ? tc('actions.copied') : tc('actions.share')}
+      id="popup-handler"
+      open={Boolean(item)}
       size="xl"
-      onConfirm={() => handleActionButtonClick()}
+      onConfirm={handleActionButtonClick}
       onClose={onClose}
       onSecondaryButtonClick={handleCopyLink}
     >
-      <PopupContent
-        action={<ActionDates activity={item} showPast={showPast} showTime />}
-        content={
-          (item.longDescription && parseHtml(item.longDescription)) ||
-          (item.description && parseHtml(item.description))
-        }
-        images={item.images || [item.imageUrl]}
-        subTitle={
-          item.subTitle || item.readingMaterial || item.shortDescription || null
-        }
-        tags={tags}
-        title={item.title || item.label}
-      />
+      {item && (
+        <PopupContent
+          action={<ActionDates activity={item} showPast={showPast} showTime />}
+          content={
+            (item.longDescription && parseHtml(item.longDescription)) ||
+            (item.description && parseHtml(item.description))
+          }
+          images={item.images || [item.imageUrl]}
+          subTitle={
+            item.subTitle ||
+            item.readingMaterial ||
+            item.shortDescription ||
+            null
+          }
+          tags={tags}
+          title={item.title || item.label}
+        />
+      )}
     </Modal>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 
-import { Box, Button, Center, Checkbox, VStack, Text } from '/imports/ui/core';
+import { Box, Button, Center, Flex, Checkbox, Text } from '/imports/ui/core';
 import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
 import FileDropper from '/imports/ui/forms/FileDropper';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -140,7 +140,7 @@ export default function BackgroundHandler({
       </Text>
 
       <Boxling mb="8" mt="4">
-        <VStack align="center" gap="1">
+        <Flex align="center" direction="column" gap="1">
           <GenericColorPicker
             color={backgroundColor}
             onChange={(selectedOption) =>
@@ -155,7 +155,7 @@ export default function BackgroundHandler({
           >
             <Trans i18nKey="admin:design.color.revert" />
           </Button>
-        </VStack>
+        </Flex>
       </Boxling>
 
       <Text fontWeight="bold">

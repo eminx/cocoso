@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { StateContext } from '../../LayoutContainer';
-import { call } from '../../utils/shared';
-import { message } from '../../generic/message';
-import ActivitiesHybrid from '../../listing/ActivitiesHybrid';
+import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
+import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
+import { StateContext } from '/imports/ui/LayoutContainer';
+import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+
 import NewPublicActivity from './NewPublicActivity';
-import NewEntryHandler from '../../listing/NewEntryHandler';
 
 export default function Activities() {
   const initialActivities = window?.__PRELOADED_STATE__?.activities || [];
@@ -27,7 +28,10 @@ export default function Activities() {
   const getActivities = async () => {
     try {
       if (isPortalHost) {
-        const allActivities = await call('getAllPublicActivitiesFromAllHosts', showPast);
+        const allActivities = await call(
+          'getAllPublicActivitiesFromAllHosts',
+          showPast
+        );
         setActivities(allActivities);
       } else {
         const allActivities = await call('getAllPublicActivities', showPast);
@@ -48,7 +52,11 @@ export default function Activities() {
 
   return (
     <>
-      <ActivitiesHybrid activities={activities} Host={currentHost} showPast={showPast} />
+      <ActivitiesHybrid
+        activities={activities}
+        Host={currentHost}
+        showPast={showPast}
+      />
 
       <NewEntryHandler>
         <NewPublicActivity />

@@ -3,7 +3,7 @@ import React, { memo, useContext } from 'react';
 import dayjs from 'dayjs';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import { Box, Flex, HStack, Tag } from '/imports/ui/core';
+import { Box, Flex, Tag } from '/imports/ui/core';
 
 import { DateJust } from '../entry/FancyDate';
 import { StateContext } from '../LayoutContainer';
@@ -31,7 +31,7 @@ const imageStyle = {
   borderRadius: 'var(--cocoso-border-radius)',
 };
 
-function ThumbDate({ occurrence }) {
+export function ThumbDate({ occurrence }) {
   if (!occurrence) {
     return null;
   }
@@ -85,7 +85,10 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
       bg="theme.500"
       className="thumb-cover-container"
       h={imageStyle.height}
-      maxW={imageStyle.maxWidth}
+      mb="0.6"
+      css={{
+        maxWidth: imageStyle.maxWidth,
+      }}
     >
       <div className="thumb-cover">
         <LazyLoadImage
@@ -106,7 +109,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
             right: '12px',
           }}
         >
-          <Tag colorScheme="gray" size="sm">
+          <Tag color="gray" size="sm">
             {hostValue}
           </Tag>
         </Box>
@@ -129,15 +132,15 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
           </Box>
 
           {dates && (
-            <div
-              style={{
-                alignItems: 'center',
-                display: 'flex',
-                flexWrap: 'wrap',
-              }}
-            >
+            <div>
               {!showPast && futureDates && (
-                <HStack align="center" color="theme.50" mb="4">
+                <Flex
+                  align="center"
+                  color="theme.50"
+                  gap="2"
+                  mb="4"
+                  wrap="wrap"
+                >
                   {futureDates.slice(0, 3).map((occurrence) => (
                     <ThumbDate
                       key={occurrence?.startDate + occurrence?.startTime}
@@ -150,10 +153,10 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
                       <span>{remainingFuture}</span>
                     </span>
                   )}
-                </HStack>
+                </Flex>
               )}
               {showPast && (
-                <HStack color="gray.400" mb="4">
+                <Flex color="gray.400" mb="4" wrap="wrap">
                   {pastDates.slice(0, 1).map((occurrence) => (
                     <ThumbDate
                       key={occurrence?.startDate + occurrence?.startTime}
@@ -166,7 +169,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
                       <span>{remainingPast}</span>
                     </span>
                   )}
-                </HStack>
+                </Flex>
               )}
             </div>
           )}

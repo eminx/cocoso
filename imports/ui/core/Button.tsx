@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { styled, GlobalStyles } from 'restyle';
+import { styled } from '/stitches.config';
 
 import { Flex } from './Box';
 import { xToRem } from './functions';
@@ -31,11 +31,24 @@ interface ButtonProps {
   style?: any;
 }
 
-const ButtonComponent = styled('button', (props: ButtonProps) => {
-  const variant = props.variant || 'solid';
-  const size = props.size || 'md';
-  const disabled = props.disabled || props.isDisabled;
-  const colorScheme = props.colorScheme || 'theme';
+const ButtonComponentStyled = styled('button', {
+  borderRadius: 'var(--cocoso-border-radius)',
+  borderStyle: 'solid',
+  fontWeight: 'bold',
+});
+
+const ButtonComponent = (props: ButtonProps) => {
+  const {
+    children,
+    colorScheme = 'theme',
+    disabled: disabledProp,
+    isDisabled,
+    size = 'md',
+    variant = 'solid',
+    css,
+    ...rest
+  } = props;
+  const disabled = disabledProp || isDisabled;
 
   // Color variables
   const bg =
@@ -56,104 +69,109 @@ const ButtonComponent = styled('button', (props: ButtonProps) => {
       ? `var(--cocoso-colors-${colorScheme}-700)`
       : `var(--cocoso-colors-${colorScheme}-100)`;
 
-  return {
-    backgroundColor: bg,
-    borderRadius: 'var(--cocoso-border-radius)',
-    borderStyle: 'solid',
-    borderWidth: variant === 'ghost' ? '0' : '2px',
-    borderColor: border,
-    color: textColor,
-    cursor: disabled ? 'not-allowed' : 'pointer',
-    fontSize:
-      size === 'xs'
-        ? '0.75rem'
-        : size === 'sm'
-        ? '0.875rem'
-        : size === 'lg'
-        ? '1.1rem'
-        : '1rem',
-    fontWeight: 'bold',
-    marginInline: xToRem(props.mx),
-    marginInlineStart: xToRem(props.ml),
-    marginInlineEnd: xToRem(props.mr),
-    marginTop: xToRem(props.mt || props.my),
-    marginBottom: xToRem(props.mb || props.my),
-    margin: xToRem(props.m),
-    opacity: disabled ? 0.6 : 1,
-    paddingInline:
-      size === 'xs'
-        ? '0.65rem'
-        : size === 'sm'
-        ? '0.85rem'
-        : size === 'lg'
-        ? '1.15rem'
-        : '1rem',
-    paddingTop:
-      size === 'xs'
-        ? '0.35rem'
-        : size === 'sm'
-        ? '0.35rem'
-        : size === 'lg'
-        ? '0.55rem'
-        : '0.45rem',
-    paddingBottom:
-      size === 'xs'
-        ? '0.35rem'
-        : size === 'sm'
-        ? '0.35rem'
-        : size === 'lg'
-        ? '0.55rem'
-        : '0.45rem',
-    pointerEvents: disabled ? 'none' : 'auto',
-    ':hover': {
-      backgroundColor: disabled ? undefined : hoverBg,
-    },
-    ':focus': {
-      backgroundColor: disabled ? undefined : focusBg,
-    },
-  };
-});
+  return (
+    <ButtonComponentStyled
+      disabled={disabled}
+      css={{
+        backgroundColor: bg,
+        borderWidth: variant === 'ghost' ? '0' : '2px',
+        borderColor: border,
+        color: textColor,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        fontSize:
+          size === 'xs'
+            ? '0.75rem'
+            : size === 'sm'
+            ? '0.875rem'
+            : size === 'lg'
+            ? '1.1rem'
+            : '1rem',
+        marginInline: xToRem(props.mx),
+        marginInlineStart: xToRem(props.ml),
+        marginInlineEnd: xToRem(props.mr),
+        marginTop: xToRem(props.mt || props.my),
+        marginBottom: xToRem(props.mb || props.my),
+        margin: xToRem(props.m),
+        opacity: disabled ? 0.6 : 1,
+        paddingInline:
+          size === 'xs'
+            ? '0.65rem'
+            : size === 'sm'
+            ? '0.85rem'
+            : size === 'lg'
+            ? '1.15rem'
+            : '1rem',
+        paddingTop:
+          size === 'xs'
+            ? '0.35rem'
+            : size === 'sm'
+            ? '0.35rem'
+            : size === 'lg'
+            ? '0.55rem'
+            : '0.45rem',
+        paddingBottom:
+          size === 'xs'
+            ? '0.35rem'
+            : size === 'sm'
+            ? '0.35rem'
+            : size === 'lg'
+            ? '0.55rem'
+            : '0.45rem',
+        pointerEvents: disabled ? 'none' : 'auto',
+        '&:hover': {
+          backgroundColor: disabled ? undefined : hoverBg,
+        },
+        '&:focus': {
+          backgroundColor: disabled ? undefined : focusBg,
+        },
+        ...css,
+      }}
+      {...rest}
+    >
+      {children}
+    </ButtonComponentStyled>
+  );
+};
 
-export const Button = (props: ButtonProps) => {
-  const disabled = props.disabled || props.isDisabled;
-  const loading = props.loading || props.isLoading;
-  const isDisabled = disabled || loading; // Button is disabled if explicitly disabled OR loading
+export const Button = ({
+  disabled,
+  isDisabled,
+  isLoading,
+  loading,
+  leftIcon,
+  rightIcon,
+  children,
+  onClick,
+  ...rest
+}: ButtonProps) => {
+  const itsLoading = loading || isLoading;
+  const itsDisabled = disabled || isDisabled || itsLoading;
 
   return (
-    <>
-      <GlobalStyles>
-        {{
-          '@keyframes spin': {
-            '0%': { transform: 'rotate(0deg)' },
-            '100%': { transform: 'rotate(360deg)' },
-          },
-        }}
-      </GlobalStyles>
-      <ButtonComponent
-        {...props}
-        disabled={isDisabled}
-        onClick={isDisabled ? undefined : props.onClick}
-      >
-        <Flex align="center" justify="center" gap="0.25rem">
-          {loading && (
-            <div
-              style={{
-                width: '1rem',
-                height: '1rem',
-                border: '2px solid currentColor',
-                borderTop: '2px solid transparent',
-                borderRadius: '50%',
-                animation: 'spin 1s linear infinite',
-                marginRight: '0.25rem',
-              }}
-            />
-          )}
-          {!loading && props.leftIcon ? props.leftIcon : null}
-          {props.children}
-          {!loading && props.rightIcon ? props.rightIcon : null}
-        </Flex>
-      </ButtonComponent>
-    </>
+    <ButtonComponent
+      disabled={itsDisabled}
+      onClick={isDisabled ? undefined : onClick}
+      {...rest}
+    >
+      <Flex align="center" justify="center" gap="0.25rem">
+        {itsLoading && (
+          <div
+            style={{
+              width: '1rem',
+              height: '1rem',
+              border: '2px solid currentColor',
+              borderTop: '2px solid transparent',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+              marginRight: '0.25rem',
+            }}
+          />
+        )}
+        {!itsLoading && leftIcon ? leftIcon : null}
+        {children}
+        {!loading && rightIcon ? rightIcon : null}
+      </Flex>
+    </ButtonComponent>
   );
 };
 
@@ -184,70 +202,60 @@ export const IconButton = (props: IconButtonProps) => {
   const isDisabledFinal = disabled || loading;
 
   return (
-    <>
-      <GlobalStyles>
-        {{
-          '@keyframes spin': {
-            '0%': { transform: 'rotate(0deg)' },
-            '100%': { transform: 'rotate(360deg)' },
-          },
-        }}
-      </GlobalStyles>
-      <ButtonComponent
-        {...rest}
-        size={size}
-        variant={variant}
-        aria-label={ariaLabel}
-        colorScheme={colorScheme}
-        disabled={isDisabledFinal}
-        onClick={isDisabledFinal ? undefined : props.onClick}
-        style={{
-          borderRadius: 'var(--cocoso-border-radius)',
-          padding:
-            size === 'xs'
-              ? '0.25rem'
-              : size === 'sm'
-              ? '0.35rem'
-              : size === 'lg'
-              ? '0.65rem'
-              : '0.5rem',
-          width:
-            size === 'xs'
-              ? '2rem'
-              : size === 'sm'
-              ? '2.25rem'
-              : size === 'lg'
-              ? '2.75rem'
-              : '2.5rem',
-          height:
-            size === 'xs'
-              ? '2rem'
-              : size === 'sm'
-              ? '2.25rem'
-              : size === 'lg'
-              ? '2.75rem'
-              : '2.5rem',
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          ...rest.style,
-        }}
-      >
-        {loading ? (
-          <div
-            style={{
-              width: '1rem',
-              height: '1rem',
-              border: '2px solid currentColor',
-              borderTop: '2px solid transparent',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite',
-            }}
-          />
-        ) : (
-          icon
-        )}
-      </ButtonComponent>
-    </>
+    <ButtonComponent
+      size={size}
+      variant={variant}
+      aria-label={ariaLabel}
+      colorScheme={colorScheme}
+      disabled={isDisabledFinal}
+      onClick={isDisabledFinal ? undefined : props.onClick}
+      style={{
+        borderRadius: 'var(--cocoso-border-radius)',
+        padding:
+          size === 'xs'
+            ? '0.25rem'
+            : size === 'sm'
+            ? '0.35rem'
+            : size === 'lg'
+            ? '0.65rem'
+            : '0.5rem',
+        width:
+          size === 'xs'
+            ? '2rem'
+            : size === 'sm'
+            ? '2.25rem'
+            : size === 'lg'
+            ? '2.75rem'
+            : '2.5rem',
+        height:
+          size === 'xs'
+            ? '2rem'
+            : size === 'sm'
+            ? '2.25rem'
+            : size === 'lg'
+            ? '2.75rem'
+            : '2.5rem',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...rest.style,
+      }}
+      {...rest}
+    >
+      {loading ? (
+        <div
+          style={{
+            width: '1rem',
+            height: '1rem',
+            border: '2px solid currentColor',
+            borderTop: '2px solid transparent',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+          }}
+        />
+      ) : (
+        icon
+      )}
+    </ButtonComponent>
   );
 };

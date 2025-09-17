@@ -11,7 +11,6 @@ import {
   NumberInput,
   Select,
   Textarea,
-  VStack,
 } from '/imports/ui/core';
 
 import Quill from './Quill';
@@ -122,7 +121,7 @@ export default function GenericEntryForm({
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <VStack gap="0">
+        <Flex direction="column" gap="0">
           {formFields.map((item, index) => (
             <Box key={item.value} w="100%">
               {index === childrenIndex && children}
@@ -139,7 +138,7 @@ export default function GenericEntryForm({
               </FormField>
             </Box>
           ))}
-        </VStack>
+        </Flex>
 
         <Flex justify="flex-end" mt="8" mb="12">
           <Button

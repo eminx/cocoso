@@ -1,6 +1,6 @@
 import React, { ReactNode, CSSProperties } from 'react';
 
-import { Box, Text, VStack } from '/imports/ui/core';
+import { Box, Flex, Text } from '/imports/ui/core';
 
 interface BoxlingProps {
   children: ReactNode;
@@ -17,13 +17,13 @@ export function BoxlingColumn({
   children: React.ReactNode;
 }) {
   return (
-    <VStack align="center" gap="1">
+    <Flex align="center" direction="column" gap="1">
       <Text fontWeight="bold" size="sm">
         {title}
       </Text>
       <Box style={{ marginBottom: '1rem' }} />
       {children}
-    </VStack>
+    </Flex>
   );
 }
 
@@ -31,7 +31,7 @@ const Boxling: React.FC<BoxlingProps> = ({
   children,
   css,
   noHoverEffect = true,
-  ...otherProps
+  ...rest
 }) => {
   return (
     <Box
@@ -40,14 +40,14 @@ const Boxling: React.FC<BoxlingProps> = ({
       css={{
         borderRadius: 'var(--cocoso-border-radius)',
         ...(!noHoverEffect && {
-          ':hover': {
+          '&:hover': {
             backgroundColor: 'white',
           },
         }),
         ...css,
       }}
       w="100%"
-      {...otherProps}
+      {...rest}
     >
       {children}
     </Box>

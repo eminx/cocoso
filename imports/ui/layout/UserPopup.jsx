@@ -15,6 +15,7 @@ import {
   Divider,
   Flex,
   Link as CLink,
+  NotificationBadge,
   Text,
   Modal,
 } from '/imports/ui/core';
@@ -38,7 +39,7 @@ function NotificationLinkItem({ host, item, children }) {
 }
 
 const linkButtonProps = {
-  as: 'span',
+  as: 'div',
   bg: 'theme.50',
   color: 'theme.500',
   fontWeight: 'normal',
@@ -47,12 +48,14 @@ const linkButtonProps = {
   size: 'sm',
 };
 
-export function UserThumb({ isNotification = false }) {
+export function UserThumb({ notificationsCounter = 0 }) {
   const { currentUser, isDesktop, role } = useContext(StateContext);
 
   if (!currentUser) {
     return null;
   }
+
+  const isNotification = notificationsCounter && notificationsCounter !== 0;
 
   return (
     <Flex
@@ -63,7 +66,7 @@ export function UserThumb({ isNotification = false }) {
         borderRadius: 'var(--cocoso-border-radius)',
         marginTop: '-0.075rem',
         marginRight: '-0.4rem',
-        ':hover': {
+        '&:hover': {
           background: 'rgba(255, 252, 250, 0.9)',
         },
       }}
@@ -74,8 +77,19 @@ export function UserThumb({ isNotification = false }) {
         src={currentUser.avatar && currentUser.avatar.src}
       >
         {isNotification ? (
-          <CircleIcon color="red" fill="red" size="16" />
-        ) : role === 'admin' ? (
+          <NotificationBadge
+            colorScheme="red"
+            style={{
+              left: '-2px',
+              top: '-5px',
+              width: '1.5rem',
+              height: '1.5rem',
+            }}
+          >
+            {notificationsCounter?.toString()}
+          </NotificationBadge>
+        ) : // <CircleIcon color="red" fill="red" size="16" />
+        role === 'admin' ? (
           <BoltIcon color="#010101" size="16" />
         ) : role === 'contributor' ? (
           <CheckCircleIcon color="#010101" size="16" />
@@ -86,13 +100,14 @@ export function UserThumb({ isNotification = false }) {
         align="flex-start"
         direction="column"
         gap="0"
-        px="2"
+        pl="2"
+        pr="4"
         pt="1"
         css={{ lineHeight: isDesktop ? '1.2' : '0.8' }}
       >
         <Text
           fontSize={isDesktop ? 'md' : 'sm'}
-          css={{ fontWeight: 'bold', margin: isDesktop ? '0.125rem 0' : '0' }}
+          css={{ fontWeight: 'bold', margin: '0.125rem 0' }}
         >
           {currentUser.username}
         </Text>
@@ -130,14 +145,14 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
   const notifications = currentUser?.notifications;
 
+  const isNotification = notifications && notifications.length > 0;
   let notificationsCounter = 0;
-  if (notifications && notifications.length > 0) {
+  if (isNotification) {
     notifications.forEach((notification) => {
       notificationsCounter = notification.count + notificationsCounter;
     });
   }
 
-  const isNotification = notifications && notifications.length > 0;
   const host = currentHost?.host;
   const roleTranslated = <Trans i18nKey={`roles.${role}`} ns="members" />;
 
@@ -147,13 +162,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
     <Box>
       <Menu
         align="end"
-        button={
-          <UserThumb
-            currentUser={currentUser}
-            isDesktop={isDesktop}
-            isNotification={isNotification}
-          />
-        }
+        button={<UserThumb notificationsCounter={notificationsCounter} />}
         open={isOpen}
       >
         <Box p="2">

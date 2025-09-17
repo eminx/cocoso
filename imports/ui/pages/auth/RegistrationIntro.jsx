@@ -11,7 +11,7 @@ import { Box, Button, Center } from '/imports/ui/core';
 
 import { StateContext } from '/imports/ui/LayoutContainer';
 
-function RegistrationIntro() {
+export default function RegistrationIntro() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { currentUser, platform } = useContext(StateContext);
   const [tc] = useTranslation('common');
@@ -32,6 +32,9 @@ function RegistrationIntro() {
     mt: '512px',
     size: 'sm',
     variant: 'link',
+    css: {
+      color: 'var(--cocoso-colors-gray-200)',
+    },
   };
 
   return (
@@ -58,8 +61,7 @@ function RegistrationIntro() {
               nextArrow={
                 <Button
                   {...arrowButtonProps}
-                  color="green.200"
-                  isDisabled={isLastSlide}
+                  disabled={isLastSlide}
                   rightIcon={<ChevronRightIcon />}
                 >
                   {tc('actions.next')}
@@ -68,8 +70,7 @@ function RegistrationIntro() {
               prevArrow={
                 <Button
                   {...arrowButtonProps}
-                  color="gray.200"
-                  isDisabled={currentSlide === 0}
+                  disabled={currentSlide === 0}
                   leftIcon={<ChevronLeftIcon />}
                 >
                   {tc('actions.previous')}
@@ -83,8 +84,10 @@ function RegistrationIntro() {
                   key={slide}
                   className="text-content"
                   h="420px"
-                  overflowY="scroll"
                   p="4"
+                  css={{
+                    overflowY: 'scroll',
+                  }}
                 >
                   {parseHtml(slide)}
                 </Box>
@@ -97,7 +100,7 @@ function RegistrationIntro() {
       <Center p="4" mt="-82px">
         <Link to={isLastSlide ? '/communities' : '/'}>
           <Button
-            as="span"
+            as="div"
             colorScheme="green"
             size="sm"
             variant={isLastSlide ? 'solid' : 'ghost'}
@@ -109,5 +112,3 @@ function RegistrationIntro() {
     </Box>
   );
 }
-
-export default RegistrationIntro;

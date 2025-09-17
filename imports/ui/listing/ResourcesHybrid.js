@@ -27,13 +27,15 @@ export default function ResourcesHybrid({ resources, Host }) {
       />
 
       <Box px="2" pb="8">
-        <InfiniteScroller isMasonry items={resources}>
+        <InfiniteScroller isMasonry items={resources} filtrerMarginTop={-82}>
           {(resource, index) => (
             <Box
               key={resource._id}
-              borderRadius="lg"
-              cursor="pointer"
               mb="2"
+              css={{
+                borderRadius: 'var(--cocoso-border-radius)',
+                cursor: 'pointer',
+              }}
               onClick={() => setModalItem(resource)}
             >
               <NewGridThumb

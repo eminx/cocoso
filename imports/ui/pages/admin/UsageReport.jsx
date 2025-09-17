@@ -166,6 +166,7 @@ export default function UsageReport({ user, onClose }) {
     <Modal
       hideHeader
       hideFooter
+      id="usage-report"
       open={Boolean(activities)}
       size="2xl"
       onClose={onCloseDrawer}

@@ -141,6 +141,7 @@ export default function NewEntryHandler({ children }) {
         closeOnOverlayClick={false}
         closeOnEsc={false}
         hideFooter
+        id="new-entry-handler"
         open={isOpen}
         size="2xl"
         title={<Trans i18nKey={title} />}
@@ -152,6 +153,7 @@ export default function NewEntryHandler({ children }) {
       <Modal
         cancelText={tc('modals.confirm.newentry.cancel')}
         confirmText={tc('modals.confirm.newentry.yes')}
+        id="new-entry-handler-confirm-close"
         open={confirmOpen}
         title={tc('modals.confirm.newentry.title')}
         onConfirm={handleCancelAndClose}

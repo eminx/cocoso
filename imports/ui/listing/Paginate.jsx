@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import Masonry from 'react-masonry-css';
 
-import { Center, Wrap } from '/imports/ui/core';
+import { Center, Flex } from '/imports/ui/core';
 
 import NewEntryHelper from '../generic/NewEntryHelper';
 
@@ -72,12 +72,12 @@ function PaginatedItems({
           )}
         </Masonry>
       ) : (
-        <Wrap justify="center" spacing="8" shouldWrapChildren>
+        <Flex justify="center" gap="8" wrap="wrap" shouldWrapChildren>
           {currentItems?.map((item) => children(item))}
           {canCreateContent && currentPage + 1 === pageCount && (
             <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} />
           )}
-        </Wrap>
+        </Flex>
       )}
       {items && items.length > itemsPerPage && (
         <Center>

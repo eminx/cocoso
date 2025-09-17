@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Flex, Input, VStack } from '/imports/ui/core';
+import { Button, Flex, Input } from '/imports/ui/core';
 
 import FormField from '../../forms/FormField';
 
@@ -24,7 +24,7 @@ export default function NewPlatform({ onSubmit }) {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <VStack spacing="6">
+        <Flex direction="column" gap="6">
           <FormField key="name" label="Name" required>
             <Input {...register('name')} />
           </FormField>
@@ -42,7 +42,7 @@ export default function NewPlatform({ onSubmit }) {
               Confirm
             </Button>
           </Flex>
-        </VStack>
+        </Flex>
       </form>
     </>
   );

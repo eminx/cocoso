@@ -1,23 +1,41 @@
 import React from 'react';
-import { styled } from 'restyle';
-
+import { styled, xToRem } from '/stitches.config';
 import { getPropStyles, getSpacing } from '/imports/ui/core/functions';
 
+// Base primitives
+const BaseDiv = styled('div', {});
+const BaseLabel = styled('label', {});
+const BaseHr = styled('hr', {});
+const BaseUl = styled('ul', {});
+const BaseLi = styled('li', {});
+
 // Box
-export const Box = styled('div', (props: any) => ({
-  display: 'block',
-  ...getPropStyles(props),
-}));
+export const Box = ({ css, children, ...props }: any) => (
+  <BaseDiv
+    css={{ display: 'block', ...getPropStyles(props), ...css }}
+    {...props}
+  >
+    {children}
+  </BaseDiv>
+);
 
 // Center
-export const Center = styled('div', (props: any) => ({
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  width: props.w || props.width || '100%',
-  ...getPropStyles(props),
-}));
+export const Center = ({ css, children, ...props }: any) => (
+  <BaseDiv
+    css={{
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      width: props.w || props.width || '100%',
+      ...getPropStyles(props),
+      ...css,
+    }}
+    {...props}
+  >
+    {children}
+  </BaseDiv>
+);
 
 // Container
 interface ContainerProps {
@@ -25,34 +43,75 @@ interface ContainerProps {
   px?: string | number;
 }
 
-export const Container = styled(Box, (props: ContainerProps) => ({
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  maxWidth: props.maxW || '60rem',
-  paddingLeft: props.px ? getSpacing(props.px) : '1rem',
-  paddingRight: props.px ? getSpacing(props.px) : '1rem',
-  width: '100%',
-}));
+export const Container = ({
+  css,
+  children,
+  ...props
+}: ContainerProps & any) => (
+  <Box
+    css={{
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      maxWidth: props.maxW || '60rem',
+      paddingLeft: props.px ? getSpacing(props.px) : '1rem',
+      paddingRight: props.px ? getSpacing(props.px) : '1rem',
+      width: '100%',
+      ...getPropStyles(props),
+      ...css,
+    }}
+    {...props}
+  >
+    {children}
+  </Box>
+);
 
 // Flex
-export const Flex = styled('div', (props: any) => ({
-  alignItems: props.align || props.alignItems || 'flex-start',
-  display: 'flex',
-  gap: props.gap || props.spacing || '0.5rem',
-  flexDirection: props.direction || props.flexDirection || 'row',
-  flexWrap: props.wrap || props.flexWrap || 'nowrap',
-  justifyContent: props.justify || props.justifyContent || 'flex-start',
-  ...getPropStyles(props),
-}));
+export const Flex = ({
+  align,
+  alignItems,
+  css,
+  direction,
+  gap,
+  justify,
+  wrap,
+  children,
+  ...rest
+}: any) => (
+  <BaseDiv
+    css={{
+      alignItems: align || alignItems || 'flex-start',
+      display: 'flex',
+      flexDirection: direction || 'row',
+      flexWrap: wrap || 'nowrap',
+      gap: xToRem(gap) || '0.5rem',
+      justifyContent: justify || 'flex-start',
+      ...getPropStyles(rest),
+      ...css,
+    }}
+    {...rest}
+  >
+    {children}
+  </BaseDiv>
+);
 
-export const FormControl = (props: any) => <Flex {...props} />;
+export const FormControl = ({ css, children, ...props }: any) => (
+  <Flex {...props}>{children}</Flex>
+);
 
-export const FormLabel = styled('label', (props: any) => ({
-  display: 'block',
-  fontSize: '0.875rem',
-  fontWeight: 'bold',
-  ...getPropStyles(props),
-}));
+export const FormLabel = ({ css, children, ...props }: any) => (
+  <BaseLabel
+    css={{
+      display: 'block',
+      fontSize: '0.875rem',
+      fontWeight: 'bold',
+      ...getPropStyles(props),
+      ...css,
+    }}
+    {...props}
+  >
+    {children}
+  </BaseLabel>
+);
 
 // Grid
 interface GridProps {
@@ -61,15 +120,24 @@ interface GridProps {
   gap?: string | number;
 }
 
-export const Grid = styled('div', (props: GridProps) => ({
-  display: 'grid',
-  gridTemplateColumns:
-    props.templateColumns ||
-    props.gridTemplateColumns ||
-    'repeat(auto-fit, minmax(200px, 1fr))',
-  gap: props.gap ? getSpacing(props.gap) : '1rem',
-  width: '100%',
-}));
+export const Grid = ({ css, children, ...props }: GridProps & any) => (
+  <BaseDiv
+    css={{
+      display: 'grid',
+      gap: props.gap ? getSpacing(props.gap) : '1rem',
+      gridTemplateColumns:
+        props.templateColumns ||
+        props.gridTemplateColumns ||
+        'repeat(auto-fit, minmax(200px, 1fr))',
+      width: '100%',
+      ...getPropStyles(props),
+      ...css,
+    }}
+    // {...props}
+  >
+    {children}
+  </BaseDiv>
+);
 
 // Divider
 interface DividerProps {
@@ -79,40 +147,42 @@ interface DividerProps {
   margin?: string;
 }
 
-export const Divider = styled('hr', (props: DividerProps) => {
+export const Divider = ({ css, ...props }: DividerProps & any) => {
   const vertical = props.orientation === 'vertical';
 
-  return {
-    border: 'none',
-    backgroundColor: props.color || 'var(--cocoso-colors-gray-300)',
-    margin: props.margin || (vertical ? '0 0.5rem' : '0.5rem auto'),
-    maxWidth: vertical ? 'none' : '980px',
-    padding: '0',
-    width: vertical ? props.thickness || '1px' : '100%',
-    height: vertical ? 'auto' : props.thickness || '1px',
-    minHeight: vertical ? '1rem' : 'auto',
-    alignSelf: vertical ? 'stretch' : 'auto',
-  };
-});
+  return (
+    <BaseHr
+      css={{
+        alignSelf: vertical ? 'stretch' : 'auto',
+        border: 'none',
+        backgroundColor: props.color || 'var(--cocoso-colors-gray-300)',
+        height: vertical ? 'auto' : props.thickness || '1px',
+        margin: props.margin || (vertical ? '0 0.5rem' : '0.5rem auto'),
+        maxWidth: vertical ? 'none' : '980px',
+        minHeight: vertical ? '1rem' : 'auto',
+        padding: '0',
+        width: vertical ? props.thickness || '1px' : '100%',
+        ...css,
+      }}
+      {...props}
+    />
+  );
+};
 
-export const List = styled('ul', (props: any) => ({
-  listStyleType: 'none',
-  padding: '0',
-  ...getPropStyles(props),
-}));
-
-export const ListItem = styled('li', (props: any) => ({
-  marginBottom: '0.5rem',
-  ...getPropStyles(props),
-}));
-
-// Stack, HStack, VStack, Wrap
-export const Stack = styled(Flex, {});
-
-export const HStack = (props: any) => <Flex flexDirection="row" {...props} />;
-
-export const VStack = (props: any) => (
-  <Flex flexDirection="column" {...props} />
+export const List = ({ css, children, ...props }: any) => (
+  <BaseUl
+    css={{ listStyleType: 'none', padding: 0, ...getPropStyles(props), ...css }}
+    {...props}
+  >
+    {children}
+  </BaseUl>
 );
 
-export const Wrap = (props: any) => <Flex flexWrap="wrap" {...props} />;
+export const ListItem = ({ css, children, ...props }: any) => (
+  <BaseLi
+    css={{ marginBottom: '0.5rem', ...getPropStyles(props), ...css }}
+    {...props}
+  >
+    {children}
+  </BaseLi>
+);

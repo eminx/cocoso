@@ -30,9 +30,7 @@ function DateJust({ time, children, ...otherProps }) {
         {dayjs(children).format('MMM')}
       </div>
       {time && (
-        <div style={{ ...fancyDateStyle, ...fancyTimeStyle }}>
-          {time}
-        </div>
+        <div style={{ ...fancyDateStyle, ...fancyTimeStyle }}>{time}</div>
       )}
     </div>
   );
@@ -44,13 +42,7 @@ function FancyDate({ occurrence, resources, ...otherProps }) {
   }
   return (
     <>
-      <Flex
-        justifyContent="space-between"
-        mb="1"
-        p="1"
-        w="100%"
-        {...otherProps}
-      >
+      <Flex justify="space-between" mb="1" p="1" w="100%" {...otherProps}>
         <div style={{ flexGrow: 1 }}>
           {occurrence.startDate === occurrence.endDate ? (
             <DateJust>{occurrence.startDate}</DateJust>

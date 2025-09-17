@@ -5,7 +5,7 @@ import { Fade, Slide } from 'react-slideshow-image';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Client, useHydrated } from 'react-hydration-provider';
 
-import { Box, Center, Flex, HStack, Image } from '/imports/ui/core';
+import { Box, Center, Flex, Image } from '/imports/ui/core';
 
 if (Meteor.isClient) {
   import 'react-slideshow-image/dist/styles.css';
@@ -66,7 +66,7 @@ function Dots({ images, currentSlideIndex }) {
   return (
     <Center>
       {images.length > 1 && (
-        <HStack p="2">
+        <Flex p="2">
           {images.map((image, index) =>
             index === currentSlideIndex ? (
               <FilledCircle key={image} />
@@ -74,7 +74,7 @@ function Dots({ images, currentSlideIndex }) {
               <EmptyCircle key={image} />
             )
           )}
-        </HStack>
+        </Flex>
       )}
     </Center>
   );
@@ -162,7 +162,7 @@ export default function NiceSlider({
       <ImageHandler height={height} images={images} width={width}>
         {(image, index) => (
           <Center key={image + index}>
-            <Flex flexDirection="column" justify="center">
+            <Flex direction="column" justify="center">
               <LazyLoadImage
                 alt={`${alt} ${image}`}
                 src={image}

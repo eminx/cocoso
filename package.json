@@ -52,6 +52,7 @@
     "@react-email/row": "0.0.8",
     "@react-email/section": "0.0.12",
     "@react-email/text": "0.0.8",
+    "@stitches/react": "^1.2.8",
     "@szhsin/react-accordion": "^1.4.1",
     "@szhsin/react-menu": "^4.4.0",
     "antd": "^5.24.5",
@@ -99,8 +100,8 @@
     "react-slideshow-image": "^4.3.2",
     "react-sortable-hoc": "^1.11.0",
     "react-table": "^6.8.6",
+    "react-virtualized-auto-sizer": "^1.0.26",
     "react-visibility-sensor": "^5.0.2",
-    "restyle": "^3.4.2",
     "rooks": "^5.11.0",
     "simpl-schema": "^1.12.0",
     "zod": "^3.24.1"

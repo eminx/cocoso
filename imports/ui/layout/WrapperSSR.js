@@ -7,7 +7,6 @@ import Header from './Header';
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
 import { Footer } from './Footers';
-import GlobalStyles from './GlobalStyles';
 
 export default function WrapperSSR({ Host, isEntryPage = false, children }) {
   if (!Host) {

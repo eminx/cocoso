@@ -30,11 +30,10 @@ export default function SignupPage() {
   return (
     <Box pb="8">
       <Modal
-        // contentProps={{ h: 'auto' }}
         hideHeader
         hideFooter
+        id="signup-page"
         open
-        // scrollBehavior="outside"
         size="2xl"
         onClose={() => navigate('/')}
       >

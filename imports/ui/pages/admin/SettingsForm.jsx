@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Flex, Input, VStack } from '/imports/ui/core';
+import { Button, Flex, Input } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import ChangeLanguage from '/imports/ui/layout/ChangeLanguageMenu';
 
@@ -18,7 +18,7 @@ export default function SettingsForm({ initialValues, onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <VStack>
+      <Flex direction="column">
         <FormField label={t('new.name.label')}>
           <Input {...register('name')} />
         </FormField>
@@ -42,7 +42,7 @@ export default function SettingsForm({ initialValues, onSubmit }) {
             {tc('actions.submit')}
           </Button>
         </Flex>
-      </VStack>
+      </Flex>
     </form>
   );
 }

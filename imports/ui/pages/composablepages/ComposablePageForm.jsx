@@ -356,6 +356,7 @@ export default function ComposablePageForm({
 
           <Modal
             confirmButtonProps={{ colorScheme: 'red' }}
+            id="composable-page-form-delete-module-confirm"
             open={deleteModuleModal.open}
             title={<Trans i18nKey="admin:composable.confirmDelete.title" />}
             onConfirm={() => handleDeleteModule()}
@@ -383,6 +384,7 @@ export default function ComposablePageForm({
       <Modal
         closeOnOverlayClick={false}
         hideFooter
+        id="composable-page-form-delete-content-handler"
         open={contentModal?.open}
         size="3xl"
         title={<Trans i18nKey="admin:composable.form.addContent" />}
@@ -408,6 +410,7 @@ export default function ComposablePageForm({
         <Modal
           confirmButtonProps={{ colorScheme: 'red' }}
           confirmText={<Trans i18nKey="admin:pages.actions.delete" />}
+          id="composable-page-form-delete-whole-page-confirm"
           open={deleteWholePageModal}
           title={<Trans i18nKey="admin:composable.confirmDelete.title" />}
           onConfirm={deleteComposablePage}

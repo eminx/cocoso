@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, Flex, Text, VStack } from '/imports/ui/core';
+import { Box, Button, Flex, Text } from '/imports/ui/core';
 
 import FileDropper from '../../forms/FileDropper';
 
@@ -31,7 +31,7 @@ export default function AvatarUploader({
         </Box>
         {uploadableAvatarLocal && (
           <Box>
-            <VStack spacing="2" p="4">
+            <Flex gap="2" p="4">
               <Button
                 colorScheme="green"
                 isLoading={isUploading}
@@ -53,7 +53,7 @@ export default function AvatarUploader({
               >
                 {t('profile.form.avatar.remove')}
               </Button>
-            </VStack>
+            </Flex>
           </Box>
         )}
       </Box>

@@ -3,6 +3,7 @@ import { HydrationProvider } from 'react-hydration-provider';
 import { useLocation } from 'react-router-dom';
 
 import { Box } from '/imports/ui/core';
+
 import GlobalStyles from './GlobalStyles';
 
 export default function DummyWrapper({

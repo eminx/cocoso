@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
 
-import { Flex, Loader, Wrap } from '/imports/ui/core';
+import { Center, Flex, Loader } from '/imports/ui/core';
 
 import NewEntryHelper from '../generic/NewEntryHelper';
 import FiltrerSorter from './FiltrerSorter';
@@ -90,6 +90,7 @@ const filterSortItems = (
 export default function InfiniteScroller({
   canCreateContent = false,
   hideFiltrerSorter = false,
+  filtrerMarginTop = 0,
   isMasonry = false,
   items,
   itemsPerPage = defaultItemsPerPage,
@@ -127,40 +128,47 @@ export default function InfiniteScroller({
   return (
     <>
       {!hideFiltrerSorter && (
-        <Flex justify="flex-end">
+        <Flex
+          justify="flex-end"
+          css={{
+            '@media(min-width: 960px)': { marginTop: `${filtrerMarginTop}px` },
+          }}
+        >
           <FiltrerSorter {...filtrerProps} />
         </Flex>
       )}
 
-      <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>
-        {isMasonry ? (
-          <Masonry
-            breakpointCols={breakpointColumnsObj(currentItems?.length > 3)}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column"
-          >
-            {currentItems?.map((item, index) => children(item, index))}
-            {hasMore && <Loader relative />}
-            {!hasMore && canCreateContent && (
-              <NewEntryHelper
-                buttonLink={newHelperLink}
-                small={isMasonry || smallThumb}
-              />
-            )}
-          </Masonry>
-        ) : (
-          <Wrap align="center" justify="center" spacing="2">
-            {currentItems?.map((item, index) => children(item, index))}
-            {hasMore && <Loader relative />}
-            {!hasMore && canCreateContent && (
-              <NewEntryHelper
-                buttonLink={newHelperLink}
-                small={smallThumb || isMasonry}
-              />
-            )}
-          </Wrap>
-        )}
-      </InfiniteScroll>
+      <Center px="2" pb="8">
+        <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>
+          {isMasonry ? (
+            <Masonry
+              breakpointCols={breakpointColumnsObj(currentItems?.length > 3)}
+              className="my-masonry-grid"
+              columnClassName="my-masonry-grid_column"
+            >
+              {currentItems?.map((item, index) => children(item, index))}
+              {hasMore && <Loader relative />}
+              {!hasMore && canCreateContent && (
+                <NewEntryHelper
+                  buttonLink={newHelperLink}
+                  small={isMasonry || smallThumb}
+                />
+              )}
+            </Masonry>
+          ) : (
+            <Flex align="center" justify="center" gap="2" wrap="wrap">
+              {currentItems?.map((item, index) => children(item, index))}
+              {hasMore && <Loader relative />}
+              {!hasMore && canCreateContent && (
+                <NewEntryHelper
+                  buttonLink={newHelperLink}
+                  small={smallThumb || isMasonry}
+                />
+              )}
+            </Flex>
+          )}
+        </InfiniteScroll>
+      </Center>
     </>
   );
 }

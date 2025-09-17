@@ -34,7 +34,7 @@ function Template({
                   as="h1"
                   mb="4"
                   size="lg"
-                  textAlign={titleCentered ? 'center' : 'start'}
+                  textAlign={titleCentered ? 'center' : 'left'}
                 >
                   {heading}
                 </Heading>
@@ -55,7 +55,7 @@ function Template({
                   <Heading
                     as="h3"
                     size="md"
-                    textAlign={titleCentered ? 'center' : 'start'}
+                    textAlign={titleCentered ? 'center' : 'left'}
                   >
                     {heading}
                   </Heading>

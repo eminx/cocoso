@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 
-import { Button, Checkbox, Flex, Stack, Text } from '/imports/ui/core';
+import { Button, Checkbox, Flex, Text } from '/imports/ui/core';
 
 export function PlatformOptions({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
@@ -16,7 +16,7 @@ export function PlatformOptions({ initialValues, onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Stack spacing="4">
+      <Flex gap="4">
         <Flex align="center">
           <Checkbox mr="2" {...register('isFederationLayout')} />
           <Text fontSize="md">{t('info.platform.federationLabel')}</Text>
@@ -35,7 +35,7 @@ export function PlatformOptions({ initialValues, onSubmit }) {
             {tc('actions.submit')}
           </Button>
         </Flex>
-      </Stack>
+      </Flex>
     </form>
   );
 }

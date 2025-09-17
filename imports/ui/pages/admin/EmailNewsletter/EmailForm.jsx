@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Center, Flex, Input, Text, VStack } from '/imports/ui/core';
+import { Button, Center, Flex, Input, Text } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import ReactQuill from '/imports/ui/forms/Quill';
 import FileDropper from '/imports/ui/forms/FileDropper';
@@ -40,7 +40,7 @@ export default function EmailForm({
   return (
     <>
       <form onSubmit={handleSubmit((data) => onSubmit())}>
-        <VStack spacing="4">
+        <Flex direction="column" gap="4">
           <FormField
             helperText={t('newsletter.form.subject.helper')}
             required
@@ -114,7 +114,7 @@ export default function EmailForm({
               {tc('actions.preview')}
             </Button>
           </Flex>
-        </VStack>
+        </Flex>
       </form>
     </>
   );

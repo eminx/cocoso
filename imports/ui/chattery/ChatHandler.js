@@ -7,9 +7,10 @@ import {
   Box,
   Center,
   Drawer,
+  Flex,
   IconButton,
+  NotificationBadge,
   Text,
-  VStack,
 } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 
@@ -109,10 +110,11 @@ export function ChatButton({
   return (
     <Box css={{ flexGrow: '0' }}>
       <Center>
-        <VStack
+        <Flex
+          align="center"
+          direction="column"
+          gap="0"
           style={{
-            alignItems: 'center',
-            gap: '0',
             position: 'relative',
           }}
         >
@@ -123,34 +125,23 @@ export function ChatButton({
               onClick={() => setOpen(true)}
             />
           </Box>
-          {notificationCount && (
-            <Badge
-              style={{
-                border: '2px solid white',
-                borderRadius: '50%',
-                colorScheme: 'red',
-                fontSize: '0.75rem',
-                height: '1.5rem',
-                padding: '0.45rem',
-                position: 'absolute',
-                right: '-0.75rem',
-                top: '-0.5rem',
-                width: '1.5rem',
-              }}
-            >
-              {notificationCount}
-            </Badge>
+          {notificationCount && notificationCount !== 0 && (
+            <NotificationBadge colorScheme="red">
+              {notificationCount?.toString()}
+            </NotificationBadge>
           )}
           <Text
-            color="theme.50"
-            fontSize="xs"
-            fontWeight="bold"
-            textAlign="center"
+            css={{
+              color: 'var(--cocoso-colors-theme-50)',
+              fontSize: '0.8rem',
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
             onClick={() => setOpen(true)}
           >
             {tc('labels.discussion')}
           </Text>
-        </VStack>
+        </Flex>
       </Center>
 
       <ChatUI {...props} />

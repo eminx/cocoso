@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, Flex, Input, Textarea, VStack } from '/imports/ui/core';
+import { Box, Button, Flex, Input, Textarea } from '/imports/ui/core';
 
 import { hostFields } from '../utils/constants/general';
 import FormField from './FormField';
@@ -19,7 +19,7 @@ function NewHostForm({ defaultValues, onSubmit }) {
   return (
     <Box minW="300px">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <VStack spacing="6">
+        <Flex direction="column" spacing="6">
           {hostFields.map((props) => (
             <FormField key={props.name} label={t(`new.${props.name}.label`)}>
               {props.textArea ? (
@@ -47,7 +47,7 @@ function NewHostForm({ defaultValues, onSubmit }) {
               {tc('actions.submit')}
             </Button>
           </Flex>
-        </VStack>
+        </Flex>
       </form>
     </Box>
   );

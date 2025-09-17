@@ -1,6 +1,6 @@
 import React, { useId, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { styled } from 'restyle';
+import { styled } from '/stitches.config';
 
 import { Badge, Flex, Text } from '/imports/ui/core';
 
@@ -21,7 +21,7 @@ type TabsListProps = {
 };
 
 type TabItemProps = {
-  isSelected?: boolean;
+  selected?: boolean;
   children?: ReactNode;
   id?: string;
 };
@@ -31,19 +31,24 @@ const TabsContainer = styled('div', {
   top: '1px',
 });
 
-const TabsList = styled('div', (props: TabsListProps) => ({
+const TabsListStyled = styled('div', {
   display: 'flex',
-  alignItems: props.alignItems || 'center',
   flexShrink: '0',
-  justifyContent: props.justify || 'flex-start',
   flexDirection: 'row',
-  // borderBottom: '1px solid #e2e8f0',
-}));
+  marginBottom: '1px',
+});
 
-const TabItem = styled('div', (props: TabItemProps) => ({
-  borderBottom: `2px solid ${
-    props.isSelected ? 'var(--cocoso-colors-theme-500)' : 'transparent'
-  }`,
+const TabsList = ({ alignItems, justify, ...rest }: TabsListProps) => (
+  <TabsListStyled
+    css={{
+      alignItems: alignItems || 'center',
+      justifyContent: justify || 'flex-start',
+    }}
+    {...rest}
+  />
+);
+
+const TabItemStyled = styled('div', {
   color: 'var(--cocoso-colors-gray-700)',
   cursor: 'pointer',
   display: 'inline-flex',
@@ -51,23 +56,34 @@ const TabItem = styled('div', (props: TabItemProps) => ({
   paddingInline: '1rem',
   paddingBlock: '0.5rem',
   transition: 'border-color 0.2s, color 0.2s',
-  ':hover': {
-    borderBottomColor: props.isSelected
-      ? 'var(--cocoso-colors-theme-500)'
-      : 'var(--cocoso-colors-theme-200)',
-    color: 'var(--cocoso-colors-theme-500)',
-  },
-  ':focus': {
+  '&:focus': {
     outline: 'none',
     boxShadow: '0 0 0 2px var(--cocoso-colors-theme-200)',
   },
-}));
+});
+
+const TabItem = ({ selected, ...rest }: TabItemProps) => (
+  <TabItemStyled
+    css={{
+      borderBottom: `2px solid ${
+        selected ? 'var(--cocoso-colors-theme-500)' : 'transparent'
+      }`,
+      '&:hover': {
+        borderBottomColor: selected
+          ? 'var(--cocoso-colors-theme-500)'
+          : 'var(--cocoso-colors-theme-200)',
+        color: 'var(--cocoso-colors-theme-500)',
+      },
+    }}
+    {...rest}
+  />
+);
 
 const TabLink = styled(Link, {
   color: 'inherit',
   marginBottom: 0,
   textDecoration: 'none',
-  ':hover': {
+  '&:hover': {
     textDecoration: 'none',
   },
 });
@@ -79,24 +95,24 @@ const TabButton = styled('button', {
   cursor: 'pointer',
   marginBottom: 0,
   textDecoration: 'none',
-  ':hover': {
+  '&:hover': {
     textDecoration: 'none',
   },
 });
 
 interface CoTabProps {
   tab: TabType;
-  isSelected: boolean;
+  selected: boolean;
 }
 
-const CoTab: React.FC<CoTabProps> = ({ tab, isSelected }) => {
+const CoTab: React.FC<CoTabProps> = ({ tab, selected }) => {
   const instanceId = useId();
   if (!tab) {
     return null;
   }
 
   return (
-    <TabItem isSelected={isSelected} id={instanceId}>
+    <TabItem selected={selected} id={instanceId}>
       <Flex
         css={{
           alignItems: 'center',
@@ -136,7 +152,7 @@ const Tabs: React.FC<TabsProps> = ({
     <TabsContainer>
       <TabsList {...otherProps}>
         {tabs?.map((tab, tabIndex) => {
-          const isSelected = tabIndex === index;
+          const selected = tabIndex === index;
 
           if (tab.path) {
             return (
@@ -145,16 +161,15 @@ const Tabs: React.FC<TabsProps> = ({
                 to={tab.path}
                 onClick={tab.onClick}
               >
-                <CoTab tab={tab} isSelected={isSelected} />
+                <CoTab tab={tab} selected={selected} />
               </TabLink>
             );
-          } else {
-            return (
-              <TabButton key={tab.key || tab.title} onClick={tab.onClick}>
-                <CoTab tab={tab} isSelected={isSelected} />
-              </TabButton>
-            );
           }
+          return (
+            <TabButton key={tab.key || tab.title} onClick={tab.onClick}>
+              <CoTab tab={tab} selected={selected} />
+            </TabButton>
+          );
         })}
         {children}
       </TabsList>

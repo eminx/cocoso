@@ -21,19 +21,13 @@ function ReserveButton({ resource }) {
   }
 
   return (
-    <Link to={link}>
-      <Button
-        as="span"
-        h="48px"
-        w={isDesktop ? '240px' : '180px'}
-        css={{
-          borderColor: 'var(--cocoso-colors-theme-200)',
-          borderWidth: '2px',
-        }}
-      >
-        <Trans i18nKey="common:labels.book">Reserve</Trans>
-      </Button>
-    </Link>
+    <Box>
+      <Link to={link}>
+        <Button size={isDesktop ? 'lg' : 'md'}>
+          <Trans i18nKey="common:labels.book">Reserve</Trans>
+        </Button>
+      </Link>
+    </Box>
   );
 }
 
@@ -64,7 +58,7 @@ export default function ResourceInteractionHandler({ slideStart }) {
     return (
       <SlideWidget justify="space-between" slideStart={slideStart}>
         <Box w="40px" />
-        <ReserveButton resource={resource} />
+        {resource.isBookable ? <ReserveButton resource={resource} /> : null}
         <Box>
           <ChatButton
             context="resources"

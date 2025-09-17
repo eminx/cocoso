@@ -35,7 +35,7 @@ export default function FontSelector({ handleStyleChange, selectedFont }) {
             <Box p="2" mt="2">
               <Center>
                 <p>
-                  <Text fontSize="sm" textAlign="center">
+                  <Text fontSize="sm" css={{ textAlign: 'center' }}>
                     <b>Demo:</b>
                   </Text>
                 </p>

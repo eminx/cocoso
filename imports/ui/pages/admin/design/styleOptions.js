@@ -1,3 +1,6 @@
+import React from 'react';
+import { Trans } from 'react-i18next';
+
 export const borderRadiusOptions = [
   { label: 'none', value: '0' },
   { label: 'tiny', value: '0.125rem' },
@@ -86,11 +89,11 @@ export const textTransformOptions = [
 
 export const themeOptions = [
   {
-    label: 'Gray',
+    label: <Trans i18nKey="admin:design.theme.options.gray" />,
     value: 'gray',
   },
   {
-    label: 'Custom',
+    label: <Trans i18nKey="admin:design.theme.options.custom" />,
     value: 'custom',
   },
 ];

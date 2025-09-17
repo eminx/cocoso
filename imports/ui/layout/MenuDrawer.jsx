@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
 
-import { Box, Drawer, Flex, IconButton, Text, VStack } from '/imports/ui/core';
+import { Box, Drawer, Flex, IconButton, Text } from '/imports/ui/core';
 
 import ChangeLanguageMenu from './ChangeLanguageMenu';
 import { StateContext } from '../LayoutContainer';
@@ -25,9 +25,11 @@ function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
   };
 
   return (
-    <VStack
+    <Flex
       align="flex-start"
-      style={{ ...styles, padding: '1rem', width: '100%' }}
+      direction="column"
+      p="2"
+      css={{ ...styles, width: '100%' }}
     >
       {menuItems.map((item) => {
         const isCurrentPageLabel = isCurrentPage(item);
@@ -59,7 +61,9 @@ function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
                   fontWeight: isCurrentPageLabel ? 'bold' : 'normal',
                   textTransform: styles.textTransform,
                 }}
-                _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
+                _hover={
+                  !isCurrentPageLabel ? { textDecoration: 'underline' } : null
+                }
               >
                 {item.label}
               </Text>
@@ -67,7 +71,7 @@ function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
           </Link>
         );
       })}
-    </VStack>
+    </Flex>
   );
 }
 
@@ -129,7 +133,7 @@ export default function MenuDrawer() {
 
   return (
     <Box>
-      <Flex align="center" flexDirection="column" gap="1" px="2">
+      <Flex align="center" direction="column" gap="1" px="2">
         <IconButton
           icon={<HamburgerIcon fontSize="24px" />}
           size={isDesktop ? 'md' : 'sm'}
@@ -148,7 +152,12 @@ export default function MenuDrawer() {
         title={tc('menu.label')}
         onClose={onToggle}
       >
-        <Flex flexDirection="column" h="100%" justify="space-between">
+        <Flex
+          id="flex-menu"
+          direction="column"
+          height="100%"
+          justify="space-between"
+        >
           <MenuContent
             menuItems={menuItems}
             styles={menuStyles}

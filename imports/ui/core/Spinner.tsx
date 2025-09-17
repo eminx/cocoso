@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from 'restyle';
+import { styled } from '/stitches.config';
 
 export interface SpinnerProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -17,35 +17,33 @@ const sizeMap = {
   xl: '3rem',
 };
 
-const StyledSpinner = styled('div', (props: SpinnerProps) => {
+const StyledSpinnerStyled = styled('div', {
+  display: 'inline-block',
+  borderRadius: '50%',
+});
+
+const StyledSpinner = (props: SpinnerProps) => {
   const size = sizeMap[props.size || 'md'];
   const thickness = props.thickness || '2px';
   const speed = props.speed || '0.65s';
   const color = props.color || 'currentColor';
   const emptyColor = props.emptyColor || 'transparent';
 
-  return {
-    display: 'inline-block',
-    width: size,
-    height: size,
-    border: `${thickness} solid ${emptyColor}`,
-    borderTop: `${thickness} solid ${color}`,
-    borderRadius: '50%',
-    animation: `spin ${speed} linear infinite`,
-  };
-});
+  return (
+    <StyledSpinnerStyled
+      css={{
+        width: size,
+        height: size,
+        border: `${thickness} solid ${emptyColor}`,
+        borderTop: `${thickness} solid ${color}`,
+        animation: `spin ${speed} linear infinite`,
+      }}
+    />
+  );
+};
 
 export const Spinner = (props: SpinnerProps) => {
-  return (
-    <>
-      <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
-      <StyledSpinner {...props} />
-    </>
-  );
+  return <StyledSpinner {...props} />;
 };
 
 export default Spinner;

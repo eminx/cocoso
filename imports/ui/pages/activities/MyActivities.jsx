@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Box,
+  Flex,
   Heading,
-  HStack,
   Image,
   Loader,
   Tag,
@@ -26,7 +26,7 @@ function ActivityItem({ act }) {
   const [t] = useTranslation('activities');
 
   return (
-    <HStack align="flex-start" bg="white" p="3" w="100%">
+    <Flex align="flex-start" bg="white" p="3" w="100%">
       {act.isPublicActivity && (
         <Box p="2">
           <Image
@@ -47,7 +47,7 @@ function ActivityItem({ act }) {
           {act.datesAndTimes.length} {t('members.occurences')}
         </Text>
       </Box>
-    </HStack>
+    </Flex>
   );
 }
 

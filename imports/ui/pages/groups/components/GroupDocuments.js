@@ -14,7 +14,7 @@ export default function GroupDocuments({ documents }) {
       <NiceList keySelector="downloadUrl" list={documents}>
         {(document) => (
           <Flex align="center" color="blue.500">
-            <Code isTruncated mr="1">
+            <Code truncated mr="1">
               <CLink
                 color="blue.500"
                 href={document.downloadUrl}

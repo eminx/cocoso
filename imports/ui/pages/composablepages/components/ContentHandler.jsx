@@ -217,7 +217,7 @@ function ImageContent({ value, ping, onChange }) {
               value={value.linkValue}
               css={{
                 borderColor,
-                ':hover': {
+                '&:hover': {
                   borderColor,
                 },
                 ':focus': {

@@ -250,6 +250,7 @@ export default function GroupMeetingDates(props) {
 
       <Modal
         hideFooter
+        id="group-meeting-dates"
         open={modalOpen}
         title={t('labels.meetings')}
         onClose={() => setModalOpen(false)}

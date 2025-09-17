@@ -160,7 +160,7 @@ export default function DocumentsField({
                     border: '2px dashed',
                     borderColor: 'var(--cocoso-colors-theme-500)',
                     cursor: 'grab',
-                    ':hover': {
+                    '&:hover': {
                       bg: 'var(--cocoso-colors-theme-50)',
                     },
                   }}

@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
-import { GlobalStyles } from 'restyle';
 
 import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
@@ -118,13 +117,13 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
   return (
     <Box mt="4">
       {hideMenu ? (
-        <GlobalStyles>
+        <style>
           {{
             '#main-menu': {
               display: 'none',
             },
           }}
-        </GlobalStyles>
+        </style>
       ) : null}
       {hideTitle ? null : (
         <Heading
@@ -134,7 +133,7 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
           {composablePage.title}
         </Heading>
       )}
-      <Flex flexDirection="column">
+      <Flex direction="column">
         {composablePage.contentRows.map((row, rowIndex) => (
           <Grid
             key={row.id || row.gridType + rowIndex}

@@ -10,7 +10,6 @@ import {
   Input,
   Text,
   Textarea,
-  VStack,
 } from '/imports/ui/core';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
@@ -144,11 +143,11 @@ export default function MainFeatureSettings({ itemName }) {
       </Box>
 
       <Boxling>
-        <VStack align="flex-start">
+        <Flex direction="column">
           {rowItems.map((rowItem) => (
             <Tablish key={rowItem.key} rowItem={rowItem} />
           ))}
-        </VStack>
+        </Flex>
 
         <Flex justify="flex-end" mt="6">
           <Button

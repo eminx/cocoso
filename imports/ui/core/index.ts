@@ -1,7 +1,7 @@
 import { Accordion, AccordionItem } from './Accordion';
 import Alert from './Alert';
 import Avatar, { AvatarGroup } from './Avatar';
-import Badge from './Badge';
+import Badge, { NotificationBadge } from './Badge';
 import {
   Box,
   Center,
@@ -13,10 +13,6 @@ import {
   Grid,
   List,
   ListItem,
-  Stack,
-  HStack,
-  VStack,
-  Wrap,
 } from './Box';
 import { Button, IconButton } from './Button';
 import Checkbox from './Checkbox';
@@ -55,7 +51,6 @@ export {
   FormLabel,
   Grid,
   Heading,
-  HStack,
   IconButton,
   Image,
   Input,
@@ -63,20 +58,18 @@ export {
   List,
   ListItem,
   Loader,
-  NumberInput,
   Modal,
+  NotificationBadge,
+  NumberInput,
   Overlay,
   Radio,
   RadioGroup,
   Select,
   Slide,
   Spinner,
-  Stack,
   Progress,
   Tabs,
   Tag,
   Text,
   Textarea,
-  VStack,
-  Wrap,
 };

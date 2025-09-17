@@ -4,15 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  Text,
-} from '/imports/ui/core';
+import { Box, Center, Flex, Heading, Image, Text } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
@@ -75,7 +67,8 @@ export function InfoPagesMenu({
               ? `2px solid ${borderColor}`
               : '2px solid transparent',
             color: menuStyles?.color,
-            ':hover': !isCurrentContext && {
+            wrap: 'wrap',
+            '&:hover': !isCurrentContext && {
               borderBottomColor: borderColor,
               textDecoration: 'underline',
             },
@@ -139,7 +132,7 @@ function HeaderMenu({ Host, pageTitles }) {
 
   return (
     <Center id="main-menu" mb="4" px="4">
-      <HStack
+      <Flex
         align="center"
         justify="center"
         mb="2"
@@ -170,7 +163,7 @@ function HeaderMenu({ Host, pageTitles }) {
                       ? menuStyles.color
                       : 'transparent',
                     color: menuStyles?.color,
-                    ':hover': {
+                    '&:hover': {
                       borderBottomColor: menuStyles?.color,
                       borderBottomWidth: '1px',
                     },
@@ -183,7 +176,7 @@ function HeaderMenu({ Host, pageTitles }) {
           )
         )}
         {Host.isPortalHost && (
-          <Link className="main-menu-item" to="/communities">
+          <Link key="communities" className="main-menu-item" to="/communities">
             <Box as="span" px="2">
               <Text
                 css={{
@@ -193,7 +186,7 @@ function HeaderMenu({ Host, pageTitles }) {
                       ? menuStyles.color
                       : 'transparent',
                   color: menuStyles?.color,
-                  ':hover': {
+                  '&:hover': {
                     borderBottomColor: menuStyles?.color,
                     borderBottomWidth: '1px',
                   },
@@ -204,7 +197,7 @@ function HeaderMenu({ Host, pageTitles }) {
             </Box>
           </Link>
         )}
-      </HStack>
+      </Flex>
     </Center>
   );
 }
@@ -218,9 +211,9 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
 
   return (
     <Box id="header" w="100%">
-      <Center mb="6">
+      <Center p="6">
         <Link className="logo-container" to="/">
-          <Box maxH={isLogoSmall ? '48px' : '96px'} p="4">
+          <Box css={{ maxHeight: isLogoSmall ? '48px' : '96px' }}>
             {currentHost.logo ? (
               <Image
                 src={Host.logo}

@@ -83,6 +83,7 @@ export default function AddDocument({ onClose }) {
   return (
     <Modal
       hideFooter
+      id="group-add-document"
       open
       size="lg"
       title={tc('documents.label')}

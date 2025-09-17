@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
-import { Box, Text, VStack } from '/imports/ui/core';
+import { Box, Flex, Text } from '/imports/ui/core';
 import TablyCentered from './TablyCentered';
 import DocumentsField from '../pages/resources/components/DocumentsField';
 
@@ -28,12 +28,12 @@ export default function ResourceHybrid({ documents, resource, Host }) {
     tabs.push({
       title: <Trans i18nKey="resources:labels.combo">Combo</Trans>,
       content: (
-        <VStack pt="4" spacing="2">
+        <Flex direction="column" gap="2" pt="4">
           {resource.resourcesForCombo.map((res) => (
             <Link key={res._id} to={`/resources/${res._id}/info`}>
               <Box
                 css={{
-                  ':hover': {
+                  '&:hover': {
                     backgroundColor: 'white',
                   },
                 }}
@@ -44,7 +44,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
               </Box>
             </Link>
           ))}
-        </VStack>
+        </Flex>
       ),
       path: 'combo',
     });

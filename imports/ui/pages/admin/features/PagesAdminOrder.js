@@ -98,7 +98,7 @@ export default function PagesAdminOrder() {
                   >
                     <Text fontWeight="bold">{page.order}</Text>
                     <DragHandleIcon />
-                    <Text isTruncated>{page.title}</Text>
+                    <Text truncated>{page.title}</Text>
                   </Flex>
                 </div>
               </SortableItem>

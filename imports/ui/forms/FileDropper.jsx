@@ -8,7 +8,7 @@ const containerStyle = {
   borderRadius: 'var(--cocoso-border-radius)',
   border: '2px dashed',
   cursor: 'grab',
-  ':hover': {
+  '&:hover': {
     bg: 'var(--cocoso-colors-gray-50)',
     borderColor: 'var(--cocoso-colors-theme-300)',
   },
@@ -59,7 +59,7 @@ export default function FileDropper({
             />
           ) : (
             <Center p="8">
-              <Text textAlign="center" fontSize="sm">
+              <Text fontSize="sm" css={{ textAlign: 'center' }}>
                 {isMultiple
                   ? tc('plugins.fileDropper.helperMultiple')
                   : tc('plugins.fileDropper.helper')}

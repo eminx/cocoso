@@ -50,7 +50,7 @@ function NewEntryHelper({
           border: '1px solid',
           borderColor: 'var(--cocoso-colors-theme-500)',
           fontWeight: 'bold',
-          ':hover': {
+          '&:hover': {
             bg: 'var(--cocoso-colors-theme-100)',
           },
           ':active': {

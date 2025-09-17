@@ -27,7 +27,7 @@ export default function GroupMembers({ group }) {
   }
 
   const getAvatarContainerWidth = () => {
-    if (group?.members.length <= maxShownAvatars) {
+    if (group?.members?.length <= maxShownAvatars) {
       return 'auto';
     }
     return '17.5rem';
@@ -36,13 +36,14 @@ export default function GroupMembers({ group }) {
   return (
     <>
       <Box
-        p="2"
+        py="2"
+        px="4"
         mt="2"
         css={{
+          borderRadius: 'var(--cocoso-border-radius)',
           cursor: 'pointer',
-          ':hover': {
-            backgroundColor: 'var(--cocoso-colors-gray-100)',
-            borderRadius: '8px',
+          '&:hover': {
+            backgroundColor: 'var(--cocoso-colors-theme-100)',
           },
         }}
         onClick={() => setModalOpen(true)}
@@ -83,6 +84,7 @@ export default function GroupMembers({ group }) {
       {hydrated && (
         <Modal
           hideFooter
+          id="group-members"
           open={modalOpen}
           title={t('labels.member')}
           onClose={() => setModalOpen(false)}

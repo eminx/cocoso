@@ -7,8 +7,14 @@ import Hosts from '../hosts/host';
 import Groups from './group';
 import Activities from '../activities/activity';
 import Platform from '../platform/platform';
-import { getGroupRegistrationEmailBody, getInviteToPrivateGroupEmailBody } from './group.mails';
-import { compareDatesWithStartDateForSort, parseGroupsWithMeetings } from '../../ui/utils/shared';
+import {
+  getGroupRegistrationEmailBody,
+  getInviteToPrivateGroupEmailBody,
+} from './group.mails';
+import {
+  compareDatesWithStartDateForSort,
+  parseGroupsWithMeetings,
+} from '../../ui/utils/shared';
 
 const publicSettings = Meteor.settings.public;
 
@@ -16,7 +22,9 @@ const isUserGroupAdmin = (group, userId) => {
   if (!group || !userId) {
     return false;
   }
-  return group.members.some((member) => member.memberId === userId && member.isAdmin);
+  return group.members.some(
+    (member) => member.memberId === userId && member.isAdmin
+  );
 };
 
 Meteor.methods({
@@ -38,7 +46,9 @@ Meteor.methods({
       if (
         group.adminId !== currentUserId &&
         !group.members.some((member) => member.memberId === currentUserId) &&
-        !group.peopleInvited.some((person) => person.email === currentUser.emails[0]?.address)
+        !group.peopleInvited.some(
+          (person) => person.email === currentUser.emails[0]?.address
+        )
       ) {
         return null;
       }
@@ -53,7 +63,7 @@ Meteor.methods({
       _id: groupId,
     });
 
-    if (group.isPrivate) {
+    if (group && group.isPrivate) {
       const currentUser = Meteor.user();
       if (!currentUser) {
         return null;
@@ -63,13 +73,18 @@ Meteor.methods({
       if (
         group.adminId !== currentUserId &&
         !group.members?.some((member) => member.memberId === currentUserId) &&
-        !group.peopleInvited?.some((person) => person.email === currentUser.emails[0]?.address)
+        !group.peopleInvited?.some(
+          (person) => person.email === currentUser.emails[0]?.address
+        )
       ) {
         return null;
       }
     }
 
-    const groupActivities = await Meteor.callAsync('getGroupMeetingsFuture', groupId);
+    const groupActivities = await Meteor.callAsync(
+      'getGroupMeetingsFuture',
+      groupId
+    );
 
     return {
       ...group,
@@ -86,13 +101,20 @@ Meteor.methods({
     const host = hostPredefined || getHost(this);
 
     try {
-      const retrievedGroups = await Meteor.callAsync('getGroups', isPortalHost, host);
+      const retrievedGroups = await Meteor.callAsync(
+        'getGroups',
+        isPortalHost,
+        host
+      );
       const allGroupActivities = await Meteor.callAsync(
         'getAllGroupMeetingsFuture',
         isPortalHost,
         host
       );
-      const parsedGroups = parseGroupsWithMeetings(retrievedGroups, allGroupActivities);
+      const parsedGroups = parseGroupsWithMeetings(
+        retrievedGroups,
+        allGroupActivities
+      );
       return parsedGroups;
     } catch (error) {
       throw new Meteor.Error(error);
@@ -117,7 +139,9 @@ Meteor.methods({
       return (
         group.adminId === userId ||
         group.members.some((member) => member.memberId === userId) ||
-        group.peopleInvited.some((person) => person.email === user.emails[0].address)
+        group.peopleInvited.some(
+          (person) => person.email === user.emails[0].address
+        )
       );
     });
 
@@ -230,11 +254,17 @@ Meteor.methods({
         creationDate: new Date(),
       });
 
-      Meteor.call('createChat', formValues.title, newGroupId, 'groups', (error) => {
-        if (error) {
-          console.log('Chat is not created due to error: ', error);
+      Meteor.call(
+        'createChat',
+        formValues.title,
+        newGroupId,
+        'groups',
+        (error) => {
+          if (error) {
+            console.log('Chat is not created due to error: ', error);
+          }
         }
-      });
+      );
 
       try {
         Meteor.users.update(user._id, {
@@ -343,7 +373,11 @@ Meteor.methods({
 
     const currentHostName = currentHost?.settings?.name;
     const userAvatar = user.avatar ? user.avatar.src : null;
-    const emailBody = getGroupRegistrationEmailBody(theGroup, currentHost, user);
+    const emailBody = getGroupRegistrationEmailBody(
+      theGroup,
+      currentHost,
+      user
+    );
 
     try {
       Groups.update(theGroup._id, {
@@ -367,7 +401,12 @@ Meteor.methods({
         },
       });
 
-      Meteor.call('sendEmail', user._id, `"${theGroup.title}", ${currentHostName}`, emailBody);
+      Meteor.call(
+        'sendEmail',
+        user._id,
+        `"${theGroup.title}", ${currentHostName}`,
+        emailBody
+      );
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, 'Could not join the circle');
@@ -385,7 +424,12 @@ Meteor.methods({
     const theGroup = Groups.findOne(groupId);
     const currentHostName = currentHost?.settings?.name;
 
-    const emailBody = getGroupRegistrationEmailBody(theGroup, currentHost, user, true);
+    const emailBody = getGroupRegistrationEmailBody(
+      theGroup,
+      currentHost,
+      user,
+      true
+    );
     try {
       Groups.update(theGroup._id, {
         $pull: {
@@ -451,7 +495,9 @@ Meteor.methods({
       throw new Meteor.Error('You are not admin!');
     }
 
-    const newDocuments = theGroup.documents.filter((document) => document.name !== documentName);
+    const newDocuments = theGroup.documents.filter(
+      (document) => document.name !== documentName
+    );
 
     try {
       Groups.update(groupId, {
@@ -460,7 +506,10 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      throw new Meteor.Error('Could not remove the document because: ', error.reason);
+      throw new Meteor.Error(
+        'Could not remove the document because: ',
+        error.reason
+      );
     }
   },
 
@@ -481,7 +530,9 @@ Meteor.methods({
     const newAdmin = Meteor.users.findOne({ username: newAdminUsername });
 
     if (!isContributorOrAdmin(newAdmin, currentHost)) {
-      throw new Meteor.Error('Admins must either have a cocreator or admin role in the space');
+      throw new Meteor.Error(
+        'Admins must either have a cocreator or admin role in the space'
+      );
     }
 
     const newMembers = theGroup.members.map((member) => {
@@ -582,7 +633,12 @@ Meteor.methods({
     }
 
     const currentHostName = currentHost.settings?.name;
-    const emailBody = getInviteToPrivateGroupEmailBody(theGroup, currentHost, user, person);
+    const emailBody = getInviteToPrivateGroupEmailBody(
+      theGroup,
+      currentHost,
+      user,
+      person
+    );
 
     try {
       Groups.update(groupId, {
@@ -594,7 +650,12 @@ Meteor.methods({
         },
       });
 
-      Meteor.call('sendEmail', person.email, `"${theGroup.title}", ${currentHostName}`, emailBody);
+      Meteor.call(
+        'sendEmail',
+        person.email,
+        `"${theGroup.title}", ${currentHostName}`,
+        emailBody
+      );
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, 'Could not send the invite to the person');

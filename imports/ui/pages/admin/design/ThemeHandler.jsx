@@ -32,8 +32,9 @@ export default function ThemeHandler() {
     useContext(StateContext);
 
   const [state, setState] = useState({
-    uploadingBackgroundImage: false,
     updating: false,
+    uploadingBackgroundImage: false,
+    hasChanges: false,
   });
 
   const currentTheme = currentHost?.theme;
@@ -62,9 +63,9 @@ export default function ThemeHandler() {
   };
 
   const handleStyleChange = (key, value) => {
-    if (currentHost?.theme?.body?.[key] === value) {
-      return;
-    }
+    // if (currentHost?.theme?.body?.[key] === value) {
+    //   return;
+    // }
 
     setCurrentHost((prevState) => ({
       ...prevState,
@@ -139,15 +140,10 @@ export default function ThemeHandler() {
 
       <Boxling mb="12">
         <RadioGroup
+          options={themeOptions}
           value={currentTheme?.variant}
-          onChange={(selectedValue) => handleThemeChange(selectedValue)}
-        >
-          {themeOptions.map((option) => (
-            <Radio key={option.value} value={option.value}>
-              <Trans i18nKey={`admin:design.theme.options.${option.value}`} />
-            </Radio>
-          ))}
-        </RadioGroup>
+          onChange={handleThemeChange}
+        />
       </Boxling>
 
       <Text fontWeight="bold" mb="4">

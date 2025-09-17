@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next';
 
 import { Box, Center } from '/imports/ui/core';
 
+import InfiniteScroller from './InfiniteScroller';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
-import InfiniteScroller from './InfiniteScroller';
 import SexyThumb from './SexyThumb';
+// import VirtualGridLister from './VirtualGridLister';
 
 export default function GroupsHybrid({ groups, Host }) {
   const [modalItem, setModalItem] = useState(null);
@@ -18,6 +19,7 @@ export default function GroupsHybrid({ groups, Host }) {
   const description = groupsInMenu?.description;
   const heading = groupsInMenu?.label;
   const url = `${Host?.host}/${groupsInMenu?.name}`;
+  const getTags = (item) => (item.isPrivate ? [tc('labels.private')] : null);
 
   return (
     <>
@@ -28,33 +30,37 @@ export default function GroupsHybrid({ groups, Host }) {
         url={url}
       />
 
-      <Box px="2" pb="8">
-        <InfiniteScroller items={groups}>
-          {(item, index) => (
-            <Center
-              key={item._id}
-              flex="1 1 355px"
-              p="1"
-              onClick={() => setModalItem(item)}
-            >
-              <SexyThumb
-                activity={item}
-                host={Host?.isPortalHost ? item.host : null}
-                index={index}
-                tags={item.isPrivate ? [tc('labels.private')] : null}
-              />
-            </Center>
-          )}
-        </InfiniteScroller>
+      {/* <Center>
+        <VirtualGridLister
+          cellProps={{ Host, getTags, setModalItem }}
+          items={groups}
+        />
+      </Center> */}
 
-        {modalItem && (
-          <PopupHandler
-            item={modalItem}
-            kind="groups"
-            onClose={() => setModalItem(null)}
-          />
+      <InfiniteScroller items={groups} filtrerMarginTop={-76}>
+        {(item, index) => (
+          <Center
+            key={item._id}
+            flex="1 1 355px"
+            onClick={() => setModalItem(item)}
+          >
+            <SexyThumb
+              activity={item}
+              host={Host?.isPortalHost ? item.host : null}
+              index={index}
+              tags={item.isPrivate ? [tc('labels.private')] : null}
+            />
+          </Center>
         )}
-      </Box>
+      </InfiniteScroller>
+
+      {modalItem && (
+        <PopupHandler
+          item={modalItem}
+          kind="groups"
+          onClose={() => setModalItem(null)}
+        />
+      )}
     </>
   );
 }

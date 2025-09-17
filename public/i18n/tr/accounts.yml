@@ -41,6 +41,7 @@ signup:
       helper: Minimum 8 karakter, en az bir tanesi küçük harf, bir tanesi büyük harf, bir tanesi de rakam
       info: Şifreniz enkript edilir (sistem sahipleri erişemez)
     terms:
+      agreement: Anlaşma
       label: '{{ terms }} okudum, anladım ve kabul ediyorum'
       terms: Hizmet şartları ve gizlilik politikası
 

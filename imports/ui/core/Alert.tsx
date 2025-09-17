@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from 'restyle';
+import { styled } from '/stitches.config';
 import AlertIcon from 'lucide-react/dist/esm/icons/alert-circle';
 import InfoIcon from 'lucide-react/dist/esm/icons/info';
 import WarningIcon from 'lucide-react/dist/esm/icons/alert-triangle';
@@ -27,27 +27,39 @@ const AlertDescription = styled('div', {
 // AlertContainer
 interface AlertContainerProps {
   status?: 'info' | 'warning' | 'success' | 'error';
+  children?: React.ReactNode;
 }
 
-const AlertContainer = styled('div', (props: AlertContainerProps) => {
+const AlertContainerStyled = styled('div', {
+  borderRadius: 'var(--cocoso-border-radius)',
+  backgroundColor: `var(--cocoso-colors-bluegray-50)`,
+  border: '1px solid',
+  color: `var(--cocoso-colors-gray-800)`,
+  padding: '1rem',
+});
+
+const AlertContainer = (props: AlertContainerProps) => {
+  const { status, children, ...rest } = props;
   const color =
-    props.status === 'error'
+    status === 'error'
       ? 'red'
-      : props.status === 'warning'
+      : status === 'warning'
       ? 'orange'
-      : props.status === 'success'
+      : status === 'success'
       ? 'green'
       : 'blue';
 
-  return {
-    borderRadius: 'var(--cocoso-border-radius)',
-    backgroundColor: `var(--cocoso-colors-bluegray-50)`,
-    border: '1px solid',
-    borderColor: `var(--cocoso-colors-${color}-300)`,
-    color: `var(--cocoso-colors-gray-800)`,
-    padding: '1rem',
-  };
-});
+  return (
+    <AlertContainerStyled
+      css={{
+        borderColor: `var(--cocoso-colors-${color}-300)`,
+      }}
+      {...rest}
+    >
+      {children}
+    </AlertContainerStyled>
+  );
+};
 
 interface AlertProps {
   message?: string | React.ReactNode;

@@ -8,10 +8,10 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Heading,
   IconButton,
   Text,
-  VStack,
 } from '/imports/ui/core';
 
 import { StateContext } from '../../LayoutContainer';
@@ -112,16 +112,13 @@ export default function PlatformRegistrationIntro() {
             variant="ghost"
             ml="2"
             onClick={() => {
-              window.open(
-                `https://${platform.portalHost}/intro`,
-                '_blank'
-              );
+              window.open(`https://${platform.portalHost}/intro`, '_blank');
             }}
           >
             {tc('platform.registrationIntro.linkLabel')}
           </Button>
         </Text>
-        <VStack alignItems="center" gap="4">
+        <Flex align="center" direction="column" gap="4">
           {registrationIntro.map((slide, index) => (
             <Box key={index} py="2" w="100%">
               <Heading mb="2" size="sm">
@@ -158,7 +155,7 @@ export default function PlatformRegistrationIntro() {
               onClick={() => handleAddSlide()}
             />
           </Center>
-        </VStack>
+        </Flex>
 
         <Center mb="8">
           <Button

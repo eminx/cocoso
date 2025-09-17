@@ -23,7 +23,7 @@
 
     /* Module Resolution Options */
     "baseUrl": ".",
-    "jsxImportSource": "restyle",
+    "jsxImportSource": "react",
     "paths": {
       /* Support absolute /imports/* with a leading '/' */
       "/*": ["*"]

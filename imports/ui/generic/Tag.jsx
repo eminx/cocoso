@@ -32,7 +32,7 @@ function Tag({
     <Flex
       align="center"
       gap="0"
-      style={{
+      css={{
         background: getBackground(),
         borderRadius: 'var(--cocoso-border-radius)',
         border:
@@ -45,7 +45,7 @@ function Tag({
       {...otherProps}
     >
       <Box
-        style={{
+        css={{
           background: checkable && checked ? 'none' : 'white',
           border: checkable && !checked ? 'white' : 'none',
           borderRadius: 'var(--cocoso-border-radius)',

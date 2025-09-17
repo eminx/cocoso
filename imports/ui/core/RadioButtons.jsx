@@ -1,18 +1,27 @@
 import React from 'react';
-import { styled } from 'restyle';
+import { styled } from '/stitches.config';
+
 import { Flex, Text } from '/imports/ui/core';
 
 // Styled components
-const RadioContainer = styled('label', (props) => ({
+const RadioContainerStyled = styled('label', {
   display: 'inline-flex',
   alignItems: 'center',
-  cursor: props.disabled ? 'not-allowed' : 'pointer',
-  opacity: props.disabled ? 0.6 : 1,
   position: 'relative',
   marginRight: '1.5rem',
   fontSize: '1rem',
   userSelect: 'none',
-}));
+});
+
+const RadioContainer = ({ disabled, ...rest }) => (
+  <RadioContainerStyled
+    css={{
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      opacity: disabled ? 0.6 : 1,
+    }}
+    {...rest}
+  />
+);
 
 const HiddenInput = styled('input', {
   position: 'absolute',
@@ -23,11 +32,7 @@ const HiddenInput = styled('input', {
   padding: 0,
 });
 
-const RadioCircle = styled('span', (props) => ({
-  background: props.checked ? 'var(--cocoso-colors-theme-100)' : '#fff',
-  border: `2px solid ${
-    props.checked ? 'var(--cocoso-colors-theme-500)' : '#b3b3b3'
-  }`,
+const RadioCircleStyled = styled('span', {
   borderRadius: '50%',
   boxSizing: 'border-box',
   display: 'inline-block',
@@ -35,15 +40,26 @@ const RadioCircle = styled('span', (props) => ({
   marginRight: '0.5em',
   position: 'relative',
   transition: 'border-color 0.2s, box-shadow 0.2s',
-  ...(props.focused && {
+  width: '1.25em',
+  '&:focus': {
     boxShadow: '0 0 0 2px var(--cocoso-colors-theme-200)',
     borderColor: 'var(--cocoso-colors-theme-500)',
-  }),
-  width: '1.25em',
-}));
+  },
+});
 
-const RadioDot = styled('span', (props) => ({
-  display: props.checked ? 'block' : 'none',
+const RadioCircle = ({ checked, ...rest }) => (
+  <RadioCircleStyled
+    css={{
+      background: checked ? 'var(--cocoso-colors-theme-100)' : '#fff',
+      border: `2px solid ${
+        checked ? 'var(--cocoso-colors-theme-500)' : '#b3b3b3'
+      }`,
+    }}
+    {...rest}
+  />
+);
+
+const RadioDotStyled = styled('span', {
   borderRadius: '50%',
   background: 'var(--cocoso-colors-theme-500)',
   height: '0.6em',
@@ -52,67 +68,70 @@ const RadioDot = styled('span', (props) => ({
   top: '50%',
   transform: 'translate(-50%, -50%)',
   width: '0.6em',
-}));
+});
 
-export function Radio({
-  isChecked,
-  isDisabled,
-  onChange,
-  value,
-  name,
-  children,
-  ...props
-}) {
+const RadioDot = ({ checked, ...rest }) => (
+  <RadioDotStyled
+    css={{
+      display: checked ? 'block' : 'none',
+    }}
+    {...rest}
+  />
+);
+
+export function Radio({ checked, label, disabled, value, onChange, ...props }) {
   const [focused, setFocused] = React.useState(false);
 
   return (
-    <RadioContainer disabled={isDisabled}>
+    <RadioContainer disabled={disabled}>
       <HiddenInput
-        aria-checked={isChecked}
-        aria-disabled={isDisabled}
-        checked={isChecked}
-        disabled={isDisabled}
+        aria-checked={checked}
+        aria-disabled={disabled}
+        checked={checked}
+        disabled={disabled}
         name={name}
+        type="radio"
+        value={value}
         onBlur={() => setFocused(false)}
         onChange={onChange}
         onFocus={() => setFocused(true)}
-        type="radio"
-        value={value}
         {...props}
       />
-      <RadioCircle checked={isChecked} focused={focused}>
-        <RadioDot checked={isChecked} />
+      <RadioCircle checked={checked} focused={focused}>
+        <RadioDot checked={checked} />
       </RadioCircle>
-      {children && <Text css={{ fontWeight: 'bold' }}>{children}</Text>}
+      {label && <Text css={{ fontWeight: 'bold' }}>{label}</Text>}
     </RadioContainer>
   );
 }
 
 export function RadioGroup({
+  children,
   direction = 'row',
   name,
   spacing = '1.5rem',
   value,
-  children,
+  options,
   onChange,
   ...props
 }) {
   const handleChange = (event) => {
-    if (onChange) {
-      onChange(event.target.value);
-    }
+    if (!onChange) return;
+    onChange(event.target.value);
   };
 
   return (
     <Flex direction={direction} gap={spacing} {...props}>
-      {React.Children.map(children, (child) => {
-        if (!React.isValidElement(child)) return child;
-        return React.cloneElement(child, {
-          isChecked: child.props.value === value,
-          name,
-          onChange: handleChange,
-        });
-      })}
+      {options.map((option) => (
+        <Radio
+          key={option.value}
+          checked={value === option.value}
+          disabled={option.disabled}
+          label={option.label}
+          value={option.value}
+          onChange={handleChange}
+        />
+      ))}
     </Flex>
   );
 }

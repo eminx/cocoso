@@ -59,14 +59,13 @@ function NewGridThumb({
         borderRadius: 'var(--cocoso-border-radius)',
         cursor: 'pointer',
         overflow: 'hidden',
-        ':hover': { bg: 'theme.50' },
+        '&:hover': { bg: 'theme.50' },
       }}
     >
       <Box
         className="text-link-container"
         css={{
           borderRadius: 'var(--cocoso-border-radius)',
-          position: 'relative',
         }}
       >
         <Center
@@ -74,6 +73,7 @@ function NewGridThumb({
           h={fixedImageHeight ? '220px' : 'auto'}
           css={{
             overflow: 'hidden',
+            position: 'relative',
           }}
         >
           {imageUrl ? (
@@ -102,28 +102,28 @@ function NewGridThumb({
               </Text>
             )
           )}
-        </Center>
 
-        {host && (
-          <Box
-            p="1"
-            css={{
-              position: 'absolute',
-              right: '0',
-              top: '0',
-            }}
-          >
-            <CTag
-              size="sm"
+          {host && (
+            <Box
+              p="2"
               css={{
-                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                color: 'white',
+                position: 'absolute',
+                right: '0',
+                bottom: '8px',
               }}
             >
-              {hostValue}
-            </CTag>
-          </Box>
-        )}
+              <CTag
+                size="sm"
+                css={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                  color: 'white',
+                }}
+              >
+                {hostValue}
+              </CTag>
+            </Box>
+          )}
+        </Center>
 
         <Flex
           align="flex-start"
@@ -139,9 +139,10 @@ function NewGridThumb({
             borderTopWidth: '0',
           }}
         >
-          <Box pb="2" pr="3" isTruncated>
+          <Box pb="2" pr="3">
             <Heading
               className="text-link"
+              truncated
               mb="1"
               mt="2"
               css={{
@@ -156,6 +157,7 @@ function NewGridThumb({
             {subTitle && (
               <Heading
                 className="text-link"
+                truncated
                 css={{
                   fontSize: '1rem',
                   fontWeight: 'light',
