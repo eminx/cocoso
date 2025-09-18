@@ -11,6 +11,7 @@ import { I18nextProvider, useSSR } from 'react-i18next';
 import Hosts from '/imports/api/hosts/host';
 import i18n from '/imports/startup/i18n';
 import AppRoutesSSR from '/imports/ssr/AppRoutes';
+import { getGlobalStylesForSSR } from '/imports/ui/utils/globalStylesManager';
 
 import './api';
 import './migrations';
@@ -56,18 +57,18 @@ Meteor.startup(() => {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
   }
 
-  const { styled, getCssText } = require('/stitches.config');
+  const { getCssText } = require('/stitches.config');
 
   onPageLoad(async (sink) => {
-    const appHtml = renderToString(<App sink={sink} />);
-
-    await new Promise((resolve) => setTimeout(resolve, 10));
-
-    if (typeof document === 'undefined') {
-      React.useLayoutEffect = React.useEffect;
-    }
-
     try {
+      const host = sink?.request?.headers?.['host'];
+      const Host = await Hosts.findOneAsync({ host });
+      const theme = Host?.theme;
+      const globalStyles = getGlobalStylesForSSR(theme);
+      globalStyles();
+
+      const appHtml = renderToString(<App sink={sink} />);
+      await new Promise((resolve) => setTimeout(resolve, 10));
       const helmet = Helmet.renderStatic();
 
       sink.appendToHead(`

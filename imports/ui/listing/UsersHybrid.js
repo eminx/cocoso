@@ -168,7 +168,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
 
       {showKeywordSearch ? (
         <Flex justify="center">
-          <Box boxShadow="md">
+          <Box>
             <Cascader
               changeOnSelect
               dropdownRender={cascaderRender}

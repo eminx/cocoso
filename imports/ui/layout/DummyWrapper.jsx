@@ -4,13 +4,11 @@ import { useLocation } from 'react-router-dom';
 
 import { Box } from '/imports/ui/core';
 
-import GlobalStyles from './GlobalStyles';
-
 export default function DummyWrapper({
   animate = false,
   theme,
   children,
-  otherProps,
+  ...rest
 }) {
   const location = useLocation();
   const pathname = location?.pathname;
@@ -22,7 +20,6 @@ export default function DummyWrapper({
 
   return (
     <HydrationProvider>
-      <GlobalStyles theme={theme} />
       <Box
         className={wrapperClass}
         id="main-content-container"
@@ -31,7 +28,7 @@ export default function DummyWrapper({
           backgroundImage: `url("${theme?.body?.backgroundImage}")`,
           backgroundRepeat: theme?.body?.backgroundRepeat,
         }}
-        {...otherProps}
+        {...rest}
       >
         {children}
       </Box>

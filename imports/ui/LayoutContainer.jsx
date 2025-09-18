@@ -12,6 +12,7 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 
 import { Box } from '/imports/ui/core';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
+import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
 import { call } from './utils/shared';
 import Header from './layout/Header';
@@ -111,6 +112,17 @@ function LayoutPage({ currentUser, userLoading, children }) {
     getAllHosts();
     getPageTitles();
   }, []);
+
+  useEffect(() => {
+    const theme = currentHost?.theme;
+    applyGlobalStyles(theme);
+  }, [currentHost]);
+
+  useLayoutEffect(() => {
+    if (currentHost?.theme) {
+      applyGlobalStyles(currentHost.theme);
+    }
+  }, [currentHost?.theme]);
 
   const setSelectedHue = async () => {
     try {

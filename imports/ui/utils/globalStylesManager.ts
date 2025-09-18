@@ -1,23 +1,32 @@
-import React from 'react';
+// imports/ui/utils/globalStylesManager.ts
 import { globalCss } from '/stitches.config';
 
-const getColor = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
+const getColor = (hue: number, lightness: string) =>
+  `hsl(${hue}deg, 80%, ${lightness}%)`;
 
-export default function GlobalStyles({ theme }) {
+// For CLIENT-SIDE use
+export const applyGlobalStyles = (theme: any) => {
+  if (!theme) return;
+
+  const styles = createGlobalStyles(theme);
+  styles(); // <- IMPORTANT: actually apply
+};
+
+// For SERVER-SIDE use
+export const getGlobalStylesForSSR = (theme: any) => {
+  const styles = createGlobalStyles(theme);
+  return styles; // caller must invoke during SSR render
+};
+
+// Shared style creation logic
+const createGlobalStyles = (theme: any) => {
   const hue = theme?.hue || 220;
-  const variant = theme?.variant;
-  const isGray = variant === 'gray';
-
+  const isGray = theme?.variant === 'gray';
   const bodyFontDefinition = `${
     theme?.body?.fontFamily?.replace(/\+/g, ' ') || 'Raleway'
   }, sans-serif`;
 
-  const globalStyles = globalCss({
-    /* Usage:
-      .cocoso-button, .cocoso-button--{size}, .cocoso-button--{variant}
-      .cocoso-input, .cocoso-input--{size}
-      colorScheme is handled by CSS variables (set on :root or body)
-    */
+  return globalCss({
     ':root': {
       '--cocoso-colors-theme-': 'white',
       '--cocoso-colors-theme-50': isGray
@@ -55,17 +64,12 @@ export default function GlobalStyles({ theme }) {
       '--cocoso-border-radius': theme?.body?.borderRadius,
       '--cocoso-border-style': theme?.body?.borderStyle,
       '--cocoso-border-width': theme?.body?.borderWidth,
-
       '--cocoso-box-shadow':
-        theme?.body?.boxShadow ||
-        '1px 1px 3px rgba(0, 0, 0, 0.5), 1 1px 3px rgba(0, 0, 0, 0.5)',
-
+        '1px 1px 3px rgba(0, 0, 0, 0.5), 1px 1px 3px rgba(0, 0, 0, 0.5)',
       '--cocoso-body-font-family': bodyFontDefinition,
     },
     body: {
       fontFamily: bodyFontDefinition,
     },
   });
-
-  return <>{globalStyles()}</>;
-}
+};

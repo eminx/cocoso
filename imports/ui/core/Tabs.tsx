@@ -58,7 +58,6 @@ const TabItemStyled = styled('div', {
   transition: 'border-color 0.2s, color 0.2s',
   '&:focus': {
     outline: 'none',
-    boxShadow: '0 0 0 2px var(--cocoso-colors-theme-200)',
   },
 });
 

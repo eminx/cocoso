@@ -53,7 +53,7 @@ export const getColor = (color: string) => {
   return `var(--cocoso-colors-${colorParts[0]}-${colorParts[1]})`;
 };
 
-export const { styled, css, globalCss, getCssText } = createStitches();
+export const { styled, css, globalCss, getCssText } = createStitches({});
 
 // --- stitches config
 // export const { styled, css, getCssText } = createStitches({
