@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Trans } from 'react-i18next';
 
 import {
@@ -22,6 +22,7 @@ import {
   getCustomTheme,
   getGrayTheme,
 } from '/imports/ui/pages/admin/design/styleOptions';
+// import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
 import HuePicker from './HuePicker';
 import BackgroundHandler from './BackgroundHandler';
@@ -56,27 +57,34 @@ export default function ThemeHandler() {
       return;
     }
 
+    console.log('is same object?', currentHost.theme === newTheme);
+    console.log('is same body?', currentHost.theme?.body === newTheme?.body);
+
+    // applyGlobalStyles(newTheme);
+
     setCurrentHost((prevState) => ({
       ...prevState,
-      theme: newTheme,
+      theme: { ...newTheme },
     }));
   };
 
   const handleStyleChange = (key, value) => {
-    // if (currentHost?.theme?.body?.[key] === value) {
-    //   return;
-    // }
-
-    setCurrentHost((prevState) => ({
-      ...prevState,
-      theme: {
+    const newTheme = setCurrentHost((prevState) => {
+      const newTheme = {
         ...prevState?.theme,
         body: {
           ...prevState?.theme?.body,
           [key]: value,
         },
-      },
-    }));
+      };
+
+      // applyGlobalStyles(newTheme);
+
+      return {
+        ...prevState,
+        theme: { ...newTheme },
+      };
+    });
   };
 
   const updateHostTheme = async (uploadedImage = null) => {

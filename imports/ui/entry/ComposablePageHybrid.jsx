@@ -44,7 +44,7 @@ function ContentViewModule({ module, Host }) {
             </a>
           ) : (
             <Link to={buttonLink}>
-              <Button as="span">{value.label}</Button>
+              <Button>{value.label}</Button>
             </Link>
           )}
         </Center>

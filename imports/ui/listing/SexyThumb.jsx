@@ -87,6 +87,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
       h={imageStyle.height}
       mb="0.6"
       css={{
+        borderRadius: 'var(--cocoso-border-radius)',
         maxWidth: imageStyle.maxWidth,
       }}
     >
