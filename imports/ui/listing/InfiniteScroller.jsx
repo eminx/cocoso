@@ -8,11 +8,11 @@ import NewEntryHelper from '../generic/NewEntryHelper';
 import FiltrerSorter from './FiltrerSorter';
 
 const breakpointColumnsObj = (isLarger) => ({
-  default: 4,
-  1900: isLarger ? 4 : 2,
-  1500: isLarger ? 4 : 2,
-  1100: isLarger ? 2 : 1,
-  700: isLarger ? 2 : 1,
+  default: 6,
+  2440: isLarger ? 5 : 3,
+  1920: isLarger ? 4 : 2,
+  1420: isLarger ? 3 : 2,
+  760: isLarger ? 2 : 1,
   480: 1,
 });
 

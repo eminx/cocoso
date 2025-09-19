@@ -6,7 +6,7 @@ const getColor = (hue: number, lightness: string) =>
  * Create a CSS string for the given theme.
  * Shared between SSR + client.
  */
-export const getGlobalStylesForSSR = (theme: any): string => {
+export const getGlobalStyles = (theme: any): string => {
   const hue = theme?.hue || 220;
   const variant = theme?.variant;
   const isGray = variant === 'gray';
@@ -52,8 +52,7 @@ export const getGlobalStylesForSSR = (theme: any): string => {
       --cocoso-border-radius: ${theme?.body?.borderRadius || '0'};
       --cocoso-border-style: ${theme?.body?.borderStyle || 'solid'};
       --cocoso-border-width: ${theme?.body?.borderWidth || '0px'};
-      --cocoso-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5),
-                           1px 1px 3px rgba(0, 0, 0, 0.5);
+      --cocoso-box-shadow: 1px 1px 0px rgba(205, 205, 205, 0.5), 1px 1px 3px rgba(55, 55, 55, 0.5);
       --cocoso-body-font-family: ${bodyFontDefinition};
     }
 
@@ -69,7 +68,7 @@ export const getGlobalStylesForSSR = (theme: any): string => {
 export const applyGlobalStyles = (theme: any) => {
   if (typeof document === 'undefined') return; // SSR safety
 
-  const css = getGlobalStylesForSSR(theme);
+  const css = getGlobalStyles(theme);
 
   let tag = document.getElementById('global-theme') as HTMLStyleElement | null;
   if (!tag) {

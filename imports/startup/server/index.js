@@ -11,7 +11,7 @@ import { I18nextProvider, useSSR } from 'react-i18next';
 import Hosts from '/imports/api/hosts/host';
 import i18n from '/imports/startup/i18n';
 import AppRoutesSSR from '/imports/ssr/AppRoutes';
-import { getGlobalStylesForSSR } from '/imports/ui/utils/globalStylesManager';
+import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
 import './api';
 import './migrations';
@@ -66,7 +66,7 @@ Meteor.startup(() => {
       const theme = Host?.theme;
 
       // NEW: this now returns a string, not a function
-      const globalCssString = getGlobalStylesForSSR(theme);
+      const globalCssString = getGlobalStyles(theme);
 
       const appHtml = renderToString(<App sink={sink} />);
       const helmet = Helmet.renderStatic();
