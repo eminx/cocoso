@@ -27,7 +27,7 @@ export default function TopBarHandler({ slideStart }) {
       <Fade ping={scrollTop < 120}>
         <Flex justify="space-between" w="100%">
           <Box p="1" pointerEvents="all">
-            <FederationIconMenu />
+            {/* <FederationIconMenu /> */}
           </Box>
           <Flex p="1" pointerEvents="all">
             <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />

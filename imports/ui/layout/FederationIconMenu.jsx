@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { Suspense, useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
@@ -11,6 +11,7 @@ import {
   Divider,
   Flex,
   Image,
+  Loader,
   Modal,
 } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
@@ -32,7 +33,6 @@ export default function FederationIconMenu() {
   const handleSetHostInfo = async () => {
     try {
       const info = await call('getPortalHostInfoPage');
-      console.log('Host info received:', info);
       setHostInfo(info);
       setInfoOpen(true);
     } catch (error) {
@@ -47,7 +47,7 @@ export default function FederationIconMenu() {
   }
 
   return (
-    <>
+    <Suspense fallback={<Loader />}>
       <Flex
         align="center"
         className="federation-logo"
@@ -144,6 +144,6 @@ export default function FederationIconMenu() {
           </Box>
         )}
       </Modal>
-    </>
+    </Suspense>
   );
 }
