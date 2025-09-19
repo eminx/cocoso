@@ -113,11 +113,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
     getPageTitles();
   }, []);
 
-  useEffect(() => {
-    const theme = currentHost?.theme;
-    applyGlobalStyles(theme);
-  }, [currentHost]);
-
   useLayoutEffect(() => {
     if (currentHost?.theme) {
       applyGlobalStyles(currentHost.theme);
