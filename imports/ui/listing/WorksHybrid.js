@@ -80,29 +80,29 @@ export default function WorksHybrid({ works, Host }) {
   const heading = worksInMenu?.label;
   const url = `${Host?.host}/${worksInMenu?.name}`;
 
-  const getAvatar = (work) =>
-    work.showAvatar && {
-      name: work.authorUsername,
-      url: work.authorAvatar,
-    };
-  const getColor = (work) =>
-    categories?.find((cat) => cat?.label === work.category?.label)?.color;
-  const getImageUrl = (work) => work?.images && work.images[0];
-  const getTag = (work) => work.category?.label;
-  const getTitle = (work) => work.title;
+  // const getAvatar = (work) =>
+  //   work.showAvatar && {
+  //     name: work.authorUsername,
+  //     url: work.authorAvatar,
+  //   };
+  // const getColor = (work) =>
+  //   categories?.find((cat) => cat?.label === work.category?.label)?.color;
+  // const getImageUrl = (work) => work?.images && work.images[0];
+  // const getTag = (work) => work.category?.label;
+  // const getTitle = (work) => work.title;
 
-  const WorkItem = useMemo(
-    () => (props) => {
-      const itemProps = {
-        ...props,
-        categories,
-        Host,
-        onClick: () => setModalItem(props?.data),
-      };
-      return <WorkThumb {...itemProps} />;
-    },
-    []
-  );
+  // const WorkItem = useMemo(
+  //   () => (props) => {
+  //     const itemProps = {
+  //       ...props,
+  //       categories,
+  //       Host,
+  //       onClick: () => setModalItem(props?.data),
+  //     };
+  //     return <WorkThumb {...itemProps} />;
+  //   },
+  //   []
+  // );
 
   return (
     <>
