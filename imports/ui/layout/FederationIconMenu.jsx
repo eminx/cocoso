@@ -28,10 +28,14 @@ export default function FederationIconMenu() {
   const [t] = useTranslation('members');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const info = call('getPortalHostInfoPage');
+  const getInfo = async () => {
+    const info = await call('getPortalHostInfoPage');
     setHostInfo(info);
-  }, [platform]);
+  };
+
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   const isPortalHost = currentHost?.isPortalHost;
 
