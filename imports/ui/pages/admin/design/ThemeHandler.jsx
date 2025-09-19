@@ -22,7 +22,6 @@ import {
   getCustomTheme,
   getGrayTheme,
 } from '/imports/ui/pages/admin/design/styleOptions';
-// import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
 import HuePicker from './HuePicker';
 import BackgroundHandler from './BackgroundHandler';
@@ -57,11 +56,6 @@ export default function ThemeHandler() {
       return;
     }
 
-    console.log('is same object?', currentHost.theme === newTheme);
-    console.log('is same body?', currentHost.theme?.body === newTheme?.body);
-
-    // applyGlobalStyles(newTheme);
-
     setCurrentHost((prevState) => ({
       ...prevState,
       theme: { ...newTheme },
@@ -77,8 +71,6 @@ export default function ThemeHandler() {
           [key]: value,
         },
       };
-
-      // applyGlobalStyles(newTheme);
 
       return {
         ...prevState,
