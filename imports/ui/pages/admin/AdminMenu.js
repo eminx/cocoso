@@ -121,6 +121,10 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
       cursor="pointer"
       p="2.5"
       css={{
+        backgroundColor:
+          isCurrentRoute && !item.isMulti
+            ? 'var(--cocoso-colors-bluegray-100)'
+            : null,
         borderRightColor: 'var(--cocoso-colors-bluegray-500)',
         borderRightStyle: 'solid',
         borderRightWidth: isCurrentRoute && !item.isMulti ? '3px' : '0',
