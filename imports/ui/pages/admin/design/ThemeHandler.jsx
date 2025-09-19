@@ -22,7 +22,6 @@ import {
   getCustomTheme,
   getGrayTheme,
 } from '/imports/ui/pages/admin/design/styleOptions';
-// import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
 import HuePicker from './HuePicker';
 import BackgroundHandler from './BackgroundHandler';
@@ -57,11 +56,6 @@ export default function ThemeHandler() {
       return;
     }
 
-    console.log('is same object?', currentHost.theme === newTheme);
-    console.log('is same body?', currentHost.theme?.body === newTheme?.body);
-
-    // applyGlobalStyles(newTheme);
-
     setCurrentHost((prevState) => ({
       ...prevState,
       theme: { ...newTheme },
@@ -77,8 +71,6 @@ export default function ThemeHandler() {
           [key]: value,
         },
       };
-
-      // applyGlobalStyles(newTheme);
 
       return {
         ...prevState,
@@ -99,6 +91,8 @@ export default function ThemeHandler() {
         backgroundImage: uploadedImage,
       },
     };
+
+    console.log();
 
     try {
       await call('updateHostTheme', newTheme);
@@ -216,13 +210,13 @@ export default function ThemeHandler() {
         </Center>
       </Boxling>
 
-      {currentTheme?.variant === 'custom' && (
-        <BackgroundHandler
-          uploadPing={state.uploadingBackgroundImage}
-          onStyleChange={handleStyleChange}
-          onUploadFinish={updateHostTheme}
-        />
-      )}
+      {/* {currentTheme?.variant === 'custom' && ( */}
+      <BackgroundHandler
+        uploadPing={state.uploadingBackgroundImage}
+        onStyleChange={handleStyleChange}
+        onUploadFinish={updateHostTheme}
+      />
+      {/* )} */}
 
       <Flex justify="flex-end" mb="12">
         <Button loading={state.updating} onClick={confirmUpdate}>

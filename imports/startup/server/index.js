@@ -64,19 +64,20 @@ Meteor.startup(() => {
       const host = sink?.request?.headers?.['host'];
       const Host = await Hosts.findOneAsync({ host });
       const theme = Host?.theme;
-      const globalStyles = getGlobalStylesForSSR(theme);
-      globalStyles();
+
+      // NEW: this now returns a string, not a function
+      const globalCssString = getGlobalStylesForSSR(theme);
 
       const appHtml = renderToString(<App sink={sink} />);
-      await new Promise((resolve) => setTimeout(resolve, 10));
       const helmet = Helmet.renderStatic();
 
       sink.appendToHead(`
-        ${helmet.title.toString()}
-        ${helmet.meta.toString()}
-        ${helmet.link.toString()}
-        <style id="stitches">${getCssText()}</style>
-      `);
+      ${helmet.title.toString()}
+      ${helmet.meta.toString()}
+      ${helmet.link.toString()}
+      <style id="global-theme">${globalCssString}</style>
+      <style id="stitches">${getCssText()}</style>
+    `);
 
       sink.renderIntoElementById('root', appHtml);
     } catch (error) {

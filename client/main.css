@@ -299,7 +299,7 @@ input::placeholder {
   background-clip: padding-box;
   flex-basis: 240px;
   flex-grow: 1;
-  max-width: 480px;
+  max-width: 380px;
 }
 
 .ant-select-dropdown {

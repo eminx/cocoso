@@ -20,7 +20,7 @@ import {
 } from './components';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
-const AppRoutesSSR = (host, sink) => {
+export default AppRoutesSSR = (host, sink) => {
   const props = {
     host,
     sink,
@@ -98,5 +98,3 @@ const AppRoutesSSR = (host, sink) => {
     },
   ];
 };
-
-export default AppRoutesSSR;

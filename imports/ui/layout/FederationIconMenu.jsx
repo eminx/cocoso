@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
@@ -21,7 +21,6 @@ import { StateContext } from '/imports/ui/LayoutContainer';
 
 export default function FederationIconMenu() {
   const [infoOpen, setInfoOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [hostInfo, setHostInfo] = useState(null);
   const { allHosts, currentHost, currentUser, isDesktop, platform } =
     useContext(StateContext);
@@ -29,16 +28,10 @@ export default function FederationIconMenu() {
   const [t] = useTranslation('members');
   const navigate = useNavigate();
 
-  const handleSetHostInfo = async () => {
-    try {
-      const info = await call('getPortalHostInfoPage');
-      console.log('Host info received:', info);
-      setHostInfo(info);
-      setInfoOpen(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    const info = call('getPortalHostInfoPage');
+    setHostInfo(info);
+  }, [platform]);
 
   const isPortalHost = currentHost?.isPortalHost;
 
@@ -76,7 +69,7 @@ export default function FederationIconMenu() {
               transition: 'all .2s ease-in-out',
             },
           }}
-          onClick={() => handleSetHostInfo()}
+          onClick={() => setInfoOpen(true)}
         />
 
         {currentUser ? (
