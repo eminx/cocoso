@@ -30,9 +30,7 @@ export default function RsvpList({ occurrence, title }) {
           filename={getFileName(occurrence, title)}
           target="_blank"
         >
-          <Button as="span" size="sm">
-            {tc('actions.downloadCSV')}
-          </Button>
+          <Button size="sm">{tc('actions.downloadCSV')}</Button>
         </CSVLink>
       </Center>
       <ReactTable

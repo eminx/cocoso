@@ -174,9 +174,7 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
             <Center bg="gray.100" p="2">
               <Box>
                 <Center>
-                  <Text as="span" fontSize="sm">
-                    {tc('actions.toHost')}:
-                  </Text>
+                  <Text fontSize="sm">{tc('actions.toHost')}:</Text>
                   <Code
                     fontSize="sm"
                     linebreak="anywhere"
