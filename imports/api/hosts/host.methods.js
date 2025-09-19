@@ -242,7 +242,9 @@ Meteor.methods({
         host: portalHost.host,
       },
       {
+        images: 1,
         longDescription: 1,
+        title: 1,
       }
     );
   },
