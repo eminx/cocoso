@@ -92,6 +92,8 @@ export default function ThemeHandler() {
       },
     };
 
+    console.log();
+
     try {
       await call('updateHostTheme', newTheme);
       await getCurrentHost();
@@ -208,13 +210,13 @@ export default function ThemeHandler() {
         </Center>
       </Boxling>
 
-      {currentTheme?.variant === 'custom' && (
-        <BackgroundHandler
-          uploadPing={state.uploadingBackgroundImage}
-          onStyleChange={handleStyleChange}
-          onUploadFinish={updateHostTheme}
-        />
-      )}
+      {/* {currentTheme?.variant === 'custom' && ( */}
+      <BackgroundHandler
+        uploadPing={state.uploadingBackgroundImage}
+        onStyleChange={handleStyleChange}
+        onUploadFinish={updateHostTheme}
+      />
+      {/* )} */}
 
       <Flex justify="flex-end" mb="12">
         <Button loading={state.updating} onClick={confirmUpdate}>

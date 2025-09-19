@@ -99,24 +99,24 @@ export const themeOptions = [
 ];
 
 export const getGrayTheme = (theme) => ({
-  hue: theme.hue, // Keep for potential reverse case
+  hue: theme?.hue, // Keep for potential reverse case
   variant: 'gray',
   body: {
     backgroundColor: 'var(--cocoso-colors-gray-100)',
     backgroundImage: 'none',
     backgroundRepeat: 'no-repeat',
-    borderRadius: theme.body.borderRadius,
-    fontFamily: theme.body.fontFamily || 'sans-serif',
+    borderRadius: theme?.body?.borderRadius,
+    fontFamily: theme?.body?.fontFamily || 'sans-serif',
   },
   menu: {
     backgroundColor: 'var(--cocoso-colors-gray-50)',
     borderColor: 'var(--cocoso-colors-gray-200)',
-    borderRadius: theme.menu.borderRadius || '0.25rem',
-    borderStyle: theme.menu.borderStyle || 'solid',
-    borderWidth: theme.menu.borderWidth || '0px',
+    borderRadius: theme?.menu?.borderRadius || '0.25rem',
+    borderStyle: theme?.menu?.borderStyle || 'solid',
+    borderWidth: theme?.menu?.borderWidth || '0px',
     color: 'var(--cocoso-colors-gray-800)',
-    fontStyle: theme.menu.fontStyle || 'normal',
-    textTransform: theme.menu.textTransform || 'none',
+    fontStyle: theme?.menu?.fontStyle || 'normal',
+    textTransform: theme?.menu?.textTransform || 'none',
   },
 });
 
