@@ -297,9 +297,9 @@ input::placeholder {
 .my-masonry-grid_column {
   padding-left: 8px; /* gutter size */
   background-clip: padding-box;
-  flex-basis: 240px;
+  flex-basis: 320px;
   flex-grow: 1;
-  max-width: 360px;
+  max-width: 420px;
 }
 
 .ant-select-dropdown {
