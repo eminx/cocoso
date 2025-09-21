@@ -26,6 +26,7 @@ const remainingStyle = {
 const imageStyle = {
   height: '325px',
   maxWidth: '780px',
+  minWidth: '355px',
   objectFit: 'cover',
   width: '100%',
   borderRadius: 'var(--cocoso-border-radius)',
@@ -89,6 +90,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
       css={{
         borderRadius: 'var(--cocoso-border-radius)',
         maxWidth: imageStyle.maxWidth,
+        minWidth: imageStyle.minWidth,
       }}
     >
       <div className="thumb-cover">

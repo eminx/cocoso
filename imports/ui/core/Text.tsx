@@ -1,5 +1,7 @@
 import React from 'react';
-import { CSSProperties, styled } from '/stitches.config';
+import { CSSProperties } from '@stitches/react';
+
+import { styled } from '/stitches.config';
 
 import { getPropStyles } from './functions';
 
@@ -162,7 +164,7 @@ export const Heading = (props: HeadingProps) => {
         lineHeight: lineHeight || '1.2',
         textAlign: textAlign || 'left',
         textOverflow: truncated ? 'ellipsis' : 'clip',
-        whiteSpace: truncated ? 'nowrap' : 'normal',
+        whiteSpace: truncated ? 'pre-wrap' : 'normal',
         ...getPropStyles(props),
         ...css,
       }}
@@ -217,21 +219,22 @@ const LinkStyled = styled('a', {
 });
 
 export const Link = (props: TextProps) => {
-  const { children, ...rest } = props;
-  const color = props.color?.split('.') || ['blue', '500'];
-  const fontSize = props.size || props.fontSize;
-  const truncated = props.truncated || false;
+  const { children, css, color, fontSize, size, truncated, ...rest } = props;
+  const colorValue = color?.split('.') || ['blue', '500'];
+  const fontSizeValue = size || fontSize;
+  const truncatedValue = truncated || false;
 
   return (
     <LinkStyled
       css={{
-        color: `var(--cocoso-colors-${color[0]}-${color[1]})`,
+        color: `var(--cocoso-colors-${colorValue[0]}-${colorValue[1]})`,
         fontSize: fontSize
-          ? fontSizes[fontSize as keyof typeof fontSizes]
+          ? fontSizes[fontSizeValue as keyof typeof fontSizes]
           : fontSizes.md,
-        overflow: truncated ? 'hidden' : 'visible',
-        textOverflow: truncated ? 'ellipsis' : 'clip',
-        whiteSpace: truncated ? 'nowrap' : 'normal',
+        overflow: truncatedValue ? 'hidden' : 'visible',
+        textOverflow: truncatedValue ? 'ellipsis' : 'clip',
+        whiteSpace: truncatedValue ? 'nowrap' : 'normal',
+        ...css,
       }}
       {...rest}
     >
