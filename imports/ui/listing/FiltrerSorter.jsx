@@ -70,7 +70,7 @@ export default function FiltrerSorter(props) {
   };
 
   return (
-    <Flex justify="flex-end" my="2" w="300px">
+    <Flex justify="flex-end" my="2" w="300px" px="2">
       <Accordion
         options={[
           {
