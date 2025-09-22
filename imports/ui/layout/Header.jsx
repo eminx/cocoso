@@ -80,6 +80,7 @@ export function InfoPagesMenu({
       }
     >
       <Box
+        key="menu-content-x"
         css={{
           backgroundColor: menuStyles?.backgroundColor,
           maxHeight: '480px',
