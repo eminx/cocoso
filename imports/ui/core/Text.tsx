@@ -32,7 +32,6 @@ const TagStyled = styled('span', {
   fontWeight: '400',
   lineHeight: '1.35rem',
   paddingInline: '0.55rem',
-  textTransform: 'capitalize',
 });
 
 export const Tag = (props: any) => {
