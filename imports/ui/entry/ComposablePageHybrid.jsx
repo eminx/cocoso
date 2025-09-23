@@ -119,7 +119,7 @@ export default function ComposablePageHybrid({ composablePage, Host }) {
       {hideMenu ? (
         <style>
           {`
-            #main-menu: {
+            #main-menu {
               display: none;
             }
           `}

@@ -202,6 +202,7 @@ export const Code = (props: CodeProps & { children?: React.ReactNode }) => {
         fontSize: fontSize
           ? fontSizes[fontSize as keyof typeof fontSizes]
           : fontSizes.md,
+        overflowWrap: 'anywhere',
       }}
       {...rest}
     >
