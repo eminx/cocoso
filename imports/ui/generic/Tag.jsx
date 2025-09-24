@@ -12,8 +12,8 @@ function Tag({
   removable = false,
   onClick,
   onRemove,
-  ...otherProps
 }) {
+  console.log(filterColor);
   const getBackground = () => {
     if (gradientBackground) {
       return gradientBackground;
@@ -42,11 +42,10 @@ function Tag({
         display: 'inline-flex',
         padding: gradientBackground && checkable ? '2px' : '0',
       }}
-      {...otherProps}
     >
       <Box
         css={{
-          background: checkable && checked ? 'none' : 'white',
+          backgroundColor: checkable && checked ? 'none' : 'white',
           border: checkable && !checked ? 'white' : 'none',
           borderRadius: 'var(--cocoso-border-radius)',
           cursor: 'pointer',
