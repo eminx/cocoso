@@ -32,7 +32,6 @@ const TagStyled = styled('span', {
   fontWeight: '400',
   lineHeight: '1.35rem',
   paddingInline: '0.55rem',
-  textTransform: 'capitalize',
 });
 
 export const Tag = (props: any) => {
@@ -203,6 +202,7 @@ export const Code = (props: CodeProps & { children?: React.ReactNode }) => {
         fontSize: fontSize
           ? fontSizes[fontSize as keyof typeof fontSizes]
           : fontSizes.md,
+        overflowWrap: 'anywhere',
       }}
       {...rest}
     >

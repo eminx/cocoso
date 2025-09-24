@@ -1,7 +1,7 @@
 # ADMIN SETTINGS PAGE
 label: Admin
 panel: Admin Paneli
-menulabel: Admin Menü
+menulabel: 'Admin Menü'
 site: Site
 home: Anasayfa
 description: Web sitesini yapılandır, tasarla ve yönet
@@ -13,9 +13,9 @@ settings:
     design: Tasarım
     general: Genel
     logo: Logo
-    logoHelper: Topluluğunuzun web sitesi için logo yükle
+    logoHelper: Web sitesi için logo yükle
     info: Bilgi
-    infoHelper: Topluluğunuz hakkında bilgi gir
+    infoHelper: Topluluğun hakkında bilgi gir
     categories: Kategoriler
     menu: Menü
     menuHelper: Menüyü oluştur ve ayarla
@@ -40,9 +40,9 @@ info:
   info: Topluluk hakkında bilgi gir
   platform:
     info: Global Platform hakkında bilgi gir
-    name: İsim
+    name: 'İsim'
     email: Eposta adresi
-    options: İstediğin seçenekleri seç ve onayla
+    options: 'İstediğin seçenekleri seç ve onayla'
     showfooter: Tüm topluluk uygulamalarında, toplulukları görüntülemek için bağlantı içeren altbilgi gösterilsin
     showCommunities: Tüm topluluk uygulamalarında toplulukları görüntülemek için menüdeki Topluluklar bağlantı ögesi gösterilsin
     topbar:
@@ -62,11 +62,11 @@ users:
   title: Kullanıcılar
   description: Kullanıcıları yönet, onları doğrula/onayla veya yönetici olarak tayin et
   shortcutHelper: Kullanıcılarınızı yönet, onları doğrula/onayla veya yönetici olarak tayin et
-  usersListed: kullanıcı
-  userListed: kullanıcı
+  usersListed: 'kullanıcı'
+  userListed: 'kullanıcı'
 
 menu:
-  title: Menü
+  title: 'Menü'
   description: Ana menüyü oluştur, ayarla ve tasarla
   tabs:
     menuitems:
@@ -76,27 +76,27 @@ menu:
       label: Sıralama
       info: Görüntüleme sırasını değiştirmek istiyorsan, ögeleri yukarı ve aşağı sürükleyerek yeniden sırala
   itemActive: Aktif
-  itemLabel: İsim
+  itemLabel: 'İsim'
   info:
-    activities: Etkinlikler ve grup/süreç buluşmalarını içeren listeleme sayfası
-    calendar: Takvim sayfası
-    groups: Gruplar ve süreçleri içeren listeleme sayfası
-    info: Statik bilgi sayfaları için listeleme sayfası
-    people: Topluluk üyelerini içeren listeleme sayfası
-    resources: Topluluk kaynaklarını içeren listeleme sayfası
-    works: Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası
+    activities: 'Etkinlikler ve grup/süreç buluşmalarını içeren listeleme sayfası'
+    calendar: 'Takvim sayfası'
+    groups: 'Gruplar ve süreçleri içeren listeleme sayfası'
+    info: 'Statik bilgi sayfaları için listeleme sayfası'
+    people: 'Topluluk üyelerini içeren listeleme sayfası'
+    resources: 'Topluluk kaynaklarını içeren listeleme sayfası'
+    works: 'Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası'
   burgermenu:
-    title: Burger Menü
+    title: 'Burger Menü'
     label: Burger Menü aktif
     mobile: Burger Menü mobil görüntülemede aktif
     desktop: Burger Menü masaüstü görüntülemede aktif
-    text: İsteğe bağlı olarak burger menüyü aktifleştir. Burger menü, ekranın sağ üst köşesindeki "burger" simgesine tıklandığında görünen menüdür.
+    text: 'İsteğe bağlı olarak burger menüyü aktifleştir. Burger menü, ekranın sağ üst köşesindeki "burger" simgesine tıklandığında görünen menüdür.'
   options:
     label: Seçenekler
 
 categories:
   title: Kategoriler
-  info: İşler için kategorileri burdan girebilirsin
+  info: 'İşler için kategorileri burdan girebilirsin'
   message:
     denySpecialChars: Kısa çizgi (-) dışındaki özel karakterlere izin verilmez
 
@@ -116,14 +116,14 @@ emails:
     body:
       label: Açıklama
     image:
-      label: Imaj
-      helper: E-postanın üst kısmında görünecek bir imaj seç
+      label: 'Imaj'
+      helper: 'E-postanın üst kısmında görünecek bir imaj seç'
     footer:
       label: Altbilgi
   new:
-    title: Yeni kullanıcı
+    title: 'Yeni kullanıcı'
   verified:
-    title: Onaylanmış kullanıcı
+    title: 'Onaylanmış kullanıcı'
   admin:
     title: Yeni admin
 
@@ -133,12 +133,12 @@ newsletter:
   description: Tüm kullanıcılara aynı anda bir e-posta bülteni gönder
   shortcutHelper: Tüm kullanıcılarınıza aynı anda bir e-posta bülteni gönder
   subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsin.
-  subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik ögeleri.'
-  contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsin.
+  subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik ögeleri'
+  contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsin
   labels:
-    insertcontent: İçerik ekle
+    insertcontent: 'İçerik ekle'
     browserlink: Bu e-postayı tarayıcıda görüntülemek için buraya tıklayın
-    previouslink: Önceki Bültenleri Görüntüle
+    previouslink: 'Önceki Bültenleri Görüntüle'
   modals:
     title: Herkese göndermeyi onayla
     body: Bu e-postayı topluluğunuzun tüm üyelerine göndermek üzeresin. Bu e-postayı üyelerinize gönderdikten sonra bu işlemi geri alamazsın.
@@ -162,7 +162,7 @@ newsletter:
     info: Bu federasyonun portal uygulaması olduğu için, e-posta tüm {{ platform }} platformu üyelerine gönderilecektir
 
 listings:
-  title: Listeleme Sayfaları
+  title: 'Listeleme Sayfaları'
   shortcutHelper: Her farklı listeleme sayfası için bir başlık ve bir açıklama belirleyebilirsiniz
 
 # ADMIN STATIC PAGES
@@ -180,45 +180,45 @@ pages:
       holder: Katkı sağlama prosedürünün işleyiş şekli...
       helper: Lütfen bu sayfada yayınlamak istediğin metin içeriğinin tamamını buraya gir
     images:
-      label: İmajlar
-      helper: Tercihen, lütfen yayınlandığında bu sayfada bir slayt içinde görüntülenecek bir imaj veya bir dizi imaj seç
+      label: 'İmajlar'
+      helper: 'Tercihen, lütfen yayınlandığında bu sayfada bir slayt içinde görüntülenecek bir imaj veya bir dizi imaj seç'
   order:
     title: Sıra
     label: Sayfaların sırasını düzenle
     info: Sayfaları yukarı ve aşağı sürükleyerek yeniden sıralayabilirsin. Navigasyon menüsündeki görüntülenme sırasını etkiler
 
 composable:
-  title: Özelleştirilebilir sayfalar
+  title: 'Özelleştirilebilir sayfalar'
   existing: Mevcut olanlar
   none: Henüz özelleştirilebilir sayfa yok
   new: Yeni oluştur
   create: Oluştur
   newTitleInputLabel: Başlık
   newTitleInputHelper: Lütfen yeni oluşturulacak özelleştirilebilir sayfanın başlığını gir
-  description: Özel bir sayfa oluştur ve bunu açılış sayfası, kampanya sayfası veya istediğin herhangi bir sayfa olarak düzenle
+  description: 'Özel bir sayfa oluştur ve bunu açılış sayfası, kampanya sayfası veya istediğin herhangi bir sayfa olarak düzenle'
   form:
-    addContent: İçerik ekle
-    addToMenu: Özelleştirilebilir sayfa ekle
+    addContent: 'İçerik ekle'
+    addToMenu: 'Özelleştirilebilir sayfa ekle'
     addRow: Satır ekle
     emptySpace: Boşluk
     emptySpaceHelper: Lütfen boşluk için piksel bazlı bir yükseklik gir
     label: Etiket
     labelHelper: Lütfen buton için etiketi gir. Bu etiket buton üzerinde görünecek
-    line: Çizgi
+    line: 'Çizgi'
     link: Bağlantı adresi
     linkHelper: Lütfen bağlantı adresini gir. Bu bağlantı, butona tıklandığında açılır
-    imageAsLink: İmaj link mi?
+    imageAsLink: 'İmaj link mi?'
     video: Video-URL
     videoHelper: Lütfen bir video URL'si gir, genellikle bir YouTube veya Vimeo video sayfasının bağlantı adresi olur..
     removeRow: Satırı kaldır
     title: Başlık
     types:
-      button: Buton
-      divider: Ayraç
-      image: İmaj
-      image-slider: Slayt
-      text: Metin
-      video: Video
+      button: 'Buton'
+      divider: 'Ayraç'
+      image: 'İmaj'
+      image-slider: 'Slayt'
+      text: 'Metin'
+      video: 'Video'
   confirmDelete:
     title: Silmeyi onayla
     text1: Bu modülü silmek istediğinden emin misin?
@@ -233,9 +233,9 @@ composable:
     titleEmpty: Lütfen bir başlık gir
     titleTooLong: Başlık 50 karakterden fazla olamaz
   toolbar:
-    preview: Önizleme
+    preview: 'Önizleme'
     publish: Yayınla
-    published: Yayınlandı
+    published: 'Yayınlandı'
     unpublish: Yayından kaldır
     unpublished: Taslak
     updated: Kaydedildi
@@ -243,8 +243,8 @@ composable:
     modalTitleUnpublish: Yayından kaldırmayı Onayla
     publishText: Bu sayfayı yayınlamak istediğinden emin misin?
     unpublishText: Bu sayfayı yayından kaldırmak istediğinden emin misin?
-    publishSuccess: Sayfa yayınlandı
-    unpublishSuccess: Sayfa yayından kaldırıldı
+    publishSuccess: 'Sayfa yayınlandı'
+    unpublishSuccess: 'Sayfa yayından kaldırıldı'
     unpublishErrorPageInMenu: Sayfa ana menüde bağlantılı, lütfen önce ordan kaldır
     linkToMenu: Bu sayfayı ana menüye eklemek/kaldırmak için buraya tıklayın
 
@@ -252,16 +252,16 @@ design:
   title: Tasarım
   description: Web sitenin görünümünü istediğin şekilde özelleştirmek için tema ve menüyü tercihlerine göre ayarla
   tabs:
-    theme: Tema
-    menu: Menü
+    theme: 'Tema'
+    menu: 'Menü'
   theme:
-    title: Tema
-    color: Tema rengi
-    demo: Önizleme
-    button: Buton
+    title: 'Tema'
+    color: 'Tema rengi'
+    demo: 'Önizleme'
+    button: 'Buton'
     options:
-      gray: Gri tonları
-      custom: Özelleştirilmiş
+      gray: 'Gri tonları'
+      custom: 'Özelleştirilmiş'
   background:
     title: Arka plan
     color: Arka plan rengi
@@ -270,42 +270,42 @@ design:
   border:
     title: Kenarlıklar
     color: Kenarlık rengi
-    radius: Kenarlık yuvarlaklığı
-    width: Kenarlık kalınlığı
+    radius: 'Kenarlık yuvarlaklığı'
+    width: 'Kenarlık kalınlığı'
     style: Kenarlık stili
     radiusOptions:
       none: Yok
-      tiny: Çok küçük
+      tiny: 'Çok küçük'
       small: Küçük
       medium: Orta
       large: Büyük
-      xlarge: Çok büyük
+      xlarge: 'Çok büyük'
     styleOptions:
-      solid: Düz
-      dotted: Noktalı
-      dashed: Kesikli
-      double: Çift
-      groove: Oluk
-      ridge: Sırt
-      inset: İçe dönük
+      solid: 'Düz'
+      dotted: 'Noktalı'
+      dashed: 'Kesikli'
+      double: 'Çift'
+      groove: 'Oluk'
+      ridge: 'Sırt'
+      inset: 'İçe dönük'
       outset: Dışa dönük
     widthOptions:
       none: Yok
-      thin: İnce
+      thin: 'İnce'
       medium: Orta
       thick: Kalın
   menu:
-    title: Menü
+    title: 'Menü'
     color: Metin rengi
     border: Kenarlık
     background: Arka plan rengi
-    demo: Önizleme
+    demo: 'Önizleme'
   color:
     colors: Renkler
     text: Metin rengi
     description: Tema, butonlar gibi birçok arayüz ögesinin görünümünü etkiler
-    pick: Renk seç
-    select: Paletten istediğin rengi seç
+    pick: 'Renk seç'
+    select: 'Paletten istediğin rengi seç'
     revert: Varsayılana Dön
     info: Topluluk web siteniz için istediğiniz rengi seçmek üzere kaydırıcıyı ayarla. Seçilen renk tonunun açık ve koyu varyasyonları, tüm kullanıcı arayüzünün farklı bölümlerinde kullanılacaktır.
     alert1: Artık sitede dolaşabilir ve bu rengi test edebilir, ardından buraya geri dönüp beğenirseniz onaylayabilirsiniz.
@@ -313,24 +313,24 @@ design:
   text:
     title: Metin
     fontStyle: Yazı tipi
-    textTransform: Metin dönüşümü
+    textTransform: 'Metin dönüşümü'
     fontStyleOptions:
       normal: Normal
-      italic: Italik
+      italic: 'Italik'
     textTransformOptions:
       none: Olduğu gibi
       uppercase: Hepsi büyük harf
       lowercase: Hepsi küçük harf
-      capitalize: İlk harf büyük
+      capitalize: 'İlk harf büyük'
   message:
     success: Tema başarıyla kaydedildi!
     error: Tema kaydedilemedi
   fonts:
     body: 
-      title: Fontlar
-      select: Font seç
+      title: 'Fontlar'
+      select: 'Font seç'
   
 
 messages:
   upload: Lütfen görünmesini istediğin boyutta bir imaj seç ve boyutunun 400kb'tan küçük olduğundan emin ol
-    imageTooLarge: İmaj çok büyük. Lütfen 400 KB'den küçük bir imaj seçin
+    imageTooLarge: 'İmaj çok büyük. Lütfen 400 KB'den küçük bir imaj seçin'

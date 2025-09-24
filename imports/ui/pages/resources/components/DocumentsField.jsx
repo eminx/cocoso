@@ -131,7 +131,9 @@ export default function DocumentsField({
                     target="_blank"
                   >
                     {document.documentLabel}{' '}
-                    <ExternalLinkIcon mr="2px" fontSize="sm" />
+                    <ExternalLinkIcon
+                      style={{ marginRight: '1rem', flexShrink: 0 }}
+                    />
                   </CLink>
                 </Code>
               </Box>
