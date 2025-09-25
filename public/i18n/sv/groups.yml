@@ -24,18 +24,20 @@ form:
     holder: Välj
   title:
     label: Titel
-    holder: Att förstå Benjamin
     helper: Ange en titel för din grupp / process
+    holder: Att förstå Benjamin
   subtitle:
     label: Undertitel
-    holder: Studiegrupp, kurs, öppen konstnärlig group etc…
     helper: Ange en underrubrik
+    holder: Studiegrupp, kurs, öppen konstnärlig group etc…
   description:
     label: Beskrivning
     helper: Ange en beskrivning av din grupp
+    holder: Beskrivning
   capacity:
     label: Max antal deltagare
     helper: Ange om det finns en maxgräns för deltagare
+    holder: Maximalt antal deltagare
   image:
     label: Bild
     helper: Välj en bild från din enhet eller ett foto som du ska ta nu (bara i mobilen)

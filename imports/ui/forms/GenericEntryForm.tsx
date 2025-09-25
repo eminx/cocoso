@@ -91,7 +91,7 @@ function FieldItemHandler({ control, item, register }: FieldItemHandlerProps) {
         </Select>
       );
     case 'number':
-      return <NumberInput {...props} min={1} max={20} step={1} />;
+      return <NumberInput {...props} min={1} max={1000} step={1} />;
     case 'quill':
       return (
         <Controller
