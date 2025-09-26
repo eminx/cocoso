@@ -8,10 +8,7 @@ export interface NumberInputProps extends Omit<InputProps, 'type'> {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const NumberInput = React.forwardRef<
-  HTMLInputElement,
-  NumberInputProps
->(
+const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
   (
     {
       min,
@@ -42,13 +39,7 @@ const NumberInput = React.forwardRef<
         disabled={disabled || isDisabled}
         required={required || isRequired}
         readOnly={readOnly || isReadOnly}
-        onChange={(e) => {
-          const value = e.target.value;
-          if (value === '' || value === '-') {
-            e.target.value = '0';
-          }
-          onChange?.(e);
-        }}
+        onChange={onChange}
         {...rest}
       />
     );

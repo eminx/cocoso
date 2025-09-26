@@ -14,7 +14,7 @@ import {
 } from '/imports/ui/core';
 import { StateContext } from '/imports/ui/LayoutContainer';
 import FancyDate from '/imports/ui/entry/FancyDate';
-import { call } from '/imports/ui/utils/shared';
+import { call, getComboResourcesWithColor } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 
@@ -91,6 +91,7 @@ export default function RsvpContent({
           values?.email?.trim()?.toLowerCase()
       ) {
         isAlreadyRegistered = true;
+        return;
       }
     });
     if (isAlreadyRegistered) {
@@ -98,15 +99,15 @@ export default function RsvpContent({
       return;
     }
 
-    let registeredNumberOfAttendees = 0;
+    let totalNumberOfAttendees = 0;
     occurrence.attendees.forEach((attendee) => {
-      registeredNumberOfAttendees += attendee.numberOfPeople;
+      totalNumberOfAttendees += attendee.numberOfPeople;
     });
 
     const numberOfPeople = Number(values.numberOfPeople);
 
-    if (capacity < registeredNumberOfAttendees + numberOfPeople) {
-      const capacityLeft = capacity - registeredNumberOfAttendees;
+    if (capacity < totalNumberOfAttendees + numberOfPeople) {
+      const capacityLeft = capacity - totalNumberOfAttendees;
       message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
     }
@@ -134,21 +135,19 @@ export default function RsvpContent({
   };
 
   const handleChangeRsvpSubmit = async (values) => {
-    // const occurrenceIndex = rsvpCancelModalInfo?.occurrenceIndex;
-    // const occurrence = activity?.datesAndTimes[occurrenceIndex];
-
-    let registeredNumberOfAttendees = 0;
+    let totalNumberOfAttendees = 0;
     occurrence?.attendees?.forEach((attendee, index) => {
       if (rsvpCancelModalInfo.attendeeIndex === index) {
+        console.log('attendeeIndex:', rsvpCancelModalInfo.attendeeIndex);
         return;
       }
-      registeredNumberOfAttendees += attendee.numberOfPeople;
+      totalNumberOfAttendees += attendee.numberOfPeople;
     });
 
     const numberOfPeople = Number(values.numberOfPeople);
 
-    if (capacity < registeredNumberOfAttendees + numberOfPeople) {
-      const capacityLeft = capacity - registeredNumberOfAttendees;
+    if (capacity < totalNumberOfAttendees + numberOfPeople) {
+      const capacityLeft = capacity - totalNumberOfAttendees;
       message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
     }
@@ -188,7 +187,9 @@ export default function RsvpContent({
 
     const theOccurrence = activity?.datesAndTimes[occurrenceIndex];
     const theNonAttendee = theOccurrence.attendees.find(
-      (a) => a.email === email && a.lastName === lastName
+      (a) =>
+        a.email.trim().toLowerCase() === email.trim().toLowerCase() &&
+        a.lastName.trim().toLowerCase() === lastName.trim().toLowerCase()
     );
 
     if (!theNonAttendee) {

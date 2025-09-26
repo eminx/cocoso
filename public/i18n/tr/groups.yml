@@ -24,17 +24,19 @@ form:
     holder: Seç
   title:
     label: Başlık
-    holder: Benjamin'i Anlamak...
     helper: Lütfen içerik hakkında herkese açık olarak görüntülemek istediğin başlığı gir
+    holder: Benjamin'i Anlamak...
   subtitle:
     label: Alt Başlık
-    holder: Illuminations ile...
     helper: Lütfen başlığı destekleyici bir alt başlık gir. Herkese açık olacak
+    holder: Illuminations ile...
   description:
     label: Açıklama
     helper: Lütfen oluşturduğunuz bu içerik hakkında ayrıntılı bir açıklama sağla. Örneğin, ilgini çeken konsepti ve varsa katılım koşullarını içerebilir
+    holder: Açıklama
   capacity:
     label: Kapasite
+    holder: Maksimum katılımcı sayısı
     helper: Katılımcı üyeler için maksimum bir sınır var ise lütfen gir
   image:
     label: İmaj

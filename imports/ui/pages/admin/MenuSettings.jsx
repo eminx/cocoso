@@ -137,10 +137,10 @@ export default function MenuSettings() {
     }));
   };
 
-  const removeComposablePage = (itemIndex) => {
+  const removeComposablePage = (selectedItemName) => {
     setLocalSettings((prevSettings) => ({
       ...prevSettings,
-      menu: prevSettings.menu.filter((_, index) => index !== itemIndex),
+      menu: prevSettings.menu.filter((item) => item.name !== selectedItemName),
     }));
   };
 
@@ -211,7 +211,9 @@ export default function MenuSettings() {
                               icon={
                                 <XIcon
                                   size="18px"
-                                  onClick={() => removeComposablePage(index)}
+                                  onClick={() =>
+                                    removeComposablePage(value.name)
+                                  }
                                 />
                               }
                               size="xs"

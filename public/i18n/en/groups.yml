@@ -24,18 +24,20 @@ form:
     holder: Select
   title:
     label: Title
-    holder: Understanding Benjamin
     helper: Please enter the title you would like to display publicly
+    holder: Understanding Benjamin
   subtitle:
     label: Subtitle
-    holder: Through Illuminations
     helper: Please enter a subtitle that will be supportive to the title. It will be publicly visible
+    holder: Through Illuminations
   description:
     label: Description
     helper: Please provide a detailed description about this entry you are creating. For example this could include the concept that intrigues you, as well as the conditions for the participation if there are any
+    holder: Description
   capacity:
     label: Capacity
     helper: If there is a maximum limit for participating members, please enter
+    holder: Maximum number of participants
   image:
     label: Image
     helper: To represent the entry, please choose an image from the gallery on your device or a photo you will take now
