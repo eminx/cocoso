@@ -13,7 +13,6 @@ function Tag({
   onClick,
   onRemove,
 }) {
-  console.log(filterColor);
   const getBackground = () => {
     if (gradientBackground) {
       return gradientBackground;

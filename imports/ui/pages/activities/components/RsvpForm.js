@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, Flex, Input, NumberInput } from '/imports/ui/core';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Input,
+  NumberInput,
+} from '/imports/ui/core';
 
 import FormField from '../../../forms/FormField';
 
@@ -59,18 +66,20 @@ export default function RsvpForm({
             </Button>
           </Flex>
           {isUpdateMode && (
-            <Button
-              colorScheme="red"
-              loading={deleteLoading}
-              size="sm"
-              variant="ghost"
-              onClick={() => {
-                setDeleteLoading(true);
-                onDelete();
-              }}
-            >
-              {t('public.register.form.actions.remove')}
-            </Button>
+            <Center p="2">
+              <Button
+                colorScheme="red"
+                loading={deleteLoading}
+                size="sm"
+                variant="ghost"
+                onClick={() => {
+                  setDeleteLoading(true);
+                  onDelete();
+                }}
+              >
+                {t('public.register.form.actions.remove')}
+              </Button>
+            </Center>
           )}
         </Flex>
       </form>
