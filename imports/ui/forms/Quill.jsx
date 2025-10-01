@@ -8,7 +8,7 @@ import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 export default function Quill(props) {
   const [focused, setFocused] = useState(false);
 
-  let megaContainer = 'quill-megacontainer';
+  let megaContainer = 'text-container quill-megacontainer';
   if (focused) {
     megaContainer += ' is-focused';
   }
