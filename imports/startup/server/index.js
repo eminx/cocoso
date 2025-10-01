@@ -6,10 +6,8 @@ import { Routes, Route } from 'react-router-dom';
 import { StaticRouter } from 'react-router-dom/server';
 import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
-import { I18nextProvider, useSSR } from 'react-i18next';
 
 import Hosts from '/imports/api/hosts/host';
-import i18n from '/imports/startup/i18n';
 import AppRoutesSSR from '/imports/ssr/AppRoutes';
 import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
@@ -22,21 +20,19 @@ const App = memo(({ context = {}, sink }) => {
   const host = sink.request.headers['host'];
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <StaticRouter location={sink.request.url} context={context}>
-        <Routes>
-          {AppRoutesSSR(host, sink).map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={route.element}
-              url={sink.request.url}
-              sink={sink}
-            />
-          ))}
-        </Routes>
-      </StaticRouter>
-    </I18nextProvider>
+    <StaticRouter location={sink.request.url} context={context}>
+      <Routes>
+        {AppRoutesSSR(host, sink).map((route) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={route.element}
+            url={sink.request.url}
+            sink={sink}
+          />
+        ))}
+      </Routes>
+    </StaticRouter>
   );
 });
 

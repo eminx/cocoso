@@ -186,7 +186,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
           {children}
         </DummyWrapper>
 
-        {rendered && !adminPage && (
+        {!adminPage && (
           <>
             <Footer
               currentHost={currentHost}

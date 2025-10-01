@@ -29,7 +29,7 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
           />
           {children}
         </DummyWrapper>
-        <Footer currentHost={Host} isFederationFooter />
+        <Footer currentHost={Host} />
       </I18nextProvider>
     </>
   );
