@@ -30,7 +30,7 @@ edgee:slingshot               # Directly post files to cloud storage services, s
 aldeed:collection2            # Automatic validation of Meteor Mongo insert and update operations on the client and server
 force-ssl-custom              # Require this application to use HTTPS
 percolate:migrations
-webapp
 ostrio:spiderable-middleware
 server-render
 typescript
+webapp

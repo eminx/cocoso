@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 // import { Masonry, usePositioner, useResizeObserver } from 'masonic';
 
 import { Box, Center, Flex } from '/imports/ui/core';
-
 import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
+
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 // import VirtualGridLister from './VirtualGridLister';
