@@ -21,29 +21,29 @@ function validateLabel(label, host, resourceId) {
 
 // RESOURCE METHODS
 Meteor.methods({
-  getResourcesFromAllHosts() {
+  async getResourcesFromAllHosts() {
     const fields = Resources.publicFields;
     const sort = { createdAt: -1 };
-    return Resources.find({}, { fields, sort }).fetch();
+    return await Resources.find({}, { fields, sort }).fetchAsync();
   },
 
-  getResources(hostPredefined) {
+  async getResources(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     const fields = Resources.publicFields;
-    return Resources.find(
+    return await Resources.find(
       { host },
       {
         fields,
         sort: { createdAt: -1 },
       }
-    ).fetch();
+    ).fetchAsync();
   },
 
-  getResourcesDry(hostPredefined) {
+  async getResourcesDry(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
-    return Resources.find(
+    return await Resources.find(
       { host },
       {
         fields: {
@@ -56,25 +56,25 @@ Meteor.methods({
         },
         sort: { createdAt: -1 },
       }
-    ).fetch();
+    ).fetchAsync();
   },
 
-  getResourceById(resourceId) {
+  async getResourceById(resourceId) {
     const fields = Resources.publicFields;
-    return Resources.findOne(resourceId, { fields });
+    return await Resources.findOneAsync(resourceId, { fields });
   },
 
-  getResourceBookingsForUser(resourceId, hostPredefined) {
+  async getResourceBookingsForUser(resourceId, hostPredefined) {
     const user = Meteor.user();
     const host = hostPredefined || getHost(this);
 
-    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
+    const currentHost = await Hosts.findOneAsync({ host }, { fields: { members: 1 } });
     if (!isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not valid user!');
     }
 
     try {
-      const bookings = Activities.find(
+      const bookings = await Activities.find(
         {
           resourceId,
           authorId: user._id,
@@ -86,7 +86,7 @@ Meteor.methods({
             datesAndTimes: 1,
           },
         }
-      ).fetch();
+      ).fetchAsync();
 
       const userBookings = bookings.map((booking) => ({
         _id: booking._id,
@@ -104,48 +104,41 @@ Meteor.methods({
     }
   },
 
-  createResource(values) {
+  async createResource(values) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
+    const currentHost = await Hosts.findOneAsync({ host }, { fields: { members: 1 } });
     if (!isAdmin(user, currentHost) || !validateLabel(values.label, host)) {
       return 'Not valid user or label!';
     }
     try {
-      const newResourceId = Resources.insert(
+      const newResourceId = await Resources.insert(
         {
           ...values,
           host,
           userId: user._id,
           createdBy: user.username,
           createdAt: new Date(),
-        },
-        () => {
-          Meteor.call('createChat', values.label, newResourceId, 'resources', (error) => {
-            if (error) {
-              console.log('Chat is not created due to error: ', error);
-            }
-          });
-        }
-      );
+        });
+      await Meteor.callAsync('createChat', values.label, newResourceId, 'resources');
       return newResourceId;
     } catch (error) {
       throw new Meteor.Error(error);
     }
   },
 
-  updateResource(resourceId, values) {
+  async updateResource(resourceId, values) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
+    const currentHost = newGroupIdHosts.findOneAsync({ host }, { fields: { members: 1 } });
     if (!isAdmin(user, currentHost) || !validateLabel(values.label, host, resourceId)) {
       throw new Meteor.Error('Not allowed');
     }
 
-    const resource = Resources.findOne(resourceId);
+    const resource = await Resources.findOneAsync(resourceId);
 
     try {
-      Resources.update(resourceId, {
+      await Resources.updateAsync(resourceId, {
         $set: {
           ...values,
           updatedBy: user.username,
@@ -153,7 +146,7 @@ Meteor.methods({
         },
       });
       if (!resource.isCombo && Resources.find({ host, 'resourcesForCombo._id': resource._id })) {
-        Resources.update(
+        await Resources.updateAsync(
           { host, 'resourcesForCombo._id': resource._id },
           {
             $set: {
@@ -170,19 +163,19 @@ Meteor.methods({
     }
   },
 
-  deleteResource(resourceId) {
+  async deleteResource(resourceId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
+    const currentHost = await Hosts.findOneAsync({ host }, { fields: { members: 1 } });
 
     if (!isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed');
     }
 
     try {
-      Resources.remove(resourceId);
+      await Resources.removeAsync(resourceId);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
-    }
+     }
   },
 });

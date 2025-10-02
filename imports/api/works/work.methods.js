@@ -5,31 +5,31 @@ import Works from './work';
 import Platform from '../platform/platform';
 
 Meteor.methods({
-  getAllWorksFromAllHosts() {
+  async getAllWorksFromAllHosts() {
     try {
-      return Works.find({}, { sort: { creationDate: -1 } }).fetch();
+      return await Works.find({}, { sort: { creationDate: -1 } }).fetchAsync();
     } catch (error) {
       throw new Meteor.Error(error, 'Could not retrieve data');
     }
   },
 
-  getAllWorks(hostPredefined) {
+  async getAllWorks(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     try {
-      return Works.find(
+      return await Works.find(
         {
           host,
         },
         { sort: { creationDate: -1 } }
-      ).fetch();
+      ).fetchAsync();
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, 'Could not retrieve data');
     }
   },
 
-  getWorksByUser(username) {
+  async getWorksByUser(username) {
     if (!username) {
       throw new Meteor.Error('Not allowed!');
     }
@@ -38,20 +38,20 @@ Meteor.methods({
 
     try {
       if (platform.isFederationLayout) {
-        return Works.find({
+        return await Works.find({
           authorUsername: username,
-        }).fetch();
+        }).fetchAsync();
       }
-      return Works.find({
+      return await  Works.find({
         host,
         authorUsername: username,
-      }).fetch();
+      }).fetchAsync();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch works");
     }
   },
 
-  getMyWorks(hostPredefined) {
+  async getMyWorks(hostPredefined) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -59,21 +59,21 @@ Meteor.methods({
     const host = hostPredefined || getHost(this);
 
     try {
-      const works = Works.find({
+      const works = await Works.find({
         host,
         authorId: user._id,
-      }).fetch();
+      }).fetchAsync();
       return works;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch works");
     }
   },
 
-  getWork(workId, username) {
+  async getWork(workId, username) {
     const host = getHost(this);
 
     try {
-      const work = Works.findOne({ _id: workId, host });
+      const work = await Works.findOneAsync({ _id: workId, host });
       if (work.authorUsername !== username) {
         throw new Meteor.Error('Not allowed!');
       }
@@ -86,7 +86,7 @@ Meteor.methods({
     }
   },
 
-  createWork(values) {
+  async createWork(values) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('You are not a member anyways!');
@@ -96,7 +96,7 @@ Meteor.methods({
     const userAvatar = user.avatar ? user.avatar.src : null;
 
     try {
-      const newWorkId = Works.insert({
+      const newWorkId = await Works.insertAsync({
         ...values,
         host,
         authorId: user._id,
@@ -111,20 +111,20 @@ Meteor.methods({
     }
   },
 
-  updateWork(workId, values) {
+  async updateWork(workId, values) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theWork = Works.findOne(workId);
+    const theWork = await Works.findOneAsync(workId);
 
     if (user._id !== theWork.authorId) {
       throw new Meteor.Error('You are not allowed');
     }
 
     try {
-      Works.update(workId, {
+      await Works.updateAsync(workId, {
         $set: {
           ...values,
           latestUpdate: new Date(),
@@ -136,20 +136,20 @@ Meteor.methods({
     }
   },
 
-  deleteWork(workId) {
+  async deleteWork(workId) {
     const userId = Meteor.userId();
 
     if (!userId) {
       throw new Meteor.Error('You are not allowed!');
     }
 
-    const work = Works.findOne(workId);
+    const work = await Works.findOneAsync(workId);
     if (work.authorId !== userId) {
       throw new Meteor.Error('You are not allowed!');
     }
 
     try {
-      Works.remove(workId);
+      await Works.removeAsync(workId);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }

@@ -33,25 +33,25 @@ const filterPrivateGroups = (activities, user) =>
   });
 
 Meteor.methods({
-  getAllPublicActivitiesFromAllHosts(showPast = false) {
+  async getAllPublicActivitiesFromAllHosts(showPast = false) {
     const user = Meteor.user();
     const today = dayjs().format('YYYY-MM-DD');
 
     try {
       if (showPast) {
-        const pastActs = Activities.find({
+        const pastActs = await Activities.find({
           $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
           'datesAndTimes.endDate': { $lte: today },
-        }).fetch();
+        }).fetchAsync();
         const pastActsSorted = parseGroupActivities(pastActs)?.sort(
           compareDatesForSortActivitiesReverse
         );
         return filterPrivateGroups(pastActsSorted, user);
       }
-      const futureActs = Activities.find({
+      const futureActs = await Activities.find({
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
         'datesAndTimes.endDate': { $gte: today },
-      }).fetch();
+      }).fetchAsync();
       const futureActsSorted = parseGroupActivities(futureActs)?.sort(
         compareDatesForSortActivities
       );
@@ -61,28 +61,28 @@ Meteor.methods({
     }
   },
 
-  getAllPublicActivities(showPast = false, hostPredefined) {
+  async getAllPublicActivities(showPast = false, hostPredefined) {
     const host = hostPredefined || getHost(this);
     const user = Meteor.user();
     const today = dayjs().format('YYYY-MM-DD');
 
     try {
       if (showPast) {
-        const pastActs = Activities.find({
+        const pastActs = await Activities.find({
           host,
           $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
           'datesAndTimes.endDate': { $lte: today },
-        }).fetch();
+        }).fetchAsync();
         const pastActsSorted = parseGroupActivities(pastActs)?.sort(
           compareDatesForSortActivitiesReverse
         );
         return filterPrivateGroups(pastActsSorted, user);
       }
-      const futureActs = Activities.find({
+      const futureActs = await Activities.find({
         host,
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
         'datesAndTimes.endDate': { $gte: today },
-      }).fetch();
+      }).fetchAsync();
       const futureActsSorted = parseGroupActivities(futureActs)?.sort(
         compareDatesForSortActivities
       );
@@ -92,10 +92,10 @@ Meteor.methods({
     }
   },
 
-  getAllActivitiesFromAllHosts() {
+  async getAllActivitiesFromAllHosts() {
     const user = Meteor.user();
     try {
-      const allActs = Activities.find().fetch();
+      const allActs = await Activities.find().fetchAsync();
       const allActsParsed = parseGroupActivities(allActs);
       return filterPrivateGroups(allActsParsed, user);
     } catch (error) {
@@ -103,14 +103,14 @@ Meteor.methods({
     }
   },
 
-  getAllActivities(hostPredefined) {
+  async getAllActivities(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     const user = Meteor.user();
     try {
-      const allActs = Activities.find({
+      const allActs = await Activities.find({
         host,
-      }).fetch();
+      }).fetchAsync();
       const allActsParsed = parseGroupActivities(allActs);
       return filterPrivateGroups(allActsParsed, user);
     } catch (error) {
@@ -118,20 +118,20 @@ Meteor.methods({
     }
   },
 
-  getActivityById(activityId) {
+  async getActivityById(activityId) {
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     try {
       if (!host || currentHost.isPortal) {
-        return Activities.findOne(activityId);
+        return await Activities.findOneAsync(activityId);
       }
-      return Activities.findOne({ _id: activityId, host });
+      return await Activities.findOneAsync({ _id: activityId, host });
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
 
-  getMyActivities(hostPredefined) {
+  async getMyActivities(hostPredefined) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -140,33 +140,33 @@ Meteor.methods({
     const host = hostPredefined || getHost(this);
 
     try {
-      const activities = Activities.find({
+      const activities = await Activities.find({
         host,
         authorId: user._id,
-      }).fetch();
+      }).fetchAsync();
       return activities;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
 
-  getActivitiesByUser(username) {
+  async getActivitiesByUser(username) {
     if (!username) {
       throw new Meteor.Error('Not allowed!');
     }
     const host = getHost(this);
-    const platform = Platform.findOne();
+    const platform = await Platform.findOneAsync();
 
     try {
       if (platform?.isFederationLayout) {
-        return Activities.find({
+        return await Activities.find({
           authorName: username,
-        }).fetch();
+        }).fetchAsync();
       }
-      return Activities.find({
+      return await Activities.find({
         host,
         authorName: username,
-      }).fetch();
+      }).fetchAsync();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch activities");
     }
@@ -276,7 +276,7 @@ Meteor.methods({
 
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
@@ -308,16 +308,16 @@ Meteor.methods({
     }
   },
 
-  updateActivity(activityId, values) {
+  async updateActivity(activityId, values) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theActivity = Activities.findOne(activityId);
+    const theActivity = await Activities.findOneAsync(activityId);
 
     if (!theActivity) {
       throw new Meteor.Error('Activity not found!');
@@ -328,50 +328,49 @@ Meteor.methods({
     }
 
     try {
-      Activities.update(activityId, {
+      return await Activities.updateAsync(activityId, {
         $set: {
           ...values,
         },
       });
-      return activityId;
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
 
-  deleteActivity(activityId) {
+  async deleteActivity(activityId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theActivity = Activities.findOne(activityId);
+    const theActivity = await Activities.findOneAsync(activityId);
 
     if (user._id !== theActivity.authorId && !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
     try {
-      Activities.remove(activityId);
+      await Activities.removeAsync(activityId);
       return true;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
   },
 
-  registerAttendance(activityId, values, occurenceIndex = 0) {
-    const theActivity = Activities.findOne(activityId);
+  async registerAttendance(activityId, values, occurenceIndex = 0) {
+    const theActivity = await Activities.findOneAsync(activityId);
     const rsvpValues = {
       ...values,
       registerDate: new Date(),
     };
 
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const hostName = currentHost?.settings?.name;
 
     const field = `datesAndTimes.${occurenceIndex}.attendees`;
@@ -386,20 +385,20 @@ Meteor.methods({
     );
 
     try {
-      Activities.update(activityId, {
+      await Activities.updateAsync(activityId, {
         $push: {
           [field]: rsvpValues,
         },
       });
-      Meteor.call('sendEmail', values.email, `"${theActivity.title}", ${hostName}`, emailBody);
+      await Meteor.callAsync('sendEmail', values.email, `"${theActivity.title}", ${hostName}`, emailBody);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't register attendance");
     }
   },
 
-  updateAttendance(activityId, values, occurenceIndex, attendeeIndex) {
-    const theActivity = Activities.findOne(activityId);
+  async updateAttendance(activityId, values, occurenceIndex, attendeeIndex) {
+    const theActivity = await Activities.findOneAsync(activityId);
     const rsvpValues = {
       ...values,
       registerDate: new Date(),
@@ -408,7 +407,7 @@ Meteor.methods({
     const theOccurence = newDatesAndTimes[occurenceIndex];
 
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const currentUser = Meteor.user();
     const emailBody = getRegistrationEmailBody(
       theActivity,
@@ -422,12 +421,12 @@ Meteor.methods({
     const field = `datesAndTimes.${occurenceIndex}.attendees.${attendeeIndex}`;
 
     try {
-      Activities.update(activityId, {
+      await Activities.updateAsync(activityId, {
         $set: {
           [field]: rsvpValues,
         },
       });
-      Meteor.call(
+      await Meteor.callAsync(
         'sendEmail',
         values.email,
         `Update to your registration for "${theActivity.title}" at ${currentHost.settings.name}`,
@@ -439,9 +438,9 @@ Meteor.methods({
     }
   },
 
-  removeAttendance(activityId, occurenceIndex, email, lastName) {
+  async removeAttendance(activityId, occurenceIndex, email, lastName) {
     const currentUser = Meteor.user();
-    const theActivity = Activities.findOne(activityId);
+    const theActivity = await Activities.findOneAsync(activityId);
     const newOccurences = [...theActivity.datesAndTimes];
     const theOccurence = newOccurences[occurenceIndex];
     const theNonAttendee = theOccurence.attendees.find((a) => a.email === email);
@@ -454,16 +453,16 @@ Meteor.methods({
     });
 
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const hostName = currentHost.settings.name;
 
     try {
-      Activities.update(activityId, {
+      await Activities.updateAsync(activityId, {
         $set: {
           datesAndTimes: newOccurences,
         },
       });
-      Meteor.call(
+      await Meteor.callAsync(
         'sendEmail',
         email,
         `Update to your registration for "${theActivity.title}" at ${hostName}`,

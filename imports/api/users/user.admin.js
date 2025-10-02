@@ -11,10 +11,10 @@ const isUserAdmin = (members, userId) =>
   );
 
 Meteor.methods({
-  setAsAdmin(memberId) {
+  async setAsAdmin(memberId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin =
       currentHost && isUserAdmin(currentHost.members, user._id);
 
@@ -22,7 +22,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    const member = Meteor.users.findOne(memberId);
+    const member = await Meteor.users.findOneAsync(memberId);
 
     if (
       !member.memberships ||
@@ -36,7 +36,7 @@ Meteor.methods({
     }
 
     try {
-      Meteor.users.update(
+      await Meteor.users.updateAsync(
         {
           _id: memberId,
           'memberships.host': host,
@@ -52,7 +52,7 @@ Meteor.methods({
           },
         }
       );
-      Hosts.update(
+      await Hosts.updateAsync(
         { _id: currentHost._id, 'members.id': memberId },
         {
           $set: {
@@ -65,16 +65,16 @@ Meteor.methods({
           },
         }
       );
-      Meteor.call('sendNewAdminEmail', memberId);
+      await Meteor.callAsync('sendNewAdminEmail', memberId);
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
     }
   },
 
-  setAsContributor(memberId) {
+  async setAsContributor(memberId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (
       !user.isSuperAdmin &&
@@ -83,7 +83,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    const member = Meteor.users.findOne(memberId);
+    const member = await Meteor.users.findOneAsync(memberId);
     if (
       !member ||
       !member.memberships ||
@@ -99,7 +99,7 @@ Meteor.methods({
     }
 
     try {
-      Meteor.users.update(
+      await Meteor.users.updateAsync(
         {
           _id: memberId,
           'memberships.host': host,
@@ -115,7 +115,7 @@ Meteor.methods({
           },
         }
       );
-      Hosts.update(
+      await Hosts.updateAsync(
         { _id: currentHost._id, 'members.id': memberId },
         {
           $set: {
@@ -128,17 +128,17 @@ Meteor.methods({
           },
         }
       );
-      Meteor.call('sendNewContributorEmail', memberId);
+      await Meteor.callAsync('sendNewContributorEmail', memberId);
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
     }
   },
 
-  setAsParticipant(memberId) {
+  async setAsParticipant(memberId) {
     const user = Meteor.user();
     const host = getHost(this);
 
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin =
       currentHost && isUserAdmin(currentHost.members, user._id);
 
@@ -146,14 +146,14 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    const member = Meteor.users.findOne(memberId);
+    const member = await Meteor.users.findOneAsync(memberId);
 
     if (!isContributor(member, currentHost)) {
       throw new Meteor.Error('User is not verified');
     }
 
     try {
-      Meteor.users.update(
+      await Meteor.users.updateAsync(
         { _id: memberId, 'memberships.host': host },
         {
           $set: {
@@ -166,7 +166,7 @@ Meteor.methods({
           },
         }
       );
-      Hosts.update(
+      await Hosts.updateAsync(
         { _id: currentHost._id, 'members.id': memberId },
         {
           $set: {
@@ -182,7 +182,7 @@ Meteor.methods({
 
       // const currentHost = Hosts.findOne({ host });
       // const hostName = currentHost.settings.name;
-      // Meteor.call(
+      // Meteor.callAsync(
       //   'sendEmail',
       //   memberId,
       //   `You are removed from ${hostName} as a verified member`,
@@ -193,10 +193,10 @@ Meteor.methods({
     }
   },
 
-  updateHostSettings(newSettings) {
+  async updateHostSettings(newSettings) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin =
       currentHost && isUserAdmin(currentHost.members, user._id);
 
@@ -205,7 +205,7 @@ Meteor.methods({
     }
 
     try {
-      Hosts.update(
+      await Hosts.updateAsync(
         { host },
         {
           $set: {
@@ -219,10 +219,10 @@ Meteor.methods({
     }
   },
 
-  assignHostLogo(image) {
+  async assignHostLogo(image) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin =
       currentHost && isUserAdmin(currentHost.members, user._id);
 
@@ -231,7 +231,7 @@ Meteor.methods({
     }
 
     try {
-      Hosts.update(
+      await Hosts.updateAsync(
         { host },
         {
           $set: {
@@ -244,10 +244,10 @@ Meteor.methods({
     }
   },
 
-  setMainColor(colorHSL) {
+  async setMainColor(colorHSL) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin =
       currentHost && isUserAdmin(currentHost.members, user._id);
 
@@ -262,7 +262,7 @@ Meteor.methods({
     };
 
     try {
-      Hosts.update(
+      await Hosts.updateAsync(
         { host },
         {
           $set: {
@@ -275,10 +275,10 @@ Meteor.methods({
     }
   },
 
-  getEmails() {
+  async getEmails() {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin =
       currentHost && isUserAdmin(currentHost.members, user._id);
 
@@ -293,10 +293,10 @@ Meteor.methods({
     }
   },
 
-  updateEmail(emailIndex, email) {
+  async updateEmail(emailIndex, email) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin =
       currentHost && isUserAdmin(currentHost.members, user._id);
 
@@ -309,7 +309,7 @@ Meteor.methods({
     newEmails[emailIndex] = email;
 
     try {
-      Hosts.update(
+      await Hosts.updateAsync(
         { host },
         {
           $set: {
@@ -322,10 +322,10 @@ Meteor.methods({
     }
   },
 
-  getActivitiesbyUserId(userId) {
+  async getActivitiesbyUserId(userId) {
     const currentUser = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin =
       currentHost && isUserAdmin(currentHost.members, currentUser._id);
 
@@ -342,7 +342,7 @@ Meteor.methods({
     }
 
     try {
-      return Activities.find({ authorId: userId, host }).fetch();
+      return await Activities.find({ authorId: userId, host }).fetchAsync();
     } catch (error) {
       throw new Meteor.Error(error);
     }

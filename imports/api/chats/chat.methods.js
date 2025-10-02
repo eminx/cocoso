@@ -6,21 +6,21 @@ import Groups from '../groups/group';
 import Chats from './chat';
 
 Meteor.methods({
-  getChatByContextId(contextId) {
-    const chat = Chats.findOne({ contextId });
+  async getChatByContextId(contextId) {
+    const chat = await Chats.findOneAsync({ contextId });
     return chat;
   },
 
-  createChat(contextName, contextId, contextType) {
+  async createChat(contextName, contextId, contextType) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theChat = Chats.insert({
+    const theChat = await Chats.insertAsync({
       host,
       contextId,
       contextName,
@@ -35,7 +35,7 @@ Meteor.methods({
     return theChat;
   },
 
-  addChatMessage(values) {
+  async addChatMessage(values) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -43,7 +43,7 @@ Meteor.methods({
     const host = getHost(this);
 
     try {
-      Chats.update(
+      await Chats.updateAsync(
         { contextId: values.contextId },
         {
           $push: {
@@ -68,14 +68,19 @@ Meteor.methods({
           return;
         }
         const unSeenIndex = theGroup?.messages?.length - 1;
-        Meteor.call('createGroupNotification', host, values, unSeenIndex);
+        await Meteor.callAsync(
+          'createGroupNotification',
+          host,
+          values,
+          unSeenIndex
+        );
       }
     } catch (error) {
       throw new Meteor.Error(error);
     }
   },
 
-  createGroupNotification(host, values, unSeenIndex) {
+  async createGroupNotification(host, values, unSeenIndex) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -84,58 +89,60 @@ Meteor.methods({
     const contextId = values.contextId;
 
     try {
-      const theGroup = Groups.findOne(contextId);
+      const theGroup = await Groups.findOneAsync(contextId);
       const theOthers = theGroup.members
         .filter((member) => member.memberId !== user._id)
-        .map((other) => Meteor.users.findOne(other.memberId));
+        .map((other) => Meteor.users.findOneAsync(other.memberId));
 
-      theOthers.forEach((member) => {
-        if (!member) {
-          return;
-        }
-        let contextIdIndex = -1;
-        for (let i = 0; i < member.notifications.length; i += 1) {
-          if (member.notifications[i].contextId === contextId) {
-            contextIdIndex = i;
-            break;
+      Promise.all(
+        theOthers.forEach(async (member) => {
+          if (!member) {
+            return;
           }
-        }
-
-        if (contextIdIndex !== -1) {
-          const notifications = [...member.notifications];
-          notifications[contextIdIndex].count += 1;
-          if (!notifications[contextIdIndex].unSeenIndexes) {
-            notifications[contextIdIndex].unSeenIndexes = [];
+          let contextIdIndex = -1;
+          for (let i = 0; i < member.notifications.length; i += 1) {
+            if (member.notifications[i].contextId === contextId) {
+              contextIdIndex = i;
+              break;
+            }
           }
 
-          notifications[contextIdIndex].unSeenIndexes?.push(unSeenIndex);
-          Meteor.users.update(member._id, {
-            $set: {
-              notifications,
-            },
-          });
-        } else {
-          Meteor.users.update(member._id, {
-            $push: {
-              notifications: {
-                title: theGroup.title,
-                count: 1,
-                context: 'groups',
-                contextId: theGroup._id,
-                host,
-                unSeenIndexes: [unSeenIndex],
+          if (contextIdIndex !== -1) {
+            const notifications = [...member.notifications];
+            notifications[contextIdIndex].count += 1;
+            if (!notifications[contextIdIndex].unSeenIndexes) {
+              notifications[contextIdIndex].unSeenIndexes = [];
+            }
+
+            notifications[contextIdIndex].unSeenIndexes?.push(unSeenIndex);
+            await Meteor.users.updateAsync(member._id, {
+              $set: {
+                notifications,
               },
-            },
-          });
-        }
-      });
+            });
+          } else {
+            await Meteor.users.updateAsync(member._id, {
+              $push: {
+                notifications: {
+                  title: theGroup.title,
+                  count: 1,
+                  context: 'groups',
+                  contextId: theGroup._id,
+                  host,
+                  unSeenIndexes: [unSeenIndex],
+                },
+              },
+            });
+          }
+        })
+      );
     } catch (error) {
       console.log('error', error);
       throw new Meteor.Error(error);
     }
   },
 
-  removeNotification(contextId, messageIndex) {
+  async removeNotification(contextId, messageIndex) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -170,7 +177,7 @@ Meteor.methods({
         newNotifications = notifications;
       }
 
-      Meteor.users.update(user._id, {
+      await Meteor.users.updateAsync(user._id, {
         $set: {
           notifications: newNotifications,
         },

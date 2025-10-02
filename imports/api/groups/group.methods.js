@@ -28,9 +28,9 @@ const isUserGroupAdmin = (group, userId) => {
 };
 
 Meteor.methods({
-  getGroup(groupId) {
+  async getGroup(groupId) {
     check(groupId, String);
-    const group = Groups.findOne({
+    const group = await Groups.findOneAsync({
       _id: groupId,
     });
     if (!group) {
@@ -121,13 +121,13 @@ Meteor.methods({
     }
   },
 
-  getGroups(isPortalHost = false, hostPredefined) {
+  async getGroups(isPortalHost = false, hostPredefined) {
     const user = Meteor.user();
     const host = hostPredefined || getHost(this);
 
     const allGroups = isPortalHost
-      ? Groups.find({}, { sort: { creationDate: -1 } }).fetch()
-      : Groups.find({ host }).fetch();
+      ? await Groups.find({}, { sort: { creationDate: -1 } }).fetchAsync()
+      : await Groups.find({ host }).fetchAsync();
     const groupsFiltered = allGroups.filter((group) => {
       if (!group.isPrivate) {
         return true;
@@ -162,67 +162,67 @@ Meteor.methods({
     }));
   },
 
-  getAllGroupMeetingsFuture(isPortalHost = false, hostPredefined) {
+  async getAllGroupMeetingsFuture(isPortalHost = false, hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     const dateNow = new Date().toISOString().substring(0, 10);
 
     try {
       if (isPortalHost) {
-        return Activities.find({
+        return await Activities.find({
           isGroupMeeting: true,
           'datesAndTimes.startDate': { $gte: dateNow },
-        }).fetch();
+        }).fetchAsync();
       }
-      return Activities.find({
+      return await Activities.find({
         host,
         isGroupMeeting: true,
         'datesAndTimes.startDate': { $gte: dateNow },
-      }).fetch();
+      }).fetchAsync();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
 
-  getGroupMeetingsFuture(groupId) {
+  async getGroupMeetingsFuture(groupId) {
     check(groupId, String);
 
     const dateNow = new Date().toISOString().substring(0, 10);
-    return Activities.find({
+    return await Activities.find({
       groupId,
       isGroupMeeting: true,
       'datesAndTimes.startDate': { $gte: dateNow },
       datesAndTimes: { $exists: true, $ne: [] },
-    }).fetch();
+    }).fetchAsync();
   },
 
-  getGroupsByUser(username) {
+  async getGroupsByUser(username) {
     if (!username) {
       throw new Meteor.Error('Not allowed!');
     }
     const host = getHost(this);
-    const platform = Platform.findOne();
+    const platform = await Platform.findOneAsync();
 
     try {
       if (platform?.isFederationLayout) {
-        return Groups.find({
+        return await Groups.find({
           isPrivate: { $ne: true },
           isArchived: { $ne: true },
           $or: [{ authorUsername: username }, { 'members.username': username }],
-        }).fetch();
+        }).fetchAsync();
       }
-      return Groups.find({
+      return await Groups.find({
         isPrivate: { $ne: true },
         isArchived: { $ne: true },
         $or: [{ authorUsername: username }, { 'members.username': username }],
         host,
-      }).fetch();
+      }).fetchAsync();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch groups");
     }
   },
 
-  createGroup(formValues) {
+  async createGroup(formValues) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -234,7 +234,7 @@ Meteor.methods({
     const userAvatar = user.avatar ? user.avatar.src : null;
 
     try {
-      const newGroupId = Groups.insert({
+      const newGroupId = await Groups.insertAsync({
         ...formValues,
         host,
         authorId: user._id,
@@ -254,65 +254,51 @@ Meteor.methods({
         creationDate: new Date(),
       });
 
-      Meteor.call(
+      await Meteor.callAsync(
         'createChat',
         formValues.title,
         newGroupId,
-        'groups',
-        (error) => {
-          if (error) {
-            console.log('Chat is not created due to error: ', error);
-          }
-        }
+        'groups'
       );
 
-      try {
-        Meteor.users.update(user._id, {
-          $addToSet: {
-            groups: {
-              groupId: newGroupId,
-              name: formValues.title,
-              joinDate: new Date(),
-              isAdmin: true,
-            },
+      await Meteor.users.updateAsync(user._id, {
+        $addToSet: {
+          groups: {
+            groupId: newGroupId,
+            name: formValues.title,
+            joinDate: new Date(),
+            isAdmin: true,
           },
-        });
-      } catch (error) {
-        console.log(error);
-        throw new Meteor.Error(
-          error,
-          "Couldn't add the group info to user collection, but group is created"
-        );
-      }
+        },
+      });
       return newGroupId;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't add group to the collection");
     }
   },
 
-  updateGroup(groupId, values) {
+  async updateGroup(groupId, values) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     if (!isUserGroupAdmin(theGroup, user._id)) {
       throw new Meteor.Error('You are not allowed!');
     }
 
     try {
-      Groups.update(groupId, {
+      await Groups.updateAsync(groupId, {
         $set: {
           ...values,
         },
       });
 
-      Activities.update(
+      await Activities.updateAsync(
         {
           groupId,
         },
@@ -333,39 +319,39 @@ Meteor.methods({
     }
   },
 
-  deleteGroup(groupId) {
+  async deleteGroup(groupId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const groupToDelete = Groups.findOne(groupId);
+    const groupToDelete = await Groups.findOneAsync(groupId);
 
     if (!isUserGroupAdmin(groupToDelete, user._id)) {
       throw new Meteor.Error('You are not allowed!');
     }
 
     try {
-      Groups.remove(groupId);
+      await Groups.removeAsync(groupId);
       return true;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
   },
 
-  joinGroup(groupId) {
+  async joinGroup(groupId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isMember(user, currentHost)) {
       throw new Meteor.Error('Please join the community first!');
     }
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     const alreadyMember = theGroup.members.some((m) => m.memberId === user._id);
     if (alreadyMember) {
       throw new Meteor.Error('You are already a member');
@@ -380,7 +366,7 @@ Meteor.methods({
     );
 
     try {
-      Groups.update(theGroup._id, {
+      await Groups.updateAsync(theGroup._id, {
         $addToSet: {
           members: {
             memberId: user._id,
@@ -391,7 +377,7 @@ Meteor.methods({
         },
       });
 
-      Meteor.users.update(user._id, {
+      await Meteor.users.updateAsync(user._id, {
         $addToSet: {
           groups: {
             groupId: theGroup._id,
@@ -401,27 +387,26 @@ Meteor.methods({
         },
       });
 
-      Meteor.call(
+      await Meteor.callAsync(
         'sendEmail',
         user._id,
         `"${theGroup.title}", ${currentHostName}`,
         emailBody
       );
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, 'Could not join the circle');
     }
   },
 
-  leaveGroup(groupId) {
+  async leaveGroup(groupId) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('You are not allowed!');
     }
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     const currentHostName = currentHost?.settings?.name;
 
     const emailBody = getGroupRegistrationEmailBody(
@@ -431,21 +416,21 @@ Meteor.methods({
       true
     );
     try {
-      Groups.update(theGroup._id, {
+      await Groups.updateAsync(theGroup._id, {
         $pull: {
           members: {
             memberId: user._id,
           },
         },
       });
-      Meteor.users.update(user._id, {
+      await Meteor.users.updateAsync(user._id, {
         $pull: {
           groups: {
             groupId,
           },
         },
       });
-      Meteor.call(
+      await Meteor.callAsync(
         'sendEmail',
         user._id,
         `"${theGroup.title}", ${currentHostName || publicSettings.name}`,
@@ -456,22 +441,22 @@ Meteor.methods({
     }
   },
 
-  addGroupDocument(document, groupId) {
+  async addGroupDocument(document, groupId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     if (!isUserGroupAdmin(theGroup, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
 
     try {
-      Groups.update(groupId, {
+      await Groups.updateAsync(groupId, {
         $push: {
           documents: document,
         },
@@ -481,16 +466,16 @@ Meteor.methods({
     }
   },
 
-  removeGroupDocument(documentName, groupId) {
+  async removeGroupDocument(documentName, groupId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     if (!isUserGroupAdmin(theGroup, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
@@ -500,7 +485,7 @@ Meteor.methods({
     );
 
     try {
-      Groups.update(groupId, {
+      await Groups.updateAsync(groupId, {
         $set: {
           documents: newDocuments,
         },
@@ -513,21 +498,23 @@ Meteor.methods({
     }
   },
 
-  setAsAGroupAdmin(groupId, newAdminUsername) {
+  async setAsAGroupAdmin(groupId, newAdminUsername) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     if (!isUserGroupAdmin(theGroup, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
 
-    const newAdmin = Meteor.users.findOne({ username: newAdminUsername });
+    const newAdmin = await Meteor.users.findOneAsync({
+      username: newAdminUsername,
+    });
 
     if (!isContributorOrAdmin(newAdmin, currentHost)) {
       throw new Meteor.Error(
@@ -548,7 +535,7 @@ Meteor.methods({
     });
 
     try {
-      Groups.update(groupId, {
+      await Groups.updateAsync(groupId, {
         $set: {
           members: newMembers,
         },
@@ -558,22 +545,22 @@ Meteor.methods({
     }
   },
 
-  archiveGroup(groupId) {
+  async archiveGroup(groupId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     if (!isUserGroupAdmin(theGroup, user._id)) {
       throw new Meteor.Error('You do not have admin privileges!');
     }
 
     try {
-      Groups.update(groupId, {
+      await Groups.updateAsync(groupId, {
         $set: {
           isArchived: true,
         },
@@ -583,22 +570,22 @@ Meteor.methods({
     }
   },
 
-  unarchiveGroup(groupId) {
+  async unarchiveGroup(groupId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     if (!isUserGroupAdmin(theGroup, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
 
     try {
-      Groups.update(groupId, {
+      await Groups.updateAsync(groupId, {
         $set: {
           isArchived: false,
         },
@@ -608,16 +595,16 @@ Meteor.methods({
     }
   },
 
-  invitePersonToPrivateGroup(groupId, person) {
+  async invitePersonToPrivateGroup(groupId, person) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     if (!isUserGroupAdmin(theGroup, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
@@ -641,7 +628,7 @@ Meteor.methods({
     );
 
     try {
-      Groups.update(groupId, {
+      await Groups.updateAsync(groupId, {
         $addToSet: {
           peopleInvited: {
             email: person.email,
@@ -650,28 +637,27 @@ Meteor.methods({
         },
       });
 
-      Meteor.call(
+      await Meteor.callAsync(
         'sendEmail',
         person.email,
         `"${theGroup.title}", ${currentHostName}`,
         emailBody
       );
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, 'Could not send the invite to the person');
     }
   },
 
-  removePersonFromInvitedList(groupId, person) {
+  async removePersonFromInvitedList(groupId, person) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    const theGroup = Groups.findOne(groupId);
+    const theGroup = await Groups.findOneAsync(groupId);
     if (!isUserGroupAdmin(theGroup, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
@@ -687,7 +673,7 @@ Meteor.methods({
     }
 
     try {
-      Groups.update(groupId, {
+      await Groups.updateAsync(groupId, {
         $pull: {
           peopleInvited: {
             email: person.email,
@@ -696,7 +682,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, 'Could not remove the invite');
     }
   },

@@ -39,18 +39,18 @@ const publicUserFields = {
 };
 
 Meteor.methods({
-  createNewHost(values) {
+  async createNewHost(values) {
     const currentUser = Meteor.user();
     if (!currentUser || !currentUser.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
 
-    if (Hosts.findOne({ host: values.host })) {
+    if (await Hosts.findOneAsync({ host: values.host })) {
       throw new Meteor.Error('A hub with this url already exists');
     }
 
     try {
-      Hosts.insert({
+      await Hosts.insertAsync({
         emails: defaultEmails,
         host: values.host,
         members: [
@@ -78,7 +78,7 @@ Meteor.methods({
         createdAt: new Date(),
       });
 
-      Pages.insert({
+      await Pages.insertAsync({
         host: values.host,
         authorId: currentUser._id,
         authorName: currentUser.username,
@@ -89,7 +89,7 @@ Meteor.methods({
         creationDate: new Date(),
       });
 
-      Meteor.users.update(currentUser._id, {
+      await Meteor.users.updateAsync(currentUser._id, {
         $push: {
           memberships: {
             date: new Date(),
@@ -105,19 +105,19 @@ Meteor.methods({
     }
   },
 
-  getPortalHost() {
+  async getPortalHost() {
     try {
-      const portalHost = Hosts.findOne({ isPortalHost: true });
+      const portalHost = await Hosts.findOneAsync({ isPortalHost: true });
       return portalHost;
     } catch (error) {
       throw new Meteor.Error(error);
     }
   },
 
-  getCurrentHost() {
+  async getCurrentHost() {
     const host = getHost(this);
     try {
-      const currentHost = Hosts.findOne(
+      const currentHost = await Hosts.findOneAsync(
         { host },
         {
           fields: {
@@ -135,8 +135,8 @@ Meteor.methods({
     }
   },
 
-  getHost(host) {
-    return Hosts.findOne(
+  async getHost(host) {
+    return await Hosts.findOneAsync(
       { host },
       {
         fields: {
@@ -150,9 +150,9 @@ Meteor.methods({
     );
   },
 
-  getAllHosts() {
+  async getAllHosts() {
     try {
-      const hosts = Hosts.find().fetch();
+      const hosts = await Hosts.find().fetchAsync();
       return (
         hosts
           // .filter((h) => !h.isPortalHost)
@@ -171,9 +171,9 @@ Meteor.methods({
     }
   },
 
-  getHostMembersForAdmin() {
+  async getHostMembersForAdmin() {
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const currentUser = Meteor.user();
 
     if (!currentUser || !isAdmin(currentUser, currentHost)) {
@@ -183,17 +183,17 @@ Meteor.methods({
     return currentHost.members;
   },
 
-  getHostMembers(hostPredefined) {
+  async getHostMembers(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
-    const users = Meteor.users
+    const users = await Meteor.users
       .find(
         { 'memberships.host': host },
         {
           fields: publicUserFields,
         }
       )
-      .fetch();
+      .fetchAsync();
 
     const usersFiltered = users.filter(
       (u) => u.memberships.find((m) => m.host === host)?.isPublic
@@ -202,21 +202,21 @@ Meteor.methods({
     return getUsersRandomlyWithAvatarsFirst(usersFiltered);
   },
 
-  getAllMembersFromAllHosts() {
-    const users = Meteor.users
+  async getAllMembersFromAllHosts() {
+    const users = await Meteor.users
       .find(
         {},
         {
           fields: publicUserFields,
         }
       )
-      .fetch();
+      .fetchAsync();
 
     return getUsersRandomlyWithAvatarsFirst(users);
   },
 
-  getHostInfoPage(host) {
-    const infoPages = Pages.find(
+  async getHostInfoPage(host) {
+    const infoPages = await Pages.find(
       {
         host,
       },
@@ -226,18 +226,18 @@ Meteor.methods({
       {
         $sort: { creationDate: 1 },
       }
-    ).fetch();
+    ).fetchAsync();
 
     return infoPages && infoPages[0] && infoPages[0].longDescription;
   },
 
-  getPortalHostInfoPage() {
-    const portalHost = Hosts.findOne({ isPortalHost: true });
+  async getPortalHostInfoPage() {
+    const portalHost = await Hosts.findOneAsync({ isPortalHost: true });
     if (!portalHost) {
       throw new Meteor.Error('not portalhost');
     }
 
-    return Pages.findOne(
+    return await Pages.findOneAsync(
       {
         host: portalHost.host,
       },
@@ -249,10 +249,10 @@ Meteor.methods({
     );
   },
 
-  setHostHue(hue) {
+  async setHostHue(hue) {
     check(hue, String);
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = Hosts.findOneAsync({ host });
     const currentUser = Meteor.user();
 
     if (!currentUser || !isAdmin(currentUser, currentHost)) {
@@ -260,7 +260,7 @@ Meteor.methods({
     }
 
     try {
-      Hosts.update(currentHost._id, {
+      await Hosts.updateAsync(currentHost._id, {
         $set: {
           'settings.hue': hue,
         },
@@ -270,23 +270,23 @@ Meteor.methods({
     }
   },
 
-  getNewslettersForHost() {
+  async getNewslettersForHost() {
     const host = getHost(this);
 
-    return Newsletters.find({ host }).fetch();
+    return await Newsletters.find({ host }).fetchAsync();
   },
 
-  sendNewsletter(email, emailHtml) {
+  async sendNewsletter(email, emailHtml) {
     check(emailHtml, String);
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const currentUser = Meteor.user();
 
     if (!currentUser || !isAdmin(currentUser, currentHost)) {
       throw new Meteor.Error('You are not allowed!');
     }
 
-    const newEmailId = Newsletters.insert({
+    const newEmailId = await Newsletters.insertAsync({
       ...email,
       authorId: currentUser._id,
       authorUsername: currentUser.username,
@@ -304,28 +304,25 @@ Meteor.methods({
     const members = isPortalHost ? Meteor.users.find() : currentHost.members;
 
     try {
-      members.forEach((member) => {
-        const emailHtmlWithUsername = emailHtmlWithBrowserLink.replace(
-          '[username]',
-          member.username
-        );
+      Promise.all(
+        members.forEach(async (member) => {
+          const emailHtmlWithUsername = emailHtmlWithBrowserLink.replace(
+            '[username]',
+            member.username
+          );
 
-        const emailAddress = isPortalHost
-          ? member.emails[0].address
-          : member.email;
+          const emailAddress = isPortalHost
+            ? member.emails[0].address
+            : member.email;
 
-        Meteor.call(
-          'sendEmail',
-          emailAddress,
-          email.subject,
-          emailHtmlWithUsername,
-          (error) => {
-            if (error) {
-              console.log(error);
-            }
-          }
-        );
-      });
+          await Meteor.callAsync(
+            'sendEmail',
+            emailAddress,
+            email.subject,
+            emailHtmlWithUsername
+          );
+        })
+      );
     } catch (error) {
       throw new Meteor.Error(error);
     }
