@@ -38,7 +38,7 @@ Meteor.methods({
     }
 
     if (group.isPrivate) {
-      const currentUser = Meteor.user();
+      const currentUser = await Meteor.userAsync();
       const currentUserId = currentUser._id;
       if (!currentUser) {
         return null;
@@ -64,7 +64,7 @@ Meteor.methods({
     });
 
     if (group && group.isPrivate) {
-      const currentUser = Meteor.user();
+      const currentUser = await Meteor.userAsync();
       if (!currentUser) {
         return null;
       }
@@ -122,7 +122,7 @@ Meteor.methods({
   },
 
   async getGroups(isPortalHost = false, hostPredefined) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
 
     const allGroups = isPortalHost
@@ -223,7 +223,7 @@ Meteor.methods({
   },
 
   async createGroup(formValues) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
 
@@ -278,7 +278,7 @@ Meteor.methods({
   },
 
   async updateGroup(groupId, values) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -320,7 +320,7 @@ Meteor.methods({
   },
 
   async deleteGroup(groupId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -343,7 +343,7 @@ Meteor.methods({
   },
 
   async joinGroup(groupId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -399,7 +399,7 @@ Meteor.methods({
   },
 
   async leaveGroup(groupId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       throw new Meteor.Error('You are not allowed!');
     }
@@ -442,7 +442,7 @@ Meteor.methods({
   },
 
   async addGroupDocument(document, groupId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -467,7 +467,7 @@ Meteor.methods({
   },
 
   async removeGroupDocument(documentName, groupId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -499,7 +499,7 @@ Meteor.methods({
   },
 
   async setAsAGroupAdmin(groupId, newAdminUsername) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -546,7 +546,7 @@ Meteor.methods({
   },
 
   async archiveGroup(groupId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -571,7 +571,7 @@ Meteor.methods({
   },
 
   async unarchiveGroup(groupId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -596,7 +596,7 @@ Meteor.methods({
   },
 
   async invitePersonToPrivateGroup(groupId, person) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -649,7 +649,7 @@ Meteor.methods({
   },
 
   async removePersonFromInvitedList(groupId, person) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 

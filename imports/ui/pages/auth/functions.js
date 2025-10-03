@@ -24,7 +24,11 @@ function loginWithPassword(username, password, isNewAccount) {
   });
 }
 
-async function createAccount(values) {
+export const loginWithPasswordAsync = Meteor.promisify(
+  Meteor.loginWithPassword
+);
+
+export async function createAccount(values) {
   check(values.email, String);
   check(values.username, String);
   check(values.password, String);
@@ -35,5 +39,3 @@ async function createAccount(values) {
     message.error(error.error ? error.error.reason : error.reason);
   }
 }
-
-export { createAccount, loginWithPassword };

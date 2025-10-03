@@ -13,8 +13,8 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
     return null;
   }
 
-  const pages = Meteor.call('getPageTitles');
-  const pageTitles = pages.map((p) => p.title);
+  // const pages = Meteor.call('getPageTitles');
+  // const pageTitles = pages.map((p) => p.title);
 
   return (
     <>

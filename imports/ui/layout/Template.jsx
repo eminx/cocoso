@@ -40,7 +40,7 @@ function Template({
                 </Heading>
               </Box>
             )}
-            <Box maxW="520px">{children}</Box>
+            <Box css={{ maxWidth: '520px' }}>{children}</Box>
           </Box>
 
           <Box>{rightContent}</Box>
@@ -61,7 +61,7 @@ function Template({
                   </Heading>
                 </Box>
               )}
-              <Box maxW="520px">{children}</Box>
+              <Box css={{ maxWidth: '520px' }}>{children}</Box>
             </Box>
             <Box>{rightContent}</Box>
           </Box>

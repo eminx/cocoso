@@ -12,7 +12,9 @@ function validateLabel(label, host, resourceId) {
   if (resourceId) resourceQuery._id = { $ne: resourceId };
   // validate label
   if (label.length < 3) {
-    throw new Meteor.Error('Resource name is too short. Minimum 3 letters required');
+    throw new Meteor.Error(
+      'Resource name is too short. Minimum 3 letters required'
+    );
   } else if (Resources.find(resourceQuery).fetch().length > 0) {
     throw new Meteor.Error('There already is a resource with this name');
   }
@@ -65,10 +67,13 @@ Meteor.methods({
   },
 
   async getResourceBookingsForUser(resourceId, hostPredefined) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
 
-    const currentHost = await Hosts.findOneAsync({ host }, { fields: { members: 1 } });
+    const currentHost = await Hosts.findOneAsync(
+      { host },
+      { fields: { members: 1 } }
+    );
     if (!isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not valid user!');
     }
@@ -105,22 +110,29 @@ Meteor.methods({
   },
 
   async createResource(values) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host }, { fields: { members: 1 } });
+    const currentHost = await Hosts.findOneAsync(
+      { host },
+      { fields: { members: 1 } }
+    );
     if (!isAdmin(user, currentHost) || !validateLabel(values.label, host)) {
       return 'Not valid user or label!';
     }
     try {
-      const newResourceId = await Resources.insert(
-        {
-          ...values,
-          host,
-          userId: user._id,
-          createdBy: user.username,
-          createdAt: new Date(),
-        });
-      await Meteor.callAsync('createChat', values.label, newResourceId, 'resources');
+      const newResourceId = await Resources.insert({
+        ...values,
+        host,
+        userId: user._id,
+        createdBy: user.username,
+        createdAt: new Date(),
+      });
+      await Meteor.callAsync(
+        'createChat',
+        values.label,
+        newResourceId,
+        'resources'
+      );
       return newResourceId;
     } catch (error) {
       throw new Meteor.Error(error);
@@ -128,10 +140,16 @@ Meteor.methods({
   },
 
   async updateResource(resourceId, values) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = newGroupIdHosts.findOneAsync({ host }, { fields: { members: 1 } });
-    if (!isAdmin(user, currentHost) || !validateLabel(values.label, host, resourceId)) {
+    const currentHost = newGroupIdHosts.findOneAsync(
+      { host },
+      { fields: { members: 1 } }
+    );
+    if (
+      !isAdmin(user, currentHost) ||
+      !validateLabel(values.label, host, resourceId)
+    ) {
       throw new Meteor.Error('Not allowed');
     }
 
@@ -145,7 +163,10 @@ Meteor.methods({
           updatedAt: new Date(),
         },
       });
-      if (!resource.isCombo && Resources.find({ host, 'resourcesForCombo._id': resource._id })) {
+      if (
+        !resource.isCombo &&
+        Resources.find({ host, 'resourcesForCombo._id': resource._id })
+      ) {
         await Resources.updateAsync(
           { host, 'resourcesForCombo._id': resource._id },
           {
@@ -164,9 +185,12 @@ Meteor.methods({
   },
 
   async deleteResource(resourceId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host }, { fields: { members: 1 } });
+    const currentHost = await Hosts.findOneAsync(
+      { host },
+      { fields: { members: 1 } }
+    );
 
     if (!isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed');
@@ -176,6 +200,6 @@ Meteor.methods({
       await Resources.removeAsync(resourceId);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
-     }
+    }
   },
 });

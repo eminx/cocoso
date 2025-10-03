@@ -24,7 +24,6 @@ Meteor.methods({
         { sort: { creationDate: -1 } }
       ).fetchAsync();
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, 'Could not retrieve data');
     }
   },
@@ -42,7 +41,7 @@ Meteor.methods({
           authorUsername: username,
         }).fetchAsync();
       }
-      return await  Works.find({
+      return await Works.find({
         host,
         authorUsername: username,
       }).fetchAsync();
@@ -52,7 +51,7 @@ Meteor.methods({
   },
 
   async getMyWorks(hostPredefined) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
@@ -87,7 +86,7 @@ Meteor.methods({
   },
 
   async createWork(values) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       throw new Meteor.Error('You are not a member anyways!');
     }
@@ -106,13 +105,12 @@ Meteor.methods({
       });
       return newWorkId;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
 
   async updateWork(workId, values) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }

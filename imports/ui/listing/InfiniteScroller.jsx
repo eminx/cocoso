@@ -84,7 +84,9 @@ const filterSortItems = (
   }
   const filteredItems = filterItems(items, filterValue);
   const filteredSortedItems = sortItems(filteredItems, sortValue);
-  return filteredSortedItems.slice(0, itemsPerPage * currentPage);
+  return filteredSortedItems
+    ? filteredSortedItems.slice(0, itemsPerPage * currentPage)
+    : null;
 };
 
 export default function InfiniteScroller({

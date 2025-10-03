@@ -43,10 +43,10 @@ function SimplePage({ description, images, imageUrl, title, url }) {
           <Box
             bg="white"
             className="text-content"
-            maxW="540px"
             mt="2"
             mb="24"
             p="6"
+            css={{ maxWidth: '540px' }}
           >
             {description && HTMLReactParser(description)}
           </Box>

@@ -50,9 +50,9 @@ export default function RegistrationIntro() {
           <Box
             bg="white"
             className="slide-container"
-            maxW="420px"
             p="4"
             w="100%"
+            css={{ maxWidth: '420px' }}
           >
             <Slide
               autoplay={false}

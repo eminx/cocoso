@@ -62,18 +62,24 @@ Meteor.methods({
   },
 
   async setSelfAsParticipant(hostToJoin) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       return;
     }
     const host = hostToJoin || getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
-    if (currentHost.members && currentHost.members.some((member) => member.id === user._id)) {
+    if (
+      currentHost.members &&
+      currentHost.members.some((member) => member.id === user._id)
+    ) {
       throw new Meteor.Error('Host already does have you as a participant');
     }
 
-    if (user.memberships && user.memberships.some((membership) => membership.host === host)) {
+    if (
+      user.memberships &&
+      user.memberships.some((membership) => membership.host === host)
+    ) {
       throw new Meteor.Error('You are already a participant');
     }
 
@@ -115,12 +121,14 @@ Meteor.methods({
 
   async removeAsParticipant() {
     const host = getHost(this);
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
 
     const currentHost = await Hosts.findOneAsync({ host });
 
     if (!currentHost.members.some((member) => member.id === user._id)) {
-      throw new Meteor.Error('Host already does not have you as a participant ');
+      throw new Meteor.Error(
+        'Host already does not have you as a participant '
+      );
     }
 
     if (!user.memberships.some((membership) => membership.host === host)) {
@@ -149,7 +157,7 @@ Meteor.methods({
   },
 
   async saveUserInfo(values) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
@@ -166,7 +174,7 @@ Meteor.methods({
   },
 
   async setPreferredLanguage(lang) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
@@ -427,7 +435,7 @@ Meteor.methods({
     // Accounts.emailTemplates.siteName = currentHost.settings?.name;
 
     Accounts.emailTemplates.siteName = host;
-    
+
     try {
       await Meteor.callAsync('forgotPassword', email);
     } catch (error) {
@@ -441,10 +449,14 @@ Meteor.methods({
       throw new Meteor.Error('You are not a member anyways!');
     }
     try {
-      Promise.all(
-        Hosts.find({ 'members.id': userId }).forEach(async (host) => {
-          await Hosts.updateAsync(host._id, { $pull: { members: { id: userId } } });
-        })
+      await Promise.all(
+        Hosts.find({ 'members.id': userId })
+          .fetchAsync()
+          .forEach(async (host) => {
+            await Hosts.updateAsync(host._id, {
+              $pull: { members: { id: userId } },
+            });
+          })
       );
       await Meteor.users.removeAsync(userId);
     } catch (error) {

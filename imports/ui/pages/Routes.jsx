@@ -2,11 +2,14 @@ import React, { Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import loadable from '@loadable/component';
 
-import Terms from '/imports/ui/entry/Terms';
 import Loader from '/imports/ui/core/Loader';
-
+const Terms = loadable(() => import('/imports/ui/entry/Terms'));
 import LayoutContainer, { StateContext } from '../LayoutContainer';
-import ComposablePageView from './composablepages/ComposablePageView';
+const ComposablePageView = loadable(() =>
+  import('./composablepages/ComposablePageView')
+);
+
+import SetupHome from '/imports/ui/pages/setup';
 
 const Communities = loadable(() => import('../pages/hosts/Communities'));
 
@@ -177,6 +180,7 @@ export default function AppRoutes() {
           {/* SuperAdmin */}
           <Route exact path="/new-host" element={<NewHost />} />
           <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
+          <Route exact path="/setup" element={<SetupHome />} />
 
           {/* NotFoundPage */}
           <Route exact path="/not-found" element={<NotFoundPage />} />

@@ -6,7 +6,7 @@ Meteor.methods({
     if (await Platform.findOneAsync()) {
       throw new Meteor.Error('Platform already exists');
     }
-    const currentUser = Meteor.user();
+    const currentUser = await Meteor.userAsync();
     if (!currentUser || !currentUser.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
@@ -14,7 +14,6 @@ Meteor.methods({
     try {
       await Platform.insertAsync({ ...values, createdAt: new Date() });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -28,7 +27,7 @@ Meteor.methods({
   },
 
   async updatePlatformSettings(values) {
-    const currentUser = Meteor.user();
+    const currentUser = await Meteor.userAsync();
     if (!currentUser || !currentUser.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
@@ -48,7 +47,7 @@ Meteor.methods({
   },
 
   async updatePlatformRegistrationIntro(registrationIntro) {
-    const currentUser = Meteor.user();
+    const currentUser = await Meteor.userAsync();
 
     if (!currentUser || !currentUser.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
@@ -69,7 +68,7 @@ Meteor.methods({
   },
 
   async setUserSuperAdmin(userId) {
-    if (!Meteor.user()) {
+    if (!(await Meteor.userAsync())) {
       return;
     }
 

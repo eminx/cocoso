@@ -13,14 +13,11 @@ onPageLoad(async () => {
   const container = document.getElementById('root');
 
   const platform = await Meteor.callAsync('getPlatform');
+  const currentHost = await Meteor.callAsync('getCurrentHost');
 
-  if (!platform) {
+  if (!platform || !currentHost) {
     const root = createRoot(container);
-    root.render(
-      <BrowserRouter>
-        <SetupHome />
-      </BrowserRouter>
-    );
+    root.render(<SetupHome />);
     return;
   }
 

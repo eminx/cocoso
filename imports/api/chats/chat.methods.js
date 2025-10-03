@@ -12,7 +12,7 @@ Meteor.methods({
   },
 
   async createChat(contextName, contextId, contextType) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -36,7 +36,7 @@ Meteor.methods({
   },
 
   async addChatMessage(values) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
@@ -81,7 +81,7 @@ Meteor.methods({
   },
 
   async createGroupNotification(host, values, unSeenIndex) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
@@ -94,7 +94,7 @@ Meteor.methods({
         .filter((member) => member.memberId !== user._id)
         .map((other) => Meteor.users.findOneAsync(other.memberId));
 
-      Promise.all(
+      await Promise.all(
         theOthers.forEach(async (member) => {
           if (!member) {
             return;
@@ -143,7 +143,7 @@ Meteor.methods({
   },
 
   async removeNotification(contextId, messageIndex) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }

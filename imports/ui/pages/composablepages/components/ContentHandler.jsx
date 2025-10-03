@@ -39,7 +39,7 @@ function ButtonContent({ value, onChange }) {
 
   return (
     <Center>
-      <Box maxW="md">
+      <Box>
         <FormField
           helperText={<Trans i18nKey="admin:composable.form.labelHelper" />}
           label={<Trans i18nKey="admin:composable.form.label" />}
@@ -99,7 +99,7 @@ function Divider({ value, onChange }) {
   return (
     <>
       <Center>
-        <Box maxW="md">
+        <Box>
           <Flex align="center" mb="2">
             <Text fontSize="sm" mr="2">
               <Trans i18nKey="common:labels.select" />
@@ -277,7 +277,7 @@ const VideoContent = function VideoContent({ value, onChange }) {
 
   return (
     <Center>
-      <Box maxW="md">
+      <Box>
         <FormField
           label={<Trans i18nKey="admin:composable.form.video" />}
           helperText={<Trans i18nKey="admin:composable.form.videoHelper" />}

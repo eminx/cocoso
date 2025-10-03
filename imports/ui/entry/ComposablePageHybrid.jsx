@@ -79,7 +79,7 @@ function ContentViewModule({ module, Host }) {
     case 'text':
       return (
         <Center>
-          <Box className="text-content" maxW="480px" p="4">
+          <Box className="text-content" p="4" css={{ maxWidth: '480px' }}>
             {value.html ? HTMLReactParser(value.html) : null}
           </Box>
         </Center>

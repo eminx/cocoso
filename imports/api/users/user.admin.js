@@ -6,17 +6,14 @@ import { isContributorOrAdmin, isContributor } from './user.roles';
 import Activities from '../activities/activity';
 
 const isUserAdmin = (members, userId) =>
-  members.some(
-    (member) => member.id === userId && member.role === 'admin'
-  );
+  members.some((member) => member.id === userId && member.role === 'admin');
 
 Meteor.methods({
   async setAsAdmin(memberId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin =
-      currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -72,14 +69,11 @@ Meteor.methods({
   },
 
   async setAsContributor(memberId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
-    if (
-      !user.isSuperAdmin &&
-      !isContributorOrAdmin(user, currentHost)
-    ) {
+    if (!user.isSuperAdmin && !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed');
     }
 
@@ -135,12 +129,11 @@ Meteor.methods({
   },
 
   async setAsParticipant(memberId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
 
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin =
-      currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -194,11 +187,10 @@ Meteor.methods({
   },
 
   async updateHostSettings(newSettings) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin =
-      currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -220,11 +212,10 @@ Meteor.methods({
   },
 
   async assignHostLogo(image) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin =
-      currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -245,11 +236,10 @@ Meteor.methods({
   },
 
   async setMainColor(colorHSL) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin =
-      currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -276,11 +266,10 @@ Meteor.methods({
   },
 
   async getEmails() {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin =
-      currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -294,11 +283,10 @@ Meteor.methods({
   },
 
   async updateEmail(emailIndex, email) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin =
-      currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -323,7 +311,7 @@ Meteor.methods({
   },
 
   async getActivitiesbyUserId(userId) {
-    const currentUser = Meteor.user();
+    const currentUser = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin =

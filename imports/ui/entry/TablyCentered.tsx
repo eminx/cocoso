@@ -90,7 +90,7 @@ const Header: React.FC<HeaderProps> = ({
         p="4"
         justify={author ? 'space-between' : 'center'}
         w="100%"
-        maxW="720px"
+        css={{ maxWidth: '720px' }}
       >
         <Box px="2">
           <Heading
@@ -229,7 +229,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
           </Box>
 
           <Center mb="8" mt="4">
-            <Box maxW="540px" w="100%">
+            <Box w="100%" css={{ maxWidth: '540px' }}>
               <Box w="100%">
                 {tabs && (
                   <Box mt="2">

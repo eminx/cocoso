@@ -93,7 +93,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
           <FormField
             errorMessage={errors.username?.message}
             helperText={t('signup.form.username.helper')}
-            isInvalid={errors.username}
+            // isInvalid={errors.username}
             label={t('signup.form.username.label')}
             required
           >
@@ -102,7 +102,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
 
           <FormField
             errorMessage={errors.email?.message}
-            isInvalid={errors.email}
+            // isInvalid={errors.email}
             label={t('signup.form.email.label')}
             required
           >
@@ -112,7 +112,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
             <FormField
               errorMessage={errors.password?.message}
               helperText={passwordHelperText}
-              isInvalid={errors.password}
+              // isInvalid={errors.password}
               label={t('signup.form.password.label')}
               required
             >
@@ -199,7 +199,7 @@ const ForgotPassword = ({ onForgotPassword }) => {
       <Flex direction="column" gap="6">
         <FormField
           errorMessage={errors.email?.message}
-          isInvalid={errors.email}
+          // isInvalid={errors.email}
           label={t('password.form.email.label')}
         >
           <Input {...register('email')} type="email" />
@@ -238,7 +238,7 @@ const ResetPassword = ({ onResetPassword }) => {
         <FormField
           errorMessage={errors.password?.message}
           helperText={passwordHelperText}
-          isInvalid={errors.password}
+          // isInvalid={errors.password}
           label={t('login.form.password.label')}
         >
           <Input {...register('password')} type="password" />

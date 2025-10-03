@@ -29,6 +29,9 @@ export default function FederationIconMenu() {
   const navigate = useNavigate();
 
   const getInfo = async () => {
+    if (!platform?.isFederationLayout) {
+      return;
+    }
     const info = await call('getPortalHostInfoPage');
     setHostInfo(info);
   };

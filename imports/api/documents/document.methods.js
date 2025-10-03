@@ -5,15 +5,14 @@ import Hosts from '../hosts/host';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
-  getDocumentsByAttachments(attachedTo) {
+  async getDocumentsByAttachments(attachedTo) {
     const sort = {};
     const fields = Documents.publicFields;
-    const documents = Documents.find({ attachedTo }, { sort, fields }).fetch();
-    return documents;
+    return await Documents.find({ attachedTo }, { sort, fields }).fetchAsync();
   },
 
-  createDocument(documentLabel, documentUrl, contextType, attachedTo) {
-    const user = Meteor.user();
+  async createDocument(documentLabel, documentUrl, contextType, attachedTo) {
+    const user = await Meteor.userAsync();
     if (!user) {
       return;
     }
@@ -21,7 +20,7 @@ Meteor.methods({
     const host = getHost(this);
 
     try {
-      Documents.insert({
+      return await Documents.insertAsync({
         host,
         documentLabel,
         documentUrl,
@@ -33,24 +32,22 @@ Meteor.methods({
         creationDate: new Date(),
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't create the document");
     }
   },
 
-  removeDocument(documentId) {
-    const user = Meteor.user();
+  async removeDocument(documentId) {
+    const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
     try {
-      Documents.remove(documentId);
+      await Documents.removeAsync(documentId);
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't delete the document");
     }
   },

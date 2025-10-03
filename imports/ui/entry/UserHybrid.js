@@ -99,7 +99,7 @@ export default function UserHybrid({ user, Host }) {
       </Box>
 
       <Center>
-        <Box maxW="600px">
+        <Box css={{ maxWidth: '600px' }}>
           <Center>
             <MemberAvatarEtc isThumb={false} user={user} />
           </Center>
@@ -110,7 +110,7 @@ export default function UserHybrid({ user, Host }) {
       </Center>
 
       <Center>
-        <Box maxW="600px">
+        <Box css={{ maxWidth: '600px' }}>
           <Tabs align="center" index={tabIndex} tabs={tabs} />
 
           <Box pt="4">

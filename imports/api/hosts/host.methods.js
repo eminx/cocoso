@@ -40,7 +40,7 @@ const publicUserFields = {
 
 Meteor.methods({
   async createNewHost(values) {
-    const currentUser = Meteor.user();
+    const currentUser = await Meteor.userAsync();
     if (!currentUser || !currentUser.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
@@ -174,7 +174,7 @@ Meteor.methods({
   async getHostMembersForAdmin() {
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const currentUser = Meteor.user();
+    const currentUser = await Meteor.userAsync();
 
     if (!currentUser || !isAdmin(currentUser, currentHost)) {
       throw new Meteor.Error('You are not allowed!');
@@ -234,7 +234,7 @@ Meteor.methods({
   async getPortalHostInfoPage() {
     const portalHost = await Hosts.findOneAsync({ isPortalHost: true });
     if (!portalHost) {
-      throw new Meteor.Error('not portalhost');
+      throw new Meteor.Error('no portalhost defined');
     }
 
     return await Pages.findOneAsync(
@@ -253,7 +253,7 @@ Meteor.methods({
     check(hue, String);
     const host = getHost(this);
     const currentHost = Hosts.findOneAsync({ host });
-    const currentUser = Meteor.user();
+    const currentUser = await Meteor.userAsync();
 
     if (!currentUser || !isAdmin(currentUser, currentHost)) {
       throw new Meteor.Error('You are not allowed!');
@@ -280,7 +280,7 @@ Meteor.methods({
     check(emailHtml, String);
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const currentUser = Meteor.user();
+    const currentUser = await Meteor.userAsync();
 
     if (!currentUser || !isAdmin(currentUser, currentHost)) {
       throw new Meteor.Error('You are not allowed!');
@@ -301,10 +301,12 @@ Meteor.methods({
     );
 
     const isPortalHost = currentHost.isPortalHost;
-    const members = isPortalHost ? Meteor.users.find() : currentHost.members;
+    const members = isPortalHost
+      ? Meteor.users.find().fetchAsync()
+      : currentHost.members;
 
     try {
-      Promise.all(
+      await Promise.all(
         members.forEach(async (member) => {
           const emailHtmlWithUsername = emailHtmlWithBrowserLink.replace(
             '[username]',
@@ -336,7 +338,7 @@ Meteor.methods({
   async updateHostTheme(theme) {
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const currentUser = Meteor.user();
+    const currentUser = await Meteor.userAsync();
 
     if (!currentUser || !isAdmin(currentUser, currentHost)) {
       throw new Meteor.Error('You are not allowed!');

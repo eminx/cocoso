@@ -109,8 +109,8 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
       <Box px="2" mt="4">
         <InfiniteScroller hideFiltrerSorter items={hostsRendered}>
           {(host) => (
-            <Box key={host.host} m="2" w={300}>
-              <Box maxW="" onClick={() => handleSetModalHost(host)}>
+            <Box key={host.host} m="2" w="300px">
+              <Box onClick={() => handleSetModalHost(host)}>
                 <NewGridThumb
                   coverText={host.host}
                   fixedImageHeight
@@ -198,13 +198,13 @@ export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
               </Box>
             </Center>
 
-            <Box bg="white" maxW="520px" p="4">
+            <Box bg="white" p="4" css={{ maxWidth: '520px' }}>
               <Text fontSize="sm" fontWeight="bold" textAlign="center">
                 {tc('communities.info', { community: modalItem.name })}
               </Text>
             </Box>
 
-            <Box py="4" maxW="520px">
+            <Box py="4" css={{ maxWidth: '520px' }}>
               {modalItem.info && (
                 <div className="text-content">
                   {HTMLReactParser(modalItem?.info)}
