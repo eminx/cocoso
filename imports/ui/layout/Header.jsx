@@ -89,15 +89,11 @@ export function InfoPagesMenu({
         }}
       >
         {pageTitles.map((item) => (
-          <Link
-            key={item._id}
-            to={`/info/${parseTitle(item.title)}`}
-            onClick={onSelect}
-          >
-            <MenuItem as="span" id={item._id}>
+          <MenuItem key={item._id} as="span" id={item._id}>
+            <Link to={`/info/${parseTitle(item.title)}`} onClick={onSelect}>
               <Text css={textStyles}>{item.title}</Text>
-            </MenuItem>
-          </Link>
+            </Link>
+          </MenuItem>
         ))}
       </Box>
     </Menu>

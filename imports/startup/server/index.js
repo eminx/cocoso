@@ -16,13 +16,27 @@ import './migrations';
 
 const { cdn_server } = Meteor.settings;
 
-const App = memo(({ context = {}, sink }) => {
-  const host = sink.request.headers['host'];
+function setupSMTP() {
+  const smtp = Meteor.settings?.mailCredentials?.smtp;
+
+  process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${
+    smtp.password
+  }@${smtp.host}:${smtp.port}`;
+  Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
+  Accounts.emailTemplates.from = () => smtp.fromEmail;
+  Accounts.emailTemplates.resetPassword.text = function (user, url) {
+    const newUrl = url.replace('#/', '');
+    return `To reset your password, simply click the link below. ${newUrl}`;
+  };
+}
+
+const RouterSSR = memo(({ context = {}, ...rest }) => {
+  const sink = rest.sink;
 
   return (
     <StaticRouter location={sink.request.url} context={context}>
       <Routes>
-        {AppRoutesSSR(host, sink).map((route) => (
+        {AppRoutesSSR(rest).map((route) => (
           <Route
             key={route.path}
             path={route.path}
@@ -36,46 +50,58 @@ const App = memo(({ context = {}, sink }) => {
   );
 });
 
-Meteor.startup(() => {
-  const smtp = Meteor.settings?.mailCredentials?.smtp;
+async function dataFetcherSSR(pathname, isPortalHost = false) {
+  if (pathname === '/activities') {
+    if (isPortalHost) {
+      return await Meteor.callAsync('getAllPublicActivitiesFromAllHosts');
+    }
+    return await Meteor.callAsync('getAllPublicActivities');
+  }
+}
 
-  process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${
-    smtp.password
-  }@${smtp.host}:${smtp.port}`;
-  Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
-  Accounts.emailTemplates.from = () => smtp.fromEmail;
-  Accounts.emailTemplates.resetPassword.text = function (user, url) {
-    const newUrl = url.replace('#/', '');
-    return `To reset your password, simply click the link below. ${newUrl}`;
+async function ServerRenderer(sink) {
+  const host = sink?.request?.headers?.['host'];
+  const Host = await Hosts.findOneAsync({ host });
+  const pages = await Meteor.callAsync('getPageTitles');
+
+  const pageTitles = pages.map((p) => p.title);
+  const theme = Host?.theme;
+
+  const { getCssText } = require('/stitches.config');
+  const globalCssString = getGlobalStyles(theme);
+
+  const helmet = Helmet.renderStatic();
+  sink.appendToHead(`
+    ${helmet.title.toString()}
+    ${helmet.meta.toString()}
+    ${helmet.link.toString()}
+    <style id="global-theme">${globalCssString}</style>
+    <style id="stitches">${getCssText()}</style>
+  `);
+
+  const pathname = sink?.request?.url?.pathname;
+  const data = await dataFetcherSSR(pathname, Boolean(Host.isPortalHost));
+  const props = {
+    data,
+    Host,
+    pageTitles,
+    sink,
   };
+  const appHtml = renderToString(<RouterSSR {...props} />);
+
+  sink.renderIntoElementById('root', appHtml);
+}
+
+Meteor.startup(() => {
+  setupSMTP();
 
   if (cdn_server) {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
   }
 
-  const { getCssText } = require('/stitches.config');
-
   onPageLoad(async (sink) => {
     try {
-      const host = sink?.request?.headers?.['host'];
-      const Host = await Hosts.findOneAsync({ host });
-      const theme = Host?.theme;
-
-      // NEW: this now returns a string, not a function
-      const globalCssString = getGlobalStyles(theme);
-
-      const appHtml = renderToString(<App sink={sink} />);
-      const helmet = Helmet.renderStatic();
-
-      sink.appendToHead(`
-      ${helmet.title.toString()}
-      ${helmet.meta.toString()}
-      ${helmet.link.toString()}
-      <style id="global-theme">${globalCssString}</style>
-      <style id="stitches">${getCssText()}</style>
-    `);
-
-      sink.renderIntoElementById('root', appHtml);
+      await ServerRenderer(sink);
     } catch (error) {
       console.log(error);
     }

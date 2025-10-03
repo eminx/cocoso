@@ -20,12 +20,7 @@ import {
 } from './components';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
-export default function AppRoutesSSR(host, sink) {
-  const props = {
-    host,
-    sink,
-  };
-
+export default function AppRoutesSSR(props) {
   return [
     {
       path: '/',

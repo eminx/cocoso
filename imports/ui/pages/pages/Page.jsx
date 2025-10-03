@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import PageHybrid from '../../entry/PageHybrid';
@@ -48,7 +54,9 @@ function Page() {
     currentHost = Host;
   }
 
-  const currentPage = pages.find((page) => parseTitle(page.title) === pageTitle);
+  const currentPage = pages?.find(
+    (page) => parseTitle(page.title) === pageTitle
+  );
 
   const contextValue = {
     currentPage,

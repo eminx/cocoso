@@ -28,14 +28,16 @@ function parsePreloadedState(item) {
   `;
 }
 
-export function ActivityList({ host, sink }) {
+export function ActivityList({ data, Host, pageTitles, sink }) {
   const [searchParams] = useSearchParams();
   const showPast = Boolean(searchParams.get('showPast') === 'true');
 
-  const Host = Meteor.call('getHost', host);
-  const activities = Host.isPortalHost
-    ? Meteor.call('getAllPublicActivitiesFromAllHosts', Boolean(showPast))
-    : Meteor.call('getAllPublicActivities', Boolean(showPast), host);
+  // const Host = Meteor.call('getHost', host);
+  // const activities = Host.isPortalHost
+  //   ? Meteor.call('getAllPublicActivitiesFromAllHosts', Boolean(showPast))
+  //   : Meteor.call('getAllPublicActivities', Boolean(showPast), host);
+
+  const activities = [...data];
 
   sink.appendToBody(parsePreloadedState({ activities, Host }));
 
@@ -44,7 +46,7 @@ export function ActivityList({ host, sink }) {
   }
 
   return (
-    <WrapperSSR Host={Host} sink={sink}>
+    <WrapperSSR Host={Host} pageTitles={pageTitles} sink={sink}>
       <ActivitiesHybrid
         activities={activities}
         Host={Host}

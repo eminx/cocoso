@@ -8,13 +8,15 @@ import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
 import { Footer } from './Footers';
 
-export default function WrapperSSR({ Host, isEntryPage = false, children }) {
+export default function WrapperSSR({
+  Host,
+  pageTitles,
+  isEntryPage = false,
+  children,
+}) {
   if (!Host) {
     return null;
   }
-
-  // const pages = Meteor.call('getPageTitles');
-  // const pageTitles = pages.map((p) => p.title);
 
   return (
     <>
