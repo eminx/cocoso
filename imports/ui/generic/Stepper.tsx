@@ -19,14 +19,8 @@ interface StepperProps {
 const StepperContainer = styled(Flex, {
   flexDirection: 'row',
   alignItems: 'flex-start',
-  gap: 32,
-});
-
-const StepItem = styled(Flex, {
-  flexDirection: 'column',
-  alignItems: 'center',
-  flex: 1,
-  position: 'relative',
+  gap: '8',
+  flexWrap: 'wrap',
 });
 
 const StepIndicator = styled(Box, {
@@ -37,21 +31,12 @@ const StepIndicator = styled(Box, {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: '#f0f0f0',
-  marginBottom: 8,
 });
 
 const StepSeparator = styled(Box, {
-  position: 'absolute',
-  top: 16,
-  left: '100%',
-  width: 32,
-  height: 2,
+  width: 2,
+  height: 32,
   backgroundColor: '#e0e0e0',
-  zIndex: 0,
-});
-
-const StepContent = styled(Box, {
-  textAlign: 'center',
 });
 
 const Stepper: React.FC<StepperProps> = ({ steps, activeStep }) => {
@@ -61,29 +46,34 @@ const Stepper: React.FC<StepperProps> = ({ steps, activeStep }) => {
         const isComplete = index < activeStep;
         const isActive = index === activeStep;
         return (
-          <StepItem key={step.title}>
-            <StepIndicator>
-              {isComplete ? (
-                <CheckIcon width={20} height={20} color="#4caf50" />
-              ) : isActive ? (
-                <DotIcon width={20} height={20} color="#1976d2" />
-              ) : (
-                <CircleIcon width={20} height={20} color="#bdbdbd" />
-              )}
-            </StepIndicator>
-            {index < steps.length - 1 && <StepSeparator />}
-            <StepContent>
-              <Heading as="h4" size="md">
+          <Box key={step.title}>
+            <Flex align="center">
+              <StepIndicator>
+                {isComplete ? (
+                  <CheckIcon width={32} height={32} color="#4caf50" />
+                ) : isActive ? (
+                  <DotIcon width={32} height={32} color="#1976d2" />
+                ) : (
+                  <CircleIcon width={32} height={32} color="#bdbdbd" />
+                )}
+              </StepIndicator>
+              <Heading
+                as="h2"
+                fontWeight={isActive ? 'bold' : 'lighter'}
+                size="md"
+              >
                 {step.title}
               </Heading>
-              <Box style={{ marginBottom: '8px' }} />
+              {index < steps.length - 1 && <StepSeparator />}
+            </Flex>
+            <Box>
               {step.description && (
                 <Text size="sm" color="#757575">
                   {step.description}
                 </Text>
               )}
-            </StepContent>
-          </StepItem>
+            </Box>
+          </Box>
         );
       })}
     </StepperContainer>
