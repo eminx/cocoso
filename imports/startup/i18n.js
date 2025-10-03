@@ -51,7 +51,15 @@ const options = {
   debug: false,
   defaultNS: 'common',
   detection: {
-    order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'], // Specify the order of language detection
+    order: [
+      'querystring',
+      'cookie',
+      'localStorage',
+      'navigator',
+      'htmlTag',
+      'path',
+      'subdomain',
+    ], // Specify the order of language detection
     caches: ['cookie'], // Cache the selected language
   },
   fallbackLng: defaultLang,
@@ -72,12 +80,12 @@ const options = {
 };
 
 // for browser use http backend to load translations and browser lng detector
-if (process && !process.release) {
+if (i18n && process && !process.release) {
   i18n.use(Backend).use(LanguageDetector).use(initReactI18next);
 }
 
 // initialize if not already initialized
-if (!i18n.isInitialized) {
+if (i18n && !i18n.isInitialized) {
   i18n.init(options);
   // check & set lang for user(logged) or host prefences
   Tracker.autorun(() => {

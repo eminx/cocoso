@@ -1,5 +1,7 @@
 import { Mongo } from 'meteor/mongo';
+import 'meteor/aldeed:collection2/static';
 import SimpleSchema from 'simpl-schema';
+
 import { Schemas } from '../_utils/schemas';
 
 const Hosts = new Mongo.Collection('hosts');

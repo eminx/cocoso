@@ -292,7 +292,7 @@ export function Home(props) {
 
   const getComponentBasedOnFirstRoute = () => {
     const menuItems = Host.settings?.menu;
-    const visibleMenu = menuItems.filter((item) => item.isVisible);
+    const visibleMenu = menuItems?.filter((item) => item.isVisible);
     const firstRoute = visibleMenu && visibleMenu[0].name;
 
     switch (firstRoute) {

@@ -23,7 +23,6 @@ accounts-password@3.2.1       # Password support for accounts
 check@1.4.4                   # Check whether a value matches a pattern
 email@3.1.2                   # Send email messages
 tracker@1.3.4                 # Dependency tracker to allow reactive callbacks
-appcache@1.2.7                # Enable the application cache in the browser
 service-configuration@1.3.5   # Manage the configuration for third-party services
 dev-error-overlay@0.1.3       # Show build errors in client when using HMR
 edgee:slingshot               # Directly post files to cloud storage services, such as AWS-S3.
