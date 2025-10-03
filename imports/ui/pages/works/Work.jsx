@@ -37,7 +37,7 @@ export default function Work() {
 
   const getWorkById = async () => {
     try {
-      const response = await call('getWork', workId, username);
+      const response = await call('getWorkById', workId, username);
       setWork(response);
     } catch (error) {
       message.error(error.reason || error.error);

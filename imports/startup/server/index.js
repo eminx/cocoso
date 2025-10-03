@@ -8,8 +8,10 @@ import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
 
 import Hosts from '/imports/api/hosts/host';
-import AppRoutesSSR from '/imports/ssr/AppRoutes';
+import AppRoutes from '/imports/ssr/AppRoutes';
 import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';
+import { call } from '/imports/ui/utils/shared';
+import dataFetcher from '../../ssr/dataFetcher';
 
 import './api';
 import './migrations';
@@ -36,7 +38,7 @@ const RouterSSR = memo(({ context = {}, ...rest }) => {
   return (
     <StaticRouter location={sink.request.url} context={context}>
       <Routes>
-        {AppRoutesSSR(rest).map((route) => (
+        {AppRoutes(rest).map((route) => (
           <Route
             key={route.path}
             path={route.path}
@@ -50,16 +52,9 @@ const RouterSSR = memo(({ context = {}, ...rest }) => {
   );
 });
 
-async function dataFetcherSSR(pathname, isPortalHost = false) {
-  if (pathname === '/activities') {
-    if (isPortalHost) {
-      return await Meteor.callAsync('getAllPublicActivitiesFromAllHosts');
-    }
-    return await Meteor.callAsync('getAllPublicActivities');
-  }
-}
-
 async function ServerRenderer(sink) {
+  const { getCssText } = require('/stitches.config');
+
   const host = sink?.request?.headers?.['host'];
   const Host = await Hosts.findOneAsync({ host });
   const pages = await Meteor.callAsync('getPageTitles');
@@ -67,7 +62,6 @@ async function ServerRenderer(sink) {
   const pageTitles = pages.map((p) => p.title);
   const theme = Host?.theme;
 
-  const { getCssText } = require('/stitches.config');
   const globalCssString = getGlobalStyles(theme);
 
   const helmet = Helmet.renderStatic();
@@ -80,7 +74,14 @@ async function ServerRenderer(sink) {
   `);
 
   const pathname = sink?.request?.url?.pathname;
-  const data = await dataFetcherSSR(pathname, Boolean(Host.isPortalHost));
+  const search = sink?.request?.url?.search;
+  const data = await dataFetcher({
+    pathname,
+    search,
+    host,
+    isPortalHost: Boolean(Host.isPortalHost),
+  });
+
   const props = {
     data,
     Host,

@@ -20,7 +20,7 @@ import {
 } from './components';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
-export default function AppRoutesSSR(props) {
+const AppRoutes = (props) => {
   return [
     {
       path: '/',
@@ -92,4 +92,6 @@ export default function AppRoutesSSR(props) {
       element: <NotFoundPage />,
     },
   ];
-}
+};
+
+export default AppRoutes;

@@ -68,7 +68,7 @@ Meteor.methods({
     }
   },
 
-  async getWork(workId, username) {
+  async getWorkById(workId, username) {
     const host = getHost(this);
 
     try {

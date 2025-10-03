@@ -88,11 +88,13 @@ Meteor.methods({
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
         'datesAndTimes.endDate': { $gte: today },
       }).fetchAsync();
+
       const futureActsSorted = parseGroupActivities(futureActs)?.sort(
         compareDatesForSortActivities
       );
       return filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },

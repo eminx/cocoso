@@ -31,19 +31,8 @@ function parsePreloadedState(item) {
 export function ActivityList({ data, Host, pageTitles, sink }) {
   const [searchParams] = useSearchParams();
   const showPast = Boolean(searchParams.get('showPast') === 'true');
-
-  // const Host = Meteor.call('getHost', host);
-  // const activities = Host.isPortalHost
-  //   ? Meteor.call('getAllPublicActivitiesFromAllHosts', Boolean(showPast))
-  //   : Meteor.call('getAllPublicActivities', Boolean(showPast), host);
-
-  const activities = [...data];
-
+  const activities = [...data?.activities];
   sink.appendToBody(parsePreloadedState({ activities, Host }));
-
-  if (!Host) {
-    return null;
-  }
 
   return (
     <WrapperSSR Host={Host} pageTitles={pageTitles} sink={sink}>
@@ -56,229 +45,152 @@ export function ActivityList({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function Activity({ host, sink }) {
-  const { activityId } = useParams();
-  const activity = Meteor.call('getActivityById', activityId);
-  const Host = Meteor.call('getHost', host);
-
+export function Activity({ data, Host, pageTitles, sink }) {
+  const activity = { ...data?.activity };
   sink.appendToBody(parsePreloadedState({ activity, Host }));
 
-  if (!activity) {
-    return null;
-  }
-
   return (
-    <WrapperSSR isEntryPage Host={Host}>
+    <WrapperSSR isEntryPage pageTitles={pageTitles} Host={Host}>
       <ActivityHybrid activity={activity} Host={Host} />
     </WrapperSSR>
   );
 }
 
-export function Calendar({ host, sink }) {
-  const Host = Meteor.call('getHost', host);
-
+export function Calendar({ Host, pageTitles, sink }) {
   sink.appendToBody(parsePreloadedState({ Host }));
 
-  if (!Host) {
-    return null;
-  }
-
-  return <WrapperSSR Host={Host} sink={sink} />;
+  return <WrapperSSR Host={Host} pageTitles={pageTitles} sink={sink} />;
 }
 
-export function ComposablePage({ host, sink }) {
-  let { composablePageId } = useParams();
-  const href = useHref();
+export function ComposablePage({ data, Host, pageTitles, sink }) {
+  const composablePage = { ...data?.composablePage };
 
-  const Host = Meteor.call('getHost', host);
-
-  if (href === '/' && !composablePageId) {
-    composablePageId = Host?.settings?.menu[0]?.name;
-  }
-
-  const composablePage = Meteor.call('getComposablePageById', composablePageId);
+  // if (href === '/' && !composablePageId) {
+  //   composablePageId = Host?.settings?.menu[0]?.name;
+  // }
 
   sink.appendToBody(parsePreloadedState({ Host }));
-
-  if (!Host) {
-    return null;
-  }
 
   if (!composablePage || !composablePage.isPublished) {
     return null;
   }
 
   return (
-    <WrapperSSR Host={Host} sink={sink}>
+    <WrapperSSR Host={Host} pageTitles={pageTitles}>
       <ComposablePageHybrid composablePage={composablePage} Host={Host} />
     </WrapperSSR>
   );
 }
 
-export function GroupList({ host, sink }) {
-  const Host = Meteor.call('getHost', host);
-  const groups = Meteor.call('getGroupsWithMeetings', Host?.isPortalHost, host);
-
+export function GroupList({ data, Host, pageTitles, sink }) {
+  const groups = [...data?.groups];
   sink.appendToBody(parsePreloadedState({ groups, Host }));
 
   return (
-    <WrapperSSR Host={Host}>
+    <WrapperSSR Host={Host} pageTitles={pageTitles}>
       <GroupsHybrid groups={groups} Host={Host} />
     </WrapperSSR>
   );
 }
 
-export function Group({ host, sink }) {
-  const { groupId } = useParams();
-  const group = Meteor.call('getGroupWithMeetings', groupId);
-  const Host = Meteor.call('getHost', host);
-
+export function Group({ data, Host, pageTitles, sink }) {
+  const group = { ...data?.group };
+  const documents = data?.documents;
   sink.appendToBody(parsePreloadedState({ group, Host }));
 
-  if (!group) {
-    return null;
-  }
-
   return (
-    <WrapperSSR isEntryPage Host={Host}>
+    <WrapperSSR isEntryPage Host={Host} pageTitles={pageTitles}>
       <GroupHybrid group={group} Host={Host} />
     </WrapperSSR>
   );
 }
 
-export function ResourceList({ host, sink }) {
-  const Host = Meteor.call('getHost', host);
-  const resources = Host.isPortalHost
-    ? Meteor.call('getResourcesFromAllHosts')
-    : Meteor.call('getResources', host);
-
+export function ResourceList({ data, Host, pageTitles, sink }) {
+  const resources = [...data?.resources];
   sink.appendToBody(parsePreloadedState({ resources, Host }));
 
   return (
-    <WrapperSSR Host={Host}>
+    <WrapperSSR Host={Host} pageTitles={pageTitles}>
       <ResourcesHybrid Host={Host} resources={resources} />
     </WrapperSSR>
   );
 }
 
-export function Resource({ host, sink }) {
-  const { resourceId } = useParams();
-  const resource = Meteor.call('getResourceById', resourceId);
-  const documents = Meteor.call('getDocumentsByAttachments', resourceId);
-  const Host = Meteor.call('getHost', host);
-
+export function Resource({ data, Host, pageTitles, sink }) {
+  const resource = { ...data?.resource };
+  const documents = data?.documents;
   sink.appendToBody(parsePreloadedState({ documents, resource, Host }));
 
-  if (!resource) {
-    return null;
-  }
-
   return (
-    <WrapperSSR isEntryPage Host={Host}>
+    <WrapperSSR isEntryPage Host={Host} pageTitles={pageTitles}>
       <ResourceHybrid documents={documents} resource={resource} Host={Host} />
     </WrapperSSR>
   );
 }
 
-export function WorkList({ host, sink }) {
-  const Host = Meteor.call('getHost', host);
-  const works = Host.isPortalHost
-    ? Meteor.call('getAllWorksFromAllHosts')
-    : Meteor.call('getAllWorks', host);
-
+export function WorkList({ data, Host, pageTitles, sink }) {
+  const works = [...data?.works];
   sink.appendToBody(parsePreloadedState({ works, Host }));
 
   return (
-    <WrapperSSR Host={Host}>
+    <WrapperSSR Host={Host} pageTitles={pageTitles}>
       <WorksHybrid Host={Host} works={works} />
     </WrapperSSR>
   );
 }
 
-export function Work({ host, sink }) {
-  const { workId, usernameSlug } = useParams();
-  const [, username] = usernameSlug.split('@');
-  const work = Meteor.call('getWork', workId, username);
-  const documents = Meteor.call('getDocumentsByAttachments', workId);
-  const Host = Meteor.call('getHost', host);
-
-  if (!work) {
-    return null;
-  }
-
+export function Work({ data, Host, pageTitles, sink }) {
+  const work = { ...data?.work };
+  const documents = data?.documents;
   sink.appendToBody(parsePreloadedState({ documents, work, Host }));
 
   return (
-    <WrapperSSR isEntryPage Host={Host}>
+    <WrapperSSR isEntryPage Host={Host} pageTitles={pageTitles}>
       <WorkHybrid documents={documents} work={work} Host={Host} />
     </WrapperSSR>
   );
 }
 
-export function Page({ host, sink }) {
-  const pages = Meteor.call('getPages', host);
-  const Host = Meteor.call('getHost', host);
-
-  if (!pages) {
-    return null;
-  }
-
+export function Page({ data, Host, pageTitles, sink }) {
+  const pages = [...data?.pages];
   sink.appendToBody(parsePreloadedState({ pages, Host }));
 
   return (
-    <WrapperSSR Host={Host}>
-      <PageHybrid pages={pages} Host={Host} />
+    <WrapperSSR Host={Host} pageTitles={pageTitles}>
+      <PageHybrid Host={Host} pages={pages} />
     </WrapperSSR>
   );
 }
 
-export function UserList({ host, sink }) {
-  const Host = Meteor.call('getHost', host);
-  const users = Host.isPortalHost
-    ? Meteor.call('getAllMembersFromAllHosts')
-    : Meteor.call('getHostMembers', host);
-
-  const keywords = Meteor.call('getKeywords');
-
+export function UserList({ data, Host, pageTitles, sink }) {
+  const users = [...data?.users];
+  const keywords = [...data?.keywords];
   sink.appendToBody(parsePreloadedState({ keywords, users, Host }));
 
   return (
-    <WrapperSSR Host={Host}>
+    <WrapperSSR Host={Host} pageTitles={pageTitles}>
       <UsersHybrid Host={Host} keywords={keywords} users={users} />
     </WrapperSSR>
   );
 }
 
-export function User({ host, sink }) {
-  const Host = Meteor.call('getHost', host);
-  const { usernameSlug } = useParams();
-  if (usernameSlug && usernameSlug[0] !== '@') {
-    return null;
-  }
-  const [, username] = usernameSlug?.split('@');
-  const user = Meteor.call('getUserInfo', username, host);
-
-  if (!user) {
-    return null;
-  }
-
+export function User({ data, Host, pageTitles, sink }) {
+  const user = { ...data?.user };
   sink.appendToBody(parsePreloadedState({ user, Host }));
 
   return (
-    <WrapperSSR isEntryPage Host={Host}>
+    <WrapperSSR isEntryPage Host={Host} pageTitles={pageTitles}>
       <UserHybrid Host={Host} user={user} />
     </WrapperSSR>
   );
 }
 
-export function Communities({ host, sink }) {
-  const Host = Meteor.call('getHost', host);
-  const hosts = Meteor.call('getAllHosts');
-
+export function Communities({ data, Host, pageTitles, sink }) {
+  const hosts = [...data?.hosts];
   sink.appendToBody(parsePreloadedState({ hosts, Host }));
 
   return (
-    <WrapperSSR Host={Host}>
+    <WrapperSSR Host={Host} pageTitles={pageTitles}>
       <CommunitiesHybrid Host={Host} hosts={hosts} />
     </WrapperSSR>
   );
