@@ -33,7 +33,7 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
     const host = getHost(this);
-    const platform = Platform.findOne();
+    const platform = await Platform.findOneAsync();
 
     try {
       if (platform.isFederationLayout) {
@@ -58,11 +58,10 @@ Meteor.methods({
     const host = hostPredefined || getHost(this);
 
     try {
-      const works = await Works.find({
+      return await Works.find({
         host,
         authorId: user._id,
       }).fetchAsync();
-      return works;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch works");
     }
@@ -76,10 +75,7 @@ Meteor.methods({
       if (work.authorUsername !== username) {
         throw new Meteor.Error('Not allowed!');
       }
-
-      return {
-        ...work,
-      };
+      return work;
     } catch (error) {
       throw new Meteor.Error(error);
     }

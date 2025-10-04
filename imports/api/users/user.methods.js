@@ -431,7 +431,7 @@ Meteor.methods({
     Accounts.urls.resetPassword = function (token) {
       return `https://${host}/reset-password/${token}`;
     };
-    // const currentHost = Hosts.findOne({ host });
+    // const currentHost = await Hosts.findOneAsync({ host });
     // Accounts.emailTemplates.siteName = currentHost.settings?.name;
 
     Accounts.emailTemplates.siteName = host;
@@ -451,8 +451,8 @@ Meteor.methods({
     try {
       await Promise.all(
         Hosts.find({ 'members.id': userId })
-          .fetchAsync()
-          .forEach(async (host) => {
+          .fetch()
+          .forEachAsync(async (host) => {
             await Hosts.updateAsync(host._id, {
               $pull: { members: { id: userId } },
             });

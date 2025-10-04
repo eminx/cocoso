@@ -63,7 +63,9 @@ Meteor.methods({
         }
       );
       if (values.context === 'groups') {
-        const theGroup = Chats.findOne({ contextId: values.contextId });
+        const theGroup = await Chats.findOneAsync({
+          contextId: values.contextId,
+        });
         if (!theGroup) {
           return;
         }

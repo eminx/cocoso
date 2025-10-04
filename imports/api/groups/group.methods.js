@@ -225,7 +225,7 @@ Meteor.methods({
   async createGroup(formValues) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');

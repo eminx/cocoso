@@ -173,7 +173,7 @@ Meteor.methods({
         }
       );
 
-      // const currentHost = Hosts.findOne({ host });
+      // const currentHost = await Hosts.findOneAsync({ host });
       // const hostName = currentHost.settings.name;
       // Meteor.callAsync(
       //   'sendEmail',

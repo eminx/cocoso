@@ -33,7 +33,7 @@ Meteor.methods({
       return;
     }
 
-    if (Keywords.findOne({ label: keyword.toLowerCase() })) {
+    if (await Keywords.findOneAsync({ label: keyword.toLowerCase() })) {
       throw new Meteor.Error('Keyword already exists');
     }
 

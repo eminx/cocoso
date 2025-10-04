@@ -37,11 +37,13 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    if (Categories.findOne({ label: category.toLowerCase(), host })) {
+    if (
+      await Categories.findOneAsync({ label: category.toLowerCase(), host })
+    ) {
       throw new Meteor.Error('Category already exists!');
     }
 
-    const catLength = Categories.find({ host, type }).count();
+    const catLength = await Categories.find({ host, type }).countAsync();
 
     try {
       return await Categories.insertAsync({
