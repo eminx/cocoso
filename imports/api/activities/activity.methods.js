@@ -18,24 +18,26 @@ import {
   parseGroupActivities,
 } from './activity.helpers';
 
-const filterPrivateGroups = (activities, user) =>
-  activities.filter((act) => {
-    if (!act.isGroupPrivate) {
-      return true;
-    }
-    if (!user) {
-      return false;
-    }
-    const group = Groups.findOne({ _id: act.groupId });
-    const userId = user?._id;
-    return (
-      group.adminId === userId ||
-      group.members.some((member) => member.memberId === userId) ||
-      group.peopleInvited.some(
-        (person) => person.email === user.emails[0].address
-      )
-    );
-  });
+const filterPrivateGroups = async (activities, user) =>
+  Promise.all(
+    await activities.filter(async (act) => {
+      if (!act.isGroupPrivate) {
+        return true;
+      }
+      if (!user) {
+        return false;
+      }
+      const group = await Groups.findOneAsync({ _id: act.groupId });
+      const userId = user?._id;
+      return (
+        group.adminId === userId ||
+        group.members.some((member) => member.memberId === userId) ||
+        group.peopleInvited.some(
+          (person) => person.email === user.emails[0].address
+        )
+      );
+    })
+  );
 
 Meteor.methods({
   async getAllPublicActivitiesFromAllHosts(showPast = false) {
@@ -51,7 +53,7 @@ Meteor.methods({
         const pastActsSorted = parseGroupActivities(pastActs)?.sort(
           compareDatesForSortActivitiesReverse
         );
-        return filterPrivateGroups(pastActsSorted, user);
+        return await filterPrivateGroups(pastActsSorted, user);
       }
       const futureActs = await Activities.find({
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
@@ -60,7 +62,7 @@ Meteor.methods({
       const futureActsSorted = parseGroupActivities(futureActs)?.sort(
         compareDatesForSortActivities
       );
-      return filterPrivateGroups(futureActsSorted, user);
+      return await filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -81,7 +83,7 @@ Meteor.methods({
         const pastActsSorted = parseGroupActivities(pastActs)?.sort(
           compareDatesForSortActivitiesReverse
         );
-        return filterPrivateGroups(pastActsSorted, user);
+        return await filterPrivateGroups(pastActsSorted, user);
       }
       const futureActs = await Activities.find({
         host,
@@ -92,7 +94,7 @@ Meteor.methods({
       const futureActsSorted = parseGroupActivities(futureActs)?.sort(
         compareDatesForSortActivities
       );
-      return filterPrivateGroups(futureActsSorted, user);
+      return await filterPrivateGroups(futureActsSorted, user);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");

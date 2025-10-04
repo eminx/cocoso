@@ -353,7 +353,9 @@ Migrations.add({
             creationDate: group.creationDate,
           };
           try {
-            const theResource = Resources.findOne({ label: meeting.resource });
+            const theResource = await Resources.findOneAsync({
+              label: meeting.resource,
+            });
             if (theResource) {
               newActivity = {
                 ...newActivity,

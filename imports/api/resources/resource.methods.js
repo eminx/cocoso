@@ -6,7 +6,7 @@ import Hosts from '../hosts/host';
 import Resources from './resource';
 import Activities from '../activities/activity';
 
-function validateLabel(label, host, resourceId) {
+async function validateLabel(label, host, resourceId) {
   // set resource query
   const resourceQuery = { host, label };
   if (resourceId) resourceQuery._id = { $ne: resourceId };
@@ -15,7 +15,7 @@ function validateLabel(label, host, resourceId) {
     throw new Meteor.Error(
       'Resource name is too short. Minimum 3 letters required'
     );
-  } else if (Resources.find(resourceQuery).fetch().length > 0) {
+  } else if ((await Resources.find(resourceQuery).fetchAsync().length) > 0) {
     throw new Meteor.Error('There already is a resource with this name');
   }
   return true;
@@ -116,7 +116,10 @@ Meteor.methods({
       { host },
       { fields: { members: 1 } }
     );
-    if (!isAdmin(user, currentHost) || !validateLabel(values.label, host)) {
+    if (
+      !isAdmin(user, currentHost) ||
+      (await !validateLabel(values.label, host))
+    ) {
       return 'Not valid user or label!';
     }
     try {
