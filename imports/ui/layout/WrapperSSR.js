@@ -10,8 +10,8 @@ import { Footer } from './Footers';
 
 export default function WrapperSSR({
   Host,
-  pageTitles,
   isEntryPage = false,
+  pageTitles,
   children,
 }) {
   if (!Host) {
