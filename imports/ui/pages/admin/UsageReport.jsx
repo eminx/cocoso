@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTable } from 'react-table';
 import dayjs from 'dayjs';
@@ -80,7 +80,7 @@ function UsageTable({ data }) {
   const table = useTable({ columns, data });
 
   return (
-    <table>
+    <table style={{ width: '100%' }}>
       <thead>
         {table.headerGroups.map((headerGroup) => (
           <tr key={headerGroup.id}>
