@@ -89,8 +89,17 @@ export function InfoPagesMenu({
         }}
       >
         {pageTitles.map((item) => (
-          <MenuItem key={item._id} as="span" id={item._id}>
-            <Link to={`/info/${parseTitle(item.title)}`} onClick={onSelect}>
+          <MenuItem
+            key={item._id}
+            as="span"
+            id={item._id}
+            style={{ padding: '0' }}
+          >
+            <Link
+              style={{ padding: '0.5rem 1rem' }}
+              to={`/info/${parseTitle(item.title)}`}
+              onClick={onSelect}
+            >
               <Text css={textStyles}>{item.title}</Text>
             </Link>
           </MenuItem>
