@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ReactTable from 'react-table';
+import { useTable } from 'react-table';
 import dayjs from 'dayjs';
-import 'react-table/react-table.css';
 import Select from 'react-select';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
@@ -46,6 +45,64 @@ function Title({ username, resources, onChange, value }) {
         />
       </Text>
     </Flex>
+  );
+}
+
+function UsageTable({ data }) {
+  const [t] = useTranslation('members');
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: t('report.table.title'),
+        accessor: 'title',
+      },
+      {
+        Header: t('report.table.resource'),
+        accessor: 'resource',
+      },
+      {
+        Header: t('report.table.start'),
+        accessor: 'start',
+      },
+      {
+        Header: t('report.table.end'),
+        accessor: 'end',
+      },
+      {
+        Header: t('report.table.consumption'),
+        accessor: 'consumption',
+      },
+    ],
+    []
+  );
+
+  const table = useTable({ columns, data });
+
+  return (
+    <table>
+      <thead>
+        {table.headerGroups.map((headerGroup) => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers.map((column) => (
+              <th key={column.id}>{column.render('Header')}</th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody>
+        {table.rows.map((row) => {
+          table.prepareRow(row);
+          return (
+            <tr key={row.id}>
+              {row.cells.map((cell) => (
+                <td key={cell.id}>{cell.render('Cell')}</td>
+              ))}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
 
@@ -195,32 +252,9 @@ export default function UsageReport({ user, onClose }) {
               } `}</Code>{' '}
               {t('report.table.total')}
             </Heading>
-            <ReactTable
-              size="sm"
-              data={activitiesPerMonth}
-              columns={[
-                {
-                  Header: t('report.table.title'),
-                  accessor: 'title',
-                },
-                {
-                  Header: t('report.table.resource'),
-                  accessor: 'resource',
-                },
-                {
-                  Header: t('report.table.start'),
-                  accessor: 'start',
-                },
-                {
-                  Header: t('report.table.end'),
-                  accessor: 'end',
-                },
-                {
-                  Header: t('report.table.consumption'),
-                  accessor: 'consumption',
-                },
-              ]}
-            />
+
+            <UsageTable data={activitiesPerMonth} />
+
             <Center p="2">
               <CSVLink
                 data={activitiesPerMonth}

@@ -9,10 +9,6 @@ import ActionButton from '/imports/ui/generic/ActionButton';
 
 import OccurrenceRsvpContent from './OccurrenceRsvpContent';
 
-if (Meteor.isClient) {
-  import 'react-table/react-table.css';
-}
-
 const buttonStyle = {
   backgroundColor: 'var(--cocoso-colors-theme-100)',
   borderRadius: 'var(--cocoso-border-radius)',
