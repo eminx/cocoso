@@ -147,3 +147,4 @@
     "last 2 versions"
   ]
 }
+{ "scripts": { "heroku-prebuild": "npm install --legacy-peer-deps" } }
