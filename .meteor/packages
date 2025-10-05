@@ -17,7 +17,6 @@ shell-server@0.6.2            # Server-side component of the `meteor shell` comm
 hot-module-replacement@0.5.4  # Update client in development without reloading the page
 
 static-html@1.4.0             # Define static page content in .html files
-react-meteor-data             # React higher-order component for reactively tracking Meteor data
 accounts-base@3.1.2           # A user account system
 accounts-password@3.2.1       # Password support for accounts
 check@1.4.4                   # Check whether a value matches a pattern
@@ -32,3 +31,4 @@ percolate:migrations
 server-render@0.4.3
 typescript@5.6.6
 webapp@2.0.7
+react-meteor-data
