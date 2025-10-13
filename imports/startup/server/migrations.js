@@ -13,13 +13,21 @@ Migrations.add({
   version: 1,
   async up() {
     console.log('up to', this.version);
-    Resources.update({}, { $unset: { authorAvatar: true } }, { multi: true });
-    Resources.update(
+    await Resources.updateAsync(
+      {},
+      { $unset: { authorAvatar: true } },
+      { multi: true }
+    );
+    await Resources.updateAsync(
       {},
       { $unset: { authorFirstName: true } },
       { multi: true }
     );
-    Resources.update({}, { $unset: { authorLastName: true } }, { multi: true });
+    await Resources.updateAsync(
+      {},
+      { $unset: { authorLastName: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
@@ -101,7 +109,11 @@ Migrations.add({
         await Resources.updateAsync(item._id, { $set: { createdAt } });
       }
     );
-    Resources.update({}, { $unset: { creationDate: true } }, { multi: true });
+    await Resources.updateAsync(
+      {},
+      { $unset: { creationDate: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
@@ -163,7 +175,11 @@ Migrations.add({
         await Resources.updateAsync(item._id, { $set: { userId } });
       }
     );
-    Resources.update({}, { $unset: { authorId: true } }, { multi: true });
+    await Resources.updateAsync(
+      {},
+      { $unset: { authorId: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
@@ -192,7 +208,11 @@ Migrations.add({
         await Resources.updateAsync(item._id, { $set: { createdBy } });
       }
     );
-    Resources.update({}, { $unset: { authorUsername: true } }, { multi: true });
+    await Resources.updateAsync(
+      {},
+      { $unset: { authorUsername: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
@@ -384,7 +404,10 @@ Migrations.add({
     console.log('up to', this.version);
     await Groups.find({ meetings: { $exists: true } }).forEachAsync(
       async (group) => {
-        await Groups.update({ _id: group._id }, { $unset: { meetings: 1 } });
+        await Groups.updateAsync(
+          { _id: group._id },
+          { $unset: { meetings: 1 } }
+        );
       }
     );
   },

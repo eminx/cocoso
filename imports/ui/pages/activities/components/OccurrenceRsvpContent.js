@@ -24,6 +24,14 @@ import RsvpList from './CsvList';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
+const getAttendeeCount = (attendees) => {
+  let count = 0;
+  attendees.forEach((att) => {
+    count += att.numberOfPeople;
+  });
+  return count;
+};
+
 export default function RsvpContent({
   activity,
   occurrence,
@@ -377,6 +385,9 @@ export default function RsvpContent({
       >
         <Heading as="h3" mb="2" size="md">
           {t('public.attendance.label')}
+          {selectedOccurrence
+            ? ` (${getAttendeeCount(selectedOccurrence.attendees)})`
+            : null}
         </Heading>
         <Box bg="white" p="2">
           <RsvpList occurrence={selectedOccurrence} title={activity?.title} />

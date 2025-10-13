@@ -123,7 +123,7 @@ Meteor.methods({
       return 'Not valid user or label!';
     }
     try {
-      const newResourceId = await Resources.insert({
+      const newResourceId = await Resources.insertAsync({
         ...values,
         host,
         userId: user._id,

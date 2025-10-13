@@ -11,7 +11,7 @@ export default function SuccessRedirector({ ping, onSuccess, children }) {
     }
     setTimeout(() => {
       setLoaders(initialLoader);
-    }, 2000);
+    }, 1200);
   }, [ping]);
 
   useEffect(() => {

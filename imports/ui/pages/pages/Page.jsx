@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useState,
 } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -54,9 +55,9 @@ function Page() {
     currentHost = Host;
   }
 
-  const currentPage = pages?.find(
-    (page) => parseTitle(page.title) === pageTitle
-  );
+  const currentPage = useMemo(() => {
+    return pages?.find((page) => parseTitle(page.title) === pageTitle);
+  }, [pageTitle, pages]);
 
   const contextValue = {
     currentPage,

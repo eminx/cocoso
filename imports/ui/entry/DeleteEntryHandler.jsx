@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import Modal from '/imports/ui/core/Modal';
-import { Center, Text } from '/imports/ui/core';
+import { Box, Center, Text } from '/imports/ui/core';
 import { StateContext } from '../LayoutContainer';
 import { call } from '../utils/shared';
 import { message } from '../generic/message';
@@ -77,19 +77,26 @@ export default function DeleteEntryHandler({ item, context }) {
         setSearchParams((params) => ({ ...params, delete: 'false' }))
       }
     >
-      <Text fontSize="xl" mb="2">
-        {tc('modals.confirm.delete.body')}
-      </Text>
-      <Center
-        bg="red.200"
-        p="2"
-        css={{
-          borderRadius: '1rem',
-          color: 'var(--cocoso-colors-red-900)',
-          textAlign: 'center',
-        }}
-      >
-        <Text size="lg">{tc('modals.confirm.delete.cantundo')}</Text>
+      <Center>
+        <Box>
+          <Text fontSize="lg" textAlign="center">
+            {tc('modals.confirm.delete.body')}
+          </Text>
+          <Box
+            bg="red.200"
+            mt="4"
+            p="2"
+            css={{
+              borderRadius: '1rem',
+              color: 'var(--cocoso-colors-red-900)',
+              textAlign: 'center',
+            }}
+          >
+            <Text fontWeight="bold" size="lg">
+              {tc('modals.confirm.delete.cantundo')}
+            </Text>
+          </Box>
+        </Box>
       </Center>
     </Modal>
   );

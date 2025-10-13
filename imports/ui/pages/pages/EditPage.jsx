@@ -1,21 +1,28 @@
 import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import PageForm from './PageForm';
 import { PageContext } from './Page';
-import { call } from '../../utils/shared';
+import { call, parseTitle } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';
 import { StateContext } from '../../LayoutContainer';
 
 export default function EditPage() {
   const [updated, setUpdated] = useState(null);
+  const [newPageTitle, setNewPageTitle] = useState(null);
   const { currentPage, getPages } = useContext(PageContext);
   const { getPageTitles } = useContext(StateContext);
+  const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
+
+  const handleSuccess = () => {
+    navigate(`/info/${parseTitle(newPageTitle)}`);
+  };
 
   const updatePage = async (newPage) => {
     const pageId = currentPage._id;
+    setNewPageTitle('new title:', newPage.title);
 
     try {
       await call('updatePage', pageId, newPage);
@@ -27,18 +34,15 @@ export default function EditPage() {
     }
   };
 
-  const pageFields = (({ images, longDescription, title }) => ({
-    images,
-    longDescription,
-    title,
-  }))(currentPage);
-
-  if (!currentPage) {
-    return null;
-  }
+  const pageFields = currentPage && {
+    images: currentPage.images,
+    longDescription: currentPage.longDescription,
+    order: currentPage.order,
+    title: currentPage.title,
+  };
 
   return (
-    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
+    <SuccessRedirector ping={updated} onSuccess={() => handleSuccess()}>
       <PageForm page={pageFields} onFinalize={updatePage} />
     </SuccessRedirector>
   );
