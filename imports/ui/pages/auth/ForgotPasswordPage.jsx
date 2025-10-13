@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -21,6 +21,14 @@ function ForgotPasswordPage() {
   const [t] = useTranslation('accounts');
   const [emailSent, setEmailSent] = useState(false);
   const { currentUser } = useContext(StateContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+    navigate(`/@${currentUser.username}/profile`);
+  }, [currentUser]);
 
   const handleForgotPassword = async (email) => {
     try {
@@ -31,10 +39,6 @@ function ForgotPasswordPage() {
       message.error(error.reason);
     }
   };
-
-  if (currentUser) {
-    return <Navigate to={`/@${currentUser.username}/profile`} />;
-  }
 
   return (
     <Box pb="8">
@@ -67,12 +71,12 @@ function ForgotPasswordPage() {
           <Flex justify="space-around" mt="4">
             <Link to="/login">
               <CLink as="span" color="blue.500">
-                {t('actions.login')}
+                <b>{t('actions.login')}</b>
               </CLink>
             </Link>
             <Link to="/register">
               <CLink as="span" color="blue.500">
-                {t('actions.signup')}
+                <b>{t('actions.signup')}</b>
               </CLink>
             </Link>
           </Flex>

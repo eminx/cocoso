@@ -10,7 +10,6 @@ import {
   Link as CLink,
   Text,
 } from '/imports/ui/core';
-
 import { StateContext } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
@@ -44,18 +43,22 @@ function ResetPasswordPage() {
           <Heading size="md" textAlign="center" mb="4">
             {t('password.labels.title')}
           </Heading>
-          <Text fontSize="lg" mb="6" textAlign="center">
-            {t('password.labels.subtitle.reset')}
-          </Text>
-          <Box bg="theme.50" mb="4" p="6">
+          <Center>
+            <Text fontSize="lg">{t('password.labels.subtitle.reset')}</Text>
+          </Center>
+          <Box bg="theme.50" maxW="420px" my="4" p="6">
             <ResetPassword onResetPassword={handleResetPassword} />
           </Box>
           <Flex justify="space-around" mt="4">
             <Link to="/login">
-              <CLink as="span">{t('actions.login')}</CLink>
+              <CLink as="span" fontWeight="bold">
+                <b>{t('actions.login')}</b>
+              </CLink>
             </Link>
             <Link to="/register">
-              <CLink as="span">{t('actions.signup')}</CLink>
+              <CLink as="span">
+                <b>{t('actions.signup')}</b>
+              </CLink>
             </Link>
           </Flex>
         </Box>

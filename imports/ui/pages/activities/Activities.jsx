@@ -36,7 +36,6 @@ export default function Activities() {
       } else {
         const allActivities = await call('getAllPublicActivities', showPast);
         setActivities(allActivities);
-        console.log('allActivities', allActivities);
       }
     } catch (error) {
       message.error(error.reason);

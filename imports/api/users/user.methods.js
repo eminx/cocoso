@@ -40,7 +40,7 @@ Meteor.methods({
       // throw new Meteor.Error('User not found');
     }
 
-    if (!user.memberships.find((m) => m.host === host).isPublic) {
+    if (!user.memberships.find((m) => m.host === host)?.isPublic) {
       return null;
       // throw new Meteor.Error('User not found');
     }
@@ -54,8 +54,7 @@ Meteor.methods({
     check(values.password, String);
 
     try {
-      const userId = await Accounts.createUserAsync(values);
-      return userId;
+      return await Accounts.createUserAsync(values);
     } catch (error) {
       throw new Meteor.Error(error);
     }
@@ -68,14 +67,12 @@ Meteor.methods({
     }
     const host = hostToJoin || getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-
     if (
       currentHost.members &&
       currentHost.members.some((member) => member.id === user._id)
     ) {
       throw new Meteor.Error('Host already does have you as a participant');
     }
-
     if (
       user.memberships &&
       user.memberships.some((membership) => membership.host === host)

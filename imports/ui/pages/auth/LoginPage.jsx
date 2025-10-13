@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -12,44 +12,49 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
-
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
 import { StateContext } from '/imports/ui/LayoutContainer';
+
+import { loginWithPassword } from './functions';
 import { Login } from './index';
 
 export default function LoginPage() {
   const [t] = useTranslation('accounts');
   const { currentUser, currentHost, platform, role } = useContext(StateContext);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isJoinModal, setIsJoinModal] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [joinModal, setJoinModal] = useState(false);
   const navigate = useNavigate();
 
-  if (currentUser && ['participant', 'contributor', 'admin'].includes(role)) {
-    return <Navigate to="/admin/my-profile/general" />;
-  }
+  useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+    if (['participant', 'contributor', 'admin'].includes(role)) {
+      navigate('/admin/my-profile/general');
+    } else {
+      setJoinModal(true);
+    }
+  }, [currentUser]);
 
   const handleSubmit = async (values) => {
     if (values?.username?.length < 4 || values?.password?.length < 8) {
       return;
     }
-    setIsSubmitted(true);
+    setSubmitted(true);
     try {
-      await loginWithPasswordAsync(values.username, values.password);
-      setTimeout(() => {
-        setIsJoinModal(true);
-      }, 300);
+      await loginWithPassword(values.username, values.password);
     } catch (error) {
       message.error(error.reason);
     } finally {
-      setIsSubmitted(false);
+      setSubmitted(false);
     }
   };
 
   const cancelJoin = () => {
     Meteor.logout();
-    setIsJoinModal(false);
-    setIsSubmitted(false);
+    setJoinModal(false);
+    setSubmitted(false);
     message.info(t('logout.messages.success'));
   };
 
@@ -105,14 +110,18 @@ export default function LoginPage() {
                 borderColor: 'var(--cocoso-colors-gray-300)',
               }}
             >
-              <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
+              <Login isSubmitted={submitted} onSubmit={handleSubmit} />
             </Box>
             <Center>
               <Text textAlign="center">
                 {t('actions.forgot')}
                 <br />
                 <Link to="/forgot-password">
-                  <CLink as="span" color="blue.500">
+                  <CLink
+                    as="span"
+                    color="blue.500"
+                    css={{ marginTop: '0.5rem' }}
+                  >
                     <b>{t('actions.reset')}</b>
                   </CLink>
                 </Link>
@@ -123,7 +132,7 @@ export default function LoginPage() {
       </Modal>
 
       <Modal
-        open={isJoinModal}
+        open={joinModal}
         id="login-page-join"
         title={t('profile.joinHost', {
           host: currentHost?.settings?.name,

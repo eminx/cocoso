@@ -40,7 +40,7 @@ const Login = ({ isSubmitted, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Flex direction="column" gap="6">
+      <Flex direction="column">
         <FormField label={t('login.form.username.label')} required>
           <Input {...register('username')} />
         </FormField>
@@ -50,7 +50,7 @@ const Login = ({ isSubmitted, onSubmit }) => {
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isLoading={isSubmitted} type="submit">
+          <Button loading={isSubmitted} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>
