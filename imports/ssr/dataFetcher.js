@@ -2,12 +2,20 @@ import queryString from 'query-string';
 import { call } from '/imports/ui/utils/shared';
 
 export default async function dataFetcher({
-  pathname,
-  search,
   host,
   isPortalHost = false,
+  menu,
+  pathname,
+  search,
 }) {
-  if (pathname === '/activities') {
+  const homeRouteName = menu && menu[0]?.name;
+  const homeRoute = `/${homeRouteName}`;
+  const isHomePage = pathname === '/null';
+
+  if (
+    pathname === '/activities' ||
+    (isHomePage && homeRoute === '/activities')
+  ) {
     const showPastValue = queryString.parse(search)?.showPast;
     const showPast = showPastValue === 'true' || false;
     if (isPortalHost) {
@@ -85,6 +93,7 @@ export default async function dataFetcher({
   if (pathname.includes('/groups/') && param?.length > 10) {
     return {
       group: await call('getGroupWithMeetings', param),
+      documents: await call('getDocumentsByAttachments', param),
     };
   }
 

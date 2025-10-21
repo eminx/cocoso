@@ -1,5 +1,5 @@
 import React, { Suspense, useContext } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import loadable from '@loadable/component';
 
 import Loader from '/imports/ui/core/Loader';
@@ -114,27 +114,44 @@ export default function AppRoutes() {
           <Route path="/calendar" element={<Calendar />} />
 
           {/* Activities */}
-          <Route exact path="/activities" element={<Activities />} />
-          <Route path="/activities/:activityId/*" element={<Activity />} />
-          <Route path="/calendar/:activityId/*" element={<Activity />} />
+          <Route path="/activities" element={<Activities />}>
+            <Route path=":activityId">
+              <Route path="*" element={<Activity />} />
+            </Route>
+          </Route>
+
+          <Route path="/calendar">
+            <Route path=":activityId">
+              <Route path="*" element={<Activity />} />
+            </Route>
+          </Route>
+
           <Route exact path="/my-activities" element={<MyActivities />} />
 
           {/* Groups */}
-          <Route exact path="/groups" element={<Groups />} />
-          <Route path="/groups/:groupId/*" element={<Group />} />
+          <Route exact path="/groups" element={<Groups />}>
+            <Route path="groupId">
+              <Route path="*" element={<Group />} />
+            </Route>
+          </Route>
 
           {/* Resources */}
-          <Route exact path="/resources" element={<Resources />} />
-          <Route path="/resources/:resourceId/*" element={<Resource />} />
+          <Route exact path="/resources" element={<Resources />}>
+            <Route path=":resourceId">
+              <Route path="*" element={<Resource />} />
+            </Route>
+          </Route>
 
           {/* Pages */}
-          <Route exact path="/info" element={<Page />} />
-          <Route path="/info/:pageTitle/*" element={<Page />} />
-          <Route path="/pages/:pageTitle/*" element={<Page />} />
-          <Route
-            path="/cp/:composablePageId"
-            element={<ComposablePageView />}
-          />
+          <Route exact path="/info" element={<Page />}>
+            <Route path=":pageTitle">
+              <Route path="*" element={<Page />} />
+            </Route>
+          </Route>
+
+          <Route path="/cp">
+            <Route path=":composablePageId" element={<ComposablePageView />} />
+          </Route>
 
           {/* Works */}
           <Route exact path="/works" element={<Works />} />
@@ -143,7 +160,9 @@ export default function AppRoutes() {
           <Route exact path="/communities" element={<Communities />} />
 
           {/* Newsletter Emails */}
-          <Route path="/newsletters/*" element={<PreviousNewsletters />} />
+          <Route path="/newsletters" element={<PreviousNewsletters />}>
+            <Route path="*" element={<PreviousNewsletters />} />
+          </Route>
 
           {/* Admin */}
           <Route path="/admin/*" element={<AdminContainer />} />
@@ -159,8 +178,13 @@ export default function AppRoutes() {
           />
 
           {/* Profile & Profile Related Pages */}
-          <Route path="/:usernameSlug/*" element={<UserProfile />} />
-          <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
+          <Route path="/:usernameSlug" element={<UserProfile />}>
+            <Route path="works">
+              <Route path=":workId">
+                <Route path="*" element={<Work />} />
+              </Route>
+            </Route>
+          </Route>
 
           {/* Auth */}
           <Route exact path="/register" element={<SignupPage />} />
@@ -170,10 +194,10 @@ export default function AppRoutes() {
             path="/forgot-password"
             element={<ForgotPasswordPage />}
           />
-          <Route
-            path="/reset-password/:token"
-            element={<ResetPasswordPage />}
-          />
+
+          <Route path="/reset-password">
+            <Route path="*" element={<ResetPasswordPage />} />
+          </Route>
 
           <Route path="/intro" element={<RegistrationIntro />} />
 

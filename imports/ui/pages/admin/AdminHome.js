@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 
 import { Flex, Heading, Text } from '/imports/ui/core';

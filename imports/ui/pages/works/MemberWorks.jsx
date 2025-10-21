@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { Box } from '/imports/ui/core';
 import { message } from '../../generic/message';
@@ -50,9 +50,7 @@ function MemberWorks({ currentHost, user }) {
                 />
               </a>
             ) : (
-              <Link
-                to={`/@${work.authorUsername}/works/${work._id}/info`}
-              >
+              <Link to={`/@${work.authorUsername}/works/${work._id}/info`}>
                 <NewGridThumb
                   avatar={{
                     name: work.authorUsername,

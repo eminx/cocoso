@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useTable } from 'react-table';
 import dayjs from 'dayjs';
 import Select from 'react-select';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import FilePlusIcon from 'lucide-react/dist/esm/icons/file-plus';
 import { Trans } from 'react-i18next';
 

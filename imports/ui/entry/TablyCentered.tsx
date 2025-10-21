@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router';
 import LinkIcon from 'lucide-react/dist/esm/icons/link';
 import { Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet';

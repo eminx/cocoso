@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import CalendarActivityForm from './CalendarActivityForm';
 import { ActivityContext } from '../activities/Activity';
@@ -45,8 +45,14 @@ export default function EditPublicActivity() {
   }))(activity);
 
   return (
-    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
-      <CalendarActivityForm activity={activityFields} onFinalize={updateActivity} />
+    <SuccessRedirector
+      ping={updated}
+      onSuccess={() => setSearchParams({ edit: 'false' })}
+    >
+      <CalendarActivityForm
+        activity={activityFields}
+        onFinalize={updateActivity}
+      />
     </SuccessRedirector>
   );
 }

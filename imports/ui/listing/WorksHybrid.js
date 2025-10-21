@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 // import { Masonry, usePositioner, useResizeObserver } from 'masonic';
 
@@ -62,7 +62,7 @@ export default function WorksHybrid({ works, Host }) {
 
   const categories = getCategoriesAssignedToWorks(works);
 
-  const worksWithCategoryColors = getFilteredWorks().map((work) => {
+  const worksWithCategoryColors = getFilteredWorks()?.map((work) => {
     const currentCategory = categories.find(
       (cat) => cat?.label === work?.category?.label
     );

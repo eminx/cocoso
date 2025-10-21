@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import AdminFunctions from '../../../entry/AdminFunctions';
 import { ActivityContext } from '../Activity';

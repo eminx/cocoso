@@ -422,7 +422,7 @@ const compareForSortFutureMeeting = (a, b) => {
 
 const getCategoriesAssignedToWorks = (works) => {
   const labels = Array.from(
-    new Set(works.map((work) => work.category && work.category.label))
+    new Set(works?.map((work) => work.category && work.category.label))
   );
   const hslValues = getHslValuesFromLength(labels.length);
   return labels

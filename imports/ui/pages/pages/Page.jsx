@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router';
 
 import PageHybrid from '../../entry/PageHybrid';
 import { StateContext } from '../../LayoutContainer';

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 
 import { IconButton } from '/imports/ui/core';
@@ -14,8 +14,7 @@ const getRoute = (item) => {
 };
 
 export default function NewButton() {
-  const { canCreateContent, currentHost, role } =
-    useContext(StateContext);
+  const { canCreateContent, currentHost, role } = useContext(StateContext);
   const location = useLocation();
   const [, setSearchParams] = useSearchParams();
 
@@ -32,9 +31,7 @@ export default function NewButton() {
       if (isAdmin) {
         return item.isVisible;
       }
-      return (
-        item.isVisible && !['info', 'resources'].includes(item.name)
-      );
+      return item.isVisible && !['info', 'resources'].includes(item.name);
     })
     .map((item, index) => ({
       ...item,
@@ -50,10 +47,7 @@ export default function NewButton() {
     return pathname.includes(item?.name);
   });
 
-  if (
-    !activeMenuItem ||
-    ['members', 'people'].includes(activeMenuItem.name)
-  ) {
+  if (!activeMenuItem || ['members', 'people'].includes(activeMenuItem.name)) {
     return null;
   }
 

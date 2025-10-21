@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import ResourceForm from './ResourceForm';
 import { ResourceContext } from './Resource';
@@ -45,7 +45,10 @@ export default function EditResource() {
   }))(resource);
 
   return (
-    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
+    <SuccessRedirector
+      ping={updated}
+      onSuccess={() => setSearchParams({ edit: 'false' })}
+    >
       <ResourceForm resource={resourceFields} onFinalize={updateResource} />
     </SuccessRedirector>
   );

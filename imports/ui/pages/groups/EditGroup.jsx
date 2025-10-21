@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import GroupForm from './GroupForm';
 import { GroupContext } from './Group';

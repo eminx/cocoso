@@ -9,7 +9,7 @@ import GroupMembers from '/imports/ui/pages/groups/components/GroupMembers';
 import TablyCentered from './TablyCentered';
 import ActionDates from './ActionDates';
 
-export default function GroupHybrid({ group, Host }) {
+export default function GroupHybrid({ group, documents, Host }) {
   if (!group) {
     return null;
   }
@@ -27,10 +27,10 @@ export default function GroupHybrid({ group, Host }) {
     },
   ];
 
-  if (group.documents && group.documents.length > 0) {
+  if (documents && documents.length > 0) {
     tabs.push({
       title: <Trans i18nKey="common:documents.label">Documents</Trans>,
-      content: <GroupDocuments documents={group.documents} />,
+      content: <GroupDocuments documents={documents} />,
       path: 'documents',
       id: 'documents',
     });

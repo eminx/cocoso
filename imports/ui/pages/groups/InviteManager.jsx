@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import XIcon from 'lucide-react/dist/esm/icons/x';
 

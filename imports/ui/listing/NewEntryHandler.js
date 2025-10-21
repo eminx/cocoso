@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useHref, useSearchParams } from 'react-router-dom';
+import { useHref, useSearchParams } from 'react-router';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'react-i18next';
 

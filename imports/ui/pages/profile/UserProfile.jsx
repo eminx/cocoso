@@ -1,10 +1,5 @@
-import React, {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 import { Alert, Center, Loader } from '/imports/ui/core';
@@ -73,9 +68,7 @@ export default function UserProfile() {
     );
   }
 
-  const role = currentHost.members?.find(
-    (m) => m.username === username
-  )?.role;
+  const role = currentHost.members?.find((m) => m.username === username)?.role;
 
   // const setAsParticipant = async (user) => {
   //   try {
@@ -101,9 +94,7 @@ export default function UserProfile() {
     <>
       <UserHybrid role={role} user={user} Host={currentHost} />
 
-      {rendered && (
-        <UserInteractionHandler user={user} slideStart={rendered} />
-      )}
+      {rendered && <UserInteractionHandler user={user} slideStart={rendered} />}
     </>
   );
 }

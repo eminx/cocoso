@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import { StateContext } from '../../LayoutContainer';
 import { message } from '../../generic/message';
@@ -15,9 +15,7 @@ export default function Users() {
   const [keywords, setKeywords] = useState(initialKeywords);
   let { currentHost } = useContext(StateContext);
   const [searchParams] = useSearchParams();
-  const showKeywordSearch = Boolean(
-    searchParams.get('showKeywordSearch')
-  );
+  const showKeywordSearch = Boolean(searchParams.get('showKeywordSearch'));
 
   if (!currentHost) {
     currentHost = Host;
@@ -77,7 +75,5 @@ export default function Users() {
     return null;
   }
 
-  return (
-    <UsersHybrid Host={currentHost} keywords={keywords} users={users} />
-  );
+  return <UsersHybrid Host={currentHost} keywords={keywords} users={users} />;
 }

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { Box } from '/imports/ui/core';
 
@@ -39,9 +39,7 @@ function MemberGroups({ currentHost, user }) {
         return (
           <Box key={group._id}>
             {isExternal ? (
-              <a
-                href={`https://${group.host}/groups/${group._id}/info`}
-              >
+              <a href={`https://${group.host}/groups/${group._id}/info`}>
                 <NewGridThumb
                   host={isPortalHost && group.host}
                   imageUrl={group.imageUrl}

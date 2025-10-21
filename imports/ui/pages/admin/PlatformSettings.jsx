@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Routes, Navigate, Route, useLocation } from 'react-router-dom';
+import { Routes, Navigate, Route, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 

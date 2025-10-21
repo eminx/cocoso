@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import dayjs from 'dayjs';
 import { Trans, useTranslation } from 'react-i18next';
 import {

@@ -6,7 +6,7 @@ import {
   Routes,
   useLocation,
   useNavigate,
-} from 'react-router-dom';
+} from 'react-router';
 import { Trans, useTranslation } from 'react-i18next';
 
 import {

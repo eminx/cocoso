@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
 import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';

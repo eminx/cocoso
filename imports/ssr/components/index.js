@@ -1,6 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { useHref, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useHref,
+  useLoaderData,
+  useParams,
+  useSearchParams,
+} from 'react-router';
 
 import WrapperSSR from '../../ui/layout/WrapperSSR';
 import ActivityHybrid from '../../ui/entry/ActivityHybrid';
@@ -28,10 +33,10 @@ function parsePreloadedState(item) {
   `;
 }
 
-export function ActivityList({ data, Host, pageTitles, sink }) {
+export function ActivityList({ Host, pageTitles, sink }) {
+  const { activities } = useLoaderData();
   const [searchParams] = useSearchParams();
   const showPast = Boolean(searchParams.get('showPast') === 'true');
-  const activities = [...data?.activities];
   sink.appendToBody(parsePreloadedState({ activities, Host }));
 
   return (
@@ -45,8 +50,8 @@ export function ActivityList({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function Activity({ data, Host, pageTitles, sink }) {
-  const activity = { ...data?.activity };
+export function Activity({ Host, pageTitles, sink }) {
+  const { activity } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ activity, Host }));
 
   return (
@@ -62,14 +67,13 @@ export function Calendar({ Host, pageTitles, sink }) {
   return <WrapperSSR Host={Host} pageTitles={pageTitles} sink={sink} />;
 }
 
-export function ComposablePage({ data, Host, pageTitles, sink }) {
-  const composablePage = { ...data?.composablePage };
-
+export function ComposablePage({ Host, pageTitles, sink }) {
+  const { composablePage } = useLoaderData();
   // if (href === '/' && !composablePageId) {
   //   composablePageId = Host?.settings?.menu[0]?.name;
   // }
 
-  sink.appendToBody(parsePreloadedState({ Host }));
+  sink.appendToBody(parsePreloadedState({ composablePage, Host }));
 
   if (!composablePage || !composablePage.isPublished) {
     return null;
@@ -82,8 +86,8 @@ export function ComposablePage({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function GroupList({ data, Host, pageTitles, sink }) {
-  const groups = [...data?.groups];
+export function GroupList({ Host, pageTitles, sink }) {
+  const { groups } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ groups, Host }));
 
   return (
@@ -93,10 +97,9 @@ export function GroupList({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function Group({ data, Host, pageTitles, sink }) {
-  const group = { ...data?.group };
-  const documents = data?.documents;
-  sink.appendToBody(parsePreloadedState({ group, Host }));
+export function Group({ Host, pageTitles, sink }) {
+  const { documents, group } = useLoaderData();
+  sink.appendToBody(parsePreloadedState({ documents, group, Host }));
 
   return (
     <WrapperSSR isEntryPage Host={Host} pageTitles={pageTitles}>
@@ -105,8 +108,8 @@ export function Group({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function ResourceList({ data, Host, pageTitles, sink }) {
-  const resources = [...data?.resources];
+export function ResourceList({ Host, pageTitles, sink }) {
+  const { resources } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ resources, Host }));
 
   return (
@@ -116,9 +119,8 @@ export function ResourceList({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function Resource({ data, Host, pageTitles, sink }) {
-  const resource = { ...data?.resource };
-  const documents = data?.documents;
+export function Resource({ Host, pageTitles, sink }) {
+  const { documents, resource } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ documents, resource, Host }));
 
   return (
@@ -128,8 +130,8 @@ export function Resource({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function WorkList({ data, Host, pageTitles, sink }) {
-  const works = [...data?.works];
+export function WorkList({ Host, pageTitles, sink }) {
+  const { works } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ works, Host }));
 
   return (
@@ -139,9 +141,8 @@ export function WorkList({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function Work({ data, Host, pageTitles, sink }) {
-  const work = { ...data?.work };
-  const documents = data?.documents;
+export function Work({ Host, pageTitles, sink }) {
+  const { documents, work } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ documents, work, Host }));
 
   return (
@@ -151,8 +152,8 @@ export function Work({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function Page({ data, Host, pageTitles, sink }) {
-  const pages = [...data?.pages];
+export function Page({ Host, pageTitles, sink }) {
+  const { pages } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ pages, Host }));
 
   return (
@@ -162,9 +163,8 @@ export function Page({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function UserList({ data, Host, pageTitles, sink }) {
-  const users = [...data?.users];
-  const keywords = [...data?.keywords];
+export function UserList({ Host, pageTitles, sink }) {
+  const { keywords, users } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ keywords, users, Host }));
 
   return (
@@ -174,8 +174,8 @@ export function UserList({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function User({ data, Host, pageTitles, sink }) {
-  const user = { ...data?.user };
+export function User({ Host, pageTitles, sink }) {
+  const { user } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ user, Host }));
 
   return (
@@ -185,8 +185,8 @@ export function User({ data, Host, pageTitles, sink }) {
   );
 }
 
-export function Communities({ data, Host, pageTitles, sink }) {
-  const hosts = [...data?.hosts];
+export function Communities({ Host, pageTitles, sink }) {
+  const { hosts } = useLoaderData();
   sink.appendToBody(parsePreloadedState({ hosts, Host }));
 
   return (

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { Box } from '/imports/ui/core';
 import { message } from '../../generic/message';
@@ -29,9 +29,7 @@ function MemberActivities({ currentHost, user }) {
     return null;
   }
 
-  const publicActivities = activities.filter(
-    (item) => item.isPublicActivity
-  );
+  const publicActivities = activities.filter((item) => item.isPublicActivity);
   const isPortalHost = currentHost?.isPortalHost;
 
   return (

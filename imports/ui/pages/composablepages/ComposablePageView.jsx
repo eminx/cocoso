@@ -1,10 +1,5 @@
-import React, {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
-import { useHref, useNavigate, useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { useHref, useNavigate, useParams } from 'react-router';
 
 import { message } from '/imports/ui/generic/message';
 import { StateContext } from '/imports/ui/LayoutContainer';
@@ -16,9 +11,7 @@ export default function ComposablePageView() {
     window?.__PRELOADED_STATE__?.composablePage || null;
   const Host = window?.__PRELOADED_STATE__?.Host || null;
   const href = useHref();
-  const [composablePage, setComposablePage] = useState(
-    initialComposablePage
-  );
+  const [composablePage, setComposablePage] = useState(initialComposablePage);
   const [rendered, setRendered] = useState(false);
   let { currentHost, currentUser, role } = useContext(StateContext);
   let { composablePageId } = useParams();
@@ -40,10 +33,7 @@ export default function ComposablePageView() {
 
   const getComposablePageById = async () => {
     try {
-      const response = await call(
-        'getComposablePageById',
-        composablePageId
-      );
+      const response = await call('getComposablePageById', composablePageId);
       setComposablePage(response);
     } catch (error) {
       message.error(error.reason || error.error);
@@ -65,9 +55,6 @@ export default function ComposablePageView() {
   }
 
   return (
-    <ComposablePageHybrid
-      composablePage={composablePage}
-      Host={currentHost}
-    />
+    <ComposablePageHybrid composablePage={composablePage} Host={currentHost} />
   );
 }

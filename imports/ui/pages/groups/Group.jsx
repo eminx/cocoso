@@ -5,7 +5,7 @@ import React, {
   useContext,
   useLayoutEffect,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';

@@ -2,41 +2,27 @@ import { Meteor } from 'meteor/meteor';
 import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
 import { renderToString } from 'react-dom/server';
-import { Routes, Route } from 'react-router-dom';
-import { StaticRouter } from 'react-router-dom/server';
+import {
+  createStaticHandler,
+  createStaticRouter,
+  StaticRouterProvider,
+} from 'react-router';
 
 import AppRoutes from '/imports/ssr/AppRoutes';
 import Hosts from '/imports/api/hosts/host';
 import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';
-
-import dataFetcher from '/imports/ssr/dataFetcher';
-
-const RouterSSR = memo(({ context = {}, ...rest }) => {
-  const sink = rest.sink;
-
-  return (
-    <StaticRouter location={sink.request.url} context={context}>
-      <Routes>
-        {AppRoutes(rest).map((route) => (
-          <Route key={route.path} path={route.path} element={route.element} />
-        ))}
-      </Routes>
-    </StaticRouter>
-  );
-});
 
 let stitchesConfig = null;
 
 export default async function ServerRenderer(sink) {
   const host = sink?.request?.headers?.['host'];
   const Host = await Hosts.findOneAsync({ host });
-  const theme = Host?.theme;
 
   if (!stitchesConfig) {
     stitchesConfig = await import('/stitches.config');
   }
+  const globalCssString = Host ? getGlobalStyles(Host.theme) : '';
   const { getCssText } = stitchesConfig;
-  const globalCssString = getGlobalStyles(theme);
   const helmet = Helmet.renderStatic();
 
   sink.appendToHead(`
@@ -52,20 +38,55 @@ export default async function ServerRenderer(sink) {
 
   const pathname = sink?.request?.url?.pathname;
   const search = sink?.request?.url?.search;
-  const data = await dataFetcher({
-    pathname,
-    search,
-    host,
-    isPortalHost: Boolean(Host.isPortalHost),
-  });
+
+  // const data = await dataFetcher({
+  //   host,
+  //   isPortalHost: Boolean(Host.isPortalHost),
+  //   menu,
+  //   pathname,
+  //   search,
+  // });
 
   const props = {
-    data,
     Host,
     pageTitles,
     sink,
   };
-  const appHtml = renderToString(<RouterSSR {...props} />);
+
+  // Create routes with props
+  const routes = AppRoutes(props);
+
+  // Create static handler and router for SSR
+  const { query, dataRoutes } = createStaticHandler(routes);
+
+  // Create fetch request for the current URL
+  const protocol = sink?.request?.connection?.encrypted ? 'https' : 'http';
+  const fullUrl = `${protocol}://${host}${pathname}${search || ''}`;
+  const fetchRequest = new Request(fullUrl);
+
+  // Execute data loading
+  const context = await query(fetchRequest);
+
+  if (context instanceof Response) {
+    throw context;
+  }
+
+  // Handle redirects or responses
+  if (context instanceof Response) {
+    // Handle redirects or other responses
+    if (context.status >= 300 && context.status < 400) {
+      const location = context.headers.get('Location');
+      sink.redirect(location);
+      return;
+    }
+    throw context;
+  }
+
+  const router = createStaticRouter(dataRoutes, context);
+
+  const appHtml = renderToString(
+    <StaticRouterProvider router={router} context={context} />
+  );
 
   sink.renderIntoElementById('root', appHtml);
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import CalendarActivityForm from './CalendarActivityForm';
 import { call } from '../../utils/shared';
@@ -59,7 +59,10 @@ export default function NewCalendarActivity({ resources }) {
 
   return (
     <SuccessRedirector ping={newEntryId} onSuccess={handleSuccess}>
-      <CalendarActivityForm activity={initialActivity || null} onFinalize={createActivity} />
+      <CalendarActivityForm
+        activity={initialActivity || null}
+        onFinalize={createActivity}
+      />
     </SuccessRedirector>
   );
 }

@@ -5,7 +5,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
@@ -43,10 +43,7 @@ export default function Resource() {
     try {
       const response = await call('getResourceById', resourceId);
       setResource(response);
-      const docs = await call(
-        'getDocumentsByAttachments',
-        response._id
-      );
+      const docs = await call('getDocumentsByAttachments', response._id);
       setDocuments(docs);
     } catch (error) {
       message.error(error.reason);

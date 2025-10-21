@@ -1,6 +1,6 @@
 import React from 'react';
 import { HydrationProvider } from 'react-hydration-provider';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import { Box } from '/imports/ui/core';
 

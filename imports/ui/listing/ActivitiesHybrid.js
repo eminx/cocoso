@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { Trans } from 'react-i18next';
 
 import { Box, Center } from '/imports/ui/core';

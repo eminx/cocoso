@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useLocation, useParams } from 'react-router-dom';
+import { Route, Routes, useLocation, useParams } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 
