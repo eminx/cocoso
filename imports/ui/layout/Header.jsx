@@ -210,23 +210,9 @@ function HeaderMenu({ Host, pageTitles }) {
   );
 }
 
-export default function Header() {
+export default function Header({ isLogoSmall = false }) {
   const currentHost = useAtomValue(currentHostAtom);
   const pageTitles = useAtomValue(pageTitlesAtom);
-
-  const pathname = window?.location?.pathname;
-  const pathnameSplitted = pathname.split('/');
-  const isLogoSmall =
-    pathnameSplitted &&
-    !['pages', 'info', 'cp'].includes(pathnameSplitted[1]) &&
-    Boolean(pathnameSplitted[2]);
-
-  useEffect(() => {
-    if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
-      return;
-    }
-    window.scrollTo(0, 0);
-  }, [pathnameSplitted[2]]);
 
   if (!currentHost) {
     return null;
@@ -239,7 +225,7 @@ export default function Header() {
           <Box css={{ maxHeight: isLogoSmall ? '48px' : '96px' }}>
             {currentHost.logo ? (
               <Image
-                src={Host.logo}
+                src={currentHost.logo}
                 css={{
                   height: isLogoSmall ? '48px' : '96px',
                   maxWidth: '360px',
@@ -260,7 +246,7 @@ export default function Header() {
         </Link>
       </Center>
 
-      <HeaderMenu Host={Host} pageTitles={pageTitles} />
+      <HeaderMenu Host={currentHost} pageTitles={pageTitles} />
     </Box>
   );
 }

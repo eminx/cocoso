@@ -24,7 +24,7 @@ import { message } from './generic/message';
 
 export const platformAtom = atom(null);
 export const currentUserAtom = atom(null);
-export const currentHostAtom = atom(window?.__PRELOADED_STATE__?.Host || null);
+export const currentHostAtom = atom(null);
 export const allHostsAtom = atom([]);
 export const pageTitlesAtom = atom([]);
 export const roleAtom = atom(null);
@@ -55,16 +55,18 @@ function LayoutPage({
   const [isDesktop, setIsDesktop] = useAtom(isDesktopAtom);
   const setIsMobile = useSetAtom(isMobileAtom);
   const [, i18n] = useTranslation();
+  const isDesktopValue = useMediaQuery('(min-width: 960px)');
+  const isMobileValue = useMediaQuery('(max-width: 480px)');
 
   const [tc] = useTranslation('common');
 
   useLayoutEffect(() => {
     setCurrentUser(currentUser);
-    setCurrentHost(initialCurrentHost);
+    setCurrentHost(initialCurrentHost || window?.__PRELOADED_STATE__?.Host);
     setPageTitles(initialPageTitles);
     setPlatform(initialPlatform);
-    setIsDesktop(useMediaQuery('(min-width: 960px)'));
-    setIsMobile(useMediaQuery('(max-width: 480px)'));
+    setIsDesktop(isDesktopValue);
+    setIsMobile(isMobileValue);
     setTimeout(() => {
       setRendered(true);
     }, 1000);
@@ -113,7 +115,20 @@ function LayoutPage({
     getAllHosts();
   }, []);
 
+  const pathname = window?.location?.pathname;
+  const pathnameSplitted = pathname.split('/');
+  const isLogoSmall =
+    pathnameSplitted &&
+    !['pages', 'info', 'cp'].includes(pathnameSplitted[1]) &&
+    Boolean(pathnameSplitted[2]);
   const adminPage = pathnameSplitted[1] === 'admin';
+
+  useEffect(() => {
+    if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
+      return;
+    }
+    window.scrollTo(0, 0);
+  }, [pathnameSplitted[2]]);
 
   return (
     <>

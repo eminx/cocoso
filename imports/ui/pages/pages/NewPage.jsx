@@ -13,7 +13,6 @@ export default function NewPage() {
   const currentUser = useAtomValue(currentUserAtom);
   const setPageTitles = useSetAtom(pageTitlesAtom);
   const [newEntryTitle, setNewEntryTitle] = useState(null);
-  const currentUser = useAtomValue(currentUserAtom);
   const { getPages } = useContext(PageContext);
   const navigate = useNavigate();
 

@@ -29,8 +29,8 @@ onPageLoad(async () => {
   }
 
   const props = {
-    initialCurrentHost,
-    initialPageTitles,
+    initialCurrentHost: currentHost,
+    initialPageTitles: pageTitles,
     platform,
   };
 

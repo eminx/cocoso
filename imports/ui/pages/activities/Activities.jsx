@@ -14,8 +14,8 @@ export default function Activities() {
   const initialActivities = window?.__PRELOADED_STATE__?.activities || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
-  const [activities, setActivities] = useState(initialActivities);
   let currentHost = useAtomValue(currentHostAtom);
+  const [activities, setActivities] = useState(initialActivities);
   const [searchParams] = useSearchParams();
 
   const showPast = Boolean(searchParams.get('showPast') === 'true');

@@ -116,10 +116,7 @@ export default function AppRoutes() {
       <Route path="/calendar" element={<Calendar />} />
 
       {/* Activities */}
-      <Route
-        path="/activities"
-        element={<Activities currentHost={currentHost} />}
-      >
+      <Route path="/activities" element={<Activities />}>
         <Route path=":activityId">
           <Route path="*" element={<Activity />} />
         </Route>
