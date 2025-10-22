@@ -1,19 +1,21 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Button, Center, Modal, Text } from '/imports/ui/core';
 
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
-import { StateContext } from '../../../LayoutContainer';
+import { currentUserAtom, isDesktopAtom } from '../../../LayoutContainer';
 import { message } from '../../../generic/message';
 
 export default function GroupJoinButton() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
   const { group, getGroupById } = useContext(GroupContext);
-  const { currentUser, isDesktop } = useContext(StateContext);
   const navigate = useNavigate();
 
   if (!group) {

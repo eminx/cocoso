@@ -1,27 +1,27 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Alert, Center, Loader } from '/imports/ui/core';
 
 import { call } from '../../utils/shared';
 import UserHybrid from '../../entry/UserHybrid';
 import { message } from '../../generic/message';
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom } from '../../LayoutContainer';
 import UserInteractionHandler from './components/UserInteractionHandler';
 
 export default function UserProfile() {
   const initialUser = window?.__PRELOADED_STATE__?.user || null;
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  let currentHost = useAtomValue(currentHostAtom);
   const [user, setUser] = useState(initialUser);
   const [loading, setLoading] = useState(true);
   const [rendered, setRendered] = useState(false);
   const [ta] = useTranslation('accounts');
   const { usernameSlug } = useParams();
   const [, username] = usernameSlug?.split('@');
-
-  let { currentHost } = useContext(StateContext);
 
   if (!currentHost) {
     currentHost = Host;

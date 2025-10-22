@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -16,7 +17,12 @@ import {
 } from '/imports/ui/core';
 import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  currentHostAtom,
+  currentUserAtom,
+  platformAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
 
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';
@@ -39,13 +45,16 @@ const emailModel = {
 };
 
 export default function EmailNewsletter() {
+  const currentHost = useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const platform = useAtomValue(platformAtom);
+  const role = useAtomValue(roleAtom);
   const [state, setState] = useState({
     sending: false,
     email: emailModel,
     preview: false,
     lastConfirm: false,
   });
-  const { currentHost, currentUser, role, platform } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 

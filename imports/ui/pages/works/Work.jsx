@@ -1,13 +1,13 @@
 import React, {
   createContext,
-  useContext,
   useLayoutEffect,
   useEffect,
   useState,
 } from 'react';
 import { useParams } from 'react-router';
+import { useAtomValue } from 'jotai';
 
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import WorkHybrid from '../../entry/WorkHybrid';
 import NewEntryHandler from '../../listing/NewEntryHandler';
@@ -22,10 +22,10 @@ export default function Work() {
   const initialDocuments = window?.__PRELOADED_STATE__?.documents || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  const currentHost = useAtomValue(currentHostAtom);
   const [work, setWork] = useState(initialWork);
   const [documents, setDocuments] = useState(initialDocuments);
   const [rendered, setRendered] = useState(false);
-  const { currentHost } = useContext(StateContext);
   const { usernameSlug, workId } = useParams();
   const [, username] = usernameSlug.split('@');
 

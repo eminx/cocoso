@@ -1,10 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import Modal from '/imports/ui/core/Modal';
 import { Box, Center, Text } from '/imports/ui/core';
-import { StateContext } from '../LayoutContainer';
+import {
+  canCreateContentAtom,
+  currentUserAtom,
+  roleAtom,
+} from '../LayoutContainer';
 import { call } from '../utils/shared';
 import { message } from '../generic/message';
 
@@ -26,11 +31,13 @@ function getDeleteMethod(context) {
 }
 
 export default function DeleteEntryHandler({ item, context }) {
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const role = useAtomValue(roleAtom);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [tc] = useTranslation('common');
-
-  const { canCreateContent, currentUser, role } = useContext(StateContext);
 
   const deleteEntry = async () => {
     const deleteMethod = getDeleteMethod(context);

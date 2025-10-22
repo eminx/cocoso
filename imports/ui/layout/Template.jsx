@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
+import { useAtomValue } from 'jotai';
 
 import { Box, Center, Heading, Grid } from '/imports/ui/core';
 
-import { StateContext } from '../LayoutContainer';
+import { isDesktopAtom } from '../LayoutContainer';
 
 const publicSettings = Meteor.settings.public;
 
@@ -15,8 +16,7 @@ function Template({
   titleCentered = false,
   children,
 }) {
-  const context = useContext(StateContext);
-  const isDesktop = context?.isDesktop;
+  const isDesktop = useAtomValue(isDesktopAtom);
 
   return (
     <>

@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
+import { useAtomValue } from 'jotai';
 
 import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
 import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 
@@ -14,7 +15,7 @@ export default function Activities() {
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
   const [activities, setActivities] = useState(initialActivities);
-  let { currentHost } = useContext(StateContext);
+  let currentHost = useAtomValue(currentHostAtom);
   const [searchParams] = useSearchParams();
 
   const showPast = Boolean(searchParams.get('showPast') === 'true');

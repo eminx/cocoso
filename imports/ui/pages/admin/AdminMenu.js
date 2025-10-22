@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import Eye from 'lucide-react/dist/esm/icons/eye';
+import { useAtomValue } from 'jotai';
 
 import {
   Avatar,
@@ -13,7 +14,12 @@ import {
   ListItem,
   Text,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  currentHostAtom,
+  currentUserAtom,
+  isDesktopAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
 import { getFullName } from '/imports/ui/utils/shared';
 
 export function AdminMenuHeader({ currentHost }) {
@@ -151,8 +157,10 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
 }
 
 export default function AdminMenu({ routes, onItemClick }) {
-  const { currentHost, currentUser, isDesktop, role } =
-    useContext(StateContext);
+  const currentHost = useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
+  const role = useAtomValue(roleAtom);
   const [t] = useTranslation('admin');
 
   const isAdmin = role === 'admin';

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router';
 import ChevronLeftIcon from 'lucide-react/dist/esm/icons/chevron-left';
 import ChevronRightIcon from 'lucide-react/dist/esm/icons/chevron-right';
@@ -6,14 +6,15 @@ import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
+import { useAtomValue } from 'jotai';
 
 import { Box, Button, Center } from '/imports/ui/core';
-
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentUserAtom, platformAtom } from '/imports/ui/LayoutContainer';
 
 export default function RegistrationIntro() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const platform = useAtomValue(platformAtom);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { currentUser, platform } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   if (!currentUser) {

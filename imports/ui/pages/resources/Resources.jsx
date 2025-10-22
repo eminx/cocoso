@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAtomValue } from 'jotai';
 
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom } from '../../LayoutContainer';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import ResourcesHybrid from '../../listing/ResourcesHybrid';
@@ -11,8 +12,8 @@ export default function Resources() {
   const initialResources = window?.__PRELOADED_STATE__?.resources || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  let currentHost = useAtomValue(currentHostAtom);
   const [resources, setResources] = useState(initialResources);
-  let { currentHost } = useContext(StateContext);
 
   if (!currentHost) {
     currentHost = Host;

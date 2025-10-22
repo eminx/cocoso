@@ -1,10 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useLocation, useSearchParams } from 'react-router';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
+import { useAtomValue } from 'jotai';
 
 import { IconButton } from '/imports/ui/core';
 
-import { StateContext } from '../LayoutContainer';
+import {
+  canCreateContentAtom,
+  currentHostAtom,
+  roleAtom,
+} from '../LayoutContainer';
 
 const getRoute = (item) => {
   if (item.name === 'info') {
@@ -14,7 +19,10 @@ const getRoute = (item) => {
 };
 
 export default function NewButton() {
-  const { canCreateContent, currentHost, role } = useContext(StateContext);
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentHost = useAtomValue(currentHostAtom);
+  const role = useAtomValue(roleAtom);
+
   const location = useLocation();
   const [, setSearchParams] = useSearchParams();
 

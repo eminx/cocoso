@@ -1,18 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
 import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
 import { Trans, useTranslation } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { pageTitlesAtom } from '/imports/ui/LayoutContainer';
 
 import Boxling from '../Boxling';
 
 export default function PagesAdminOrder() {
-  const { pageTitles, getPageTitles } = useContext(StateContext);
+  const [pageTitles, setPageTitles] = useAtom(pageTitlesAtom);
   const [state, setState] = useState({
     pages: pageTitles,
     updating: false,
@@ -45,7 +46,7 @@ export default function PagesAdminOrder() {
     }));
     try {
       await call('savePageOrder', state.pages);
-      await getPageTitles();
+      setPageTitles(await call('getPageTitles'));
       message.success(
         tc('message.success.save', { domain: tc('domains.pageOrder') })
       );

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -12,12 +13,11 @@ import {
   Select,
   Textarea,
 } from '/imports/ui/core';
-
 import DateTimePicker from '/imports/ui/forms/DateTimePicker';
 import { ConflictMarker } from '/imports/ui/forms/DatesAndTimes';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentUserAtom } from '/imports/ui/LayoutContainer';
 
 import { GroupContext } from '../../Group';
 
@@ -94,6 +94,7 @@ function AddMeetingForm({
 }
 
 export default function AddMeeting({ onClose }) {
+  const currentUser = useAtomValue(currentUserAtom);
   const [state, setState] = useState({
     activities: [],
     conflictingBooking: null,
@@ -103,7 +104,6 @@ export default function AddMeeting({ onClose }) {
     resources: [],
   });
   const { group, getGroupById } = useContext(GroupContext);
-  const { currentHost } = useContext(StateContext);
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
   const { activities, conflictingBooking, isFormValid, newMeeting, resources } =

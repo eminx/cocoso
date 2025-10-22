@@ -1,11 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useHref, useSearchParams } from 'react-router';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Box, Modal, Progress } from '/imports/ui/core';
 
-import { StateContext } from '../LayoutContainer';
+import { canCreateContentAtom, currentHostAtom } from '../LayoutContainer';
 
 export const initialLoader = {
   isCreating: false,
@@ -64,11 +65,12 @@ const renderToasts = (loaders, tc, justUpdated = false) => {
 };
 
 export default function NewEntryHandler({ children }) {
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentHost = useAtomValue(currentHostAtom);
   const [searchParams, setSearchParams] = useSearchParams();
   const forNew = searchParams.get('new') === 'true';
   const forEdit = searchParams.get('edit') === 'true';
   const isOpen = forNew || forEdit;
-  const { canCreateContent, currentHost } = useContext(StateContext);
   const [loaders, setLoaders] = useState(initialLoader);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [tc] = useTranslation('common');

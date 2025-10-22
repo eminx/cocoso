@@ -1,12 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Alert, Box, Center } from '/imports/ui/core';
 import Template from '../../layout/Template';
 import NewHostForm from '../../forms/NewHostForm';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
-import { StateContext } from '../../LayoutContainer';
+import { currentUserAtom } from '../../LayoutContainer';
 
 const hostModel = {
   host: '',
@@ -19,7 +20,7 @@ const hostModel = {
 };
 
 function NewHost() {
-  const { currentUser } = useContext(StateContext);
+  const currentUser = useAtomValue(currentUserAtom);
   const [isSuccess, setIsSuccess] = useState(false);
   const [tc] = useTranslation('common');
 
@@ -63,10 +64,7 @@ function NewHost() {
     <Box w="100%">
       <Template heading={tc('labels.create.host')}>
         <Box py="6">
-          <NewHostForm
-            defaultValues={hostModel}
-            onSubmit={handleSubmit}
-          />
+          <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
         </Box>
       </Template>
     </Box>

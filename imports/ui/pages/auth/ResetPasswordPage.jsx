@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -10,17 +11,17 @@ import {
   Link as CLink,
   Text,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentUserAtom } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { ResetPassword } from './index';
 
 function ResetPasswordPage() {
+  const currentUser = useAtomValue(currentUserAtom);
   const [t] = useTranslation('accounts');
   const navigate = useNavigate();
   const { token } = useParams();
-  const { currentUser } = useContext(StateContext);
 
   const handleResetPassword = async ({ password }) => {
     try {

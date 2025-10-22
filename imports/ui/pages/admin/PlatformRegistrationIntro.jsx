@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import PlusSquareIcon from 'lucide-react/dist/esm/icons/plus-square';
 import parseHtml from 'html-react-parser';
+import { useAtom, useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -14,7 +15,7 @@ import {
   Text,
 } from '/imports/ui/core';
 
-import { StateContext } from '../../LayoutContainer';
+import { currentUserAtom, platformAtom } from '../../LayoutContainer';
 import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
@@ -23,12 +24,11 @@ import Template from '../../layout/Template';
 import { AdminMenu } from './Settings';
 
 export default function PlatformRegistrationIntro() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const [platform, setPlatform] = useAtom(platformAtom);
   const [loading, setLoading] = useState(true);
-  const [platform, setPlatform] = useState(null);
   const [registrationIntro, setRegistrationIntro] = useState(['']);
   const [saving, setSaving] = useState(false);
-
-  const { currentUser, getPlatform } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
 
@@ -39,16 +39,15 @@ export default function PlatformRegistrationIntro() {
       if (respond && respond.registrationIntro) {
         setRegistrationIntro(respond.registrationIntro);
       }
-      getPlatform();
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      message(error.error || error.reason);
     }
   };
 
   useEffect(() => {
-    getPlatformNow();
-  }, []);
+    setRegistrationIntro(platform.registrationIntro);
+  }, [platform]);
 
   const handleAddSlide = () => {
     setRegistrationIntro([...registrationIntro, '']);

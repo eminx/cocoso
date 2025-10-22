@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router';
+import { useAtomValue } from 'jotai';
 
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import ComposablePageForm from './ComposablePageForm';
@@ -10,7 +11,7 @@ import ComposablePageCreator from '/imports/ui/pages/composablepages/components/
 import { Heading } from '/imports/ui/core';
 
 export default function ComposablePages() {
-  const { currentHost } = useContext(StateContext);
+  const currentHost = useAtomValue(currentHostAtom);
   const [composablePageTitles, setComposablePageTitles] = useState([]);
 
   const getComposablePageTitles = async () => {

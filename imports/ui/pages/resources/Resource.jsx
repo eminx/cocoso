@@ -1,15 +1,15 @@
 import React, {
   createContext,
-  useContext,
   useEffect,
   useLayoutEffect,
   useState,
 } from 'react';
 import { useParams } from 'react-router';
+import { useAtomValue } from 'jotai';
 
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom } from '../../LayoutContainer';
 import Loader from '../../core/Loader';
 import ResourceHybrid from '../../entry/ResourceHybrid';
 import ResourceInteractionHandler from './components/ResourceInteractionHandler';
@@ -23,11 +23,11 @@ export default function Resource() {
   const initialDocuments = window?.__PRELOADED_STATE__?.documents || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  let currentHost = useAtomValue(currentHostAtom);
   const [resource, setResource] = useState(initialResource);
   const [documents, setDocuments] = useState(initialDocuments);
   const [rendered, setRendered] = useState(false);
   const { resourceId } = useParams();
-  let { currentHost } = useContext(StateContext);
 
   if (!currentHost) {
     currentHost = Host;

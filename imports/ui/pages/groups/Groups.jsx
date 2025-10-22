@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAtomValue } from 'jotai';
 
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
 import GroupsHybrid from '../../listing/GroupsHybrid';
@@ -11,8 +12,8 @@ export default function Groups() {
   const initialGroups = window?.__PRELOADED_STATE__?.groups || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  let currentHost = useAtomValue(currentHostAtom);
   const [groups, setGroups] = useState(initialGroups);
-  let { currentHost } = useContext(StateContext);
 
   if (!currentHost) {
     currentHost = Host;

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -14,7 +15,7 @@ import {
 } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentUserAtom, roleAtom } from '/imports/ui/LayoutContainer';
 import FormField from '/imports/ui/forms/FormField';
 import { defaultEmails } from '/imports/startup/constants';
 import ReactQuill from '/imports/ui/forms/Quill';
@@ -75,9 +76,10 @@ function EmailForm({ defaultValues, key, onSubmit }) {
 }
 
 export default function Emails() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const role = useAtomValue(roleAtom);
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
-  const { currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 

@@ -1,15 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useAtomValue } from 'jotai';
 
-import { call } from '../../utils/shared';
 import WorkForm from './WorkForm';
-import { StateContext } from '../../LayoutContainer';
+import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';
+import { currentUserAtom } from '../../LayoutContainer';
 
 export default function NewWork() {
+  const currentUser = useAtomValue(currentUserAtom);
   const [newEntryId, setNewEntryId] = useState(null);
-  const { currentUser } = useContext(StateContext);
   const navigate = useNavigate();
 
   const createWork = async (newWork) => {

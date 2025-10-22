@@ -1,18 +1,19 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Button, Center, Modal, Text } from '/imports/ui/core';
 
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
-import { StateContext } from '../../../LayoutContainer';
+import { currentUserAtom } from '../../../LayoutContainer';
 import { message } from '../../../generic/message';
 
 export default function LeaveButton() {
+  const currentUser = useAtomValue(currentUserAtom);
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
   const { group, getGroupById } = useContext(GroupContext);
-  const { currentUser } = useContext(StateContext);
 
   if (!group || !currentUser) {
     return null;

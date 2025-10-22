@@ -1,16 +1,25 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router';
 import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Box, Button } from '/imports/ui/core';
-import { StateContext } from '../../../LayoutContainer';
+import {
+  canCreateContentAtom,
+  currentHostAtom,
+  currentUserAtom,
+  isDesktopAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
+
 import { ResourceContext } from '../Resource';
 import { ChatButton } from '../../../chattery/ChatHandler';
 import SlideWidget from '../../../entry/SlideWidget';
 import ResourceAdminFunctions from './ResourceAdminFunctions';
 
 function ReserveButton({ resource }) {
-  const { currentHost, isDesktop } = useContext(StateContext);
+  const currentHost = useAtomValue(currentHostAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
 
   const isSameHost = resource.host === currentHost.host;
 
@@ -32,7 +41,9 @@ function ReserveButton({ resource }) {
 }
 
 export default function ResourceInteractionHandler({ slideStart }) {
-  const { canCreateContent, currentUser, role } = useContext(StateContext);
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const role = useAtomValue(roleAtom);
   const { resource } = useContext(ResourceContext);
 
   if (role === 'admin') {

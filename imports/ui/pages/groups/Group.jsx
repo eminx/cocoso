@@ -2,13 +2,13 @@ import React, {
   createContext,
   useState,
   useEffect,
-  useContext,
   useLayoutEffect,
 } from 'react';
 import { useParams } from 'react-router';
+import { useAtomValue } from 'jotai';
 
 import { call } from '../../utils/shared';
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom, currentUserAtom } from '../../LayoutContainer';
 import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import GroupHybrid from '../../entry/GroupHybrid';
@@ -22,10 +22,11 @@ export default function Group() {
   const initialGroup = window?.__PRELOADED_STATE__?.group || null;
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  const currentHost = useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
   const [group, setGroup] = useState(initialGroup);
   const [rendered, setRendered] = useState(false);
   const { groupId } = useParams();
-  const { currentHost, currentUser } = useContext(StateContext);
 
   useLayoutEffect(() => {
     setTimeout(() => {

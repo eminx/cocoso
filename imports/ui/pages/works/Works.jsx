@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAtomValue } from 'jotai';
 
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom } from '../../LayoutContainer';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import WorksHybrid from '../../listing/WorksHybrid';
@@ -11,8 +12,8 @@ export default function Works() {
   const initialWorks = window?.__PRELOADED_STATE__?.works || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  let currentHost = useAtomValue(currentHostAtom);
   const [works, setWorks] = useState(initialWorks);
-  let { currentHost } = useContext(StateContext);
 
   if (!currentHost) {
     currentHost = Host;

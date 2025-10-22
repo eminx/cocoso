@@ -1,7 +1,9 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router';
 import dayjs from 'dayjs';
 import { Trans, useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
+
 import {
   Alert,
   Badge,
@@ -19,7 +21,11 @@ import NiceList from '../../generic/NiceList';
 import UsageReport from './UsageReport';
 import Boxling from './Boxling';
 import TablyRouter from '../../generic/TablyRouter';
-import { StateContext } from '../../LayoutContainer';
+import {
+  currentUserAtom,
+  isDesktopAtom,
+  roleAtom,
+} from '../../LayoutContainer';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 
@@ -67,13 +73,15 @@ function MemberList({ members, t }) {
 }
 
 export default function Members() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
+  const role = useAtomValue(roleAtom);
   const [members, setMembers] = useState(null);
   const [sortBy, setSortBy] = useState('join-date');
   const [filterWord, setFilterWord] = useState('');
   const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-  const { currentUser, isDesktop, role } = useContext(StateContext);
   const location = useLocation();
 
   const getMembers = async () => {

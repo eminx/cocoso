@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
+import { useAtomValue } from 'jotai';
 
 import { Button, Flex, Link, Modal, Text } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '/imports/ui/LayoutContainer';
 
 export default function BottomToolbar({
   currentPage,
@@ -18,7 +19,8 @@ export default function BottomToolbar({
     updated: false,
     updating: false,
   });
-  const { currentHost } = useContext(StateContext);
+
+  const currentHost = useAtomValue(currentHostAtom);
 
   useEffect(() => {
     if (currentPage?.pingSave === false) {

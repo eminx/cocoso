@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import parseHtml from 'html-react-parser';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Loader,
   Text,
 } from '/imports/ui/core';
-
 import Modal from '/imports/ui/core/Modal';
 import {
   call,
@@ -23,7 +23,12 @@ import {
   getComboResourcesWithColor,
   parseAllBookingsWithResources,
 } from '/imports/ui/utils/shared';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  canCreateContentAtom,
+  currentHostAtom,
+  currentUserAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
 import PageHeading from '/imports/ui/listing/PageHeading';
 import Tag from '/imports/ui/generic/Tag';
 
@@ -50,13 +55,14 @@ const parseNewEntryParams = (slotInfo, selectedResource, type) => {
 };
 
 export default function Calendar() {
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentHost = useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const role = useAtomValue(roleAtom);
   const [activities, setActivities] = useState([]);
   const [resources, setResources] = useState([]);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [calendarFilter, setCalendarFilter] = useState(null);
-
-  const { canCreateContent, currentHost, currentUser, role } =
-    useContext(StateContext);
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
   const [tc] = useTranslation('common');

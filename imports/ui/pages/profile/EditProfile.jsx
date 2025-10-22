@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
   Navigate,
   Route,
@@ -8,6 +8,7 @@ import {
   useNavigate,
 } from 'react-router';
 import { Trans, useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -25,7 +26,12 @@ import {
 import { message } from '/imports/ui/generic/message';
 import ChangeLanguage from '/imports/ui/layout/ChangeLanguageMenu';
 import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  currentHostAtom,
+  currentUserAtom,
+  platformAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
 
 import AvatarUploader from './AvatarUploader';
 import Boxling from '../admin/Boxling';
@@ -39,6 +45,10 @@ const subSpanStyle = {
 };
 
 export default function EditProfile() {
+  const currentHost = useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const platform = useAtomValue(platformAtom);
+  const role = useAtomValue(roleAtom);
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
   const [isLeaveModalOn, setIsLeaveModalOn] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -49,7 +59,6 @@ export default function EditProfile() {
   const [lang, setLang] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { currentHost, currentUser, platform, role } = useContext(StateContext);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 

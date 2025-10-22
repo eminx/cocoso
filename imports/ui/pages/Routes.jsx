@@ -1,10 +1,11 @@
-import React, { Suspense, useContext } from 'react';
+import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router';
 import loadable from '@loadable/component';
+import { useAtomValue } from 'jotai';
 
 import Loader from '/imports/ui/core/Loader';
 const Terms = loadable(() => import('/imports/ui/entry/Terms'));
-import LayoutContainer, { StateContext } from '../LayoutContainer';
+import LayoutContainer, { currentHostAtom } from '../LayoutContainer';
 const ComposablePageView = loadable(() =>
   import('./composablepages/ComposablePageView')
 );
@@ -89,8 +90,8 @@ function getComponentBasedOnFirstRoute(menuItems) {
 }
 
 function HomePage() {
-  const { currentHost } = useContext(StateContext);
-  const menu = currentHost && currentHost.settings && currentHost.settings.menu;
+  const currentHost = useAtomValue(currentHostAtom);
+  const menu = currentHost?.settings?.menu;
 
   if (!menu || !menu[0]) {
     return null;

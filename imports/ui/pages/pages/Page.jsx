@@ -1,15 +1,15 @@
 import React, {
   createContext,
-  useContext,
   useEffect,
   useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
 import { useParams, useSearchParams } from 'react-router';
+import { useAtomValue } from 'jotai';
 
 import PageHybrid from '../../entry/PageHybrid';
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom, role, roleAtom } from '../../LayoutContainer';
 import { message } from '../../generic/message';
 import { call, parseTitle } from '../../utils/shared';
 import NewPage from './NewPage';
@@ -23,10 +23,10 @@ function Page() {
   const initialPages = window?.__PRELOADED_STATE__?.pages || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  let currentHost = useAtomValue(currentHostAtom);
+  const role = useAtomValue(roleAtom);
   const [pages, setPages] = useState(initialPages);
   const [rendered, setRendered] = useState(false);
-  let { currentHost } = useContext(StateContext);
-  const { role } = useContext(StateContext);
   const { pageTitle } = useParams();
   const [searchParams] = useSearchParams();
   const forNew = searchParams.get('new') === 'true';

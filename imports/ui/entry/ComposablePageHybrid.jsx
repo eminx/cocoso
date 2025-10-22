@@ -7,7 +7,6 @@ import HTMLReactParser from 'html-react-parser';
 import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
-import { StateContext } from '/imports/ui/LayoutContainer';
 
 function ContentViewModule({ module, Host }) {
   const currentHost = Host;

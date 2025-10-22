@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -14,14 +15,22 @@ import {
 } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  currentHostAtom,
+  currentUserAtom,
+  platformAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
 
 import { loginWithPassword } from './functions';
 import { Login } from './index';
 
 export default function LoginPage() {
+  const currentHost = useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const platform = useAtomValue(platformAtom);
+  const role = useAtomValue(roleAtom);
   const [t] = useTranslation('accounts');
-  const { currentUser, currentHost, platform, role } = useContext(StateContext);
   const [submitted, setSubmitted] = useState(false);
   const [joinModal, setJoinModal] = useState(false);
   const navigate = useNavigate();

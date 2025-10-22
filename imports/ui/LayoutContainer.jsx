@@ -22,8 +22,6 @@ import TopBarHandler from './layout/TopBarHandler';
 import DummyWrapper from './layout/DummyWrapper';
 import { message } from './generic/message';
 
-export const StateContext = React.createContext(null);
-
 export const platformAtom = atom(null);
 export const currentUserAtom = atom(null);
 export const currentHostAtom = atom(window?.__PRELOADED_STATE__?.Host || null);
@@ -120,41 +118,19 @@ function LayoutPage({
   return (
     <>
       <HelmetHybrid Host={currentHost} />
-      <StateContext.Provider
-        value={{
-          allHosts,
-          canCreateContent,
-          currentUser,
-          currentHost,
-          hue,
-          isDesktop,
-          isMobile,
-          pageTitles,
-          platform,
-          role,
-          userLoading,
-          getCurrentHost,
-          getPageTitles,
-          getPlatform,
-          setCurrentHost,
-        }}
-      >
-        <DummyWrapper
-          animate={rendered && !isDesktop}
-          theme={currentHost?.theme}
-        >
-          {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
-          {!adminPage && <Header />}
-          {children}
-        </DummyWrapper>
 
-        {!adminPage && (
-          <>
-            <Footer />
-            <PlatformFooter />
-          </>
-        )}
-      </StateContext.Provider>
+      <DummyWrapper animate={rendered && !isDesktop} theme={currentHost?.theme}>
+        {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
+        {!adminPage && <Header />}
+        {children}
+      </DummyWrapper>
+
+      {!adminPage && (
+        <>
+          <Footer />
+          <PlatformFooter />
+        </>
+      )}
 
       {rendered && (
         <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />

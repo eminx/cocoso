@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
+import { useAtomValue } from 'jotai';
 
 import { Box } from '/imports/ui/core';
-import { StateContext } from '../../../LayoutContainer';
+import { currentUserAtom } from '../../../LayoutContainer';
 import { WorkContext } from '../Work';
 import SlideWidget from '../../../entry/SlideWidget';
 import WorkAdminFunctions from './WorkAdminFunctions';
 import ContactInfo from '../../profile/ContactInfo';
 
 export default function WorkInteractionHandler({ slideStart }) {
-  const { currentUser } = useContext(StateContext);
+  const currentUser = useAtomValue(currentUserAtom);
   const { work } = useContext(WorkContext);
 
   if (!work) {

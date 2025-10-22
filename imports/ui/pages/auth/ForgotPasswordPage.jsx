@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -13,14 +14,14 @@ import {
 
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentUserAtom } from '/imports/ui/LayoutContainer';
 
 import { ForgotPassword } from './index';
 
-function ForgotPasswordPage() {
+export default function ForgotPasswordPage() {
   const [t] = useTranslation('accounts');
   const [emailSent, setEmailSent] = useState(false);
-  const { currentUser } = useContext(StateContext);
+  const currentUser = useAtomValue(currentUserAtom);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,5 +86,3 @@ function ForgotPasswordPage() {
     </Box>
   );
 }
-
-export default ForgotPasswordPage;

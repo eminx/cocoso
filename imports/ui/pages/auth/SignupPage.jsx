@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -11,14 +12,15 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentUserAtom, platformAtom } from '/imports/ui/LayoutContainer';
 
 import { Signup } from './index';
 import { createAccount } from './functions';
 
 export default function SignupPage() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const platform = useAtomValue(platformAtom);
   const [t] = useTranslation('accounts');
-  const { currentUser, platform } = useContext(StateContext);
   const navigate = useNavigate();
 
   useEffect(() => {

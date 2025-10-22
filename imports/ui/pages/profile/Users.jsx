@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router';
+import { useAtomValue } from 'jotai';
 
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom } from '../../LayoutContainer';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import UsersHybrid from '../../listing/UsersHybrid';
@@ -11,9 +12,9 @@ export default function Users() {
   const initialKeywords = window?.__PRELOADED_STATE__?.keywords || [];
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  let currentHost = useAtomValue(currentHostAtom);
   const [users, setUsers] = useState(initialUsers);
   const [keywords, setKeywords] = useState(initialKeywords);
-  let { currentHost } = useContext(StateContext);
   const [searchParams] = useSearchParams();
   const showKeywordSearch = Boolean(searchParams.get('showKeywordSearch'));
 

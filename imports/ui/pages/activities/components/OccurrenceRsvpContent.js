@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -12,14 +13,17 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  canCreateContentAtom,
+  currentUserAtom,
+} from '/imports/ui/LayoutContainer';
 import FancyDate from '/imports/ui/entry/FancyDate';
 import { call, getComboResourcesWithColor } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 
-import RsvpForm from './RsvpForm';
 import { ActivityContext } from '../Activity';
+import RsvpForm from './RsvpForm';
 import RsvpList from './CsvList';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
@@ -38,15 +42,17 @@ export default function RsvpContent({
   occurrenceIndex,
   onCloseModal,
 }) {
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentUser = useAtomValue(currentUserAtom);
   const [state, setState] = useState({
     isRsvpCancelModalOn: false,
     rsvpCancelModalInfo: null,
     selectedOccurrence: null,
   });
   const [capacityGotFullByYou] = useState(false);
-  const [t] = useTranslation('activities');
-  const { canCreateContent, currentUser } = useContext(StateContext);
   const { getActivityById } = useContext(ActivityContext);
+  const [t] = useTranslation('activities');
+
   const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } =
     state;
 

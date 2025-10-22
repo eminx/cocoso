@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Box, Center, Flex, Heading, Modal, Tag } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { allHostsAtom } from '/imports/ui/LayoutContainer';
 
 import ActionDates from '../entry/ActionDates';
 import NiceSlider from '../generic/NiceSlider';
@@ -110,8 +111,9 @@ const getLinkPath = (item, kind, isCurrentHost = false) => {
 };
 
 export default function PopupHandler({ item, kind, showPast, onClose }) {
+  const allHosts = useAtomValue(allHostsAtom);
+  const currentHost = useAtomValue(currentHostAtom);
   const [copied, setCopied] = useState(false);
-  const { allHosts, currentHost } = useContext(StateContext);
   const navigate = useNavigate();
   const [tc] = useTranslation('common');
 

@@ -1,18 +1,19 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
+import { useSetAtom } from 'jotai';
 
 import PageForm from './PageForm';
 import { PageContext } from './Page';
 import { call, parseTitle } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';
-import { StateContext } from '../../LayoutContainer';
+import { pageTitlesAtom } from '../../LayoutContainer';
 
 export default function EditPage() {
+  const setPageTitles = useSetAtom(pageTitlesAtom);
   const [updated, setUpdated] = useState(null);
   const [newPageTitle, setNewPageTitle] = useState(null);
   const { currentPage, getPages } = useContext(PageContext);
-  const { getPageTitles } = useContext(StateContext);
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
 
@@ -26,8 +27,7 @@ export default function EditPage() {
 
     try {
       await call('updatePage', pageId, newPage);
-      await getPageTitles();
-      await getPages();
+      setPageTitles(await call('getPageTitles'));
       setUpdated(pageId);
     } catch (error) {
       message.error(error.reason || error.error);

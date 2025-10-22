@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useAtomValue } from 'jotai';
 
 import { Box } from '/imports/ui/core';
-import { StateContext } from '../../../LayoutContainer';
+import { currentUserAtom, roleAtom } from '../../../LayoutContainer';
 import SlideWidget from '../../../entry/SlideWidget';
 import PageAdminFunctions from './PageAdminFunctions';
 
 export default function PageInteractionHandler({ slideStart }) {
-  const { currentUser, role } = useContext(StateContext);
+  const currentUser = useAtomValue(currentUserAtom);
+  const role = useAtomValue(roleAtom);
 
   if (!currentUser || role !== 'admin') {
     return null;

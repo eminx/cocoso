@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 import BoltIcon from 'lucide-react/dist/esm/icons/bolt';
 import CheckCircleIcon from 'lucide-react/dist/esm/icons/check-circle';
 import CircleIcon from 'lucide-react/dist/esm/icons/circle';
+import { useAtomValue } from 'jotai';
 
 import {
   Avatar,
@@ -21,7 +22,14 @@ import {
 } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 
-import { StateContext } from '../LayoutContainer';
+import {
+  canCreateContentAtom,
+  currentHostAtom,
+  currentUserAtom,
+  isDesktopAtom,
+  platformAtom,
+  roleAtom,
+} from '../LayoutContainer';
 import { getFullName } from '../utils/shared';
 
 function NotificationLinkItem({ host, item, children }) {
@@ -49,7 +57,9 @@ const linkButtonProps = {
 };
 
 export function UserThumb({ notificationsCounter = 0 }) {
-  const { currentUser, isDesktop, role } = useContext(StateContext);
+  const currentUser = useAtomValue(currentUserAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
+  const role = useAtomValue(roleAtom);
 
   if (!currentUser) {
     return null;
@@ -120,8 +130,11 @@ export function UserThumb({ notificationsCounter = 0 }) {
 }
 
 export default function UserPopup({ isOpen, setIsOpen }) {
-  const { canCreateContent, currentHost, currentUser, isDesktop, role } =
-    useContext(StateContext);
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentHost = useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
+  const platform = useAtomValue(platformAtom);
   const navigate = useNavigate();
 
   if (!currentHost) {

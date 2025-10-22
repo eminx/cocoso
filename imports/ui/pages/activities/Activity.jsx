@@ -1,16 +1,16 @@
 import React, {
   createContext,
-  useContext,
   useEffect,
   useLayoutEffect,
   useState,
 } from 'react';
 import { Navigate, useParams } from 'react-router';
+import { useAtomValue } from 'jotai';
 
 import { call } from '../../utils/shared';
 import ActivityHybrid from '../../entry/ActivityHybrid';
 import ActivityInteractionHandler from './components/ActivityInteractionHandler';
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom } from '../../LayoutContainer';
 import Loader from '../../core/Loader';
 import NewEntryHandler from '../../listing/NewEntryHandler';
 import EditPublicActivity from './EditPublicActivity';
@@ -23,10 +23,10 @@ export default function Activity() {
   const initialActivity = window?.__PRELOADED_STATE__?.activity || null;
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
+  let currentHost = useAtomValue(currentHostAtom);
   const [activity, setActivity] = useState(initialActivity);
   const [rendered, setRendered] = useState(false);
   const { activityId } = useParams();
-  const { currentHost } = useContext(StateContext);
 
   useLayoutEffect(() => {
     setTimeout(() => {

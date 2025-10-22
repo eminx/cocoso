@@ -1,24 +1,27 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useAtomValue, useSetAtom } from 'jotai';
 
 import { call, parseTitle } from '../../utils/shared';
 import PageForm from './PageForm';
 import { PageContext } from './Page';
-import { StateContext } from '../../LayoutContainer';
+import { currentUserAtom, pageTitlesAtom } from '../../LayoutContainer';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';
 
 export default function NewPage() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const setPageTitles = useSetAtom(pageTitlesAtom);
   const [newEntryTitle, setNewEntryTitle] = useState(null);
-  const { currentUser, getPageTitles } = useContext(StateContext);
+  const currentUser = useAtomValue(currentUserAtom);
   const { getPages } = useContext(PageContext);
   const navigate = useNavigate();
 
   const createPage = async (newPage) => {
     try {
       await call('createPage', newPage);
-      await getPageTitles();
       await getPages();
+      setPageTitles(await call('getPageTitles'));
       setNewEntryTitle(newPage.title);
     } catch (error) {
       message.error(error.reason || error.error);

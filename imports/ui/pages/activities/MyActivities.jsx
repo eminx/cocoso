@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import {
@@ -12,8 +12,9 @@ import {
   Tag,
   Text,
 } from '/imports/ui/core';
+import { useAtomValue } from 'jotai';
 
-import { StateContext } from '../../LayoutContainer';
+import { currentHostAtom } from '../../LayoutContainer';
 import NiceList from '../../generic/NiceList';
 import Template from '../../layout/Template';
 import TablyRouter from '/imports/ui/generic/TablyRouter';
@@ -52,23 +53,26 @@ function ActivityItem({ act }) {
 }
 
 export default function Activities({ history }) {
+  let currentHost = useAtomValue(currentHostAtom);
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useContext(StateContext);
 
   const [t] = useTranslation('activities');
   const [tm] = useTranslation('members');
   const [tc] = useTranslation('common');
 
-  useEffect(() => {
-    Meteor.call('getMyActivities', (error, respond) => {
-      if (error) {
-        setLoading(false);
-        return;
-      }
+  const getMyActivities = async () => {
+    try {
+      const respond = await Meteor.callAsync('getMyActivities');
       setActivities(respond.reverse());
       setLoading(false);
-    });
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getMyActivities();
   }, []);
 
   const allActivities = activities;

@@ -1,8 +1,9 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
 import Eye from 'lucide-react/dist/esm/icons/eye';
+import { useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -15,14 +16,19 @@ import {
   Loader,
   Text,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  currentHostAtom,
+  currentUserAtom,
+  isDesktopAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
 import EditProfile from '/imports/ui/pages/profile/EditProfile';
 
 import AdminMenu from './AdminMenu';
 import getAdminRoutes from './getAdminRoutes';
 
 function RouteRenderer({ routes, currentRoute }) {
-  const { currentUser } = useContext(StateContext);
+  const currentUser = useAtomValue(currentUserAtom);
 
   if (!routes || !currentUser) {
     return null;
@@ -80,8 +86,11 @@ const iconContainerProps = {
 };
 
 export default function AdminContainer() {
-  const { currentUser, currentHost, isDesktop, role } =
-    useContext(StateContext);
+  const currentHost = useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
+  const role = useAtomValue(roleAtom);
+
   const [drawerMenuOpen, setDrawerMenuOpen] = useState(false);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');

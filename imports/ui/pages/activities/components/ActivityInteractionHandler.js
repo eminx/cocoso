@@ -1,9 +1,14 @@
 import React, { useContext } from 'react';
 import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Box, Flex, Text } from '/imports/ui/core';
 
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  canCreateContentAtom,
+  currentUserAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
 import SlideWidget from '/imports/ui/entry/SlideWidget';
 import { ChatButton } from '/imports/ui/chattery/ChatHandler';
 
@@ -12,7 +17,9 @@ import ActivityAdminFunctions from './ActivityAdminFunctions';
 import RsvpHandler from './RsvpHandler';
 
 export default function ActivityInteractionHandler({ slideStart }) {
-  const { canCreateContent, currentUser, role } = useContext(StateContext);
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const role = useAtomValue(roleAtom);
   const activityContext = useContext(ActivityContext);
   const activity = activityContext?.activity;
 
