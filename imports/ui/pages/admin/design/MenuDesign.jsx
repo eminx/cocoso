@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useAtom } from 'jotai';
 

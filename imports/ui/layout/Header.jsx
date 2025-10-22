@@ -112,12 +112,11 @@ export function InfoPagesMenu({
 }
 
 function HeaderMenu({ Host, pageTitles }) {
-  const location = useLocation();
-  const { pathname } = location;
   const isDesktop = useMediaQuery('(min-width: 960px)');
 
   const settings = Host?.settings;
   const menuStyles = Host?.theme?.menu;
+  const pathname = isClient ? window?.location?.pathname : null;
 
   const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } = settings || {};
 

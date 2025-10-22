@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
