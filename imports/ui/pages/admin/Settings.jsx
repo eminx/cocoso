@@ -10,9 +10,15 @@ import {
   Loader,
   Text,
 } from '/imports/ui/core';
+import { useAtom, useAtomValue } from 'jotai';
+
+import {
+  currentHostAtom,
+  currentUserAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
 
 import ReactQuill from '../../forms/Quill';
-import { StateContext } from '../../LayoutContainer';
 import { message } from '../../generic/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import SettingsForm from './SettingsForm';
@@ -21,13 +27,16 @@ import Tabs from '../../core/Tabs';
 import Boxling from './Boxling';
 
 export default function Settings() {
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const role = useAtomValue(roleAtom);
+
   const [localSettings, setLocalSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
   const location = useLocation();
-  const { currentUser, currentHost, role, getCurrentHost } =
-    useContext(StateContext);
+
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -58,11 +67,10 @@ export default function Settings() {
 
     try {
       await call('updateHostSettings', values);
-      getCurrentHost();
+      setCurrentHost(await call('getCurrentHost'));
       message.success(tc('message.success.update'));
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
     }
   };
 
@@ -92,10 +100,9 @@ export default function Settings() {
       const resizedImage = await resizeImage(localImage.uploadableImage, 800);
       const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
       await call('assignHostLogo', uploadedImage);
-      getCurrentHost();
+      setCurrentHost(await call('getCurrentHost'));
       message.success(t('logo.message.success'));
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
     } finally {
       setUploading(false);

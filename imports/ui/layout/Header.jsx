@@ -9,6 +9,8 @@ import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
 import { parseTitle } from '../utils/shared';
+import { useAtomValue } from 'jotai';
+import { currentHostAtom, pageTitlesAtom } from '/imports/ui/LayoutContainer';
 
 const isClient = Meteor?.isClient;
 
@@ -208,8 +210,23 @@ function HeaderMenu({ Host, pageTitles }) {
   );
 }
 
-export default function Header({ Host, pageTitles, isLogoSmall = false }) {
-  const currentHost = Host;
+export default function Header() {
+  const currentHost = useAtomValue(currentHostAtom);
+  const pageTitles = useAtomValue(pageTitlesAtom);
+
+  const pathname = window?.location?.pathname;
+  const pathnameSplitted = pathname.split('/');
+  const isLogoSmall =
+    pathnameSplitted &&
+    !['pages', 'info', 'cp'].includes(pathnameSplitted[1]) &&
+    Boolean(pathnameSplitted[2]);
+
+  useEffect(() => {
+    if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
+      return;
+    }
+    window.scrollTo(0, 0);
+  }, [pathnameSplitted[2]]);
 
   if (!currentHost) {
     return null;

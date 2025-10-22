@@ -102,116 +102,117 @@ function HomePage() {
 
 export default function AppRoutes() {
   return (
-    <LayoutContainer>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route exact path="/" element={<HomePage />} />
+    // <LayoutContainer>
+    //   <Suspense fallback={<Loader />}>
+    //     <Routes>
+    <>
+      <Route exact path="/" element={<HomePage />} />
 
-          {/* Members list public */}
-          <Route path="/people" element={<Users />} />
+      {/* Members list public */}
+      <Route path="/people" element={<Users />} />
 
-          {/* Calendar */}
-          <Route path="/calendar" element={<Calendar />} />
+      {/* Calendar */}
+      <Route path="/calendar" element={<Calendar />} />
 
-          {/* Activities */}
-          <Route path="/activities" element={<Activities />}>
-            <Route path=":activityId">
-              <Route path="*" element={<Activity />} />
-            </Route>
+      {/* Activities */}
+      <Route
+        path="/activities"
+        element={<Activities currentHost={currentHost} />}
+      >
+        <Route path=":activityId">
+          <Route path="*" element={<Activity />} />
+        </Route>
+      </Route>
+
+      <Route path="/calendar">
+        <Route path=":activityId">
+          <Route path="*" element={<Activity />} />
+        </Route>
+      </Route>
+
+      <Route exact path="/my-activities" element={<MyActivities />} />
+
+      {/* Groups */}
+      <Route exact path="/groups" element={<Groups />}>
+        <Route path="groupId">
+          <Route path="*" element={<Group />} />
+        </Route>
+      </Route>
+
+      {/* Resources */}
+      <Route exact path="/resources" element={<Resources />}>
+        <Route path=":resourceId">
+          <Route path="*" element={<Resource />} />
+        </Route>
+      </Route>
+
+      {/* Pages */}
+      <Route exact path="/info" element={<Page />}>
+        <Route path=":pageTitle">
+          <Route path="*" element={<Page />} />
+        </Route>
+      </Route>
+
+      <Route path="/cp">
+        <Route path=":composablePageId" element={<ComposablePageView />} />
+      </Route>
+
+      {/* Works */}
+      <Route exact path="/works" element={<Works />} />
+
+      {/* Communities: Only on Portal App */}
+      <Route exact path="/communities" element={<Communities />} />
+
+      {/* Newsletter Emails */}
+      <Route path="/newsletters" element={<PreviousNewsletters />}>
+        <Route path="*" element={<PreviousNewsletters />} />
+      </Route>
+
+      {/* Admin */}
+      <Route path="/admin/*" element={<AdminContainer />} />
+
+      {/* Super Admin */}
+      <Route
+        path="/superadmin/platform/settings/*"
+        element={<PlatformSettings />}
+      />
+      <Route
+        path="/superadmin/platform/registration-intro"
+        element={<PlatformRegistrationIntro />}
+      />
+
+      {/* Profile & Profile Related Pages */}
+      <Route path="/:usernameSlug" element={<UserProfile />}>
+        <Route path="works">
+          <Route path=":workId">
+            <Route path="*" element={<Work />} />
           </Route>
+        </Route>
+      </Route>
 
-          <Route path="/calendar">
-            <Route path=":activityId">
-              <Route path="*" element={<Activity />} />
-            </Route>
-          </Route>
+      {/* Auth */}
+      <Route exact path="/register" element={<SignupPage />} />
+      <Route exact path="/login" element={<LoginPage />} />
+      <Route exact path="/forgot-password" element={<ForgotPasswordPage />} />
 
-          <Route exact path="/my-activities" element={<MyActivities />} />
+      <Route path="/reset-password">
+        <Route path="*" element={<ResetPasswordPage />} />
+      </Route>
 
-          {/* Groups */}
-          <Route exact path="/groups" element={<Groups />}>
-            <Route path="groupId">
-              <Route path="*" element={<Group />} />
-            </Route>
-          </Route>
+      <Route path="/intro" element={<RegistrationIntro />} />
 
-          {/* Resources */}
-          <Route exact path="/resources" element={<Resources />}>
-            <Route path=":resourceId">
-              <Route path="*" element={<Resource />} />
-            </Route>
-          </Route>
+      {/* SuperAdmin */}
+      <Route exact path="/new-host" element={<NewHost />} />
+      <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
+      <Route exact path="/setup" element={<SetupHome />} />
 
-          {/* Pages */}
-          <Route exact path="/info" element={<Page />}>
-            <Route path=":pageTitle">
-              <Route path="*" element={<Page />} />
-            </Route>
-          </Route>
-
-          <Route path="/cp">
-            <Route path=":composablePageId" element={<ComposablePageView />} />
-          </Route>
-
-          {/* Works */}
-          <Route exact path="/works" element={<Works />} />
-
-          {/* Communities: Only on Portal App */}
-          <Route exact path="/communities" element={<Communities />} />
-
-          {/* Newsletter Emails */}
-          <Route path="/newsletters" element={<PreviousNewsletters />}>
-            <Route path="*" element={<PreviousNewsletters />} />
-          </Route>
-
-          {/* Admin */}
-          <Route path="/admin/*" element={<AdminContainer />} />
-
-          {/* Super Admin */}
-          <Route
-            path="/superadmin/platform/settings/*"
-            element={<PlatformSettings />}
-          />
-          <Route
-            path="/superadmin/platform/registration-intro"
-            element={<PlatformRegistrationIntro />}
-          />
-
-          {/* Profile & Profile Related Pages */}
-          <Route path="/:usernameSlug" element={<UserProfile />}>
-            <Route path="works">
-              <Route path=":workId">
-                <Route path="*" element={<Work />} />
-              </Route>
-            </Route>
-          </Route>
-
-          {/* Auth */}
-          <Route exact path="/register" element={<SignupPage />} />
-          <Route exact path="/login" element={<LoginPage />} />
-          <Route
-            exact
-            path="/forgot-password"
-            element={<ForgotPasswordPage />}
-          />
-
-          <Route path="/reset-password">
-            <Route path="*" element={<ResetPasswordPage />} />
-          </Route>
-
-          <Route path="/intro" element={<RegistrationIntro />} />
-
-          {/* SuperAdmin */}
-          <Route exact path="/new-host" element={<NewHost />} />
-          <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
-          <Route exact path="/setup" element={<SetupHome />} />
-
-          {/* NotFoundPage */}
-          <Route exact path="/not-found" element={<NotFoundPage />} />
-          <Route exact path="/404" element={<NotFoundPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
-    </LayoutContainer>
+      {/* NotFoundPage */}
+      <Route exact path="/not-found" element={<NotFoundPage />} />
+      <Route exact path="/404" element={<NotFoundPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </>
+    //     </Routes>
+    //   </Suspense>
+    // </LayoutContainer>
   );
 }

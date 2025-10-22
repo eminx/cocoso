@@ -1,0 +1,87 @@
+diff --git a/node_modules/react-router/package.json b/node_modules/react-router/package.json
+index 84ebf56..a66f26b 100644
+--- a/node_modules/react-router/package.json
++++ b/node_modules/react-router/package.json
+@@ -20,26 +20,26 @@
+   "sideEffects": false,
+   "types": "./dist/development/index.d.ts",
+   "main": "./dist/development/index.js",
+-  "module": "./dist/development/index.mjs",
++  "module": "./dist/development/index.js",
+   "exports": {
+     ".": {
+       "react-server": {
+-        "module": "./dist/development/index-react-server.mjs",
++        "module": "./dist/development/index-react-server.js",
+         "default": "./dist/development/index-react-server.js"
+       },
+       "node": {
+         "types": "./dist/development/index.d.ts",
+-        "module": "./dist/development/index.mjs",
+-        "module-sync": "./dist/development/index.mjs",
++        "module": "./dist/development/index.js",
++        "module-sync": "./dist/development/index.js",
+         "default": "./dist/development/index.js"
+       },
+       "module": {
+         "types": "./dist/development/index.d.mts",
+-        "default": "./dist/development/index.mjs"
++        "default": "./dist/development/index.js"
+       },
+       "import": {
+         "types": "./dist/development/index.d.mts",
+-        "default": "./dist/development/index.mjs"
++        "default": "./dist/development/index.js"
+       },
+       "default": {
+         "types": "./dist/development/index.d.ts",
+@@ -49,17 +49,17 @@
+     "./dom": {
+       "node": {
+         "types": "./dist/development/dom-export.d.ts",
+-        "module": "./dist/development/dom-export.mjs",
+-        "module-sync": "./dist/development/dom-export.mjs",
++        "module": "./dist/development/dom-export.js",
++        "module-sync": "./dist/development/dom-export.js",
+         "default": "./dist/development/dom-export.js"
+       },
+       "module": {
+         "types": "./dist/development/dom-export.d.mts",
+-        "default": "./dist/development/dom-export.mjs"
++        "default": "./dist/development/dom-export.js"
+       },
+       "import": {
+         "types": "./dist/development/dom-export.d.mts",
+-        "default": "./dist/development/dom-export.mjs"
++        "default": "./dist/development/dom-export.js"
+       },
+       "default": {
+         "types": "./dist/development/dom-export.d.ts",
+@@ -79,22 +79,22 @@
+     },
+     "./internal/react-server-client": {
+       "react-server": {
+-        "module": "./dist/development/index-react-server-client.mjs",
++        "module": "./dist/development/index-react-server-client.js",
+         "default": "./dist/development/index-react-server-client.js"
+       },
+       "node": {
+         "types": "./dist/development/index.d.ts",
+-        "module": "./dist/development/index.mjs",
+-        "module-sync": "./dist/development/index.mjs",
++        "module": "./dist/development/index.js",
++        "module-sync": "./dist/development/index.js",
+         "default": "./dist/development/index.js"
+       },
+       "module": {
+         "types": "./dist/development/index.d.mts",
+-        "default": "./dist/development/index.mjs"
++        "default": "./dist/development/index.js"
+       },
+       "import": {
+         "types": "./dist/development/index.d.mts",
+-        "default": "./dist/development/index.mjs"
++        "default": "./dist/development/index.js"
+       },
+       "default": {
+         "types": "./dist/development/index.d.ts",

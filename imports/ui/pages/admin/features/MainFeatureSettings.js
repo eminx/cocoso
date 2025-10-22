@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import {
   Box,
@@ -11,7 +12,7 @@ import {
   Text,
   Textarea,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 
@@ -32,7 +33,7 @@ function Tablish({ rowItem }) {
 }
 
 export default function MainFeatureSettings({ itemName }) {
-  const { currentHost, getCurrentHost } = useContext(StateContext);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [localItem, setLocalItem] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [t] = useTranslation('admin');
@@ -81,7 +82,7 @@ export default function MainFeatureSettings({ itemName }) {
 
     try {
       await call('updateHostSettings', localSettings);
-      await getCurrentHost();
+      setCurrentHost(await call('getCurrentHost'));
       message.success(
         tc('message.success.save', { domain: tc('domains.settings') })
       );

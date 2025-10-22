@@ -14,6 +14,8 @@ import {
 
 import FeedbackForm from './FeedbackForm';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
+import { useAtomValue } from 'jotai';
+import { currentHostAtom, platformAtom } from '/imports/ui/LayoutContainer';
 
 export function OldFooter({ host, settings }) {
   return (
@@ -41,16 +43,20 @@ export function OldFooter({ host, settings }) {
   );
 }
 
-export function Footer({ currentHost, isFederationFooter }) {
+export function Footer() {
+  const currentHost = useAtomValue(currentHostAtom);
+  const platform = useAtomValue(platformAtom);
   const [tc] = useTranslation('common');
-  if (!currentHost || !currentHost.settings) {
+
+  if (!platform || !currentHost || !currentHost.settings) {
     return null;
   }
 
+  const { settings } = currentHost;
+  const isFederationFooter = platform?.isFederationLayout && platform.footer;
   const activeMenu = currentHost.settings?.menu?.filter(
     (item) => item.isVisible
   );
-  const { settings } = currentHost;
 
   return (
     <Box bg="gray.700" bottom={0} color="gray.100">
@@ -126,11 +132,14 @@ export function Footer({ currentHost, isFederationFooter }) {
   );
 }
 
-export function PlatformFooter({ platform, children }) {
+export function PlatformFooter() {
+  const platform = useAtomValue(platformAtom);
   const [tc] = useTranslation('common');
-  if (!platform) {
+
+  if (!platform || !platform.isFederationLayout || !platform.footer) {
     return null;
   }
+
   return (
     <Center bg="gray.900" className="platform-footer">
       <Box
@@ -153,7 +162,6 @@ export function PlatformFooter({ platform, children }) {
         <Box p="2" className="text-content">
           {HTMLReactParser(platform.footer)}
         </Box>
-        <Box p="2">{children}</Box>
 
         <Center>
           <Link to="/terms-&-privacy-policy">

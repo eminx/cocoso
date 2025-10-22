@@ -5,6 +5,7 @@ import XIcon from 'lucide-react/dist/esm/icons/x';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
 import ReactSelect from 'react-select';
+import { useAtom, useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -17,19 +18,25 @@ import {
   Loader,
   Text,
 } from '/imports/ui/core';
+import {
+  currentHostAtom,
+  currentUserAtom,
+  roleAtom,
+} from '/imports/ui/LayoutContainer';
 
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
-import { StateContext } from '../../LayoutContainer';
 import TablyRouter from '../../generic/TablyRouter';
 import Boxling from './Boxling';
 
 export default function MenuSettings() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
+  const role = useAtomValue(roleAtom);
   const [loading, setLoading] = useState(true);
   const [localSettings, setLocalSettings] = useState(null);
   const [composablePageTitles, setComposablePageTitles] = useState([]);
-  const { currentUser, currentHost, role, getCurrentHost } =
-    useContext(StateContext);
+
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -99,7 +106,7 @@ export default function MenuSettings() {
     setLoading(true);
     try {
       await call('updateHostSettings', localSettings);
-      await getCurrentHost();
+      setCurrentHost(await call('getCurrentHost'));
       message.success(
         tc('message.success.save', { domain: tc('domains.settings') })
       );

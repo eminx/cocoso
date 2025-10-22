@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Trans } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import {
   Box,
@@ -12,7 +13,7 @@ import {
   Text,
 } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '/imports/ui/LayoutContainer';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
@@ -28,8 +29,7 @@ import BackgroundHandler from './BackgroundHandler';
 import FontSelector from './FontSelector';
 
 export default function ThemeHandler() {
-  const { currentHost, getCurrentHost, setCurrentHost } =
-    useContext(StateContext);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
 
   const [state, setState] = useState({
     updating: false,
@@ -92,11 +92,9 @@ export default function ThemeHandler() {
       },
     };
 
-    console.log();
-
     try {
       await call('updateHostTheme', newTheme);
-      await getCurrentHost();
+      setCurrentHost(await call('getCurrentHost'));
       message.success(<Trans i18nKey="admin:design.message.success" />);
     } catch (error) {
       message.error(

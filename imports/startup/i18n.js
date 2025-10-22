@@ -88,7 +88,7 @@ if (i18n && process && !process.release) {
 if (i18n && !i18n.isInitialized) {
   i18n.init(options);
   // check & set lang for user(logged) or host prefences
-  Tracker.autorun(() => {
+  Tracker.autorun(async () => {
     if (Meteor.isClient) {
       if (Meteor.userId()) {
         const handler = Meteor.subscribe('me');
@@ -99,12 +99,13 @@ if (i18n && !i18n.isInitialized) {
         return;
       }
     }
-    Meteor.call('getCurrentHost', (error, respond) => {
-      if (!error) {
-        const hostLang = respond?.settings?.lang;
-        i18n.changeLanguage(hostLang);
-      }
-    });
+    try {
+      const respond = await Meteor.callAsync('getCurrentHost');
+      const hostLang = respond?.settings?.lang;
+      i18n.changeLanguage(hostLang);
+    } catch (error) {
+      console.error(error);
+    }
   });
 }
 

@@ -39,37 +39,21 @@ export default async function ServerRenderer(sink) {
   const pathname = sink?.request?.url?.pathname;
   const search = sink?.request?.url?.search;
 
-  // const data = await dataFetcher({
-  //   host,
-  //   isPortalHost: Boolean(Host.isPortalHost),
-  //   menu,
-  //   pathname,
-  //   search,
-  // });
-
   const props = {
     Host,
     pageTitles,
     sink,
   };
 
-  // Create routes with props
   const routes = AppRoutes(props);
-
-  // Create static handler and router for SSR
   const { query, dataRoutes } = createStaticHandler(routes);
 
-  // Create fetch request for the current URL
   const protocol = sink?.request?.connection?.encrypted ? 'https' : 'http';
   const fullUrl = `${protocol}://${host}${pathname}${search || ''}`;
   const fetchRequest = new Request(fullUrl);
 
   // Execute data loading
   const context = await query(fetchRequest);
-
-  if (context instanceof Response) {
-    throw context;
-  }
 
   // Handle redirects or responses
   if (context instanceof Response) {

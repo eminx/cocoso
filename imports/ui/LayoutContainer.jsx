@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -9,6 +8,7 @@ import 'dayjs/locale/en-gb';
 import 'dayjs/locale/sv';
 import 'dayjs/locale/tr';
 import updateLocale from 'dayjs/plugin/updateLocale';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 
 import { Box } from '/imports/ui/core';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
@@ -24,28 +24,70 @@ import { message } from './generic/message';
 
 export const StateContext = React.createContext(null);
 
+export const platformAtom = atom(null);
+export const currentUserAtom = atom(null);
+export const currentHostAtom = atom(window?.__PRELOADED_STATE__?.Host || null);
+export const allHostsAtom = atom([]);
+export const pageTitlesAtom = atom([]);
+export const roleAtom = atom(null);
+export const canCreateContentAtom = atom((get) => {
+  const role = get(roleAtom);
+  return role && ['admin', 'contributor'].includes(role);
+});
+export const isDesktopAtom = atom(true);
+export const isMobileAtom = atom(false);
+export const renderedAtom = atom(false);
+
 dayjs.extend(updateLocale);
 
-function LayoutPage({ currentUser, userLoading, children }) {
-  const initialCurrentHost = window?.__PRELOADED_STATE__?.Host || null;
-  const [platform, setPlatform] = useState(null);
-  const [currentHost, setCurrentHost] = useState(initialCurrentHost);
-  const [allHosts, setAllHosts] = useState(null);
-  const [pageTitles, setPageTitles] = useState([]);
-  const [hue, setHue] = useState('233');
-  const [rendered, setRendered] = useState(false);
+function LayoutPage({
+  currentUser,
+  initialCurrentHost,
+  initialPageTitles,
+  initialPlatform,
+  children,
+}) {
+  const setPlatform = useSetAtom(platformAtom);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
+  const setCurrentUser = useSetAtom(currentUserAtom);
+  const setAllHosts = useSetAtom(allHostsAtom);
+  const setPageTitles = useSetAtom(pageTitlesAtom);
+  const setRole = useSetAtom(roleAtom);
+  const [rendered, setRendered] = useAtom(renderedAtom);
+  const [isDesktop, setIsDesktop] = useAtom(isDesktopAtom);
+  const setIsMobile = useSetAtom(isMobileAtom);
   const [, i18n] = useTranslation();
-  const isDesktop = useMediaQuery('(min-width: 960px)');
-  const isMobile = useMediaQuery('(max-width: 480px)');
-  const location = useLocation();
-  const { pathname } = location;
+
   const [tc] = useTranslation('common');
 
   useLayoutEffect(() => {
+    setCurrentUser(currentUser);
+    setCurrentHost(initialCurrentHost);
+    setPageTitles(initialPageTitles);
+    setPlatform(initialPlatform);
+    setIsDesktop(useMediaQuery('(min-width: 960px)'));
+    setIsMobile(useMediaQuery('(max-width: 480px)'));
     setTimeout(() => {
       setRendered(true);
     }, 1000);
   }, []);
+
+  useLayoutEffect(() => {
+    if (!currentHost || !currentHost.theme) {
+      return;
+    }
+    applyGlobalStyles(currentHost.theme);
+  }, [currentHost]);
+
+  useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+    const hostWithinUser = currentUser?.memberships?.find(
+      (membership) => membership?.host === window.location.host
+    );
+    setRole(hostWithinUser?.role || null);
+  }, [currentUser]);
 
   useEffect(() => {
     if (!i18n || !i18n.language) {
@@ -60,90 +102,18 @@ function LayoutPage({ currentUser, userLoading, children }) {
     });
   }, [i18n?.language]);
 
-  const pathnameSplitted = pathname.split('/');
-
-  useEffect(() => {
-    if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
-      return;
-    }
-    window.scrollTo(0, 0);
-  }, [pathnameSplitted[2]]);
-
-  const getCurrentHost = async () => {
-    try {
-      const respond = await call('getCurrentHost');
-      setCurrentHost(respond);
-      setHue(respond?.settings?.hue);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getPlatform = async () => {
-    try {
-      const respond = await call('getPlatform');
-      setPlatform(respond);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const getAllHosts = async () => {
     try {
       const respond = await call('getAllHosts');
       setAllHosts(respond.sort((a, b) => a.name.localeCompare(b.name)));
     } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getPageTitles = async () => {
-    try {
-      const respond = await call('getPageTitles');
-      setPageTitles(respond);
-    } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    getCurrentHost();
-    getPlatform();
     getAllHosts();
-    getPageTitles();
   }, []);
-
-  useLayoutEffect(() => {
-    if (currentHost?.theme) {
-      applyGlobalStyles(currentHost.theme);
-    }
-  }, [currentHost?.theme]);
-
-  const setSelectedHue = async () => {
-    try {
-      await call('setHostHue', hue);
-      message.success(tc('message.success.update'));
-      await getCurrentHost();
-    } catch (error) {
-      message.error(error.reason || error.error);
-    }
-  };
-
-  const hostWithinUser =
-    currentUser &&
-    currentUser.memberships &&
-    currentUser.memberships.find(
-      (membership) => membership.host === window.location.host
-    );
-
-  const role = hostWithinUser && hostWithinUser.role;
-  const canCreateContent = role && ['admin', 'contributor'].includes(role);
-
-  const isFederationFooter = platform?.isFederationLayout && platform.footer;
-  const isLogoSmall =
-    pathnameSplitted &&
-    !['pages', 'info', 'cp'].includes(pathnameSplitted[1]) &&
-    Boolean(pathnameSplitted[2]);
 
   const adminPage = pathnameSplitted[1] === 'admin';
 
@@ -166,8 +136,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
           getCurrentHost,
           getPageTitles,
           getPlatform,
-          setHue,
-          setSelectedHue,
           setCurrentHost,
         }}
       >
@@ -176,23 +144,14 @@ function LayoutPage({ currentUser, userLoading, children }) {
           theme={currentHost?.theme}
         >
           {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
-          {!adminPage && (
-            <Header
-              Host={currentHost}
-              isLogoSmall={isLogoSmall}
-              pageTitles={pageTitles}
-            />
-          )}
+          {!adminPage && <Header />}
           {children}
         </DummyWrapper>
 
         {!adminPage && (
           <>
-            <Footer
-              currentHost={currentHost}
-              isFederationFooter={isFederationFooter}
-            />
-            {isFederationFooter && <PlatformFooter platform={platform} />}
+            <Footer />
+            <PlatformFooter />
           </>
         )}
       </StateContext.Provider>
@@ -207,11 +166,9 @@ function LayoutPage({ currentUser, userLoading, children }) {
 export default withTracker((props) => {
   const meSub = Meteor.isClient && Meteor.subscribe('me');
   const currentUser = Meteor.isClient && Meteor.user();
-  const userLoading = meSub && !meSub.ready();
 
   return {
     currentUser,
-    userLoading,
     ...props,
   };
 })(LayoutPage);
