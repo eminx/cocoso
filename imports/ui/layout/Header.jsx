@@ -112,11 +112,12 @@ export function InfoPagesMenu({
 }
 
 function HeaderMenu({ Host, pageTitles }) {
+  const location = useLocation();
   const isDesktop = useMediaQuery('(min-width: 960px)');
 
   const settings = Host?.settings;
   const menuStyles = Host?.theme?.menu;
-  const pathname = isClient ? window?.location?.pathname : null;
+  const pathname = location?.pathname;
 
   const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } = settings || {};
 
@@ -209,9 +210,8 @@ function HeaderMenu({ Host, pageTitles }) {
   );
 }
 
-export default function Header({ isLogoSmall = false }) {
-  const currentHost = useAtomValue(currentHostAtom);
-  const pageTitles = useAtomValue(pageTitlesAtom);
+export default function Header({ Host, pageTitles, isLogoSmall = false }) {
+  const currentHost = Host;
 
   if (!currentHost) {
     return null;

@@ -3,16 +3,17 @@ import { Routes, Route } from 'react-router';
 import loadable from '@loadable/component';
 import { useAtomValue } from 'jotai';
 
-import Loader from '/imports/ui/core/Loader';
-const Terms = loadable(() => import('/imports/ui/entry/Terms'));
 import LayoutContainer, { currentHostAtom } from '../LayoutContainer';
+
+import Loader from '/imports/ui/core/Loader';
+import SetupHome from '/imports/ui/pages/setup';
+const Terms = loadable(() => import('/imports/ui/entry/Terms'));
+
 const ComposablePageView = loadable(() =>
   import('./composablepages/ComposablePageView')
 );
 
-import SetupHome from '/imports/ui/pages/setup';
-
-const Communities = loadable(() => import('../pages/hosts/Communities'));
+const Communities = loadable(() => import('./hosts/Communities'));
 
 // Activities
 const Activities = loadable(() => import('./activities/Activities'));
@@ -101,12 +102,12 @@ function HomePage() {
   return Component;
 }
 
-export default function AppRoutes() {
+export default function BrowserRoutes() {
   return (
     // <LayoutContainer>
     //   <Suspense fallback={<Loader />}>
     //     <Routes>
-    <>
+    <Routes>
       <Route exact path="/" element={<HomePage />} />
 
       {/* Members list public */}
@@ -208,7 +209,7 @@ export default function AppRoutes() {
       <Route exact path="/not-found" element={<NotFoundPage />} />
       <Route exact path="/404" element={<NotFoundPage />} />
       <Route path="*" element={<NotFoundPage />} />
-    </>
+    </Routes>
     //     </Routes>
     //   </Suspense>
     // </LayoutContainer>

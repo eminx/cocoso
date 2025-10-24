@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
+import { useTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
@@ -38,13 +38,13 @@ export const renderedAtom = atom(false);
 
 dayjs.extend(updateLocale);
 
-function LayoutPage({
-  currentUser,
+export default function LayoutPage({
   initialCurrentHost,
   initialPageTitles,
   initialPlatform,
   children,
 }) {
+  const currentUser = useTracker(() => Meteor.user(), []);
   const setPlatform = useSetAtom(platformAtom);
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
@@ -154,12 +154,12 @@ function LayoutPage({
   );
 }
 
-export default withTracker((props) => {
-  const meSub = Meteor.isClient && Meteor.subscribe('me');
-  const currentUser = Meteor.isClient && Meteor.user();
+// withTracker((props) => {
+//   const meSub = Meteor.isClient && Meteor.subscribe('me');
+//   const currentUser = Meteor.isClient && Meteor.user();
 
-  return {
-    currentUser,
-    ...props,
-  };
-})(LayoutPage);
+//   return {
+//     currentUser,
+//     ...props,
+//   };
+// })(LayoutPage);

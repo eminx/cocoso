@@ -8,11 +8,12 @@ import {
   RouterProvider,
 } from 'react-router';
 
-import AppRoutes from '/imports/ui/pages/Routes';
 import SetupHome from '/imports/ui/pages/setup';
+import BrowserRoutes from '/imports/ui/pages/BrowserRoutes';
 
 import '../i18n';
-import LayoutContainer from '/imports/ui/LayoutContainer';
+import AppRoutes from '/imports/ssr/AppRoutes';
+// import LayoutContainer from '/imports/ui/LayoutContainer';
 
 onPageLoad(async () => {
   const container = document.getElementById('root');
@@ -29,18 +30,20 @@ onPageLoad(async () => {
   }
 
   const props = {
-    initialCurrentHost: currentHost,
-    initialPageTitles: pageTitles,
-    platform,
+    // initialCurrentHost: currentHost,
+    // initialPageTitles: pageTitles,
+    // platform,
+    Host: currentHost,
+    pageTitles,
   };
 
-  const routes = createRoutesFromElements(AppRoutes());
-  const router = createBrowserRouter(routes);
+  // const routes = createRoutesFromElements(<BrowserRoutes />);
+  const router = createBrowserRouter(AppRoutes(props));
 
   hydrateRoot(
     container,
-    <LayoutContainer {...props}>
-      <RouterProvider router={router} />
-    </LayoutContainer>
+    // <LayoutContainer {...props}>
+    <RouterProvider router={router} />
+    // </LayoutContainer>
   );
 });

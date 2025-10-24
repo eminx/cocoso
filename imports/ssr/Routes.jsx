@@ -21,7 +21,7 @@ export const routes = [
   {
     path: '/',
     exact: true,
-    component: Home,
+    Component: Home,
     fetch: async ({ host }) => {
       const Host = await call('getHost', host);
       return { Host };
@@ -30,7 +30,7 @@ export const routes = [
   {
     path: '/activities',
     exact: true,
-    component: ActivityList,
+    Component: ActivityList,
     fetch: async ({ host, search, isPortalHost }) => {
       const showPast = search?.get('showPast') === 'true';
       return isPortalHost
@@ -40,7 +40,7 @@ export const routes = [
   },
   {
     path: '/activities/:activityId',
-    component: Activity,
+    Component: Activity,
     fetch: async ({ params, host }) => {
       const activity = await call('getActivityById', params.activityId);
       const Host = await call('getHost', host);
@@ -50,13 +50,13 @@ export const routes = [
   {
     path: '/groups',
     exact: true,
-    component: GroupList,
+    Component: GroupList,
     fetch: async ({ host, isPortalHost }) =>
       await call('getGroupsWithMeetings', isPortalHost, host),
   },
   {
     path: '/groups/:groupId',
-    component: Group,
+    Component: Group,
     fetch: async ({ params, host }) => {
       const group = await call('getGroupWithMeetings', params.groupId);
       const Host = await call('getHost', host);
@@ -66,7 +66,7 @@ export const routes = [
   {
     path: '/resources',
     exact: true,
-    component: ResourceList,
+    Component: ResourceList,
     fetch: async ({ host, isPortalHost }) =>
       isPortalHost
         ? await call('getResourcesFromAllHosts')
@@ -74,7 +74,7 @@ export const routes = [
   },
   {
     path: '/resources/:resourceId',
-    component: Resource,
+    Component: Resource,
     fetch: async ({ params, host }) => {
       const resource = await call('getResourceById', params.resourceId);
       const documents = await call(
@@ -88,7 +88,7 @@ export const routes = [
   {
     path: '/works',
     exact: true,
-    component: WorkList,
+    Component: WorkList,
     fetch: async ({ host, isPortalHost }) =>
       isPortalHost
         ? await call('getAllWorksFromAllHosts')
@@ -96,7 +96,7 @@ export const routes = [
   },
   {
     path: '/works/:workId',
-    component: Work,
+    Component: Work,
     fetch: async ({ params, host }) => {
       const work = await call('getWorkById', params.workId);
       const documents = await call('getDocumentsByAttachments', params.workId);
@@ -107,7 +107,7 @@ export const routes = [
   {
     path: '/people',
     exact: true,
-    component: UserList,
+    Component: UserList,
     fetch: async ({ host, isPortalHost }) => {
       const keywords = await call('getKeywords');
       const users = isPortalHost
@@ -118,7 +118,7 @@ export const routes = [
   },
   {
     path: '/:usernameSlug',
-    component: User,
+    Component: User,
     fetch: async ({ params, host }) => {
       if (!params.usernameSlug || params.usernameSlug[0] !== '@') return {};
       const [, username] = params.usernameSlug.split('@');
@@ -130,7 +130,7 @@ export const routes = [
   {
     path: '/communities',
     exact: true,
-    component: Communities,
+    Component: Communities,
     fetch: async ({ host }) => {
       const Host = await call('getHost', host);
       const hosts = await call('getAllHosts');
@@ -139,6 +139,6 @@ export const routes = [
   },
   {
     path: '*',
-    component: NotFoundPage,
+    Component: NotFoundPage,
   },
 ];

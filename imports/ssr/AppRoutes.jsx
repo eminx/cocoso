@@ -21,7 +21,7 @@ import {
 } from './components';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
-const AppRoutes = (props) => {
+export default function AppRoutes(props) {
   const Host = props?.Host;
   const host = Host?.host;
   const isPortalHost = Boolean(Host?.isPortalHost);
@@ -234,6 +234,4 @@ const AppRoutes = (props) => {
       },
     },
   ];
-};
-
-export default AppRoutes;
+}

@@ -34,13 +34,14 @@ function parsePreloadedState(item) {
 }
 
 export function ActivityList({ Host, pageTitles, sink }) {
+  console.log('activitilist');
   const { activities } = useLoaderData();
   const [searchParams] = useSearchParams();
   const showPast = Boolean(searchParams.get('showPast') === 'true');
-  sink.appendToBody(parsePreloadedState({ activities, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ activities, Host }));
 
   return (
-    <WrapperSSR Host={Host} pageTitles={pageTitles} sink={sink}>
+    <WrapperSSR Host={Host} pageTitles={pageTitles}>
       <ActivitiesHybrid
         activities={activities}
         Host={Host}
@@ -52,7 +53,7 @@ export function ActivityList({ Host, pageTitles, sink }) {
 
 export function Activity({ Host, pageTitles, sink }) {
   const { activity } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ activity, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ activity, Host }));
 
   return (
     <WrapperSSR isEntryPage pageTitles={pageTitles} Host={Host}>
@@ -62,9 +63,9 @@ export function Activity({ Host, pageTitles, sink }) {
 }
 
 export function Calendar({ Host, pageTitles, sink }) {
-  sink.appendToBody(parsePreloadedState({ Host }));
+  sink && sink.appendToBody(parsePreloadedState({ Host }));
 
-  return <WrapperSSR Host={Host} pageTitles={pageTitles} sink={sink} />;
+  return <WrapperSSR Host={Host} pageTitles={pageTitles} />;
 }
 
 export function ComposablePage({ Host, pageTitles, sink }) {
@@ -73,7 +74,7 @@ export function ComposablePage({ Host, pageTitles, sink }) {
   //   composablePageId = Host?.settings?.menu[0]?.name;
   // }
 
-  sink.appendToBody(parsePreloadedState({ composablePage, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ composablePage, Host }));
 
   if (!composablePage || !composablePage.isPublished) {
     return null;
@@ -88,7 +89,7 @@ export function ComposablePage({ Host, pageTitles, sink }) {
 
 export function GroupList({ Host, pageTitles, sink }) {
   const { groups } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ groups, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ groups, Host }));
 
   return (
     <WrapperSSR Host={Host} pageTitles={pageTitles}>
@@ -99,7 +100,7 @@ export function GroupList({ Host, pageTitles, sink }) {
 
 export function Group({ Host, pageTitles, sink }) {
   const { documents, group } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ documents, group, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ documents, group, Host }));
 
   return (
     <WrapperSSR isEntryPage Host={Host} pageTitles={pageTitles}>
@@ -110,7 +111,7 @@ export function Group({ Host, pageTitles, sink }) {
 
 export function ResourceList({ Host, pageTitles, sink }) {
   const { resources } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ resources, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ resources, Host }));
 
   return (
     <WrapperSSR Host={Host} pageTitles={pageTitles}>
@@ -121,7 +122,7 @@ export function ResourceList({ Host, pageTitles, sink }) {
 
 export function Resource({ Host, pageTitles, sink }) {
   const { documents, resource } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ documents, resource, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ documents, resource, Host }));
 
   return (
     <WrapperSSR isEntryPage Host={Host} pageTitles={pageTitles}>
@@ -132,7 +133,7 @@ export function Resource({ Host, pageTitles, sink }) {
 
 export function WorkList({ Host, pageTitles, sink }) {
   const { works } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ works, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ works, Host }));
 
   return (
     <WrapperSSR Host={Host} pageTitles={pageTitles}>
@@ -143,7 +144,7 @@ export function WorkList({ Host, pageTitles, sink }) {
 
 export function Work({ Host, pageTitles, sink }) {
   const { documents, work } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ documents, work, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ documents, work, Host }));
 
   return (
     <WrapperSSR isEntryPage Host={Host} pageTitles={pageTitles}>
@@ -154,7 +155,7 @@ export function Work({ Host, pageTitles, sink }) {
 
 export function Page({ Host, pageTitles, sink }) {
   const { pages } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ pages, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ pages, Host }));
 
   return (
     <WrapperSSR Host={Host} pageTitles={pageTitles}>
@@ -165,7 +166,7 @@ export function Page({ Host, pageTitles, sink }) {
 
 export function UserList({ Host, pageTitles, sink }) {
   const { keywords, users } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ keywords, users, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ keywords, users, Host }));
 
   return (
     <WrapperSSR Host={Host} pageTitles={pageTitles}>
@@ -176,7 +177,7 @@ export function UserList({ Host, pageTitles, sink }) {
 
 export function User({ Host, pageTitles, sink }) {
   const { user } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ user, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ user, Host }));
 
   return (
     <WrapperSSR isEntryPage Host={Host} pageTitles={pageTitles}>
@@ -187,7 +188,7 @@ export function User({ Host, pageTitles, sink }) {
 
 export function Communities({ Host, pageTitles, sink }) {
   const { hosts } = useLoaderData();
-  sink.appendToBody(parsePreloadedState({ hosts, Host }));
+  sink && sink.appendToBody(parsePreloadedState({ hosts, Host }));
 
   return (
     <WrapperSSR Host={Host} pageTitles={pageTitles}>
