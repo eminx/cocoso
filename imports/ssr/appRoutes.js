@@ -223,12 +223,11 @@ export default function appRoutes(props) {
           children: [
             {
               path: ':workId/*',
-              index: true,
               element: <Work {...props} />,
               loader: async ({ params }) => {
                 const workId = params?.workId;
                 const username = params.usernameSlug.replace('@', '');
-                const work = await call('getActivityById', workId, username);
+                const work = await call('getWorkById', workId, username);
                 const documents = await call(
                   'getDocumentsByAttachments',
                   workId
