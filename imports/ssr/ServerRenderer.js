@@ -8,13 +8,13 @@ import {
   StaticRouterProvider,
 } from 'react-router';
 
-import AppRoutes from '/imports/ssr/AppRoutes';
+import appRoutes from './appRoutes';
 import Hosts from '/imports/api/hosts/host';
 import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
 let stitchesConfig = null;
 
-export default async function ServerRenderer(sink) {
+export default async function serverRenderer(sink) {
   const host = sink?.request?.headers?.['host'];
   const Host = await Hosts.findOneAsync({ host });
 
@@ -45,19 +45,16 @@ export default async function ServerRenderer(sink) {
     sink,
   };
 
-  const routes = AppRoutes(props);
+  const routes = appRoutes(props);
   const { query, dataRoutes } = createStaticHandler(routes);
 
   const protocol = sink?.request?.connection?.encrypted ? 'https' : 'http';
   const fullUrl = `${protocol}://${host}${pathname}${search || ''}`;
   const fetchRequest = new Request(fullUrl);
 
-  // Execute data loading
   const context = await query(fetchRequest);
 
-  // Handle redirects or responses
   if (context instanceof Response) {
-    // Handle redirects or other responses
     if (context.status >= 300 && context.status < 400) {
       const location = context.headers.get('Location');
       sink.redirect(location);

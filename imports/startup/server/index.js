@@ -4,7 +4,7 @@ import { onPageLoad } from 'meteor/server-render';
 import React from 'react';
 
 import { call } from '/imports/ui/utils/shared';
-import ServerRenderer from '/imports/ssr/ServerRenderer';
+import serverRenderer from '/imports/ssr/serverRenderer';
 
 import './api';
 import './migrations';
@@ -34,7 +34,7 @@ Meteor.startup(() => {
 
   onPageLoad(async (sink) => {
     try {
-      await ServerRenderer(sink);
+      await serverRenderer(sink);
     } catch (error) {
       console.error('SSR Error:', error);
       // Fallback to client-side rendering or error page

@@ -38,7 +38,7 @@ export const renderedAtom = atom(false);
 
 dayjs.extend(updateLocale);
 
-export default function LayoutPage({
+export default function LayoutContainer({
   initialCurrentHost,
   initialPageTitles,
   initialPlatform,
@@ -153,13 +153,3 @@ export default function LayoutPage({
     </>
   );
 }
-
-// withTracker((props) => {
-//   const meSub = Meteor.isClient && Meteor.subscribe('me');
-//   const currentUser = Meteor.isClient && Meteor.user();
-
-//   return {
-//     currentUser,
-//     ...props,
-//   };
-// })(LayoutPage);

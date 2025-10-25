@@ -12,7 +12,7 @@ import SetupHome from '/imports/ui/pages/setup';
 import BrowserRoutes from '/imports/ui/pages/BrowserRoutes';
 
 import '../i18n';
-import AppRoutes from '/imports/ssr/AppRoutes';
+import appRoutes from '../../ssr/appRoutes';
 // import LayoutContainer from '/imports/ui/LayoutContainer';
 
 onPageLoad(async () => {
@@ -20,8 +20,7 @@ onPageLoad(async () => {
 
   const platform = await Meteor.callAsync('getPlatform');
   const currentHost = await Meteor.callAsync('getCurrentHost');
-  const pages = await Meteor.callAsync('getPageTitles');
-  const pageTitles = pages.map((p) => p.title);
+  const pageTitles = await Meteor.callAsync('getPageTitles');
 
   if (!platform || !currentHost) {
     const root = createRoot(container);
@@ -38,7 +37,7 @@ onPageLoad(async () => {
   };
 
   // const routes = createRoutesFromElements(<BrowserRoutes />);
-  const router = createBrowserRouter(AppRoutes(props));
+  const router = createBrowserRouter(appRoutes(props));
 
   hydrateRoot(
     container,

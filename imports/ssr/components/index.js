@@ -7,6 +7,7 @@ import {
   useSearchParams,
 } from 'react-router';
 
+import LayoutContainer from '/imports/ui/LayoutContainer';
 import WrapperSSR from '../../ui/layout/WrapperSSR';
 import ActivityHybrid from '../../ui/entry/ActivityHybrid';
 import ComposablePageHybrid from '/imports/ui/entry/ComposablePageHybrid';
@@ -41,13 +42,15 @@ export function ActivityList({ Host, pageTitles, sink }) {
   sink && sink.appendToBody(parsePreloadedState({ activities, Host }));
 
   return (
-    <WrapperSSR Host={Host} pageTitles={pageTitles}>
-      <ActivitiesHybrid
-        activities={activities}
-        Host={Host}
-        showPast={showPast}
-      />
-    </WrapperSSR>
+    <>
+      <WrapperSSR Host={Host} pageTitles={pageTitles}>
+        <ActivitiesHybrid
+          activities={activities}
+          Host={Host}
+          showPast={showPast}
+        />
+      </WrapperSSR>
+    </>
   );
 }
 
@@ -75,6 +78,7 @@ export function ComposablePage({ Host, pageTitles, sink }) {
   // }
 
   sink && sink.appendToBody(parsePreloadedState({ composablePage, Host }));
+  console.log('composablePage', composablePage);
 
   if (!composablePage || !composablePage.isPublished) {
     return null;
