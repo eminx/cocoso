@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   useHref,
   useLoaderData,
@@ -23,6 +23,8 @@ import PageHybrid from '../../ui/entry/PageHybrid';
 import ActivitiesHybrid from '../../ui/listing/ActivitiesHybrid';
 import CommunitiesHybrid from '../../ui/pages/hosts/CommunitiesHybrid';
 
+// import ActivityInteractionHandler from '/imports/ui/pages/activities/components/ActivityInteractionHandler';
+
 function parsePreloadedState(item) {
   return `
     <script>
@@ -34,8 +36,9 @@ function parsePreloadedState(item) {
   `;
 }
 
+const isClient = Meteor?.isClient;
+
 export function ActivityList({ Host, pageTitles, sink }) {
-  console.log('activitilist');
   const { activities } = useLoaderData();
   const [searchParams] = useSearchParams();
   const showPast = Boolean(searchParams.get('showPast') === 'true');
@@ -55,8 +58,14 @@ export function ActivityList({ Host, pageTitles, sink }) {
 }
 
 export function Activity({ Host, pageTitles, sink }) {
+  const [rendered, setRendered] = useState(false);
   const { activity } = useLoaderData();
-  sink && sink.appendToBody(parsePreloadedState({ activity, Host }));
+
+  useEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
+  }, []);
 
   return (
     <WrapperSSR isEntryPage pageTitles={pageTitles} Host={Host}>
@@ -78,7 +87,6 @@ export function ComposablePage({ Host, pageTitles, sink }) {
   // }
 
   sink && sink.appendToBody(parsePreloadedState({ composablePage, Host }));
-  console.log('composablePage', composablePage);
 
   if (!composablePage || !composablePage.isPublished) {
     return null;
@@ -94,6 +102,10 @@ export function ComposablePage({ Host, pageTitles, sink }) {
 export function GroupList({ Host, pageTitles, sink }) {
   const { groups } = useLoaderData();
   sink && sink.appendToBody(parsePreloadedState({ groups, Host }));
+
+  // if (isClient) {
+  //   return <GroupsHybrid groups={groups} Host={Host} />;
+  // }
 
   return (
     <WrapperSSR Host={Host} pageTitles={pageTitles}>
@@ -202,39 +214,28 @@ export function Communities({ Host, pageTitles, sink }) {
 }
 
 export function Home(props) {
-  const host = props?.host;
-  const Host = Meteor.call('getHost', host);
+  const Host = props?.Host;
+  const host = Host?.host;
+  const menuItems = Host.settings?.menu;
+  const visibleMenu = menuItems?.filter((item) => item.isVisible);
+  const firstRoute = visibleMenu && visibleMenu[0].name;
 
-  if (!Host) {
-    return null;
+  switch (firstRoute) {
+    case 'activities':
+      return <ActivityList {...props} />;
+    case 'groups':
+      return <GroupList {...props} />;
+    case 'works':
+      return <WorkList {...props} />;
+    case 'resources':
+      return <ResourceList {...props} />;
+    case 'info':
+      return <Page {...props} />;
+    case 'calendar':
+      return <Calendar {...props} />;
+    case 'people':
+      return <UserList {...props} />;
+    default:
+      return <ComposablePage {...props} />;
   }
-
-  const getComponentBasedOnFirstRoute = () => {
-    const menuItems = Host.settings?.menu;
-    const visibleMenu = menuItems?.filter((item) => item.isVisible);
-    const firstRoute = visibleMenu && visibleMenu[0].name;
-
-    switch (firstRoute) {
-      case 'activities':
-        return <ActivityList {...props} />;
-      case 'groups':
-        return <GroupList {...props} />;
-      case 'works':
-        return <WorkList {...props} />;
-      case 'resources':
-        return <ResourceList {...props} />;
-      case 'info':
-        return <Page {...props} />;
-      case 'calendar':
-        return <Calendar {...props} />;
-      case 'people':
-        return <UserList {...props} />;
-      default:
-        return <ComposablePage {...props} />;
-    }
-  };
-
-  const Component = getComponentBasedOnFirstRoute();
-
-  return Component;
 }

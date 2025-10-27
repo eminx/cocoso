@@ -8,6 +8,7 @@ import {
   StaticRouterProvider,
 } from 'react-router';
 
+import WrapperSSR from '/imports/ui/layout/WrapperSSR';
 import appRoutes from './appRoutes';
 import Hosts from '/imports/api/hosts/host';
 import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';

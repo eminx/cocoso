@@ -6,6 +6,7 @@ import { useAtomValue } from 'jotai';
 
 import { Box, Center, Flex, Heading, Modal, Tag } from '/imports/ui/core';
 import { allHostsAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '/imports/state';
 
 import ActionDates from '../entry/ActionDates';
 import NiceSlider from '../generic/NiceSlider';

@@ -93,7 +93,7 @@ if (i18n && !i18n.isInitialized) {
       if (Meteor.userId()) {
         const handler = Meteor.subscribe('me');
         if (handler.ready()) {
-          const userLang = Meteor.user()?.lang;
+          const userLang = await Meteor.userAsync()?.lang;
           i18n.changeLanguage(userLang);
         }
         return;

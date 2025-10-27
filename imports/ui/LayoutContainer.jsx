@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -136,7 +136,13 @@ export default function LayoutContainer({
 
       <DummyWrapper animate={rendered && !isDesktop} theme={currentHost?.theme}>
         {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
-        {!adminPage && <Header />}
+        {!adminPage && (
+          <Header
+            Host={currentHost}
+            isLogoSmall={isEntryPage}
+            pageTitles={pageTitles}
+          />
+        )}
         {children}
       </DummyWrapper>
 

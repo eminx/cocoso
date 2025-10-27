@@ -110,18 +110,8 @@ export default function BrowserRoutes() {
     <Routes>
       <Route exact path="/" element={<HomePage />} />
 
-      {/* Members list public */}
-      <Route path="/people" element={<Users />} />
-
       {/* Calendar */}
       <Route path="/calendar" element={<Calendar />} />
-
-      {/* Activities */}
-      <Route path="/activities" element={<Activities />}>
-        <Route path=":activityId">
-          <Route path="*" element={<Activity />} />
-        </Route>
-      </Route>
 
       <Route path="/calendar">
         <Route path=":activityId">
@@ -130,37 +120,6 @@ export default function BrowserRoutes() {
       </Route>
 
       <Route exact path="/my-activities" element={<MyActivities />} />
-
-      {/* Groups */}
-      <Route exact path="/groups" element={<Groups />}>
-        <Route path="groupId">
-          <Route path="*" element={<Group />} />
-        </Route>
-      </Route>
-
-      {/* Resources */}
-      <Route exact path="/resources" element={<Resources />}>
-        <Route path=":resourceId">
-          <Route path="*" element={<Resource />} />
-        </Route>
-      </Route>
-
-      {/* Pages */}
-      <Route exact path="/info" element={<Page />}>
-        <Route path=":pageTitle">
-          <Route path="*" element={<Page />} />
-        </Route>
-      </Route>
-
-      <Route path="/cp">
-        <Route path=":composablePageId" element={<ComposablePageView />} />
-      </Route>
-
-      {/* Works */}
-      <Route exact path="/works" element={<Works />} />
-
-      {/* Communities: Only on Portal App */}
-      <Route exact path="/communities" element={<Communities />} />
 
       {/* Newsletter Emails */}
       <Route path="/newsletters" element={<PreviousNewsletters />}>
@@ -180,15 +139,6 @@ export default function BrowserRoutes() {
         element={<PlatformRegistrationIntro />}
       />
 
-      {/* Profile & Profile Related Pages */}
-      <Route path="/:usernameSlug" element={<UserProfile />}>
-        <Route path="works">
-          <Route path=":workId">
-            <Route path="*" element={<Work />} />
-          </Route>
-        </Route>
-      </Route>
-
       {/* Auth */}
       <Route exact path="/register" element={<SignupPage />} />
       <Route exact path="/login" element={<LoginPage />} />
@@ -202,8 +152,9 @@ export default function BrowserRoutes() {
 
       {/* SuperAdmin */}
       <Route exact path="/new-host" element={<NewHost />} />
-      <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
       <Route exact path="/setup" element={<SetupHome />} />
+
+      <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
 
       {/* NotFoundPage */}
       <Route exact path="/not-found" element={<NotFoundPage />} />
