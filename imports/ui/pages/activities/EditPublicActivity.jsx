@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import PublicActivityForm from './PublicActivityForm';
-import { ActivityContext } from './Activity';
+import { ActivityContext } from './ActivityItemHandler';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';

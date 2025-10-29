@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import WorkForm from './WorkForm';
-import { WorkContext } from './Work';
+import { WorkContext } from './WorkItemHandler';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';

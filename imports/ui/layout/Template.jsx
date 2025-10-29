@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai';
 
 import { Box, Center, Heading, Grid } from '/imports/ui/core';
 
-import { isDesktopAtom } from '../LayoutContainer';
+import { isDesktopAtom } from '../../state';
 
 const publicSettings = Meteor.settings.public;
 

@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router';
 import loadable from '@loadable/component';
 import { useAtomValue } from 'jotai';
 
-import LayoutContainer, { currentHostAtom } from '../LayoutContainer';
+import state, { currentHostAtom } from '../../state';
 
 import Loader from '/imports/ui/core/Loader';
 import SetupHome from '/imports/ui/pages/setup';
@@ -16,23 +16,23 @@ const ComposablePageView = loadable(() =>
 const Communities = loadable(() => import('./hosts/Communities'));
 
 // Activities
-const Activities = loadable(() => import('./activities/Activities'));
-const Activity = loadable(() => import('./activities/Activity'));
+const Activities = loadable(() => import('./activities/ActivityListHandler'));
+const Activity = loadable(() => import('./activities/ActivityItemHandler'));
 
 // Groups
-const Groups = loadable(() => import('./groups/Groups'));
+const Groups = loadable(() => import('./groups/GroupListHandler'));
 const Group = loadable(() => import('./groups/Group'));
 
 // Resources
-const Resources = loadable(() => import('./resources/Resources'));
-const Resource = loadable(() => import('./resources/Resource'));
+const Resources = loadable(() => import('./resources/ResourceListHandler'));
+const Resource = loadable(() => import('./resources/ResourceItemHandler'));
 
 // Calendar
 const Calendar = loadable(() => import('./calendar/Calendar'));
 
 // Works
-const Works = loadable(() => import('./works/Works'));
-const Work = loadable(() => import('./works/Work'));
+const Works = loadable(() => import('./works/WorkListHandler'));
+const Work = loadable(() => import('./works/WorkItemHandler'));
 
 // Users
 const Users = loadable(() => import('./profile/Users'));
@@ -104,7 +104,7 @@ function HomePage() {
 
 export default function BrowserRoutes() {
   return (
-    // <LayoutContainer>
+    // <state>
     //   <Suspense fallback={<Loader />}>
     //     <Routes>
     <Routes>
@@ -163,6 +163,6 @@ export default function BrowserRoutes() {
     </Routes>
     //     </Routes>
     //   </Suspense>
-    // </LayoutContainer>
+    // </state>
   );
 }

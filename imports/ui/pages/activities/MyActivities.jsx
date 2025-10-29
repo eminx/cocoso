@@ -14,7 +14,7 @@ import {
 } from '/imports/ui/core';
 import { useAtomValue } from 'jotai';
 
-import { currentHostAtom } from '../../LayoutContainer';
+import { currentHostAtom } from '../../../state';
 import NiceList from '../../generic/NiceList';
 import Template from '../../layout/Template';
 import TablyRouter from '/imports/ui/generic/TablyRouter';

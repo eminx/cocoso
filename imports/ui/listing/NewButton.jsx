@@ -5,11 +5,7 @@ import { useAtomValue } from 'jotai';
 
 import { IconButton } from '/imports/ui/core';
 
-import {
-  canCreateContentAtom,
-  currentHostAtom,
-  roleAtom,
-} from '../LayoutContainer';
+import { canCreateContentAtom, currentHostAtom, roleAtom } from '../../state';
 
 const getRoute = (item) => {
   if (item.name === 'info') {

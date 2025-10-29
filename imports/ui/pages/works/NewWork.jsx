@@ -6,7 +6,7 @@ import WorkForm from './WorkForm';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';
-import { currentUserAtom } from '../../LayoutContainer';
+import { currentUserAtom } from '../../../state';
 
 export default function NewWork() {
   const currentUser = useAtomValue(currentUserAtom);

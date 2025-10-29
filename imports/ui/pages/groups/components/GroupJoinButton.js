@@ -5,17 +5,18 @@ import { useAtomValue } from 'jotai';
 
 import { Button, Center, Modal, Text } from '/imports/ui/core';
 
-import { call } from '../../../utils/shared';
-import { GroupContext } from '../Group';
-import { currentUserAtom, isDesktopAtom } from '../../../LayoutContainer';
-import { message } from '../../../generic/message';
+import { call } from '/imports/ui/utils/shared';
+import { currentUserAtom, isDesktopAtom } from '/imports/state';
+import { message } from '/imports/ui/generic/message';
+
+import { groupAtom } from '../GroupItemHandler';
 
 export default function GroupJoinButton() {
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
-  const { group, getGroupById } = useContext(GroupContext);
+  const group = useAtomValue(groupAtom);
   const navigate = useNavigate();
 
   if (!group) {

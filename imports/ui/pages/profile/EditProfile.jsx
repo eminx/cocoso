@@ -31,7 +31,7 @@ import {
   currentUserAtom,
   platformAtom,
   roleAtom,
-} from '/imports/ui/LayoutContainer';
+} from '../../../state';
 
 import AvatarUploader from './AvatarUploader';
 import Boxling from '../admin/Boxling';

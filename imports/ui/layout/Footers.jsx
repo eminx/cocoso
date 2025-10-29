@@ -15,7 +15,7 @@ import {
 import FeedbackForm from './FeedbackForm';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
 import { useAtomValue } from 'jotai';
-import { currentHostAtom, platformAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom, platformAtom } from '../../state';
 
 export function OldFooter({ host, settings }) {
   return (

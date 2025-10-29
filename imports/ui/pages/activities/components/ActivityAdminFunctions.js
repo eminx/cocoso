@@ -1,17 +1,17 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
+import { useAtomValue } from 'jotai';
+
+import { activityAtom } from '/imports/ssr/components';
 
 import AdminFunctions from '../../../entry/AdminFunctions';
-import { ActivityContext } from '../Activity';
 import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 
 export default function ActivityAdminFunctions() {
   const [tc] = useTranslation('common');
-  const activityContext = useContext(ActivityContext);
+  const activity = useAtomValue(activityAtom);
   const [, setSearchParams] = useSearchParams();
-
-  const activity = activityContext?.activity;
 
   const handleSelect = (item) => {
     if (item.kind === 'edit') {

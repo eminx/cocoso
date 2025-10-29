@@ -4,8 +4,8 @@ import { onPageLoad } from 'meteor/server-render';
 import React from 'react';
 
 import { call } from '/imports/ui/utils/shared';
-import serverRenderer from '/imports/ssr/serverRenderer';
 
+import serverRenderer from './serverRenderer';
 import './api';
 import './migrations';
 

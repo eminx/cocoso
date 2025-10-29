@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
 import { Box, Center, Flex, Heading, Modal, Tag } from '/imports/ui/core';
-import { allHostsAtom } from '/imports/ui/LayoutContainer';
+import { allHostsAtom } from '../../state';
 import { currentHostAtom } from '/imports/state';
 
 import ActionDates from '../entry/ActionDates';

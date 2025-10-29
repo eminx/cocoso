@@ -2,7 +2,7 @@ import React from 'react';
 import { useAtomValue } from 'jotai';
 
 import { Box } from '/imports/ui/core';
-import { currentUserAtom, roleAtom } from '../../../LayoutContainer';
+import { currentUserAtom, roleAtom } from '../../../../state';
 import SlideWidget from '../../../entry/SlideWidget';
 import PageAdminFunctions from './PageAdminFunctions';
 

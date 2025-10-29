@@ -6,7 +6,7 @@ import { useAtomValue } from 'jotai';
 
 import { Box, Modal, Progress } from '/imports/ui/core';
 
-import { canCreateContentAtom, currentHostAtom } from '../LayoutContainer';
+import { canCreateContentAtom, currentHostAtom } from '/imports/state';
 
 export const initialLoader = {
   isCreating: false,

@@ -14,7 +14,7 @@ import {
 
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
-import { currentUserAtom } from '/imports/ui/LayoutContainer';
+import { currentUserAtom } from '../../../state';
 
 import { ForgotPassword } from './index';
 

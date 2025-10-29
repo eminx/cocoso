@@ -7,7 +7,7 @@ import { PageContext } from './Page';
 import { call, parseTitle } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';
-import { pageTitlesAtom } from '../../LayoutContainer';
+import { pageTitlesAtom } from '../../../state';
 
 export default function EditPage() {
   const setPageTitles = useSetAtom(pageTitlesAtom);

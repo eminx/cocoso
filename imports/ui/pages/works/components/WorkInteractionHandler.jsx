@@ -2,15 +2,14 @@ import React, { useContext } from 'react';
 import { useAtomValue } from 'jotai';
 
 import { Box } from '/imports/ui/core';
-import { currentUserAtom } from '../../../LayoutContainer';
-import { WorkContext } from '../Work';
+
+import { currentUserAtom } from '/imports/state';
 import SlideWidget from '../../../entry/SlideWidget';
 import WorkAdminFunctions from './WorkAdminFunctions';
 import ContactInfo from '../../profile/ContactInfo';
 
-export default function WorkInteractionHandler({ slideStart }) {
+export default function WorkInteractionHandler({ work }) {
   const currentUser = useAtomValue(currentUserAtom);
-  const { work } = useContext(WorkContext);
 
   if (!work) {
     return null;
@@ -18,14 +17,14 @@ export default function WorkInteractionHandler({ slideStart }) {
 
   if (!currentUser || currentUser._id !== work.authorId) {
     return (
-      <SlideWidget justify="center" slideStart={slideStart}>
+      <SlideWidget justify="center">
         <ContactInfo username={work.authorUsername} />
       </SlideWidget>
     );
   }
 
   return (
-    <SlideWidget justify="space-between" slideStart={slideStart}>
+    <SlideWidget justify="space-between">
       <Box w="40px">
         <WorkAdminFunctions />
       </Box>

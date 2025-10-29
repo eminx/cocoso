@@ -8,9 +8,9 @@ import {
   StaticRouterProvider,
 } from 'react-router';
 
-import WrapperSSR from '/imports/ui/layout/WrapperSSR';
-import appRoutes from './appRoutes';
 import Hosts from '/imports/api/hosts/host';
+import Platform from '/imports/api/platform/platform';
+import appRoutes from '/imports/appRoutes';
 import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
 let stitchesConfig = null;
@@ -18,6 +18,8 @@ let stitchesConfig = null;
 export default async function serverRenderer(sink) {
   const host = sink?.request?.headers?.['host'];
   const Host = await Hosts.findOneAsync({ host });
+  const platform = await Platform.findOneAsync();
+  const currentUser = await Meteor.callAsync('getCurrentUser');
 
   if (!stitchesConfig) {
     stitchesConfig = await import('/stitches.config');
@@ -41,9 +43,10 @@ export default async function serverRenderer(sink) {
   const search = sink?.request?.url?.search;
 
   const props = {
+    currentUser,
     Host,
     pageTitles,
-    sink,
+    platform,
   };
 
   const routes = appRoutes(props);

@@ -8,7 +8,7 @@ import { Alert, Center, Loader } from '/imports/ui/core';
 import { call } from '../../utils/shared';
 import UserHybrid from '../../entry/UserHybrid';
 import { message } from '../../generic/message';
-import { currentHostAtom } from '../../LayoutContainer';
+import { currentHostAtom } from '../../../state';
 import UserInteractionHandler from './components/UserInteractionHandler';
 
 export default function UserProfile() {

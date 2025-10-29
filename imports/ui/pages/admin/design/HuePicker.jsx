@@ -4,7 +4,7 @@ import { Trans } from 'react-i18next';
 import { useAtom } from 'jotai';
 
 import { Box, Button, Center, Code, Flex, Text } from '/imports/ui/core';
-import { currentHostAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '../../../../state';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 
 const getColorForPicker = (hue) => ({ h: hue, s: 80, l: 0.1, a: 0 });

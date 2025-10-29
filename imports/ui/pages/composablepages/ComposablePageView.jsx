@@ -3,11 +3,7 @@ import { useHref, useNavigate, useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 
 import { message } from '/imports/ui/generic/message';
-import {
-  currentHostAtom,
-  currentUserAtom,
-  roleAtom,
-} from '/imports/ui/LayoutContainer';
+import { currentHostAtom, currentUserAtom, roleAtom } from '../../../state';
 import { call } from '/imports/ui/utils/shared';
 
 import ComposablePageHybrid from '../../entry/ComposablePageHybrid';

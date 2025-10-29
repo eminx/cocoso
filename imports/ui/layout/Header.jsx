@@ -10,7 +10,7 @@ import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
 import { parseTitle } from '../utils/shared';
 import { useAtomValue } from 'jotai';
-import { currentHostAtom, pageTitlesAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom, pageTitlesAtom } from '../../state';
 
 const isClient = Meteor?.isClient;
 

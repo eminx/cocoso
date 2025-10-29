@@ -15,7 +15,7 @@ import {
   Loader,
   Text,
 } from '/imports/ui/core';
-import { currentUserAtom, platformAtom } from '/imports/ui/LayoutContainer';
+import { currentUserAtom, platformAtom } from '../../../state';
 import { message } from '/imports/ui/generic/message';
 import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
 import FormField from '/imports/ui/forms/FormField';

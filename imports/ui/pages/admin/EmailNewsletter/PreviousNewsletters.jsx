@@ -18,7 +18,7 @@ import {
 import NiceList from '/imports/ui/generic/NiceList';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { currentHostAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '../../../../state';
 
 import EmailPreview from './EmailPreview';
 

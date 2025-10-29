@@ -22,7 +22,7 @@ import {
   currentUserAtom,
   platformAtom,
   roleAtom,
-} from '/imports/ui/LayoutContainer';
+} from '../../../../state';
 
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';

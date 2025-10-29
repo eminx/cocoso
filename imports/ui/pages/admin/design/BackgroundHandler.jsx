@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { Box, Button, Center, Flex, Checkbox, Text } from '/imports/ui/core';
 import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
 import FileDropper from '/imports/ui/forms/FileDropper';
-import { currentHostAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '../../../../state';
 import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';

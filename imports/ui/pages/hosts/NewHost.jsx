@@ -7,7 +7,7 @@ import Template from '../../layout/Template';
 import NewHostForm from '../../forms/NewHostForm';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
-import { currentUserAtom } from '../../LayoutContainer';
+import { currentUserAtom } from '../../../state';
 
 const hostModel = {
   host: '',

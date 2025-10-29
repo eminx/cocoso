@@ -13,7 +13,7 @@ import {
 } from '/imports/ui/core';
 import Tag from '/imports/ui/generic/Tag';
 import { message } from '/imports/ui/generic/message';
-import { currentUserAtom, roleAtom } from '/imports/ui/LayoutContainer';
+import { currentUserAtom, roleAtom } from '../../../state';
 import { call } from '/imports/ui/utils/shared';
 
 import Boxling from './Boxling';

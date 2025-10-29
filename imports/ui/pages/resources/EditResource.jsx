@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import ResourceForm from './ResourceForm';
-import { ResourceContext } from './Resource';
+import { ResourceContext } from './ResourceItemHandler';
 import { call } from '../../utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';

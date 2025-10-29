@@ -10,9 +10,8 @@ import {
   currentUserAtom,
   isDesktopAtom,
   roleAtom,
-} from '/imports/ui/LayoutContainer';
+} from '/imports/state';
 
-import { ResourceContext } from '../Resource';
 import { ChatButton } from '../../../chattery/ChatHandler';
 import SlideWidget from '../../../entry/SlideWidget';
 import ResourceAdminFunctions from './ResourceAdminFunctions';
@@ -40,15 +39,14 @@ function ReserveButton({ resource }) {
   );
 }
 
-export default function ResourceInteractionHandler({ slideStart }) {
+export default function ResourceInteractionHandler({ resource }) {
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const role = useAtomValue(roleAtom);
-  const { resource } = useContext(ResourceContext);
 
   if (role === 'admin') {
     return (
-      <SlideWidget justify="space-between" slideStart={slideStart}>
+      <SlideWidget justify="space-between">
         <Box w="40px">
           <ResourceAdminFunctions />
         </Box>
@@ -67,7 +65,7 @@ export default function ResourceInteractionHandler({ slideStart }) {
 
   if (canCreateContent) {
     return (
-      <SlideWidget justify="space-between" slideStart={slideStart}>
+      <SlideWidget justify="space-between">
         <Box w="40px" />
         {resource.isBookable ? <ReserveButton resource={resource} /> : null}
         <Box>

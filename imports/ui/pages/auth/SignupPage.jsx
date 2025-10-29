@@ -12,7 +12,7 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
-import { currentUserAtom, platformAtom } from '/imports/ui/LayoutContainer';
+import { currentUserAtom, platformAtom } from '../../../state';
 
 import { Signup } from './index';
 import { createAccount } from './functions';

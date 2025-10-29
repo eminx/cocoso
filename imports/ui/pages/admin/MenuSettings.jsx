@@ -18,11 +18,7 @@ import {
   Loader,
   Text,
 } from '/imports/ui/core';
-import {
-  currentHostAtom,
-  currentUserAtom,
-  roleAtom,
-} from '/imports/ui/LayoutContainer';
+import { currentHostAtom, currentUserAtom, roleAtom } from '../../../state';
 
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';

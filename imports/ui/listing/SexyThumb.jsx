@@ -7,7 +7,7 @@ import { useAtomValue } from 'jotai';
 import { Box, Flex, Tag } from '/imports/ui/core';
 
 import { DateJust } from '../entry/FancyDate';
-import { allHostsAtom } from '../LayoutContainer';
+import { allHostsAtom } from '../../state';
 
 const isClient = Meteor?.isClient;
 

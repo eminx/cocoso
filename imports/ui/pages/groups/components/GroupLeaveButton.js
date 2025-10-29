@@ -6,7 +6,7 @@ import { Button, Center, Modal, Text } from '/imports/ui/core';
 
 import { call } from '../../../utils/shared';
 import { GroupContext } from '../Group';
-import { currentUserAtom } from '../../../LayoutContainer';
+import { currentUserAtom } from '../../../../state';
 import { message } from '../../../generic/message';
 
 export default function LeaveButton() {

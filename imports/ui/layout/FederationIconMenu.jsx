@@ -24,7 +24,7 @@ import {
   currentUserAtom,
   isDesktopAtom,
   platformAtom,
-} from '/imports/ui/LayoutContainer';
+} from '../../state';
 
 export default function FederationIconMenu() {
   const allHosts = useAtomValue(allHostsAtom);

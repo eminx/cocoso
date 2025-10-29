@@ -12,7 +12,7 @@ import {
   Text,
   Textarea,
 } from '/imports/ui/core';
-import { currentHostAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '../../../../state';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 

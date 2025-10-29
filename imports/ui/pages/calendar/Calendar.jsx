@@ -28,7 +28,7 @@ import {
   currentHostAtom,
   currentUserAtom,
   roleAtom,
-} from '/imports/ui/LayoutContainer';
+} from '../../../state';
 import PageHeading from '/imports/ui/listing/PageHeading';
 import Tag from '/imports/ui/generic/Tag';
 

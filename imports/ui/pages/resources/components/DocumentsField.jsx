@@ -10,7 +10,7 @@ import { call } from '../../../utils/shared';
 import { message } from '../../../generic/message';
 import NiceList from '../../../generic/NiceList';
 import DocumentUploadHelper from '../../../forms/UploadHelpers';
-import { isDesktopAtom } from '../../../LayoutContainer';
+import { isDesktopAtom } from '../../../../state';
 
 export default function DocumentsField({
   contextType,

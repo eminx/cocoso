@@ -21,7 +21,7 @@ import {
   currentUserAtom,
   isDesktopAtom,
   roleAtom,
-} from '/imports/ui/LayoutContainer';
+} from '../../../state';
 import EditProfile from '/imports/ui/pages/profile/EditProfile';
 
 import AdminMenu from './AdminMenu';

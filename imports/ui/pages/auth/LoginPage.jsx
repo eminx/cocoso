@@ -20,7 +20,7 @@ import {
   currentUserAtom,
   platformAtom,
   roleAtom,
-} from '/imports/ui/LayoutContainer';
+} from '../../../state';
 
 import { loginWithPassword } from './functions';
 import { Login } from './index';

@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useAtomValue } from 'jotai';
 
-import { currentHostAtom, currentUserAtom } from '../../LayoutContainer';
+import { currentHostAtom, currentUserAtom } from '../../../state';
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
 import CommunitiesHybrid from './CommunitiesHybrid';

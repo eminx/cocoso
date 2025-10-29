@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import { currentHostAtom } from '../../LayoutContainer';
+import { currentHostAtom } from '../../../state';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import UsersHybrid from '../../listing/UsersHybrid';

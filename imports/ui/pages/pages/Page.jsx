@@ -9,7 +9,7 @@ import { useParams, useSearchParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 
 import PageHybrid from '../../entry/PageHybrid';
-import { currentHostAtom, role, roleAtom } from '../../LayoutContainer';
+import { currentHostAtom, role, roleAtom } from '../../../state';
 import { message } from '../../generic/message';
 import { call, parseTitle } from '../../utils/shared';
 import NewPage from './NewPage';

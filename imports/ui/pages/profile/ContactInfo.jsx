@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai';
 
 import { Box, Button, Center, Modal, Loader } from '/imports/ui/core';
 
-import { isDesktopAtom } from '../../LayoutContainer';
+import { isDesktopAtom } from '../../../state';
 import { call } from '../../utils/shared';
 import { message } from '../../generic/message';
 

@@ -56,7 +56,11 @@ const slideProps = (slideStart) => ({
   ping: slideStart,
 });
 
-export default function SlideWidget({ slideStart, children, ...otherProps }) {
+export default function SlideWidget({
+  slideStart = true,
+  children,
+  ...otherProps
+}) {
   const [position, setPosition] = useState('fixed');
   const [widgetHeight, setWidgetHeight] = useState(0);
   const positionRef = useRef(position);

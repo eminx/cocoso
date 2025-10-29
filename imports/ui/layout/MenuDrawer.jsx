@@ -12,7 +12,7 @@ import {
   isDesktopAtom,
   pageTitlesAtom,
   platformAtom,
-} from '../LayoutContainer';
+} from '../../state';
 import { InfoPagesMenu } from './Header';
 
 function MenuContent({ menuItems, pageTitles, styles, onToggle }) {

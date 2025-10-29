@@ -19,7 +19,7 @@ import {
   currentUserAtom,
   isDesktopAtom,
   roleAtom,
-} from '/imports/ui/LayoutContainer';
+} from '../../../state';
 import { getFullName } from '/imports/ui/utils/shared';
 
 export function AdminMenuHeader({ currentHost }) {

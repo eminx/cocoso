@@ -20,7 +20,7 @@ import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/ui/utils/shared';
 import ActionButton from '/imports/ui/generic/ActionButton';
 
-import { GroupContext } from '../Group';
+import { groupAtom } from '../GroupItemHandler';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 const isFutureMeeting = (meeting) => dayjs(meeting.endDate).isAfter(yesterday);
@@ -34,7 +34,7 @@ function MeetingDatesContent({
 }) {
   const [regButtonDisabled, setRegButtonDisabled] = useState(false);
   const [delButtonDisabled, setDelButtonDisabled] = useState(false);
-  const { getGroupById } = useContext(GroupContext);
+  const getGroupById = () => console.log('geoup');
   const [t] = useTranslation('groups');
 
   if (!group) {

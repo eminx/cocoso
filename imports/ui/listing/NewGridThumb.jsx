@@ -14,7 +14,7 @@ import {
   Text,
 } from '/imports/ui/core';
 
-import { allHostsAtom } from '../LayoutContainer';
+import { allHostsAtom } from '../../state';
 import Tag from '../generic/Tag';
 
 const isClient = Meteor.isClient;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import { currentHostAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '../../../state';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import ComposablePageForm from './ComposablePageForm';

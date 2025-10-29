@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
-import { atom, useAtom, useSetAtom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
@@ -25,19 +24,26 @@ import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
 import { Footer, PlatformFooter } from './Footers';
 
-export default function WrapperSSR({
+const isClient = Meteor.isClient;
+
+export default function WrapperHybrid({
+  currentUser,
   Host,
   isEntryPage = false,
   pageTitles,
+  platform,
   children,
 }) {
-  useHydrateAtoms([[currentHostAtom, Host]]);
-  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
+  useHydrateAtoms([
+    [currentHostAtom, Host],
+    [currentUserAtom, currentUser],
+    [pageTitlesAtom, pageTitles],
+    [platformAtom, platform],
+  ]);
 
-  // const setCurrentUser = useSetAtom(currentUserAtom);
-  // const setPlatform = useSetAtom(platformAtom);
+  const [rendered, setRendered] = useState(false);
+
   // const setAllHosts = useSetAtom(allHostsAtom);
-  // const setPageTitles = useSetAtom(pageTitlesAtom);
   // const setRole = useSetAtom(roleAtom);
   // const [rendered, setRendered] = useAtom(renderedAtom);
   // const [isDesktop, setIsDesktop] = useAtom(isDesktopAtom);
@@ -46,6 +52,9 @@ export default function WrapperSSR({
   // const isMobileValue = useMediaQuery('(max-width: 480px)');
 
   useEffect(() => {
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
     console.log('client');
   }, []);
 
@@ -64,7 +73,8 @@ export default function WrapperSSR({
             isLogoSmall={isEntryPage}
             pageTitles={pageTitles}
           />
-          {children}
+
+          {children({ rendered })}
         </DummyWrapper>
 
         <Footer currentHost={Host} />

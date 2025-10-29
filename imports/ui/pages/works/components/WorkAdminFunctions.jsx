@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 
 import AdminFunctions from '../../../entry/AdminFunctions';
-import { WorkContext } from '../Work';
+import { WorkContext } from '../WorkItemHandler';
 import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 
 export default function WorkAdminFunctions() {

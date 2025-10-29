@@ -19,6 +19,10 @@ const userModel = (user) => ({
 });
 
 Meteor.methods({
+  async getCurrentUser() {
+    return await Meteor.userAsync();
+  },
+
   async getUserInfo(username, hostPredefined) {
     check(username, String);
     const host = hostPredefined || getHost(this);

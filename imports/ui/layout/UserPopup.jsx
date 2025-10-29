@@ -29,7 +29,7 @@ import {
   isDesktopAtom,
   platformAtom,
   roleAtom,
-} from '../LayoutContainer';
+} from '../../state';
 import { getFullName } from '../utils/shared';
 
 function NotificationLinkItem({ host, item, children }) {

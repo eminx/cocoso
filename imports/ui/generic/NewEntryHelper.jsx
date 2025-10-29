@@ -6,7 +6,7 @@ import { useAtomValue } from 'jotai';
 
 import { Box } from '/imports/ui/core';
 
-import { currentHostAtom } from '../LayoutContainer';
+import { currentHostAtom } from '../../state';
 
 function NewEntryHelper({
   buttonLabel,

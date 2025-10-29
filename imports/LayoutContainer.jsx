@@ -14,13 +14,13 @@ import { Box } from '/imports/ui/core';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
-import { call } from './utils/shared';
-import Header from './layout/Header';
-import HelmetHybrid from './layout/HelmetHybrid';
-import { Footer, PlatformFooter } from './layout/Footers';
-import TopBarHandler from './layout/TopBarHandler';
-import DummyWrapper from './layout/DummyWrapper';
-import { message } from './generic/message';
+import { call } from './ui/utils/shared';
+import Header from './ui/layout/Header';
+import HelmetHybrid from './ui/layout/HelmetHybrid';
+import { Footer, PlatformFooter } from './ui/layout/Footers';
+import TopBarHandler from './ui/layout/TopBarHandler';
+import DummyWrapper from './ui/layout/DummyWrapper';
+import { message } from './ui/generic/message';
 
 export const platformAtom = atom(null);
 export const currentUserAtom = atom(null);

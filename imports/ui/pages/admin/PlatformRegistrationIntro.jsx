@@ -15,7 +15,7 @@ import {
   Text,
 } from '/imports/ui/core';
 
-import { currentUserAtom, platformAtom } from '../../LayoutContainer';
+import { currentUserAtom, platformAtom } from '../../../state';
 import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';

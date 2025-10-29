@@ -21,11 +21,7 @@ import NiceList from '../../generic/NiceList';
 import UsageReport from './UsageReport';
 import Boxling from './Boxling';
 import TablyRouter from '../../generic/TablyRouter';
-import {
-  currentUserAtom,
-  isDesktopAtom,
-  roleAtom,
-} from '../../LayoutContainer';
+import { currentUserAtom, isDesktopAtom, roleAtom } from '../../../state';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 

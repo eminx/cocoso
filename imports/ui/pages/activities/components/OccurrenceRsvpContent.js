@@ -15,14 +15,15 @@ import {
 } from '/imports/ui/core';
 import {
   canCreateContentAtom,
+  currentHostAtom,
   currentUserAtom,
-} from '/imports/ui/LayoutContainer';
+} from '/imports/state';
 import FancyDate from '/imports/ui/entry/FancyDate';
 import { call, getComboResourcesWithColor } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 
-import { ActivityContext } from '../Activity';
+// import { ActivityContext } from '../Activity';
 import RsvpForm from './RsvpForm';
 import RsvpList from './CsvList';
 
@@ -42,6 +43,7 @@ export default function RsvpContent({
   occurrenceIndex,
   onCloseModal,
 }) {
+  const currentHost = useAtomValue(currentHostAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const [state, setState] = useState({
@@ -50,8 +52,8 @@ export default function RsvpContent({
     selectedOccurrence: null,
   });
   const [capacityGotFullByYou] = useState(false);
-  const { getActivityById } = useContext(ActivityContext);
   const [t] = useTranslation('activities');
+  const getActivityById = () => console.log('getActivityById');
 
   const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } =
     state;

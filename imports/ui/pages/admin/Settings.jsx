@@ -12,11 +12,7 @@ import {
 } from '/imports/ui/core';
 import { useAtom, useAtomValue } from 'jotai';
 
-import {
-  currentHostAtom,
-  currentUserAtom,
-  roleAtom,
-} from '/imports/ui/LayoutContainer';
+import { currentHostAtom, currentUserAtom, roleAtom } from '../../../state';
 
 import ReactQuill from '../../forms/Quill';
 import { message } from '../../generic/message';

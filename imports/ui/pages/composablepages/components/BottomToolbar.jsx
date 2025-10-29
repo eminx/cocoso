@@ -7,7 +7,7 @@ import { useAtomValue } from 'jotai';
 import { Button, Flex, Link, Modal, Text } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { currentHostAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '../../../../state';
 
 export default function BottomToolbar({
   currentPage,

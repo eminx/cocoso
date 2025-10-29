@@ -98,7 +98,7 @@ function SubInfo({ occurrence }) {
     <Center>
       <Flex mt="2">
         <Text color="gray.100" mr="2" mt="-1px" size="sm">
-          {t('label.next')}:
+          {t('label.next')}
         </Text>
 
         <Text color="gray.100" fontWeight="bold" size="sm">

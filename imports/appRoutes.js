@@ -20,22 +20,24 @@ import {
   getWorks,
   getWork,
 } from './loaders';
+
 import {
-  ActivityList,
-  Activity,
   Communities,
   ComposablePage,
   Home,
-  GroupList,
-  Group,
   Page,
-  ResourceList,
-  Resource,
-  WorkList,
-  Work,
   UserList,
   User,
-} from './components';
+} from './ssr/components';
+
+import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
+import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
+import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
+import GroupItemHandler from '/imports/ui/pages/groups/GroupItemHandler';
+import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
+import ResourceItemHandler from '/imports/ui/pages/resources/ResourceItemHandler';
+import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
+import WorkItemHandler from '/imports/ui/pages/works/WorkItemHandler';
 
 export default function appRoutes(props) {
   const Host = props?.Host;
@@ -54,13 +56,13 @@ export default function appRoutes(props) {
       children: [
         {
           index: true,
-          element: <ActivityList {...props} />,
+          element: <ActivityListHandler {...props} />,
           loader: async ({ request }) =>
             await getActivities({ request, host, isPortalHost }),
         },
         {
           path: ':activityId/*',
-          element: <Activity {...props} />,
+          element: <ActivityItemHandler {...props} />,
           loader: async ({ params }) => await getActivity({ params }),
         },
       ],
@@ -70,13 +72,13 @@ export default function appRoutes(props) {
       children: [
         {
           index: true,
-          element: <GroupList {...props} />,
+          element: <GroupListHandler {...props} />,
           loader: async () => await getGroups({ host, isPortalHost }),
         },
         {
           path: ':groupId/*',
           index: true,
-          element: <Group {...props} />,
+          element: <GroupItemHandler {...props} />,
           loader: async ({ params }) => await getGroup({ params }),
         },
       ],
@@ -101,13 +103,13 @@ export default function appRoutes(props) {
       children: [
         {
           index: true,
-          element: <ResourceList {...props} />,
+          element: <ResourceListHandler {...props} />,
           loader: async () => await getResources({ host, isPortalHost }),
         },
         {
           path: ':resourceId/*',
           index: true,
-          element: <Resource {...props} />,
+          element: <ResourceItemHandler {...props} />,
           loader: async ({ params }) => await getResource({ params }),
         },
       ],
@@ -117,7 +119,7 @@ export default function appRoutes(props) {
       children: [
         {
           index: true,
-          element: <WorkList {...props} />,
+          element: <WorkListHandler {...props} />,
           loader: async () => await getWorks({ host, isPortalHost }),
         },
       ],
@@ -136,7 +138,7 @@ export default function appRoutes(props) {
           children: [
             {
               path: ':workId/*',
-              element: <Work {...props} />,
+              element: <WorkItemHandler {...props} />,
               loader: async ({ params }) => await getWork({ params }),
             },
           ],

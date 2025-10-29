@@ -15,7 +15,7 @@ import {
 } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { currentUserAtom, roleAtom } from '/imports/ui/LayoutContainer';
+import { currentUserAtom, roleAtom } from '../../../state';
 import FormField from '/imports/ui/forms/FormField';
 import { defaultEmails } from '/imports/startup/constants';
 import ReactQuill from '/imports/ui/forms/Quill';

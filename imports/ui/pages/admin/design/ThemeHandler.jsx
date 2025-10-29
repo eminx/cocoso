@@ -13,7 +13,7 @@ import {
   Text,
 } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
-import { currentHostAtom } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '../../../../state';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';

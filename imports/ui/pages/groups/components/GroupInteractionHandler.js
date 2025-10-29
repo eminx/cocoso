@@ -10,11 +10,7 @@ import GroupAdminFunctions from './GroupAdminFunctions';
 import SlideWidget from '../../../entry/SlideWidget';
 import { ChatButton } from '../../../chattery/ChatHandler';
 
-export default function GroupInteractionHandler({
-  currentUser,
-  group,
-  slideStart,
-}) {
+export default function GroupInteractionHandler({ currentUser, group }) {
   if (!group) {
     return null;
   }
@@ -39,6 +35,7 @@ export default function GroupInteractionHandler({
   );
 
   const memberProps = { currentUser, group, isAdmin, isMember };
+
   const notificationCount = currentUser?.notifications?.find(
     (n) => n?.contextId === group?._id
   )?.unSeenIndexes?.length;
@@ -54,7 +51,7 @@ export default function GroupInteractionHandler({
 
   if (isAdmin) {
     return (
-      <SlideWidget justify="space-between" slideStart={slideStart}>
+      <SlideWidget justify="space-between">
         <Box w="40px">
           <GroupAdminFunctions />
         </Box>
@@ -69,7 +66,7 @@ export default function GroupInteractionHandler({
       <>
         <GroupLeaveButton />
 
-        <SlideWidget justify="space-between" slideStart={slideStart}>
+        <SlideWidget justify="space-between">
           <Box w="40px" />
           <GroupMeetingDates {...memberProps} />
           <ChatButton {...chatProps} />
@@ -79,7 +76,7 @@ export default function GroupInteractionHandler({
   }
 
   return (
-    <SlideWidget slideStart={slideStart}>
+    <SlideWidget>
       <Box>
         <GroupJoinButton />
         <GroupMeetingDates {...memberProps} />
