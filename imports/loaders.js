@@ -51,6 +51,21 @@ export async function getActivity({ params }) {
   };
 }
 
+export async function getCalendarEntries({ host, isPortalHost }) {
+  const activities = isPortalHost
+    ? await call('getAllActivitiesFromAllHosts')
+    : await call('getAllActivities', host);
+
+  const resources = isPortalHost
+    ? await call('getResourcesFromAllHosts')
+    : await call('getResources', host);
+
+  return {
+    activities,
+    resources,
+  };
+}
+
 export async function getGroups({ host, isPortalHost }) {
   const groups = await call('getGroupsWithMeetings', isPortalHost, host);
 

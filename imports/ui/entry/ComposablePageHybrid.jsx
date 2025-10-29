@@ -105,7 +105,7 @@ function ContentViewModule({ module, Host }) {
   }
 }
 
-export default function ComposablePageHybrid({ composablePage, Host }) {
+export default function ComposablePageHybrid({ Host, composablePage }) {
   if (!composablePage) {
     return null;
   }

@@ -10,10 +10,10 @@ import SetupHome from '/imports/ui/pages/setup';
 const Terms = loadable(() => import('/imports/ui/entry/Terms'));
 
 const ComposablePageView = loadable(() =>
-  import('./composablepages/ComposablePageView')
+  import('./composablepages/ComposablePageHandler')
 );
 
-const Communities = loadable(() => import('./hosts/Communities'));
+const Communities = loadable(() => import('./hosts/CommunityListHandler'));
 
 // Activities
 const Activities = loadable(() => import('./activities/ActivityListHandler'));
@@ -28,18 +28,18 @@ const Resources = loadable(() => import('./resources/ResourceListHandler'));
 const Resource = loadable(() => import('./resources/ResourceItemHandler'));
 
 // Calendar
-const Calendar = loadable(() => import('./calendar/Calendar'));
+const Calendar = loadable(() => import('./calendar/CalendarHandler'));
 
 // Works
 const Works = loadable(() => import('./works/WorkListHandler'));
 const Work = loadable(() => import('./works/WorkItemHandler'));
 
 // Users
-const Users = loadable(() => import('./profile/Users'));
-const UserProfile = loadable(() => import('./profile/UserProfile'));
+const Users = loadable(() => import('./profile/UserListHandler'));
+const UserProfile = loadable(() => import('./profile/UserProfileHandler'));
 
 // Pages
-const Page = loadable(() => import('./pages/Page'));
+const Page = loadable(() => import('./pages/PageItemHandler'));
 
 // Auth
 const SignupPage = loadable(() => import('./auth/SignupPage'));

@@ -3,14 +3,17 @@ import { Route, Routes, useLocation, useParams } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 
-import { Box, Center, Flex } from '/imports/ui/core';
+import { Alert, Box, Center, Flex } from '/imports/ui/core';
+import { stripHtml, getFullName } from '/imports/ui/utils/shared';
+
 import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 import MemberWorks from '../pages/works/MemberWorks';
 import MemberActivities from '../pages/activities/MemberActivities';
 import MemberGroups from '../pages/groups/MemberGroups';
 import Tabs from '../core/Tabs';
 import BackLink from './BackLink';
-import { stripHtml, getFullName } from '/imports/ui/utils/shared';
+import { useTranslation } from 'react-i18next';
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
 export function Bio({ user }) {
   if (!user || !user.bio) {
@@ -39,13 +42,20 @@ export function Bio({ user }) {
 export default function UserHybrid({ user, Host }) {
   const location = useLocation();
   const { usernameSlug } = useParams();
+  const [ta] = useTranslation('accounts');
 
   if (usernameSlug[0] !== '@') {
-    return null;
+    return <NotFoundPage />;
   }
 
+  console.log(user);
+
   if (!user) {
-    return null;
+    return (
+      <Center p="8">
+        <Alert message={ta('profile.message.notfound')} />
+      </Center>
+    );
   }
 
   const { menu } = Host?.settings;

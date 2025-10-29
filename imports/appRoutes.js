@@ -1,13 +1,26 @@
 import React from 'react';
 
-import { call } from '/imports/ui/utils/shared';
-import { Loader } from '/imports/ui/core';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
+import HomeHandler from '/imports/HomeHandler';
+import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
+import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
+import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
+import GroupItemHandler from '/imports/ui/pages/groups/GroupItemHandler';
+import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
+import ResourceItemHandler from '/imports/ui/pages/resources/ResourceItemHandler';
+import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
+import WorkItemHandler from '/imports/ui/pages/works/WorkItemHandler';
+import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
+import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
+import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
+import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
+import UserProfileHandler from '/imports/ui/pages/profile/UserProfileHandler';
 
 import {
   getHomeLoader,
   getActivities,
   getActivity,
+  getCalendarEntries,
   getComposablePage,
   getCommunities,
   getGroup,
@@ -20,24 +33,7 @@ import {
   getWorks,
   getWork,
 } from './loaders';
-
-import {
-  Communities,
-  ComposablePage,
-  Home,
-  Page,
-  UserList,
-  User,
-} from './ssr/components';
-
-import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
-import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
-import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
-import GroupItemHandler from '/imports/ui/pages/groups/GroupItemHandler';
-import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
-import ResourceItemHandler from '/imports/ui/pages/resources/ResourceItemHandler';
-import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
-import WorkItemHandler from '/imports/ui/pages/works/WorkItemHandler';
+import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
 export default function appRoutes(props) {
   const Host = props?.Host;
@@ -47,7 +43,7 @@ export default function appRoutes(props) {
   return [
     {
       path: '/',
-      element: <Home {...props} />,
+      element: <HomeHandler {...props} />,
       loader: async ({ params, request }) =>
         await getHomeLoader({ Host, params, request }),
     },
@@ -66,6 +62,12 @@ export default function appRoutes(props) {
           loader: async ({ params }) => await getActivity({ params }),
         },
       ],
+    },
+    {
+      path: '/calendar',
+      element: <CalendarHandler {...props} />,
+      loader: async ({ request }) =>
+        await getCalendarEntries({ host, isPortalHost }),
     },
     {
       path: '/groups',
@@ -88,14 +90,14 @@ export default function appRoutes(props) {
       children: [
         {
           path: ':pageTitle',
-          element: <Page {...props} />,
+          element: <PageItemHandler {...props} />,
           loader: async () => await getPages({ host }),
         },
       ],
     },
     {
       path: '/people',
-      element: <UserList {...props} />,
+      element: <UserListHandler {...props} />,
       loader: async () => await getPeople({ host, isPortalHost }),
     },
     {
@@ -130,7 +132,7 @@ export default function appRoutes(props) {
         {
           index: true,
           path: '*',
-          element: <User {...props} />,
+          element: <UserProfileHandler {...props} />,
           loader: async ({ params }) => await getUser({ params, host }),
         },
         {
@@ -147,20 +149,17 @@ export default function appRoutes(props) {
     },
     {
       path: '/cp/:composablePageId',
-      element: <ComposablePage {...props} />,
+      element: <ComposablePageHandler {...props} />,
       loader: async ({ params }) => await getComposablePage({ params }),
     },
     {
       path: '/communities',
-      element: <Communities {...props} />,
+      element: <CommunityListHandler {...props} />,
       loader: async () => getCommunities(),
     },
     {
       path: '/*',
-      element: <NotFoundPage />,
-      loader: async () => {
-        return {};
-      },
+      element: <NotFoundPage {...props} />,
     },
   ];
 }

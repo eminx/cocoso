@@ -4,31 +4,31 @@ import { atom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
-import WorkHybrid from '/imports/ui/entry/WorkHybrid';
+import PageHybrid from '/imports/ui/entry/PageHybrid';
 
-const WorkInteractionHandler = lazy(() =>
-  import('./components/WorkInteractionHandler')
+const PageInteractionHandler = lazy(() =>
+  import('./components/PageInteractionHandler')
 );
-// const EditWork = lazy(() => import('./EditWork'));
+// const EditPage = lazy(() => import('./EditPage'));
 // const NewEntryHandler = lazy(() =>
 //   import('/imports/ui/listing/NewEntryHandler')
 // );
 
-export const workAtom = atom(null);
+export const pagesAtom = atom(null);
 
-export default function WorkItemHandler({ Host, pageTitles }) {
-  const { documents, work } = useLoaderData();
-  useHydrateAtoms([[workAtom, work]]);
+export default function PageItemHandler({ Host, pageTitles }) {
+  const { pages } = useLoaderData();
+  useHydrateAtoms([[pagesAtom, pages]]);
 
   return (
     <WrapperHybrid isEntryPage pageTitles={pageTitles} Host={Host}>
       {({ rendered }) => (
         <>
-          <WorkHybrid documents={documents} work={work} Host={Host} />
+          <PageHybrid pages={pages} />
           {rendered && (
-            <WorkInteractionHandler work={work} />
+            <PageInteractionHandler pages={pages} />
             // <NewEntryHandler>
-            //   <EditWork />
+            //   <EditPage />
             // </NewEntryHandler>
           )}
         </>

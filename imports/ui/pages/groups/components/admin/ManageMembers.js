@@ -1,17 +1,19 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Avatar, Flex, Link as CLink, Text } from '/imports/ui/core';
-
 import Modal from '/imports/ui/core/Modal';
 import NiceList from '/imports/ui/generic/NiceList';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { GroupContext } from '../../Group';
+
+import { groupAtom } from '../../GroupItemHandler';
 
 export default function ManageMembers({ onClose }) {
   const [t] = useTranslation('groups');
-  const { group, getGroupById } = useContext(GroupContext);
+  const group = useAtomValue(groupAtom);
+  const getGroupById = () => console.log('getGroupById');
 
   const setAsAGroupAdmin = async (username) => {
     try {

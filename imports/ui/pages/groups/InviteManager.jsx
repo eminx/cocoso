@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import XIcon from 'lucide-react/dist/esm/icons/x';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -22,7 +23,7 @@ import {
 } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 
-import { GroupContext } from './Group';
+import { groupAtom } from './GroupItemHandler';
 
 const EmailsContainer = (props) => (
   <Box>
@@ -38,11 +39,12 @@ export default function InviteManager() {
     emailInput: '',
     firstNameInput: '',
   });
-  const { group, getGroupById } = useContext(GroupContext);
+  const group = useAtomValue(groupAtom);
+  const getGroupById = () => console.log('getGroupById');
   const [t] = useTranslation('groups');
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const peopleInvited = group.peopleInvited;
+  const peopleInvited = group?.peopleInvited;
 
   const isAlreadyInvited = () => {
     const inviteEmailsList = peopleInvited.map((person) => person.email);

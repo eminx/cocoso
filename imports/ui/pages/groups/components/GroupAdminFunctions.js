@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import AddDocument from './admin/AddDocument';
 import AddMeeting from './admin/AddMeeting';
 import ManageMembers from './admin/ManageMembers';
 import AdminFunctions from '../../../entry/AdminFunctions';
-import { GroupContext } from '../Group';
+import { groupAtom } from '../GroupItemHandler';
 import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 import InviteManager from '../InviteManager';
 
 export default function GroupAdminFunctions() {
   const [popup, setPopup] = useState('none');
-  const { group } = useContext(GroupContext);
+  const group = useAtomValue(groupAtom);
   const [, setSearchParams] = useSearchParams();
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');

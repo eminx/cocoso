@@ -3,6 +3,7 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import React, { useContext, useState } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -17,13 +18,14 @@ import {
 import DocumentUploadHelper from '/imports/ui/forms/UploadHelpers';
 import { message } from '/imports/ui/generic/message';
 
-import { GroupContext } from '../../Group';
 import GroupDocuments from '../GroupDocuments';
+import { groupAtom } from '../../GroupItemHandler';
 
 export default function AddDocument({ onClose }) {
   const [isUploading, setIsUploading] = useState(false);
   const [tc] = useTranslation('common');
-  const { group, getGroupById } = useContext(GroupContext);
+  const group = useAtomValue(groupAtom);
+  const getGroupById = () => console.log('getGroupById');
 
   if (!group) {
     return null;

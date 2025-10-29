@@ -1,12 +1,13 @@
 import React from 'react';
 import { useAtomValue } from 'jotai';
 
+import SlideWidget from '/imports/ui/entry/SlideWidget';
 import { Box } from '/imports/ui/core';
-import { currentUserAtom, roleAtom } from '../../../../state';
-import SlideWidget from '../../../entry/SlideWidget';
+import { currentUserAtom, roleAtom } from '/imports/state';
+
 import PageAdminFunctions from './PageAdminFunctions';
 
-export default function PageInteractionHandler({ slideStart }) {
+export default function PageInteractionHandler() {
   const currentUser = useAtomValue(currentUserAtom);
   const role = useAtomValue(roleAtom);
 
@@ -14,7 +15,7 @@ export default function PageInteractionHandler({ slideStart }) {
     return null;
   }
   return (
-    <SlideWidget justify="space-between" slideStart={slideStart}>
+    <SlideWidget justify="space-between">
       <Box w="40px">
         <PageAdminFunctions />
       </Box>

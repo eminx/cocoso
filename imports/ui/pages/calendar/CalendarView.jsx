@@ -1,15 +1,19 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useMemo } from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import dayjs from 'dayjs';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+if (Meteor.isClient) {
+  import 'react-big-calendar/lib/css/react-big-calendar.css';
+  import '../../utils/styles/bigcalendar-custom.css';
+}
 
 import { Loader } from '/imports/ui/core';
 
-import '../../utils/styles/bigcalendar-custom.css';
-import NewEntryHandler from '../../listing/NewEntryHandler';
-import NewCalendarActivity from './NewCalendarActivity';
+// import NewEntryHandler from '../../listing/NewEntryHandler';
+// import NewCalendarActivity from './NewCalendarActivity';
 
 const weekday = require('dayjs/plugin/weekday');
 
@@ -73,9 +77,9 @@ export default function CalendarView({
         onSelectEvent={onSelect}
         onSelectSlot={onSelectSlot}
       />
-      <NewEntryHandler>
+      {/* <NewEntryHandler>
         <NewCalendarActivity resources={resources} />
-      </NewEntryHandler>
+      </NewEntryHandler> */}
     </>
   );
 }

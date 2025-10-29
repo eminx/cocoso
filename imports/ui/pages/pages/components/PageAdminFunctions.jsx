@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 import AdminFunctions from '../../../entry/AdminFunctions';
-import { PageContext } from '../Page';
 import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 
 export default function PageAdminFunctions() {

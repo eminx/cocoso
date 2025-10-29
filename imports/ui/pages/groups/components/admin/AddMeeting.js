@@ -19,7 +19,7 @@ import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import { currentUserAtom } from '../../../../../state';
 
-import { GroupContext } from '../../Group';
+import { groupAtom } from '../../GroupItemHandler';
 
 const today = dayjs();
 
@@ -103,7 +103,8 @@ export default function AddMeeting({ onClose }) {
     newMeeting: emptyDateAndTime,
     resources: [],
   });
-  const { group, getGroupById } = useContext(GroupContext);
+  const group = useAtomValue(groupAtom);
+  const getGroupById = () => console.log('getGroupById');
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
   const { activities, conflictingBooking, isFormValid, newMeeting, resources } =

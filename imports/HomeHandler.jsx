@@ -4,6 +4,9 @@ import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandle
 import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
 import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
 import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
+import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
+import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
+import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 
 export default function HomeHandler(props) {
   const Host = props?.Host;
@@ -16,18 +19,18 @@ export default function HomeHandler(props) {
     case 'activities':
       return <ActivityListHandler {...props} />;
     case 'groups':
-      return <GroupList {...props} />;
+      return <GroupListHandler {...props} />;
     case 'works':
-      return <WorkList {...props} />;
+      return <WorkListHandler {...props} />;
     case 'resources':
-      return <ResourceList {...props} />;
+      return <ResourceListHandler {...props} />;
     case 'info':
-      return <Page {...props} />;
+      return <PageItemHandler {...props} />;
     case 'calendar':
       return <Calendar {...props} />;
     case 'people':
-      return <UserList {...props} />;
+      return <UserListHandler {...props} />;
     default:
-      return <ComposablePage {...props} />;
+      return <ComposablePageHandler {...props} />;
   }
 }

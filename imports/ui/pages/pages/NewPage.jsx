@@ -4,7 +4,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 
 import { call, parseTitle } from '../../utils/shared';
 import PageForm from './PageForm';
-import { PageContext } from './Page';
+import { PageContext } from './PageItemHandler';
 import { currentUserAtom, pageTitlesAtom } from '../../../state';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';

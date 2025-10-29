@@ -17,14 +17,18 @@ const ResourceInteractionHandler = lazy(() =>
 export const resourceAtom = atom(null);
 
 export default function ResourceItemHandler({ Host, pageTitles }) {
-  const { resource } = useLoaderData();
+  const { documents, resource } = useLoaderData();
   useHydrateAtoms([[resourceAtom, resource]]);
 
   return (
     <WrapperHybrid isEntryPage pageTitles={pageTitles} Host={Host}>
       {({ rendered }) => (
         <>
-          <ResourceHybrid resource={resource} Host={Host} />
+          <ResourceHybrid
+            documents={documents}
+            resource={resource}
+            Host={Host}
+          />
           {rendered && (
             <ResourceInteractionHandler resource={resource} />
             // <NewEntryHandler>
