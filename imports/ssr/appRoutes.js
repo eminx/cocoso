@@ -61,10 +61,7 @@ export default function appRoutes(props) {
         {
           path: ':activityId/*',
           element: <Activity {...props} />,
-          loader: async ({ params }) => {
-            const activityId = params.activityId;
-            return await getActivity({ activityId });
-          },
+          loader: async ({ params }) => await getActivity({ params }),
         },
       ],
     },
@@ -80,10 +77,7 @@ export default function appRoutes(props) {
           path: ':groupId/*',
           index: true,
           element: <Group {...props} />,
-          loader: async ({ params }) => {
-            const groupId = params?.groupId;
-            return await getGroup({ groupId });
-          },
+          loader: async ({ params }) => await getGroup({ params }),
         },
       ],
     },
@@ -114,10 +108,7 @@ export default function appRoutes(props) {
           path: ':resourceId/*',
           index: true,
           element: <Resource {...props} />,
-          loader: async ({ params }) => {
-            const resourceId = params?.resourceId;
-            return await getResource({ resourceId, host, isPortalHost });
-          },
+          loader: async ({ params }) => await getResource({ params }),
         },
       ],
     },
@@ -146,9 +137,7 @@ export default function appRoutes(props) {
             {
               path: ':workId/*',
               element: <Work {...props} />,
-              loader: async ({ params }) => {
-                return await getWork({ params });
-              },
+              loader: async ({ params }) => await getWork({ params }),
             },
           ],
         },

@@ -37,7 +37,13 @@ export async function getActivities({ host, isPortalHost, request }) {
   };
 }
 
-export async function getActivity({ activityId }) {
+export async function getActivity({ params }) {
+  if (!params) {
+    return null;
+  }
+
+  const { activityId } = params;
+
   const activity = await call('getActivityById', activityId);
 
   return {
@@ -53,7 +59,11 @@ export async function getGroups({ host, isPortalHost }) {
   };
 }
 
-export async function getGroup({ groupId }) {
+export async function getGroup({ params }) {
+  if (!params) {
+    return null;
+  }
+  const { groupId } = params;
   const group = await call('getGroupWithMeetings', groupId);
   const documents = await call('getDocumentsByAttachments', groupId);
 
@@ -93,8 +103,13 @@ export async function getResources({ host, isPortalHost }) {
   };
 }
 
-export async function getResource({ resourceId, host, isPortalHost }) {
-  const resource = await call('getResourceById', resourceId, host);
+export async function getResource({ params }) {
+  if (!params) {
+    return null;
+  }
+
+  const { resourceId } = params;
+  const resource = await call('getResourceById', resourceId);
   const documents = await call('getDocumentsByAttachments', resourceId);
 
   return {
@@ -104,7 +119,12 @@ export async function getResource({ resourceId, host, isPortalHost }) {
 }
 
 export async function getUser({ host, params }) {
-  const username = params?.usernameSlug?.replace('@', '');
+  if (!params) {
+    return null;
+  }
+
+  const { usernameSlug } = params;
+  const username = usernameSlug?.replace('@', '');
   const user = await call('getUserInfo', username, host);
 
   return {
@@ -123,8 +143,12 @@ export async function getWorks({ host, isPortalHost }) {
 }
 
 export async function getWork({ params }) {
-  const workId = params?.workId;
-  const username = params?.usernameSlug?.replace('@', '');
+  if (!params) {
+    return null;
+  }
+
+  const { usernameSlug, workId } = params;
+  const username = usernameSlug?.replace('@', '');
   const work = await call('getWorkById', workId, username);
   const documents = await call('getDocumentsByAttachments', workId);
 
@@ -136,10 +160,13 @@ export async function getWork({ params }) {
 }
 
 export async function getComposablePage({ params }) {
-  const composablePage = await call(
-    'getComposablePageById',
-    params.composablePageId
-  );
+  if (!params) {
+    return null;
+  }
+
+  const { composablePageId } = params;
+  const composablePage = await call('getComposablePageById', composablePageId);
+
   return {
     composablePage,
   };
