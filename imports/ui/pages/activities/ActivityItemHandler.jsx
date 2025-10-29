@@ -5,11 +5,11 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router';
-import { atom } from 'jotai';
+import { atom, useAtomValue } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
-import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
+import { renderedAtom } from '/imports/state';
 
 const ActivityInteractionHandler = lazy(() =>
   import('./components/ActivityInteractionHandler')
@@ -27,23 +27,22 @@ export const activityAtom = atom(null);
 export default function ActivityItemHandler({ Host, pageTitles }) {
   const { activity } = useLoaderData();
   useHydrateAtoms([[activityAtom, activity]]);
+  const rendered = useAtomValue(renderedAtom);
 
   return (
-    <WrapperHybrid isEntryPage pageTitles={pageTitles} Host={Host}>
-      {({ rendered }) => (
-        <>
-          <ActivityHybrid activity={activity} Host={Host} />
-          {rendered && <ActivityInteractionHandler activity={activity} />}
-          <NewEntryHandler>
-            {activity.isPublicActivity ? (
-              <EditPublicActivity />
-            ) : (
-              <EditCalendarActivity />
-            )}
-          </NewEntryHandler>
-        </>
-      )}
-    </WrapperHybrid>
+    <>
+      <ActivityHybrid activity={activity} Host={Host} />
+
+      {rendered ? <ActivityInteractionHandler activity={activity} /> : null}
+
+      <NewEntryHandler>
+        {activity.isPublicActivity ? (
+          <EditPublicActivity />
+        ) : (
+          <EditCalendarActivity />
+        )}
+      </NewEntryHandler>
+    </>
   );
 }
 

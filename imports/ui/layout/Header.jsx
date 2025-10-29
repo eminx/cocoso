@@ -210,7 +210,7 @@ function HeaderMenu({ Host, pageTitles }) {
   );
 }
 
-export default function Header({ Host, pageTitles, isLogoSmall = false }) {
+export default function Header({ Host, isLogoSmall = false, pageTitles }) {
   const currentHost = Host;
 
   if (!currentHost) {

@@ -10,17 +10,17 @@ export default function GroupListHandler({ Host, pageTitles }) {
   const { groups } = useLoaderData();
 
   return (
-    <WrapperHybrid Host={Host} pageTitles={pageTitles}>
-      {({ rendered }) => (
-        <>
-          <GroupsHybrid groups={groups} Host={Host} />
-          {/* {rendered ? (
+    // <WrapperHybrid Host={Host} pageTitles={pageTitles}>
+    //   {({ rendered }) => (
+    <>
+      <GroupsHybrid groups={groups} Host={Host} />
+      {/* {rendered ? (
             <NewEntryHandler>
               <NewGroup />
             </NewEntryHandler>
           ) : null} */}
-        </>
-      )}
-    </WrapperHybrid>
+    </>
+    //   )}
+    // </WrapperHybrid>
   );
 }

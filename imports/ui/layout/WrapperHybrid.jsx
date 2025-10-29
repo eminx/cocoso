@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import { I18nextProvider } from 'react-i18next';
 import { useHydrateAtoms } from 'jotai/utils';
+import { useSetAtom } from 'jotai';
 
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 import i18n from '/imports/startup/i18n';
@@ -22,7 +24,6 @@ import {
 import Header from './Header';
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
-import { Footer, PlatformFooter } from './Footers';
 
 const isClient = Meteor.isClient;
 
@@ -40,27 +41,22 @@ export default function WrapperHybrid({
     [pageTitlesAtom, pageTitles],
     [platformAtom, platform],
   ]);
-
-  const [rendered, setRendered] = useState(false);
-
-  // const setAllHosts = useSetAtom(allHostsAtom);
-  // const setRole = useSetAtom(roleAtom);
-  // const [rendered, setRendered] = useAtom(renderedAtom);
-  // const [isDesktop, setIsDesktop] = useAtom(isDesktopAtom);
-  // const setIsMobile = useSetAtom(isMobileAtom);
-  // const isDesktopValue = useMediaQuery('(min-width: 960px)');
-  // const isMobileValue = useMediaQuery('(max-width: 480px)');
+  const setRendered = useSetAtom(renderedAtom);
+  const location = useLocation();
 
   useEffect(() => {
+    setRendered(false);
     setTimeout(() => {
       setRendered(true);
     }, 1000);
-    console.log('client');
-  }, []);
+  }, [location.pathname]);
 
-  if (!Host) {
-    return null;
-  }
+  // const isDesktopValue = useMediaQuery('(min-width: 960px)');
+  // const isMobileValue = useMediaQuery('(max-width: 480px)');
+  // const setAllHosts = useSetAtom(allHostsAtom);
+  // const setRole = useSetAtom(roleAtom);
+  // const [isDesktop, setIsDesktop] = useAtom(isDesktopAtom);
+  // const setIsMobile = useSetAtom(isMobileAtom);
 
   return (
     <>
@@ -74,11 +70,8 @@ export default function WrapperHybrid({
             pageTitles={pageTitles}
           />
 
-          {children({ rendered })}
+          {children}
         </DummyWrapper>
-
-        <Footer currentHost={Host} />
-        <PlatformFooter />
       </I18nextProvider>
     </>
   );

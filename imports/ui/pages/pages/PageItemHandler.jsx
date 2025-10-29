@@ -1,10 +1,10 @@
 import React, { lazy } from 'react';
 import { useLoaderData } from 'react-router';
-import { atom } from 'jotai';
+import { atom, useAtomValue } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
-import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import PageHybrid from '/imports/ui/entry/PageHybrid';
+import { renderedAtom } from '/imports/state';
 
 const PageInteractionHandler = lazy(() =>
   import('./components/PageInteractionHandler')
@@ -19,20 +19,17 @@ export const pagesAtom = atom(null);
 export default function PageItemHandler({ Host, pageTitles }) {
   const { pages } = useLoaderData();
   useHydrateAtoms([[pagesAtom, pages]]);
+  const rendered = useAtomValue(renderedAtom);
 
   return (
-    <WrapperHybrid isEntryPage pageTitles={pageTitles} Host={Host}>
-      {({ rendered }) => (
-        <>
-          <PageHybrid pages={pages} />
-          {rendered && (
-            <PageInteractionHandler pages={pages} />
-            // <NewEntryHandler>
-            //   <EditPage />
-            // </NewEntryHandler>
-          )}
-        </>
+    <>
+      <PageHybrid pages={pages} />
+      {rendered && (
+        <PageInteractionHandler pages={pages} />
+        // <NewEntryHandler>
+        //   <EditPage />
+        // </NewEntryHandler>
       )}
-    </WrapperHybrid>
+    </>
   );
 }

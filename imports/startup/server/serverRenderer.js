@@ -20,6 +20,7 @@ export default async function serverRenderer(sink) {
   const Host = await Hosts.findOneAsync({ host });
   const platform = await Platform.findOneAsync();
   const currentUser = await Meteor.callAsync('getCurrentUser');
+  const pages = await Meteor.callAsync('getPageTitles');
 
   if (!stitchesConfig) {
     stitchesConfig = await import('/stitches.config');
@@ -36,7 +37,6 @@ export default async function serverRenderer(sink) {
     <style id="stitches">${getCssText()}</style>
   `);
 
-  const pages = await Meteor.callAsync('getPageTitles');
   const pageTitles = pages.map((p) => p.title);
 
   const pathname = sink?.request?.url?.pathname;

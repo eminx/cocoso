@@ -5,12 +5,12 @@ import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
 import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
 import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
 import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
+import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
 import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 
 export default function HomeHandler(props) {
   const Host = props?.Host;
-  const host = Host?.host;
   const menuItems = Host.settings?.menu;
   const visibleMenu = menuItems?.filter((item) => item.isVisible);
   const firstRoute = visibleMenu && visibleMenu[0].name;
@@ -20,14 +20,14 @@ export default function HomeHandler(props) {
       return <ActivityListHandler {...props} />;
     case 'groups':
       return <GroupListHandler {...props} />;
-    case 'works':
-      return <WorkListHandler {...props} />;
     case 'resources':
       return <ResourceListHandler {...props} />;
+    case 'works':
+      return <WorkListHandler {...props} />;
     case 'info':
       return <PageItemHandler {...props} />;
     case 'calendar':
-      return <Calendar {...props} />;
+      return <CalendarHandler {...props} />;
     case 'people':
       return <UserListHandler {...props} />;
     default:

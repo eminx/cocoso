@@ -1,10 +1,11 @@
 import React, { lazy } from 'react';
 import { useLoaderData } from 'react-router';
-import { atom } from 'jotai';
+import { atom, useAtomValue } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import ResourceHybrid from '/imports/ui/entry/ResourceHybrid';
+import { renderedAtom } from '/imports/state';
 
 const ResourceInteractionHandler = lazy(() =>
   import('./components/ResourceInteractionHandler')
@@ -19,24 +20,17 @@ export const resourceAtom = atom(null);
 export default function ResourceItemHandler({ Host, pageTitles }) {
   const { documents, resource } = useLoaderData();
   useHydrateAtoms([[resourceAtom, resource]]);
+  const rendered = useAtomValue(renderedAtom);
 
   return (
-    <WrapperHybrid isEntryPage pageTitles={pageTitles} Host={Host}>
-      {({ rendered }) => (
-        <>
-          <ResourceHybrid
-            documents={documents}
-            resource={resource}
-            Host={Host}
-          />
-          {rendered && (
-            <ResourceInteractionHandler resource={resource} />
-            // <NewEntryHandler>
-            //   <EditResource />
-            // </NewEntryHandler>
-          )}
-        </>
+    <>
+      <ResourceHybrid documents={documents} resource={resource} Host={Host} />
+      {rendered && (
+        <ResourceInteractionHandler resource={resource} />
+        // <NewEntryHandler>
+        //   <EditResource />
+        // </NewEntryHandler>
       )}
-    </WrapperHybrid>
+    </>
   );
 }

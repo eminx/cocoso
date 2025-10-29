@@ -1,12 +1,10 @@
 import React from 'react';
 import { useLoaderData } from 'react-router';
 
+import CommunitiesHybrid from '/imports/ui/pages/hosts/CommunitiesHybrid';
+
 export default function CommunityListHandler({ Host, pageTitles }) {
   const { hosts } = useLoaderData();
 
-  return (
-    <WrapperHybrid Host={Host} pageTitles={pageTitles}>
-      {({ rendered }) => <CommunitiesHybrid Host={Host} hosts={hosts} />}
-    </WrapperHybrid>
-  );
+  return <CommunitiesHybrid Host={Host} hosts={hosts} />;
 }

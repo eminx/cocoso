@@ -13,11 +13,5 @@ export default function ComposablePageHandler({ Host, pageTitles }) {
     return null;
   }
 
-  return (
-    <WrapperHybrid Host={Host} pageTitles={pageTitles}>
-      {({ rendered }) => (
-        <ComposablePageHybrid Host={Host} composablePage={composablePage} />
-      )}
-    </WrapperHybrid>
-  );
+  return <ComposablePageHybrid Host={Host} composablePage={composablePage} />;
 }

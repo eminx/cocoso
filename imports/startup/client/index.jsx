@@ -9,8 +9,6 @@ import {
 } from 'react-router';
 
 import appRoutes from '/imports/appRoutes';
-import SetupHome from '/imports/ui/pages/setup';
-import BrowserRoutes from '/imports/ui/pages/BrowserRoutes';
 import '/imports/startup/i18n';
 
 onPageLoad(async () => {

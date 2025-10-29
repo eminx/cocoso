@@ -1,10 +1,11 @@
 import React, { lazy } from 'react';
 import { useLoaderData } from 'react-router';
-import { atom } from 'jotai';
+import { atom, useAtomValue } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import WorkHybrid from '/imports/ui/entry/WorkHybrid';
+import { renderedAtom } from '/imports/state';
 
 const WorkInteractionHandler = lazy(() =>
   import('./components/WorkInteractionHandler')
@@ -19,20 +20,17 @@ export const workAtom = atom(null);
 export default function WorkItemHandler({ Host, pageTitles }) {
   const { documents, work } = useLoaderData();
   useHydrateAtoms([[workAtom, work]]);
+  const rendered = useAtomValue(renderedAtom);
 
   return (
-    <WrapperHybrid isEntryPage pageTitles={pageTitles} Host={Host}>
-      {({ rendered }) => (
-        <>
-          <WorkHybrid documents={documents} work={work} Host={Host} />
-          {rendered && (
-            <WorkInteractionHandler work={work} />
-            // <NewEntryHandler>
-            //   <EditWork />
-            // </NewEntryHandler>
-          )}
-        </>
+    <>
+      <WorkHybrid Host={Host} documents={documents} work={work} />
+      {rendered && (
+        <WorkInteractionHandler work={work} />
+        // <NewEntryHandler>
+        //   <EditWork />
+        // </NewEntryHandler>
       )}
-    </WrapperHybrid>
+    </>
   );
 }

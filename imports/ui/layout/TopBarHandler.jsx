@@ -6,7 +6,7 @@ import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
 import MenuDrawer from './MenuDrawer';
 
-export default function TopBarHandler({ slideStart }) {
+export default function TopBarHandler({ slideStart = true }) {
   const [scrollTop, setScrollTop] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 

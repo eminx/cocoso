@@ -37,7 +37,6 @@ import PageHeading from '/imports/ui/listing/PageHeading';
 import Tag from '/imports/ui/generic/Tag';
 
 import CalendarView from './CalendarView';
-import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;
@@ -219,153 +218,149 @@ export default function CalendarHandler({ Host, pageTitles }) {
   }
 
   return (
-    <WrapperHybrid Host={Host} pageTitles={pageTitles}>
-      {({ rendered }) => (
-        <>
-          <PageHeading
-            description={description}
-            heading={heading}
-            imageUrl={currentHost.logo}
-            url={url}
-          />
+    <>
+      <PageHeading
+        description={description}
+        heading={heading}
+        imageUrl={currentHost.logo}
+        url={url}
+      />
 
-          <Box>
-            <Center mb="2">
-              {!selectFilterView ? (
+      <Box>
+        <Center mb="2">
+          {!selectFilterView ? (
+            <Box>
+              <Flex justify="center" px="1" pb="1" mb="3" wrap="wrap">
                 <Box>
-                  <Flex justify="center" px="1" pb="1" mb="3" wrap="wrap">
-                    <Box>
+                  <Tag
+                    key="All"
+                    checkable
+                    label={tc('labels.all')}
+                    filterColor="#484848"
+                    checked={!calendarFilter}
+                    css={{ alignSelf: 'center' }}
+                    onClick={() => setCalendarFilter(null)}
+                  />
+                </Box>
+
+                {nonComboResourcesWithColor
+                  .filter((r) => r.isBookable)
+                  .map((resource) => (
+                    <Box key={resource._id}>
                       <Tag
-                        key="All"
                         checkable
-                        label={tc('labels.all')}
-                        filterColor="#484848"
-                        checked={!calendarFilter}
-                        css={{ alignSelf: 'center' }}
-                        onClick={() => setCalendarFilter(null)}
+                        label={resource.label}
+                        filterColor={resource.color}
+                        checked={calendarFilter?._id === resource._id}
+                        onClick={() => setCalendarFilter(resource)}
                       />
                     </Box>
-
-                    {nonComboResourcesWithColor
-                      .filter((r) => r.isBookable)
-                      .map((resource) => (
-                        <Box key={resource._id}>
-                          <Tag
-                            checkable
-                            label={resource.label}
-                            filterColor={resource.color}
-                            checked={calendarFilter?._id === resource._id}
-                            onClick={() => setCalendarFilter(resource)}
-                          />
-                        </Box>
-                      ))}
-                  </Flex>
-                  <Flex justify="center" mb="2" px="1" wrap="wrap">
-                    {comboResourcesWithColor
-                      .filter((r) => r.isBookable)
-                      .map((resource) => (
-                        <Box key={resource._id}>
-                          <Tag
-                            checkable
-                            label={resource.label}
-                            filterColor={'#2d2d2d'}
-                            gradientBackground={resource.color}
-                            checked={calendarFilter?._id === resource._id}
-                            onClick={() => setCalendarFilter(resource)}
-                          />
-                        </Box>
-                      ))}
-                  </Flex>
-                </Box>
-              ) : (
-                <Flex w="30rem">
-                  <Button
-                    colorScheme="green"
-                    mr="2"
-                    size="sm"
-                    variant={calendarFilter ? 'outline' : 'solid'}
-                    onClick={() => setCalendarFilter(null)}
-                  >
-                    {tc('labels.all')}
-                  </Button>
-
-                  <Box w="100%">
-                    <AutoCompleteSelect
-                      components={animatedComponents}
-                      isClearable
-                      options={allResourcesForSelect}
-                      style={{ width: '100%', marginTop: '1rem' }}
-                      styles={{
-                        option: (styles, { data }) => ({
-                          ...styles,
-                          borderLeft: `8px solid ${data.color}`,
-                          // background: data.color.replace('40%', '90%'),
-                          paddingLeft: !data.isCombo && 6,
-                          fontWeight: data.isCombo ? 'bold' : 'normal',
-                        }),
-                      }}
-                      value={calendarFilter}
-                      getOptionValue={(option) => option._id}
-                      onChange={(value) => setCalendarFilter(value)}
-                    />
-                  </Box>
-                </Flex>
-              )}
-            </Center>
-
-            <Box mb="4">
-              <CalendarView
-                activities={allFilteredActsWithColors}
-                resources={resources}
-                onSelect={handleSelectActivity}
-                onSelectSlot={handleSelectSlot}
-              />
+                  ))}
+              </Flex>
+              <Flex justify="center" mb="2" px="1" wrap="wrap">
+                {comboResourcesWithColor
+                  .filter((r) => r.isBookable)
+                  .map((resource) => (
+                    <Box key={resource._id}>
+                      <Tag
+                        checkable
+                        label={resource.label}
+                        filterColor={'#2d2d2d'}
+                        gradientBackground={resource.color}
+                        checked={calendarFilter?._id === resource._id}
+                        onClick={() => setCalendarFilter(resource)}
+                      />
+                    </Box>
+                  ))}
+              </Flex>
             </Box>
-          </Box>
+          ) : (
+            <Flex w="30rem">
+              <Button
+                colorScheme="green"
+                mr="2"
+                size="sm"
+                variant={calendarFilter ? 'outline' : 'solid'}
+                onClick={() => setCalendarFilter(null)}
+              >
+                {tc('labels.all')}
+              </Button>
 
-          <Modal
-            id="calendar-item"
-            open={Boolean(selectedActivity)}
-            title={selectedActivity && selectedActivity.title}
-            confirmText={tc('actions.entryPage')}
-            cancelText={
-              isCreatorOrAdmin() ? tc('actions.update') : tc('actions.close')
-            }
-            onClose={() => setSelectedActivity(null)}
-            onConfirm={() => handlePrimaryButtonClick()}
-            onCancel={() => handleSecondaryButtonClick()}
-          >
-            <Box
-              bg="theme.50"
-              style={{ fontFamily: 'Courier, monospace' }}
-              p="2"
-              my="1"
-            >
-              <div>
-                <Link to={`/@${selectedActivity?.authorName}`}>
-                  <CLink as="span" fontWeight="bold">
-                    {selectedActivity && selectedActivity.authorName}
-                  </CLink>{' '}
-                </Link>
-                <Text as="span">{tc('labels.booked')}</Text>{' '}
-                <Link to={`/resources/${selectedActivity?.resourceId}`}>
-                  <CLink as="span" fontWeight="bold">
-                    {selectedActivity && selectedActivity.resource}
-                  </CLink>
-                </Link>
-              </div>
-              <Text>{getActivityTimes(selectedActivity)}</Text>
-            </Box>
+              <Box w="100%">
+                <AutoCompleteSelect
+                  components={animatedComponents}
+                  isClearable
+                  options={allResourcesForSelect}
+                  style={{ width: '100%', marginTop: '1rem' }}
+                  styles={{
+                    option: (styles, { data }) => ({
+                      ...styles,
+                      borderLeft: `8px solid ${data.color}`,
+                      // background: data.color.replace('40%', '90%'),
+                      paddingLeft: !data.isCombo && 6,
+                      fontWeight: data.isCombo ? 'bold' : 'normal',
+                    }),
+                  }}
+                  value={calendarFilter}
+                  getOptionValue={(option) => option._id}
+                  onChange={(value) => setCalendarFilter(value)}
+                />
+              </Box>
+            </Flex>
+          )}
+        </Center>
 
-            <Text fontSize="sm" mt="2" p="1">
-              {selectedActivity?.longDescription &&
-                (selectedActivity?.isGroupPrivate
-                  ? ''
-                  : parseHtml(selectedActivity?.longDescription))}
-            </Text>
-          </Modal>
-        </>
-      )}
-    </WrapperHybrid>
+        <Box mb="4">
+          <CalendarView
+            activities={allFilteredActsWithColors}
+            resources={resources}
+            onSelect={handleSelectActivity}
+            onSelectSlot={handleSelectSlot}
+          />
+        </Box>
+      </Box>
+
+      <Modal
+        id="calendar-item"
+        open={Boolean(selectedActivity)}
+        title={selectedActivity && selectedActivity.title}
+        confirmText={tc('actions.entryPage')}
+        cancelText={
+          isCreatorOrAdmin() ? tc('actions.update') : tc('actions.close')
+        }
+        onClose={() => setSelectedActivity(null)}
+        onConfirm={() => handlePrimaryButtonClick()}
+        onCancel={() => handleSecondaryButtonClick()}
+      >
+        <Box
+          bg="theme.50"
+          style={{ fontFamily: 'Courier, monospace' }}
+          p="2"
+          my="1"
+        >
+          <div>
+            <Link to={`/@${selectedActivity?.authorName}`}>
+              <CLink as="span" fontWeight="bold">
+                {selectedActivity && selectedActivity.authorName}
+              </CLink>{' '}
+            </Link>
+            <Text as="span">{tc('labels.booked')}</Text>{' '}
+            <Link to={`/resources/${selectedActivity?.resourceId}`}>
+              <CLink as="span" fontWeight="bold">
+                {selectedActivity && selectedActivity.resource}
+              </CLink>
+            </Link>
+          </div>
+          <Text>{getActivityTimes(selectedActivity)}</Text>
+        </Box>
+
+        <Text fontSize="sm" mt="2" p="1">
+          {selectedActivity?.longDescription &&
+            (selectedActivity?.isGroupPrivate
+              ? ''
+              : parseHtml(selectedActivity?.longDescription))}
+        </Text>
+      </Modal>
+    </>
   );
 }
