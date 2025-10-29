@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Outlet } from 'react-router';
+import { useHydrated } from 'react-hydration-provider';
+import { Toaster } from 'react-hot-toast';
+import { useAtomValue } from 'jotai';
 
-import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 import HomeHandler from '/imports/HomeHandler';
 import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
 import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
@@ -13,9 +15,21 @@ import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
 import WorkItemHandler from '/imports/ui/pages/works/WorkItemHandler';
 import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
 import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
-import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
-import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
+import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 import UserProfileHandler from '/imports/ui/pages/profile/UserProfileHandler';
+import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
+import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
+
+// import AdminContainer from '/imports/ui/pages/admin/AdminContainer';
+// import LoginPage from '/imports/ui/pages/auth/LoginPage';
+// import SignupPage from '/imports/ui/pages/auth/SignupPage';
+// import ForgotPasswordPage from '/imports/ui/pages/auth/ForgotPasswordPage';
+// import ResetPasswordPage from '/imports/ui/pages/auth/ResetPasswordPage';
+// import RegistrationIntro from '/imports/ui/pages/auth/RegistrationIntro';
+// import NewHost from '/imports/ui/pages/hosts/NewHost';
+// import SetupHome from '/imports/ui/pages/setup';
+import Terms from '/imports/ui/entry/Terms';
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
 import {
   getHomeLoader,
@@ -34,22 +48,16 @@ import {
   getWorks,
   getWork,
 } from './loaders';
-import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import TopBarHandler from '/imports/ui/layout/TopBarHandler';
 import { Footer, PlatformFooter } from '/imports/ui/layout/Footers';
+import { renderedAtom } from '/imports/state';
 
 function Wrapper({ Host, pageTitles, children }) {
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setHydrated(true);
-    }, 1000);
-  }, []);
-
+  const hydrated = useHydrated();
   const location = useLocation();
+  const rendered = useAtomValue(renderedAtom);
 
   const pathname = location?.pathname;
   const pathnameSplitted = pathname.split('/');
@@ -57,10 +65,14 @@ function Wrapper({ Host, pageTitles, children }) {
 
   return (
     <WrapperHybrid Host={Host} pageTitles={pageTitles}>
-      {hydrated && !adminPage && <TopBarHandler />}
-      <Outlet rendered={hydrated} />
+      {rendered && !adminPage && <TopBarHandler />}
+      <Outlet />
       <Footer currentHost={Host} />
       <PlatformFooter />
+
+      {hydrated && (
+        <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />
+      )}
     </WrapperHybrid>
   );
 }
@@ -113,13 +125,13 @@ export default function appRoutes(props) {
           ],
         },
         {
-          path: '/calendar',
+          path: 'calendar',
           element: <CalendarHandler {...props} />,
           loader: async ({ request }) =>
             await getCalendarEntries({ host, isPortalHost }),
         },
         {
-          path: '/info',
+          path: 'info',
           children: [
             {
               path: ':pageTitle',
@@ -129,12 +141,12 @@ export default function appRoutes(props) {
           ],
         },
         {
-          path: '/people',
+          path: 'people',
           element: <UserListHandler {...props} />,
           loader: async () => await getPeople({ host, isPortalHost }),
         },
         {
-          path: '/resources',
+          path: 'resources',
           children: [
             {
               index: true,
@@ -150,7 +162,7 @@ export default function appRoutes(props) {
           ],
         },
         {
-          path: '/works',
+          path: 'works',
           children: [
             {
               index: true,
@@ -181,20 +193,68 @@ export default function appRoutes(props) {
           ],
         },
         {
-          path: '/cp/:composablePageId',
+          path: 'cp/:composablePageId',
           element: <ComposablePageHandler {...props} />,
           loader: async ({ params }) => await getComposablePage({ params }),
         },
         {
-          path: '/communities',
+          path: 'communities',
           element: <CommunityListHandler {...props} />,
           loader: async () => getCommunities(),
         },
         {
-          path: '/*',
+          path: '*',
           element: <NotFoundPage {...props} />,
         },
       ],
+    },
+    // {
+    //   path: '/intro',
+    //   element: <RegistrationIntro {...props} />,
+    // },
+    // {
+    //   path: '/login',
+    //   element: <LoginPage {...props} />,
+    // },
+    // {
+    //   path: '/register',
+    //   element: <SignupPage {...props} />,
+    // },
+    // {
+    //   path: '/forgot-password',
+    //   element: <ForgotPasswordPage {...props} />,
+    // },
+    // {
+    //   path: '/reset-password/*',
+    //   element: <ResetPasswordPage {...props} />,
+    // },
+    // {
+    //   path: '/setup',
+    //   element: <SetupHome {...props} />,
+    // },
+    // {
+    //   path: '/admin',
+    //   element: <AdminContainer {...props} />,
+    // },
+    // {
+    //   path: '/new-host',
+    //   element: <NewHost {...props} />,
+    // },
+    {
+      path: '/terms-&-privacy-policy',
+      element: <Terms {...props} />,
+    },
+    {
+      path: '/not-found',
+      element: <NotFoundPage {...props} />,
+    },
+    {
+      path: '/404',
+      element: <NotFoundPage {...props} />,
+    },
+    {
+      path: '/*',
+      element: <NotFoundPage {...props} />,
     },
   ];
 }

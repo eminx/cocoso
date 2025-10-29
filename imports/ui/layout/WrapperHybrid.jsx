@@ -45,11 +45,11 @@ export default function WrapperHybrid({
   const location = useLocation();
 
   useEffect(() => {
-    setRendered(false);
+    // setRendered(false);
     setTimeout(() => {
       setRendered(true);
     }, 1000);
-  }, [location.pathname]);
+  }, []);
 
   // const isDesktopValue = useMediaQuery('(min-width: 960px)');
   // const isMobileValue = useMediaQuery('(max-width: 480px)');

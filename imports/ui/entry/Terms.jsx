@@ -4,7 +4,8 @@ const publicSettings = Meteor.settings.public;
 import { useAtomValue } from 'jotai';
 
 import { Box, Divider, Heading } from '/imports/ui/core';
-import { currentHostAtom } from '../../state';
+import { currentHostAtom } from '/imports/state';
+
 import Template from '../layout/Template';
 
 export default function Terms() {
