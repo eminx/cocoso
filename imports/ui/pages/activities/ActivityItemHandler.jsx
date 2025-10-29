@@ -14,13 +14,13 @@ import { renderedAtom } from '/imports/state';
 const ActivityInteractionHandler = lazy(() =>
   import('./components/ActivityInteractionHandler')
 );
-const EditCalendarActivity = lazy(() =>
-  import('../calendar/EditCalendarActivity')
-);
-const EditPublicActivity = lazy(() => import('./EditPublicActivity'));
-const NewEntryHandler = lazy(() =>
-  import('/imports/ui/listing/NewEntryHandler')
-);
+// const EditCalendarActivity = lazy(() =>
+//   import('../calendar/EditCalendarActivity')
+// );
+// const EditPublicActivity = lazy(() => import('./EditPublicActivity'));
+// const NewEntryHandler = lazy(() =>
+//   import('/imports/ui/listing/NewEntryHandler')
+// );
 
 export const activityAtom = atom(null);
 
@@ -35,13 +35,13 @@ export default function ActivityItemHandler({ Host, pageTitles }) {
 
       {rendered ? <ActivityInteractionHandler activity={activity} /> : null}
 
-      <NewEntryHandler>
+      {/* <NewEntryHandler>
         {activity.isPublicActivity ? (
           <EditPublicActivity />
         ) : (
           <EditCalendarActivity />
         )}
-      </NewEntryHandler>
+      </NewEntryHandler> */}
     </>
   );
 }

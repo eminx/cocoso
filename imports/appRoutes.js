@@ -20,16 +20,16 @@ import UserProfileHandler from '/imports/ui/pages/profile/UserProfileHandler';
 import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
 
-// import AdminContainer from '/imports/ui/pages/admin/AdminContainer';
-// import LoginPage from '/imports/ui/pages/auth/LoginPage';
-// import SignupPage from '/imports/ui/pages/auth/SignupPage';
-// import ForgotPasswordPage from '/imports/ui/pages/auth/ForgotPasswordPage';
-// import ResetPasswordPage from '/imports/ui/pages/auth/ResetPasswordPage';
+import LoginPage from '/imports/ui/pages/auth/LoginPage';
+import SignupPage from '/imports/ui/pages/auth/SignupPage';
+import ForgotPasswordPage from '/imports/ui/pages/auth/ForgotPasswordPage';
+import ResetPasswordPage from '/imports/ui/pages/auth/ResetPasswordPage';
 // import RegistrationIntro from '/imports/ui/pages/auth/RegistrationIntro';
-// import NewHost from '/imports/ui/pages/hosts/NewHost';
-// import SetupHome from '/imports/ui/pages/setup';
 import Terms from '/imports/ui/entry/Terms';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
+// import AdminContainer from '/imports/ui/pages/admin/AdminContainer';
+// import NewHost from '/imports/ui/pages/hosts/NewHost';
+// import SetupHome from '/imports/ui/pages/setup';
 
 import {
   getHomeLoader,
@@ -202,6 +202,46 @@ export default function appRoutes(props) {
           element: <CommunityListHandler {...props} />,
           loader: async () => getCommunities(),
         },
+        // {
+        //   path: 'intro',
+        //   element: <RegistrationIntro {...props} />,
+        // },
+        {
+          path: 'login',
+          element: <LoginPage {...props} />,
+        },
+        {
+          path: 'register',
+          element: <SignupPage {...props} />,
+        },
+        {
+          path: 'forgot-password',
+          element: <ForgotPasswordPage {...props} />,
+        },
+        {
+          path: 'reset-password/*',
+          element: <ResetPasswordPage {...props} />,
+        },
+        // {
+        //   path: '/setup',
+        //   element: <SetupHome {...props} />,
+        // },
+        // {
+        //   path: '/new-host',
+        //   element: <NewHost {...props} />,
+        // },
+        {
+          path: 'terms-&-privacy-policy',
+          element: <Terms {...props} />,
+        },
+        {
+          path: 'not-found',
+          element: <NotFoundPage {...props} />,
+        },
+        {
+          path: '404',
+          element: <NotFoundPage {...props} />,
+        },
         {
           path: '*',
           element: <NotFoundPage {...props} />,
@@ -209,52 +249,8 @@ export default function appRoutes(props) {
       ],
     },
     // {
-    //   path: '/intro',
-    //   element: <RegistrationIntro {...props} />,
-    // },
-    // {
-    //   path: '/login',
-    //   element: <LoginPage {...props} />,
-    // },
-    // {
-    //   path: '/register',
-    //   element: <SignupPage {...props} />,
-    // },
-    // {
-    //   path: '/forgot-password',
-    //   element: <ForgotPasswordPage {...props} />,
-    // },
-    // {
-    //   path: '/reset-password/*',
-    //   element: <ResetPasswordPage {...props} />,
-    // },
-    // {
-    //   path: '/setup',
-    //   element: <SetupHome {...props} />,
-    // },
-    // {
     //   path: '/admin',
     //   element: <AdminContainer {...props} />,
     // },
-    // {
-    //   path: '/new-host',
-    //   element: <NewHost {...props} />,
-    // },
-    {
-      path: '/terms-&-privacy-policy',
-      element: <Terms {...props} />,
-    },
-    {
-      path: '/not-found',
-      element: <NotFoundPage {...props} />,
-    },
-    {
-      path: '/404',
-      element: <NotFoundPage {...props} />,
-    },
-    {
-      path: '/*',
-      element: <NotFoundPage {...props} />,
-    },
   ];
 }

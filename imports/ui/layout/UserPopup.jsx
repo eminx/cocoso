@@ -21,7 +21,6 @@ import {
   Modal,
 } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
-
 import {
   canCreateContentAtom,
   currentHostAtom,
@@ -29,7 +28,8 @@ import {
   isDesktopAtom,
   platformAtom,
   roleAtom,
-} from '../../state';
+} from '/imports/state';
+
 import { getFullName } from '../utils/shared';
 
 function NotificationLinkItem({ host, item, children }) {
@@ -135,6 +135,7 @@ export default function UserPopup({ isOpen, setIsOpen }) {
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const platform = useAtomValue(platformAtom);
+  const role = useAtomValue(roleAtom);
   const navigate = useNavigate();
 
   if (!currentHost) {

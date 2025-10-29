@@ -20,7 +20,7 @@ import {
   currentUserAtom,
   platformAtom,
   roleAtom,
-} from '../../../state';
+} from '/imports/state';
 
 import { loginWithPassword } from './functions';
 import { Login } from './index';

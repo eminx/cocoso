@@ -11,7 +11,7 @@ import {
   Link as CLink,
   Text,
 } from '/imports/ui/core';
-import { currentUserAtom } from '../../../state';
+import { currentUserAtom } from '/imports/state';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 

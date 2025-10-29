@@ -11,7 +11,6 @@ import i18n from '/imports/startup/i18n';
 import {
   allHostsAtom,
   currentHostAtom,
-  currentUserAtom,
   pageTitlesAtom,
   platformAtom,
   roleAtom,
@@ -37,7 +36,6 @@ export default function WrapperHybrid({
 }) {
   useHydrateAtoms([
     [currentHostAtom, Host],
-    [currentUserAtom, currentUser],
     [pageTitlesAtom, pageTitles],
     [platformAtom, platform],
   ]);

@@ -9,7 +9,7 @@ import 'react-slideshow-image/dist/styles.css';
 import { useAtomValue } from 'jotai';
 
 import { Box, Button, Center } from '/imports/ui/core';
-import { currentUserAtom, platformAtom } from '../../../state';
+import { currentUserAtom, platformAtom } from '/imports/state';
 
 export default function RegistrationIntro() {
   const currentUser = useAtomValue(currentUserAtom);

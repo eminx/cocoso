@@ -9,7 +9,7 @@ import { isDesktopAtom } from '../../state';
 
 const publicSettings = Meteor.settings.public;
 
-function Template({
+export default function Template({
   heading,
   leftContent,
   rightContent,
@@ -70,5 +70,3 @@ function Template({
     </>
   );
 }
-
-export default Template;
