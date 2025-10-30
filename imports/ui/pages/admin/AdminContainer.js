@@ -27,7 +27,7 @@ import EditProfile from '/imports/ui/pages/profile/EditProfile';
 import AdminMenu from './AdminMenu';
 import getAdminRoutes from './getAdminRoutes';
 
-function RouteRenderer({ routes, currentRoute }) {
+export function RouteRenderer({ routes, currentRoute }) {
   const currentUser = useAtomValue(currentUserAtom);
 
   if (!routes || !currentUser) {
@@ -214,7 +214,7 @@ export default function AdminContainer() {
             </Link>
           </Flex>
 
-          <RouteRenderer routes={routes} currentRoute={currentRoute} />
+          {/* <RouteRenderer routes={routes} currentRoute={currentRoute} /> */}
         </Box>
       </Box>
     );
@@ -227,7 +227,7 @@ export default function AdminContainer() {
           <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Box>
 
-        <RouteRenderer routes={routes} currentRoute={currentRoute} />
+        {/* <RouteRenderer routes={routes} currentRoute={currentRoute} /> */}
       </Grid>
     </Box>
   );

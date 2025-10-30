@@ -25,6 +25,7 @@ export default function ResourceItemHandler({ Host, pageTitles }) {
   return (
     <>
       <ResourceHybrid documents={documents} resource={resource} Host={Host} />
+
       {rendered && (
         <ResourceInteractionHandler resource={resource} />
         // <NewEntryHandler>

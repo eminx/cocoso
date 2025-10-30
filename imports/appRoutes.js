@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Outlet } from 'react-router';
-import { useHydrated } from 'react-hydration-provider';
-import { Toaster } from 'react-hot-toast';
-import { useAtomValue } from 'jotai';
 
+import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import HomeHandler from '/imports/HomeHandler';
 import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
 import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
@@ -49,42 +46,16 @@ import {
   getWork,
 } from './loaders';
 
-import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
-import TopBarHandler from '/imports/ui/layout/TopBarHandler';
-import { Footer, PlatformFooter } from '/imports/ui/layout/Footers';
-import { renderedAtom } from '/imports/state';
-
-function Wrapper({ Host, pageTitles, children }) {
-  const hydrated = useHydrated();
-  const location = useLocation();
-  const rendered = useAtomValue(renderedAtom);
-
-  const pathname = location?.pathname;
-  const pathnameSplitted = pathname.split('/');
-  const adminPage = pathnameSplitted[1] === 'admin';
-
-  return (
-    <WrapperHybrid Host={Host} pageTitles={pageTitles}>
-      {rendered && !adminPage && <TopBarHandler />}
-      <Outlet />
-      <Footer currentHost={Host} />
-      <PlatformFooter />
-
-      {hydrated && (
-        <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />
-      )}
-    </WrapperHybrid>
-  );
-}
-
 export default function appRoutes(props) {
   const Host = props?.Host;
   const host = Host?.host;
   const isPortalHost = Boolean(Host?.isPortalHost);
 
+  // const adminRoutes = getAdminRoutes(Host?.settings?.menu);
+
   return [
     {
-      element: <Wrapper {...props} />,
+      element: <WrapperHybrid {...props} />,
       children: [
         {
           path: '',
@@ -246,11 +217,12 @@ export default function appRoutes(props) {
           path: '*',
           element: <NotFoundPage {...props} />,
         },
+        // {
+        //   path: '/admin',
+        //   element: <AdminContainer {...props} />,
+        //   children: [...adminRoutes],
+        // },
       ],
     },
-    // {
-    //   path: '/admin',
-    //   element: <AdminContainer {...props} />,
-    // },
   ];
 }
