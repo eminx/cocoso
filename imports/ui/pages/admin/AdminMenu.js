@@ -19,7 +19,7 @@ import {
   currentUserAtom,
   isDesktopAtom,
   roleAtom,
-} from '../../../state';
+} from '/imports/state';
 import { getFullName } from '/imports/ui/utils/shared';
 
 export function AdminMenuHeader({ currentHost }) {
@@ -156,14 +156,18 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
   );
 }
 
-export default function AdminMenu({ routes, onItemClick }) {
-  const currentHost = useAtomValue(currentHostAtom);
+export default function AdminMenu({ currentHost, routes, onItemClick }) {
+  // const currentHost = useAtomValue(currentHostAtom);
+  console.log('currentHost:', currentHost);
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const role = useAtomValue(roleAtom);
+
   const [t] = useTranslation('admin');
 
   const isAdmin = role === 'admin';
+
+  console.log('currentUser:', currentUser);
 
   if (!currentHost || !currentUser) {
     return null;

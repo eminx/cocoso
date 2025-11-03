@@ -15,6 +15,7 @@ import i18n from '/imports/startup/i18n';
 import {
   allHostsAtom,
   currentHostAtom,
+  currentUserAtom,
   pageTitlesAtom,
   platformAtom,
   roleAtom,
@@ -28,22 +29,21 @@ import Header from './Header';
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
 
-export default function WrapperHybrid({
-  currentUser,
-  Host,
-  pageTitles,
-  platform,
-}) {
+export default function WrapperHybrid({ Host, pageTitles, platform }) {
   useHydrateAtoms([
     [currentHostAtom, Host],
     [pageTitlesAtom, pageTitles],
     [platformAtom, platform],
   ]);
+  const setCurrentUser = useSetAtom(currentUserAtom);
   const [rendered, setRendered] = useAtom(renderedAtom);
   const location = useLocation();
   const hydrated = useHydrated();
 
   useEffect(() => {
+    const currentUser = Meteor.user();
+    console.log('currentUser:', currentUser);
+    setCurrentUser(currentUser);
     setTimeout(() => {
       setRendered(true);
     }, 1000);

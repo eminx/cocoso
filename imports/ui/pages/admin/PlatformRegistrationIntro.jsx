@@ -21,7 +21,7 @@ import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
 import ReactQuill from '../../forms/Quill';
 import Template from '../../layout/Template';
-import { AdminMenu } from './Settings';
+import { AdminMenu } from './AdminSettings';
 
 export default function PlatformRegistrationIntro() {
   const currentUser = useAtomValue(currentUserAtom);

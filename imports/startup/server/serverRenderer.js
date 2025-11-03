@@ -20,6 +20,7 @@ export default async function serverRenderer(sink) {
   const Host = await Hosts.findOneAsync({ host });
   const platform = await Platform.findOneAsync();
   const currentUser = await Meteor.callAsync('getCurrentUser');
+  console.log('sv currentUser:', currentUser);
   const pages = await Meteor.callAsync('getPageTitles');
 
   if (!stitchesConfig) {

@@ -1,7 +1,7 @@
 import React, { useId, ReactNode } from 'react';
 import { Link } from 'react-router';
-import { styled } from '/stitches.config';
 
+import { styled } from '/stitches.config';
 import { Badge, Flex, Text } from '/imports/ui/core';
 
 // Tab type definition

@@ -100,8 +100,9 @@ if (i18n && !i18n.isInitialized) {
       }
     }
     try {
-      const respond = await Meteor.callAsync('getCurrentHost');
-      const hostLang = respond?.settings?.lang;
+      // const respond = await Meteor.callAsync('getCurrentHost');
+      // const hostLang = respond?.settings?.lang;
+      const hostLang = 'en';
       i18n.changeLanguage(hostLang);
     } catch (error) {
       console.error(error);

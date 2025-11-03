@@ -2,7 +2,6 @@ import React from 'react';
 import { useLoaderData } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
 import { renderedAtom } from '/imports/state';
 // import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { Meteor } from 'meteor/meteor';
+import React from 'react';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import HomeHandler from '/imports/HomeHandler';
@@ -24,9 +25,16 @@ import ResetPasswordPage from '/imports/ui/pages/auth/ResetPasswordPage';
 // import RegistrationIntro from '/imports/ui/pages/auth/RegistrationIntro';
 import Terms from '/imports/ui/entry/Terms';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
-// import AdminContainer from '/imports/ui/pages/admin/AdminContainer';
 // import NewHost from '/imports/ui/pages/hosts/NewHost';
 // import SetupHome from '/imports/ui/pages/setup';
+// import getAdminRoutes from '/imports/ui/pages/admin/getAdminRoutes';
+
+import AdminContainer from '/imports/ui/pages/admin/AdminContainer';
+import AdminHome from '/imports/ui/pages/admin/AdminHome';
+import AdminSettings from '/imports/ui/pages/admin/AdminSettings';
+// import AdminUsers from '/imports/ui/pages/admin/AdminUsers';
+// import AdminEmails from '/imports/ui/pages/admin/AdminEmails';
+// import AdminEmailNewsletter from '/imports/ui/pages/admin/AdminEmailNewsletter';
 
 import {
   getHomeLoader,
@@ -45,13 +53,57 @@ import {
   getWorks,
   getWork,
 } from './loaders';
+import AdminSettingsLogo from '/imports/ui/pages/admin/AdminSettingsLogo';
+import AdminSettingsForm from '/imports/ui/pages/admin/AdminSettingsForm';
+import AdminSettingsFooter from '/imports/ui/pages/admin/AdminSettingsFooter';
+
+const getAdminRoutes = (props) => [
+  {
+    path: 'home',
+    element: <AdminHome {...props} />,
+  },
+  {
+    path: 'settings',
+    children: [
+      {
+        path: 'organization',
+        element: <AdminSettings {...props} />,
+        children: [
+          { path: 'logo', element: <AdminSettingsLogo {...props} /> },
+          {
+            path: 'info',
+            element: <AdminSettingsForm {...props} />,
+          },
+          {
+            path: 'footer',
+            element: <AdminSettingsFooter {...props} />,
+          },
+        ],
+      },
+      // {
+      //   path: 'menu',
+      //   element:
+      // }
+    ],
+  },
+  // {
+  //   path: 'users',
+  //   element: <AdminUsers />,
+  // },
+  // {
+  //   path: 'emails',
+  //   element: <AdminEmails />,
+  // },
+  // {
+  //   path: 'email-newsletter',
+  //   element: <AdminEmailNewsletter />,
+  // },
+];
 
 export default function appRoutes(props) {
   const Host = props?.Host;
   const host = Host?.host;
   const isPortalHost = Boolean(Host?.isPortalHost);
-
-  // const adminRoutes = getAdminRoutes(Host?.settings?.menu);
 
   return [
     {
@@ -206,6 +258,11 @@ export default function appRoutes(props) {
           element: <Terms {...props} />,
         },
         {
+          path: '/admin',
+          element: <AdminContainer {...props} />,
+          children: Meteor.isServer ? null : [...getAdminRoutes(props)],
+        },
+        {
           path: 'not-found',
           element: <NotFoundPage {...props} />,
         },
@@ -217,11 +274,6 @@ export default function appRoutes(props) {
           path: '*',
           element: <NotFoundPage {...props} />,
         },
-        // {
-        //   path: '/admin',
-        //   element: <AdminContainer {...props} />,
-        //   children: [...adminRoutes],
-        // },
       ],
     },
   ];
