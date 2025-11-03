@@ -1,49 +1,32 @@
 import React, { useEffect } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router';
+import { Outlet } from 'react-router';
 import { Trans } from 'react-i18next';
 
-import { Box, Tabs } from '/imports/ui/core';
+import { Box } from '/imports/ui/core';
 
-import Boxling from './Boxling';
+import AdminTabs from './AdminTabs';
 
 export default function AdminSettings() {
-  const location = useLocation();
-
   const tabs = [
     {
       title: <Trans i18nKey="admin:settings.tabs.logo" />,
-      path: 'logo',
+      path: '/admin/settings/organization/logo',
     },
     {
       title: <Trans i18nKey="admin:settings.tabs.info" />,
-      path: 'info',
+      path: '/admin/settings/organization/info',
     },
     {
       title: <Trans i18nKey="admin:settings.tabs.footer" />,
-      path: 'footer',
+      path: '/admin/settings/organization/footer',
     },
   ];
 
-  const pathname = location?.pathname;
-  const pathnameLastPart = pathname.split('/').pop();
-  const tabIndex =
-    tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
-
-  useEffect(() => {
-    if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
-      return <Navigate to="/settings/logo" />;
-    }
-  }, [pathname]);
-
   return (
-    <>
-      <Box mb="8">
-        <Tabs index={tabIndex} mb="4" tabs={tabs} />
-      </Box>
-
-      <Box mb="24" py="4">
+    <AdminTabs tabs={tabs}>
+      <Box mb="24">
         <Outlet />
       </Box>
-    </>
+    </AdminTabs>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import Eye from 'lucide-react/dist/esm/icons/eye';
 import { useAtomValue } from 'jotai';
@@ -106,17 +106,15 @@ export function AdminUserThumb({ currentUser }) {
   );
 }
 
-function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
+function AdminMenuItem({ item, isSub, parentValue }) {
   if (!item) {
     return null;
   }
-  const location = useLocation();
-  const pathname = location?.pathname;
 
-  const itemSplitted = item.value.split('/');
-  const isCurrentRoute = pathname.includes(
-    isSub ? itemSplitted[1] : itemSplitted[0]
-  );
+  const location = useLocation();
+  const navigate = useNavigate();
+  const pathname = location?.pathname;
+  const isCurrentRoute = pathname.includes(item.value);
 
   if (isSub && !pathname.includes(parentValue)) {
     return null;
@@ -139,7 +137,7 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
           backgroundColor: 'var(--cocoso-colors-bluegray-100)',
         },
       }}
-      onClick={() => onItemClick(item)}
+      onClick={() => navigate(item.value)}
     >
       <Text
         css={{
@@ -156,18 +154,14 @@ function AdminMenuItem({ item, isSub, parentValue, onItemClick }) {
   );
 }
 
-export default function AdminMenu({ currentHost, routes, onItemClick }) {
+export default function AdminMenu({ currentHost, routes }) {
   // const currentHost = useAtomValue(currentHostAtom);
-  console.log('currentHost:', currentHost);
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const role = useAtomValue(roleAtom);
-
   const [t] = useTranslation('admin');
 
   const isAdmin = role === 'admin';
-
-  console.log('currentUser:', currentUser);
 
   if (!currentHost || !currentUser) {
     return null;
@@ -215,7 +209,7 @@ export default function AdminMenu({ currentHost, routes, onItemClick }) {
           <List w="100%">
             {routes?.map((item) => (
               <ListItem key={item.value} p="0">
-                <AdminMenuItem item={item} onItemClick={onItemClick} />
+                <AdminMenuItem item={item} />
                 {item.isMulti &&
                   item.content.map((itemSub) => (
                     <AdminMenuItem
@@ -223,7 +217,6 @@ export default function AdminMenu({ currentHost, routes, onItemClick }) {
                       item={itemSub}
                       isSub
                       parentValue={item.value}
-                      onItemClick={onItemClick}
                     />
                   ))}
               </ListItem>
@@ -237,12 +230,7 @@ export default function AdminMenu({ currentHost, routes, onItemClick }) {
             cursor: 'pointer',
             flexGrow: '0',
           }}
-          onClick={() =>
-            onItemClick({
-              label: 'My Profile',
-              value: '/admin/my-profile',
-            })
-          }
+          onClick={() => navigate('/admin/my-profile')}
         >
           <AdminUserThumb currentUser={currentUser} />
         </Box>

@@ -56,6 +56,12 @@ import {
 import AdminSettingsLogo from '/imports/ui/pages/admin/AdminSettingsLogo';
 import AdminSettingsForm from '/imports/ui/pages/admin/AdminSettingsForm';
 import AdminSettingsFooter from '/imports/ui/pages/admin/AdminSettingsFooter';
+import MenuSettings from '/imports/ui/pages/admin/MenuSettings';
+import MenuSettingsOrder from '/imports/ui/pages/admin/MenuSettingsOrder';
+import MenuSettingsOptions from '/imports/ui/pages/admin/MenuSettingsOptions';
+import AdminDesign from '/imports/ui/pages/admin/design';
+import ThemeHandler from '/imports/ui/pages/admin/design/ThemeHandler';
+import MenuDesign from '/imports/ui/pages/admin/design/MenuDesign';
 
 const getAdminRoutes = (props) => [
   {
@@ -80,10 +86,34 @@ const getAdminRoutes = (props) => [
           },
         ],
       },
-      // {
-      //   path: 'menu',
-      //   element:
-      // }
+      {
+        path: 'design',
+        element: <AdminDesign {...props} />,
+        children: [
+          {
+            path: 'theme',
+            element: <ThemeHandler {...props} />,
+          },
+          {
+            path: 'navigation',
+            element: <MenuDesign {...props} />,
+          },
+        ],
+      },
+      {
+        path: 'menu',
+        element: <MenuSettings {...props} />,
+        children: [
+          {
+            path: 'order',
+            element: <MenuSettingsOrder {...props} />,
+          },
+          {
+            path: 'options',
+            element: <MenuSettingsOptions {...props} />,
+          },
+        ],
+      },
     ],
   },
   // {
@@ -270,10 +300,10 @@ export default function appRoutes(props) {
           path: '404',
           element: <NotFoundPage {...props} />,
         },
-        {
-          path: '*',
-          element: <NotFoundPage {...props} />,
-        },
+        // {
+        //   path: '*',
+        //   element: <NotFoundPage {...props} />,
+        // },
       ],
     },
   ];
