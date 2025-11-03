@@ -194,3 +194,27 @@ export async function getCommunities() {
     hosts,
   };
 }
+
+export async function getHostMembersForAdmin() {
+  const members = await call('getHostMembersForAdmin');
+
+  return {
+    members,
+  };
+}
+
+export async function getEmails() {
+  const emails = await call('getEmails');
+
+  return {
+    emails,
+  };
+}
+
+export async function getComposablePageTitles() {
+  const composablePageTitles = await call('getComposablePageTitles');
+
+  return {
+    composablePageTitles,
+  };
+}

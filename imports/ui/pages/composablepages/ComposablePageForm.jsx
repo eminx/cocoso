@@ -36,6 +36,7 @@ import ComposablePagesListing from './components/ComposablePagesListing';
 import ContentHandler from './components/ContentHandler';
 import Row from './components/Row';
 import BottomToolbar from './components/BottomToolbar';
+import { getComposablePageTitles } from '/imports/loaders';
 
 const getNewRow = (rowType) => {
   const selectedRowType = rowTypes.find((type) => type.value === rowType);

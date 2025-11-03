@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-
 import React, { useState } from 'react';
 
+let ReactQuill;
+import { editorFormats, editorModules } from '../utils/constants/quillConfig';
+
 if (Meteor.isClient) {
-  import ReactQuill from 'react-quill-new';
+  ReactQuill = require('react-quill-new');
   import 'react-quill-new/dist/quill.snow.css';
   import '../utils/styles/quilleditor-custom.css';
-  import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 }
 
 export default function Quill(props) {
@@ -18,7 +19,6 @@ export default function Quill(props) {
   }
 
   if (!Meteor.isClient) {
-    console.log('wtf');
     return null;
   }
 

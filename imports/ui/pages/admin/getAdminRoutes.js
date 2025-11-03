@@ -88,11 +88,11 @@ const getAdminRoutes = (menuItems) => [
         // content: <CalendarAdmin />,
         description: <Trans i18nKey="admin:menu.info.calendar" />,
       },
-      {
-        label: getMenuLabel(menuItems, 'communities'),
-        value: '/admin/features//communities',
-        // content: <CommunitiesAdmin />,
-      },
+      // {
+      // label: getMenuLabel(menuItems, 'communities'),
+      // value: '/admin/features//communities',
+      // content: <CommunitiesAdmin />,
+      // },
       {
         label: getMenuLabel(menuItems, 'groups'),
         value: '/admin/features/groups',
@@ -127,19 +127,19 @@ const getAdminRoutes = (menuItems) => [
   },
   {
     label: <Trans i18nKey="admin:users.title" />,
-    value: '/admin/features/users',
+    value: '/admin/users',
     // content: <Members />,
     description: <Trans i18nKey="admin:users.description" />,
   },
   {
     label: <Trans i18nKey="admin:emails.title" />,
-    value: '/admin/features/emails',
+    value: '/admin/emails',
     // content: <Emails />,
     description: <Trans i18nKey="admin:emails.description" />,
   },
   {
     label: <Trans i18nKey="admin:newsletter.title" />,
-    value: '/admin/features/email-newsletter',
+    value: '/admin/email-newsletter',
     // content: <EmailNewsletter />,
     description: <Trans i18nKey="admin:newsletter.description" />,
   },

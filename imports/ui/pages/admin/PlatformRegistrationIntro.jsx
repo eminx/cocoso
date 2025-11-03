@@ -19,7 +19,7 @@ import { currentUserAtom, platformAtom } from '../../../state';
 import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
 import { call } from '../../utils/shared';
-import ReactQuill from '../../forms/Quill';
+import Quill from '../../forms/Quill';
 import Template from '../../layout/Template';
 import { AdminMenu } from './AdminSettings';
 
@@ -123,7 +123,7 @@ export default function PlatformRegistrationIntro() {
               <Heading mb="2" size="sm">
                 Slide {index + 1}
               </Heading>
-              <ReactQuill
+              <Quill
                 value={slide}
                 onChange={(value) =>
                   handleChangeRegistrationIntro(value, index)

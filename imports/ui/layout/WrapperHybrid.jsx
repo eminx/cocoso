@@ -13,15 +13,14 @@ import { Footer, PlatformFooter } from '/imports/ui/layout/Footers';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 import i18n from '/imports/startup/i18n';
 import {
-  allHostsAtom,
+  // allHostsAtom,
   currentHostAtom,
   currentUserAtom,
   pageTitlesAtom,
   platformAtom,
   roleAtom,
-  canCreateContentAtom,
-  isDesktopAtom,
-  isMobileAtom,
+  // isDesktopAtom,
+  // isMobileAtom,
   renderedAtom,
 } from '/imports/state';
 
@@ -36,14 +35,18 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
     [platformAtom, platform],
   ]);
   const setCurrentUser = useSetAtom(currentUserAtom);
+  const setRole = useSetAtom(roleAtom);
   const [rendered, setRendered] = useAtom(renderedAtom);
   const location = useLocation();
   const hydrated = useHydrated();
 
   useEffect(() => {
     const currentUser = Meteor.user();
-    console.log('currentUser:', currentUser);
     setCurrentUser(currentUser);
+    const hostWithinUser = currentUser?.memberships?.find(
+      (membership) => membership?.host === window.location.host
+    );
+    setRole(hostWithinUser?.role || null);
     setTimeout(() => {
       setRendered(true);
     }, 1000);

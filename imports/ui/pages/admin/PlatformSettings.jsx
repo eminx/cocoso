@@ -21,7 +21,7 @@ import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
 import FormField from '/imports/ui/forms/FormField';
 import FileDropper from '/imports/ui/forms/FileDropper';
 import Tabs from '../../core/Tabs';
-import ReactQuill from '/imports/ui/forms/Quill';
+import Quill from '/imports/ui/forms/Quill';
 
 function PlatformSettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
@@ -282,7 +282,7 @@ export default function PlatformSettings() {
             {t('info.platform.footer.description')}
           </Text>
           <Box w="100%">
-            <ReactQuill
+            <Quill
               value={localPlatform.footer}
               onChange={(value) => handleFooterChange(value)}
             />

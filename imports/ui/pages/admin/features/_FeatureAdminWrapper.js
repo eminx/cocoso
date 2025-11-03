@@ -1,24 +1,28 @@
 import React from 'react';
-
+import { Outlet } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
-import TablyRouter from '../../../generic/TablyRouter';
-import MainFeatureSettings from './MainFeatureSettings';
+import { Box } from '/imports/ui/core';
 
-export default function FeatureAdminWrapper({
-  menuItemName,
-  furtherTabs = [],
-}) {
+import MainFeatureSettings from './MainFeatureSettings';
+import AdminTabs from '/imports/ui/pages/admin/AdminTabs';
+
+export default function FeatureAdminWrapper({ furtherTabs = [] }) {
   const [t] = useTranslation('admin');
 
   const tabs = [
     {
       title: t('menu.title'),
       path: 'menu',
-      content: <MainFeatureSettings itemName={menuItemName} />,
     },
     ...furtherTabs,
   ];
 
-  return <TablyRouter tabs={tabs} />;
+  return (
+    <AdminTabs tabs={tabs}>
+      <Box mb="24">
+        <Outlet />
+      </Box>
+    </AdminTabs>
+  );
 }

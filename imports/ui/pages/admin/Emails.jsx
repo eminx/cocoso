@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Outlet, useLoaderData, useSearchParams } from 'react-router';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
@@ -11,6 +12,7 @@ import {
   Heading,
   Input,
   Loader,
+  Tabs,
   Text,
 } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
@@ -18,12 +20,12 @@ import { message } from '/imports/ui/generic/message';
 import { currentUserAtom, roleAtom } from '../../../state';
 import FormField from '/imports/ui/forms/FormField';
 import { defaultEmails } from '/imports/startup/constants';
-import ReactQuill from '/imports/ui/forms/Quill';
-import TablyRouter from '/imports/ui/generic/TablyRouter';
+// import Quill from '/imports/ui/forms/Quill';
 
 import Boxling from './Boxling';
+import AdminTabs from './AdminTabs';
 
-function EmailForm({ defaultValues, key, onSubmit }) {
+function EmailForm({ defaultValues, onSubmit }) {
   const { control, handleSubmit, register, formState } = useForm({
     defaultValues,
   });
@@ -33,8 +35,11 @@ function EmailForm({ defaultValues, key, onSubmit }) {
   const { isDirty, isSubmitting } = formState;
 
   return (
-    <>
-      {key && <Heading>{defaultValues.title}</Heading>}
+    <Box py="8" mb="4">
+      <Heading size="md" mb="4">
+        {defaultValues.title}
+      </Heading>
+
       <Boxling>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <Flex direction="column">
@@ -55,13 +60,13 @@ function EmailForm({ defaultValues, key, onSubmit }) {
               </Flex>
             </FormField>
 
-            <FormField label={t('emails.form.body.label')} required>
+            {/* <FormField label={t('emails.form.body.label')} required>
               <Controller
                 control={control}
                 name="body"
-                render={({ field }) => <ReactQuill {...field} />}
+                render={({ field }) => <Quill {...field} />}
               />
-            </FormField>
+            </FormField> */}
 
             <Flex justify="flex-end" py="2" w="100%">
               <Button disabled={!isDirty} loading={isSubmitting} type="submit">
@@ -71,38 +76,17 @@ function EmailForm({ defaultValues, key, onSubmit }) {
           </Flex>
         </form>
       </Boxling>
-    </>
+    </Box>
   );
 }
 
 export default function Emails() {
   const currentUser = useAtomValue(currentUserAtom);
   const role = useAtomValue(roleAtom);
-  const [loading, setLoading] = useState(true);
-  const [emails, setEmails] = useState([]);
+  const { emails } = useLoaderData();
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
-
-  const getEmails = async () => {
-    try {
-      const savedEmails = await call('getEmails');
-      if (savedEmails) {
-        setEmails(savedEmails);
-      }
-      setLoading(false);
-    } catch (error) {
-      setEmails(defaultEmails);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getEmails();
-  }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
+  const [searchParams, setSearchParams] = useSearchParams();
 
   if (!currentUser || role !== 'admin') {
     return <Alert>{tc('message.access.deny')}</Alert>;
@@ -124,33 +108,45 @@ export default function Emails() {
     }
   };
 
-  const parsedEmails = emails.map((email, index) => {
-    let key = 'new';
-    if (index === 1) {
-      key = 'verified';
-    } else if (index === 2) {
-      key = 'admin';
-    }
+  const parsedEmails = useMemo(
+    () =>
+      emails.map((email, index) => {
+        let key = 'new';
+        if (index === 1) {
+          key = 'verified';
+        } else if (index === 2) {
+          key = 'admin';
+        }
 
-    const title = t(`emails.${key}.title`);
+        return {
+          key,
+          title: t(`emails.${key}.title`),
+          onClick: () =>
+            setSearchParams((params) => ({ ...params, show: key })),
+        };
+      }),
+    [emails]
+  );
 
-    return {
-      title,
-      path: key,
-      content: (
-        <Box py="8" mb="4">
-          <Heading size="md" mb="4">
-            {title}
-          </Heading>
-          <EmailForm
-            key={key}
-            onSubmit={(values) => handleSubmit(values, index)}
-            defaultValues={email}
-          />
-        </Box>
-      ),
-    };
-  });
+  const show = searchParams.get('show');
+  const key = ['new', 'verified', 'admin'].includes(show) ? show : 'new';
 
-  return <TablyRouter tabs={parsedEmails} />;
+  const tabIndex = show
+    ? parsedEmails.findIndex((email) => email.key === show)
+    : 0;
+
+  const selectedEmail =
+    key === 'admin' ? emails[2] : key === 'verified' ? emails[1] : emails[0];
+
+  return (
+    <>
+      <Tabs tabs={parsedEmails} index={tabIndex} />
+
+      <EmailForm
+        key={key}
+        onSubmit={(values) => handleSubmit(values, index)}
+        defaultValues={selectedEmail}
+      />
+    </>
+  );
 }

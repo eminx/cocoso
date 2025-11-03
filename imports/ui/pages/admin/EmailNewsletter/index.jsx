@@ -22,7 +22,7 @@ import {
   currentUserAtom,
   platformAtom,
   roleAtom,
-} from '../../../../state';
+} from '/imports/state';
 
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';

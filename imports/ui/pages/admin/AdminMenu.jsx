@@ -160,6 +160,7 @@ export default function AdminMenu({ currentHost, routes }) {
   const isDesktop = useAtomValue(isDesktopAtom);
   const role = useAtomValue(roleAtom);
   const [t] = useTranslation('admin');
+  const navigate = useNavigate();
 
   const isAdmin = role === 'admin';
 

@@ -13,7 +13,7 @@ export default function AdminTabs({ tabs, children }) {
     if (!tabs.find((tab) => pathname.includes(tab.path))) {
       navigate(tabs[0]?.path);
     }
-  }, []);
+  }, [pathname]);
 
   return (
     <>

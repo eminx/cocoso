@@ -32,9 +32,23 @@ import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 import AdminContainer from '/imports/ui/pages/admin/AdminContainer';
 import AdminHome from '/imports/ui/pages/admin/AdminHome';
 import AdminSettings from '/imports/ui/pages/admin/AdminSettings';
-// import AdminUsers from '/imports/ui/pages/admin/AdminUsers';
-// import AdminEmails from '/imports/ui/pages/admin/AdminEmails';
-// import AdminEmailNewsletter from '/imports/ui/pages/admin/AdminEmailNewsletter';
+import AdminSettingsLogo from '/imports/ui/pages/admin/AdminSettingsLogo';
+import AdminSettingsForm from '/imports/ui/pages/admin/AdminSettingsForm';
+import AdminSettingsFooter from '/imports/ui/pages/admin/AdminSettingsFooter';
+import MenuSettings from '/imports/ui/pages/admin/MenuSettings';
+import MenuSettingsOrder from '/imports/ui/pages/admin/MenuSettingsOrder';
+import MenuSettingsOptions from '/imports/ui/pages/admin/MenuSettingsOptions';
+import AdminDesign from '/imports/ui/pages/admin/design';
+import ThemeHandler from '/imports/ui/pages/admin/design/ThemeHandler';
+import MenuDesign from '/imports/ui/pages/admin/design/MenuDesign';
+import Members from '/imports/ui/pages/admin/Members';
+import Emails from '/imports/ui/pages/admin/Emails';
+import EmailNewsletter from '/imports/ui/pages/admin/EmailNewsletter';
+import ComposablePages from '/imports/ui/pages/composablepages';
+import ComposablePageForm from '/imports/ui/pages/composablepages/ComposablePageForm';
+import FeatureAdminWrapper from '/imports/ui/pages/admin/features/_FeatureAdminWrapper';
+import MainFeatureSettings from '/imports/ui/pages/admin/features/MainFeatureSettings';
+import { call } from '/imports/ui/utils/shared';
 
 import {
   getHomeLoader,
@@ -52,16 +66,20 @@ import {
   getUser,
   getWorks,
   getWork,
+  getHostMembersForAdmin,
+  getEmails,
+  getComposablePageTitles,
 } from './loaders';
-import AdminSettingsLogo from '/imports/ui/pages/admin/AdminSettingsLogo';
-import AdminSettingsForm from '/imports/ui/pages/admin/AdminSettingsForm';
-import AdminSettingsFooter from '/imports/ui/pages/admin/AdminSettingsFooter';
-import MenuSettings from '/imports/ui/pages/admin/MenuSettings';
-import MenuSettingsOrder from '/imports/ui/pages/admin/MenuSettingsOrder';
-import MenuSettingsOptions from '/imports/ui/pages/admin/MenuSettingsOptions';
-import AdminDesign from '/imports/ui/pages/admin/design';
-import ThemeHandler from '/imports/ui/pages/admin/design/ThemeHandler';
-import MenuDesign from '/imports/ui/pages/admin/design/MenuDesign';
+
+const features = [
+  'activities',
+  'calendar',
+  'groups',
+  'pages',
+  'people',
+  'resources',
+  'works',
+];
 
 const getAdminRoutes = (props) => [
   {
@@ -116,18 +134,45 @@ const getAdminRoutes = (props) => [
       },
     ],
   },
-  // {
-  //   path: 'users',
-  //   element: <AdminUsers />,
-  // },
-  // {
-  //   path: 'emails',
-  //   element: <AdminEmails />,
-  // },
-  // {
-  //   path: 'email-newsletter',
-  //   element: <AdminEmailNewsletter />,
-  // },
+  {
+    path: 'composable-pages',
+    element: <ComposablePages {...props} />,
+    loader: async () => await getComposablePageTitles(),
+    children: [
+      {
+        path: ':composablePageId',
+        element: <ComposablePageForm {...props} />,
+        loader: async ({ params }) => await getComposablePage({ params }),
+      },
+    ],
+  },
+  {
+    path: 'features',
+    children: features.map((feature) => ({
+      path: feature,
+      element: <FeatureAdminWrapper {...props} />,
+      children: [
+        {
+          path: 'menu',
+          element: <MainFeatureSettings feature={feature} {...props} />,
+        },
+      ],
+    })),
+  },
+  {
+    path: 'users',
+    element: <Members {...props} />,
+    loader: async () => await getHostMembersForAdmin(),
+  },
+  {
+    path: 'emails',
+    element: <Emails {...props} />,
+    loader: async () => await getEmails(),
+  },
+  {
+    path: 'email-newsletter',
+    element: <EmailNewsletter {...props} />,
+  },
 ];
 
 export default function appRoutes(props) {

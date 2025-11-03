@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLoaderData, useLocation, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { Trans, useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
@@ -8,22 +8,24 @@ import {
   Alert,
   Badge,
   Box,
+  Center,
   Code,
   Flex,
   Heading,
   Input,
   Loader,
   Select,
+  Tabs,
   Text,
 } from '/imports/ui/core';
 
-import NiceList from '../../generic/NiceList';
+import NiceList from '/imports/ui/generic/NiceList';
+import { currentUserAtom, isDesktopAtom, roleAtom } from '/imports/state';
+import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+
 import UsageReport from './UsageReport';
 import Boxling from './Boxling';
-import TablyRouter from '../../generic/TablyRouter';
-import { currentUserAtom, isDesktopAtom, roleAtom } from '../../../state';
-import { message } from '../../generic/message';
-import { call } from '../../utils/shared';
 
 const compareUsersByDate = (a, b) => {
   const rawA = a.date || a.createdAt;
@@ -68,29 +70,48 @@ function MemberList({ members, t }) {
   );
 }
 
+const filterOptions = [
+  {
+    label: <Trans i18nKey="members:all" />,
+    value: 'all',
+  },
+  {
+    label: <Trans i18nKey="members:roles.participant" />,
+    value: 'participant',
+  },
+  {
+    label: <Trans i18nKey="members:roles.contributor" />,
+    value: 'contributor',
+  },
+  {
+    label: <Trans i18nKey="members:roles.admin" />,
+    value: 'admin',
+  },
+];
+
+const sortOptions = [
+  {
+    label: <Trans i18nKey="members:form.sort.date" />,
+    value: 'join-date',
+  },
+  {
+    label: <Trans i18nKey="members:form.sort.user" />,
+    value: 'username',
+  },
+];
+
 export default function Members() {
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const role = useAtomValue(roleAtom);
-  const [members, setMembers] = useState(null);
+  const { members } = useLoaderData();
   const [sortBy, setSortBy] = useState('join-date');
   const [filterWord, setFilterWord] = useState('');
   const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
   const location = useLocation();
-
-  const getMembers = async () => {
-    try {
-      const respond = await call('getHostMembersForAdmin');
-      setMembers(respond);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getMembers();
-  }, []);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Keep hooks order stable; avoid early returns. Use conditional rendering below.
 
@@ -102,7 +123,6 @@ export default function Members() {
         t('message.success.participant', { username: user.username })
       );
     } catch (error) {
-      console.log(error);
       message.error({
         title: error.reason || error.error,
         status: 'error',
@@ -118,7 +138,6 @@ export default function Members() {
         t('message.success.contributor', { username: user.username })
       );
     } catch (error) {
-      console.log(error);
       message.error({
         title: error.reason || error.error,
         status: 'error',
@@ -176,36 +195,6 @@ export default function Members() {
     [safeMembers, role, t]
   );
 
-  const filterOptions = [
-    {
-      label: t('all'),
-      value: 'all',
-    },
-    {
-      label: t('roles.participant'),
-      value: 'participant',
-    },
-    {
-      label: t('roles.contributor'),
-      value: 'contributor',
-    },
-    {
-      label: t('roles.admin'),
-      value: 'admin',
-    },
-  ];
-
-  const sortOptions = [
-    {
-      label: t('form.sort.date'),
-      value: 'join-date',
-    },
-    {
-      label: t('form.sort.user'),
-      value: 'username',
-    },
-  ];
-
   const membersFilteredWithType = useMemo(() => {
     const lowerCaseFilterWord = filterWord ? filterWord.toLowerCase() : '';
     if (!lowerCaseFilterWord) return membersList;
@@ -231,89 +220,90 @@ export default function Members() {
     }
   }, [membersFilteredWithType, sortBy]);
 
-  const { pathname } = location;
-  const pathParts = pathname.split('/');
-  const filterInPath = pathParts[pathParts.length - 1];
+  const show = searchParams.get('show');
 
   const membersRendered = useMemo(
     () =>
-      membersSorted.filter(
-        (m) => filterInPath === 'all' || filterInPath === m.role
-      ),
-    [membersSorted, filterInPath]
+      membersSorted.filter((m) => !show || show === 'all' || show === m.role),
+    [membersSorted, show]
   );
 
   const tabs = useMemo(
     () =>
       filterOptions.map((item) => ({
         title: item.label,
-        path: item.value,
+        onClick: () =>
+          setSearchParams((params) => ({ ...params, show: item.value })),
         content: <MemberList members={membersRendered} t={t} />,
       })),
     [filterOptions, membersRendered, t]
   );
 
+  const tabIndex = show
+    ? filterOptions.findIndex((opt) => opt.value === show)
+    : 0;
+
+  if (!currentUser || role !== 'admin') {
+    return (
+      <Center>
+        <Alert message={tc('message.access.deny')} type="warning" />
+      </Center>
+    );
+  }
+
   return (
     <>
-      {!currentUser || role !== 'admin' ? (
-        <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert message={tc('message.access.deny')} type="warning" />
-        </div>
-      ) : !members ? (
-        <Loader />
-      ) : (
-        <TablyRouter tabs={tabs}>
-          <Boxling mb="4" mt="8">
-            <Heading color="gray.600" mb="2" size="md">
-              <span
-                style={{
-                  fontSize: '150%',
-                }}
-              >
-                {membersRendered.length}
-              </span>{' '}
-              <Trans
-                i18nKey={`admin:users.${
-                  membersRendered.length > 1 ? 'usersListed' : 'userListed'
-                }`}
-              />
-            </Heading>
+      <Tabs tabs={tabs} index={tabIndex} />
 
-            <Box mb="2">
-              <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
-            </Box>
+      <Boxling mb="4" mt="8">
+        <Heading color="gray.600" mb="2" size="md">
+          <span
+            style={{
+              fontSize: '150%',
+            }}
+          >
+            {membersRendered.length}
+          </span>{' '}
+          <Trans
+            i18nKey={`admin:users.${
+              membersRendered.length > 1 ? 'usersListed' : 'userListed'
+            }`}
+          />
+        </Heading>
 
-            <Flex direction={isDesktop ? 'row' : 'column'} w="100%">
-              <Box
-                pr={isDesktop ? '4' : '0'}
-                pb={isDesktop ? '0' : '2'}
-                css={{
-                  flexBasis: '60%',
-                }}
-              >
-                <Input
-                  placeholder={t('form.holder')}
-                  value={filterWord}
-                  onChange={(event) => setFilterWord(event.target.value)}
-                />
-              </Box>
-              <Box css={{ flexBasis: '40%' }}>
-                <Select
-                  name="sorter"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  {sortOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </Select>
-              </Box>
-            </Flex>
-          </Boxling>
-        </TablyRouter>
-      )}
+        <Box mb="2">
+          <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
+        </Box>
+
+        <Flex direction={isDesktop ? 'row' : 'column'} w="100%">
+          <Box
+            pr={isDesktop ? '4' : '0'}
+            pb={isDesktop ? '0' : '2'}
+            css={{
+              flexBasis: '60%',
+            }}
+          >
+            <Input
+              placeholder={t('form.holder')}
+              value={filterWord}
+              onChange={(event) => setFilterWord(event.target.value)}
+            />
+          </Box>
+          <Box css={{ flexBasis: '40%' }}>
+            <Select
+              name="sorter"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              {sortOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Select>
+          </Box>
+        </Flex>
+      </Boxling>
 
       <UsageReport
         isOpen={Boolean(userForUsageReport)}

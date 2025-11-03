@@ -1,43 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router';
+import { Outlet, useLoaderData } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import { currentHostAtom } from '../../../state';
+import { currentHostAtom } from '/imports/state';
+import { Heading } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
+
+// import ComposablePagesListing from './components/ComposablePagesListing';
+// import ComposablePageCreator from './components/ComposablePageCreator';
 import ComposablePageForm from './ComposablePageForm';
-import ComposablePagesListing from './components/ComposablePagesListing';
-import ComposablePageCreator from '/imports/ui/pages/composablepages/components/ComposablePageCreator';
-import { Heading } from '/imports/ui/core';
 
 export default function ComposablePages() {
   const currentHost = useAtomValue(currentHostAtom);
-  const [composablePageTitles, setComposablePageTitles] = useState([]);
-
-  const getComposablePageTitles = async () => {
-    try {
-      const response = await call('getComposablePageTitles');
-      setComposablePageTitles(response);
-    } catch (error) {
-      message.error(error.reason || error.error);
-    }
-  };
-
-  useEffect(() => {
-    getComposablePageTitles();
-  }, []);
+  const { composablePageTitles } = useLoaderData();
 
   return (
-    <Routes>
-      <Route
-        path=":composablePageId"
-        element={
-          <ComposablePageForm
-            composablePageTitles={composablePageTitles}
-            getComposablePageTitles={getComposablePageTitles}
-          />
-        }
-      />
-    </Routes>
+    <>
+      {/* <TopToolBar composablePageTitles={composablePageTitles} /> */}
+
+      <Outlet />
+      <ComposablePageForm composablePageTitles={composablePageTitles} />
+    </>
   );
 }

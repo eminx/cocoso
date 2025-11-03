@@ -10,7 +10,7 @@ import { message } from '/imports/ui/generic/message';
 
 import { ComposablePageContext } from '../ComposablePageForm';
 
-export default function ComposablePageSettings({ getComposablePageTitles }) {
+export default function ComposablePageSettings() {
   const { currentPage, getComposablePageById } = useContext(
     ComposablePageContext
   );
