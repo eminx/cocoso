@@ -78,7 +78,7 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
           <PlatformFooter />
         </DummyWrapper>
 
-        {hydrated && (
+        {rendered && (
           <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />
         )}
       </I18nextProvider>

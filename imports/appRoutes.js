@@ -48,7 +48,9 @@ import ComposablePages from '/imports/ui/pages/composablepages';
 import ComposablePageForm from '/imports/ui/pages/composablepages/ComposablePageForm';
 import FeatureAdminWrapper from '/imports/ui/pages/admin/features/_FeatureAdminWrapper';
 import MainFeatureSettings from '/imports/ui/pages/admin/features/MainFeatureSettings';
+import FeaturesWrapper from '/imports/ui/pages/admin/features/FeaturesWrapper';
 import { call } from '/imports/ui/utils/shared';
+import Redirector from '/imports/ui/generic/Redirector';
 
 import {
   getHomeLoader,
@@ -70,6 +72,8 @@ import {
   getEmails,
   getComposablePageTitles,
 } from './loaders';
+
+import { updateHostSettings } from './actions';
 
 const features = [
   'activities',
@@ -148,6 +152,7 @@ const getAdminRoutes = (props) => [
   },
   {
     path: 'features',
+    // element: <FeaturesWrapper {...props} />,
     children: features.map((feature) => ({
       path: feature,
       element: <FeatureAdminWrapper {...props} />,

@@ -3,14 +3,14 @@ import React from 'react';
 import { Link, useLocation } from 'react-router';
 import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+import { useAtomValue } from 'jotai';
 
 import { Box, Center, Flex, Heading, Image, Text } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
+import { currentHostAtom, pageTitlesAtom } from '/imports/state';
 
 import { parseTitle } from '../utils/shared';
-import { useAtomValue } from 'jotai';
-import { currentHostAtom, pageTitlesAtom } from '../../state';
 
 const isClient = Meteor?.isClient;
 
@@ -210,8 +210,9 @@ function HeaderMenu({ Host, pageTitles }) {
   );
 }
 
-export default function Header({ Host, isLogoSmall = false, pageTitles }) {
-  const currentHost = Host;
+export default function Header({ isLogoSmall = false }) {
+  const currentHost = useAtomValue(currentHostAtom);
+  const pageTitles = useAtomValue(pageTitlesAtom);
 
   if (!currentHost) {
     return null;

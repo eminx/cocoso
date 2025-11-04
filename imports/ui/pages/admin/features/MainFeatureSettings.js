@@ -12,7 +12,8 @@ import {
   Text,
   Textarea,
 } from '/imports/ui/core';
-import { currentHostAtom } from '../../../../state';
+import { currentHostAtom } from '/imports/state';
+import { updateHostSettings } from '/imports/actions';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 
@@ -68,7 +69,7 @@ export default function MainFeatureSettings({ feature }) {
     }));
   };
 
-  const handleSave = async () => {
+  const handleSubmit = async () => {
     setSubmitting(true);
     const localSettings = {
       ...currentHost.settings,
@@ -155,7 +156,7 @@ export default function MainFeatureSettings({ feature }) {
             isDisabled={localItem === selectedMenuItem}
             isLoading={submitting}
             type="submit"
-            onClick={handleSave}
+            onClick={handleSubmit}
           >
             {tc('actions.submit')}
           </Button>

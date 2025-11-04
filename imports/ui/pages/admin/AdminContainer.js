@@ -47,12 +47,7 @@ export default function AdminContainer({ Host, ...props }) {
   const currentHost = Host || useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
-  // const role = useAtomValue(roleAtom);
-  const role = 'admin';
-  console.log('currentUser:', currentUser);
-  console.log('currentHost:', currentHost);
-  console.log('role:', role);
-  console.log('isDesktop:', isDesktop);
+  const role = useAtomValue(roleAtom);
 
   const [drawerMenuOpen, setDrawerMenuOpen] = useState(false);
   const [t] = useTranslation('admin');
@@ -67,7 +62,7 @@ export default function AdminContainer({ Host, ...props }) {
 
   const pathname = location?.pathname;
 
-  const currentRoute = useMemo(() => {
+  const getCurrentRoute = () => {
     if (!routes) {
       return null;
     }
@@ -94,7 +89,9 @@ export default function AdminContainer({ Host, ...props }) {
     });
 
     return allRoutes.find((r) => pathname.includes(r.value));
-  }, [pathname]);
+  };
+
+  const currentRoute = getCurrentRoute();
 
   const handleItemClick = (item) => {
     if (!item) {

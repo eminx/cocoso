@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 
 import FileDropper from '/imports/ui/forms/FileDropper';
@@ -11,7 +11,7 @@ import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
 import Boxling from './Boxling';
 
 export default function AdminSettingsLogo() {
-  const currentHost = useAtomValue(currentHostAtom);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
   const [t] = useTranslation('admin');

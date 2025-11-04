@@ -212,8 +212,8 @@ Meteor.methods({
   },
 
   async assignHostLogo(image) {
-    const user = await Meteor.userAsync();
     const host = getHost(this);
+    const user = await Meteor.userAsync();
     const currentHost = await Hosts.findOneAsync({ host });
     const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 

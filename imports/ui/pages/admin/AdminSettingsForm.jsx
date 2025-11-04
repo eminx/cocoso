@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSubmit } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +9,7 @@ import FormField from '/imports/ui/forms/FormField';
 import ChangeLanguage from '/imports/ui/layout/ChangeLanguageMenu';
 import { currentHostAtom } from '/imports/state';
 import { updateHostSettings } from '/imports/actions';
+import { message } from '/imports/ui/generic/message';
 
 import Boxling from './Boxling';
 
@@ -20,7 +22,6 @@ export default function AdminSettingsForm() {
   const { handleSubmit, register, formState } = useForm({
     defaultValues: localSettings,
   });
-
   const { isDirty, isSubmitting } = formState;
 
   useEffect(() => {
@@ -64,7 +65,11 @@ export default function AdminSettingsForm() {
               <ChangeLanguage hideHelper select register={register} />
             </FormField>
             <Flex justify="flex-end" py="4">
-              <Button disabled={!isDirty || isSubmitting} type="submit">
+              <Button
+                disabled={!isDirty || isSubmitting}
+                loading={isSubmitting}
+                type="submit"
+              >
                 {tc('actions.submit')}
               </Button>
             </Flex>
