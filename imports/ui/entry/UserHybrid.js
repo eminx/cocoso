@@ -48,8 +48,6 @@ export default function UserHybrid({ user, Host }) {
     return <NotFoundPage />;
   }
 
-  console.log(user);
-
   if (!user) {
     return (
       <Center p="8">

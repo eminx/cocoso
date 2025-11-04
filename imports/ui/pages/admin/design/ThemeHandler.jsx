@@ -23,6 +23,7 @@ import {
   getCustomTheme,
   getGrayTheme,
 } from '/imports/ui/pages/admin/design/styleOptions';
+import { updateHostSettings } from '/imports/actions';
 
 import HuePicker from './HuePicker';
 import BackgroundHandler from './BackgroundHandler';
@@ -63,7 +64,7 @@ export default function ThemeHandler() {
   };
 
   const handleStyleChange = (key, value) => {
-    const newTheme = setCurrentHost((prevState) => {
+    setCurrentHost((prevState) => {
       const newTheme = {
         ...prevState?.theme,
         body: {
@@ -91,17 +92,12 @@ export default function ThemeHandler() {
         backgroundImage: uploadedImage,
       },
     };
-
     try {
       await call('updateHostTheme', newTheme);
       setCurrentHost(await call('getCurrentHost'));
-      message.success(<Trans i18nKey="admin:design.message.success" />);
+      message.success(<Trans i18nKey="common:message.success.update" />);
     } catch (error) {
-      message.error(
-        error.error || error.reason || (
-          <Trans i18nKey="admin:design.message.error" />
-        )
-      );
+      message.error(error.error || error.reason);
     } finally {
       setState((prevState) => ({
         ...prevState,
@@ -165,6 +161,7 @@ export default function ThemeHandler() {
       </Box>
 
       <FontSelector
+        currentTheme={currentTheme}
         handleStyleChange={handleStyleChange}
         selectedFont={currentTheme.body.fontFamily}
       />
