@@ -8,8 +8,6 @@ import { useAtom, useSetAtom } from 'jotai';
 import { useHydrated } from 'react-hydration-provider';
 import { Toaster } from 'react-hot-toast';
 
-import TopBarHandler from '/imports/ui/layout/TopBarHandler';
-import { Footer, PlatformFooter } from '/imports/ui/layout/Footers';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 import i18n from '/imports/startup/i18n';
 import {
@@ -24,9 +22,11 @@ import {
   renderedAtom,
 } from '/imports/state';
 
-import Header from './Header';
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
+import TopBarHandler from './TopBarHandler';
+import Header from './Header';
+import { Footer, PlatformFooter } from './Footers';
 
 export default function WrapperHybrid({ Host, pageTitles, platform }) {
   useHydrateAtoms([
@@ -68,13 +68,13 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
       <HelmetHybrid Host={Host} />
 
       <I18nextProvider i18n={i18n}>
-        <DummyWrapper theme={Host?.theme}>
+        <DummyWrapper>
           {rendered && !adminPage && <TopBarHandler />}
-          {!adminPage && <Header Host={Host} pageTitles={pageTitles} />}
+          {!adminPage && <Header />}
 
           <Outlet />
 
-          <Footer currentHost={Host} />
+          <Footer />
           <PlatformFooter />
         </DummyWrapper>
 

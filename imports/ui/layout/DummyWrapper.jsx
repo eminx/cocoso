@@ -1,17 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { HydrationProvider } from 'react-hydration-provider';
+import { useAtomValue } from 'jotai';
 
 import { Box } from '/imports/ui/core';
+import { currentHostAtom } from '/imports/state';
 
 const isClient = Meteor.isClient;
 
-export default function DummyWrapper({
-  animate = false,
-  theme,
-  children,
-  ...rest
-}) {
+export default function DummyWrapper({ animate = false, children, ...rest }) {
+  const currentHost = useAtomValue(currentHostAtom);
+  const theme = currentHost?.theme;
   const pathname = isClient ? window?.location?.pathname : null;
 
   let wrapperClass = 'wrapper';

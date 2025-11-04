@@ -5,17 +5,21 @@ import ReactSelect from 'react-select';
 import { arrayMoveImmutable } from 'array-move';
 import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
 import XIcon from 'lucide-react/dist/esm/icons/x';
+import { useAtomValue } from 'jotai';
 
 import { call } from '/imports/ui/utils/shared';
 import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
 import { updateHostSettings } from '/imports/actions';
+import { message } from '/imports/ui/generic/message';
+import { currentHostAtom } from '/imports/state';
 
 import Boxling from './Boxling';
 
 export default function MenuSettingsOrder({ Host }) {
-  const currentHost = Host;
-  const [localSettings, setLocalSettings] = useState(Host?.settings);
+  const currentHost = useAtomValue(currentHostAtom);
+  const [localMenu, setLocalMenu] = useState(currentHost?.settings?.menu);
   const [composablePageTitles, setComposablePageTitles] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   const getComposablePageTitles = async () => {
     const response = await call('getComposablePageTitles');
@@ -30,51 +34,47 @@ export default function MenuSettingsOrder({ Host }) {
   }, []);
 
   const onSortMenuEnd = (oldIndex, newIndex) => {
-    const { menu } = localSettings;
-    const visibleItems = menu.filter((item) => item.isVisible);
-    const invisibleItems = menu.filter((item) => !item.isVisible);
-    const newSettings = {
-      ...localSettings,
-      menu: [
-        ...arrayMoveImmutable(visibleItems, oldIndex, newIndex),
-        ...invisibleItems,
-      ],
-    };
-    setLocalSettings(newSettings);
+    const visibleItems = localMenu.filter((item) => item.isVisible);
+    const invisibleItems = localMenu.filter((item) => !item.isVisible);
+    const newMenu = [
+      ...arrayMoveImmutable(visibleItems, oldIndex, newIndex),
+      ...invisibleItems,
+    ];
+    setLocalMenu(newMenu);
   };
 
   const addComposablePage = (option) => {
-    setLocalSettings((prevSettings) => ({
-      ...prevSettings,
-      menu: [
-        {
-          label: option.title,
-          name: option._id,
-          isVisible: true,
-          isComposablePage: true,
-        },
-        ...prevSettings.menu,
-      ],
-    }));
+    setLocalMenu([
+      {
+        label: option.title,
+        name: option._id,
+        isVisible: true,
+        isComposablePage: true,
+      },
+      ...prevSettings.menu,
+    ]);
   };
 
   const removeComposablePage = (selectedItemName) => {
-    setLocalSettings((prevSettings) => ({
-      ...prevSettings,
-      menu: prevSettings.menu.filter((item) => item.name !== selectedItemName),
-    }));
+    setLocalMenu(
+      prevSettings.menu.filter((item) => item.name !== selectedItemName)
+    );
   };
 
   const getComposablePageOptions = () => {
-    const existingComposableIdsInlocalMenu = localSettings.menu.map(
-      (item) => item.name
-    );
+    const existingComposableIdsInlocalMenu = localMenu.map((item) => item.name);
 
     const options = composablePageTitles?.filter(
       (item) =>
         item.isPublished && !existingComposableIdsInlocalMenu.includes(item._id)
     );
     return options;
+  };
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    await updateHostSettings({ values: { menu: localMenu } });
+    setSubmitting(false);
   };
 
   return (
@@ -110,9 +110,9 @@ export default function MenuSettingsOrder({ Host }) {
           />
         </Box>
 
-        {localSettings && localSettings.menu && (
+        {localMenu && (
           <SortableList onSortEnd={onSortMenuEnd}>
-            {localSettings.menu
+            {localMenu
               .filter((item) => item.isVisible)
               .map((value, index) => (
                 <SortableItem key={value.name}>
@@ -152,11 +152,9 @@ export default function MenuSettingsOrder({ Host }) {
               ))}
           </SortableList>
         )}
+
         <Flex justify="flex-end" mt="8">
-          <Button
-            onClick={() => updateHostSettings({ values: localSettings })}
-            type="submit"
-          >
+          <Button loading={submitting} onClick={handleSubmit}>
             <Trans i18nKey="common:actions.submit" />
           </Button>
         </Flex>

@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Box, Button, Checkbox, Heading, Flex, Text } from '/imports/ui/core';
 import { updateHostSettings } from '/imports/actions';
+import { currentHostAtom } from '/imports/state';
 
 import Boxling from './Boxling';
 
 export default function MenuSettingsOptions({ Host }) {
-  const [localSettings, setLocalSettings] = useState(Host?.settings);
+  const currentHost = useAtomValue(currentHostAtom);
+  const [localSettings, setLocalSettings] = useState({
+    isBurgerMenuOnMobile: Boolean(currentHost?.settings?.isBurgerMenuOnMobile),
+    isBurgerMenuOnDesktop: Boolean(
+      currentHost?.settings?.isBurgerMenuOnDesktop
+    ),
+  });
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSwitchBurgerMenuMobile = (checked) => {
     setLocalSettings((prevSettings) => ({
-      ...prevSettings,
       isBurgerMenuOnMobile: checked,
       isBurgerMenuOnDesktop: !checked
         ? false
@@ -26,7 +34,13 @@ export default function MenuSettingsOptions({ Host }) {
     }));
   };
 
-  const settings = Host?.settings;
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    await updateHostSettings({ values: localSettings });
+    setSubmitting(false);
+  };
+
+  const settings = currentHost?.settings;
   const isOptionsSubmitButtonDisabled =
     settings.isBurgerMenuOnDesktop === localSettings.isBurgerMenuOnDesktop &&
     settings.isBurgerMenuOnMobile === localSettings.isBurgerMenuOnMobile;
@@ -75,7 +89,8 @@ export default function MenuSettingsOptions({ Host }) {
       <Flex justify="flex-end" pt="2">
         <Button
           disabled={isOptionsSubmitButtonDisabled}
-          onClick={() => updateHostSettings({ values: localSettings })}
+          loading={submitting}
+          onClick={handleSubmit}
         >
           <Trans i18nKey="common:actions.submit" />
         </Button>
