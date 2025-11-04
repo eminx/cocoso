@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
+const ReactQuill = lazy(() => import('react-quill-new'));
 
-let ReactQuill;
-import { editorFormats, editorModules } from '../utils/constants/quillConfig';
+import { editorModules } from '../utils/constants/quillConfig';
 
 if (Meteor.isClient) {
-  ReactQuill = require('react-quill-new');
   import 'react-quill-new/dist/quill.snow.css';
   import '../utils/styles/quilleditor-custom.css';
 }
@@ -13,17 +12,13 @@ if (Meteor.isClient) {
 export default function Quill(props) {
   const [focused, setFocused] = useState(false);
 
-  let megaContainer = 'text-container quill-megacontainer';
+  let quillContainer = 'text-container quill-megacontainer';
   if (focused) {
-    megaContainer += ' is-focused';
-  }
-
-  if (!Meteor.isClient) {
-    return null;
+    quillContainer += ' is-focused';
   }
 
   return (
-    <div className={megaContainer}>
+    <div className={quillContainer}>
       <ReactQuill
         modules={editorModules}
         {...props}

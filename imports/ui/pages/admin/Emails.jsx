@@ -20,7 +20,7 @@ import { message } from '/imports/ui/generic/message';
 import { currentUserAtom, roleAtom } from '../../../state';
 import FormField from '/imports/ui/forms/FormField';
 import { defaultEmails } from '/imports/startup/constants';
-// import Quill from '/imports/ui/forms/Quill';
+import Quill from '/imports/ui/forms/Quill';
 
 import Boxling from './Boxling';
 import AdminTabs from './AdminTabs';
@@ -60,13 +60,13 @@ function EmailForm({ defaultValues, onSubmit }) {
               </Flex>
             </FormField>
 
-            {/* <FormField label={t('emails.form.body.label')} required>
+            <FormField label={t('emails.form.body.label')} required>
               <Controller
                 control={control}
                 name="body"
                 render={({ field }) => <Quill {...field} />}
               />
-            </FormField> */}
+            </FormField>
 
             <Flex justify="flex-end" py="2" w="100%">
               <Button disabled={!isDirty} loading={isSubmitting} type="submit">
