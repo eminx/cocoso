@@ -97,9 +97,9 @@ export default function Emails() {
   }
 
   const handleSubmit = async (values, emailIndex) => {
+    console.log(values, emailIndex);
     try {
-      await call('updateEmail', emailIndex, values);
-      getEmails();
+      await call('updateEmail', values, emailIndex);
       message.success(tc('message.success.update'));
     } catch (error) {
       message.error(error.reason || error.error);
@@ -144,7 +144,7 @@ export default function Emails() {
 
       <EmailForm
         key={key}
-        onSubmit={(values) => handleSubmit(values, index)}
+        onSubmit={(values) => handleSubmit(values, tabIndex)}
         defaultValues={selectedEmail}
       />
     </>

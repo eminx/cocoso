@@ -281,7 +281,7 @@ Meteor.methods({
     }
   },
 
-  async updateEmail(emailIndex, email) {
+  async updateEmail(email, emailIndex) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
