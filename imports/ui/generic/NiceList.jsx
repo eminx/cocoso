@@ -23,17 +23,19 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
     <Flex align="flex-start" justify="space-between">
       <Box w="100%">{renderChildren(listItem)}</Box>
       {actions && (
-        <Menu
-          align="end"
-          button={<IconButton icon={<EllipsisVertical size="16px" />} />}
-          options={actions}
-          onSelect={(action) => {
-            if (action.isDisabled) {
-              return;
-            }
-            action.onClick();
-          }}
-        />
+        <Box p="2">
+          <Menu
+            align="end"
+            button={<IconButton icon={<EllipsisVertical size="16px" />} />}
+            options={actions}
+            onSelect={(action) => {
+              if (action.isDisabled) {
+                return;
+              }
+              action.onClick();
+            }}
+          />
+        </Box>
       )}
     </Flex>
   );
@@ -44,7 +46,7 @@ const ListItem = memo(function ({ bg, children }) {
     <div style={{ width: '100%' }}>
       <Box
         bg={bg}
-        mb="2"
+        mb="4"
         w="100%"
         css={{
           borderRadius: 'var(--cocoso-border-radius)',

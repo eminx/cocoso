@@ -1,8 +1,10 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 // import { Masonry, usePositioner, useResizeObserver } from 'masonic';
 
+import { currentHostAtom } from '/imports/state';
 import { Box, Center, Flex } from '/imports/ui/core';
 import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
 
@@ -13,7 +15,8 @@ import Tag from '../generic/Tag';
 import { getCategoriesAssignedToWorks } from '../utils/shared';
 import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 
-function WorkThumb({ index, categories, data, Host, onClick }) {
+function WorkThumb({ index, categories, data, onClick }) {
+  const currentHost = useAtomValue(currentHostAtom);
   const work = { ...data };
   return (
     <Box onClick={onClick}>
@@ -27,7 +30,7 @@ function WorkThumb({ index, categories, data, Host, onClick }) {
         color={
           categories.find((cat) => cat?.label === work.category?.label)?.color
         }
-        host={Host?.isPortalHost ? work.host : null}
+        host={currentHost?.isPortalHost ? work.host : null}
         imageUrl={work?.images && work.images[0]}
         index={index}
         tag={work.category?.label}
@@ -37,7 +40,8 @@ function WorkThumb({ index, categories, data, Host, onClick }) {
   );
 }
 
-export default function WorksHybrid({ works, Host }) {
+export default function WorksHybrid({ works }) {
+  const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
   const [t] = useTranslation('members');
   const [searchParams, setSearchParams] = useSearchParams();
@@ -73,12 +77,12 @@ export default function WorksHybrid({ works, Host }) {
     };
   });
 
-  const worksInMenu = Host?.settings?.menu?.find(
+  const worksInMenu = currentHost?.settings?.menu?.find(
     (item) => item.name === 'works'
   );
   const description = worksInMenu?.description;
   const heading = worksInMenu?.label;
-  const url = `${Host?.host}/${worksInMenu?.name}`;
+  const url = `${currentHost?.host}/${worksInMenu?.name}`;
 
   // const getAvatar = (work) =>
   //   work.showAvatar && {
@@ -96,7 +100,7 @@ export default function WorksHybrid({ works, Host }) {
   //     const itemProps = {
   //       ...props,
   //       categories,
-  //       Host,
+  //       currentHost,
   //       onClick: () => setModalItem(props?.data),
   //     };
   //     return <WorkThumb {...itemProps} />;
@@ -109,7 +113,7 @@ export default function WorksHybrid({ works, Host }) {
       <PageHeading
         description={description}
         heading={heading}
-        imageUrl={Host?.logo}
+        imageUrl={currentHost?.logo}
         url={url}
       />
 
@@ -152,7 +156,7 @@ export default function WorksHybrid({ works, Host }) {
       <Center>
         <VirtualGridLister
           cellProps={{
-            Host,
+            currentHost,
             isMasonry: true,
             getAvatar,
             getColor,
@@ -188,7 +192,7 @@ export default function WorksHybrid({ works, Host }) {
                   categories.find((cat) => cat?.label === work.category?.label)
                     ?.color
                 }
-                host={Host?.isPortalHost ? work.host : null}
+                host={currentHost?.isPortalHost ? work.host : null}
                 imageUrl={work?.images && work.images[0]}
                 index={index}
                 tag={work.category?.label}

@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import HTMLReactParser from 'html-react-parser';
 
 import { Box, Center, Heading } from '/imports/ui/core';
+
 import NiceSlider from '../generic/NiceSlider';
 import { parseTitle } from '../utils/shared';
 
