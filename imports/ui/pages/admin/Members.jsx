@@ -35,7 +35,9 @@ const compareUsersByDate = (a, b) => {
   return dateA - dateB;
 };
 
-function MemberItem({ member, t }) {
+function MemberItem({ member }) {
+  const [t] = useTranslation('members');
+
   return (
     <Box p="6">
       <Heading size="md" fontWeight="bold" mb="1">
@@ -56,7 +58,7 @@ function MemberItem({ member, t }) {
   );
 }
 
-function MemberList({ members, t }) {
+function MemberList({ members }) {
   return (
     <NiceList
       actionsDisabled={false}
@@ -65,7 +67,7 @@ function MemberList({ members, t }) {
       list={members}
       virtual
     >
-      {(member) => <MemberItem key={member.username} t={t} member={member} />}
+      {(member) => <MemberItem key={member.username} member={member} />}
     </NiceList>
   );
 }
@@ -161,6 +163,8 @@ export default function Members() {
 
   const safeMembers = members || [];
 
+  console.log('members:', members);
+
   const membersList = useMemo(
     () =>
       safeMembers.map((member) => ({
@@ -234,7 +238,6 @@ export default function Members() {
         title: item.label,
         onClick: () =>
           setSearchParams((params) => ({ ...params, show: item.value })),
-        content: <MemberList members={membersRendered} t={t} />,
       })),
     [filterOptions, membersRendered, t]
   );
@@ -304,6 +307,8 @@ export default function Members() {
           </Box>
         </Flex>
       </Boxling>
+
+      <MemberList members={membersRendered} />
 
       <UsageReport
         isOpen={Boolean(userForUsageReport)}
