@@ -1,10 +1,11 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useLoaderData } from 'react-router';
 import { useHydrateAtoms } from 'jotai/utils';
 import { atom, useAtomValue } from 'jotai';
 
 import GroupHybrid from '/imports/ui/entry/GroupHybrid';
 import { renderedAtom } from '/imports/state';
+import { Loader } from '/imports/ui/core';
 
 const GroupInteractionHandler = lazy(() =>
   import('./components/GroupInteractionHandler')
@@ -17,22 +18,22 @@ const NewEntryHandler = lazy(() =>
 export const groupAtom = atom(null);
 
 export default function GroupItemHandler({ Host, pageTitles }) {
-  const { group } = useLoaderData();
+  const { group, documents } = useLoaderData();
   useHydrateAtoms([[groupAtom, group]]);
   const rendered = useAtomValue(renderedAtom);
 
   return (
     <>
-      <GroupHybrid group={group} Host={Host} />
+      <GroupHybrid group={group} documents={documents} Host={Host} />
 
       {rendered && (
-        <>
+        <Suspense fallback={<Loader />}>
           <GroupInteractionHandler group={group} />
 
           <NewEntryHandler>
             <EditGroup />
           </NewEntryHandler>
-        </>
+        </Suspense>
       )}
     </>
   );

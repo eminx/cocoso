@@ -8,7 +8,7 @@ import { message } from '../../generic/message';
 import Alert from '../../core/Alert';
 import { call } from '../../../api/_utils/shared';
 
-function NewHost({ setFinished }) {
+export default function NewHost({ setFinished }) {
   const [tc] = useTranslation('common');
 
   const currentUser = Meteor.user();
@@ -53,5 +53,3 @@ function NewHost({ setFinished }) {
 
   return <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />;
 }
-
-export default NewHost;

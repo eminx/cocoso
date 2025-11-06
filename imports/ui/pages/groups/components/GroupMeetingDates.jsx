@@ -80,7 +80,7 @@ function MeetingDatesContent({
           meetingAttendee.email,
           meetingAttendee.lastName
         );
-        setGroup(await call('getGroupById', groupId));
+        setGroup(await call('getGroupWithMeetings', groupId));
         setRegButtonDisabled(false);
         message.success(t('meeting.attends.remove'));
         onClose();
@@ -90,7 +90,7 @@ function MeetingDatesContent({
     } else {
       try {
         await call('registerAttendance', activityId, meetingAttendee);
-        setGroup(await call('getGroupById', groupId));
+        setGroup(await call('getGroupWithMeetings', groupId));
         setRegButtonDisabled(false);
         message.success(t('meeting.attends.register'));
         onClose();
@@ -111,7 +111,7 @@ function MeetingDatesContent({
     try {
       await call('deleteActivity', activityId);
       const groupId = group?._id;
-      setGroup(await call('getGroupById', groupId));
+      setGroup(await call('getGroupWithMeetings', groupId));
       setDelButtonDisabled(false);
       message.success(t('meeting.success.remove'));
     } catch (error) {

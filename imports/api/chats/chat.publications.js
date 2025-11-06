@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import Chats from './chat';
 
 Meteor.publish('chat', (contextId) => {
-  const user = Meteor.user();
-  if (!user) {
+  const userId = this.userId;
+  if (!userId) {
     return null;
   }
   return Chats.find({

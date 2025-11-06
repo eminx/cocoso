@@ -14,13 +14,12 @@ import {
   Input,
   Text,
 } from '/imports/ui/core';
-
 import FormField from '/imports/ui/forms/FormField';
 import {
   call,
   emailIsValid,
   includesSpecialCharacters,
-} from '../../../api/_utils/shared';
+} from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { groupAtom } from './GroupItemHandler';
@@ -87,7 +86,7 @@ export default function InviteManager() {
     try {
       const groupId = group?._id;
       await call('invitePersonToPrivateGroup', groupId, person);
-      setGroup(await call('getGroupById', groupId));
+      setGroup(await call('getGroupWithMeetings', groupId));
       message.success(t('invite.success', { name: state.firstNameInput }));
       setState((prevState) => ({
         ...prevState,
@@ -103,7 +102,7 @@ export default function InviteManager() {
     try {
       const groupId = group?._id;
       await call('removePersonFromInvitedList', groupId, person);
-      setGroup(await call('getGroupById', groupId));
+      setGroup(await call('getGroupWithMeetings', groupId));
       message.success(t('invite.remove.success'));
     } catch (error) {
       message.error(error.reason || error.error);

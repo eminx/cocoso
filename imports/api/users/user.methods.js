@@ -35,7 +35,7 @@ Meteor.methods({
       // throw new Meteor.Error('User not found');
     }
 
-    if (user._id === Meteor.userId()) {
+    if (user._id === (await Meteor.userAsync()?._id)) {
       return userModel(user);
     }
 
@@ -192,7 +192,7 @@ Meteor.methods({
   },
 
   async setAvatar(avatar) {
-    const userId = Meteor.userId();
+    const userId = await Meteor.userAsync()?._id;
     if (!userId) {
       throw new Meteor.Error('Not allowed!');
     }
@@ -291,7 +291,7 @@ Meteor.methods({
   },
 
   async setProfilePublicGlobally(isPublic) {
-    const userId = Meteor.userId();
+    const userId = await Meteor.userAsync()?._id;
     const host = getHost(this);
 
     try {
@@ -334,7 +334,7 @@ Meteor.methods({
   },
 
   async setProfilePublic(isPublic) {
-    const userId = Meteor.userId();
+    const userId = await Meteor.userAsync()?._id;
     const host = getHost(this);
 
     try {
@@ -400,7 +400,7 @@ Meteor.methods({
   removeAvatar: () => {},
 
   async leaveHost() {
-    const userId = Meteor.userId();
+    const userId = await Meteor.userAsync()?._id;
     const host = getHost(this);
 
     try {
@@ -445,7 +445,7 @@ Meteor.methods({
   },
 
   async deleteAccount() {
-    const userId = Meteor.userId();
+    const userId = await Meteor.userAsync()?._id;
     if (!userId) {
       throw new Meteor.Error('You are not a member anyways!');
     }

@@ -12,7 +12,7 @@ Meteor.publish('attendingEvents', function () {
 });
 
 Meteor.publish('me', () => {
-  const userId = Meteor.userId();
+  const userId = this.userId;
   if (!userId) {
     return null;
   }

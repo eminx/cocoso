@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
 import { currentUserAtom, isDesktopAtom } from '/imports/state';
 import { Button, Center, Modal, Text } from '/imports/ui/core';
@@ -13,9 +13,9 @@ import { groupAtom } from '../GroupItemHandler';
 export default function GroupJoinButton() {
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
+  const [group, setGroup] = useAtom(groupAtom);
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
-  const group = useAtomValue(groupAtom);
   const navigate = useNavigate();
 
   if (!group) {
@@ -29,8 +29,9 @@ export default function GroupJoinButton() {
     }
 
     try {
-      await call('joinGroup', group._id);
-      await getGroupById();
+      const groupId = group?._id;
+      await call('joinGroup', groupId);
+      setGroup(await call('getGroupWithMeetings', groupId));
       setModalOpen(false);
       message.success(t('message.added'));
     } catch (error) {

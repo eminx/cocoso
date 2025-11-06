@@ -5,7 +5,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { Avatar, Flex, Link as CLink, Text } from '/imports/ui/core';
 import Modal from '/imports/ui/core/Modal';
 import NiceList from '/imports/ui/generic/NiceList';
-import { call } from '../../../../../api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { groupAtom } from '../../GroupItemHandler';
@@ -18,7 +18,7 @@ export default function ManageMembers({ onClose }) {
     try {
       const groupId = group?._id;
       await call('setAsAGroupAdmin', groupId, username);
-      setGroup(await call('getGroupById', groupId));
+      setGroup(await call('getGroupWithMeetings', groupId));
       message.success(t('meeting.success.admin'));
     } catch (error) {
       message.error(error.error);

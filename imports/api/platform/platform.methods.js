@@ -72,7 +72,7 @@ Meteor.methods({
       return;
     }
 
-    const currentUserId = Meteor.userId();
+    const currentUserId = await Meteor.userAsync()?._id;
     if (currentUserId !== userId) {
       return;
     }

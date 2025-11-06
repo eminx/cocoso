@@ -90,7 +90,7 @@ if (i18n && !i18n.isInitialized) {
   // check & set lang for user(logged) or host prefences
   Tracker.autorun(async () => {
     if (Meteor.isClient) {
-      if (Meteor.userId()) {
+      if (await Meteor.userAsync()) {
         const handler = Meteor.subscribe('me');
         if (handler.ready()) {
           const userLang = await Meteor.userAsync()?.lang;

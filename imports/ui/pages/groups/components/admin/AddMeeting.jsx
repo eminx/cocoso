@@ -16,7 +16,7 @@ import {
 } from '/imports/ui/core';
 import DateTimePicker from '/imports/ui/forms/DateTimePicker';
 import { ConflictMarker } from '/imports/ui/forms/DatesAndTimes';
-import { call } from '../../../../../api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { groupAtom } from '../../GroupItemHandler';
@@ -234,7 +234,7 @@ export default function AddMeeting({ onClose }) {
     try {
       const response = await call('createActivity', activityValues);
       const groupId = group?._id;
-      setGroup(await call('getGroupById', groupId));
+      setGroup(await call('getGroupWithMeetings', groupId));
       setState((prevState) => ({
         ...prevState,
         isSubmitted: false,

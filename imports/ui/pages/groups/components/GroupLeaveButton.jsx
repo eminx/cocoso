@@ -4,8 +4,7 @@ import { useAtom, useAtomValue } from 'jotai';
 
 import { Button, Center, Modal, Text } from '/imports/ui/core';
 import { currentUserAtom } from '/imports/state';
-
-import { call } from '../../../../api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { groupAtom } from '../GroupItemHandler';
@@ -24,7 +23,7 @@ export default function LeaveButton() {
     try {
       const groupId = group?._id;
       await call('leaveGroup', groupId);
-      setGroup(await call('getGroupById', groupId));
+      setGroup(await call('getGroupWithMeetings', groupId));
       message.success(t('message.removed'));
     } catch (error) {
       message.error(error.error || error.reason);

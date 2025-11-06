@@ -4,7 +4,7 @@ import { getHost } from '../_utils/shared';
 import Groups from './group';
 
 Meteor.publish('groups', function () {
-  const userId = Meteor.userId();
+  const userId = this.userId;
   const host = getHost(this);
   // Groups._ensureIndex({ host, isPublished: true });
 
