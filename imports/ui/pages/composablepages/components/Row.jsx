@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { styled } from '/stitches.config';
 import { Trans } from 'react-i18next';
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
 import { arrayMoveImmutable } from 'array-move';
 
+import { styled } from '/stitches.config';
 import Menu from '/imports/ui/generic/Menu';
 import { Box, Center, Flex, IconButton } from '/imports/ui/core';
 import Boxling from '/imports/ui/pages/admin/Boxling';

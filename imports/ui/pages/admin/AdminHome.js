@@ -25,7 +25,7 @@ const shortCuts = [
   {
     label: <Trans i18nKey="admin:composable.title" />,
     helper: <Trans i18nKey="admin:composable.description" />,
-    link: '/admin/composable-pages/*',
+    link: '/admin/composable-pages',
   },
   {
     label: <Trans i18nKey="admin:settings.tabs.footer" />,

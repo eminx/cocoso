@@ -1,19 +1,21 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+
+import { call, parseTitle } from '/imports/api/_utils/shared';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { message } from '/imports/ui/generic/message';
+import { pageTitlesAtom } from '/imports/state';
 
 import PageForm from './PageForm';
-import { PageContext } from './PageItemHandler';
-import { call, parseTitle } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
-import { pageTitlesAtom } from '../../../state';
+import { currentPageAtom, pagesAtom } from './PageItemHandler';
 
 export default function EditPage() {
   const setPageTitles = useSetAtom(pageTitlesAtom);
   const [updated, setUpdated] = useState(null);
   const [newPageTitle, setNewPageTitle] = useState(null);
-  const { currentPage, getPages } = useContext(PageContext);
+  const currentPage = useAtomValue(currentPageAtom);
+  const [pages, setPages] = useAtom(pagesAtom);
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
 
@@ -22,11 +24,12 @@ export default function EditPage() {
   };
 
   const updatePage = async (newPage) => {
-    const pageId = currentPage._id;
+    const pageId = currentPage?._id;
     setNewPageTitle('new title:', newPage.title);
 
     try {
       await call('updatePage', pageId, newPage);
+      setPages(await call('getPages'));
       setPageTitles(await call('getPageTitles'));
       setUpdated(pageId);
     } catch (error) {
@@ -34,7 +37,11 @@ export default function EditPage() {
     }
   };
 
-  const pageFields = currentPage && {
+  if (!currentPage) {
+    return null;
+  }
+
+  const pageFields = {
     images: currentPage.images,
     longDescription: currentPage.longDescription,
     order: currentPage.order,

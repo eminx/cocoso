@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Controller, useForm, Control, UseFormRegister } from 'react-hook-form';
 import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -15,7 +16,7 @@ import {
 
 import Quill from './Quill';
 import FormField from './FormField';
-import { LoaderContext } from '../listing/NewEntryHandler';
+import { loaderAtom } from '../listing/NewEntryHandler';
 
 interface Option {
   value: string;
@@ -116,7 +117,7 @@ export default function GenericEntryForm({
   const { control, handleSubmit, register } = useForm({
     defaultValues: defaultValues || undefined,
   });
-  const { loaders } = useContext(LoaderContext);
+  const loaders = useAtomValue(loaderAtom);
 
   return (
     <>

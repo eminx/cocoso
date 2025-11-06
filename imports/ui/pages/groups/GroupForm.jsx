@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import GenericEntryForm from '../../forms/GenericEntryForm';
 import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import groupFormFields from './groupFormFields';
-import { LoaderContext } from '../../listing/NewEntryHandler';
+import { loaderAtom } from '../../listing/NewEntryHandler';
 
 export const emptyFormValues = {
   isPrivate: false,
@@ -19,7 +20,7 @@ export default function GroupForm({ group, onFinalize }) {
   const [state, setState] = useState({
     formValues: group || emptyFormValues,
   });
-  const { loaders, setLoaders } = useContext(LoaderContext);
+  const [loaders, setLoaders] = useAtom(loaderAtom);
   const [t] = useTranslation('groups');
 
   useEffect(() => {

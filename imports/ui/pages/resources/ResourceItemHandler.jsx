@@ -10,10 +10,10 @@ import { renderedAtom } from '/imports/state';
 const ResourceInteractionHandler = lazy(() =>
   import('./components/ResourceInteractionHandler')
 );
-// const EditResource = lazy(() => import('./EditResource'));
-// const NewEntryHandler = lazy(() =>
-//   import('/imports/ui/listing/NewEntryHandler')
-// );
+const EditResource = lazy(() => import('./EditResource'));
+const NewEntryHandler = lazy(() =>
+  import('/imports/ui/listing/NewEntryHandler')
+);
 
 export const resourceAtom = atom(null);
 
@@ -27,10 +27,12 @@ export default function ResourceItemHandler({ Host, pageTitles }) {
       <ResourceHybrid documents={documents} resource={resource} Host={Host} />
 
       {rendered && (
-        <ResourceInteractionHandler resource={resource} />
-        // <NewEntryHandler>
-        //   <EditResource />
-        // </NewEntryHandler>
+        <>
+          <ResourceInteractionHandler resource={resource} />
+          <NewEntryHandler>
+            <EditResource />
+          </NewEntryHandler>
+        </>
       )}
     </>
   );

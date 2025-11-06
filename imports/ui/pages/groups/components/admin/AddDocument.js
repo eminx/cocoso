@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -24,8 +24,7 @@ import { groupAtom } from '../../GroupItemHandler';
 export default function AddDocument({ onClose }) {
   const [isUploading, setIsUploading] = useState(false);
   const [tc] = useTranslation('common');
-  const group = useAtomValue(groupAtom);
-  const getGroupById = () => console.log('getGroupById');
+  const [group, setGroup] = useAtom(groupAtom);
 
   if (!group) {
     return null;
@@ -37,8 +36,7 @@ export default function AddDocument({ onClose }) {
       return;
     }
 
-    const closeLoader = () => {
-      getGroupById();
+    const closeLoader = async () => {
       setIsUploading(false);
     };
 

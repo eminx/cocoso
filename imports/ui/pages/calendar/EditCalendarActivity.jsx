@@ -1,15 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
+import { useAtom } from 'jotai';
+
+import { call } from '/imports/ui/utils/shared';
+import { message } from '/imports/ui/generic/message';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
 
 import CalendarActivityForm from './CalendarActivityForm';
-import { ActivityContext } from '../activities/ActivityItemHandler';
-import { call } from '../../utils/shared';
-import { message } from '../../generic/message';
-import SuccessRedirector from '../../forms/SuccessRedirector';
+import { activityAtom } from '../activities/ActivityItemHandler';
 
 export default function EditPublicActivity() {
   const [updated, setUpdated] = useState(null);
-  const { activity, getActivityById } = useContext(ActivityContext);
+  const [activity, setActivity] = useAtom(activityAtom);
   const [, setSearchParams] = useSearchParams();
   if (!activity) {
     return null;
@@ -19,7 +21,7 @@ export default function EditPublicActivity() {
     const activityId = activity._id;
     try {
       await call('updateActivity', activityId, newActivity);
-      await getActivityById(activityId);
+      setActivity(await call('getActivityById', activityId));
       setUpdated(activityId);
     } catch (error) {
       message.error(error.reason || error.error);

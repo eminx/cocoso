@@ -14,13 +14,13 @@ import { renderedAtom } from '/imports/state';
 const ActivityInteractionHandler = lazy(() =>
   import('./components/ActivityInteractionHandler')
 );
-// const EditCalendarActivity = lazy(() =>
-//   import('../calendar/EditCalendarActivity')
-// );
-// const EditPublicActivity = lazy(() => import('./EditPublicActivity'));
-// const NewEntryHandler = lazy(() =>
-//   import('/imports/ui/listing/NewEntryHandler')
-// );
+const EditCalendarActivity = lazy(() =>
+  import('../calendar/EditCalendarActivity')
+);
+const EditPublicActivity = lazy(() => import('./EditPublicActivity'));
+const NewEntryHandler = lazy(() =>
+  import('/imports/ui/listing/NewEntryHandler')
+);
 
 export const activityAtom = atom(null);
 
@@ -33,15 +33,18 @@ export default function ActivityItemHandler({ Host, pageTitles }) {
     <>
       <ActivityHybrid activity={activity} Host={Host} />
 
-      {rendered ? <ActivityInteractionHandler activity={activity} /> : null}
-
-      {/* <NewEntryHandler>
-        {activity.isPublicActivity ? (
-          <EditPublicActivity />
-        ) : (
-          <EditCalendarActivity />
-        )}
-      </NewEntryHandler> */}
+      {rendered && (
+        <>
+          <ActivityInteractionHandler activity={activity} />
+          <NewEntryHandler>
+            {activity.isPublicActivity ? (
+              <EditPublicActivity />
+            ) : (
+              <EditCalendarActivity />
+            )}
+          </NewEntryHandler>
+        </>
+      )}
     </>
   );
 }

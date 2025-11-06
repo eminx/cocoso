@@ -1,8 +1,8 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHref, useSearchParams } from 'react-router';
 import toast from 'react-hot-toast';
 import { Trans, useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
+import { atom, useAtom, useAtomValue } from 'jotai';
 
 import { Box, Modal, Progress } from '/imports/ui/core';
 
@@ -15,9 +15,7 @@ export const initialLoader = {
   isSuccess: false,
 };
 
-export const LoaderContext = createContext({
-  loaders: initialLoader,
-});
+export const loaderAtom = atom(initialLoader);
 
 const getLoaderProgress = (loaders) => {
   let progress = 0;
@@ -71,7 +69,7 @@ export default function NewEntryHandler({ children }) {
   const forNew = searchParams.get('new') === 'true';
   const forEdit = searchParams.get('edit') === 'true';
   const isOpen = forNew || forEdit;
-  const [loaders, setLoaders] = useState(initialLoader);
+  const [loaders, setLoaders] = useAtom(loaderAtom);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [tc] = useTranslation('common');
 
@@ -111,7 +109,7 @@ export default function NewEntryHandler({ children }) {
   }
 
   return (
-    <LoaderContext.Provider value={{ loaders, setLoaders }}>
+    <>
       {loaders?.isCreating && (
         <Box
           bg="rgba(0, 0, 0, 0.5)"
@@ -163,6 +161,6 @@ export default function NewEntryHandler({ children }) {
       >
         {tc('modals.confirm.newentry.body')}
       </Modal>
-    </LoaderContext.Provider>
+    </>
   );
 }

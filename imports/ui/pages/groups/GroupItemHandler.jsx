@@ -9,10 +9,10 @@ import { renderedAtom } from '/imports/state';
 const GroupInteractionHandler = lazy(() =>
   import('./components/GroupInteractionHandler')
 );
-// const EditGroup = lazy(() => import('./EditGroup'));
-// const NewEntryHandler = lazy(() =>
-//   import('/imports/ui/listing/NewEntryHandler')
-// );
+const EditGroup = lazy(() => import('./EditGroup'));
+const NewEntryHandler = lazy(() =>
+  import('/imports/ui/listing/NewEntryHandler')
+);
 
 export const groupAtom = atom(null);
 
@@ -25,13 +25,15 @@ export default function GroupItemHandler({ Host, pageTitles }) {
     <>
       <GroupHybrid group={group} Host={Host} />
 
-      {rendered ? (
-        <GroupInteractionHandler currentUser={null} group={group} />
-      ) : null}
+      {rendered && (
+        <>
+          <GroupInteractionHandler group={group} />
 
-      {/* <NewEntryHandler>
-        <EditGroup />
-      </NewEntryHandler> */}
+          <NewEntryHandler>
+            <EditGroup />
+          </NewEntryHandler>
+        </>
+      )}
     </>
   );
 }

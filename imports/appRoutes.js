@@ -140,9 +140,12 @@ const getAdminRoutes = (props) => [
   },
   {
     path: 'composable-pages',
-    element: <ComposablePages {...props} />,
-    loader: async () => await getComposablePageTitles(),
     children: [
+      {
+        index: true,
+        element: <ComposablePages {...props} />,
+        loader: async () => await getComposablePageTitles(),
+      },
       {
         path: ':composablePageId',
         element: <ComposablePageForm {...props} />,

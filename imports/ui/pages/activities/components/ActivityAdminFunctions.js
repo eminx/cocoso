@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import { activityAtom } from '/imports/ssr/components';
+import AdminFunctions from '/imports/ui/entry/AdminFunctions';
+import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
 
-import AdminFunctions from '../../../entry/AdminFunctions';
-import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
+import { activityAtom } from '../ActivityItemHandler';
 
 export default function ActivityAdminFunctions() {
   const [tc] = useTranslation('common');

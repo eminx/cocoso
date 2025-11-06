@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { useAtom } from 'jotai';
 
 import { Box, Checkbox, NumberInput } from '/imports/ui/core';
 
@@ -11,7 +12,7 @@ import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
 import publicActivityFormFields from './publicActivityFormFields';
-import { LoaderContext } from '../../listing/NewEntryHandler';
+import { loaderAtom } from '../../listing/NewEntryHandler';
 import { message } from '../../generic/message';
 
 const animatedComponents = makeAnimated();
@@ -40,7 +41,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       : true,
     resources: [],
   });
-  const { loaders, setLoaders } = useContext(LoaderContext);
+  const [loaders, setLoaders] = useAtom(loaderAtom);
   const [t] = useTranslation('activities');
   const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
 

@@ -97,7 +97,6 @@ export default function Emails() {
   }
 
   const handleSubmit = async (values, emailIndex) => {
-    console.log(values, emailIndex);
     try {
       await call('updateEmail', values, emailIndex);
       message.success(tc('message.success.update'));

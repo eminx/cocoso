@@ -3,11 +3,12 @@ import { Link } from 'react-router';
 import PlusIcon from 'lucide-react/dist/esm/icons/plus';
 import { Trans } from 'react-i18next';
 import dayjs from 'dayjs';
+import { useAtomValue } from 'jotai';
 
-import { Box, Flex, Link as CLink, Tag } from '/imports/ui/core';
-
+import { Box, Flex, Heading, Link as CLink, Tag, Text } from '/imports/ui/core';
 import Boxling from '/imports/ui/pages/admin/Boxling';
-import { Heading, Text } from '/imports/ui/core';
+
+import { composablePageTitlesAtom } from '../index';
 
 function formatDate(date) {
   return dayjs(date).format('MMM D, YYYY');
@@ -34,7 +35,9 @@ function getItemFootnote(composablePage) {
   );
 }
 
-export default function ComposablePagesListing({ composablePageTitles }) {
+export default function ComposablePagesListing() {
+  const composablePageTitles = useAtomValue(composablePageTitlesAtom);
+
   return (
     <Box css={{ flexGrow: '1' }}>
       <Box py="4">
@@ -50,10 +53,7 @@ export default function ComposablePagesListing({ composablePageTitles }) {
       </Box>
 
       {composablePageTitles.map((composablePage) => (
-        <Link
-          key={composablePage._id}
-          to={`/admin/composable-pages/${composablePage._id}`}
-        >
+        <Link key={composablePage._id} to={composablePage._id}>
           <Boxling mb="4">
             <Flex justify="space-between" w="100%">
               <Box>

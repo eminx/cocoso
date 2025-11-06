@@ -4,8 +4,8 @@ import { useAtomValue } from 'jotai';
 
 import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
 import { renderedAtom } from '/imports/state';
-// import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
-// import NewResource from './NewResource';
+import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
+import NewResource from './NewResource';
 
 export default function ResourceListHandler({ Host, pageTitles }) {
   const { documents, resources } = useLoaderData();
@@ -18,11 +18,12 @@ export default function ResourceListHandler({ Host, pageTitles }) {
         resources={resources}
         Host={Host}
       />
-      {/* {rendered ? (
-            <NewEntryHandler>
-              <NewResource />
-            </NewEntryHandler>
-          ) : null} */}
+
+      {rendered ? (
+        <NewEntryHandler>
+          <NewResource />
+        </NewEntryHandler>
+      ) : null}
     </>
   );
 }

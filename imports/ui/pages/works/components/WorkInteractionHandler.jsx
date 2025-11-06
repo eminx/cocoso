@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useAtomValue } from 'jotai';
 
 import { Box } from '/imports/ui/core';
 
 import { currentUserAtom } from '/imports/state';
-import SlideWidget from '../../../entry/SlideWidget';
+import SlideWidget from '/imports/ui/entry/SlideWidget';
+
 import WorkAdminFunctions from './WorkAdminFunctions';
 import ContactInfo from '../../profile/ContactInfo';
 

@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import GenericEntryForm from '../../forms/GenericEntryForm';
 import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import pageFormFields from './pageFormFields';
-import { LoaderContext } from '../../listing/NewEntryHandler';
+import { loaderAtom } from '../../listing/NewEntryHandler';
 
 export const emptyFormValues = {
   longDescription: '',
@@ -16,7 +17,7 @@ export default function PageForm({ page, onFinalize }) {
   const [state, setState] = useState({
     formValues: page || emptyFormValues,
   });
-  const { loaders, setLoaders } = useContext(LoaderContext);
+  const [loaders, setLoaders] = useAtom(loaderAtom);
   const [t] = useTranslation('admin');
 
   useEffect(() => {

@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
+import { useSetAtom } from 'jotai';
 
 import {
   Accordion,
@@ -34,7 +35,7 @@ function MeetingDatesContent({
 }) {
   const [regButtonDisabled, setRegButtonDisabled] = useState(false);
   const [delButtonDisabled, setDelButtonDisabled] = useState(false);
-  const getGroupById = () => console.log('geoup');
+  const setGroup = useSetAtom(groupAtom);
   const [t] = useTranslation('groups');
 
   if (!group) {
@@ -70,6 +71,7 @@ function MeetingDatesContent({
     };
 
     if (isAttending) {
+      const groupId = groupId;
       try {
         await call(
           'removeAttendance',
@@ -78,7 +80,7 @@ function MeetingDatesContent({
           meetingAttendee.email,
           meetingAttendee.lastName
         );
-        await getGroupById();
+        setGroup(await call('getGroupById', groupId));
         setRegButtonDisabled(false);
         message.success(t('meeting.attends.remove'));
         onClose();
@@ -88,7 +90,7 @@ function MeetingDatesContent({
     } else {
       try {
         await call('registerAttendance', activityId, meetingAttendee);
-        await getGroupById();
+        setGroup(await call('getGroupById', groupId));
         setRegButtonDisabled(false);
         message.success(t('meeting.attends.register'));
         onClose();
@@ -108,9 +110,10 @@ function MeetingDatesContent({
 
     try {
       await call('deleteActivity', activityId);
-      message.success(t('meeting.success.remove'));
-      getGroupById();
+      const groupId = group?._id;
+      setGroup(await call('getGroupById', groupId));
       setDelButtonDisabled(false);
+      message.success(t('meeting.success.remove'));
     } catch (error) {
       message.error(error.error);
     }

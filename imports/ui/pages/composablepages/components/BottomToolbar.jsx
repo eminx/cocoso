@@ -4,23 +4,19 @@ import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
 import { useAtomValue } from 'jotai';
 
+import { currentHostAtom } from '/imports/state';
 import { Button, Flex, Link, Modal, Text } from '/imports/ui/core';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { currentHostAtom } from '../../../../state';
 
-export default function BottomToolbar({
-  currentPage,
-  getComposablePageById,
-  getComposablePageTitles,
-}) {
+export default function BottomToolbar({ currentPage, getComposablePageById }) {
+  const currentHost = useAtomValue(currentHostAtom);
+
   const [state, setState] = useState({
     publishModalVisible: false,
     updated: false,
     updating: false,
   });
-
-  const currentHost = useAtomValue(currentHostAtom);
 
   useEffect(() => {
     if (currentPage?.pingSave === false) {
@@ -44,7 +40,6 @@ export default function BottomToolbar({
         updating: false,
       }));
       await getComposablePageById();
-      await getComposablePageTitles();
     };
 
     try {
@@ -72,6 +67,7 @@ export default function BottomToolbar({
         <Trans i18nKey="admin:composable.toolbar.publishSuccess" />
       );
     } catch (error) {
+      console.log(error);
       message.error(error.reason || error.error);
     }
   };

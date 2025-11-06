@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
 import { Avatar, Flex, Link as CLink, Text } from '/imports/ui/core';
 import Modal from '/imports/ui/core/Modal';
@@ -12,13 +12,13 @@ import { groupAtom } from '../../GroupItemHandler';
 
 export default function ManageMembers({ onClose }) {
   const [t] = useTranslation('groups');
-  const group = useAtomValue(groupAtom);
-  const getGroupById = () => console.log('getGroupById');
+  const [group, setGroup] = useAtom(groupAtom);
 
   const setAsAGroupAdmin = async (username) => {
     try {
-      await call('setAsAGroupAdmin', group._id, username);
-      getGroupById();
+      const groupId = group?._id;
+      await call('setAsAGroupAdmin', groupId, username);
+      setGroup(await call('getGroupById', groupId));
       message.success(t('meeting.success.admin'));
     } catch (error) {
       message.error(error.error);

@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import XIcon from 'lucide-react/dist/esm/icons/x';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -39,8 +39,7 @@ export default function InviteManager() {
     emailInput: '',
     firstNameInput: '',
   });
-  const group = useAtomValue(groupAtom);
-  const getGroupById = () => console.log('getGroupById');
+  const [group, setGroup] = useAtom(groupAtom);
   const [t] = useTranslation('groups');
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -86,8 +85,9 @@ export default function InviteManager() {
     };
 
     try {
-      await call('invitePersonToPrivateGroup', group._id, person);
-      await getGroupById();
+      const groupId = group?._id;
+      await call('invitePersonToPrivateGroup', groupId, person);
+      setGroup(await call('getGroupById', groupId));
       message.success(t('invite.success', { name: state.firstNameInput }));
       setState((prevState) => ({
         ...prevState,
@@ -101,8 +101,9 @@ export default function InviteManager() {
 
   const handleRemoveInvite = async (person) => {
     try {
-      await call('removePersonFromInvitedList', group._id, person);
-      await getGroupById();
+      const groupId = group?._id;
+      await call('removePersonFromInvitedList', groupId, person);
+      setGroup(await call('getGroupById', groupId));
       message.success(t('invite.remove.success'));
     } catch (error) {
       message.error(error.reason || error.error);

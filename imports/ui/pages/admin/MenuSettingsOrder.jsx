@@ -8,7 +8,7 @@ import XIcon from 'lucide-react/dist/esm/icons/x';
 import { useAtomValue } from 'jotai';
 
 import { call } from '/imports/ui/utils/shared';
-import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
+import { Box, Button, Flex, Heading, IconButton, Text } from '/imports/ui/core';
 import { updateHostSettings } from '/imports/actions';
 import { message } from '/imports/ui/generic/message';
 import { currentHostAtom } from '/imports/state';
@@ -44,21 +44,19 @@ export default function MenuSettingsOrder({ Host }) {
   };
 
   const addComposablePage = (option) => {
-    setLocalMenu([
+    setLocalMenu((prevMenu) => [
       {
         label: option.title,
         name: option._id,
         isVisible: true,
         isComposablePage: true,
       },
-      ...prevSettings.menu,
+      ...prevMenu,
     ]);
   };
 
   const removeComposablePage = (selectedItemName) => {
-    setLocalMenu(
-      prevSettings.menu.filter((item) => item.name !== selectedItemName)
-    );
+    setLocalMenu(localMenu.filter((item) => item.name !== selectedItemName));
   };
 
   const getComposablePageOptions = () => {

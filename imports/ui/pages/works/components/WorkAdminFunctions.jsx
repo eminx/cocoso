@@ -1,14 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
+import { useAtomValue } from 'jotai';
 
 import AdminFunctions from '../../../entry/AdminFunctions';
-import { WorkContext } from '../WorkItemHandler';
+import { workAtom } from '../WorkItemHandler';
 import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 
 export default function WorkAdminFunctions() {
   const [tc] = useTranslation('common');
-  const { work } = useContext(WorkContext);
+  const work = useAtomValue(workAtom);
   const [, setSearchParams] = useSearchParams();
 
   const handleSelect = (item) => {

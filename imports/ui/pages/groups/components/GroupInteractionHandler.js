@@ -1,16 +1,20 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
+import { currentUserAtom } from '/imports/state';
 import { Box, Flex, Text } from '/imports/ui/core';
+import SlideWidget from '/imports/ui/entry/SlideWidget';
+import { ChatButton } from '/imports/ui/chattery/ChatHandler';
 
 import GroupMeetingDates from './GroupMeetingDates';
 import GroupJoinButton from './GroupJoinButton';
 import GroupLeaveButton from './GroupLeaveButton';
 import GroupAdminFunctions from './GroupAdminFunctions';
-import SlideWidget from '../../../entry/SlideWidget';
-import { ChatButton } from '../../../chattery/ChatHandler';
 
-export default function GroupInteractionHandler({ currentUser, group }) {
+export default function GroupInteractionHandler({ group }) {
+  const currentUser = useAtomValue(currentUserAtom);
+
   if (!group) {
     return null;
   }

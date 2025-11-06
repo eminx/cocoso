@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
+import { currentUserAtom, currentHostAtom } from '/imports/state';
 import {
   Box,
   Button,
@@ -17,7 +18,6 @@ import DateTimePicker from '/imports/ui/forms/DateTimePicker';
 import { ConflictMarker } from '/imports/ui/forms/DatesAndTimes';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { currentUserAtom } from '../../../../../state';
 
 import { groupAtom } from '../../GroupItemHandler';
 
@@ -95,6 +95,7 @@ function AddMeetingForm({
 
 export default function AddMeeting({ onClose }) {
   const currentUser = useAtomValue(currentUserAtom);
+  const currentHost = useAtomValue(currentHostAtom);
   const [state, setState] = useState({
     activities: [],
     conflictingBooking: null,
@@ -103,8 +104,7 @@ export default function AddMeeting({ onClose }) {
     newMeeting: emptyDateAndTime,
     resources: [],
   });
-  const group = useAtomValue(groupAtom);
-  const getGroupById = () => console.log('getGroupById');
+  const [group, setGroup] = useAtom(groupAtom);
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
   const { activities, conflictingBooking, isFormValid, newMeeting, resources } =
@@ -233,7 +233,8 @@ export default function AddMeeting({ onClose }) {
 
     try {
       const response = await call('createActivity', activityValues);
-      getGroupById();
+      const groupId = group?._id;
+      setGroup(await call('getGroupById', groupId));
       setState((prevState) => ({
         ...prevState,
         isSubmitted: false,

@@ -1,15 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
+import { useAtom } from 'jotai';
+
+import { call } from '/imports/ui/utils/shared';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { message } from '/imports/ui/generic/message';
 
 import GroupForm from './GroupForm';
-import { GroupContext } from './Group';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
+import { groupAtom } from './GroupItemHandler';
 
 export default function EditGroup() {
   const [updated, setUpdated] = useState(null);
-  const { group, getGroupById } = useContext(GroupContext);
+  const [group, setGroup] = useAtom(groupAtom);
   const [, setSearchParams] = useSearchParams();
   if (!group) {
     return null;
@@ -19,12 +21,16 @@ export default function EditGroup() {
     const groupId = group._id;
     try {
       await call('updateGroup', groupId, newGroup);
-      await getGroupById(groupId);
+      setGroup(await call('getGroupWithMeetings', groupId));
       setUpdated(groupId);
     } catch (error) {
       message.error(error.reason || error.error);
     }
   };
+
+  if (!group) {
+    return null;
+  }
 
   const groupFields = (({
     capacity,
@@ -41,10 +47,6 @@ export default function EditGroup() {
     readingMaterial,
     title,
   }))(group);
-
-  if (!group) {
-    return null;
-  }
 
   return (
     <SuccessRedirector

@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { useAtom } from 'jotai';
 
 import { call } from '../../utils/shared';
 import GenericEntryForm from '../../forms/GenericEntryForm';
 import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';
 import workFormFields from './workFormFields';
-import { LoaderContext } from '../../listing/NewEntryHandler';
+import { loaderAtom } from '../../listing/NewEntryHandler';
 import { message } from '../../generic/message';
 
 export const emptyFormValues = {
@@ -34,7 +35,7 @@ export default function WorkForm({ work, onFinalize }) {
         }
       : null,
   });
-  const { loaders, setLoaders } = useContext(LoaderContext);
+  const [loaders, setLoaders] = useAtom(loaderAtom);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
 

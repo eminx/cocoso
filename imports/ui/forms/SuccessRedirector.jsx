@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useAtom } from 'jotai';
 
-import { initialLoader, LoaderContext } from '../listing/NewEntryHandler';
+import { initialLoader, loaderAtom } from '../listing/NewEntryHandler';
 
 export default function SuccessRedirector({ ping, onSuccess, children }) {
-  const { loaders, setLoaders } = useContext(LoaderContext);
+  const [loaders, setLoaders] = useAtom(loaderAtom);
 
   useEffect(() => {
     if (typeof ping === 'string') {

@@ -1,15 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
+import { useAtom } from 'jotai';
+
+import { call } from '/imports/api/_utils/shared';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { message } from '/imports/ui/generic/message';
 
 import ResourceForm from './ResourceForm';
-import { ResourceContext } from './ResourceItemHandler';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
+import { resourceAtom } from './ResourceItemHandler';
 
 export default function EditResource() {
   const [updated, setUpdated] = useState(null);
-  const { resource, getResourceById } = useContext(ResourceContext);
+  const [resource, setResource] = useAtom(resourceAtom);
   const [, setSearchParams] = useSearchParams();
   if (!resource) {
     return null;
@@ -19,7 +21,7 @@ export default function EditResource() {
     const resourceId = resource._id;
     try {
       await call('updateResource', resourceId, newResource);
-      await getResourceById(resourceId);
+      setResource(await call('getResourceById', resourceId));
       setUpdated(resourceId);
     } catch (error) {
       message.error(error.reason || error.error);

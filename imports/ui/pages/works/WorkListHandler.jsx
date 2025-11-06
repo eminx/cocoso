@@ -4,8 +4,8 @@ import { useAtomValue } from 'jotai';
 
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
 import { renderedAtom } from '/imports/state';
-// import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
-// import NewWork from './NewWork';
+import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
+import NewWork from './NewWork';
 
 export default function WorkListHandler({ Host, pageTitles }) {
   const { documents, works } = useLoaderData();
@@ -14,11 +14,12 @@ export default function WorkListHandler({ Host, pageTitles }) {
   return (
     <>
       <WorksHybrid Host={Host} documents={documents} works={works} />
-      {/* {rendered ? (
-            <NewEntryHandler>
-              <NewWork />
-            </NewEntryHandler>
-          ) : null} */}
+
+      {rendered ? (
+        <NewEntryHandler>
+          <NewWork />
+        </NewEntryHandler>
+      ) : null}
     </>
   );
 }

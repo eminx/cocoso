@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import FilePlusIcon from 'lucide-react/dist/esm/icons/file-plus';
 import { Trans } from 'react-i18next';
+import { useSetAtom } from 'jotai';
 
 import { Button, Center, Input, Modal } from '/imports/ui/core';
-
+import { pageTitlesAtom } from '/imports/state';
 import { call } from '/imports/ui/utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
+
+import { composablePageTitlesAtom } from '../index';
 
 const emptyPageModal = {
   title: '',
@@ -15,7 +18,8 @@ const emptyPageModal = {
   visible: false,
 };
 
-export default function ComposablePageCreator({ getComposablePageTitles }) {
+export default function ComposablePageCreator() {
+  const setComposablePageTitles = useSetAtom(composablePageTitlesAtom);
   const [createPageModal, setCreatePageModal] = useState(emptyPageModal);
   const navigate = useNavigate();
 
@@ -24,12 +28,11 @@ export default function ComposablePageCreator({ getComposablePageTitles }) {
       const response = await call('createComposablePage', {
         title: createPageModal.title,
       });
-      await getComposablePageTitles();
+      setComposablePageTitles(await call('getComposablePageTitles'));
       setCreatePageModal(emptyPageModal);
       message.success('Special Page created successfully');
       navigate(`/admin/composable-pages/${response}`);
     } catch (error) {
-      console.log(error);
       message.error(error.reason || error.error);
     }
   };
