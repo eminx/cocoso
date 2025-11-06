@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai';
 import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
 import { renderedAtom } from '/imports/state';
 import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
+
 import NewResource from './NewResource';
 
 export default function ResourceListHandler({ Host, pageTitles }) {

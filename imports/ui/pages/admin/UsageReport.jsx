@@ -16,7 +16,7 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 function compareDatesForSort(a, b) {

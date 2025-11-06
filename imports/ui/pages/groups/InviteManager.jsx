@@ -20,7 +20,7 @@ import {
   call,
   emailIsValid,
   includesSpecialCharacters,
-} from '/imports/ui/utils/shared';
+} from '../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { groupAtom } from './GroupItemHandler';

@@ -29,6 +29,12 @@ export default function ActivityItemHandler({ Host, pageTitles }) {
   useHydrateAtoms([[activityAtom, activity]]);
   const rendered = useAtomValue(renderedAtom);
 
+  const isGroupMeeting = activity?.isGroupMeeting;
+
+  if (isGroupMeeting) {
+    return <Navigate to={`/groups/${activity.groupId}/info`} />;
+  }
+
   return (
     <>
       <ActivityHybrid activity={activity} Host={Host} />
@@ -48,9 +54,3 @@ export default function ActivityItemHandler({ Host, pageTitles }) {
     </>
   );
 }
-
-// const isGroupMeeting = activity?.isGroupMeeting;
-
-// if (isGroupMeeting) {
-//   return <Navigate to={`/groups/${activity.groupId}/info`} />;
-// }

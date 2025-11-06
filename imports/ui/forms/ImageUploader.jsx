@@ -6,7 +6,7 @@ import { arrayMoveImmutable } from 'array-move';
 import { Box, Center, IconButton } from '/imports/ui/core';
 
 import FileDropper from './FileDropper';
-import { resizeImage, uploadImage } from '../utils/shared';
+import { resizeImage, uploadImage } from '../../api/_utils/shared';
 import DocumentUploadHelper from './UploadHelpers';
 import { message } from '../generic/message';
 

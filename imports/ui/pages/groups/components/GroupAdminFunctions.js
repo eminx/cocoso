@@ -3,12 +3,13 @@ import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
+import AdminFunctions from '/imports/ui/entry/AdminFunctions';
+import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
+
 import AddDocument from './admin/AddDocument';
 import AddMeeting from './admin/AddMeeting';
 import ManageMembers from './admin/ManageMembers';
-import AdminFunctions from '../../../entry/AdminFunctions';
 import { groupAtom } from '../GroupItemHandler';
-import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 import InviteManager from '../InviteManager';
 
 export default function GroupAdminFunctions() {

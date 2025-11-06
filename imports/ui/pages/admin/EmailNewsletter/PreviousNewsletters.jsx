@@ -16,7 +16,7 @@ import {
   Text,
 } from '/imports/ui/core';
 import NiceList from '/imports/ui/generic/NiceList';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import { currentHostAtom } from '../../../../state';
 

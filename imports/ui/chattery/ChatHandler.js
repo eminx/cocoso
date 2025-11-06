@@ -12,7 +12,7 @@ import {
   NotificationBadge,
   Text,
 } from '/imports/ui/core';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../api/_utils/shared';
 
 import { Chattery, useChattery } from '../chattery';
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { useAtomValue } from 'jotai';
 
 import { Box } from '/imports/ui/core';
-
 import { currentUserAtom } from '/imports/state';
 import SlideWidget from '/imports/ui/entry/SlideWidget';
 

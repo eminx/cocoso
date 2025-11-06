@@ -6,7 +6,7 @@ import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import { useAtomValue } from 'jotai';
 
-import { call } from '../../../utils/shared';
+import { call } from '../../../../api/_utils/shared';
 import { message } from '../../../generic/message';
 import NiceList from '../../../generic/NiceList';
 import DocumentUploadHelper from '../../../forms/UploadHelpers';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Trans } from 'react-i18next';
 import { getDefaultStore } from 'jotai';
 
-import { call } from '/imports/ui/utils/shared';
+import { call } from './api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import { currentHostAtom } from '/imports/state';
 

@@ -6,7 +6,7 @@ import { useAtomValue } from 'jotai';
 import { Box, Button, Center, Modal, Loader } from '/imports/ui/core';
 
 import { isDesktopAtom } from '../../../state';
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 import { message } from '../../generic/message';
 
 export default function ContactInfo({ username }) {

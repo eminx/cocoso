@@ -6,7 +6,7 @@ import { useSetAtom } from 'jotai';
 
 import { Button, Center, Input, Modal } from '/imports/ui/core';
 import { pageTitlesAtom } from '/imports/state';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 

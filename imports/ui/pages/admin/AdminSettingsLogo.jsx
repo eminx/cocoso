@@ -6,7 +6,7 @@ import FileDropper from '/imports/ui/forms/FileDropper';
 import { currentHostAtom } from '/imports/state';
 import { Button, Center, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
-import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
+import { call, resizeImage, uploadImage } from '../../../api/_utils/shared';
 
 import Boxling from './Boxling';
 

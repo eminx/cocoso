@@ -30,7 +30,7 @@ import {
   roleAtom,
 } from '/imports/state';
 
-import { getFullName } from '../utils/shared';
+import { getFullName } from '../../api/_utils/shared';
 
 function NotificationLinkItem({ host, item, children }) {
   if (item.host && host === item.host) {

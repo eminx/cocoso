@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { useAtom } from 'jotai';
 
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+
 import WorkForm from './WorkForm';
 import { workAtom } from './WorkItemHandler';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
 
 export default function EditWork() {
   const [updated, setUpdated] = useState(null);

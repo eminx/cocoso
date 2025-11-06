@@ -14,7 +14,7 @@ import {
 import {
   compareDatesWithStartDateForSort,
   parseGroupsWithMeetings,
-} from '../../ui/utils/shared';
+} from '../_utils/shared';
 
 const publicSettings = Meteor.settings.public;
 

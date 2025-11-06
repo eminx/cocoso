@@ -17,7 +17,7 @@ import {
 } from '/imports/ui/core';
 import { currentUserAtom, platformAtom } from '../../../state';
 import { message } from '/imports/ui/generic/message';
-import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
+import { call, resizeImage, uploadImage } from '../../../api/_utils/shared';
 import FormField from '/imports/ui/forms/FormField';
 import FileDropper from '/imports/ui/forms/FileDropper';
 import Tabs from '../../core/Tabs';

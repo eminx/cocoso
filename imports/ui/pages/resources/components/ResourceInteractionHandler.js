@@ -11,9 +11,9 @@ import {
   isDesktopAtom,
   roleAtom,
 } from '/imports/state';
+import { ChatButton } from '/imports/ui/chattery/ChatHandler';
+import SlideWidget from '/imports/ui/entry/SlideWidget';
 
-import { ChatButton } from '../../../chattery/ChatHandler';
-import SlideWidget from '../../../entry/SlideWidget';
 import ResourceAdminFunctions from './ResourceAdminFunctions';
 
 function ReserveButton({ resource }) {

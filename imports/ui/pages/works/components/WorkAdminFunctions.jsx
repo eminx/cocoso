@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import AdminFunctions from '../../../entry/AdminFunctions';
+import AdminFunctions from '/imports/ui/entry/AdminFunctions';
+import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
+
 import { workAtom } from '../WorkItemHandler';
-import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
 
 export default function WorkAdminFunctions() {
   const [tc] = useTranslation('common');

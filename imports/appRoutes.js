@@ -49,7 +49,7 @@ import ComposablePageForm from '/imports/ui/pages/composablepages/ComposablePage
 import FeatureAdminWrapper from '/imports/ui/pages/admin/features/_FeatureAdminWrapper';
 import MainFeatureSettings from '/imports/ui/pages/admin/features/MainFeatureSettings';
 import FeaturesWrapper from '/imports/ui/pages/admin/features/FeaturesWrapper';
-import { call } from '/imports/ui/utils/shared';
+import { call } from './api/_utils/shared';
 import Redirector from '/imports/ui/generic/Redirector';
 
 import {

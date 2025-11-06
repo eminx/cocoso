@@ -14,7 +14,7 @@ import {
   Text,
 } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../api/_utils/shared';
 import {
   currentHostAtom,
   currentUserAtom,

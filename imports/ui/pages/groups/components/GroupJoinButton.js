@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
-import { Button, Center, Modal, Text } from '/imports/ui/core';
-
-import { call } from '/imports/ui/utils/shared';
 import { currentUserAtom, isDesktopAtom } from '/imports/state';
+import { Button, Center, Modal, Text } from '/imports/ui/core';
+import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { groupAtom } from '../GroupItemHandler';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import PublicActivityForm from './PublicActivityForm';
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';
 

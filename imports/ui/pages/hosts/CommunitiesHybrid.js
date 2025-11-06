@@ -19,7 +19,7 @@ import PageHeading from '../../listing/PageHeading';
 import InfiniteScroller from '../../listing/InfiniteScroller';
 import NewGridThumb from '../../listing/NewGridThumb';
 import { message } from '../../generic/message';
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 
 export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
   const [modalItem, setModalItem] = useState(null);

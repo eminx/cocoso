@@ -18,7 +18,7 @@ import {
 
 import FancyDate from '/imports/ui/entry/FancyDate';
 import { message } from '/imports/ui/generic/message';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import ActionButton from '/imports/ui/generic/ActionButton';
 
 import { groupAtom } from '../GroupItemHandler';

@@ -1,4 +1,4 @@
-import { call } from '/imports/ui/utils/shared';
+import { call } from './api/_utils/shared';
 
 export async function getHomeLoader({ Host, params, request }) {
   const host = Host?.host;

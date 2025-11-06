@@ -6,7 +6,7 @@ import { useAtom } from 'jotai';
 
 import { Box, Checkbox, NumberInput } from '/imports/ui/core';
 
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 import GenericEntryForm from '../../forms/GenericEntryForm';
 import ImageUploader from '../../forms/ImageUploader';
 import FormField from '../../forms/FormField';

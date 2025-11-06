@@ -20,7 +20,7 @@ import {
   isDesktopAtom,
   roleAtom,
 } from '/imports/state';
-import { getFullName } from '/imports/ui/utils/shared';
+import { getFullName } from '../../../api/_utils/shared';
 
 export function AdminMenuHeader({ currentHost }) {
   return (

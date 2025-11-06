@@ -6,7 +6,7 @@ import { Alert, Box, Center } from '/imports/ui/core';
 import Template from '../../layout/Template';
 import NewHostForm from '../../forms/NewHostForm';
 import { message } from '../../generic/message';
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 import { currentUserAtom } from '../../../state';
 
 const hostModel = {

@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai';
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
 import { renderedAtom } from '/imports/state';
 import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
+
 import NewWork from './NewWork';
 
 export default function WorkListHandler({ Host, pageTitles }) {

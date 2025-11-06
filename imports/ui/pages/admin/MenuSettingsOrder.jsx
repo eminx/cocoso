@@ -7,11 +7,11 @@ import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
 import XIcon from 'lucide-react/dist/esm/icons/x';
 import { useAtom } from 'jotai';
 
-import { call } from '/imports/ui/utils/shared';
-import { Box, Button, Flex, Heading, IconButton, Text } from '/imports/ui/core';
-import { updateHostSettings } from '/imports/actions';
-import { message } from '/imports/ui/generic/message';
 import { currentHostAtom } from '/imports/state';
+import { updateHostSettings } from '/imports/actions';
+import { Box, Button, Flex, Heading, IconButton, Text } from '/imports/ui/core';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
 
 import Boxling from './Boxling';
 
@@ -33,7 +33,7 @@ export default function MenuSettingsOrder({ Host }) {
     getComposablePageTitles();
   }, []);
 
-  const onSortMenuEnd = (oldIndex, newIndex) => {
+  const onSortMeuEnd = (oldIndex, newIndex) => {
     const visibleItems = localMenu.filter((item) => item.isVisible);
     const invisibleItems = localMenu.filter((item) => !item.isVisible);
     const newMenu = [

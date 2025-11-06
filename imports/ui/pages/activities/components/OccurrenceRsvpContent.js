@@ -19,7 +19,10 @@ import {
   currentUserAtom,
 } from '/imports/state';
 import FancyDate from '/imports/ui/entry/FancyDate';
-import { call, getComboResourcesWithColor } from '/imports/ui/utils/shared';
+import {
+  call,
+  getComboResourcesWithColor,
+} from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import CalendarActivityForm from './CalendarActivityForm';
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { emptyDateAndTime } from '../../forms/DatesAndTimes';
 import { message } from '../../generic/message';

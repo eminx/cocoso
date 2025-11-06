@@ -5,7 +5,7 @@ import makeAnimated from 'react-select/animated';
 import { useAtom } from 'jotai';
 
 import { Box, Checkbox } from '/imports/ui/core';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
 import FormField from '/imports/ui/forms/FormField';
 import DatesAndTimes, {

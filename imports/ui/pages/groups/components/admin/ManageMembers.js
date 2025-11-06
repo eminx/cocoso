@@ -5,7 +5,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { Avatar, Flex, Link as CLink, Text } from '/imports/ui/core';
 import Modal from '/imports/ui/core/Modal';
 import NiceList from '/imports/ui/generic/NiceList';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { groupAtom } from '../../GroupItemHandler';

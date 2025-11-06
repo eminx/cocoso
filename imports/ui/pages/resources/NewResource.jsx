@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 import ResourceForm from './ResourceForm';
 import SuccessRedirector from '../../forms/SuccessRedirector';
 import { message } from '../../generic/message';

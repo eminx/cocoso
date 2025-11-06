@@ -5,13 +5,14 @@ import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { useAtom } from 'jotai';
 
-import { call } from '../../utils/shared';
-import GenericEntryForm from '../../forms/GenericEntryForm';
-import ImageUploader from '../../forms/ImageUploader';
-import FormField from '../../forms/FormField';
+import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
+import ImageUploader from '/imports/ui/forms/ImageUploader';
+import FormField from '/imports/ui/forms/FormField';
+import { call } from '/imports/api/_utils/shared';
+import { loaderAtom } from '/imports/ui/listing/NewEntryHandler';
+import { message } from '/imports/ui/generic/message';
+
 import resourceFormFields from './resourceFormFields';
-import { message } from '../../generic/message';
-import { loaderAtom } from '../../listing/NewEntryHandler';
 
 export const emptyFormValues = {
   label: '',

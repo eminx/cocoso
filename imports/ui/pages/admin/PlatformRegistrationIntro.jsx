@@ -18,7 +18,7 @@ import {
 import { currentUserAtom, platformAtom } from '../../../state';
 import Loader from '../../core/Loader';
 import { message } from '../../generic/message';
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 import Quill from '../../forms/Quill';
 import Template from '../../layout/Template';
 import { AdminMenu } from './AdminSettings';

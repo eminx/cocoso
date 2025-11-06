@@ -16,7 +16,7 @@ import {
 } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../api/_utils/shared';
 import NiceSlider from '/imports/ui/generic/NiceSlider';
 import {
   allHostsAtom,

@@ -26,7 +26,7 @@ import {
   getNonComboResourcesWithColor,
   getComboResourcesWithColor,
   parseAllBookingsWithResources,
-} from '/imports/ui/utils/shared';
+} from '/imports/api/_utils/shared';
 import {
   canCreateContentAtom,
   currentHostAtom,

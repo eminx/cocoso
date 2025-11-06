@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 
 import { Box, Button, Center, Flex, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../api/_utils/shared';
 import { currentHostAtom } from '../../../../state';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';

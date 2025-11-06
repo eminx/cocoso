@@ -16,7 +16,7 @@ import {
 } from '/imports/ui/core';
 import DateTimePicker from '/imports/ui/forms/DateTimePicker';
 import { ConflictMarker } from '/imports/ui/forms/DatesAndTimes';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { groupAtom } from '../../GroupItemHandler';

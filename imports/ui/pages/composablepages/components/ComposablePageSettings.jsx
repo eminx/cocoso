@@ -6,7 +6,7 @@ import { useSetAtom } from 'jotai';
 import { Box, Button, Checkbox, Input } from '/imports/ui/core';
 import Modal from '/imports/ui/core/Modal';
 import FormField from '/imports/ui/forms/FormField';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { ComposablePageContext } from '../ComposablePageForm';

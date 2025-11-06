@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useAtom } from 'jotai';
 
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../api/_utils/shared';
 import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
 import { message } from '/imports/ui/generic/message';
 

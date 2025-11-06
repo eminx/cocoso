@@ -14,7 +14,7 @@ import {
   Tabs,
   Text,
 } from '/imports/ui/core';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 

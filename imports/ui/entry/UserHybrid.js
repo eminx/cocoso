@@ -4,7 +4,7 @@ import HTMLReactParser from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 
 import { Alert, Box, Center, Flex } from '/imports/ui/core';
-import { stripHtml, getFullName } from '/imports/ui/utils/shared';
+import { stripHtml, getFullName } from '../../api/_utils/shared';
 
 import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 import MemberWorks from '../pages/works/MemberWorks';

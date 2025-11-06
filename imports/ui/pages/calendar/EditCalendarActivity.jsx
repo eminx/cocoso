@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useAtom } from 'jotai';
 
-import { call } from '/imports/ui/utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
 
 import CalendarActivityForm from './CalendarActivityForm';
 import { activityAtom } from '../activities/ActivityItemHandler';
 
-export default function EditPublicActivity() {
+export default function EditCalendarActivity() {
   const [updated, setUpdated] = useState(null);
   const [activity, setActivity] = useAtom(activityAtom);
   const [, setSearchParams] = useSearchParams();

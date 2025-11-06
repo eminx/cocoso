@@ -8,7 +8,7 @@ import NewHostForm from '/imports/ui/forms/NewHostForm';
 import { Signup } from '../auth';
 import NewPlatform from './NewPlatform';
 import Stepper from '../../generic/Stepper';
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 import { message } from '../../generic/message';
 import { loginWithPasswordAsync } from '../auth/functions';
 

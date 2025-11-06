@@ -6,7 +6,7 @@ import { Center } from '/imports/ui/core';
 import NewHostForm from '../../forms/NewHostForm';
 import { message } from '../../generic/message';
 import Alert from '../../core/Alert';
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 
 function NewHost({ setFinished }) {
   const [tc] = useTranslation('common');

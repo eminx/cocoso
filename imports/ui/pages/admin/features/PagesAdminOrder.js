@@ -7,7 +7,7 @@ import { useAtom } from 'jotai';
 
 import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../api/_utils/shared';
 import { pageTitlesAtom } from '../../../../state';
 
 import Boxling from '../Boxling';

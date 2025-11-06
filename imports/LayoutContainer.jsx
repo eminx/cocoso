@@ -13,8 +13,8 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { Box } from '/imports/ui/core';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
+import { call } from '/imports/api/_utils/shared';
 
-import { call } from './ui/utils/shared';
 import Header from './ui/layout/Header';
 import HelmetHybrid from './ui/layout/HelmetHybrid';
 import { Footer, PlatformFooter } from './ui/layout/Footers';

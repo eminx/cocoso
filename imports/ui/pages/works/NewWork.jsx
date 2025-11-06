@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAtomValue } from 'jotai';
 
+import { currentUserAtom } from '/imports/state';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+
 import WorkForm from './WorkForm';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
-import { currentUserAtom } from '../../../state';
 
 export default function NewWork() {
   const currentUser = useAtomValue(currentUserAtom);

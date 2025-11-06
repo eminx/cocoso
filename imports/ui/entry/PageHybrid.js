@@ -6,7 +6,7 @@ import HTMLReactParser from 'html-react-parser';
 import { Box, Center, Heading } from '/imports/ui/core';
 
 import NiceSlider from '../generic/NiceSlider';
-import { parseTitle } from '../utils/shared';
+import { parseTitle } from '../../api/_utils/shared';
 
 function SimplePage({ description, images, imageUrl, title, url }) {
   return (

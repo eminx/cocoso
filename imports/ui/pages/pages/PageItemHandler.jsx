@@ -5,7 +5,7 @@ import { useHydrateAtoms } from 'jotai/utils';
 
 import PageHybrid from '/imports/ui/entry/PageHybrid';
 import { renderedAtom } from '/imports/state';
-import { parseTitle } from '/imports/ui/utils/shared';
+import { parseTitle } from '../../../api/_utils/shared';
 
 const PageInteractionHandler = lazy(() =>
   import('./components/PageInteractionHandler')

@@ -7,6 +7,7 @@ import { arrayMoveImmutable } from 'array-move';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import PlusIcon from 'lucide-react/dist/esm/icons/plus';
+import { useAtom } from 'jotai';
 
 import {
   Box,
@@ -20,9 +21,8 @@ import {
 } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
 import { message } from '/imports/ui/generic/message';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import Boxling from '/imports/ui/pages/admin/Boxling';
-import { useAtom } from 'jotai';
 
 import TopToolBar from './components/TopToolbar';
 import { rowTypes } from './constants';

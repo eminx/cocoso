@@ -12,7 +12,7 @@ import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 // import VirtualGridLister from './VirtualGridLister';
 import Tag from '../generic/Tag';
-import { getCategoriesAssignedToWorks } from '../utils/shared';
+import { getCategoriesAssignedToWorks } from '../../api/_utils/shared';
 import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 
 function WorkThumb({ index, categories, data, onClick }) {

@@ -3,7 +3,7 @@ import { check } from 'meteor/check';
 import i18next from 'i18next';
 
 import { message } from '/imports/ui/generic/message';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../api/_utils/shared';
 
 export const loginWithPasswordAsync = Meteor.promisify(
   Meteor.loginWithPassword

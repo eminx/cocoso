@@ -10,7 +10,7 @@ import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 import { currentHostAtom, pageTitlesAtom } from '/imports/state';
 
-import { parseTitle } from '../utils/shared';
+import { parseTitle } from '../../api/_utils/shared';
 
 const isClient = Meteor?.isClient;
 

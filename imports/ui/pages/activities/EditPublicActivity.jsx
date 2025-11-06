@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
-import { message } from '../../generic/message';
+import { useAtom } from 'jotai';
+
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
 
 import PublicActivityForm from './PublicActivityForm';
 import { activityAtom } from './ActivityItemHandler';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { useAtom } from 'jotai';
 
 export default function EditPublicActivity() {
   const [updated, setUpdated] = useState(null);
