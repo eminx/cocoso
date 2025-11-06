@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
 import {
@@ -46,7 +46,6 @@ export function OldFooter({ host, settings }) {
 export function Footer() {
   const currentHost = useAtomValue(currentHostAtom);
   const platform = useAtomValue(platformAtom);
-  const [tc] = useTranslation('common');
 
   if (!platform || !currentHost || !currentHost.settings) {
     return null;
@@ -115,7 +114,9 @@ export function Footer() {
                 <Center>
                   <Link to="/terms-&-privacy-policy">
                     <Text color="blue.100" fontSize="xs">
-                      {tc('terms.title')}{' '}
+                      <Trans i18nKey="common:terms.title">
+                        Terms of Service & Privacy Policy
+                      </Trans>
                     </Text>
                   </Link>
                 </Center>
@@ -134,7 +135,6 @@ export function Footer() {
 
 export function PlatformFooter() {
   const platform = useAtomValue(platformAtom);
-  const [tc] = useTranslation('common');
 
   if (!platform || !platform.isFederationLayout || !platform.footer) {
     return null;
@@ -175,7 +175,9 @@ export function PlatformFooter() {
                 },
               }}
             >
-              {tc('terms.title')}{' '}
+              <Trans i18nKey="common:terms.title">
+                Terms of Service & Privacy Policy
+              </Trans>
             </Text>
           </Link>
         </Center>

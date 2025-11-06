@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 
 import {
   Button,
@@ -10,11 +10,36 @@ import {
   Select,
   Textarea,
 } from '/imports/ui/core';
-
 import FormField from '/imports/ui/forms/FormField';
 
-function FeedbackForm({ isDarkText = false }) {
-  const [tc] = useTranslation('common');
+const feedbackOptions = [
+  {
+    label: (
+      <Trans i18nKey="common:modals.feedback.form.subject.select.suggest">
+        Suggestion
+      </Trans>
+    ),
+    value: 'suggestion',
+  },
+  {
+    label: (
+      <Trans i18nKey="common:modals.feedback.form.subject.select.bug">
+        Bug
+      </Trans>
+    ),
+    value: 'bug',
+  },
+  {
+    label: (
+      <Trans i18nKey="common:modals.feedback.form.subject.select.compliment">
+        Compliment
+      </Trans>
+    ),
+    value: 'compliment',
+  },
+];
+
+export default function FeedbackForm({ isDarkText = false }) {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   return (
@@ -26,7 +51,7 @@ function FeedbackForm({ isDarkText = false }) {
           variant="ghost"
           onClick={() => setShowFeedbackModal(true)}
         >
-          {tc('modals.feedback.label')}
+          <Trans i18nKey="common:modals.feedback.label">Give Feedback</Trans>
         </Button>
       </Center>
 
@@ -34,30 +59,48 @@ function FeedbackForm({ isDarkText = false }) {
         hideFooter
         id="feedback-form"
         open={showFeedbackModal}
-        title={tc('modals.feedback.label')}
+        title={
+          <Trans i18nKey="common:modals.feedback.label">Give Feedback</Trans>
+        }
         onClose={() => setShowFeedbackModal(false)}
       >
         <form action="https://formspree.io/f/xdopweon" method="POST">
           <Flex direction="column" mb="8" gap="6">
-            <FormField label={tc('modals.feedback.form.email.label')}>
+            <FormField
+              label={
+                <Trans i18nKey="common:modals.feedback.form.email.label">
+                  Your email address
+                </Trans>
+              }
+            >
               <Input type="email" name="_replyto" />
             </FormField>
 
-            <FormField label={tc('modals.feedback.form.subject.label')}>
+            <FormField
+              label={
+                <Trans i18nKey="common:modals.feedback.form.subject.label">
+                  Subject
+                </Trans>
+              }
+            >
               <Select name="subject">
-                {[
-                  tc('modals.feedback.form.subject.select.suggest'),
-                  tc('modals.feedback.form.subject.select.bug'),
-                  tc('modals.feedback.form.subject.select.compliment'),
-                ].map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
+                {feedbackOptions.map((option) => {
+                  return (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  );
+                })}
               </Select>
             </FormField>
 
-            <FormField label={tc('modals.feedback.form.details.label')}>
+            <FormField
+              label={
+                <Trans i18nKey="common:modals.feedback.form.details.label">
+                  Message
+                </Trans>
+              }
+            >
               <Textarea
                 style={{
                   border: '2px solid var(--cocoso-colors-theme-400)',
@@ -66,11 +109,15 @@ function FeedbackForm({ isDarkText = false }) {
                 rows={10}
               />
             </FormField>
+
+            <Flex justify="flex-end" w="100%">
+              <Button type="submit">
+                <Trans i18nKey="common:actions.send">Send</Trans>
+              </Button>
+            </Flex>
           </Flex>
         </form>
       </Modal>
     </>
   );
 }
-
-export default FeedbackForm;

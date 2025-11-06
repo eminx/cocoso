@@ -5,7 +5,7 @@ import ReactSelect from 'react-select';
 import { arrayMoveImmutable } from 'array-move';
 import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
 import XIcon from 'lucide-react/dist/esm/icons/x';
-import { useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 
 import { call } from '/imports/ui/utils/shared';
 import { Box, Button, Flex, Heading, IconButton, Text } from '/imports/ui/core';
@@ -16,7 +16,7 @@ import { currentHostAtom } from '/imports/state';
 import Boxling from './Boxling';
 
 export default function MenuSettingsOrder({ Host }) {
-  const currentHost = useAtomValue(currentHostAtom);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [localMenu, setLocalMenu] = useState(currentHost?.settings?.menu);
   const [composablePageTitles, setComposablePageTitles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
@@ -72,6 +72,7 @@ export default function MenuSettingsOrder({ Host }) {
   const handleSubmit = async () => {
     setSubmitting(true);
     await updateHostSettings({ values: { menu: localMenu } });
+    setCurrentHost(await call('getCurrentHost'));
     setSubmitting(false);
   };
 
