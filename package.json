@@ -107,7 +107,7 @@
   },
   "meteor": {
     "mainModule": {
-      "client": "client/main.jsx",
+      "client": "client/main.js",
       "server": "server/main.js"
     },
     "moduleAliases": {
@@ -126,6 +126,5 @@
   },
   "browserslist": [
     "last 2 versions"
-  ],
-  "postinstall": "patch-package"
+  ]
 }

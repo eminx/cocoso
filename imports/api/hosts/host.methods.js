@@ -116,6 +116,7 @@ Meteor.methods({
 
   async getCurrentHost() {
     const host = getHost(this);
+    console.log('host currentHost', host);
     try {
       const currentHost = await Hosts.findOneAsync(
         { host },
