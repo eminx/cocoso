@@ -12,8 +12,8 @@ if (Meteor.isClient) {
 
 import { Loader } from '/imports/ui/core';
 
-// import NewEntryHandler from '../../listing/NewEntryHandler';
-// import NewCalendarActivity from './NewCalendarActivity';
+import NewEntryHandler from '../../listing/NewEntryHandler';
+import NewCalendarActivity from './NewCalendarActivity';
 
 const weekday = require('dayjs/plugin/weekday');
 
@@ -77,9 +77,9 @@ export default function CalendarView({
         onSelectEvent={onSelect}
         onSelectSlot={onSelectSlot}
       />
-      {/* <NewEntryHandler>
+      <NewEntryHandler>
         <NewCalendarActivity resources={resources} />
-      </NewEntryHandler> */}
+      </NewEntryHandler>
     </>
   );
 }
