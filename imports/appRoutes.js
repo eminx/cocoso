@@ -1,61 +1,129 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
-import HomeHandler from '/imports/HomeHandler';
-import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
-import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
-import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
-import GroupItemHandler from '/imports/ui/pages/groups/GroupItemHandler';
-import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
-import ResourceItemHandler from '/imports/ui/pages/resources/ResourceItemHandler';
-import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
-import WorkItemHandler from '/imports/ui/pages/works/WorkItemHandler';
-import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
-import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
-import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
-import UserProfileHandler from '/imports/ui/pages/profile/UserProfileHandler';
-import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
-import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
+import { Loader } from '/imports/ui/core';
 
-import LoginPage from '/imports/ui/pages/auth/LoginPage';
-import SignupPage from '/imports/ui/pages/auth/SignupPage';
-import ForgotPasswordPage from '/imports/ui/pages/auth/ForgotPasswordPage';
-import ResetPasswordPage from '/imports/ui/pages/auth/ResetPasswordPage';
-// import RegistrationIntro from '/imports/ui/pages/auth/RegistrationIntro';
-import Terms from '/imports/ui/entry/Terms';
-import NotFoundPage from '/imports/ui/pages/NotFoundPage';
+const HomeHandler = lazy(() => import('/imports/HomeHandler'));
+const ActivityListHandler = lazy(() =>
+  import('/imports/ui/pages/activities/ActivityListHandler')
+);
+const ActivityItemHandler = lazy(() =>
+  import('/imports/ui/pages/activities/ActivityItemHandler')
+);
+const GroupListHandler = lazy(() =>
+  import('/imports/ui/pages/groups/GroupListHandler')
+);
+const GroupItemHandler = lazy(() =>
+  import('/imports/ui/pages/groups/GroupItemHandler')
+);
+const ResourceListHandler = lazy(() =>
+  import('/imports/ui/pages/resources/ResourceListHandler')
+);
+const ResourceItemHandler = lazy(() =>
+  import('/imports/ui/pages/resources/ResourceItemHandler')
+);
+const WorkListHandler = lazy(() =>
+  import('/imports/ui/pages/works/WorkListHandler')
+);
+const WorkItemHandler = lazy(() =>
+  import('/imports/ui/pages/works/WorkItemHandler')
+);
+const PageItemHandler = lazy(() =>
+  import('/imports/ui/pages/pages/PageItemHandler')
+);
+const UserListHandler = lazy(() =>
+  import('/imports/ui/pages/profile/UserListHandler')
+);
+const CalendarHandler = lazy(() =>
+  import('/imports/ui/pages/calendar/CalendarHandler')
+);
+const UserProfileHandler = lazy(() =>
+  import('/imports/ui/pages/profile/UserProfileHandler')
+);
+const ComposablePageHandler = lazy(() =>
+  import('/imports/ui/pages/composablepages/ComposablePageHandler')
+);
+const CommunityListHandler = lazy(() =>
+  import('/imports/ui/pages/hosts/CommunityListHandler')
+);
+
+const LoginPage = lazy(() => import('/imports/ui/pages/auth/LoginPage'));
+const SignupPage = lazy(() => import('/imports/ui/pages/auth/SignupPage'));
+const ForgotPasswordPage = lazy(() =>
+  import('/imports/ui/pages/auth/ForgotPasswordPage')
+);
+const ResetPasswordPage = lazy(() =>
+  import('/imports/ui/pages/auth/ResetPasswordPage')
+);
+const Terms = lazy(() => import('/imports/ui/entry/Terms'));
+const NotFoundPage = lazy(() => import('/imports/ui/pages/NotFoundPage'));
+
+const AdminContainer = lazy(() =>
+  import('/imports/ui/pages/admin/AdminContainer')
+);
+const AdminHome = lazy(() => import('/imports/ui/pages/admin/AdminHome'));
+const AdminSettings = lazy(() =>
+  import('/imports/ui/pages/admin/AdminSettings')
+);
+const AdminSettingsLogo = lazy(() =>
+  import('/imports/ui/pages/admin/AdminSettingsLogo')
+);
+const AdminSettingsForm = lazy(() =>
+  import('/imports/ui/pages/admin/AdminSettingsForm')
+);
+const AdminSettingsFooter = lazy(() =>
+  import('/imports/ui/pages/admin/AdminSettingsFooter')
+);
+const MenuSettings = lazy(() => import('/imports/ui/pages/admin/MenuSettings'));
+const MenuSettingsOrder = lazy(() =>
+  import('/imports/ui/pages/admin/MenuSettingsOrder')
+);
+const MenuSettingsOptions = lazy(() =>
+  import('/imports/ui/pages/admin/MenuSettingsOptions')
+);
+const AdminDesign = lazy(() => import('/imports/ui/pages/admin/design'));
+const ThemeHandler = lazy(() =>
+  import('/imports/ui/pages/admin/design/ThemeHandler')
+);
+const MenuDesign = lazy(() =>
+  import('/imports/ui/pages/admin/design/MenuDesign')
+);
+const Members = lazy(() => import('/imports/ui/pages/admin/Members'));
+const Emails = lazy(() => import('/imports/ui/pages/admin/Emails'));
+const EmailNewsletter = lazy(() =>
+  import('/imports/ui/pages/admin/EmailNewsletter')
+);
+const ComposablePages = lazy(() => import('/imports/ui/pages/composablepages'));
+const ComposablePageForm = lazy(() =>
+  import('/imports/ui/pages/composablepages/ComposablePageForm')
+);
+const FeatureAdminWrapper = lazy(() =>
+  import('/imports/ui/pages/admin/features/_FeatureAdminWrapper')
+);
+const MainFeatureSettings = lazy(() =>
+  import('/imports/ui/pages/admin/features/MainFeatureSettings')
+);
+const FeaturesWrapper = lazy(() =>
+  import('/imports/ui/pages/admin/features/FeaturesWrapper')
+);
+const Redirector = lazy(() => import('/imports/ui/generic/Redirector'));
+const EditProfile = lazy(() => import('/imports/ui/pages/profile/EditProfile'));
+const EditProfileGeneral = lazy(() =>
+  import('/imports/ui/pages/profile/EditProfileGeneral')
+);
+const EditProfileLanguage = lazy(() =>
+  import('/imports/ui/pages/profile/EditProfileLanguage')
+);
+const EditProfilePrivacy = lazy(() =>
+  import('/imports/ui/pages/profile/EditProfilePrivacy')
+);
 // import NewHost from '/imports/ui/pages/hosts/NewHost';
 // import SetupHome from '/imports/ui/pages/setup';
 // import getAdminRoutes from '/imports/ui/pages/admin/getAdminRoutes';
+// import RegistrationIntro from '/imports/ui/pages/auth/RegistrationIntro';
 
-import AdminContainer from '/imports/ui/pages/admin/AdminContainer';
-import AdminHome from '/imports/ui/pages/admin/AdminHome';
-import AdminSettings from '/imports/ui/pages/admin/AdminSettings';
-import AdminSettingsLogo from '/imports/ui/pages/admin/AdminSettingsLogo';
-import AdminSettingsForm from '/imports/ui/pages/admin/AdminSettingsForm';
-import AdminSettingsFooter from '/imports/ui/pages/admin/AdminSettingsFooter';
-import MenuSettings from '/imports/ui/pages/admin/MenuSettings';
-import MenuSettingsOrder from '/imports/ui/pages/admin/MenuSettingsOrder';
-import MenuSettingsOptions from '/imports/ui/pages/admin/MenuSettingsOptions';
-import AdminDesign from '/imports/ui/pages/admin/design';
-import ThemeHandler from '/imports/ui/pages/admin/design/ThemeHandler';
-import MenuDesign from '/imports/ui/pages/admin/design/MenuDesign';
-import Members from '/imports/ui/pages/admin/Members';
-import Emails from '/imports/ui/pages/admin/Emails';
-import EmailNewsletter from '/imports/ui/pages/admin/EmailNewsletter';
-import ComposablePages from '/imports/ui/pages/composablepages';
-import ComposablePageForm from '/imports/ui/pages/composablepages/ComposablePageForm';
-import FeatureAdminWrapper from '/imports/ui/pages/admin/features/_FeatureAdminWrapper';
-import MainFeatureSettings from '/imports/ui/pages/admin/features/MainFeatureSettings';
-import FeaturesWrapper from '/imports/ui/pages/admin/features/FeaturesWrapper';
-import { call } from './api/_utils/shared';
-import Redirector from '/imports/ui/generic/Redirector';
-import EditProfile from '/imports/ui/pages/profile/EditProfile';
-import EditProfileGeneral from '/imports/ui/pages/profile/EditProfileGeneral';
-import EditProfileLanguage from '/imports/ui/pages/profile/EditProfileLanguage';
-import EditProfilePrivacy from '/imports/ui/pages/profile/EditProfilePrivacy';
-
+import { call } from '/imports/api/_utils/shared';
 import {
   getHomeLoader,
   getActivities,
@@ -89,26 +157,68 @@ const features = [
   'works',
 ];
 
+class RouteErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Route loading error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-4 text-center">
+          <h2>Something went wrong while loading this page.</h2>
+          <button
+            onClick={() => this.setState({ hasError: false })}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Try Again
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Use it in your route wrapper
+const createRouteElement = (Component, props) => (
+  <RouteErrorBoundary>
+    <Suspense fallback={<Loader />}>
+      <Component {...props} />
+    </Suspense>
+  </RouteErrorBoundary>
+);
+
 const getAdminRoutes = (props) => [
   {
     path: 'home',
-    element: <AdminHome {...props} />,
+    element: createRouteElement(AdminHome, props),
   },
   {
     path: 'my-profile',
-    element: <EditProfile {...props} />,
+    element: createRouteElement(EditProfile, props),
     children: [
       {
         path: 'general',
-        element: <EditProfileGeneral {...props} />,
+        element: createRouteElement(EditProfileGeneral, props),
       },
       {
         path: 'language',
-        element: <EditProfileLanguage {...props} />,
+        element: createRouteElement(EditProfileLanguage, props),
       },
       {
         path: 'privacy',
-        element: <EditProfilePrivacy {...props} />,
+        element: createRouteElement(EditProfilePrivacy, props),
       },
     ],
   },
@@ -117,44 +227,47 @@ const getAdminRoutes = (props) => [
     children: [
       {
         path: 'organization',
-        element: <AdminSettings {...props} />,
+        element: createRouteElement(AdminSettings, props),
         children: [
-          { path: 'logo', element: <AdminSettingsLogo {...props} /> },
+          {
+            path: 'logo',
+            element: createRouteElement(AdminSettingsLogo, props),
+          },
           {
             path: 'info',
-            element: <AdminSettingsForm {...props} />,
+            element: createRouteElement(AdminSettingsForm, props),
           },
           {
             path: 'footer',
-            element: <AdminSettingsFooter {...props} />,
+            element: createRouteElement(AdminSettingsFooter, props),
           },
         ],
       },
       {
         path: 'design',
-        element: <AdminDesign {...props} />,
+        element: createRouteElement(AdminDesign, props),
         children: [
           {
             path: 'theme',
-            element: <ThemeHandler {...props} />,
+            element: createRouteElement(ThemeHandler, props),
           },
           {
             path: 'navigation',
-            element: <MenuDesign {...props} />,
+            element: createRouteElement(MenuDesign, props),
           },
         ],
       },
       {
         path: 'menu',
-        element: <MenuSettings {...props} />,
+        element: createRouteElement(MenuSettings, props),
         children: [
           {
             path: 'order',
-            element: <MenuSettingsOrder {...props} />,
+            element: createRouteElement(MenuSettingsOrder, props),
           },
           {
             path: 'options',
-            element: <MenuSettingsOptions {...props} />,
+            element: createRouteElement(MenuSettingsOptions, props),
           },
         ],
       },
@@ -165,46 +278,49 @@ const getAdminRoutes = (props) => [
     children: [
       {
         index: true,
-        element: <ComposablePages {...props} />,
+        element: createRouteElement(ComposablePages, props),
         loader: async () => await getComposablePageTitles(),
       },
       {
         path: ':composablePageId',
-        element: <ComposablePageForm {...props} />,
+        element: createRouteElement(ComposablePageForm, props),
         loader: async ({ params }) => await getComposablePage({ params }),
       },
     ],
   },
   {
     path: 'features',
-    // element: <FeaturesWrapper {...props} />,
+    // element: createRouteElement(FeaturesWrapper, props),
     children: features.map((feature) => ({
       path: feature,
       children: [
         {
           index: true,
-          element: <FeatureAdminWrapper {...props} />,
+          element: createRouteElement(FeatureAdminWrapper, props),
         },
         {
           path: 'menu',
-          element: <MainFeatureSettings feature={feature} {...props} />,
+          element: createRouteElement(MainFeatureSettings, {
+            ...props,
+            feature,
+          }),
         },
       ],
     })),
   },
   {
     path: 'users',
-    element: <Members {...props} />,
+    element: createRouteElement(Members, props),
     loader: async () => await getHostMembersForAdmin(),
   },
   {
     path: 'emails',
-    element: <Emails {...props} />,
+    element: createRouteElement(Emails, props),
     loader: async () => await getEmails(),
   },
   {
     path: 'email-newsletter',
-    element: <EmailNewsletter {...props} />,
+    element: createRouteElement(EmailNewsletter, props),
   },
 ];
 
@@ -215,11 +331,11 @@ export default function appRoutes(props) {
 
   return [
     {
-      element: <WrapperHybrid {...props} />,
+      element: createRouteElement(WrapperHybrid, props),
       children: [
         {
           path: '',
-          element: <HomeHandler {...props} />,
+          element: createRouteElement(HomeHandler, props),
           loader: async ({ params, request }) =>
             await getHomeLoader({ Host, params, request }),
         },
@@ -228,13 +344,13 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: <ActivityListHandler {...props} />,
+              element: createRouteElement(ActivityListHandler, props),
               loader: async ({ request }) =>
                 await getActivities({ request, host, isPortalHost }),
             },
             {
               path: ':activityId/*',
-              element: <ActivityItemHandler {...props} />,
+              element: createRouteElement(ActivityItemHandler, props),
               loader: async ({ params }) => await getActivity({ params }),
             },
           ],
@@ -244,20 +360,20 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: <GroupListHandler {...props} />,
+              element: createRouteElement(GroupListHandler, props),
               loader: async () => await getGroups({ host, isPortalHost }),
             },
             {
               path: ':groupId/*',
               index: true,
-              element: <GroupItemHandler {...props} />,
+              element: createRouteElement(GroupItemHandler, props),
               loader: async ({ params }) => await getGroup({ params }),
             },
           ],
         },
         {
           path: 'calendar',
-          element: <CalendarHandler {...props} />,
+          element: createRouteElement(CalendarHandler, props),
           loader: async ({ request }) =>
             await getCalendarEntries({ host, isPortalHost }),
         },
@@ -266,14 +382,14 @@ export default function appRoutes(props) {
           children: [
             {
               path: ':pageTitle',
-              element: <PageItemHandler {...props} />,
+              element: createRouteElement(PageItemHandler, props),
               loader: async () => await getPages({ host }),
             },
           ],
         },
         {
           path: 'people',
-          element: <UserListHandler {...props} />,
+          element: createRouteElement(UserListHandler, props),
           loader: async () => await getPeople({ host, isPortalHost }),
         },
         {
@@ -281,13 +397,13 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: <ResourceListHandler {...props} />,
+              element: createRouteElement(ResourceListHandler, props),
               loader: async () => await getResources({ host, isPortalHost }),
             },
             {
               path: ':resourceId/*',
               index: true,
-              element: <ResourceItemHandler {...props} />,
+              element: createRouteElement(ResourceItemHandler, props),
               loader: async ({ params }) => await getResource({ params }),
             },
           ],
@@ -297,7 +413,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: <WorkListHandler {...props} />,
+              element: createRouteElement(WorkListHandler, props),
               loader: async () => await getWorks({ host, isPortalHost }),
             },
           ],
@@ -308,7 +424,7 @@ export default function appRoutes(props) {
             {
               index: true,
               path: '*',
-              element: <UserProfileHandler {...props} />,
+              element: createRouteElement(UserProfileHandler, props),
               loader: async ({ params }) => await getUser({ params, host }),
             },
             {
@@ -316,7 +432,7 @@ export default function appRoutes(props) {
               children: [
                 {
                   path: ':workId/*',
-                  element: <WorkItemHandler {...props} />,
+                  element: createRouteElement(WorkItemHandler, props),
                   loader: async ({ params }) => await getWork({ params }),
                 },
               ],
@@ -325,63 +441,63 @@ export default function appRoutes(props) {
         },
         {
           path: 'cp/:composablePageId',
-          element: <ComposablePageHandler {...props} />,
+          element: createRouteElement(ComposablePageHandler, props),
           loader: async ({ params }) =>
             await getComposablePage({ params, Host }),
         },
         {
           path: 'communities',
-          element: <CommunityListHandler {...props} />,
+          element: createRouteElement(CommunityListHandler, props),
           loader: async () => getCommunities(),
         },
         // {
         //   path: 'intro',
-        //   element: <RegistrationIntro {...props} />,
+        //   element: createRouteElement(RegistrationIntro, props),
         // },
         {
           path: 'login',
-          element: <LoginPage {...props} />,
+          element: createRouteElement(LoginPage, props),
         },
         {
           path: 'register',
-          element: <SignupPage {...props} />,
+          element: createRouteElement(SignupPage, props),
         },
         {
           path: 'forgot-password',
-          element: <ForgotPasswordPage {...props} />,
+          element: createRouteElement(ForgotPasswordPage, props),
         },
         {
           path: 'reset-password/*',
-          element: <ResetPasswordPage {...props} />,
+          element: createRouteElement(ResetPasswordPage, props),
         },
         // {
         //   path: '/setup',
-        //   element: <SetupHome {...props} />,
+        //   element: createRouteElement(SetupHome, props),
         // },
         // {
         //   path: '/new-host',
-        //   element: <NewHost {...props} />,
+        //   element: createRouteElement(NewHost, props),
         // },
         {
           path: 'terms-&-privacy-policy',
-          element: <Terms {...props} />,
+          element: createRouteElement(Terms, props),
         },
         {
           path: '/admin',
-          element: <AdminContainer {...props} />,
+          element: createRouteElement(AdminContainer, props),
           children: Meteor.isServer ? null : [...getAdminRoutes(props)],
         },
         {
           path: 'not-found',
-          element: <NotFoundPage {...props} />,
+          element: createRouteElement(NotFoundPage, props),
         },
         {
           path: '404',
-          element: <NotFoundPage {...props} />,
+          element: createRouteElement(NotFoundPage, props),
         },
         // {
         //   path: '*',
-        //   element: <NotFoundPage {...props} />,
+        //   element: createRouteElement(NotFoundPage, props),
         // },
       ],
     },
