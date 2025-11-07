@@ -36,7 +36,6 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
     [platformAtom, platform],
   ]);
 
-  console.log('Wrapper Host:', Host);
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setRole = useSetAtom(roleAtom);

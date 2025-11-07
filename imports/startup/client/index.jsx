@@ -18,8 +18,6 @@ onPageLoad(async () => {
   const platform = await Meteor.callAsync('getPlatform');
   const pageTitles = await Meteor.callAsync('getPageTitles');
 
-  console.log('currentHost onpageload', currentHost);
-
   if (!platform || !currentHost) {
     const root = createRoot(container);
     root.render(<SetupHome />);
