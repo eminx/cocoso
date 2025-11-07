@@ -34,7 +34,7 @@ function KeywordsManager({ currentUser }) {
 
   useEffect(() => {
     getKeywords();
-  }, []);
+  }, [currentUser]);
 
   const saveKeywords = async () => {
     try {

@@ -11,7 +11,7 @@ Meteor.publish('attendingEvents', function () {
   });
 });
 
-Meteor.publish('currentUser', () => {
+Meteor.publish('currentUser', function () {
   const userId = this.userId;
   if (!userId) {
     return null;
@@ -26,6 +26,7 @@ Meteor.publish('currentUser', () => {
         emails: 1,
         firstName: 1,
         groups: 1,
+        keywords: 1,
         lang: 1,
         lastName: 1,
         memberships: 1,
@@ -33,7 +34,6 @@ Meteor.publish('currentUser', () => {
       },
     }
   );
-  console.log('user', user);
   return user;
 });
 

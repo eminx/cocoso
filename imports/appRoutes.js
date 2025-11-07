@@ -52,6 +52,9 @@ import FeaturesWrapper from '/imports/ui/pages/admin/features/FeaturesWrapper';
 import { call } from './api/_utils/shared';
 import Redirector from '/imports/ui/generic/Redirector';
 import EditProfile from '/imports/ui/pages/profile/EditProfile';
+import EditProfileGeneral from '/imports/ui/pages/profile/EditProfileGeneral';
+import EditProfileLanguage from '/imports/ui/pages/profile/EditProfileLanguage';
+import EditProfilePrivacy from '/imports/ui/pages/profile/EditProfilePrivacy';
 
 import {
   getHomeLoader,
@@ -94,6 +97,20 @@ const getAdminRoutes = (props) => [
   {
     path: 'my-profile',
     element: <EditProfile {...props} />,
+    children: [
+      {
+        path: 'general',
+        element: <EditProfileGeneral {...props} />,
+      },
+      {
+        path: 'language',
+        element: <EditProfileLanguage {...props} />,
+      },
+      {
+        path: 'privacy',
+        element: <EditProfilePrivacy {...props} />,
+      },
+    ],
   },
   {
     path: 'settings',
@@ -163,8 +180,11 @@ const getAdminRoutes = (props) => [
     // element: <FeaturesWrapper {...props} />,
     children: features.map((feature) => ({
       path: feature,
-      element: <FeatureAdminWrapper {...props} />,
       children: [
+        {
+          index: true,
+          element: <FeatureAdminWrapper {...props} />,
+        },
         {
           path: 'menu',
           element: <MainFeatureSettings feature={feature} {...props} />,
@@ -192,8 +212,6 @@ export default function appRoutes(props) {
   const Host = props?.Host;
   const host = Host?.host;
   const isPortalHost = Boolean(Host?.isPortalHost);
-
-  console.log('approutes', props);
 
   return [
     {
