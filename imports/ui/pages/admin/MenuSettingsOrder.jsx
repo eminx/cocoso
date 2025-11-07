@@ -33,7 +33,7 @@ export default function MenuSettingsOrder({ Host }) {
     getComposablePageTitles();
   }, []);
 
-  const onSortMeuEnd = (oldIndex, newIndex) => {
+  const onSortMenuEnd = (oldIndex, newIndex) => {
     const visibleItems = localMenu.filter((item) => item.isVisible);
     const invisibleItems = localMenu.filter((item) => !item.isVisible);
     const newMenu = [
@@ -56,15 +56,18 @@ export default function MenuSettingsOrder({ Host }) {
   };
 
   const removeComposablePage = (selectedItemName) => {
-    setLocalMenu(localMenu.filter((item) => item.name !== selectedItemName));
+    setLocalMenu(localMenu?.filter((item) => item.name !== selectedItemName));
   };
 
   const getComposablePageOptions = () => {
-    const existingComposableIdsInlocalMenu = localMenu.map((item) => item.name);
+    const existingComposableIdsInlocalMenu = localMenu?.map(
+      (item) => item.name
+    );
 
     const options = composablePageTitles?.filter(
       (item) =>
-        item.isPublished && !existingComposableIdsInlocalMenu.includes(item._id)
+        item.isPublished &&
+        !existingComposableIdsInlocalMenu?.includes(item._id)
     );
     return options;
   };
@@ -112,8 +115,8 @@ export default function MenuSettingsOrder({ Host }) {
         {localMenu && (
           <SortableList onSortEnd={onSortMenuEnd}>
             {localMenu
-              .filter((item) => item.isVisible)
-              .map((value, index) => (
+              ?.filter((item) => item.isVisible)
+              ?.map((value, index) => (
                 <SortableItem key={value.name}>
                   <div>
                     <Flex

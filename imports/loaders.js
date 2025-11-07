@@ -19,7 +19,7 @@ export async function getHomeLoader({ Host, params, request }) {
     case 'users':
       return await getPeople({ host, isPortalHost });
     default:
-      return await getComposablePage({ params });
+      return await getComposablePage({ params, Host });
   }
 }
 
@@ -174,12 +174,13 @@ export async function getWork({ params }) {
   };
 }
 
-export async function getComposablePage({ params }) {
-  if (!params) {
-    return null;
+export async function getComposablePage({ params, Host }) {
+  let composablePageId = params?.composablePageId;
+
+  if (!composablePageId) {
+    composablePageId = Host?.settings?.menu[0]?.name;
   }
 
-  const { composablePageId } = params;
   const composablePage = await call('getComposablePageById', composablePageId);
 
   return {

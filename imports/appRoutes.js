@@ -326,7 +326,8 @@ export default function appRoutes(props) {
         {
           path: 'cp/:composablePageId',
           element: <ComposablePageHandler {...props} />,
-          loader: async ({ params }) => await getComposablePage({ params }),
+          loader: async ({ params }) =>
+            await getComposablePage({ params, Host }),
         },
         {
           path: 'communities',
