@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-router/package.json b/node_modules/react-router/package.json
-index 84ebf56..a66f26b 100644
+index 84ebf56..60ef7c9 100644
 --- a/node_modules/react-router/package.json
 +++ b/node_modules/react-router/package.json
 @@ -20,26 +20,26 @@
@@ -24,13 +24,15 @@ index 84ebf56..a66f26b 100644
          "default": "./dist/development/index.js"
        },
        "module": {
-         "types": "./dist/development/index.d.mts",
+-        "types": "./dist/development/index.d.mts",
 -        "default": "./dist/development/index.mjs"
++        "types": "./dist/development/index.d.ts",
 +        "default": "./dist/development/index.js"
        },
        "import": {
-         "types": "./dist/development/index.d.mts",
+-        "types": "./dist/development/index.d.mts",
 -        "default": "./dist/development/index.mjs"
++        "types": "./dist/development/index.d.ts",
 +        "default": "./dist/development/index.js"
        },
        "default": {
@@ -46,17 +48,28 @@ index 84ebf56..a66f26b 100644
          "default": "./dist/development/dom-export.js"
        },
        "module": {
-         "types": "./dist/development/dom-export.d.mts",
+-        "types": "./dist/development/dom-export.d.mts",
 -        "default": "./dist/development/dom-export.mjs"
++        "types": "./dist/development/dom-export.d.ts",
 +        "default": "./dist/development/dom-export.js"
        },
        "import": {
-         "types": "./dist/development/dom-export.d.mts",
+-        "types": "./dist/development/dom-export.d.mts",
 -        "default": "./dist/development/dom-export.mjs"
++        "types": "./dist/development/dom-export.d.ts",
 +        "default": "./dist/development/dom-export.js"
        },
        "default": {
          "types": "./dist/development/dom-export.d.ts",
+@@ -71,7 +71,7 @@
+         "types": "./dist/development/lib/types/internal.d.ts"
+       },
+       "import": {
+-        "types": "./dist/development/lib/types/internal.d.mts"
++        "types": "./dist/development/lib/types/internal.d.ts"
+       },
+       "default": {
+         "types": "./dist/development/lib/types/index.d.ts"
 @@ -79,22 +79,22 @@
      },
      "./internal/react-server-client": {
@@ -74,13 +87,15 @@ index 84ebf56..a66f26b 100644
          "default": "./dist/development/index.js"
        },
        "module": {
-         "types": "./dist/development/index.d.mts",
+-        "types": "./dist/development/index.d.mts",
 -        "default": "./dist/development/index.mjs"
++        "types": "./dist/development/index.d.ts",
 +        "default": "./dist/development/index.js"
        },
        "import": {
-         "types": "./dist/development/index.d.mts",
+-        "types": "./dist/development/index.d.mts",
 -        "default": "./dist/development/index.mjs"
++        "types": "./dist/development/index.d.ts",
 +        "default": "./dist/development/index.js"
        },
        "default": {
