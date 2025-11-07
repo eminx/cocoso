@@ -12,7 +12,6 @@ import appRoutes from '/imports/appRoutes';
 import '/imports/startup/i18n';
 
 onPageLoad(async () => {
-  console.log('wtf');
   const container = document.getElementById('root');
 
   const currentHost = await Meteor.callAsync('getCurrentHost');

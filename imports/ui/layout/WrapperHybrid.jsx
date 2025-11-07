@@ -27,6 +27,7 @@ import DummyWrapper from './DummyWrapper';
 import TopBarHandler from './TopBarHandler';
 import Header from './Header';
 import { Footer, PlatformFooter } from './Footers';
+import { call } from '/imports/api/_utils/shared';
 
 export default function WrapperHybrid({ Host, pageTitles, platform }) {
   useHydrateAtoms([
