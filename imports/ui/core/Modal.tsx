@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import { styled } from '/stitches.config';
 
 import { Box, Button } from '/imports/ui/core';
@@ -405,8 +405,6 @@ const Content: React.FC<{
   onSecondaryButtonClick,
   title,
 }) => {
-  const [tc] = useTranslation('common');
-
   // Handle cancel
   const handleCancel = () => {
     if (onSecondaryButtonClick) {
@@ -465,10 +463,14 @@ const Content: React.FC<{
             onClick={handleCancel}
             {...cancelButtonProps}
           >
-            {cancelText || tc('actions.cancel')}
+            {cancelText || (
+              <Trans i18nKey="common:actions.cancel">Cancel</Trans>
+            )}
           </Button>
           <Button onClick={handleConfirm} {...confirmButtonProps}>
-            {confirmText || tc('actions.submit')}
+            {confirmText || (
+              <Trans i18nKey="common:actions.submit">Confirm</Trans>
+            )}
           </Button>
         </Footer>
       )}

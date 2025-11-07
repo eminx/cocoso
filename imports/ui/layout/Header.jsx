@@ -3,14 +3,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router';
 import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
-import { useAtomValue } from 'jotai';
 
 import { Box, Center, Flex, Heading, Image, Text } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
+import { parseTitle } from '/imports/api/_utils/shared';
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
-import { currentHostAtom, pageTitlesAtom } from '/imports/state';
-
-import { parseTitle } from '../../api/_utils/shared';
 
 const isClient = Meteor?.isClient;
 

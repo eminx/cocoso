@@ -9,25 +9,13 @@ import PopupHandler from './PopupHandler';
 import InfiniteScroller from './InfiniteScroller';
 import NewGridThumb from './NewGridThumb';
 
-export default function ResourcesHybrid({ resources }) {
+export default function ResourcesHybrid({ Host, resources }) {
   const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
 
-  const resourcesInMenu = currentHost?.settings?.menu?.find(
-    (item) => item.name === 'resources'
-  );
-  const description = resourcesInMenu?.description;
-  const heading = resourcesInMenu?.label;
-  const url = `${currentHost?.host}/${resourcesInMenu?.name}`;
-
   return (
     <>
-      <PageHeading
-        description={description}
-        heading={heading}
-        imageUrl={currentHost?.logo}
-        url={url}
-      />
+      <PageHeading currentHost={currentHost || Host} listing="resources" />
 
       <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={resources} filtrerMarginTop={-82}>

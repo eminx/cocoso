@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 // import { Masonry, usePositioner, useResizeObserver } from 'masonic';
 
@@ -40,10 +40,9 @@ function WorkThumb({ index, categories, data, onClick }) {
   );
 }
 
-export default function WorksHybrid({ works }) {
+export default function WorksHybrid({ Host, works }) {
   const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
-  const [t] = useTranslation('members');
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category');
   const containerRef = useRef(null);
@@ -77,13 +76,6 @@ export default function WorksHybrid({ works }) {
     };
   });
 
-  const worksInMenu = currentHost?.settings?.menu?.find(
-    (item) => item.name === 'works'
-  );
-  const description = worksInMenu?.description;
-  const heading = worksInMenu?.label;
-  const url = `${currentHost?.host}/${worksInMenu?.name}`;
-
   // const getAvatar = (work) =>
   //   work.showAvatar && {
   //     name: work.authorUsername,
@@ -110,19 +102,14 @@ export default function WorksHybrid({ works }) {
 
   return (
     <>
-      <PageHeading
-        description={description}
-        heading={heading}
-        imageUrl={currentHost?.logo}
-        url={url}
-      />
+      <PageHeading currentHost={currentHost || Host} listing="works" />
 
       <Center px="4">
         <Flex justify="center" wrap="wrap">
           <Tag
             key="all"
             filterColor="var(--cocoso-colors-gray-800)"
-            label={t('all')}
+            label={<Trans i18nKey="members:all">All</Trans>}
             checkable
             checked={Boolean(category) === false || category === 'all'}
             onClick={() => setCategoryFilter('all')}

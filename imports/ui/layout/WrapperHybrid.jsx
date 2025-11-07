@@ -83,7 +83,7 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
       <HelmetHybrid Host={currentHost || Host} />
 
       <I18nextProvider i18n={i18n}>
-        <DummyWrapper>
+        <DummyWrapper theme={currentHost?.theme || Host?.theme}>
           {rendered && !adminPage && <TopBarHandler />}
           {!adminPage && (
             <Header
@@ -94,7 +94,7 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
 
           <Outlet />
 
-          <Footer />
+          <Footer currentHost={currentHost || Host} />
           <PlatformFooter />
         </DummyWrapper>
 

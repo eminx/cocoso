@@ -11,27 +11,16 @@ import PopupHandler from './PopupHandler';
 import SexyThumb from './SexyThumb';
 // import VirtualGridLister from './VirtualGridLister';
 
-export default function GroupsHybrid({ groups }) {
+export default function GroupsHybrid({ Host, groups }) {
   const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
   const [tc] = useTranslation('common');
 
-  const groupsInMenu = currentHost?.settings?.menu?.find(
-    (item) => item.name === 'groups'
-  );
-  const description = groupsInMenu?.description;
-  const heading = groupsInMenu?.label;
-  const url = `${currentHost?.host}/${groupsInMenu?.name}`;
-  const getTags = (item) => (item.isPrivate ? [tc('labels.private')] : null);
+  // const getTags = (item) => (item.isPrivate ? [tc('labels.private')] : null);
 
   return (
     <>
-      <PageHeading
-        description={description}
-        heading={heading}
-        imageUrl={currentHost?.logo}
-        url={url}
-      />
+      <PageHeading currentHost={currentHost || Host} listing="groups" />
 
       {/* <Center>
         <VirtualGridLister

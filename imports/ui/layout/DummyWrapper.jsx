@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
+import { useLocation } from 'react-router';
 import { HydrationProvider } from 'react-hydration-provider';
 import { useAtomValue } from 'jotai';
 
@@ -8,10 +9,14 @@ import { currentHostAtom } from '/imports/state';
 
 const isClient = Meteor.isClient;
 
-export default function DummyWrapper({ animate = false, children, ...rest }) {
-  const currentHost = useAtomValue(currentHostAtom);
-  const theme = currentHost?.theme;
-  const pathname = isClient ? window?.location?.pathname : null;
+export default function DummyWrapper({
+  animate = false,
+  theme,
+  children,
+  ...rest
+}) {
+  const location = useLocation();
+  const pathname = location?.pathname;
 
   let wrapperClass = 'wrapper';
   if (animate && isClient && !pathname?.includes('admin')) {

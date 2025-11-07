@@ -6,13 +6,15 @@ import { Box, Center, Divider, Heading, Text } from '/imports/ui/core';
 
 import NewButton from './NewButton';
 
-export default function PageHeading({
-  description,
-  heading,
-  imageUrl,
-  url,
-  children,
-}) {
+export default function PageHeading({ currentHost, listing }) {
+  const listingInMenu = currentHost?.settings?.menu?.find(
+    (item) => item.name === listing
+  );
+  const description = listingInMenu?.description;
+  const heading = listingInMenu?.label;
+  const url = `${currentHost?.host}/${listingInMenu?.name}`;
+  const imageUrl = currentHost?.logo;
+
   return (
     <>
       <Helmet>
@@ -49,7 +51,6 @@ export default function PageHeading({
                 minWidth: '280px',
               }}
             />
-            <Center>{children}</Center>
             {description && (
               <Center>
                 <Text

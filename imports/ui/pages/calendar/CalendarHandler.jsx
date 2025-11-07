@@ -205,26 +205,13 @@ export default function CalendarHandler({ Host, pageTitles }) {
     ...nonComboResourcesWithColor,
   ]?.filter((r) => r.isBookable);
 
-  const settings = currentHost?.settings;
-  const calendarInMenu = settings?.menu.find(
-    (item) => item.name === 'calendar'
-  );
-  const heading = calendarInMenu?.label;
-  const description = calendarInMenu?.description;
-  const url = `${currentHost?.host}/${calendarInMenu?.name}`;
-
   if (!currentHost) {
     return <Loader />;
   }
 
   return (
     <>
-      <PageHeading
-        description={description}
-        heading={heading}
-        imageUrl={currentHost.logo}
-        url={url}
-      />
+      <PageHeading currentHost={currentHost || Host} listing="calendar" />
 
       <Box>
         <Center mb="2">

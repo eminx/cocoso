@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import { useAtomValue } from 'jotai';
 
+import { platformAtom } from '/imports/state';
 import {
   Box,
   Center,
@@ -14,8 +16,6 @@ import {
 
 import FeedbackForm from './FeedbackForm';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
-import { useAtomValue } from 'jotai';
-import { currentHostAtom, platformAtom } from '../../state';
 
 export function OldFooter({ host, settings }) {
   return (
@@ -43,8 +43,7 @@ export function OldFooter({ host, settings }) {
   );
 }
 
-export function Footer() {
-  const currentHost = useAtomValue(currentHostAtom);
+export function Footer({ currentHost }) {
   const platform = useAtomValue(platformAtom);
 
   if (!platform || !currentHost || !currentHost.settings) {

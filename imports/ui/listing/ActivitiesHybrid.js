@@ -13,16 +13,10 @@ import SexyThumb from './SexyThumb';
 import Tabs from '../core/Tabs';
 // import VirtualGridLister from './VirtualGridLister';
 
-export default function ActivitiesHybrid({ activities, showPast }) {
+export default function ActivitiesHybrid({ Host, activities, showPast }) {
   const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
   const [, setSearchParams] = useSearchParams();
-
-  const activitiesInMenu = currentHost?.settings?.menu?.find(
-    (item) => item.name === 'activities'
-  );
-  const description = activitiesInMenu?.description;
-  const heading = activitiesInMenu?.label;
 
   const tabs = [
     {
@@ -40,18 +34,12 @@ export default function ActivitiesHybrid({ activities, showPast }) {
   const groupsInMenu = currentHost?.settings?.menu?.find(
     (item) => item.name === 'groups'
   );
-  const groupsLabel = groupsInMenu?.label;
-  const url = `${currentHost?.host}/${activitiesInMenu?.name}`;
-  const getTags = (item) => (item.isGroupMeeting ? [groupsLabel] : null);
+  // const groupsLabel = groupsInMenu?.label;
+  // const getTags = (item) => (item.isGroupMeeting ? [groupsLabel] : null);
 
   return (
     <>
-      <PageHeading
-        description={description}
-        heading={heading}
-        imageUrl={currentHost?.logo}
-        url={url}
-      />
+      <PageHeading currentHost={currentHost || Host} listing="activities" />
 
       <Center>
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
