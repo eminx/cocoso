@@ -43,7 +43,6 @@ export default async function serverRenderer(sink) {
   const search = sink?.request?.url?.search;
 
   const props = {
-    currentUser,
     Host,
     pageTitles,
     platform,

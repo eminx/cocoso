@@ -30,25 +30,23 @@ import { Footer, PlatformFooter } from './Footers';
 import { call } from '/imports/api/_utils/shared';
 
 export default function WrapperHybrid({ Host, pageTitles, platform }) {
-  useHydrateAtoms([
-    [currentHostAtom, Host],
-    [pageTitlesAtom, pageTitles],
-    [platformAtom, platform],
-  ]);
+  useHydrateAtoms([[platformAtom, platform]]);
 
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
+  const setPageTitles = useSetAtom(pageTitlesAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setRole = useSetAtom(roleAtom);
   const [rendered, setRendered] = useAtom(renderedAtom);
   const location = useLocation();
   const hydrated = useHydrated();
 
-  const setHost = async () => {
+  const setValues = async () => {
     setCurrentHost(await call('getCurrentHost'));
+    setPageTitles(await call('getPageTitles'));
   };
 
   useEffect(() => {
-    setHost();
+    setValues();
     const currentUser = Meteor.user();
     setCurrentUser(currentUser);
     const hostWithinUser = currentUser?.memberships?.find(
@@ -73,12 +71,14 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
 
   return (
     <>
-      <HelmetHybrid Host={currentHost} />
+      <HelmetHybrid Host={currentHost || Host} />
 
       <I18nextProvider i18n={i18n}>
         <DummyWrapper>
           {rendered && !adminPage && <TopBarHandler />}
-          {!adminPage && <Header />}
+          {!adminPage && (
+            <Header currentHost={currentHost || Host} pageTitles={pageTitles} />
+          )}
 
           <Outlet />
 

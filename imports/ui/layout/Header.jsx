@@ -210,10 +210,11 @@ function HeaderMenu({ Host, pageTitles }) {
   );
 }
 
-export default function Header({ isLogoSmall = false }) {
-  const currentHost = useAtomValue(currentHostAtom);
-  const pageTitles = useAtomValue(pageTitlesAtom);
-
+export default function Header({
+  currentHost,
+  pageTitles,
+  isLogoSmall = false,
+}) {
   if (!currentHost) {
     return null;
   }
