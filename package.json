@@ -28,7 +28,8 @@
     "start": "meteor run --settings private/settings.json",
     "e2e": "METEOR_LOCAL_DIR=.meteor/test BABEL_ENV=test DISABLE_REACT_FAST_REFRESH=1 meteor run --port 4000",
     "analyze": "meteor run --settings private/settings.json --extra-packages bundle-visualizer --production",
-    "lint": "eslint . --ext .js --ext .jsx --ext .ts --ext .tsx"
+    "lint": "eslint . --ext .js --ext .jsx --ext .ts --ext .tsx",
+    "postinstall": "patch-package"
   },
   "theme": {
     "primary-color": "orange"
