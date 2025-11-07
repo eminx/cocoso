@@ -165,7 +165,11 @@ const Tabs: React.FC<TabsProps> = ({
             );
           }
           return (
-            <TabButton key={tab.key || tab.title} onClick={tab.onClick}>
+            <TabButton
+              key={tab.key || tab.title}
+              type="button"
+              onClick={tab.onClick}
+            >
               <CoTab tab={tab} selected={selected} />
             </TabButton>
           );

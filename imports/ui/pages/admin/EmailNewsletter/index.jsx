@@ -15,7 +15,7 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
-import { call, resizeImage, uploadImage } from '../../../../api/_utils/shared';
+import { call, resizeImage, uploadImage } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import {
   currentHostAtom,

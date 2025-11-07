@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Center, Flex, Input, Text } from '/imports/ui/core';
+import { Box, Button, Center, Flex, Input, Text } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import Quill from '/imports/ui/forms/Quill';
 import FileDropper from '/imports/ui/forms/FileDropper';
@@ -99,7 +99,9 @@ export default function EmailForm({
             />
           </FormField>
 
-          {/* <ContentInserter currentHost={currentHost} onSelect={onSelectItems} /> */}
+          <Box mb="24">
+            <ContentInserter onSelect={onSelectItems} />
+          </Box>
 
           <FormField label={t('emails.form.footer.label')} mb="4">
             <Quill

@@ -3,6 +3,8 @@ import CloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
+import { useAtomValue } from 'jotai';
+
 import {
   Box,
   Flex,
@@ -14,11 +16,12 @@ import {
   Tabs,
   Text,
 } from '/imports/ui/core';
-import { call } from '../../../../api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 
 import { ActivityDates } from './EmailPreview';
+import { currentHostAtom } from '/imports/state';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
@@ -70,12 +73,12 @@ function ListItemCheckbox({ item, children, onSelect }) {
         </Box>
         <Image
           fit="cover"
-          h="80px"
+          height="80px"
           src={(item.images && item.images[0]) || item.imageUrl}
           css={{
             backgroundColor: 'var(--cocoso-colors-theme-100)',
           }}
-          w="80px"
+          width="80px"
         />
         <Box ml="2" css={{ flexShrink: '1' }}>
           <Text fontSize="lg" fontWeight="bold">
@@ -88,7 +91,8 @@ function ListItemCheckbox({ item, children, onSelect }) {
   );
 }
 
-export default function ContentInserter({ currentHost, onSelect }) {
+export default function ContentInserter({ onSelect }) {
+  const currentHost = useAtomValue(currentHostAtom);
   const [activities, setActivities] = useState([]);
   const [works, setWorks] = useState([]);
   const [activitiesLoading, setActivitiesLoading] = useState(false);
@@ -208,7 +212,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
 
   if (activitiesInMenu?.isVisible) {
     tabs.push({
-      label: activitiesInMenu?.label,
+      title: activitiesInMenu.label,
       items: activitiesFiltered,
       onClick: () => setActiveTab(0),
     });
@@ -216,13 +220,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
 
   if (worksInMenu?.isVisible) {
     tabs.push({
-      label: worksInMenu?.label,
+      title: worksInMenu.label,
       items: worksFiltered,
       onClick: () => setActiveTab(1),
     });
   }
-
-  console.log(tabs);
 
   return (
     <>
@@ -250,13 +252,14 @@ export default function ContentInserter({ currentHost, onSelect }) {
         )}
       </Flex>
 
-      <Box maxH="800px" overflowY="scroll">
-        {activitiesInMenu?.isVisible && (
+      <Box css={{ maxHeight: '800px', overflowY: 'scroll' }}>
+        {activeTab === 0 && activitiesInMenu?.isVisible && (
           <Box>
             {!activitiesLoading ? (
               <List bg="white">
                 {activitiesFiltered?.map((activity) => (
                   <ListItemCheckbox
+                    key={activity._id}
                     item={activity}
                     onSelect={(item) => handleSelectItem(item, 'activities')}
                   >
@@ -270,12 +273,13 @@ export default function ContentInserter({ currentHost, onSelect }) {
           </Box>
         )}
 
-        {worksInMenu?.isVisible && (
+        {activeTab === 1 && worksInMenu?.isVisible && (
           <Box>
             {!worksLoading ? (
               <List bg="white">
                 {worksFiltered?.map((work) => (
                   <ListItemCheckbox
+                    key={work._id}
                     item={work}
                     onSelect={(item) => handleSelectItem(item, 'works')}
                   >
