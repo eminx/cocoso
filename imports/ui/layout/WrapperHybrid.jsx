@@ -30,6 +30,7 @@ import { Footer, PlatformFooter } from './Footers';
 
 export default function WrapperHybrid({ Host, pageTitles, platform }) {
   useHydrateAtoms([
+    [currentHostAtom, Host],
     [pageTitlesAtom, pageTitles],
     [platformAtom, platform],
   ]);
