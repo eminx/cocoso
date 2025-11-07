@@ -5,9 +5,9 @@ import ComposablePageHybrid from '/imports/ui/entry/ComposablePageHybrid';
 
 export default function ComposablePageHandler({ Host, pageTitles }) {
   const { composablePage } = useLoaderData();
-  // if (href === '/' && !composablePageId) {
-  //   composablePageId = Host?.settings?.menu[0]?.name;
-  // }
+  if (href === '/' && !composablePageId) {
+    composablePageId = Host?.settings?.menu[0]?.name;
+  }
 
   if (!composablePage || !composablePage.isPublished) {
     return null;
