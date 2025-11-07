@@ -33,16 +33,20 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
     [pageTitlesAtom, pageTitles],
     [platformAtom, platform],
   ]);
-  const [currentHost, setCurrentHost] = useAtom(currentHostAtom)
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setRole = useSetAtom(roleAtom);
   const [rendered, setRendered] = useAtom(renderedAtom);
   const location = useLocation();
   const hydrated = useHydrated();
 
+  const setHost = async () => {
+    setCurrentHost(await call('getCurrentHost'));
+  };
+
   useEffect(() => {
+    setHost();
     const currentUser = Meteor.user();
-    setCurrentHost(await call('getCurrentHost'))
     setCurrentUser(currentUser);
     const hostWithinUser = currentUser?.memberships?.find(
       (membership) => membership?.host === window.location.host
