@@ -32,7 +32,7 @@ import { call } from '/imports/api/_utils/shared';
 export default function WrapperHybrid({ Host, pageTitles, platform }) {
   useHydrateAtoms([[platformAtom, platform]]);
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
-  const [pTitles, setPageTitles] = useSetAtom(pageTitlesAtom);
+  const [pTitles, setPageTitles] = useAtom(pageTitlesAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setRole = useSetAtom(roleAtom);
   const [rendered, setRendered] = useAtom(renderedAtom);
