@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { useTracker } from 'meteor/react-meteor-data';
+import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { I18nextProvider } from 'react-i18next';
@@ -31,14 +31,21 @@ import { call } from '/imports/api/_utils/shared';
 
 export default function WrapperHybrid({ Host, pageTitles, platform }) {
   useHydrateAtoms([[platformAtom, platform]]);
-
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
-  const setPageTitles = useSetAtom(pageTitlesAtom);
+  const [pTitles, setPageTitles] = useSetAtom(pageTitlesAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setRole = useSetAtom(roleAtom);
   const [rendered, setRendered] = useAtom(renderedAtom);
   const location = useLocation();
   const hydrated = useHydrated();
+
+  useSubscribe('currentUser');
+  const currentUser = useTracker(() => {
+    if (Meteor.isClient) {
+      return Meteor.users.findOne(Meteor.userId());
+    }
+    return null;
+  }, []);
 
   const setValues = async () => {
     setCurrentHost(await call('getCurrentHost'));
@@ -47,16 +54,18 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
 
   useEffect(() => {
     setValues();
-    const currentUser = Meteor.user();
+    setTimeout(() => {
+      setRendered(true);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
     setCurrentUser(currentUser);
     const hostWithinUser = currentUser?.memberships?.find(
       (membership) => membership?.host === window.location.host
     );
     setRole(hostWithinUser?.role || null);
-    setTimeout(() => {
-      setRendered(true);
-    }, 1000);
-  }, []);
+  }, [currentUser]);
 
   const pathname = location?.pathname;
   const pathnameSplitted = pathname.split('/');
@@ -77,7 +86,10 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
         <DummyWrapper>
           {rendered && !adminPage && <TopBarHandler />}
           {!adminPage && (
-            <Header currentHost={currentHost || Host} pageTitles={pageTitles} />
+            <Header
+              currentHost={currentHost || Host}
+              pageTitles={pTitles || pageTitles}
+            />
           )}
 
           <Outlet />

@@ -51,6 +51,7 @@ import MainFeatureSettings from '/imports/ui/pages/admin/features/MainFeatureSet
 import FeaturesWrapper from '/imports/ui/pages/admin/features/FeaturesWrapper';
 import { call } from './api/_utils/shared';
 import Redirector from '/imports/ui/generic/Redirector';
+import EditProfile from '/imports/ui/pages/profile/EditProfile';
 
 import {
   getHomeLoader,
@@ -89,6 +90,10 @@ const getAdminRoutes = (props) => [
   {
     path: 'home',
     element: <AdminHome {...props} />,
+  },
+  {
+    path: 'my-profile',
+    element: <EditProfile {...props} />,
   },
   {
     path: 'settings',

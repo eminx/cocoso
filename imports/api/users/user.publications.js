@@ -11,12 +11,30 @@ Meteor.publish('attendingEvents', function () {
   });
 });
 
-Meteor.publish('me', () => {
+Meteor.publish('currentUser', () => {
   const userId = this.userId;
   if (!userId) {
     return null;
   }
-  return Meteor.users.find(userId);
+  const user = Meteor.users.find(
+    { _id: userId },
+    {
+      fields: {
+        avatar: 1,
+        bio: 1,
+        contactInfo: 1,
+        emails: 1,
+        firstName: 1,
+        groups: 1,
+        lang: 1,
+        lastName: 1,
+        memberships: 1,
+        username: 1,
+      },
+    }
+  );
+  console.log('user', user);
+  return user;
 });
 
 Meteor.publish('membersForPublic', function () {

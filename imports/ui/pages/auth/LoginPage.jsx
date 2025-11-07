@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -29,7 +29,7 @@ export default function LoginPage() {
   const currentHost = useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const platform = useAtomValue(platformAtom);
-  const role = useAtomValue(roleAtom);
+  const [role, setRole] = useAtom(roleAtom);
   const [t] = useTranslation('accounts');
   const [submitted, setSubmitted] = useState(false);
   const [joinModal, setJoinModal] = useState(false);
@@ -39,7 +39,15 @@ export default function LoginPage() {
     if (!currentUser) {
       return;
     }
-    if (['participant', 'contributor', 'admin'].includes(role)) {
+    const hostWithinUser = currentUser?.memberships?.find(
+      (membership) => membership?.host === window.location.host
+    );
+    console.log('currentUsers', currentUser);
+    console.log('hostWithinUser', hostWithinUser);
+    setRole(hostWithinUser?.role || null);
+    if (
+      ['participant', 'contributor', 'admin'].includes(hostWithinUser?.role)
+    ) {
       navigate('/admin/my-profile/general');
     } else {
       setJoinModal(true);
