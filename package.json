@@ -112,7 +112,8 @@
     },
     "moduleAliases": {
       "~": "imports"
-    }
+    },
+    "modern": true
   },
   "devDependencies": {
     "@types/react-dom": "^19.1.6",
@@ -126,5 +127,6 @@
   },
   "browserslist": [
     "last 2 versions"
-  ]
+  ],
+  "postinstall": "patch-package"
 }
