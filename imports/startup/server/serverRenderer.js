@@ -12,12 +12,14 @@ import Hosts from '/imports/api/hosts/host';
 import Platform from '/imports/api/platform/platform';
 import appRoutes from '/imports/appRoutes';
 import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';
+import { call } from '/imports/api/_utils/shared';
 
 let stitchesConfig = null;
 
 export default async function serverRenderer(sink) {
   const host = sink?.request?.headers?.['host'];
   const Host = await Hosts.findOneAsync({ host });
+  const allHosts = await call('getAllHosts');
   const platform = await Platform.findOneAsync();
   const currentUser = await Meteor.callAsync('getCurrentUser');
   const pages = await Meteor.callAsync('getPageTitles');
@@ -44,6 +46,7 @@ export default async function serverRenderer(sink) {
 
   const props = {
     Host,
+    allHosts,
     pageTitles,
     platform,
   };

@@ -193,6 +193,8 @@ export default function appRoutes(props) {
   const host = Host?.host;
   const isPortalHost = Boolean(Host?.isPortalHost);
 
+  console.log('approutes', props);
+
   return [
     {
       element: <WrapperHybrid {...props} />,

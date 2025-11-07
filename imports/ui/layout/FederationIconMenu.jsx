@@ -15,8 +15,7 @@ import {
   Modal,
 } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
-
-import { call } from '../../api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import NiceSlider from '/imports/ui/generic/NiceSlider';
 import {
   allHostsAtom,
@@ -24,7 +23,7 @@ import {
   currentUserAtom,
   isDesktopAtom,
   platformAtom,
-} from '../../state';
+} from '/imports/state';
 
 export default function FederationIconMenu() {
   const allHosts = useAtomValue(allHostsAtom);

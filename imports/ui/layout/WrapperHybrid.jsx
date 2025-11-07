@@ -5,22 +5,28 @@ import { Outlet, useLocation } from 'react-router';
 import { I18nextProvider } from 'react-i18next';
 import { useHydrateAtoms } from 'jotai/utils';
 import { useAtom, useSetAtom } from 'jotai';
-import { useHydrated } from 'react-hydration-provider';
 import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
+import 'dayjs/locale/en-gb';
+import 'dayjs/locale/sv';
+import 'dayjs/locale/tr';
+import updateLocale from 'dayjs/plugin/updateLocale';
 
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 import i18n from '/imports/startup/i18n';
 import {
-  // allHostsAtom,
+  allHostsAtom,
   currentHostAtom,
   currentUserAtom,
   pageTitlesAtom,
   platformAtom,
   roleAtom,
-  // isDesktopAtom,
-  // isMobileAtom,
+  isDesktopAtom,
+  isMobileAtom,
   renderedAtom,
 } from '/imports/state';
+import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
@@ -29,15 +35,27 @@ import Header from './Header';
 import { Footer, PlatformFooter } from './Footers';
 import { call } from '/imports/api/_utils/shared';
 
-export default function WrapperHybrid({ Host, pageTitles, platform }) {
+dayjs.extend(updateLocale);
+
+export default function WrapperHybrid({
+  Host,
+  allHosts,
+  pageTitles,
+  platform,
+}) {
   useHydrateAtoms([[platformAtom, platform]]);
+  useHydrateAtoms([[allHostsAtom, allHosts]]);
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [pTitles, setPageTitles] = useAtom(pageTitlesAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setRole = useSetAtom(roleAtom);
   const [rendered, setRendered] = useAtom(renderedAtom);
+
+  const isDesktopValue = useMediaQuery('(min-width: 960px)');
+  const isMobileValue = useMediaQuery('(max-width: 480px)');
+  const setIsDesktop = useSetAtom(isDesktopAtom);
+  const setIsMobile = useSetAtom(isMobileAtom);
   const location = useLocation();
-  const hydrated = useHydrated();
 
   useSubscribe('currentUser');
   const currentUser = useTracker(() => {
@@ -53,11 +71,32 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
   };
 
   useEffect(() => {
+    setIsDesktop(isDesktopValue);
+    setIsMobile(isMobileValue);
     setValues();
     setTimeout(() => {
       setRendered(true);
     }, 1000);
   }, []);
+
+  useEffect(() => {
+    if (currentHost) {
+      applyGlobalStyles(currentHost.theme);
+    }
+  }, [currentHost]);
+
+  useEffect(() => {
+    if (!i18n || !i18n.language) {
+      return;
+    }
+    let culture = 'en-GB';
+    if (i18n.language !== 'en') {
+      culture = i18n.language;
+    }
+    dayjs.updateLocale(culture, {
+      weekStart: 1,
+    });
+  }, [i18n?.language]);
 
   useEffect(() => {
     setCurrentUser(currentUser);
@@ -71,12 +110,12 @@ export default function WrapperHybrid({ Host, pageTitles, platform }) {
   const pathnameSplitted = pathname.split('/');
   const adminPage = pathnameSplitted[1] === 'admin';
 
-  // const isDesktopValue = useMediaQuery('(min-width: 960px)');
-  // const isMobileValue = useMediaQuery('(max-width: 480px)');
-  // const setAllHosts = useSetAtom(allHostsAtom);
-  // const setRole = useSetAtom(roleAtom);
-  // const [isDesktop, setIsDesktop] = useAtom(isDesktopAtom);
-  // const setIsMobile = useSetAtom(isMobileAtom);
+  useEffect(() => {
+    if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
+      return;
+    }
+    window.scrollTo(0, 0);
+  }, [pathnameSplitted[2]]);
 
   return (
     <>

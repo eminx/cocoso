@@ -1,6 +1,5 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Client } from 'react-hydration-provider';
 
 import { Box, Center, Divider, Heading, Text } from '/imports/ui/core';
 
@@ -40,9 +39,8 @@ export default function PageHeading({ currentHost, listing }) {
             <Heading as="h1" size="lg" textAlign="center">
               {heading}
             </Heading>
-            <Client>
-              <NewButton />
-            </Client>
+
+            <NewButton />
           </Center>
           <Box py="2">
             <Divider

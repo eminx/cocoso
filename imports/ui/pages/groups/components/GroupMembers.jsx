@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useHydrated } from 'react-hydration-provider';
 
 const maxShownAvatars = 6;
 
@@ -20,7 +19,6 @@ import NiceList from '/imports/ui/generic/NiceList';
 export default function GroupMembers({ group }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('groups');
-  const hydrated = useHydrated();
 
   if (!group) {
     return null;
@@ -81,34 +79,32 @@ export default function GroupMembers({ group }) {
         </AvatarGroup>
       </Box>
 
-      {hydrated && (
-        <Modal
-          hideFooter
-          id="group-members"
-          open={modalOpen}
-          title={t('labels.member')}
-          onClose={() => setModalOpen(false)}
-        >
-          <NiceList keySelector="username" list={group.members}>
-            {(member) => (
-              <Link to={`/@${member.username}/bio`}>
-                <Flex align="center">
-                  <Avatar
-                    mr="2"
-                    name={member.username}
-                    size="md"
-                    src={member.avatar}
-                  />
-                  <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
-                    {member.username}
-                  </CLink>
-                  <Text ml="1">{member.isAdmin && '(admin)'}</Text>
-                </Flex>
-              </Link>
-            )}
-          </NiceList>
-        </Modal>
-      )}
+      <Modal
+        hideFooter
+        id="group-members"
+        open={modalOpen}
+        title={t('labels.member')}
+        onClose={() => setModalOpen(false)}
+      >
+        <NiceList keySelector="username" list={group.members}>
+          {(member) => (
+            <Link to={`/@${member.username}/bio`}>
+              <Flex align="center">
+                <Avatar
+                  mr="2"
+                  name={member.username}
+                  size="md"
+                  src={member.avatar}
+                />
+                <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
+                  {member.username}
+                </CLink>
+                <Text ml="1">{member.isAdmin && '(admin)'}</Text>
+              </Flex>
+            </Link>
+          )}
+        </NiceList>
+      </Modal>
     </>
   );
 }

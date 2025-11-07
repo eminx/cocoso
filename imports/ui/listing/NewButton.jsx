@@ -24,7 +24,7 @@ export default function NewButton() {
 
   const menu = currentHost?.settings?.menu;
 
-  if (!canCreateContent || !menu) {
+  if (!currentHost || !canCreateContent || !menu) {
     return null;
   }
 
