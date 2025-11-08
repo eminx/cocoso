@@ -7,9 +7,11 @@ import SlideWidget from '/imports/ui/entry/SlideWidget';
 
 import WorkAdminFunctions from './WorkAdminFunctions';
 import ContactInfo from '../../profile/ContactInfo';
+import { workAtom } from '../WorkItemHandler';
 
-export default function WorkInteractionHandler({ work }) {
+export default function WorkInteractionHandler() {
   const currentUser = useAtomValue(currentUserAtom);
+  const work = useAtomValue(workAtom);
 
   if (!work) {
     return null;

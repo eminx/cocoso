@@ -5,7 +5,7 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router';
-import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
@@ -27,7 +27,7 @@ export const activityAtom = atom(null);
 export default function ActivityItemHandler({ Host }) {
   const { activity } = useLoaderData();
   useHydrateAtoms([[activityAtom, activity]]);
-  const setActivity = useSetAtom(activityAtom);
+  const [activityValue, setActivity] = useAtom(activityAtom);
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
 
@@ -43,11 +43,11 @@ export default function ActivityItemHandler({ Host }) {
 
   return (
     <>
-      <ActivityHybrid activity={activity} Host={Host} />
+      <ActivityHybrid activity={activityValue || activity} Host={Host} />
 
       {rendered && (
         <>
-          <ActivityInteractionHandler activity={activity} />
+          <ActivityInteractionHandler />
           {canCreateContent && (
             <NewEntryHandler>
               {activity.isPublicActivity ? (

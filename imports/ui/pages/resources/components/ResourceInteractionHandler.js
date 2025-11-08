@@ -15,6 +15,7 @@ import { ChatButton } from '/imports/ui/chattery/ChatHandler';
 import SlideWidget from '/imports/ui/entry/SlideWidget';
 
 import ResourceAdminFunctions from './ResourceAdminFunctions';
+import { resourceAtom } from '../ResourceItemHandler';
 
 function ReserveButton({ resource }) {
   const currentHost = useAtomValue(currentHostAtom);
@@ -39,10 +40,15 @@ function ReserveButton({ resource }) {
   );
 }
 
-export default function ResourceInteractionHandler({ resource }) {
+export default function ResourceInteractionHandler() {
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom);
+  const resource = useAtomValue(resourceAtom);
   const role = useAtomValue(roleAtom);
+
+  if (!resource) {
+    return null;
+  }
 
   if (role === 'admin') {
     return (

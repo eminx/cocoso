@@ -11,9 +11,11 @@ import GroupMeetingDates from './GroupMeetingDates';
 import GroupJoinButton from './GroupJoinButton';
 import GroupLeaveButton from './GroupLeaveButton';
 import GroupAdminFunctions from './GroupAdminFunctions';
+import { groupAtom } from '../GroupItemHandler';
 
-export default function GroupInteractionHandler({ group }) {
+export default function GroupInteractionHandler() {
   const currentUser = useAtomValue(currentUserAtom);
+  const group = useAtomValue(groupAtom);
 
   if (!group) {
     return null;
