@@ -10,9 +10,6 @@ export default function SuccessRedirector({ ping, onSuccess, children }) {
     if (typeof ping === 'string') {
       setLoaders((prevState) => ({ ...prevState, isSuccess: true }));
     }
-    setTimeout(() => {
-      setLoaders(initialLoader);
-    }, 1200);
   }, [ping]);
 
   useEffect(() => {

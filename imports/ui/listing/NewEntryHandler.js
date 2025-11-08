@@ -15,7 +15,7 @@ export const initialLoader = {
   isSuccess: false,
 };
 
-export const loaderAtom = atom(initialLoader);
+export const loaderAtom = atom({ ...initialLoader });
 
 const getLoaderProgress = (loaders) => {
   let progress = 0;
@@ -85,7 +85,7 @@ export default function NewEntryHandler({ children }) {
   }, [searchParams.get('edit'), loaders]);
 
   const handleCancelAndClose = () => {
-    setLoaders(initialLoader);
+    setLoaders({ ...initialLoader });
     setConfirmOpen(false);
     if (forEdit) {
       setSearchParams((params) => ({ ...params, edit: 'false' }));

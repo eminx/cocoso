@@ -13,8 +13,10 @@ import { ChatButton } from '/imports/ui/chattery/ChatHandler';
 
 import ActivityAdminFunctions from './ActivityAdminFunctions';
 import RsvpHandler from './RsvpHandler';
+import { activityAtom } from '../ActivityItemHandler';
 
-export default function ActivityInteractionHandler({ activity }) {
+export default function ActivityInteractionHandler() {
+  const activity = useAtomValue(activityAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const role = useAtomValue(roleAtom);

@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
-import List from 'rc-virtual-list';
+import React, { lazy, memo } from 'react';
+const List = lazy(() => import('rc-virtual-list'));
 import EllipsisVertical from 'lucide-react/dist/esm/icons/ellipsis-vertical';
 
 import { Box, Flex, IconButton } from '/imports/ui/core';

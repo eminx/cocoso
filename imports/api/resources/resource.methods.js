@@ -145,7 +145,7 @@ Meteor.methods({
   async updateResource(resourceId, values) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = newGroupIdHosts.findOneAsync(
+    const currentHost = await Hosts.findOneAsync(
       { host },
       { fields: { members: 1 } }
     );
@@ -168,7 +168,10 @@ Meteor.methods({
       });
       if (
         !resource.isCombo &&
-        Resources.find({ host, 'resourcesForCombo._id': resource._id })
+        (await Resources.findOneAsync({
+          host,
+          'resourcesForCombo._id': resource._id,
+        }))
       ) {
         await Resources.updateAsync(
           { host, 'resourcesForCombo._id': resource._id },

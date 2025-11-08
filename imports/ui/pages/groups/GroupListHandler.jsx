@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { useLoaderData } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import { renderedAtom } from '/imports/state';
+import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
-import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
+const NewEntryHandler = lazy(() =>
+  import('/imports/ui/listing/NewEntryHandler')
+);
+const NewGroup = lazy(() => import('./NewGroup'));
 
-import NewGroup from './NewGroup';
-
-export default function GroupListHandler({ Host, pageTitles }) {
+export default function GroupListHandler({ Host }) {
   const { groups } = useLoaderData();
   const rendered = useAtomValue(renderedAtom);
+  const canCreateContent = useAtomValue(canCreateContentAtom);
 
   return (
     <>
       <GroupsHybrid groups={groups} Host={Host} />
 
-      {rendered ? (
+      {rendered && canCreateContent ? (
         <NewEntryHandler>
           <NewGroup />
         </NewEntryHandler>

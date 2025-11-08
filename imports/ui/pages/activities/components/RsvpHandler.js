@@ -64,6 +64,7 @@ function AccordionDates({ activity, onCloseModal }) {
           {t('public.register.disabled.false')}
         </Text>
       )}
+
       <Accordion
         options={items.map((occurrence, occurrenceIndex) => ({
           key: occurrence.startDate + occurrence.startTime + occurrenceIndex,

@@ -1,15 +1,15 @@
-import React, { lazy } from 'react';
+import React, { lazy, useEffect } from 'react';
 import {
   Navigate,
   useLoaderData,
   useParams,
   useSearchParams,
 } from 'react-router';
-import { atom, useAtomValue } from 'jotai';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
-import { renderedAtom } from '/imports/state';
+import { canCreateContentAtom, renderedAtom } from '/imports/state';
 
 const ActivityInteractionHandler = lazy(() =>
   import('./components/ActivityInteractionHandler')
@@ -24,10 +24,16 @@ const NewEntryHandler = lazy(() =>
 
 export const activityAtom = atom(null);
 
-export default function ActivityItemHandler({ Host, pageTitles }) {
+export default function ActivityItemHandler({ Host }) {
   const { activity } = useLoaderData();
   useHydrateAtoms([[activityAtom, activity]]);
+  const setActivity = useSetAtom(activityAtom);
   const rendered = useAtomValue(renderedAtom);
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+
+  useEffect(() => {
+    setActivity(activity);
+  }, [activity]);
 
   const isGroupMeeting = activity?.isGroupMeeting;
 
@@ -42,13 +48,15 @@ export default function ActivityItemHandler({ Host, pageTitles }) {
       {rendered && (
         <>
           <ActivityInteractionHandler activity={activity} />
-          <NewEntryHandler>
-            {activity.isPublicActivity ? (
-              <EditPublicActivity />
-            ) : (
-              <EditCalendarActivity />
-            )}
-          </NewEntryHandler>
+          {canCreateContent && (
+            <NewEntryHandler>
+              {activity.isPublicActivity ? (
+                <EditPublicActivity />
+              ) : (
+                <EditCalendarActivity />
+              )}
+            </NewEntryHandler>
+          )}
         </>
       )}
     </>

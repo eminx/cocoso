@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { useLoaderData } from 'react-router';
 import { useAtomValue } from 'jotai';
 
 import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
-import { renderedAtom } from '/imports/state';
-import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
+import { canCreateContentAtom, renderedAtom } from '/imports/state';
+const NewEntryHandler = lazy(() =>
+  import('/imports/ui/listing/NewEntryHandler')
+);
+const NewResource = lazy(() => import('./NewResource'));
 
-import NewResource from './NewResource';
-
-export default function ResourceListHandler({ Host, pageTitles }) {
+export default function ResourceListHandler({ Host }) {
   const { documents, resources } = useLoaderData();
   const rendered = useAtomValue(renderedAtom);
+  const canCreateContent = useAtomValue(canCreateContentAtom);
 
   return (
     <>
@@ -20,7 +22,7 @@ export default function ResourceListHandler({ Host, pageTitles }) {
         Host={Host}
       />
 
-      {rendered ? (
+      {rendered && canCreateContent ? (
         <NewEntryHandler>
           <NewResource />
         </NewEntryHandler>

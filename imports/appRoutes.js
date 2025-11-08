@@ -3,11 +3,9 @@ import React, { lazy, Suspense } from 'react';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import { Loader } from '/imports/ui/core';
+import HomeHandler from '/imports/HomeHandler';
+import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
 
-const HomeHandler = lazy(() => import('/imports/HomeHandler'));
-const ActivityListHandler = lazy(() =>
-  import('/imports/ui/pages/activities/ActivityListHandler')
-);
 const ActivityItemHandler = lazy(() =>
   import('/imports/ui/pages/activities/ActivityItemHandler')
 );
@@ -47,7 +45,6 @@ const ComposablePageHandler = lazy(() =>
 const CommunityListHandler = lazy(() =>
   import('/imports/ui/pages/hosts/CommunityListHandler')
 );
-
 const LoginPage = lazy(() => import('/imports/ui/pages/auth/LoginPage'));
 const SignupPage = lazy(() => import('/imports/ui/pages/auth/SignupPage'));
 const ForgotPasswordPage = lazy(() =>
@@ -56,6 +53,7 @@ const ForgotPasswordPage = lazy(() =>
 const ResetPasswordPage = lazy(() =>
   import('/imports/ui/pages/auth/ResetPasswordPage')
 );
+
 const Terms = lazy(() => import('/imports/ui/entry/Terms'));
 const NotFoundPage = lazy(() => import('/imports/ui/pages/NotFoundPage'));
 
@@ -144,7 +142,6 @@ import {
   getEmails,
   getComposablePageTitles,
 } from './loaders';
-
 import { updateHostSettings } from './actions';
 
 const features = [
@@ -373,9 +370,19 @@ export default function appRoutes(props) {
         },
         {
           path: 'calendar',
-          element: createRouteElement(CalendarHandler, props),
-          loader: async ({ request }) =>
-            await getCalendarEntries({ host, isPortalHost }),
+          children: [
+            {
+              index: true,
+              element: createRouteElement(CalendarHandler, props),
+              loader: async ({ request }) =>
+                await getCalendarEntries({ host, isPortalHost }),
+            },
+            {
+              path: ':activityId/*',
+              element: createRouteElement(ActivityItemHandler, props),
+              loader: async ({ params }) => await getActivity({ params }),
+            },
+          ],
         },
         {
           path: 'info',
@@ -483,7 +490,7 @@ export default function appRoutes(props) {
           element: createRouteElement(Terms, props),
         },
         {
-          path: '/admin',
+          path: 'admin',
           element: createRouteElement(AdminContainer, props),
           children: Meteor.isServer ? null : [...getAdminRoutes(props)],
         },

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { useLoaderData, useSearchParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import { renderedAtom } from '/imports/state';
+import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
-import NewEntryHandler from '/imports/ui/listing/NewEntryHandler';
+const NewEntryHandler = lazy(() =>
+  import('/imports/ui/listing/NewEntryHandler')
+);
+const NewPublicActivity = lazy(() => import('./NewPublicActivity'));
 
-import NewPublicActivity from './NewPublicActivity';
-
-export default function ActivityListHandler({ Host, pageTitles }) {
+export default function ActivityListHandler({ Host }) {
   const { activities } = useLoaderData();
   const rendered = useAtomValue(renderedAtom);
+  const canCreateContent = useAtomValue(canCreateContentAtom);
   const [searchParams] = useSearchParams();
   const showPast = Boolean(searchParams.get('showPast') === 'true');
 
@@ -22,7 +24,7 @@ export default function ActivityListHandler({ Host, pageTitles }) {
         showPast={showPast}
       />
 
-      {rendered ? (
+      {rendered && canCreateContent ? (
         <NewEntryHandler>
           <NewPublicActivity />
         </NewEntryHandler>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 
 import { call } from '../../../api/_utils/shared';
 import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
 import { message } from '/imports/ui/generic/message';
+import { initialLoader, loaderAtom } from '/imports/ui/listing/NewEntryHandler';
 
 import GroupForm from './GroupForm';
 import { groupAtom } from './GroupItemHandler';
@@ -12,6 +13,7 @@ import { groupAtom } from './GroupItemHandler';
 export default function EditGroup() {
   const [updated, setUpdated] = useState(null);
   const [group, setGroup] = useAtom(groupAtom);
+  const setLoaders = useSetAtom(loaderAtom);
   const [, setSearchParams] = useSearchParams();
   if (!group) {
     return null;
@@ -26,6 +28,14 @@ export default function EditGroup() {
     } catch (error) {
       message.error(error.reason || error.error);
     }
+  };
+
+  const handleSuccess = () => {
+    setSearchParams({ edit: 'false' });
+    setUpdated(null);
+    setTimeout(() => {
+      setLoaders({ ...initialLoader });
+    }, 1200);
   };
 
   if (!group) {
@@ -49,10 +59,7 @@ export default function EditGroup() {
   }))(group);
 
   return (
-    <SuccessRedirector
-      ping={updated}
-      onSuccess={() => setSearchParams({ edit: 'false' })}
-    >
+    <SuccessRedirector ping={updated} onSuccess={handleSuccess}>
       <GroupForm group={groupFields} onFinalize={updateGroup} />
     </SuccessRedirector>
   );

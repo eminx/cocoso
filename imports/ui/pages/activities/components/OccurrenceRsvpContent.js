@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 
 import {
   Box,
@@ -19,16 +20,13 @@ import {
   currentUserAtom,
 } from '/imports/state';
 import FancyDate from '/imports/ui/entry/FancyDate';
-import {
-  call,
-  getComboResourcesWithColor,
-} from '../../../../api/_utils/shared';
+import { call, getComboResourcesWithColor } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 
-// import { ActivityContext } from '../Activity';
 import RsvpForm from './RsvpForm';
 import RsvpList from './CsvList';
+import { activityAtom } from '../ActivityItemHandler';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
@@ -49,6 +47,8 @@ export default function RsvpContent({
   const currentHost = useAtomValue(currentHostAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom);
+  const setActivity = useSetAtom(activityAtom);
+  const { activityId } = useParams();
   const [state, setState] = useState({
     isRsvpCancelModalOn: false,
     rsvpCancelModalInfo: null,
@@ -56,7 +56,6 @@ export default function RsvpContent({
   });
   const [capacityGotFullByYou] = useState(false);
   const [t] = useTranslation('activities');
-  const getActivityById = () => console.log('getActivityById');
 
   const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } =
     state;
@@ -145,7 +144,7 @@ export default function RsvpContent({
         parsedValues,
         occurrenceIndex
       );
-      await getActivityById();
+      setActivity(await call('getActivityById', activityId));
       resetRsvpModal();
       message.success(t('public.attendance.create'));
     } catch (error) {
@@ -186,7 +185,7 @@ export default function RsvpContent({
         rsvpCancelModalInfo?.occurrenceIndex,
         rsvpCancelModalInfo?.attendeeIndex
       );
-      await getActivityById();
+      setActivity(await call('getActivityById', activityId));
       resetRsvpModal();
       message.success(t('public.attendance.update'));
     } catch (error) {
@@ -224,7 +223,7 @@ export default function RsvpContent({
         email,
         lastName
       );
-      await getActivityById();
+      setActivity(await call('getActivityById', activityId));
       resetRsvpModal();
       message.success(t('public.attendance.remove'));
       setState({
