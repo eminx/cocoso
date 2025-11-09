@@ -308,7 +308,7 @@ Meteor.methods({
 
     try {
       await Promise.all(
-        members.forEach(async (member) => {
+        members.map(async (member) => {
           const emailHtmlWithUsername = emailHtmlWithBrowserLink.replace(
             '[username]',
             member.username

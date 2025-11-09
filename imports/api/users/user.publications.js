@@ -30,6 +30,7 @@ Meteor.publish('currentUser', function () {
         lang: 1,
         lastName: 1,
         memberships: 1,
+        notifications: 1,
         username: 1,
       },
     }

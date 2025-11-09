@@ -49,16 +49,15 @@ export default function EditProfile() {
     return <Navigate to="/login" />;
   }
 
-  const deleteAccount = () => {
+  const deleteAccount = async () => {
     setIsDeleting(true);
-    Meteor.call('deleteAccount', (error) => {
-      if (error) {
-        message.error(error.reason);
-        return;
-      }
+    try {
+      await call('deleteAccount');
       message.success(tc('message.success.remove'));
       navigate('/');
-    });
+    } catch (error) {
+      message.error(error.reason);
+    }
   };
 
   const tabs = [

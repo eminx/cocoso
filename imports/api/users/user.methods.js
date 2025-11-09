@@ -400,8 +400,14 @@ Meteor.methods({
   removeAvatar: () => {},
 
   async leaveHost() {
-    const userId = await Meteor.userAsync()?._id;
+    const user = await Meteor.userAsync();
+    const userId = user?._id;
     const host = getHost(this);
+
+    console.log(userId);
+    if (!userId) {
+      return;
+    }
 
     try {
       await Meteor.users.updateAsync(userId, {

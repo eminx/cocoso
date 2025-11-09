@@ -161,7 +161,7 @@ Meteor.methods({
       await Promise.all(
         Pages.find({ host }, { sort: { order: 1 } })
           .fetchAsync()
-          .forEach(async (page) => {
+          .map(async (page) => {
             await Pages.updateAsync({ _id: page._id }, { $set: { order } });
             order += 1;
           })

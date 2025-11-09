@@ -92,17 +92,20 @@ Meteor.methods({
 
     try {
       const theGroup = await Groups.findOneAsync(contextId);
-      const theOthers = theGroup.members
-        .filter((member) => member.memberId !== user._id)
-        .map((other) => Meteor.users.findOneAsync(other.memberId));
+      const members = await Meteor.users
+        .find({ 'groups.groupId': theGroup._id })
+        .fetchAsync();
 
+      if (!members || members.length < 1) {
+        return;
+      }
       await Promise.all(
-        theOthers.forEach(async (member) => {
-          if (!member) {
+        members.map(async (member) => {
+          if (!member || member._id === user._id) {
             return;
           }
           let contextIdIndex = -1;
-          for (let i = 0; i < member.notifications.length; i += 1) {
+          for (let i = 0; i < member.notifications?.length; i += 1) {
             if (member.notifications[i].contextId === contextId) {
               contextIdIndex = i;
               break;
