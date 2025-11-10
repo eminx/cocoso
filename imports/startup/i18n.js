@@ -89,20 +89,14 @@ if (i18n && !i18n.isInitialized) {
   i18n.init(options);
   // check & set lang for user(logged) or host prefences
   Tracker.autorun(async () => {
-    if (Meteor.isClient) {
-      if (await Meteor.userAsync()) {
-        const handler = Meteor.subscribe('me');
-        if (handler.ready()) {
-          const userLang = await Meteor.userAsync()?.lang;
-          i18n.changeLanguage(userLang);
-        }
+    try {
+      const userLang = await Meteor.callAsync('getCurrentUserLang');
+      if (userLang) {
+        i18n.changeLanguage(userLang);
         return;
       }
-    }
-    try {
-      // const respond = await Meteor.callAsync('getCurrentHost');
-      // const hostLang = respond?.settings?.lang;
-      const hostLang = 'en';
+      const respond = await Meteor.callAsync('getCurrentHost');
+      const hostLang = respond?.settings?.lang;
       i18n.changeLanguage(hostLang);
     } catch (error) {
       console.error(error);

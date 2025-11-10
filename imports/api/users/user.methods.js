@@ -23,6 +23,14 @@ Meteor.methods({
     return await Meteor.userAsync();
   },
 
+  async getCurrentUserLang() {
+    const user = await Meteor.userAsync();
+    if (!user) {
+      return null;
+    }
+    return user.lang;
+  },
+
   async getUserInfo(username, hostPredefined) {
     check(username, String);
     const host = hostPredefined || getHost(this);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAtomValue } from 'jotai';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { currentUserAtom } from '/imports/state';
 import { Button, Flex, Heading } from '/imports/ui/core';
@@ -12,6 +12,7 @@ import { call } from '/imports/api/_utils/shared';
 export default function EditProfileLanguage() {
   const currentUser = useAtomValue(currentUserAtom);
   const [lang, setLang] = useState(null);
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     setLang(currentUser?.lang);
@@ -26,6 +27,7 @@ export default function EditProfileLanguage() {
         })
       );
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     }
   };
