@@ -5,24 +5,22 @@ import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import { Loader } from '/imports/ui/core';
 import HomeHandler from '/imports/HomeHandler';
 import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
+import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
+import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
+import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
+import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
+import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
+import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
+import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
 const ActivityItemHandler = lazy(() =>
   import('/imports/ui/pages/activities/ActivityItemHandler')
 );
-const GroupListHandler = lazy(() =>
-  import('/imports/ui/pages/groups/GroupListHandler')
-);
 const GroupItemHandler = lazy(() =>
   import('/imports/ui/pages/groups/GroupItemHandler')
 );
-const ResourceListHandler = lazy(() =>
-  import('/imports/ui/pages/resources/ResourceListHandler')
-);
 const ResourceItemHandler = lazy(() =>
   import('/imports/ui/pages/resources/ResourceItemHandler')
-);
-const WorkListHandler = lazy(() =>
-  import('/imports/ui/pages/works/WorkListHandler')
 );
 const WorkItemHandler = lazy(() =>
   import('/imports/ui/pages/works/WorkItemHandler')
@@ -30,23 +28,12 @@ const WorkItemHandler = lazy(() =>
 const PageItemHandler = lazy(() =>
   import('/imports/ui/pages/pages/PageItemHandler')
 );
-const UserListHandler = lazy(() =>
-  import('/imports/ui/pages/profile/UserListHandler')
-);
-const CalendarHandler = lazy(() =>
-  import('/imports/ui/pages/calendar/CalendarHandler')
-);
 const UserProfileHandler = lazy(() =>
   import('/imports/ui/pages/profile/UserProfileHandler')
 );
-const ComposablePageHandler = lazy(() =>
-  import('/imports/ui/pages/composablepages/ComposablePageHandler')
-);
-const CommunityListHandler = lazy(() =>
-  import('/imports/ui/pages/hosts/CommunityListHandler')
-);
 const LoginPage = lazy(() => import('/imports/ui/pages/auth/LoginPage'));
-const SignupPage = lazy(() => import('/imports/ui/pages/auth/SignupPage'));
+
+const SignupPage = lazy(() => import('/imports/ui/pagesh/SignupPage'));
 const ForgotPasswordPage = lazy(() =>
   import('/imports/ui/pages/auth/ForgotPasswordPage')
 );
@@ -171,7 +158,7 @@ class RouteErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="p-4 text-center">
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
           <h2>Something went wrong while loading this page.</h2>
           <button
             onClick={() => this.setState({ hasError: false })}
@@ -188,13 +175,22 @@ class RouteErrorBoundary extends React.Component {
 }
 
 // Use it in your route wrapper
-const createRouteElement = (Component, props) => (
-  <RouteErrorBoundary>
-    <Suspense fallback={<Loader />}>
-      <Component {...props} />
-    </Suspense>
-  </RouteErrorBoundary>
-);
+const createRouteElement = (Component, props, skipSuspense = false) => {
+  if (props.skipSuspense) {
+    return (
+      <RouteErrorBoundary>
+        <Component {...props} />
+      </RouteErrorBoundary>
+    );
+  }
+  return (
+    <RouteErrorBoundary>
+      <Suspense fallback={<Loader />}>
+        <Component {...props} />
+      </Suspense>
+    </RouteErrorBoundary>
+  );
+};
 
 const getAdminRoutes = (props) => [
   {
@@ -328,11 +324,11 @@ export default function appRoutes(props) {
 
   return [
     {
-      element: createRouteElement(WrapperHybrid, props),
+      element: createRouteElement(WrapperHybrid, props, true),
       children: [
         {
           path: '',
-          element: createRouteElement(HomeHandler, props),
+          element: createRouteElement(HomeHandler, props, true),
           loader: async ({ params, request }) =>
             await getHomeLoader({ Host, params, request }),
         },
@@ -341,7 +337,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(ActivityListHandler, props),
+              element: createRouteElement(ActivityListHandler, props, true),
               loader: async ({ request }) =>
                 await getActivities({ request, host, isPortalHost }),
             },
@@ -357,7 +353,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(GroupListHandler, props),
+              element: createRouteElement(GroupListHandler, props, true),
               loader: async () => await getGroups({ host, isPortalHost }),
             },
             {
@@ -373,7 +369,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(CalendarHandler, props),
+              element: createRouteElement(CalendarHandler, props, true),
               loader: async ({ request }) =>
                 await getCalendarEntries({ host, isPortalHost }),
             },
@@ -389,7 +385,7 @@ export default function appRoutes(props) {
           children: [
             {
               path: ':pageTitle',
-              element: createRouteElement(PageItemHandler, props),
+              element: createRouteElement(PageItemHandler, props, true),
               loader: async () => await getPages({ host }),
             },
           ],
@@ -404,7 +400,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(ResourceListHandler, props),
+              element: createRouteElement(ResourceListHandler, props, true),
               loader: async () => await getResources({ host, isPortalHost }),
             },
             {
@@ -420,7 +416,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(WorkListHandler, props),
+              element: createRouteElement(WorkListHandler, props, true),
               loader: async () => await getWorks({ host, isPortalHost }),
             },
           ],
@@ -448,18 +444,18 @@ export default function appRoutes(props) {
         },
         {
           path: 'cp/:composablePageId',
-          element: createRouteElement(ComposablePageHandler, props),
+          element: createRouteElement(ComposablePageHandler, props, true),
           loader: async ({ params }) =>
             await getComposablePage({ params, Host }),
         },
         {
           path: 'communities',
-          element: createRouteElement(CommunityListHandler, props),
+          element: createRouteElement(CommunityListHandler, props, true),
           loader: async () => getCommunities(),
         },
         // {
         //   path: 'intro',
-        //   element: createRouteElement(RegistrationIntro, props),
+        //   element: createRouteElement(RegistrationIntro, props,true),
         // },
         {
           path: 'login',

@@ -1,29 +1,13 @@
 import React, { lazy } from 'react';
 
-const ActivityListHandler = lazy(() =>
-  import('/imports/ui/pages/activities/ActivityListHandler')
-);
-const GroupListHandler = lazy(() =>
-  import('/imports/ui/pages/groups/GroupListHandler')
-);
-const ResourceListHandler = lazy(() =>
-  import('/imports/ui/pages/resources/ResourceListHandler')
-);
-const WorkListHandler = lazy(() =>
-  import('/imports/ui/pages/works/WorkListHandler')
-);
-const PageItemHandler = lazy(() =>
-  import('/imports/ui/pages/pages/PageItemHandler')
-);
-const CalendarHandler = lazy(() =>
-  import('/imports/ui/pages/calendar/CalendarHandler')
-);
-const UserListHandler = lazy(() =>
-  import('/imports/ui/pages/profile/UserListHandler')
-);
-const ComposablePageHandler = lazy(() =>
-  import('/imports/ui/pages/composablepages/ComposablePageHandler')
-);
+import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
+import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
+import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
+import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
+import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
+import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
+import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
+import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 
 export default function HomeHandler(props) {
   const Host = props?.Host;
