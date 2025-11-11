@@ -128,8 +128,11 @@ export default function WrapperHybrid({
       <HelmetHybrid Host={currentHost || Host} />
 
       <I18nextProvider i18n={i18n}>
-        <DummyWrapper theme={currentHost?.theme || Host?.theme}>
-          {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
+        <DummyWrapper
+          animate={rendered && !isDesktopValue}
+          theme={currentHost?.theme || Host?.theme}
+        >
+          {!adminPage && <TopBarHandler slideStart={rendered} />}
           {!adminPage && (
             <Header
               currentHost={currentHost || Host}
