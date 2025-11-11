@@ -79,25 +79,25 @@ const options = {
   useSuspense: process && !process.release,
 };
 
-// for browser use http backend to load translations and browser lng detector
 if (i18n && process && !process.release) {
   i18n.use(Backend).use(LanguageDetector).use(initReactI18next);
 }
-
-// initialize if not already initialized
 if (i18n && !i18n.isInitialized) {
   i18n.init(options);
-  // check & set lang for user(logged) or host prefences
   Tracker.autorun(async () => {
+    if (Meteor.isServer) {
+      return;
+    }
+
     try {
       const userLang = await Meteor.callAsync('getCurrentUserLang');
-      if (userLang) {
-        i18n.changeLanguage(userLang);
+      const host = await Meteor.callAsync('getCurrentHost');
+      const hostLang = host?.lang;
+      const lang = userLang || hostLang || defaultLang;
+      if (lang === i18n.language) {
         return;
       }
-      const respond = await Meteor.callAsync('getCurrentHost');
-      const hostLang = respond?.settings?.lang;
-      i18n.changeLanguage(hostLang);
+      i18n.changeLanguage(lang);
     } catch (error) {
       console.error(error);
     }

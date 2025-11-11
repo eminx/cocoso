@@ -27,13 +27,13 @@ import {
   renderedAtom,
 } from '/imports/state';
 import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
+import { call } from '/imports/api/_utils/shared';
 
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
 import TopBarHandler from './TopBarHandler';
 import Header from './Header';
 import { Footer, PlatformFooter } from './Footers';
-import { call } from '/imports/api/_utils/shared';
 
 dayjs.extend(updateLocale);
 
@@ -117,13 +117,16 @@ export default function WrapperHybrid({
     window.scrollTo(0, 0);
   }, [pathnameSplitted[2]]);
 
+  const hostLang = currentHost?.settings?.lang || 'en';
+  const userLang = currentUser?.lang || 'en';
+
   return (
     <>
       <HelmetHybrid Host={currentHost || Host} />
 
       <I18nextProvider i18n={i18n}>
         <DummyWrapper theme={currentHost?.theme || Host?.theme}>
-          {rendered && !adminPage && <TopBarHandler />}
+          {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
           {!adminPage && (
             <Header
               currentHost={currentHost || Host}
