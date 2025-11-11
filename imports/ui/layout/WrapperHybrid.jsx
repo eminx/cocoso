@@ -70,6 +70,22 @@ export default function WrapperHybrid({
     setPageTitles(await call('getPageTitles'));
   };
 
+  const changeLang = () => {
+    console.log(currentUser);
+    if (!i18n) return;
+    const userLang = currentUser?.lang;
+    console.log('userLang:', userLang);
+    const hostLang = currentHost?.settings?.lang;
+    console.log('hostLang:', hostLang);
+    console.log('i18n.language', i18n.language);
+    const lang = userLang || hostLang || i18n.language;
+    console.log('lang:', lang);
+
+    if (lang !== i18n.language) {
+      i18n.changeLanguage(lang);
+    }
+  };
+
   useEffect(() => {
     setValues();
     setTimeout(() => {
@@ -83,9 +99,9 @@ export default function WrapperHybrid({
   }, [isDesktopValue, isMobileValue]);
 
   useEffect(() => {
-    if (currentHost) {
-      applyGlobalStyles(currentHost.theme);
-    }
+    if (!currentHost) return;
+    applyGlobalStyles(currentHost.theme);
+    changeLang();
   }, [currentHost]);
 
   useEffect(() => {
@@ -102,11 +118,13 @@ export default function WrapperHybrid({
   }, [i18n?.language]);
 
   useEffect(() => {
+    if (!currentUser) return;
     setCurrentUser(currentUser);
     const hostWithinUser = currentUser?.memberships?.find(
       (membership) => membership?.host === window.location.host
     );
     setRole(hostWithinUser?.role || null);
+    changeLang();
   }, [currentUser]);
 
   const pathname = location?.pathname;
@@ -132,7 +150,7 @@ export default function WrapperHybrid({
           animate={rendered && !isDesktopValue}
           theme={currentHost?.theme || Host?.theme}
         >
-          {!adminPage && <TopBarHandler slideStart={rendered} />}
+          {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
           {!adminPage && (
             <Header
               currentHost={currentHost || Host}

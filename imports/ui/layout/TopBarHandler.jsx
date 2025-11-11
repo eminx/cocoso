@@ -3,7 +3,6 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 
 import { Box, Fade, Flex, Loader, Slide } from '/imports/ui/core';
-import { currentUserAtom, roleAtom } from '/imports/state';
 
 import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
@@ -12,17 +11,6 @@ import MenuDrawer from './MenuDrawer';
 export default function TopBarHandler({ slideStart = true }) {
   const [scrollTop, setScrollTop] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const currentUser = useTracker(() => Meteor.user(), []);
-  const setCurrentUser = useSetAtom(currentUserAtom);
-  const setRole = useSetAtom(roleAtom);
-
-  useEffect(() => {
-    setCurrentUser(currentUser);
-    const hostWithinUser = currentUser?.memberships?.find(
-      (membership) => membership?.host === window.location.host
-    );
-    setRole(hostWithinUser?.role || null);
-  }, [currentUser]);
 
   useEffect(() => {
     const handleScroll = () => {

@@ -40,28 +40,21 @@ const defaultLang = 'en';
 const path = '/i18n/{{lng}}/{{ns}}.yml';
 const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
 
-// const Backend = Meteor.isClient ? I18NextHttpBackend : I18NexFsBackend;
-const Backend = I18NextHttpBackend;
+const isServer = Meteor.isServer;
 
 const options = {
   backend: {
     loadPath,
     parse: (data) => yaml.load(data),
   },
-  debug: false,
+  debug: !Meteor.isProduction,
   defaultNS: 'common',
-  detection: {
-    order: [
-      'querystring',
-      'cookie',
-      'localStorage',
-      'navigator',
-      'htmlTag',
-      'path',
-      'subdomain',
-    ], // Specify the order of language detection
-    caches: ['cookie'], // Cache the selected language
-  },
+  detection: isServer
+    ? undefined // No browser language detection in SSR
+    : {
+        order: ['querystring', 'cookie', 'localStorage', 'navigator'],
+        caches: ['cookie'],
+      },
   fallbackLng: defaultLang,
   interpolation: {
     escapeValue: false,
@@ -69,40 +62,18 @@ const options = {
   lng: defaultLang,
   load: 'languageOnly',
   ns: ['common'],
-  only: '*',
   preload: ['en'],
   react: {
-    useSuspense: true,
+    useSuspense: false,
   },
-  saveMissing: true,
   supportedLngs: allLangs.map((l) => l.value),
-  useSuspense: process && !process.release,
 };
 
-if (i18n && process && !process.release) {
-  i18n.use(Backend).use(LanguageDetector).use(initReactI18next);
-}
-if (i18n && !i18n.isInitialized) {
-  i18n.init(options);
-  Tracker.autorun(async () => {
-    if (Meteor.isServer) {
-      return;
-    }
-
-    try {
-      const userLang = await Meteor.callAsync('getCurrentUserLang');
-      const host = await Meteor.callAsync('getCurrentHost');
-      const hostLang = host?.lang;
-      const lang = userLang || hostLang || defaultLang;
-      if (lang === i18n.language) {
-        return;
-      }
-      i18n.changeLanguage(lang);
-    } catch (error) {
-      console.error(error);
-    }
-  });
-}
+i18n
+  .use(initReactI18next)
+  .use(I18NextHttpBackend)
+  .use(LanguageDetector)
+  .init(options);
 
 export default i18n;
 export { allLangs, defaultLang };

@@ -11,6 +11,8 @@ import {
 import appRoutes from '/imports/appRoutes';
 import '/imports/startup/i18n';
 
+import './i18nReactive';
+
 onPageLoad(async () => {
   const container = document.getElementById('root');
 

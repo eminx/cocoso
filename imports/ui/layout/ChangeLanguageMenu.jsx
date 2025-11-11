@@ -54,7 +54,7 @@ export default function ChangeLanguage({
         {allLangs.map((lang) => (
           <option
             key={lang.value}
-            // selected={lang.value === currentLang}
+            // selected={lang.  value === currentLang}
             value={lang.value}
           >
             {lang.label}
