@@ -106,7 +106,7 @@ export function AdminUserThumb({ currentUser }) {
   );
 }
 
-function AdminMenuItem({ item, isSub, parentValue }) {
+function AdminMenuItem({ item, isSub = false, parentValue, onClick }) {
   if (!item) {
     return null;
   }
@@ -137,7 +137,7 @@ function AdminMenuItem({ item, isSub, parentValue }) {
           backgroundColor: 'var(--cocoso-colors-bluegray-100)',
         },
       }}
-      onClick={() => navigate(item.value)}
+      onClick={onClick}
     >
       <Text
         css={{
@@ -154,7 +154,7 @@ function AdminMenuItem({ item, isSub, parentValue }) {
   );
 }
 
-export default function AdminMenu({ currentHost, routes }) {
+export default function AdminMenu({ currentHost, routes, onItemClick }) {
   // const currentHost = useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
@@ -210,7 +210,7 @@ export default function AdminMenu({ currentHost, routes }) {
           <List w="100%">
             {routes?.map((item) => (
               <ListItem key={item.value} p="0">
-                <AdminMenuItem item={item} />
+                <AdminMenuItem item={item} onClick={() => onItemClick(item)} />
                 {item.isMulti &&
                   item.content.map((itemSub) => (
                     <AdminMenuItem
@@ -218,6 +218,7 @@ export default function AdminMenu({ currentHost, routes }) {
                       item={itemSub}
                       isSub
                       parentValue={item.value}
+                      onClick={() => onItemClick(itemSub)}
                     />
                   ))}
               </ListItem>

@@ -163,8 +163,6 @@ export default function Members() {
 
   const safeMembers = members || [];
 
-  console.log('members:', members);
-
   const membersList = useMemo(
     () =>
       safeMembers.map((member) => ({

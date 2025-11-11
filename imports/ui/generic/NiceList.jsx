@@ -90,7 +90,7 @@ export default function NiceList({
 
   return (
     <Flex direction="column" gap={spacing} {...otherProps} w="100%">
-      {list.map(renderChildren)}
+      {list ? list.map(renderChildren) : null}
     </Flex>
   );
 }

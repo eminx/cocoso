@@ -71,13 +71,16 @@ export default function WrapperHybrid({
   };
 
   useEffect(() => {
-    setIsDesktop(isDesktopValue);
-    setIsMobile(isMobileValue);
     setValues();
     setTimeout(() => {
       setRendered(true);
     }, 1000);
   }, []);
+
+  useEffect(() => {
+    setIsDesktop(isDesktopValue);
+    setIsMobile(isMobileValue);
+  }, [isDesktopValue, isMobileValue]);
 
   useEffect(() => {
     if (currentHost) {

@@ -164,7 +164,9 @@ export default function AdminContainer({ Host, ...props }) {
             </Link>
           </Flex>
 
-          <Outlet />
+          <Box p="6">
+            <Outlet />
+          </Box>
         </Box>
       </Box>
     );
