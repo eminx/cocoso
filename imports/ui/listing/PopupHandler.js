@@ -91,23 +91,23 @@ const getLinkPath = (item, kind, isCurrentHost = false) => {
     if (kind === 'works') {
       return {
         isHref: false,
-        path: `/@${item.authorUsername}/${kind}/${item._id}/info`,
+        path: `/@${item.authorUsername}/${kind}/${item._id}`,
       };
     }
     return {
       isHref: false,
-      path: `/${kind}/${item._id}/info`,
+      path: `/${kind}/${item._id}`,
     };
   }
   if (kind === 'works') {
     return {
       isHref: true,
-      path: `https://${item.host}/@${item.authorUsername}/${kind}/${item._id}/info`,
+      path: `https://${item.host}/@${item.authorUsername}/${kind}/${item._id}`,
     };
   }
   return {
     isHref: true,
-    path: `https://${item.host}/${kind}/${item._id}/info`,
+    path: `https://${item.host}/${kind}/${item._id}`,
   };
 };
 
@@ -131,7 +131,7 @@ export default function PopupHandler({ item, kind, showPast, onClose }) {
 
   const handleCopyLink = async () => {
     const link = getLinkPath(item, kind);
-    await navigator.clipboard.writeText(link.path);
+    await navigator.clipboard.writeText(link);
     setCopied(true);
   };
 

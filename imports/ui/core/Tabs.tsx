@@ -1,5 +1,5 @@
 import React, { useId, ReactNode } from 'react';
-import { Link } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 
 import { styled } from '/stitches.config';
 import { Badge, Flex, Text } from '/imports/ui/core';
@@ -147,28 +147,30 @@ const Tabs: React.FC<TabsProps> = ({
   children,
   ...otherProps
 }) => {
+  const [, setSearchParams] = useSearchParams();
+
+  const handleClick = (tab: TabType) => {
+    if (tab.path) {
+      setSearchParams((params) => ({
+        ...params,
+        tab: tab.path,
+      }));
+    }
+    if (tab.onClick) {
+      tab.onClick();
+    }
+  };
   return (
     <TabsContainer>
       <TabsList {...otherProps}>
         {tabs?.map((tab, tabIndex) => {
           const selected = tabIndex === index;
 
-          if (tab.path) {
-            return (
-              <TabLink
-                key={tab.key || tab.path}
-                to={tab.path}
-                onClick={tab.onClick}
-              >
-                <CoTab tab={tab} selected={selected} />
-              </TabLink>
-            );
-          }
           return (
             <TabButton
-              key={tab.key || tab.title}
+              key={tab.key || tab.path}
               type="button"
-              onClick={tab.onClick}
+              onClick={() => handleClick(tab)}
             >
               <CoTab tab={tab} selected={selected} />
             </TabButton>

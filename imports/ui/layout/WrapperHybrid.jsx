@@ -71,15 +71,10 @@ export default function WrapperHybrid({
   };
 
   const changeLang = () => {
-    console.log(currentUser);
     if (!i18n) return;
     const userLang = currentUser?.lang;
-    console.log('userLang:', userLang);
     const hostLang = currentHost?.settings?.lang;
-    console.log('hostLang:', hostLang);
-    console.log('i18n.language', i18n.language);
     const lang = userLang || hostLang || i18n.language;
-    console.log('lang:', lang);
 
     if (lang !== i18n.language) {
       i18n.changeLanguage(lang);
