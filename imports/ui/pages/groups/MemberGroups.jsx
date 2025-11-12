@@ -1,41 +1,23 @@
-import { Meteor } from 'meteor/meteor';
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router';
+import React from 'react';
+import { Link, useLoaderData } from 'react-router';
 
 import { Box } from '/imports/ui/core';
-
 import Paginate from '/imports/ui/listing/Paginate';
 import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 import { message } from '/imports/ui/generic/message';
 
-function MemberGroups({ currentHost, user }) {
-  const [groups, setGroups] = useState([]);
+function MemberGroups({ Host, isPortalHost }) {
+  const { groups } = useLoaderData();
+  console.log('groups:', groups);
 
-  const username = user?.username;
-
-  useEffect(() => {
-    if (!user || !username) {
-      return;
-    }
-    Meteor.call('getGroupsByUser', username, (error, respond) => {
-      if (error) {
-        message(error);
-        return;
-      }
-      setGroups(respond);
-    });
-  }, []);
-
-  if (!user || !username || !groups || groups.length === 0) {
+  if (!groups || groups.length === 0) {
     return null;
   }
-
-  const isPortalHost = currentHost?.isPortalHost;
 
   return (
     <Paginate items={groups}>
       {(group) => {
-        const isExternal = group.host !== currentHost.host;
+        const isExternal = group.host !== Host.host;
         return (
           <Box key={group._id}>
             {isExternal ? (

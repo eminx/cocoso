@@ -47,7 +47,8 @@ const options = {
     loadPath,
     parse: (data) => yaml.load(data),
   },
-  debug: !Meteor.isProduction,
+  // debug: !Meteor.isProduction,
+  debug: false,
   defaultNS: 'common',
   detection: isServer
     ? undefined // No browser language detection in SSR

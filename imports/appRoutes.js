@@ -33,7 +33,6 @@ const UserProfileHandler = loadable(() =>
   import('/imports/ui/pages/profile/UserProfileHandler')
 );
 const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
-
 const SignupPage = loadable(() => import('/imports/ui/pagesh/SignupPage'));
 const ForgotPasswordPage = loadable(() =>
   import('/imports/ui/pages/auth/ForgotPasswordPage')
@@ -41,7 +40,6 @@ const ForgotPasswordPage = loadable(() =>
 const ResetPasswordPage = loadable(() =>
   import('/imports/ui/pages/auth/ResetPasswordPage')
 );
-
 const Terms = loadable(() => import('/imports/ui/entry/Terms'));
 const NotFoundPage = loadable(() => import('/imports/ui/pages/NotFoundPage'));
 
@@ -110,6 +108,16 @@ const EditProfileLanguage = loadable(() =>
 const EditProfilePrivacy = loadable(() =>
   import('/imports/ui/pages/profile/EditProfilePrivacy')
 );
+const MemberActivities = loadable(() =>
+  import('/imports/ui/pages/activities/MemberActivities')
+);
+const MemberGroups = loadable(() =>
+  import('/imports/ui/pages/groups/MemberGroups')
+);
+const MemberWorks = loadable(() =>
+  import('/imports/ui/pages/works/MemberWorks')
+);
+
 // import NewHost from '/imports/ui/pages/hosts/NewHost';
 // import SetupHome from '/imports/ui/pages/setup';
 // import getAdminRoutes from '/imports/ui/pages/admin/getAdminRoutes';
@@ -135,6 +143,9 @@ import {
   getHostMembersForAdmin,
   getEmails,
   getComposablePageTitles,
+  getActivitiesByUser,
+  getGroupsByUser,
+  getWorksByUser,
 } from './loaders';
 import { updateHostSettings } from './actions';
 
@@ -430,16 +441,30 @@ export default function appRoutes(props) {
         },
         {
           path: ':usernameSlug',
+          element: createRouteElement(UserProfileHandler, props),
+          loader: async ({ params }) => await getUser({ params, host }),
           children: [
             {
-              index: true,
-              path: '*',
-              element: createRouteElement(UserProfileHandler, props),
-              loader: async ({ params }) => await getUser({ params, host }),
+              path: 'activities',
+              element: createRouteElement(MemberActivities, props),
+              loader: async ({ params }) =>
+                await getActivitiesByUser({ params, host }),
+            },
+            {
+              path: 'groups',
+              element: createRouteElement(MemberGroups, props),
+              loader: async ({ params }) =>
+                await getGroupsByUser({ params, host }),
             },
             {
               path: 'works',
               children: [
+                {
+                  index: true,
+                  element: createRouteElement(MemberWorks, props),
+                  loader: async ({ params }) =>
+                    await getWorksByUser({ params, host }),
+                },
                 {
                   path: ':workId/*',
                   element: createRouteElement(WorkItemHandler, props),

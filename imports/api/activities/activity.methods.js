@@ -159,11 +159,11 @@ Meteor.methods({
     }
   },
 
-  async getActivitiesByUser(username) {
+  async getActivitiesByUser(username, hostPredefined) {
     if (!username) {
       throw new Meteor.Error('Not allowed!');
     }
-    const host = getHost(this);
+    const host = hostPredefined || getHost(this);
     const platform = await Platform.findOneAsync();
 
     try {

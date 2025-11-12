@@ -1,37 +1,22 @@
-import { Meteor } from 'meteor/meteor';
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router';
+import React from 'react';
+import { Link, useLoaderData } from 'react-router';
 
 import { Box } from '/imports/ui/core';
-import { message } from '../../generic/message';
-import Paginate from '../../listing/Paginate';
-import NewGridThumb from '../../listing/NewGridThumb';
+import { message } from '/imports/ui/generic/message';
+import Paginate from '/imports/ui/listing/Paginate';
+import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 
-function MemberWorks({ currentHost, user }) {
-  const [works, setWorks] = useState([]);
+export default function MemberWorks({ Host, isPortalHost }) {
+  const { works } = useLoaderData();
 
-  const username = user?.username;
-
-  useEffect(() => {
-    Meteor.call('getWorksByUser', username, (error, respond) => {
-      if (error) {
-        message(error);
-        return;
-      }
-      setWorks(respond);
-    });
-  }, []);
-
-  if (!user || !username || !works || works.length === 0) {
+  if (!works || works.length === 0) {
     return null;
   }
-
-  const isPortalHost = currentHost?.isPortalHost;
 
   return (
     <Paginate items={works}>
       {(work) => {
-        const isExternal = work.host !== currentHost.host;
+        const isExternal = work.host !== Host.host;
         return (
           <Box key={work._id}>
             {isExternal ? (
@@ -69,5 +54,3 @@ function MemberWorks({ currentHost, user }) {
     </Paginate>
   );
 }
-
-export default MemberWorks;

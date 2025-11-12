@@ -219,3 +219,45 @@ export async function getComposablePageTitles() {
     composablePageTitles,
   };
 }
+
+export async function getActivitiesByUser({ params, host }) {
+  if (!params) {
+    return null;
+  }
+
+  const { usernameSlug } = params;
+  const username = usernameSlug?.replace('@', '');
+  const activities = await call('getActivitiesByUser', username, host);
+
+  return {
+    activities,
+  };
+}
+
+export async function getGroupsByUser({ params, host }) {
+  if (!params) {
+    return null;
+  }
+
+  const { usernameSlug } = params;
+  const username = usernameSlug?.replace('@', '');
+  const groups = await call('getGroupsByUser', username, host);
+
+  return {
+    groups,
+  };
+}
+
+export async function getWorksByUser({ params, host }) {
+  if (!params) {
+    return null;
+  }
+
+  const { usernameSlug } = params;
+  const username = usernameSlug?.replace('@', '');
+  const works = await call('getWorksByUser', username, host);
+
+  return {
+    works,
+  };
+}

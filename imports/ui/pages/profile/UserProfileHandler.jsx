@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { useLoaderData } from 'react-router';
+import { Outlet, useLoaderData } from 'react-router';
 import { useAtomValue } from 'jotai';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
