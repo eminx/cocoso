@@ -22,7 +22,7 @@ export default function GroupDocuments({ documents }) {
                 target="_blank"
                 css={{ marginRight: '1em' }}
               >
-                {document.documentLabel}
+                {document.documentLabel || document.name}
               </Link>
               <ExternalLink size="18px" />
             </Code>

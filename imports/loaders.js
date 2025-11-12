@@ -124,7 +124,6 @@ export async function getResource({ params }) {
   }
 
   const { resourceId } = params;
-  console.log('resourceId:', resourceId);
   const resource = await call('getResourceById', resourceId);
   const documents = await call('getDocumentsByAttachments', resourceId);
 

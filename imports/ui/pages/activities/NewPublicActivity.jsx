@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useSetAtom } from 'jotai';
+
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { initialLoader, loaderAtom } from '/imports/ui/listing/NewEntryHandler';
 
 import PublicActivityForm from './PublicActivityForm';
-import { call } from '../../../api/_utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
 
 export default function NewPublicActivity() {
   const [newEntryId, setNewEntryId] = useState(null);
   const navigate = useNavigate();
+  const setLoaders = useSetAtom(loaderAtom);
 
   const createActivity = async (newActivity) => {
     try {
@@ -20,7 +24,10 @@ export default function NewPublicActivity() {
   };
 
   const handleSuccess = () => {
-    navigate(`/activities/${newEntryId}/info`);
+    setTimeout(() => {
+      setLoaders({ ...initialLoader });
+      navigate(`/activities/${newEntryId}`);
+    }, 1200);
   };
 
   return (

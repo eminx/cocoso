@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 
 import { currentUserAtom } from '/imports/state';
-import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
 import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { initialLoader, loaderAtom } from '/imports/ui/listing/NewEntryHandler';
 
 import WorkForm from './WorkForm';
 
 export default function NewWork() {
-  const currentUser = useAtomValue(currentUserAtom);
   const [newEntryId, setNewEntryId] = useState(null);
+  const currentUser = useAtomValue(currentUserAtom);
   const navigate = useNavigate();
+  const setLoaders = useSetAtom(loaderAtom);
 
   const createWork = async (newWork) => {
     try {
@@ -24,11 +26,10 @@ export default function NewWork() {
   };
 
   const handleSuccess = () => {
-    if (!currentUser) {
-      navigate('/login');
-      return;
-    }
-    navigate(`/@${currentUser.username}/works/${newEntryId}/info`);
+    setTimeout(() => {
+      setLoaders({ ...initialLoader });
+      navigate(`/@${currentUser.username}/works/${newEntryId}`);
+    }, 1200);
   };
 
   return (

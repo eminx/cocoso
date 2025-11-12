@@ -161,7 +161,7 @@ export default function CalendarHandler({ Host, pageTitles }) {
     }
 
     if (selectedActivity.isGroupMeeting) {
-      navigate(`/groups/${selectedActivity.groupId}/info`);
+      navigate(`/groups/${selectedActivity.groupId}`);
     } else {
       navigate(`/calendar/${selectedActivity.activityId}?edit=true`);
     }

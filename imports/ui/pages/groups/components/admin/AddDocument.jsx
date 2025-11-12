@@ -17,6 +17,7 @@ import {
 
 import DocumentUploadHelper from '/imports/ui/forms/UploadHelpers';
 import { message } from '/imports/ui/generic/message';
+import { call, uploadImage } from '/imports/api/_utils/shared';
 
 import GroupDocuments from '../GroupDocuments';
 import { groupAtom } from '../../GroupItemHandler';
@@ -30,54 +31,46 @@ export default function AddDocument({ onClose }) {
     return null;
   }
 
-  const handleFileDrop = (files) => {
+  const handleFileDrop = async (files) => {
     if (files.length !== 1) {
       message.error(tc('plugins.fileDropper.single'));
       return;
     }
 
-    const closeLoader = async () => {
-      setIsUploading(false);
-    };
-
     setIsUploading(true);
-    const upload = new Slingshot.Upload('groupDocumentUpload');
     const file = files[0];
     const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
     const uploadableFile = new File([file], parsedName, {
       type: file.type,
     });
+    const groupId = group._id;
 
-    upload.send(uploadableFile, (error, downloadUrl) => {
-      if (error) {
-        message.error(error.reason || error.error);
-        closeLoader();
-      } else {
-        Meteor.call(
-          'createDocument',
-          uploadableFile.name,
-          downloadUrl,
-          'group',
-          group._id,
-          (error1) => {
-            if (error1) {
-              return;
-            }
-            Meteor.call(
-              'addGroupDocument',
-              { name: uploadableFile.name, downloadUrl },
-              group._id,
-              (error2) => {
-                if (error2) {
-                  return;
-                }
-                closeLoader();
-              }
-            );
-          }
-        );
-      }
-    });
+    try {
+      const uploadedDocument = await uploadImage(
+        uploadableFile,
+        'groupDocumentUpload'
+      );
+      console.log('uploadedDocument:', uploadedDocument);
+      await call(
+        'createDocument',
+        parsedName,
+        uploadedDocument,
+        'group',
+        groupId
+      );
+      await call(
+        'addGroupDocument',
+        { name: parsedName, downloadUrl: uploadedDocument },
+        groupId
+      );
+      message.success(tc('message.success.create'));
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason || error.error);
+    } finally {
+      setIsUploading(false);
+      setGroup(await call('getGroupWithMeetings', groupId));
+    }
   };
 
   return (

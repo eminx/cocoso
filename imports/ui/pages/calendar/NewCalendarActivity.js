@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
+import { useSetAtom } from 'jotai';
+
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { initialLoader, loaderAtom } from '/imports/ui/listing/NewEntryHandler';
+import { emptyDateAndTime } from '/imports/ui/forms/DatesAndTimes';
 
 import CalendarActivityForm from './CalendarActivityForm';
-import { call } from '../../../api/_utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { emptyDateAndTime } from '../../forms/DatesAndTimes';
-import { message } from '../../generic/message';
 
 export default function NewCalendarActivity({ resources }) {
   const [newEntryId, setNewEntryId] = useState(null);
   const [searchParams] = useSearchParams();
   const [initialActivity, setInitialActivity] = useState(null);
   const navigate = useNavigate();
+  const setLoaders = useSetAtom(loaderAtom);
 
   const setInitialValuesWithQueryParams = () => {
     const params = {
@@ -54,7 +58,10 @@ export default function NewCalendarActivity({ resources }) {
   };
 
   const handleSuccess = () => {
-    navigate(`/calendar/${newEntryId}/info`);
+    setTimeout(() => {
+      setLoaders({ ...initialLoader });
+      navigate(`/calendar/${newEntryId}`);
+    }, 1200);
   };
 
   return (
