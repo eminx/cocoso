@@ -23,7 +23,7 @@ export async function getHomeLoader({ Host, params, request }) {
   }
 }
 
-export async function getActivities({ host, isPortalHost, request }) {
+export async function getActivities({ request, host, isPortalHost }) {
   const url = new URL(request?.url);
   const showPast = url?.searchParams?.get('showPast') === 'true' || false;
 

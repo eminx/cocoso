@@ -14,24 +14,17 @@ import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
 import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
-const ActivityItemHandler = loadable(() =>
-  import('/imports/ui/pages/activities/ActivityItemHandler')
-);
-const GroupItemHandler = loadable(() =>
-  import('/imports/ui/pages/groups/GroupItemHandler')
-);
-const ResourceItemHandler = loadable(() =>
-  import('/imports/ui/pages/resources/ResourceItemHandler')
-);
-const WorkItemHandler = loadable(() =>
-  import('/imports/ui/pages/works/WorkItemHandler')
-);
-const PageItemHandler = loadable(() =>
-  import('/imports/ui/pages/pages/PageItemHandler')
-);
-const UserProfileHandler = loadable(() =>
-  import('/imports/ui/pages/profile/UserProfileHandler')
-);
+// const ActivityItemHandler = isServer
+//   ? require('/imports/ui/pages/activities/ActivityItemHandler').default
+//   : loadable(() => import('/imports/ui/pages/activities/ActivityItemHandler'));
+
+import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
+import GroupItemHandler from '/imports/ui/pages/groups/GroupItemHandler';
+import ResourceItemHandler from '/imports/ui/pages/resources/ResourceItemHandler';
+import WorkItemHandler from '/imports/ui/pages/works/WorkItemHandler';
+import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
+import UserProfileHandler from '/imports/ui/pages/profile/UserProfileHandler';
+
 const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
 const SignupPage = loadable(() => import('/imports/ui/pages/auth/SignupPage'));
 const ForgotPasswordPage = loadable(() =>
@@ -193,7 +186,7 @@ class RouteErrorBoundary extends React.Component {
 }
 
 // Use it in your route wrapper
-const createRouteElement = (Component, props, skipSuspense = true) => {
+const createRouteElement = (Component, props, skipSuspense = false) => {
   if (props.skipSuspense) {
     return (
       <RouteErrorBoundary>
@@ -360,7 +353,7 @@ export default function appRoutes(props) {
                 await getActivities({ request, host, isPortalHost }),
             },
             {
-              path: ':activityId/*',
+              path: ':activityId',
               element: createRouteElement(ActivityItemHandler, props),
               loader: async ({ params }) => await getActivity({ params }),
             },
