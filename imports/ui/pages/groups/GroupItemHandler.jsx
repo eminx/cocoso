@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { useLoaderData } from 'react-router';
-import { useHydrateAtoms } from 'jotai/utils';
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import GroupHybrid from '/imports/ui/entry/GroupHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
@@ -19,8 +18,7 @@ export const groupAtom = atom(null);
 
 export default function GroupItemHandler({ Host, pageTitles }) {
   const { group, documents } = useLoaderData();
-  useHydrateAtoms([[groupAtom, group]]);
-  const [groupValue, setGroup] = useAtom(groupAtom);
+  const setGroup = useSetAtom(groupAtom);
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
 
@@ -30,11 +28,7 @@ export default function GroupItemHandler({ Host, pageTitles }) {
 
   return (
     <>
-      <GroupHybrid
-        group={groupValue || group}
-        documents={documents}
-        Host={Host}
-      />
+      <GroupHybrid group={group} documents={documents} Host={Host} />
 
       {rendered && (
         <Suspense fallback={<Loader />}>

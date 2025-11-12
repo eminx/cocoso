@@ -29,6 +29,7 @@ export default function AdminFunctions({ menuItems, onSelect }) {
         </Flex>
       }
       direction="top"
+      id="admin-menu"
       options={menuItems}
       onSelect={onSelect}
     >

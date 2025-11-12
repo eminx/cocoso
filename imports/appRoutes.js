@@ -451,19 +451,14 @@ export default function appRoutes(props) {
             },
             {
               path: 'works',
-              children: [
-                {
-                  index: true,
-                  element: createRouteElement(MemberWorks, props),
-                  loader: async ({ params }) =>
-                    await getWorksByUser({ params, host }),
-                },
-                {
-                  path: ':workId/*',
-                  element: createRouteElement(WorkItemHandler, props),
-                  loader: async ({ params }) => await getWork({ params }),
-                },
-              ],
+              element: createRouteElement(MemberWorks, props),
+              loader: async ({ params }) =>
+                await getWorksByUser({ params, host }),
+            },
+            {
+              path: 'works/:workId/*',
+              element: createRouteElement(WorkItemHandler, props),
+              loader: async ({ params }) => await getWork({ params }),
             },
           ],
         },

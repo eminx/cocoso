@@ -1,7 +1,6 @@
 import React, { lazy, useEffect } from 'react';
 import { useLoaderData } from 'react-router';
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useHydrateAtoms } from 'jotai/utils';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import ResourceHybrid from '/imports/ui/entry/ResourceHybrid';
@@ -19,8 +18,7 @@ export const resourceAtom = atom(null);
 
 export default function ResourceItemHandler({ Host, pageTitles }) {
   const { documents, resource } = useLoaderData();
-  useHydrateAtoms([[resourceAtom, resource]]);
-  const [resourceValue, setResource] = useAtom(resourceAtom);
+  const setResource = useSetAtom(resourceAtom);
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
 
@@ -30,11 +28,7 @@ export default function ResourceItemHandler({ Host, pageTitles }) {
 
   return (
     <>
-      <ResourceHybrid
-        documents={documents}
-        resource={resourceValue || resource}
-        Host={Host}
-      />
+      <ResourceHybrid documents={documents} resource={resource} Host={Host} />
 
       {rendered && (
         <>

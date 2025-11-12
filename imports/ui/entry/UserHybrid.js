@@ -36,7 +36,7 @@ export function Bio({ user }) {
 }
 
 export default function UserHybrid({ user, Host }) {
-  const { usernameSlug } = useParams();
+  const { usernameSlug, workId } = useParams();
   const location = useLocation();
 
   if (usernameSlug[0] !== '@') {
@@ -104,31 +104,38 @@ export default function UserHybrid({ user, Host }) {
         <meta property="og:type" content="article" />
       </Helmet>
 
-      <Box p="2">
-        <BackLink backLink={{ label: members?.label, value: '/people' }} />
-      </Box>
-
-      <Center>
-        <Box css={{ maxWidth: '600px' }}>
-          <Center>
-            <MemberAvatarEtc isThumb={false} user={user} />
-          </Center>
-          <Center>
-            <Bio user={user} />
-          </Center>
-        </Box>
-      </Center>
-
-      <Center>
-        <Box>
-          <Center>
-            <Tabs align="center" index={tabIndex} tabs={tabs} />
-          </Center>
-          <Box css={{ maxWidth: '600px' }} pt="4" mb="24">
-            <Outlet />
+      {workId ? (
+        <Outlet />
+      ) : (
+        <>
+          <Box p="2">
+            <BackLink backLink={{ label: members?.label, value: '/people' }} />
           </Box>
-        </Box>
-      </Center>
+
+          <Center>
+            <Box css={{ maxWidth: '600px' }}>
+              <Center>
+                <MemberAvatarEtc isThumb={false} user={user} />
+              </Center>
+              <Center>
+                <Bio user={user} />
+              </Center>
+            </Box>
+          </Center>
+
+          <Center>
+            <Box>
+              <Center>
+                <Tabs align="center" index={tabIndex} tabs={tabs} />
+              </Center>
+
+              <Box css={{ maxWidth: '600px' }} pt="4" mb="24">
+                <Outlet />
+              </Box>
+            </Box>
+          </Center>
+        </>
+      )}
     </>
   );
 }
