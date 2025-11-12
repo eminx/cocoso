@@ -233,15 +233,18 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
 
           <Center mb="8" mt="4">
             <Box w="100%" css={{ maxWidth: '540px' }}>
-              <Box w="100%">
-                {tabs && (
-                  <Box mt="2">
-                    <Tabs justify="center" index={tabIndex ?? 0} tabs={tabs} />
-                  </Box>
-                )}
+              {tabs && (
+                <Box mt="2">
+                  <Tabs
+                    justify="center"
+                    index={tabIndex ?? 0}
+                    tabs={tabs}
+                    withSearchParams
+                  />
+                </Box>
+              )}
 
-                <Box mb="24">{selectedTab?.content}</Box>
-              </Box>
+              <Box mb="24">{selectedTab?.content}</Box>
             </Box>
           </Center>
         </Box>

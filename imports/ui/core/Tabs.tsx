@@ -1,5 +1,5 @@
 import React, { useId, ReactNode } from 'react';
-import { Link, useSearchParams } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 
 import { styled } from '/stitches.config';
 import { Badge, Flex, Text } from '/imports/ui/core';
@@ -138,23 +138,30 @@ const CoTab: React.FC<CoTabProps> = ({ tab, selected }) => {
 interface TabsProps extends TabsListProps {
   index: number;
   tabs: TabType[];
+  withSearchParams: boolean;
   children?: ReactNode;
 }
 
 const Tabs: React.FC<TabsProps> = ({
   index,
   tabs,
+  withSearchParams = false,
   children,
   ...otherProps
 }) => {
   const [, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const handleClick = (tab: TabType) => {
     if (tab.path) {
-      setSearchParams((params) => ({
-        ...params,
-        tab: tab.path,
-      }));
+      if (withSearchParams) {
+        setSearchParams((params) => ({
+          ...params,
+          tab: tab.path,
+        }));
+      } else {
+        navigate(tab.path);
+      }
     }
     if (tab.onClick) {
       tab.onClick();
