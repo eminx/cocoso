@@ -1,5 +1,5 @@
 import { useTracker } from 'meteor/react-meteor-data';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 
 import { Box, Fade, Flex, Loader, Slide } from '/imports/ui/core';
@@ -29,9 +29,7 @@ export default function TopBarHandler({ slideStart = true }) {
       <Fade ping={scrollTop < 120}>
         <Flex justify="space-between" w="100%">
           <Box p="1" pointerEvents="all">
-            <Suspense fallback={<Loader />}>
-              <FederationIconMenu />
-            </Suspense>
+            <FederationIconMenu />
           </Box>
           <Flex p="1" pointerEvents="all">
             <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />

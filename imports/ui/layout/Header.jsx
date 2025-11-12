@@ -3,11 +3,12 @@ import React from 'react';
 import { Link, useLocation } from 'react-router';
 import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+import { useAtomValue } from 'jotai';
 
+import { isDesktopAtom } from '/imports/state';
 import { Box, Center, Flex, Heading, Image, Text } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 import { parseTitle } from '/imports/api/_utils/shared';
-import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
 const isClient = Meteor?.isClient;
 
@@ -110,7 +111,7 @@ export function InfoPagesMenu({
 
 function HeaderMenu({ Host, pageTitles }) {
   const location = useLocation();
-  const isDesktop = useMediaQuery('(min-width: 960px)');
+  const isDesktop = useAtomValue(isDesktopAtom);
 
   const settings = Host?.settings;
   const menuStyles = Host?.theme?.menu;
@@ -122,7 +123,7 @@ function HeaderMenu({ Host, pageTitles }) {
     return null;
   }
 
-  if (!isDesktop && isBurgerMenuOnMobile && isClient) {
+  if (!isDesktop && isBurgerMenuOnMobile) {
     return null;
   }
 

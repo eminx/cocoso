@@ -33,7 +33,7 @@ const UserProfileHandler = loadable(() =>
   import('/imports/ui/pages/profile/UserProfileHandler')
 );
 const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
-const SignupPage = loadable(() => import('/imports/ui/pagesh/SignupPage'));
+const SignupPage = loadable(() => import('/imports/ui/pages/auth/SignupPage'));
 const ForgotPasswordPage = loadable(() =>
   import('/imports/ui/pages/auth/ForgotPasswordPage')
 );
@@ -117,11 +117,11 @@ const MemberGroups = loadable(() =>
 const MemberWorks = loadable(() =>
   import('/imports/ui/pages/works/MemberWorks')
 );
-
-// import NewHost from '/imports/ui/pages/hosts/NewHost';
-// import SetupHome from '/imports/ui/pages/setup';
-// import getAdminRoutes from '/imports/ui/pages/admin/getAdminRoutes';
-// import RegistrationIntro from '/imports/ui/pages/auth/RegistrationIntro';
+const RegistrationIntro = loadable(() =>
+  import('/imports/ui/pages/auth/RegistrationIntro')
+);
+const SetupHome = loadable(() => import('/imports/ui/pages/setup'));
+const NewHost = loadable(() => import('/imports/ui/pages/setup/NewHost'));
 
 import { call } from '/imports/api/_utils/shared';
 import {
@@ -485,10 +485,10 @@ export default function appRoutes(props) {
           element: createRouteElement(CommunityListHandler, props, true),
           loader: async () => getCommunities(),
         },
-        // {
-        //   path: 'intro',
-        //   element: createRouteElement(RegistrationIntro, props,true),
-        // },
+        {
+          path: 'intro',
+          element: createRouteElement(RegistrationIntro, props, true),
+        },
         {
           path: 'login',
           element: createRouteElement(LoginPage, props),

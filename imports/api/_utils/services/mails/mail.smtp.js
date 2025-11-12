@@ -12,17 +12,20 @@ Meteor.methods({
     check([id, subjectEmail, textEmail], [String]);
     const fromEmail = Meteor.settings.mailCredentials.smtp.fromEmail;
 
+    const isEmailValid = isValidEmail(id);
+
     let toEmail;
-    if (isValidEmail(id)) {
+    if (isEmailValid) {
       toEmail = id;
-    } else {
-      const user = await Meteor.users.findOneAsync({ $or: [{ _id: id }, { username: id }] });
-      if (user) {
-        toEmail = user.emails[0]?.address;
-      }
+    }
+    if (!isEmailValid) {
+      const user = await Meteor.users.findOneAsync({
+        $or: [{ _id: id }, { username: id }],
+      });
+      toEmail = user.emails?.[0]?.address;
     }
 
-    if (!isValidEmail(toEmail)) {
+    if (!toEmail) {
       return;
     }
 
@@ -43,7 +46,12 @@ Meteor.methods({
       html: textEmail,
     };
 
-    await Email.sendAsync(data);
+    try {
+      await Email.sendAsync(data);
+    } catch (error) {
+      console.log('email error', error);
+      throw new Meteor.Error(error);
+    }
   },
 
   async sendWelcomeEmail(userId, hostToJoin) {
@@ -59,17 +67,16 @@ Meteor.methods({
       welcomeText?.body
     );
 
-    await Meteor.callAsync(
-      'sendEmail',
-      user?.emails[0].address,
-      welcomeText?.subject,
-      emailBody,
-      (error, respond) => {
-        if (error) {
-          console.log(error);
-        }
-      }
-    );
+    try {
+      await Meteor.callAsync(
+        'sendEmail',
+        user?.emails[0].address,
+        welcomeText?.subject,
+        emailBody
+      );
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 
   async sendNewContributorEmail(userId) {
@@ -85,17 +92,16 @@ Meteor.methods({
       welcomeText?.body
     );
 
-    await Meteor.callAsync(
-      'sendEmail',
-      user?.emails[0].address,
-      welcomeText?.subject,
-      emailBody,
-      (error, respond) => {
-        if (error) {
-          console.log(error);
-        }
-      }
-    );
+    try {
+      await Meteor.callAsync(
+        'sendEmail',
+        user?.emails[0].address,
+        welcomeText?.subject,
+        emailBody
+      );
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 
   async sendNewAdminEmail(userId) {
@@ -104,11 +110,15 @@ Meteor.methods({
     const currentHost = await Hosts.findOneAsync({ host });
     const email = currentHost && currentHost.emails[2];
 
-    await Meteor.callAsync(
-      'sendEmail',
-      user.emails[0].address,
-      email.subject,
-      getEmailBody(email, user.username)
-    );
+    try {
+      await Meteor.callAsync(
+        'sendEmail',
+        user.emails[0].address,
+        email.subject,
+        getEmailBody(email, user.username)
+      );
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 });

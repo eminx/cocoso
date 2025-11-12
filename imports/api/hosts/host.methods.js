@@ -303,7 +303,7 @@ Meteor.methods({
 
     const isPortalHost = currentHost.isPortalHost;
     const members = isPortalHost
-      ? Meteor.users.find().fetchAsync()
+      ? await Meteor.users.find().fetchAsync()
       : currentHost.members;
 
     try {
@@ -315,8 +315,8 @@ Meteor.methods({
           );
 
           const emailAddress = isPortalHost
-            ? member.emails[0].address
-            : member.email;
+            ? member?.emails?.[0]?.address || null
+            : member?.email;
 
           await Meteor.callAsync(
             'sendEmail',

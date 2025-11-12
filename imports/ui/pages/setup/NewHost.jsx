@@ -2,11 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Center } from '/imports/ui/core';
-import NewHostForm from '../../forms/NewHostForm';
-import { message } from '../../generic/message';
-import Alert from '../../core/Alert';
-import { call } from '../../../api/_utils/shared';
+import { Alert, Center } from '/imports/ui/core';
+import NewHostForm from '/imports/ui/forms/NewHostForm';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
 
 export default function NewHost({ setFinished }) {
   const [tc] = useTranslation('common');
