@@ -2,13 +2,12 @@ import React from 'react';
 import { Link, useLoaderData } from 'react-router';
 
 import { Box } from '/imports/ui/core';
+import { message } from '/imports/ui/generic/message';
 import Paginate from '/imports/ui/listing/Paginate';
 import NewGridThumb from '/imports/ui/listing/NewGridThumb';
-import { message } from '/imports/ui/generic/message';
 
 function MemberGroups({ Host, isPortalHost }) {
   const { groups } = useLoaderData();
-  console.log('groups:', groups);
 
   if (!groups || groups.length === 0) {
     return null;

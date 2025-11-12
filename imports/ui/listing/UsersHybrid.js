@@ -148,6 +148,19 @@ export default function UsersHybrid({ Host, users, keywords }) {
     }
   };
 
+  const handleNavigateUserPage = () => {
+    if (
+      !Host.isPortalPage ||
+      modalItem?.memberships?.find((m) => m.host === Host.host)
+    ) {
+      navigate(`/@${modalItem.username}`);
+      return;
+    }
+    const membership = modalItem.memberships.find((m) => m.host === Host.host);
+    const userHost = membership?.host;
+    window.location.href = `https://${userHost}/@${modalItem.username}`;
+  };
+
   return (
     <>
       <PageHeading currentHost={currentHost || Host} listing="people" />
@@ -209,7 +222,7 @@ export default function UsersHybrid({ Host, users, keywords }) {
         id="users-hybrid"
         open={Boolean(modalItem)}
         size="xl"
-        onConfirm={() => navigate(`/@${modalItem.username}`)}
+        onConfirm={handleNavigateUserPage}
         onClose={() => setModalItem(null)}
       >
         <Box pt="8">

@@ -9,8 +9,6 @@ import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 export default function MemberActivities({ Host, isPortalHost }) {
   const { activities } = useLoaderData();
 
-  console.log('activities:', activities);
-
   if (!activities || activities.length === 0) {
     return null;
   }

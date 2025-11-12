@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, useLocation, useParams } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import { Helmet } from 'react-helmet';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 
 import { Alert, Box, Center, Flex, Tabs } from '/imports/ui/core';
 import { stripHtml, getFullName } from '/imports/api/_utils/shared';
@@ -38,7 +38,6 @@ export function Bio({ user }) {
 export default function UserHybrid({ user, Host }) {
   const { usernameSlug } = useParams();
   const location = useLocation();
-  const [ta] = useTranslation('accounts');
 
   if (usernameSlug[0] !== '@') {
     return <NotFoundPage />;
@@ -47,14 +46,21 @@ export default function UserHybrid({ user, Host }) {
   if (!user) {
     return (
       <Center p="8">
-        <Alert message={ta('profile.message.notfound')} />
+        <Alert
+          message={
+            <Trans i18nKey="accounts:profile.message.notfound">
+              User with this username within this organization not found, or
+              chose to hide their profile
+            </Trans>
+          }
+        />
       </Center>
     );
   }
 
   const { menu } = Host?.settings;
-  const tabs = [];
 
+  const tabs = [];
   menu
     ?.filter(
       (item) =>
