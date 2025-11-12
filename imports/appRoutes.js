@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
+import loadable from '@loadable/component';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import { Loader } from '/imports/ui/core';
@@ -13,94 +14,100 @@ import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
 import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
-const ActivityItemHandler = lazy(() =>
+const ActivityItemHandler = loadable(() =>
   import('/imports/ui/pages/activities/ActivityItemHandler')
 );
-const GroupItemHandler = lazy(() =>
+const GroupItemHandler = loadable(() =>
   import('/imports/ui/pages/groups/GroupItemHandler')
 );
-const ResourceItemHandler = lazy(() =>
+const ResourceItemHandler = loadable(() =>
   import('/imports/ui/pages/resources/ResourceItemHandler')
 );
-const WorkItemHandler = lazy(() =>
+const WorkItemHandler = loadable(() =>
   import('/imports/ui/pages/works/WorkItemHandler')
 );
-const PageItemHandler = lazy(() =>
+const PageItemHandler = loadable(() =>
   import('/imports/ui/pages/pages/PageItemHandler')
 );
-const UserProfileHandler = lazy(() =>
+const UserProfileHandler = loadable(() =>
   import('/imports/ui/pages/profile/UserProfileHandler')
 );
-const LoginPage = lazy(() => import('/imports/ui/pages/auth/LoginPage'));
+const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
 
-const SignupPage = lazy(() => import('/imports/ui/pagesh/SignupPage'));
-const ForgotPasswordPage = lazy(() =>
+const SignupPage = loadable(() => import('/imports/ui/pagesh/SignupPage'));
+const ForgotPasswordPage = loadable(() =>
   import('/imports/ui/pages/auth/ForgotPasswordPage')
 );
-const ResetPasswordPage = lazy(() =>
+const ResetPasswordPage = loadable(() =>
   import('/imports/ui/pages/auth/ResetPasswordPage')
 );
 
-const Terms = lazy(() => import('/imports/ui/entry/Terms'));
-const NotFoundPage = lazy(() => import('/imports/ui/pages/NotFoundPage'));
+const Terms = loadable(() => import('/imports/ui/entry/Terms'));
+const NotFoundPage = loadable(() => import('/imports/ui/pages/NotFoundPage'));
 
-const AdminContainer = lazy(() =>
+const AdminContainer = loadable(() =>
   import('/imports/ui/pages/admin/AdminContainer')
 );
-const AdminHome = lazy(() => import('/imports/ui/pages/admin/AdminHome'));
-const AdminSettings = lazy(() =>
+const AdminHome = loadable(() => import('/imports/ui/pages/admin/AdminHome'));
+const AdminSettings = loadable(() =>
   import('/imports/ui/pages/admin/AdminSettings')
 );
-const AdminSettingsLogo = lazy(() =>
+const AdminSettingsLogo = loadable(() =>
   import('/imports/ui/pages/admin/AdminSettingsLogo')
 );
-const AdminSettingsForm = lazy(() =>
+const AdminSettingsForm = loadable(() =>
   import('/imports/ui/pages/admin/AdminSettingsForm')
 );
-const AdminSettingsFooter = lazy(() =>
+const AdminSettingsFooter = loadable(() =>
   import('/imports/ui/pages/admin/AdminSettingsFooter')
 );
-const MenuSettings = lazy(() => import('/imports/ui/pages/admin/MenuSettings'));
-const MenuSettingsOrder = lazy(() =>
+const MenuSettings = loadable(() =>
+  import('/imports/ui/pages/admin/MenuSettings')
+);
+const MenuSettingsOrder = loadable(() =>
   import('/imports/ui/pages/admin/MenuSettingsOrder')
 );
-const MenuSettingsOptions = lazy(() =>
+const MenuSettingsOptions = loadable(() =>
   import('/imports/ui/pages/admin/MenuSettingsOptions')
 );
-const AdminDesign = lazy(() => import('/imports/ui/pages/admin/design'));
-const ThemeHandler = lazy(() =>
+const AdminDesign = loadable(() => import('/imports/ui/pages/admin/design'));
+const ThemeHandler = loadable(() =>
   import('/imports/ui/pages/admin/design/ThemeHandler')
 );
-const MenuDesign = lazy(() =>
+const MenuDesign = loadable(() =>
   import('/imports/ui/pages/admin/design/MenuDesign')
 );
-const Members = lazy(() => import('/imports/ui/pages/admin/Members'));
-const Emails = lazy(() => import('/imports/ui/pages/admin/Emails'));
-const EmailNewsletter = lazy(() =>
+const Members = loadable(() => import('/imports/ui/pages/admin/Members'));
+const Emails = loadable(() => import('/imports/ui/pages/admin/Emails'));
+const EmailNewsletter = loadable(() =>
   import('/imports/ui/pages/admin/EmailNewsletter')
 );
-const ComposablePages = lazy(() => import('/imports/ui/pages/composablepages'));
-const ComposablePageForm = lazy(() =>
+const ComposablePages = loadable(() =>
+  import('/imports/ui/pages/composablepages')
+);
+const ComposablePageForm = loadable(() =>
   import('/imports/ui/pages/composablepages/ComposablePageForm')
 );
-const FeatureAdminWrapper = lazy(() =>
+const FeatureAdminWrapper = loadable(() =>
   import('/imports/ui/pages/admin/features/_FeatureAdminWrapper')
 );
-const MainFeatureSettings = lazy(() =>
+const MainFeatureSettings = loadable(() =>
   import('/imports/ui/pages/admin/features/MainFeatureSettings')
 );
-const FeaturesWrapper = lazy(() =>
+const FeaturesWrapper = loadable(() =>
   import('/imports/ui/pages/admin/features/FeaturesWrapper')
 );
-const Redirector = lazy(() => import('/imports/ui/generic/Redirector'));
-const EditProfile = lazy(() => import('/imports/ui/pages/profile/EditProfile'));
-const EditProfileGeneral = lazy(() =>
+const Redirector = loadable(() => import('/imports/ui/generic/Redirector'));
+const EditProfile = loadable(() =>
+  import('/imports/ui/pages/profile/EditProfile')
+);
+const EditProfileGeneral = loadable(() =>
   import('/imports/ui/pages/profile/EditProfileGeneral')
 );
-const EditProfileLanguage = lazy(() =>
+const EditProfileLanguage = loadable(() =>
   import('/imports/ui/pages/profile/EditProfileLanguage')
 );
-const EditProfilePrivacy = lazy(() =>
+const EditProfilePrivacy = loadable(() =>
   import('/imports/ui/pages/profile/EditProfilePrivacy')
 );
 // import NewHost from '/imports/ui/pages/hosts/NewHost';
@@ -175,7 +182,7 @@ class RouteErrorBoundary extends React.Component {
 }
 
 // Use it in your route wrapper
-const createRouteElement = (Component, props, skipSuspense = false) => {
+const createRouteElement = (Component, props, skipSuspense = true) => {
   if (props.skipSuspense) {
     return (
       <RouteErrorBoundary>
@@ -392,7 +399,7 @@ export default function appRoutes(props) {
         },
         {
           path: 'people',
-          element: createRouteElement(UserListHandler, props),
+          element: createRouteElement(UserListHandler, props, true),
           loader: async () => await getPeople({ host, isPortalHost }),
         },
         {
