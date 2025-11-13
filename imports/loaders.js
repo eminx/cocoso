@@ -5,7 +5,6 @@ export async function getHomeLoader({ Host, params, request }) {
   const isPortalHost = Boolean(Host?.isPortalHost);
   const menu = Host?.settings?.menu;
   const homeRouteName = menu && menu[0]?.name;
-  // const homeRoute = `/${homeRouteName}`;
 
   switch (homeRouteName) {
     case 'activities':

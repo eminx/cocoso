@@ -14,10 +14,6 @@ import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
 import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
-// const ActivityItemHandler = isServer
-//   ? require('/imports/ui/pages/activities/ActivityItemHandler').default
-//   : loadable(() => import('/imports/ui/pages/activities/ActivityItemHandler'));
-
 import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
 import GroupItemHandler from '/imports/ui/pages/groups/GroupItemHandler';
 import ResourceItemHandler from '/imports/ui/pages/resources/ResourceItemHandler';
@@ -140,13 +136,12 @@ import {
   getGroupsByUser,
   getWorksByUser,
 } from './loaders';
-import { updateHostSettings } from './actions';
 
 const features = [
   'activities',
   'calendar',
   'groups',
-  'pages',
+  'info',
   'people',
   'resources',
   'works',
@@ -293,8 +288,7 @@ const getAdminRoutes = (props) => [
     ],
   },
   {
-    path: 'features',
-    // element: createRouteElement(FeaturesWrapper, props),
+    path: 'listing',
     children: features.map((feature) => ({
       path: feature,
       children: [
