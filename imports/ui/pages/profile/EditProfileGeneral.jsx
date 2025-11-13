@@ -76,7 +76,8 @@ export default function EditProfileGeneral() {
         })
       );
     } catch (error) {
-      message.error(error.reason);
+      console.log(error);
+      message.error(error.reason || error.error);
     } finally {
       setIsUploading(false);
     }

@@ -1,14 +1,6 @@
-import { Meteor } from 'meteor/meteor';
-import React, { useLayoutEffect, useState } from 'react';
-import {
-  Navigate,
-  Outlet,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router';
-import { Trans, useTranslation } from 'react-i18next';
+import React, { useState } from 'react';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
 import {
@@ -17,7 +9,6 @@ import {
   Button,
   Center,
   Divider,
-  Flex,
   Heading,
   Modal,
   Tabs,

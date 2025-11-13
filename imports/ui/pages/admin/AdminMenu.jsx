@@ -168,6 +168,10 @@ export default function AdminMenu({ currentHost, routes, onItemClick }) {
     return null;
   }
 
+  const handleUserThumbClick = () => {
+    onItemClick({ value: '/admin/my-profile' });
+  };
+
   // const { isPortalHost } = currentHost;
   // const { isSuperAdmin } = currentUser;
 
@@ -232,7 +236,7 @@ export default function AdminMenu({ currentHost, routes, onItemClick }) {
             cursor: 'pointer',
             flexGrow: '0',
           }}
-          onClick={() => navigate('/admin/my-profile')}
+          onClick={handleUserThumbClick}
         >
           <AdminUserThumb currentUser={currentUser} />
         </Box>
