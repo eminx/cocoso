@@ -9,7 +9,7 @@ import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
 import FormField from '/imports/ui/forms/FormField';
 import { call } from '/imports/api/_utils/shared';
-import { loaderAtom } from '/imports/ui/listing/NewEntryHandler';
+import { loaderAtom } from '/imports/ui/utils/loaderHandler';
 import { message } from '/imports/ui/generic/message';
 
 import resourceFormFields from './resourceFormFields';

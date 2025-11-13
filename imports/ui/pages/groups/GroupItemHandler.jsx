@@ -1,18 +1,18 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useSearchParams } from 'react-router';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import GroupHybrid from '/imports/ui/entry/GroupHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import { Loader } from '/imports/ui/core';
+const EditEntryHandler = lazy(() =>
+  import('/imports/ui/forms/EditEntryHandler')
+);
 
 const GroupInteractionHandler = lazy(() =>
   import('./components/GroupInteractionHandler')
 );
 const EditGroup = lazy(() => import('./EditGroup'));
-const NewEntryHandler = lazy(() =>
-  import('/imports/ui/listing/NewEntryHandler')
-);
 
 export const groupAtom = atom(null);
 
@@ -21,6 +21,7 @@ export default function GroupItemHandler({ Host, pageTitles }) {
   const setGroup = useSetAtom(groupAtom);
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     setGroup(group);
@@ -35,9 +36,9 @@ export default function GroupItemHandler({ Host, pageTitles }) {
           <GroupInteractionHandler />
 
           {canCreateContent && (
-            <NewEntryHandler>
+            <EditEntryHandler context="groups">
               <EditGroup />
-            </NewEntryHandler>
+            </EditEntryHandler>
           )}
         </Suspense>
       )}

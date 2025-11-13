@@ -5,13 +5,13 @@ import makeAnimated from 'react-select/animated';
 import { useAtom } from 'jotai';
 
 import { call } from '/imports/api/_utils/shared';
+import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
+import ImageUploader from '/imports/ui/forms/ImageUploader';
+import FormField from '/imports/ui/forms/FormField';
+import { loaderAtom } from '/imports/ui/utils/loaderHandler';
+import { message } from '/imports/ui/generic/message';
 
-import GenericEntryForm from '../../forms/GenericEntryForm';
-import ImageUploader from '../../forms/ImageUploader';
-import FormField from '../../forms/FormField';
 import workFormFields from './workFormFields';
-import { loaderAtom } from '../../listing/NewEntryHandler';
-import { message } from '../../generic/message';
 
 export const emptyFormValues = {
   additionalInfo: '',

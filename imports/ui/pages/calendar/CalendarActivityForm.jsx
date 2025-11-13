@@ -11,7 +11,7 @@ import FormField from '/imports/ui/forms/FormField';
 import DatesAndTimes, {
   emptyDateAndTime,
 } from '/imports/ui/forms/DatesAndTimes';
-import { loaderAtom } from '/imports/ui/listing/NewEntryHandler';
+import { loaderAtom } from '/imports/ui/utils/loaderHandler';
 
 import calendarActivityFormFields from './calendarActivityFormFields';
 

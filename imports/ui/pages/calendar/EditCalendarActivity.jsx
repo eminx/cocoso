@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router';
 import { useAtom } from 'jotai';
 
 import { call } from '/imports/api/_utils/shared';
@@ -12,10 +11,6 @@ import { activityAtom } from '../activities/ActivityItemHandler';
 export default function EditCalendarActivity() {
   const [updated, setUpdated] = useState(null);
   const [activity, setActivity] = useAtom(activityAtom);
-  const [, setSearchParams] = useSearchParams();
-  if (!activity) {
-    return null;
-  }
 
   const updateActivity = async (newActivity) => {
     const activityId = activity._id;
@@ -23,10 +18,17 @@ export default function EditCalendarActivity() {
       await call('updateActivity', activityId, newActivity);
       setActivity(await call('getActivityById', activityId));
       setUpdated(activityId);
+      setTimeout(() => {
+        setUpdated(null);
+      }, 1000);
     } catch (error) {
       message.error(error.reason || error.error);
     }
   };
+
+  if (!activity) {
+    return null;
+  }
 
   const activityFields = (({
     _id,
@@ -47,10 +49,7 @@ export default function EditCalendarActivity() {
   }))(activity);
 
   return (
-    <SuccessRedirector
-      ping={updated}
-      onSuccess={() => setSearchParams({ edit: 'false' })}
-    >
+    <SuccessRedirector forEdit ping={updated}>
       <CalendarActivityForm
         activity={activityFields}
         onFinalize={updateActivity}

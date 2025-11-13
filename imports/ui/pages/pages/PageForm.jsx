@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAtom } from 'jotai';
 
-import GenericEntryForm from '../../forms/GenericEntryForm';
-import ImageUploader from '../../forms/ImageUploader';
-import FormField from '../../forms/FormField';
+import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
+import ImageUploader from '/imports/ui/forms/ImageUploader';
+import FormField from '/imports/ui/forms/FormField';
+import { loaderAtom } from '/imports/ui/utils/loaderHandler';
+
 import pageFormFields from './pageFormFields';
-import { loaderAtom } from '../../listing/NewEntryHandler';
 
 export const emptyFormValues = {
   longDescription: '',

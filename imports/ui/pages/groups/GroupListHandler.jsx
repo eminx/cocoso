@@ -4,9 +4,7 @@ import { useAtomValue } from 'jotai';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
-const NewEntryHandler = lazy(() =>
-  import('/imports/ui/listing/NewEntryHandler')
-);
+const NewEntryHandler = lazy(() => import('../../forms/NewEntryHandler'));
 const NewGroup = lazy(() => import('./NewGroup'));
 
 export default function GroupListHandler({ Host }) {
@@ -19,7 +17,7 @@ export default function GroupListHandler({ Host }) {
       <GroupsHybrid groups={groups} Host={Host} />
 
       {rendered && canCreateContent ? (
-        <NewEntryHandler>
+        <NewEntryHandler context="groups">
           <NewGroup />
         </NewEntryHandler>
       ) : null}

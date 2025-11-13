@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useParams, useSearchParams } from 'react-router';
-import { useAtom, useSetAtom } from 'jotai';
+import { useParams } from 'react-router';
+import { useAtom } from 'jotai';
 
 import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
 import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { initialLoader, loaderAtom } from '/imports/ui/listing/NewEntryHandler';
 
 import WorkForm from './WorkForm';
 import { workAtom } from './WorkItemHandler';
@@ -13,9 +12,7 @@ import { workAtom } from './WorkItemHandler';
 export default function EditWork() {
   const [updated, setUpdated] = useState(null);
   const [work, setWork] = useAtom(workAtom);
-  const setLoaders = useSetAtom(loaderAtom);
-  const { workId, usernameSlug } = useParams();
-  const [, setSearchParams] = useSearchParams();
+  const { usernameSlug } = useParams();
 
   const username = usernameSlug.replace('@', '');
 
@@ -25,17 +22,12 @@ export default function EditWork() {
       await call('updateWork', workId, newWork);
       setWork(await call('getWorkById', workId, username));
       setUpdated(workId);
+      setTimeout(() => {
+        setUpdated(null);
+      }, 1000);
     } catch (error) {
       message.error(error.reason || error.error);
     }
-  };
-
-  const handleSuccess = () => {
-    setSearchParams({ edit: 'false' });
-    setUpdated(null);
-    setTimeout(() => {
-      setLoaders({ ...initialLoader });
-    }, 1200);
   };
 
   if (!work) {
@@ -63,7 +55,7 @@ export default function EditWork() {
   }))(work);
 
   return (
-    <SuccessRedirector ping={updated} onSuccess={handleSuccess}>
+    <SuccessRedirector forEdit ping={updated}>
       <WorkForm work={workFields} onFinalize={updateWork} />
     </SuccessRedirector>
   );

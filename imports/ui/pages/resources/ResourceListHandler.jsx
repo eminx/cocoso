@@ -4,9 +4,7 @@ import { useAtomValue } from 'jotai';
 
 import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
-const NewEntryHandler = lazy(() =>
-  import('/imports/ui/listing/NewEntryHandler')
-);
+const NewEntryHandler = lazy(() => import('../../forms/NewEntryHandler'));
 const NewResource = lazy(() => import('./NewResource'));
 
 export default function ResourceListHandler({ Host }) {
@@ -23,7 +21,7 @@ export default function ResourceListHandler({ Host }) {
       />
 
       {rendered && canCreateContent ? (
-        <NewEntryHandler>
+        <NewEntryHandler context="resources">
           <NewResource />
         </NewEntryHandler>
       ) : null}

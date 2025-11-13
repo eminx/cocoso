@@ -13,10 +13,10 @@ import {
   Select,
   Textarea,
 } from '/imports/ui/core';
+import { loaderAtom } from '/imports/ui/utils/loaderHandler';
 
 import Quill from './Quill';
 import FormField from './FormField';
-import { loaderAtom } from '../listing/NewEntryHandler';
 
 interface Option {
   value: string;

@@ -1,14 +1,13 @@
 import React, { lazy, useEffect } from 'react';
-import {
-  Navigate,
-  useLoaderData,
-  useParams,
-  useSearchParams,
-} from 'react-router';
+import { Navigate, useLoaderData, useSearchParams } from 'react-router';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
+
+const EditEntryHandler = lazy(() =>
+  import('/imports/ui/forms/EditEntryHandler')
+);
 
 const ActivityInteractionHandler = lazy(() =>
   import('./components/ActivityInteractionHandler')
@@ -17,9 +16,6 @@ const EditCalendarActivity = lazy(() =>
   import('../calendar/EditCalendarActivity')
 );
 const EditPublicActivity = lazy(() => import('./EditPublicActivity'));
-const NewEntryHandler = lazy(() =>
-  import('/imports/ui/listing/NewEntryHandler')
-);
 
 export const activityAtom = atom(null);
 
@@ -28,6 +24,7 @@ export default function ActivityItemHandler({ Host }) {
   const setActivity = useSetAtom(activityAtom);
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     setActivity(activity);
@@ -46,14 +43,17 @@ export default function ActivityItemHandler({ Host }) {
       {rendered && (
         <>
           <ActivityInteractionHandler />
+
           {canCreateContent && (
-            <NewEntryHandler>
+            <EditEntryHandler
+              context={activity.isPublicActivity ? 'activities' : 'calendar'}
+            >
               {activity.isPublicActivity ? (
                 <EditPublicActivity />
               ) : (
                 <EditCalendarActivity />
               )}
-            </NewEntryHandler>
+            </EditEntryHandler>
           )}
         </>
       )}

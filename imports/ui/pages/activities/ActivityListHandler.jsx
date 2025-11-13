@@ -4,9 +4,7 @@ import { useAtomValue } from 'jotai';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
-const NewEntryHandler = lazy(() =>
-  import('/imports/ui/listing/NewEntryHandler')
-);
+const NewEntryHandler = lazy(() => import('../../forms/NewEntryHandler'));
 const NewPublicActivity = lazy(() => import('./NewPublicActivity'));
 
 export default function ActivityListHandler({ Host }) {
@@ -25,7 +23,7 @@ export default function ActivityListHandler({ Host }) {
       />
 
       {rendered && canCreateContent ? (
-        <NewEntryHandler>
+        <NewEntryHandler context="activities">
           <NewPublicActivity />
         </NewEntryHandler>
       ) : null}

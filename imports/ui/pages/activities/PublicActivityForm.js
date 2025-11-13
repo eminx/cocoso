@@ -5,15 +5,17 @@ import makeAnimated from 'react-select/animated';
 import { useAtom } from 'jotai';
 
 import { Box, Checkbox, NumberInput } from '/imports/ui/core';
+import { loaderAtom } from '/imports/ui/utils/loaderHandler';
+import { call } from '/imports/api/_utils/shared';
+import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
+import ImageUploader from '/imports/ui/forms/ImageUploader';
+import FormField from '/imports/ui/forms/FormField';
+import DatesAndTimes, {
+  emptyDateAndTime,
+} from '/imports/ui/forms/DatesAndTimes';
+import { message } from '/imports/ui/generic/message';
 
-import { call } from '../../../api/_utils/shared';
-import GenericEntryForm from '../../forms/GenericEntryForm';
-import ImageUploader from '../../forms/ImageUploader';
-import FormField from '../../forms/FormField';
-import DatesAndTimes, { emptyDateAndTime } from '../../forms/DatesAndTimes';
 import publicActivityFormFields from './publicActivityFormFields';
-import { loaderAtom } from '../../listing/NewEntryHandler';
-import { message } from '../../generic/message';
 
 const animatedComponents = makeAnimated();
 const defaultCapacity = 40;
@@ -63,12 +65,12 @@ export default function PublicActivityForm({ activity, onFinalize }) {
 
   const isFormValid = () => {
     const { datesAndTimes } = state;
-    const isConflictHard = datesAndTimes.some(
-      (occurrence) => Boolean(occurrence.conflict) && occurrence.isConflictHard
-    );
+    const isConflictHard = datesAndTimes?.some((occurrence) => {
+      return Boolean(occurrence.conflict) && occurrence.isConflictHard;
+    });
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-    const isTimesInValid = datesAndTimes.some(
+    const isTimesInValid = datesAndTimes?.some(
       (dateTime) =>
         !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
     );

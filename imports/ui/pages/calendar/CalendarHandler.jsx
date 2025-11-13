@@ -209,8 +209,13 @@ export default function CalendarHandler({ Host, pageTitles }) {
     return <Loader />;
   }
 
+  const loading =
+    !activities || activities.length < 1 || !resources || resources.length < 1;
+
   return (
     <>
+      {loading && <Loader />}
+
       <PageHeading currentHost={currentHost || Host} listing="calendar" />
 
       <Box>

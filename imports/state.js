@@ -9,7 +9,6 @@ export const pageTitlesAtom = atom([]);
 export const platformAtom = atom(null);
 export const renderedAtom = atom(false);
 export const roleAtom = atom(null);
-
 export const canCreateContentAtom = atom((get) => {
   const role = get(roleAtom);
   return role && ['admin', 'contributor'].includes(role);
