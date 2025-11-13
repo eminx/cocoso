@@ -9,6 +9,8 @@ export async function getHomeLoader({ Host, params, request }) {
   switch (homeRouteName) {
     case 'activities':
       return await getActivities({ host, isPortalHost, request });
+    case 'calendar':
+      return await getCalendarEntries({ host, isPortalHost });
     case 'groups':
       return await getGroups({ host, isPortalHost });
     case 'resources':
