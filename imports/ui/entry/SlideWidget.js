@@ -56,15 +56,18 @@ const slideProps = (slideStart) => ({
   ping: slideStart,
 });
 
-export default function SlideWidget({
-  slideStart = true,
-  children,
-  ...otherProps
-}) {
+export default function SlideWidget({ children, ...otherProps }) {
+  const [slideStart, setSlideStart] = useState(false);
   const [position, setPosition] = useState('fixed');
   const [widgetHeight, setWidgetHeight] = useState(0);
   const positionRef = useRef(position);
   const containerRef = useRef();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSlideStart(true);
+    }, 1200);
+  }, []);
 
   // Sync ref with position state
   useEffect(() => {

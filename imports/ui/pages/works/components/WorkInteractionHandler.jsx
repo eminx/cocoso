@@ -5,9 +5,9 @@ import { Box } from '/imports/ui/core';
 import { currentUserAtom } from '/imports/state';
 import SlideWidget from '/imports/ui/entry/SlideWidget';
 
+import { workAtom } from '../WorkItemHandler';
 import WorkAdminFunctions from './WorkAdminFunctions';
 import ContactInfo from '../../profile/ContactInfo';
-import { workAtom } from '../WorkItemHandler';
 
 export default function WorkInteractionHandler() {
   const currentUser = useAtomValue(currentUserAtom);
@@ -23,15 +23,15 @@ export default function WorkInteractionHandler() {
         <ContactInfo username={work.authorUsername} />
       </SlideWidget>
     );
+  } else {
+    return (
+      <SlideWidget justify="space-between">
+        <Box w="40px">
+          <WorkAdminFunctions />
+        </Box>
+        <ContactInfo username={work.authorUsername} />
+        <Box w="40px" />
+      </SlideWidget>
+    );
   }
-
-  return (
-    <SlideWidget justify="space-between">
-      <Box w="40px">
-        <WorkAdminFunctions />
-      </Box>
-      <ContactInfo username={work.authorUsername} />
-      <Box w="40px" />
-    </SlideWidget>
-  );
 }

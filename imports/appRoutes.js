@@ -455,12 +455,12 @@ export default function appRoutes(props) {
               loader: async ({ params }) =>
                 await getWorksByUser({ params, host }),
             },
-            {
-              path: 'works/:workId/*',
-              element: createRouteElement(WorkItemHandler, props),
-              loader: async ({ params }) => await getWork({ params }),
-            },
           ],
+        },
+        {
+          path: ':usernameSlug/works/:workId/*',
+          element: createRouteElement(WorkItemHandler, props),
+          loader: async ({ params }) => await getWork({ params }),
         },
         {
           path: 'cp/:composablePageId',

@@ -244,7 +244,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
                 </Box>
               )}
 
-              <Box mb="24">{selectedTab?.content}</Box>
+              <Box mb="4">{selectedTab?.content}</Box>
             </Box>
           </Center>
         </Box>

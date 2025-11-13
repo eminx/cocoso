@@ -28,6 +28,7 @@ import {
 } from '/imports/state';
 import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 import { call } from '/imports/api/_utils/shared';
+import { Box } from '/imports/ui/core';
 
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
@@ -153,7 +154,9 @@ export default function WrapperHybrid({
             />
           )}
 
-          <Outlet />
+          <Box id="main-content-container">
+            <Outlet />
+          </Box>
 
           <Footer currentHost={currentHost || Host} />
           <PlatformFooter />
