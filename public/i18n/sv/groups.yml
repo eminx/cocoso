@@ -20,7 +20,7 @@ tabs:
 form:
   private:
     label: Sluten grupp (endast för inbjudna)
-    helper: Slutna grupper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den. Du kommer hantera inbjudningarna efter att du har skapat objektet.
+    helper: Slutna grupper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den. Du kommer hantera inbjudningarna efter att du har skapat gruppen.
     holder: Välj
   title:
     label: Titel
@@ -49,8 +49,8 @@ message:
   unarchived: Ditt objekt har avarkiverats
 
   joined: Du är redan medlem!
-  added: Du är nu med i objektet
-  removed: Du tas bort från objektet
+  added: Du har gått med i gruppen
+  removed: Du har lämnat gruppen
 
 actions:
   this: Gå med
@@ -72,7 +72,7 @@ meeting:
   success:
     add: Mötet har lagts till!
     remove: Mötet har tagits bort
-    fileDropper: har laddats upp till den här objektet!
+    fileDropper: har laddats upp till den här gruppen!
     admin: Ny admin har lagts till
   actions:
     remove: Ta bort det här mötet
