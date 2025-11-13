@@ -14,10 +14,6 @@ import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
 import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
-// const ActivityItemHandler = isServer
-//   ? require('/imports/ui/pages/activities/ActivityItemHandler').default
-//   : loadable(() => import('/imports/ui/pages/activities/ActivityItemHandler'));
-
 import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
 import GroupItemHandler from '/imports/ui/pages/groups/GroupItemHandler';
 import ResourceItemHandler from '/imports/ui/pages/resources/ResourceItemHandler';
@@ -79,16 +75,24 @@ const ComposablePages = loadable(() =>
 const ComposablePageForm = loadable(() =>
   import('/imports/ui/pages/composablepages/ComposablePageForm')
 );
-const FeatureAdminWrapper = loadable(() =>
-  import('/imports/ui/pages/admin/features/_FeatureAdminWrapper')
+const ActivitiesAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/ActivitiesAdmin')
 );
-const MainFeatureSettings = loadable(() =>
-  import('/imports/ui/pages/admin/features/MainFeatureSettings')
+const CalendarAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/CalendarAdmin')
 );
-const FeaturesWrapper = loadable(() =>
-  import('/imports/ui/pages/admin/features/FeaturesWrapper')
+const GroupsAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/GroupsAdmin')
 );
-const Redirector = loadable(() => import('/imports/ui/generic/Redirector'));
+const PagesAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/PagesAdmin')
+);
+const ResourcesAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/ResourcesAdmin')
+);
+const WorksAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/WorksAdmin')
+);
 const EditProfile = loadable(() =>
   import('/imports/ui/pages/profile/EditProfile')
 );
@@ -140,13 +144,12 @@ import {
   getGroupsByUser,
   getWorksByUser,
 } from './loaders';
-import { updateHostSettings } from './actions';
 
-const features = [
+const listingFeatures = [
   'activities',
   'calendar',
   'groups',
-  'pages',
+  'info',
   'people',
   'resources',
   'works',
@@ -293,24 +296,33 @@ const getAdminRoutes = (props) => [
     ],
   },
   {
-    path: 'features',
-    // element: createRouteElement(FeaturesWrapper, props),
-    children: features.map((feature) => ({
-      path: feature,
-      children: [
-        {
-          index: true,
-          element: createRouteElement(FeatureAdminWrapper, props),
-        },
-        {
-          path: 'menu',
-          element: createRouteElement(MainFeatureSettings, {
-            ...props,
-            feature,
-          }),
-        },
-      ],
-    })),
+    path: 'listing',
+    children: [
+      {
+        path: 'activities/*',
+        element: createRouteElement(ActivitiesAdmin, props),
+      },
+      {
+        path: 'calendar/*',
+        element: createRouteElement(CalendarAdmin, props),
+      },
+      {
+        path: 'groups/*',
+        element: createRouteElement(GroupsAdmin, props),
+      },
+      {
+        path: 'info/*',
+        element: createRouteElement(PagesAdmin, props),
+      },
+      {
+        path: 'resources/*',
+        element: createRouteElement(ResourcesAdmin, props),
+      },
+      {
+        path: 'works/*',
+        element: createRouteElement(WorksAdmin, props),
+      },
+    ],
   },
   {
     path: 'users',

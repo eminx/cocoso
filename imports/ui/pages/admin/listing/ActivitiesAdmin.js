@@ -1,8 +1,8 @@
 import React from 'react';
 import FeatureAdminWrapper from './_FeatureAdminWrapper';
 
-const menuItemName = 'activities';
+const listing = 'activities';
 
 export default function ActivitiesAdmin() {
-  return <FeatureAdminWrapper menuItemName={menuItemName} />;
+  return <FeatureAdminWrapper listing={listing} />;
 }

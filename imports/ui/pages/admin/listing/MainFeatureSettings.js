@@ -33,7 +33,7 @@ function Tablish({ rowItem }) {
   );
 }
 
-export default function MainFeatureSettings({ feature }) {
+export default function MainFeatureSettings({ listing }) {
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [localItem, setLocalItem] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -41,7 +41,7 @@ export default function MainFeatureSettings({ feature }) {
   const [tc] = useTranslation('common');
 
   const selectedMenuItem = currentHost?.settings?.menu?.find(
-    (menuItem) => menuItem.name === feature
+    (menuItem) => menuItem.name === listing
   );
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function MainFeatureSettings({ feature }) {
     const localSettings = {
       ...currentHost.settings,
       menu: currentHost.settings?.menu?.map((menuItem) => {
-        if (menuItem.name === feature) {
+        if (menuItem.name === listing) {
           return localItem;
         }
         return menuItem;

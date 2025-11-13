@@ -10,12 +10,11 @@ Categories.schema = new SimpleSchema({
 
   addedBy: Schemas.Id,
   addedUsername: { type: String },
+  addedDate: { type: Date },
 
   type: { type: String, optional: true },
   label: { type: String },
-  color: { type: String },
-
-  addedDate: { type: Date },
+  // color: { type: String },
 });
 
 Categories.attachSchema(Categories.schema);

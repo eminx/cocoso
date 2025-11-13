@@ -2,8 +2,8 @@ import React from 'react';
 
 import FeatureAdminWrapper from './_FeatureAdminWrapper';
 
-const menuItemName = 'calendar';
+const listing = 'calendar';
 
 export default function CalendarAdmin() {
-  return <FeatureAdminWrapper menuItemName={menuItemName} />;
+  return <FeatureAdminWrapper listing={listing} />;
 }
