@@ -2,8 +2,8 @@ import React from 'react';
 
 import FeatureAdminWrapper from './_FeatureAdminWrapper';
 
-const menuItemName = 'communities';
+const listing = 'communities';
 
 export default function CommunitiesAdmin() {
-  return <FeatureAdminWrapper menuItemName={menuItemName} />;
+  return <FeatureAdminWrapper listing={listing} />;
 }

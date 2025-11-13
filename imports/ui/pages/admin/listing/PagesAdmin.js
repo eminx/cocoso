@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import FeatureAdminWrapper from './_FeatureAdminWrapper';
 import PagesAdminOrder from './PagesAdminOrder';
 
-const menuItemName = 'info';
+const listing = 'info';
 
 export default function PagesAdmin() {
   const [t] = useTranslation('admin');
@@ -17,5 +17,5 @@ export default function PagesAdmin() {
     },
   ];
 
-  return <FeatureAdminWrapper furtherTabs={tabs} menuItemName={menuItemName} />;
+  return <FeatureAdminWrapper furtherTabs={tabs} listing={listing} />;
 }

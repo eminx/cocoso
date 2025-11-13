@@ -75,16 +75,24 @@ const ComposablePages = loadable(() =>
 const ComposablePageForm = loadable(() =>
   import('/imports/ui/pages/composablepages/ComposablePageForm')
 );
-const FeatureAdminWrapper = loadable(() =>
-  import('/imports/ui/pages/admin/features/_FeatureAdminWrapper')
+const ActivitiesAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/ActivitiesAdmin')
 );
-const MainFeatureSettings = loadable(() =>
-  import('/imports/ui/pages/admin/features/MainFeatureSettings')
+const CalendarAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/CalendarAdmin')
 );
-const FeaturesWrapper = loadable(() =>
-  import('/imports/ui/pages/admin/features/FeaturesWrapper')
+const GroupsAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/GroupsAdmin')
 );
-const Redirector = loadable(() => import('/imports/ui/generic/Redirector'));
+const PagesAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/PagesAdmin')
+);
+const ResourcesAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/ResourcesAdmin')
+);
+const WorksAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/WorksAdmin')
+);
 const EditProfile = loadable(() =>
   import('/imports/ui/pages/profile/EditProfile')
 );
@@ -137,7 +145,7 @@ import {
   getWorksByUser,
 } from './loaders';
 
-const features = [
+const listingFeatures = [
   'activities',
   'calendar',
   'groups',
@@ -289,22 +297,32 @@ const getAdminRoutes = (props) => [
   },
   {
     path: 'listing',
-    children: features.map((feature) => ({
-      path: feature,
-      children: [
-        {
-          index: true,
-          element: createRouteElement(FeatureAdminWrapper, props),
-        },
-        {
-          path: 'menu',
-          element: createRouteElement(MainFeatureSettings, {
-            ...props,
-            feature,
-          }),
-        },
-      ],
-    })),
+    children: [
+      {
+        path: 'activities/*',
+        element: createRouteElement(ActivitiesAdmin, props),
+      },
+      {
+        path: 'calendar/*',
+        element: createRouteElement(CalendarAdmin, props),
+      },
+      {
+        path: 'groups/*',
+        element: createRouteElement(GroupsAdmin, props),
+      },
+      {
+        path: 'info/*',
+        element: createRouteElement(PagesAdmin, props),
+      },
+      {
+        path: 'resources/*',
+        element: createRouteElement(ResourcesAdmin, props),
+      },
+      {
+        path: 'works/*',
+        element: createRouteElement(WorksAdmin, props),
+      },
+    ],
   },
   {
     path: 'users',

@@ -20,7 +20,7 @@ import Boxling from './Boxling';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
-function Categories() {
+export default function CategoriesAdmin() {
   const currentUser = useAtomValue(currentUserAtom);
   const role = useAtomValue(roleAtom);
   const [categories, setCategories] = useState([]);
@@ -32,7 +32,7 @@ function Categories() {
   const getCategories = async () => {
     try {
       const latestCategories = await call('getCategories');
-      setCategories(latestCategories);
+      setCategories(latestCategories.reverse());
     } catch (error) {
       message.error(error.reason);
     } finally {
@@ -43,10 +43,6 @@ function Categories() {
   useEffect(() => {
     getCategories();
   }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
 
   const addNewCategory = async (event) => {
     event.preventDefault();
@@ -75,6 +71,10 @@ function Categories() {
       setCategoryInput(value);
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   if (!currentUser || role !== 'admin') {
     return <Alert>{tc('message.access.deny')}</Alert>;
@@ -115,5 +115,3 @@ function Categories() {
     </Box>
   );
 }
-
-export default Categories;

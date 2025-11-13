@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Categories from '../Categories';
+import CategoriesAdmin from '../CategoriesAdmin';
 import FeatureAdminWrapper from './_FeatureAdminWrapper';
 
-const menuItemName = 'works';
+const listing = 'works';
 
 export default function WorksAdmin() {
   const [t] = useTranslation('admin');
@@ -13,9 +13,9 @@ export default function WorksAdmin() {
     {
       title: t('categories.title'),
       path: 'categories',
-      content: <Categories />,
+      content: <CategoriesAdmin />,
     },
   ];
 
-  return <FeatureAdminWrapper menuItemName={menuItemName} furtherTabs={tabs} />;
+  return <FeatureAdminWrapper listing={listing} furtherTabs={tabs} />;
 }

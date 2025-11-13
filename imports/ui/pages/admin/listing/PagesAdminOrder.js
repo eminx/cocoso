@@ -5,10 +5,10 @@ import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
 import { Trans, useTranslation } from 'react-i18next';
 import { useAtom } from 'jotai';
 
+import { pageTitlesAtom } from '/imports/state';
 import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
-import { call } from '../../../../api/_utils/shared';
-import { pageTitlesAtom } from '../../../../state';
+import { call } from '/imports/api/_utils/shared';
 
 import Boxling from '../Boxling';
 

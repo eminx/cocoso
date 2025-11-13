@@ -31,26 +31,26 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost?.members, user?._id);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user?.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
 
-    if (
-      await Categories.findOneAsync({ label: category.toLowerCase(), host })
-    ) {
+    const existingCat = await Categories.findOneAsync({
+      label: category.toLowerCase(),
+      host,
+    });
+
+    if (existingCat) {
       throw new Meteor.Error('Category already exists!');
     }
-
-    const catLength = await Categories.find({ host, type }).countAsync();
 
     try {
       return await Categories.insertAsync({
         host,
         type,
         label: category.toLowerCase(),
-        color: catColors[catLength],
         addedBy: user._id,
         addedUsername: user.username,
         addedDate: new Date(),
