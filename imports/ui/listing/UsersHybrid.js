@@ -170,7 +170,7 @@ export default function UsersHybrid({ Host, users, keywords }) {
       </Center>
 
       {showKeywordSearch ? (
-        <Flex justify="center">
+        <Flex justify="center" css={{ marginBottom: '480px' }}>
           <Box>
             <Cascader
               changeOnSelect
