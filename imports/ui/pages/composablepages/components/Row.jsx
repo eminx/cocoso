@@ -4,8 +4,10 @@ import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
 import { arrayMoveImmutable } from 'array-move';
+import { useAtomValue } from 'jotai';
 
 import { styled } from '/stitches.config';
+import { isDesktopAtom } from '/imports/state';
 import Menu from '/imports/ui/generic/Menu';
 import { Box, Center, Flex, IconButton } from '/imports/ui/core';
 import Boxling from '/imports/ui/pages/admin/Boxling';
@@ -184,13 +186,15 @@ const GridRow = ({ css, gridTemplateColumns, ...rest }) => (
 );
 
 export default function Row({ row, rowIndex }) {
+  const isDesktop = useAtomValue(isDesktopAtom);
+
   const { columns, gridType } = row;
 
   if (!columns || !columns.length || !gridType) {
     return null;
   }
 
-  const gridTemplateColumns = getGridTemplateColumns(gridType);
+  const gridTemplateColumns = getGridTemplateColumns(gridType, isDesktop);
 
   return (
     <GridRow gridTemplateColumns={gridTemplateColumns}>
