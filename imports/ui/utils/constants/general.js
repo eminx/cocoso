@@ -70,41 +70,44 @@ const hostFields = [
     // label: 'desired url/address',
     // placeholder: 'pineapples.fanus.co',
     name: 'host',
-    isRequired: true,
+    required: true,
   },
   {
     // label: 'name',
     // placeholder: 'Pineapples',
     name: 'name',
-    isRequired: true,
+    required: true,
   },
   {
     // label: 'contact email',
     // placeholder: 'email@pineapple.com',
     name: 'email',
-    isRequired: true,
+    required: true,
   },
   {
     // label: 'address',
     // placeholder: 'Paul Klee Boulevard 99',
     name: 'address',
+    required: true,
   },
   {
     // label: 'city',
     // placeholder: 'Pushkar',
     name: 'city',
+    required: true,
   },
   {
     // label: 'country',
     // placeholder: 'Galaxy Land',
     name: 'country',
+    required: true,
   },
   {
     // label: 'about',
     // placeholder: 'About your hub',
     name: 'about',
     textArea: true,
-    isRequired: true,
+    required: true,
   },
 ];
 
@@ -112,17 +115,17 @@ const platformFields = [
   {
     label: 'Email',
     name: 'email',
-    isRequired: true,
+    required: true,
   },
   {
     label: 'Name',
     name: 'name',
-    isRequired: true,
+    required: true,
   },
   {
     label: 'Portal Host (Main Website)',
     name: 'portalHost',
-    isRequired: true,
+    required: true,
   },
 ];
 

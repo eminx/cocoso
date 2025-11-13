@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Link, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
+import { useAtomValue } from 'jotai';
 
 import { Box } from '/imports/ui/core';
 
-import { StateContext } from '../LayoutContainer';
+import { currentHostAtom } from '../../state';
 
 function NewEntryHelper({
   buttonLabel,
@@ -15,7 +16,7 @@ function NewEntryHelper({
   small = false,
   title,
 }) {
-  const { currentHost } = useContext(StateContext);
+  const currentHost = useAtomValue(currentHostAtom);
   const location = useLocation();
   const [tc] = useTranslation('common');
 

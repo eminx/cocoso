@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Trans } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import { Box, Button, Center, Flex, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
-import { call } from '/imports/ui/utils/shared';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { call } from '../../../../api/_utils/shared';
+import { currentHostAtom } from '../../../../state';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';
 import Menu from '/imports/ui/generic/Menu';
@@ -38,7 +39,7 @@ const defaultMenuStyle = {
 };
 
 export default function MenuDesign() {
-  const { currentHost, getCurrentHost } = useContext(StateContext);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [state, setState] = useState({
     theme: currentHost?.theme || {
       menu: defaultMenuStyle,
@@ -58,7 +59,7 @@ export default function MenuDesign() {
 
     try {
       await call('updateHostTheme', newTheme);
-      await getCurrentHost();
+      setCurrentHost(await call('getCurrentHost'));
       message.success(<Trans i18nKey="admin:design.message.success" />);
     } catch (error) {
       message.error(

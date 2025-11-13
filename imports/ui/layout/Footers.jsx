@@ -1,8 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
+import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import { useAtomValue } from 'jotai';
 
+import { platformAtom } from '/imports/state';
 import {
   Box,
   Center,
@@ -41,16 +43,18 @@ export function OldFooter({ host, settings }) {
   );
 }
 
-export function Footer({ currentHost, isFederationFooter }) {
-  const [tc] = useTranslation('common');
-  if (!currentHost || !currentHost.settings) {
+export function Footer({ currentHost }) {
+  const platform = useAtomValue(platformAtom);
+
+  if (!platform || !currentHost || !currentHost.settings) {
     return null;
   }
 
+  const { settings } = currentHost;
+  const isFederationFooter = platform?.isFederationLayout && platform.footer;
   const activeMenu = currentHost.settings?.menu?.filter(
     (item) => item.isVisible
   );
-  const { settings } = currentHost;
 
   return (
     <Box bg="gray.700" bottom={0} color="gray.100">
@@ -109,7 +113,9 @@ export function Footer({ currentHost, isFederationFooter }) {
                 <Center>
                   <Link to="/terms-&-privacy-policy">
                     <Text color="blue.100" fontSize="xs">
-                      {tc('terms.title')}{' '}
+                      <Trans i18nKey="common:terms.title">
+                        Terms of Service & Privacy Policy
+                      </Trans>
                     </Text>
                   </Link>
                 </Center>
@@ -126,11 +132,13 @@ export function Footer({ currentHost, isFederationFooter }) {
   );
 }
 
-export function PlatformFooter({ platform, children }) {
-  const [tc] = useTranslation('common');
-  if (!platform) {
+export function PlatformFooter() {
+  const platform = useAtomValue(platformAtom);
+
+  if (!platform || !platform.isFederationLayout || !platform.footer) {
     return null;
   }
+
   return (
     <Center bg="gray.900" className="platform-footer">
       <Box
@@ -153,7 +161,6 @@ export function PlatformFooter({ platform, children }) {
         <Box p="2" className="text-content">
           {HTMLReactParser(platform.footer)}
         </Box>
-        <Box p="2">{children}</Box>
 
         <Center>
           <Link to="/terms-&-privacy-policy">
@@ -167,7 +174,9 @@ export function PlatformFooter({ platform, children }) {
                 },
               }}
             >
-              {tc('terms.title')}{' '}
+              <Trans i18nKey="common:terms.title">
+                Terms of Service & Privacy Policy
+              </Trans>
             </Text>
           </Link>
         </Center>

@@ -1,14 +1,18 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useMemo } from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import dayjs from 'dayjs';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { useAtomValue } from 'jotai';
 
-import { Loader } from '/imports/ui/core';
+if (Meteor.isClient) {
+  import 'react-big-calendar/lib/css/react-big-calendar.css';
+  import '/imports/ui/utils/styles/bigcalendar-custom.css';
+}
+import { canCreateContentAtom, renderedAtom } from '/imports/state';
+import NewEntryHandler from '/imports/ui/forms/NewEntryHandler';
 
-import '../../utils/styles/bigcalendar-custom.css';
-import NewEntryHandler from '../../listing/NewEntryHandler';
 import NewCalendarActivity from './NewCalendarActivity';
 
 const weekday = require('dayjs/plugin/weekday');
@@ -23,6 +27,8 @@ export default function CalendarView({
   onSelectSlot,
 }) {
   const [t] = useTranslation('calendar');
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const rendered = useAtomValue(renderedAtom);
   const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
 
   let culture = 'en-GB';
@@ -47,12 +53,8 @@ export default function CalendarView({
     showMore: (total) => t('bigCal.showMore', { total }),
   };
 
-  const loading =
-    !activities || activities.length < 1 || !resources || resources.length < 1;
-
   return (
     <>
-      {loading && <Loader />}
       <Calendar
         allDayAccessor="isMultipleDay"
         culture={culture}
@@ -73,9 +75,12 @@ export default function CalendarView({
         onSelectEvent={onSelect}
         onSelectSlot={onSelectSlot}
       />
-      <NewEntryHandler>
-        <NewCalendarActivity resources={resources} />
-      </NewEntryHandler>
+
+      {rendered && canCreateContent ? (
+        <NewEntryHandler context="calendar">
+          <NewCalendarActivity resources={resources} />
+        </NewEntryHandler>
+      ) : null}
     </>
   );
 }

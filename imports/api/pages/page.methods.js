@@ -53,7 +53,7 @@ Meteor.methods({
   },
 
   async createPage(formValues, hostPredefined) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
 
     const currentHost = await Hosts.findOneAsync({ host });
@@ -81,7 +81,7 @@ Meteor.methods({
   },
 
   async updatePage(pageId, formValues, hostPredefined) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -111,7 +111,7 @@ Meteor.methods({
   },
 
   async savePageOrder(pages) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -142,7 +142,7 @@ Meteor.methods({
   },
 
   async deletePage(pageId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -158,10 +158,14 @@ Meteor.methods({
     try {
       await Pages.removeAsync(pageId);
       let order = 1;
-      Pages.find({ host }, { sort: { order: 1 } }).forEach((page) => {
-        Pages.update({ _id: page._id }, { $set: { order } });
-        order += 1;
-      });
+      await Promise.all(
+        Pages.find({ host }, { sort: { order: 1 } })
+          .fetchAsync()
+          .map(async (page) => {
+            await Pages.updateAsync({ _id: page._id }, { $set: { order } });
+            order += 1;
+          })
+      );
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }

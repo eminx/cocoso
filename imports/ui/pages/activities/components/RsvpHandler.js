@@ -9,10 +9,6 @@ import ActionButton from '/imports/ui/generic/ActionButton';
 
 import OccurrenceRsvpContent from './OccurrenceRsvpContent';
 
-if (Meteor.isClient) {
-  import 'react-table/react-table.css';
-}
-
 const buttonStyle = {
   backgroundColor: 'var(--cocoso-colors-theme-100)',
   borderRadius: 'var(--cocoso-border-radius)',
@@ -68,6 +64,7 @@ function AccordionDates({ activity, onCloseModal }) {
           {t('public.register.disabled.false')}
         </Text>
       )}
+
       <Accordion
         options={items.map((occurrence, occurrenceIndex) => ({
           key: occurrence.startDate + occurrence.startTime + occurrenceIndex,
@@ -102,7 +99,7 @@ function SubInfo({ occurrence }) {
     <Center>
       <Flex mt="2">
         <Text color="gray.100" mr="2" mt="-1px" size="sm">
-          {t('label.next')}:
+          {t('label.next')}
         </Text>
 
         <Text color="gray.100" fontWeight="bold" size="sm">

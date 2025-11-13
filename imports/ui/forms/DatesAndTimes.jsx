@@ -15,7 +15,7 @@ import {
   Wrap,
 } from '/imports/ui/core';
 
-import { call } from '../utils/shared';
+import { call } from '../../api/_utils/shared';
 import DateTimePicker from './DateTimePicker';
 
 const today = new Date().toISOString().substring(0, 10);

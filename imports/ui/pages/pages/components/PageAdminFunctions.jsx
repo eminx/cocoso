@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React from 'react';
+import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
-import AdminFunctions from '../../../entry/AdminFunctions';
-import { PageContext } from '../Page';
-import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
+import AdminFunctions from '/imports/ui/entry/AdminFunctions';
+import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
+
+import { currentPageAtom } from '../PageItemHandler';
 
 export default function PageAdminFunctions() {
   const [tc] = useTranslation('common');
-  const { currentPage } = useContext(PageContext);
+  const currentPage = useAtomValue(currentPageAtom);
   const [, setSearchParams] = useSearchParams();
 
   const handleSelect = (item) => {

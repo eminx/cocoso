@@ -1,16 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
+import { useSetAtom } from 'jotai';
 
 import { Box, Button, Checkbox, Input } from '/imports/ui/core';
 import Modal from '/imports/ui/core/Modal';
 import FormField from '/imports/ui/forms/FormField';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import { ComposablePageContext } from '../ComposablePageForm';
+import { composablePageTitlesAtom } from '../index';
 
-export default function ComposablePageSettings({ getComposablePageTitles }) {
+export default function ComposablePageSettings() {
+  const setComposablePageTitles = useSetAtom(composablePageTitlesAtom);
   const { currentPage, getComposablePageById } = useContext(
     ComposablePageContext
   );
@@ -61,7 +64,7 @@ export default function ComposablePageSettings({ getComposablePageTitles }) {
     try {
       await call('updateComposablePage', newPage);
       await getComposablePageById();
-      await getComposablePageTitles();
+      setComposablePageTitles(await call('getComposablePageTitles'));
       message.success(<Trans i18nKey="common:message.success.save" />);
       setState((prevState) => ({
         ...prevState,

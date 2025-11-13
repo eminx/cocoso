@@ -1,16 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import { useAtomValue } from 'jotai';
 
 import { Box, Button, Center, Modal, Loader } from '/imports/ui/core';
 
-import { call } from '../../utils/shared';
+import { isDesktopAtom } from '../../../state';
+import { call } from '../../../api/_utils/shared';
 import { message } from '../../generic/message';
-import { StateContext } from '../../LayoutContainer';
 
 export default function ContactInfo({ username }) {
+  const isDesktop = useAtomValue(isDesktopAtom);
   const [modalOpen, setModalOpen] = useState(false);
-  const { isDesktop } = useContext(StateContext);
   const [contactInfo, setContactInfo] = useState(null);
 
   if (!username) {

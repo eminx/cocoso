@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, Route, Routes, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -15,15 +16,15 @@ import {
   Text,
 } from '/imports/ui/core';
 import NiceList from '/imports/ui/generic/NiceList';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '../../../../state';
 
 import EmailPreview from './EmailPreview';
 
 export default function PreviousNewsletters() {
+  const currentHost = useAtomValue(currentHostAtom);
   const [emails, setEmails] = useState(null);
-  const { currentHost } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -96,7 +97,6 @@ function NewsletterEmail({ currentHost, emails }) {
   const email = emails.find((e) => e._id === emailId);
 
   if (!email) {
-    StateContext;
     return null;
   }
 

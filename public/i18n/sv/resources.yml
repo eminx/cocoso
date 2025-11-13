@@ -11,7 +11,7 @@ form:
   holder: skriv
   bookable:
     label: Bokningsbart
-    helper: Aktivera detta om du vill att objektet ska kunna bokas i kalendern
+    helper: Aktivera detta om du vill att resursen ska kunna bokas i kalendern
   combo:
     switch:
       label: Combo

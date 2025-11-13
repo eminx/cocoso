@@ -1,4 +1,6 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import { useTracker } from 'meteor/react-meteor-data';
+import React, { useEffect, useState } from 'react';
+import { useAtomValue, useSetAtom } from 'jotai';
 
 import { Box, Fade, Flex, Loader, Slide } from '/imports/ui/core';
 
@@ -6,7 +8,7 @@ import UserPopup from './UserPopup';
 import FederationIconMenu from './FederationIconMenu';
 import MenuDrawer from './MenuDrawer';
 
-export default function TopBarHandler({ slideStart }) {
+export default function TopBarHandler({ slideStart = true }) {
   const [scrollTop, setScrollTop] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,9 +29,7 @@ export default function TopBarHandler({ slideStart }) {
       <Fade ping={scrollTop < 120}>
         <Flex justify="space-between" w="100%">
           <Box p="1" pointerEvents="all">
-            <Suspense fallback={<Loader />}>
-              <FederationIconMenu />
-            </Suspense>
+            <FederationIconMenu />
           </Box>
           <Flex p="1" pointerEvents="all">
             <UserPopup isOpen={isOpen} setIsOpen={setIsOpen} />

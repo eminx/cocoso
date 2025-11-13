@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
+import { Navigate, Routes, Route, useLocation } from 'react-router';
 
 import { Box } from '/imports/ui/core';
 

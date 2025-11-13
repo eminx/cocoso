@@ -6,7 +6,7 @@ const pageFormFields = (t) => [
     type: 'input',
     value: 'title',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
   {
@@ -16,7 +16,7 @@ const pageFormFields = (t) => [
     type: 'quill',
     value: 'longDescription',
     props: {
-      isRequired: true,
+      required: true,
     },
   },
 ];

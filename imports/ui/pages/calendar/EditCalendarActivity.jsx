@@ -1,30 +1,34 @@
-import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useAtom } from 'jotai';
+
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
 
 import CalendarActivityForm from './CalendarActivityForm';
-import { ActivityContext } from '../activities/Activity';
-import { call } from '../../utils/shared';
-import { message } from '../../generic/message';
-import SuccessRedirector from '../../forms/SuccessRedirector';
+import { activityAtom } from '../activities/ActivityItemHandler';
 
-export default function EditPublicActivity() {
+export default function EditCalendarActivity() {
   const [updated, setUpdated] = useState(null);
-  const { activity, getActivityById } = useContext(ActivityContext);
-  const [, setSearchParams] = useSearchParams();
-  if (!activity) {
-    return null;
-  }
+  const [activity, setActivity] = useAtom(activityAtom);
 
   const updateActivity = async (newActivity) => {
     const activityId = activity._id;
     try {
       await call('updateActivity', activityId, newActivity);
-      await getActivityById(activityId);
+      setActivity(await call('getActivityById', activityId));
       setUpdated(activityId);
+      setTimeout(() => {
+        setUpdated(null);
+      }, 1000);
     } catch (error) {
       message.error(error.reason || error.error);
     }
   };
+
+  if (!activity) {
+    return null;
+  }
 
   const activityFields = (({
     _id,
@@ -45,8 +49,11 @@ export default function EditPublicActivity() {
   }))(activity);
 
   return (
-    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
-      <CalendarActivityForm activity={activityFields} onFinalize={updateActivity} />
+    <SuccessRedirector forEdit ping={updated}>
+      <CalendarActivityForm
+        activity={activityFields}
+        onFinalize={updateActivity}
+      />
     </SuccessRedirector>
   );
 }

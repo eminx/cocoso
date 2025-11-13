@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactTable from 'react-table';
+import React, { useMemo } from 'react';
+import { useTable } from 'react-table';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
@@ -13,14 +13,37 @@ const getFileName = (occurrence, title) => {
 };
 
 export default function RsvpList({ occurrence, title }) {
-  const [t] = useTranslation('activities');
-  const [tc] = useTranslation('common');
-
   if (!occurrence) {
     return null;
   }
 
-  const { attendees } = occurrence;
+  const [t] = useTranslation('activities');
+  const [tc] = useTranslation('common');
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: t('public.register.form.name.first'),
+        accessor: 'firstName',
+      },
+      {
+        Header: t('public.register.form.name.last'),
+        accessor: 'lastName',
+      },
+      {
+        Header: t('public.register.form.people.label'),
+        accessor: 'numberOfPeople',
+      },
+      {
+        Header: t('public.register.form.email'),
+        accessor: 'email',
+      },
+    ],
+    []
+  );
+
+  const attendees = occurrence?.attendees;
+  const table = useTable({ columns, data: attendees });
 
   return (
     <Box>
@@ -33,27 +56,30 @@ export default function RsvpList({ occurrence, title }) {
           <Button size="sm">{tc('actions.downloadCSV')}</Button>
         </CSVLink>
       </Center>
-      <ReactTable
-        data={attendees}
-        columns={[
-          {
-            Header: t('public.register.form.name.first'),
-            accessor: 'firstName',
-          },
-          {
-            Header: t('public.register.form.name.last'),
-            accessor: 'lastName',
-          },
-          {
-            Header: t('public.register.form.people.label'),
-            accessor: 'numberOfPeople',
-          },
-          {
-            Header: t('public.register.form.email'),
-            accessor: 'email',
-          },
-        ]}
-      />
+
+      <table style={{ width: '100%' }}>
+        <thead>
+          {table.headerGroups.map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((column) => (
+                <th key={column.id}>{column.render('Header')}</th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.rows.map((row) => {
+            table.prepareRow(row);
+            return (
+              <tr key={row.id}>
+                {row.cells.map((cell) => (
+                  <td key={cell.id}>{cell.render('Cell')}</td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </Box>
   );
 }

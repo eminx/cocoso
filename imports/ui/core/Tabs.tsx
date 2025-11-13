@@ -1,7 +1,7 @@
 import React, { useId, ReactNode } from 'react';
-import { Link } from 'react-router-dom';
-import { styled } from '/stitches.config';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 
+import { styled } from '/stitches.config';
 import { Badge, Flex, Text } from '/imports/ui/core';
 
 // Tab type definition
@@ -138,34 +138,47 @@ const CoTab: React.FC<CoTabProps> = ({ tab, selected }) => {
 interface TabsProps extends TabsListProps {
   index: number;
   tabs: TabType[];
+  withSearchParams: boolean;
   children?: ReactNode;
 }
 
 const Tabs: React.FC<TabsProps> = ({
   index,
   tabs,
+  withSearchParams = false,
   children,
   ...otherProps
 }) => {
+  const [, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const handleClick = (tab: TabType) => {
+    if (tab.path) {
+      if (withSearchParams) {
+        setSearchParams((params) => ({
+          ...params,
+          tab: tab.path,
+        }));
+      } else {
+        navigate(tab.path);
+      }
+    }
+    if (tab.onClick) {
+      tab.onClick();
+    }
+  };
   return (
     <TabsContainer>
       <TabsList {...otherProps}>
         {tabs?.map((tab, tabIndex) => {
           const selected = tabIndex === index;
 
-          if (tab.path) {
-            return (
-              <TabLink
-                key={tab.key || tab.path}
-                to={tab.path}
-                onClick={tab.onClick}
-              >
-                <CoTab tab={tab} selected={selected} />
-              </TabLink>
-            );
-          }
           return (
-            <TabButton key={tab.key || tab.title} onClick={tab.onClick}>
+            <TabButton
+              key={tab.key || tab.path}
+              type="button"
+              onClick={() => handleClick(tab)}
+            >
               <CoTab tab={tab} selected={selected} />
             </TabButton>
           );

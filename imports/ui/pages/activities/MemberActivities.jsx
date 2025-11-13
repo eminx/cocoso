@@ -1,43 +1,24 @@
-import { Meteor } from 'meteor/meteor';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useLoaderData } from 'react-router';
 
 import { Box } from '/imports/ui/core';
-import { message } from '../../generic/message';
-import Paginate from '../../listing/Paginate';
-import NewGridThumb from '../../listing/NewGridThumb';
+import { message } from '/imports/ui/generic/message';
+import Paginate from '/imports/ui/listing/Paginate';
+import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 
-function MemberActivities({ currentHost, user }) {
-  const [activities, setActivities] = useState([]);
+export default function MemberActivities({ Host, isPortalHost }) {
+  const { activities } = useLoaderData();
 
-  const username = user?.username;
-
-  useEffect(() => {
-    if (!user || !username) {
-      return;
-    }
-    Meteor.call('getActivitiesByUser', username, (error, respond) => {
-      if (error) {
-        message(error);
-        return;
-      }
-      setActivities(respond);
-    });
-  }, []);
-
-  if (!user || !username || !activities || activities.length === 0) {
+  if (!activities || activities.length === 0) {
     return null;
   }
 
-  const publicActivities = activities.filter(
-    (item) => item.isPublicActivity
-  );
-  const isPortalHost = currentHost?.isPortalHost;
+  const publicActivities = activities.filter((item) => item.isPublicActivity);
 
   return (
     <Paginate items={publicActivities}>
       {(activity) => {
-        const isExternal = activity.host !== currentHost.host;
+        const isExternal = activity.host !== Host.host;
         return (
           <Box key={activity._id}>
             {isExternal ? (
@@ -75,5 +56,3 @@ function MemberActivities({ currentHost, user }) {
     </Paginate>
   );
 }
-
-export default MemberActivities;

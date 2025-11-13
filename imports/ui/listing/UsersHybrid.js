@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 import Cascader from 'antd/lib/cascader';
 import { parse } from 'query-string';
+import { useAtomValue } from 'jotai';
 
 import {
   Avatar,
@@ -13,16 +14,18 @@ import {
   Divider,
   Flex,
   Modal,
+  Tabs,
   Text,
 } from '/imports/ui/core';
-import Tabs from '../core/Tabs';
+import { currentHostAtom } from '/imports/state';
 
 import PageHeading from './PageHeading';
 import InfiniteScroller from './InfiniteScroller';
 import { Bio } from '../entry/UserHybrid';
 import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 
-export default function UsersHybrid({ users, keywords, Host }) {
+export default function UsersHybrid({ Host, users, keywords }) {
+  const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
   const [, setFilterKeyword] = useState(null);
   const [selectedProfile] = useState(null);
@@ -58,14 +61,6 @@ export default function UsersHybrid({ users, keywords, Host }) {
       ],
       [users?.length, keywords?.length]
     );
-
-  const usersInMenu = Host?.settings?.menu?.find((item) =>
-    ['people', 'members'].includes(item.name)
-  );
-
-  const description = usersInMenu?.description;
-  const heading = usersInMenu?.label;
-  const url = `${Host?.host}/${usersInMenu?.name}`;
 
   const tabs = [
     {
@@ -153,21 +148,29 @@ export default function UsersHybrid({ users, keywords, Host }) {
     }
   };
 
+  const handleNavigateUserPage = () => {
+    if (
+      !Host.isPortalPage ||
+      modalItem?.memberships?.find((m) => m.host === Host.host)
+    ) {
+      navigate(`/@${modalItem.username}`);
+      return;
+    }
+    const membership = modalItem.memberships.find((m) => m.host === Host.host);
+    const userHost = membership?.host;
+    window.location.href = `https://${userHost}/@${modalItem.username}`;
+  };
+
   return (
     <>
-      <PageHeading
-        description={description}
-        heading={heading}
-        imageUrl={Host?.logo}
-        url={url}
-      />
+      <PageHeading currentHost={currentHost || Host} listing="people" />
 
       <Center mb="4">
         <Tabs index={showKeywordSearch ? 1 : 0} tabs={tabs} />
       </Center>
 
       {showKeywordSearch ? (
-        <Flex justify="center">
+        <Flex justify="center" css={{ marginBottom: '480px' }}>
           <Box>
             <Cascader
               changeOnSelect
@@ -212,12 +215,14 @@ export default function UsersHybrid({ users, keywords, Host }) {
       )}
 
       <Modal
-        confirmText={<Trans i18nKey="members:actions.visit" />}
+        confirmText={
+          <Trans i18nKey="members:actions.visit">Visit Profile</Trans>
+        }
         hideHeader
         id="users-hybrid"
         open={Boolean(modalItem)}
         size="xl"
-        onConfirm={() => navigate(`/@${modalItem.username}`)}
+        onConfirm={handleNavigateUserPage}
         onClose={() => setModalItem(null)}
       >
         <Box pt="8">

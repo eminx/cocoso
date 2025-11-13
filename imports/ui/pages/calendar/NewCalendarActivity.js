@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
+
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { emptyDateAndTime } from '/imports/ui/forms/DatesAndTimes';
 
 import CalendarActivityForm from './CalendarActivityForm';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { emptyDateAndTime } from '../../forms/DatesAndTimes';
-import { message } from '../../generic/message';
 
 export default function NewCalendarActivity({ resources }) {
   const [newEntryId, setNewEntryId] = useState(null);
   const [searchParams] = useSearchParams();
   const [initialActivity, setInitialActivity] = useState(null);
-  const navigate = useNavigate();
 
   const setInitialValuesWithQueryParams = () => {
     const params = {
@@ -53,13 +53,12 @@ export default function NewCalendarActivity({ resources }) {
     }
   };
 
-  const handleSuccess = () => {
-    navigate(`/calendar/${newEntryId}/info`);
-  };
-
   return (
-    <SuccessRedirector ping={newEntryId} onSuccess={handleSuccess}>
-      <CalendarActivityForm activity={initialActivity || null} onFinalize={createActivity} />
+    <SuccessRedirector context="calendar" ping={newEntryId}>
+      <CalendarActivityForm
+        activity={initialActivity || null}
+        onFinalize={createActivity}
+      />
     </SuccessRedirector>
   );
 }

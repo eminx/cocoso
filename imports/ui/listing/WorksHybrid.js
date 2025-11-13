@@ -1,19 +1,22 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router';
+import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 // import { Masonry, usePositioner, useResizeObserver } from 'masonic';
 
+import { currentHostAtom } from '/imports/state';
 import { Box, Center, Flex } from '/imports/ui/core';
-
 import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
+
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 // import VirtualGridLister from './VirtualGridLister';
 import Tag from '../generic/Tag';
-import { getCategoriesAssignedToWorks } from '../utils/shared';
+import { getCategoriesAssignedToWorks } from '../../api/_utils/shared';
 import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 
-function WorkThumb({ index, categories, data, Host, onClick }) {
+function WorkThumb({ index, categories, data, onClick }) {
+  const currentHost = useAtomValue(currentHostAtom);
   const work = { ...data };
   return (
     <Box onClick={onClick}>
@@ -27,7 +30,7 @@ function WorkThumb({ index, categories, data, Host, onClick }) {
         color={
           categories.find((cat) => cat?.label === work.category?.label)?.color
         }
-        host={Host?.isPortalHost ? work.host : null}
+        host={currentHost?.isPortalHost ? work.host : null}
         imageUrl={work?.images && work.images[0]}
         index={index}
         tag={work.category?.label}
@@ -37,9 +40,9 @@ function WorkThumb({ index, categories, data, Host, onClick }) {
   );
 }
 
-export default function WorksHybrid({ works, Host }) {
+export default function WorksHybrid({ Host, works }) {
+  const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
-  const [t] = useTranslation('members');
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category');
   const containerRef = useRef(null);
@@ -62,7 +65,7 @@ export default function WorksHybrid({ works, Host }) {
 
   const categories = getCategoriesAssignedToWorks(works);
 
-  const worksWithCategoryColors = getFilteredWorks().map((work) => {
+  const worksWithCategoryColors = getFilteredWorks()?.map((work) => {
     const currentCategory = categories.find(
       (cat) => cat?.label === work?.category?.label
     );
@@ -72,13 +75,6 @@ export default function WorksHybrid({ works, Host }) {
       categoryColor,
     };
   });
-
-  const worksInMenu = Host?.settings?.menu?.find(
-    (item) => item.name === 'works'
-  );
-  const description = worksInMenu?.description;
-  const heading = worksInMenu?.label;
-  const url = `${Host?.host}/${worksInMenu?.name}`;
 
   // const getAvatar = (work) =>
   //   work.showAvatar && {
@@ -96,7 +92,7 @@ export default function WorksHybrid({ works, Host }) {
   //     const itemProps = {
   //       ...props,
   //       categories,
-  //       Host,
+  //       currentHost,
   //       onClick: () => setModalItem(props?.data),
   //     };
   //     return <WorkThumb {...itemProps} />;
@@ -106,19 +102,14 @@ export default function WorksHybrid({ works, Host }) {
 
   return (
     <>
-      <PageHeading
-        description={description}
-        heading={heading}
-        imageUrl={Host?.logo}
-        url={url}
-      />
+      <PageHeading currentHost={currentHost || Host} listing="works" />
 
       <Center px="4">
         <Flex justify="center" wrap="wrap">
           <Tag
             key="all"
             filterColor="var(--cocoso-colors-gray-800)"
-            label={t('all')}
+            label={<Trans i18nKey="members:all">All</Trans>}
             checkable
             checked={Boolean(category) === false || category === 'all'}
             onClick={() => setCategoryFilter('all')}
@@ -152,7 +143,7 @@ export default function WorksHybrid({ works, Host }) {
       <Center>
         <VirtualGridLister
           cellProps={{
-            Host,
+            currentHost,
             isMasonry: true,
             getAvatar,
             getColor,
@@ -188,7 +179,7 @@ export default function WorksHybrid({ works, Host }) {
                   categories.find((cat) => cat?.label === work.category?.label)
                     ?.color
                 }
-                host={Host?.isPortalHost ? work.host : null}
+                host={currentHost?.isPortalHost ? work.host : null}
                 imageUrl={work?.images && work.images[0]}
                 index={index}
                 tag={work.category?.label}

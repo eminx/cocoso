@@ -40,20 +40,22 @@ const defaultLang = 'en';
 const path = '/i18n/{{lng}}/{{ns}}.yml';
 const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
 
-// const Backend = Meteor.isClient ? I18NextHttpBackend : I18NexFsBackend;
-const Backend = I18NextHttpBackend;
+const isServer = Meteor.isServer;
 
 const options = {
   backend: {
     loadPath,
     parse: (data) => yaml.load(data),
   },
+  // debug: !Meteor.isProduction,
   debug: false,
   defaultNS: 'common',
-  detection: {
-    order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'], // Specify the order of language detection
-    caches: ['cookie'], // Cache the selected language
-  },
+  detection: isServer
+    ? undefined // No browser language detection in SSR
+    : {
+        order: ['querystring', 'cookie', 'localStorage', 'navigator'],
+        caches: ['cookie'],
+      },
   fallbackLng: defaultLang,
   interpolation: {
     escapeValue: false,
@@ -61,44 +63,18 @@ const options = {
   lng: defaultLang,
   load: 'languageOnly',
   ns: ['common'],
-  only: '*',
   preload: ['en'],
   react: {
-    useSuspense: true,
+    useSuspense: false,
   },
-  saveMissing: true,
   supportedLngs: allLangs.map((l) => l.value),
-  useSuspense: process && !process.release,
 };
 
-// for browser use http backend to load translations and browser lng detector
-if (process && !process.release) {
-  i18n.use(Backend).use(LanguageDetector).use(initReactI18next);
-}
-
-// initialize if not already initialized
-if (!i18n.isInitialized) {
-  i18n.init(options);
-  // check & set lang for user(logged) or host prefences
-  Tracker.autorun(() => {
-    if (Meteor.isClient) {
-      if (Meteor.userId()) {
-        const handler = Meteor.subscribe('me');
-        if (handler.ready()) {
-          const userLang = Meteor.user()?.lang;
-          i18n.changeLanguage(userLang);
-        }
-        return;
-      }
-    }
-    Meteor.call('getCurrentHost', (error, respond) => {
-      if (!error) {
-        const hostLang = respond?.settings?.lang;
-        i18n.changeLanguage(hostLang);
-      }
-    });
-  });
-}
+i18n
+  .use(initReactI18next)
+  .use(I18NextHttpBackend)
+  .use(LanguageDetector)
+  .init(options);
 
 export default i18n;
 export { allLangs, defaultLang };

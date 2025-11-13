@@ -1,33 +1,36 @@
 import { Meteor } from 'meteor/meteor';
+import { onPageLoad } from 'meteor/server-render';
 import React from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import { onPageLoad } from 'meteor/server-render';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from 'react-router';
 
-import AppRoutes from '/imports/ui/pages/Routes';
-import SetupHome from '/imports/ui/pages/setup';
-
-import '../i18n';
+import appRoutes from '/imports/appRoutes';
+import '/imports/startup/i18n';
 
 onPageLoad(async () => {
   const container = document.getElementById('root');
 
+  const currentHost = await Meteor.callAsync('getCurrentHost');
   const platform = await Meteor.callAsync('getPlatform');
+  const pageTitles = await Meteor.callAsync('getPageTitles');
 
-  if (!platform) {
+  if (!platform || !currentHost) {
     const root = createRoot(container);
-    root.render(
-      <BrowserRouter>
-        <SetupHome />
-      </BrowserRouter>
-    );
+    root.render(<SetupHome />);
     return;
   }
 
-  hydrateRoot(
-    container,
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  );
+  const props = {
+    Host: currentHost,
+    pageTitles,
+    platform,
+  };
+
+  const router = createBrowserRouter(appRoutes(props));
+
+  hydrateRoot(container, <RouterProvider router={router} />);
 });

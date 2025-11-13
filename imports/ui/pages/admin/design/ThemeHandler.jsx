@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Trans } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import {
   Box,
@@ -12,8 +13,8 @@ import {
   Text,
 } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
-import { StateContext } from '/imports/ui/LayoutContainer';
-import { call } from '/imports/ui/utils/shared';
+import { currentHostAtom } from '../../../../state';
+import { call } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
 import {
@@ -22,14 +23,14 @@ import {
   getCustomTheme,
   getGrayTheme,
 } from '/imports/ui/pages/admin/design/styleOptions';
+import { updateHostSettings } from '/imports/actions';
 
 import HuePicker from './HuePicker';
 import BackgroundHandler from './BackgroundHandler';
 import FontSelector from './FontSelector';
 
 export default function ThemeHandler() {
-  const { currentHost, getCurrentHost, setCurrentHost } =
-    useContext(StateContext);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
 
   const [state, setState] = useState({
     updating: false,
@@ -63,7 +64,7 @@ export default function ThemeHandler() {
   };
 
   const handleStyleChange = (key, value) => {
-    const newTheme = setCurrentHost((prevState) => {
+    setCurrentHost((prevState) => {
       const newTheme = {
         ...prevState?.theme,
         body: {
@@ -91,19 +92,12 @@ export default function ThemeHandler() {
         backgroundImage: uploadedImage,
       },
     };
-
-    console.log();
-
     try {
       await call('updateHostTheme', newTheme);
-      await getCurrentHost();
-      message.success(<Trans i18nKey="admin:design.message.success" />);
+      setCurrentHost(await call('getCurrentHost'));
+      message.success(<Trans i18nKey="common:message.success.update" />);
     } catch (error) {
-      message.error(
-        error.error || error.reason || (
-          <Trans i18nKey="admin:design.message.error" />
-        )
-      );
+      message.error(error.error || error.reason);
     } finally {
       setState((prevState) => ({
         ...prevState,
@@ -167,6 +161,7 @@ export default function ThemeHandler() {
       </Box>
 
       <FontSelector
+        currentTheme={currentTheme}
         handleStyleChange={handleStyleChange}
         selectedFont={currentTheme.body.fontFamily}
       />

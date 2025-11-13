@@ -1,44 +1,50 @@
-import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+
+import { call, parseTitle } from '/imports/api/_utils/shared';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { message } from '/imports/ui/generic/message';
+import { pageTitlesAtom, roleAtom } from '/imports/state';
 
 import PageForm from './PageForm';
-import { PageContext } from './Page';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
-import { StateContext } from '../../LayoutContainer';
+import { currentPageAtom, pagesAtom } from './PageItemHandler';
 
 export default function EditPage() {
   const [updated, setUpdated] = useState(null);
-  const { currentPage, getPages } = useContext(PageContext);
-  const { getPageTitles } = useContext(StateContext);
-  const [, setSearchParams] = useSearchParams();
+  const setPageTitles = useSetAtom(pageTitlesAtom);
+  const currentPage = useAtomValue(currentPageAtom);
+  const role = useAtomValue(roleAtom);
+  const [pages, setPages] = useAtom(pagesAtom);
 
   const updatePage = async (newPage) => {
-    const pageId = currentPage._id;
+    const pageId = currentPage?._id;
 
     try {
       await call('updatePage', pageId, newPage);
-      await getPageTitles();
-      await getPages();
-      setUpdated(pageId);
+      setPages(await call('getPages'));
+      setPageTitles(await call('getPageTitles'));
+      setUpdated(parseTitle(newPage.title));
+      setTimeout(() => {
+        setUpdated(null);
+      }, 1000);
     } catch (error) {
       message.error(error.reason || error.error);
     }
   };
 
-  const pageFields = (({ images, longDescription, title }) => ({
-    images,
-    longDescription,
-    title,
-  }))(currentPage);
-
-  if (!currentPage) {
+  if (!currentPage || role !== 'admin') {
     return null;
   }
 
+  const pageFields = {
+    images: currentPage.images,
+    longDescription: currentPage.longDescription,
+    order: currentPage.order,
+    title: currentPage.title,
+  };
+
   return (
-    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
+    <SuccessRedirector context="info" ping={updated}>
       <PageForm page={pageFields} onFinalize={updatePage} />
     </SuccessRedirector>
   );

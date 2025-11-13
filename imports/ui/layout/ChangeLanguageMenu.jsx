@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Box, Select, Text } from '/imports/ui/core';
 import { allLangs } from '/imports/startup/i18n';
@@ -12,7 +12,7 @@ export default function ChangeLanguage({
   select,
   onChange,
 }) {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const currentLang = i18n.language;
 
   const handleChange = (e) => {
@@ -39,12 +39,14 @@ export default function ChangeLanguage({
             textAlign: 'center',
           }}
         >
-          {t('common:langs.form.label')}:
+          <Trans i18nKey="common:langs.form.label">Preferred Language</Trans>:
         </Text>
       )}
       <Select
         name="lang"
-        placeholder={t('common:langs.form.holder')}
+        placeholder={
+          <Trans i18nKey="common:langs.form.holder">Select a language</Trans>
+        }
         value={currentLang}
         onChange={handleChange}
         {...(register && register('lang'))}
@@ -52,7 +54,7 @@ export default function ChangeLanguage({
         {allLangs.map((lang) => (
           <option
             key={lang.value}
-            // selected={lang.value === currentLang}
+            // selected={lang.  value === currentLang}
             value={lang.value}
           >
             {lang.label}

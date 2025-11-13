@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
+import { currentHostAtom } from '/imports/state';
 import { Box, Center } from '/imports/ui/core';
 
 import InfiniteScroller from './InfiniteScroller';
@@ -11,15 +13,10 @@ import SexyThumb from './SexyThumb';
 import Tabs from '../core/Tabs';
 // import VirtualGridLister from './VirtualGridLister';
 
-export default function ActivitiesHybrid({ activities, Host, showPast }) {
+export default function ActivitiesHybrid({ Host, activities, showPast }) {
+  const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
   const [, setSearchParams] = useSearchParams();
-
-  const activitiesInMenu = Host?.settings?.menu?.find(
-    (item) => item.name === 'activities'
-  );
-  const description = activitiesInMenu?.description;
-  const heading = activitiesInMenu?.label;
 
   const tabs = [
     {
@@ -34,21 +31,15 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
     },
   ];
 
-  const groupsInMenu = Host?.settings?.menu?.find(
+  const groupsInMenu = currentHost?.settings?.menu?.find(
     (item) => item.name === 'groups'
   );
-  const groupsLabel = groupsInMenu?.label;
-  const url = `${Host?.host}/${activitiesInMenu?.name}`;
-  const getTags = (item) => (item.isGroupMeeting ? [groupsLabel] : null);
+  // const groupsLabel = groupsInMenu?.label;
+  // const getTags = (item) => (item.isGroupMeeting ? [groupsLabel] : null);
 
   return (
     <>
-      <PageHeading
-        description={description}
-        heading={heading}
-        imageUrl={Host?.logo}
-        url={url}
-      />
+      <PageHeading currentHost={currentHost || Host} listing="activities" />
 
       <Center>
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
@@ -56,7 +47,7 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
 
       {/* <Center>
         <VirtualGridLister
-          cellProps={{ Host, showPast, getTags, setModalItem }}
+          cellProps={{ currentHost, showPast, getTags, setModalItem }}
           items={activities}
         />
       </Center> */}
@@ -70,7 +61,7 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
           >
             <SexyThumb
               activity={item}
-              host={Host?.isPortalHost ? item.host : null}
+              host={currentHost?.isPortalHost ? item.host : null}
               index={index}
               showPast={showPast}
               tags={item.isGroupMeeting ? [groupsInMenu?.label] : null}

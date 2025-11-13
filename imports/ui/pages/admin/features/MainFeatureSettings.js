@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import {
   Box,
@@ -11,8 +12,9 @@ import {
   Text,
   Textarea,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
-import { call } from '/imports/ui/utils/shared';
+import { currentHostAtom } from '/imports/state';
+import { updateHostSettings } from '/imports/actions';
+import { call } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 
 import Boxling from '../Boxling';
@@ -31,15 +33,15 @@ function Tablish({ rowItem }) {
   );
 }
 
-export default function MainFeatureSettings({ itemName }) {
-  const { currentHost, getCurrentHost } = useContext(StateContext);
+export default function MainFeatureSettings({ feature }) {
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [localItem, setLocalItem] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
   const selectedMenuItem = currentHost?.settings?.menu?.find(
-    (menuItem) => menuItem.name === itemName
+    (menuItem) => menuItem.name === feature
   );
 
   useEffect(() => {
@@ -67,12 +69,12 @@ export default function MainFeatureSettings({ itemName }) {
     }));
   };
 
-  const handleSave = async () => {
+  const handleSubmit = async () => {
     setSubmitting(true);
     const localSettings = {
       ...currentHost.settings,
       menu: currentHost.settings?.menu?.map((menuItem) => {
-        if (menuItem.name === itemName) {
+        if (menuItem.name === feature) {
           return localItem;
         }
         return menuItem;
@@ -81,7 +83,7 @@ export default function MainFeatureSettings({ itemName }) {
 
     try {
       await call('updateHostSettings', localSettings);
-      await getCurrentHost();
+      setCurrentHost(await call('getCurrentHost'));
       message.success(
         tc('message.success.save', { domain: tc('domains.settings') })
       );
@@ -154,7 +156,7 @@ export default function MainFeatureSettings({ itemName }) {
             isDisabled={localItem === selectedMenuItem}
             isLoading={submitting}
             type="submit"
-            onClick={handleSave}
+            onClick={handleSubmit}
           >
             {tc('actions.submit')}
           </Button>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
 import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
@@ -12,9 +13,10 @@ import {
   NotificationBadge,
   Text,
 } from '/imports/ui/core';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '/imports/api/_utils/shared';
+import Chats from '/imports/api/chats/chat';
 
-import { Chattery, useChattery } from '../chattery';
+import { Chattery } from '../chattery';
 
 export function ChatUI({
   context,
@@ -26,16 +28,25 @@ export function ChatUI({
   setOpen,
 }) {
   const [tc] = useTranslation('common');
-  const { discussion } = item && useChattery(item._id);
 
-  if (!item) {
+  if (!currentUser || !item) {
     return null;
   }
+
+  const contextId = item._id;
+  const isChatLoading = useSubscribe('chat', contextId);
+  const chat = useTracker(() => {
+    return Chats.findOne({ contextId });
+  }, []);
+  const discussion = chat?.messages?.map((message) => ({
+    ...message,
+    isFromMe: currentUser && message && message.senderId === currentUser._id,
+  }));
 
   const addNewChatMessage = async (messageContent) => {
     const values = {
       context,
-      contextId: item._id,
+      contextId,
       message: messageContent,
     };
 

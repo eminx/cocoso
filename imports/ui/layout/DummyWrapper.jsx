@@ -1,8 +1,12 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { HydrationProvider } from 'react-hydration-provider';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
+import { useAtomValue } from 'jotai';
 
+import { currentHostAtom } from '/imports/state';
 import { Box } from '/imports/ui/core';
+
+const isClient = Meteor.isClient;
 
 export default function DummyWrapper({
   animate = false,
@@ -14,24 +18,21 @@ export default function DummyWrapper({
   const pathname = location?.pathname;
 
   let wrapperClass = 'wrapper';
-  if (animate && !pathname.includes('admin')) {
+  if (animate && isClient && !pathname?.includes('admin')) {
     wrapperClass += ' mobile-wrapper';
   }
 
   return (
-    <HydrationProvider>
-      <Box
-        className={wrapperClass}
-        id="main-content-container"
-        css={{
-          backgroundColor: theme?.body?.backgroundColor,
-          backgroundImage: `url("${theme?.body?.backgroundImage}")`,
-          backgroundRepeat: theme?.body?.backgroundRepeat,
-        }}
-        {...rest}
-      >
-        {children}
-      </Box>
-    </HydrationProvider>
+    <Box
+      className={wrapperClass}
+      css={{
+        backgroundColor: theme?.body?.backgroundColor,
+        backgroundImage: `url("${theme?.body?.backgroundImage}")`,
+        backgroundRepeat: theme?.body?.backgroundRepeat,
+      }}
+      {...rest}
+    >
+      {children}
+    </Box>
   );
 }

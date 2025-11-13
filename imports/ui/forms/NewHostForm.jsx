@@ -16,12 +16,18 @@ function NewHostForm({ defaultValues, onSubmit }) {
   const [t] = useTranslation('hosts');
   const [tc] = useTranslation('common');
 
+  console.log(defaultValues);
+
   return (
-    <Box minW="300px">
+    <Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <Flex direction="column" spacing="6">
           {hostFields.map((props) => (
-            <FormField key={props.name} label={t(`new.${props.name}.label`)}>
+            <FormField
+              key={props.name}
+              label={t(`new.${props.name}.label`)}
+              required
+            >
               {props.textArea ? (
                 <Textarea
                   {...props}
@@ -39,11 +45,7 @@ function NewHostForm({ defaultValues, onSubmit }) {
           ))}
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button
-              isDisabled={!isDirty}
-              isLoading={isSubmitting}
-              type="submit"
-            >
+            <Button disabled={!isDirty} loading={isSubmitting} type="submit">
               {tc('actions.submit')}
             </Button>
           </Flex>

@@ -1,27 +1,38 @@
-import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams } from 'react-router';
+import { useAtom } from 'jotai';
+
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
 
 import WorkForm from './WorkForm';
-import { WorkContext } from './Work';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
+import { workAtom } from './WorkItemHandler';
 
 export default function EditWork() {
   const [updated, setUpdated] = useState(null);
-  const { work, getWorkById } = useContext(WorkContext);
-  const [, setSearchParams] = useSearchParams();
+  const [work, setWork] = useAtom(workAtom);
+  const { usernameSlug } = useParams();
+
+  const username = usernameSlug.replace('@', '');
 
   const updateWork = async (newWork) => {
     const workId = work._id;
     try {
       await call('updateWork', workId, newWork);
-      await getWorkById(workId);
+      setWork(await call('getWorkById', workId, username));
       setUpdated(workId);
+      setTimeout(() => {
+        setUpdated(null);
+      }, 1000);
     } catch (error) {
       message.error(error.reason || error.error);
     }
   };
+
+  if (!work) {
+    return null;
+  }
 
   const workFields = (({
     additionalInfo,
@@ -43,15 +54,8 @@ export default function EditWork() {
     title,
   }))(work);
 
-  if (!work) {
-    return null;
-  }
-
   return (
-    <SuccessRedirector
-      ping={updated}
-      onSuccess={() => setSearchParams({ edit: 'false' })}
-    >
+    <SuccessRedirector forEdit ping={updated}>
       <WorkForm work={workFields} onFinalize={updateWork} />
     </SuccessRedirector>
   );

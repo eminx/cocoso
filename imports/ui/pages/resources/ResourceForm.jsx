@@ -1,16 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Checkbox, Text } from '/imports/ui/core';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { useAtom } from 'jotai';
 
-import { call } from '../../utils/shared';
-import GenericEntryForm from '../../forms/GenericEntryForm';
-import ImageUploader from '../../forms/ImageUploader';
-import FormField from '../../forms/FormField';
+import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
+import ImageUploader from '/imports/ui/forms/ImageUploader';
+import FormField from '/imports/ui/forms/FormField';
+import { call } from '/imports/api/_utils/shared';
+import { loaderAtom } from '/imports/ui/utils/loaderHandler';
+import { message } from '/imports/ui/generic/message';
+
 import resourceFormFields from './resourceFormFields';
-import { message } from '../../generic/message';
-import { LoaderContext } from '../../listing/NewEntryHandler';
 
 export const emptyFormValues = {
   label: '',
@@ -28,7 +30,7 @@ export default function ResourceForm({ resource, onFinalize }) {
     resourcesForCombo: resource ? resource.resourcesForCombo : [],
     resources: [],
   });
-  const { loaders, setLoaders } = useContext(LoaderContext);
+  const [loaders, setLoaders] = useAtom(loaderAtom);
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
 

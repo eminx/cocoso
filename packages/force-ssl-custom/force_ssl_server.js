@@ -1,4 +1,5 @@
 import { isLocalConnection, isSslConnection } from 'meteor/force-ssl-common';
+import { WebApp } from 'meteor/webapp';
 
 const url = Npm.require('url');
 

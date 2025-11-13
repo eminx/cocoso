@@ -77,7 +77,7 @@ Meteor.methods({
   },
 
   async createComposablePage(formValues, hostPredefined) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
 
     const currentHost = await Hosts.findOneAsync({ host });
@@ -108,7 +108,7 @@ Meteor.methods({
   },
 
   async updateComposablePage(formValues, hostPredefined) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -140,7 +140,7 @@ Meteor.methods({
   },
 
   async publishComposablePage(composablePageId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -161,7 +161,7 @@ Meteor.methods({
   },
 
   async unpublishComposablePage(composablePageId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
@@ -181,7 +181,7 @@ Meteor.methods({
   },
 
   async deleteComposablePage(composablePageId) {
-    const user = Meteor.user();
+    const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 

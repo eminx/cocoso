@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
 
 import PublicActivityForm from './PublicActivityForm';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
 
 export default function NewPublicActivity() {
   const [newEntryId, setNewEntryId] = useState(null);
-  const navigate = useNavigate();
 
   const createActivity = async (newActivity) => {
     try {
@@ -19,12 +18,8 @@ export default function NewPublicActivity() {
     }
   };
 
-  const handleSuccess = () => {
-    navigate(`/activities/${newEntryId}/info`);
-  };
-
   return (
-    <SuccessRedirector ping={newEntryId} onSuccess={handleSuccess}>
+    <SuccessRedirector context="activities" ping={newEntryId}>
       <PublicActivityForm onFinalize={createActivity} />
     </SuccessRedirector>
   );

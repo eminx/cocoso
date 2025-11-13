@@ -55,6 +55,7 @@ export const Tag = (props: any) => {
 
 interface TextProps {
   color?: string;
+  colorScheme?: string;
   css?: CSSProperties;
   fontSize?: string;
   fontWeight?: string;
@@ -74,6 +75,7 @@ export const Text = (props: TextProps) => {
   const {
     children,
     color,
+    colorScheme,
     css,
     fontSize,
     fontWeight = 'normal',
@@ -86,7 +88,7 @@ export const Text = (props: TextProps) => {
     _focus,
     ...rest
   } = props;
-  const colorValue = color?.split('.');
+  const colorValue = color?.split('.') || colorScheme;
   const fontSizeValue = size || fontSize;
   const truncatedValue = truncated || false;
 

@@ -40,7 +40,7 @@ const Login = ({ isSubmitted, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Flex direction="column" gap="6">
+      <Flex direction="column">
         <FormField label={t('login.form.username.label')} required>
           <Input {...register('username')} />
         </FormField>
@@ -50,7 +50,7 @@ const Login = ({ isSubmitted, onSubmit }) => {
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isLoading={isSubmitted} type="submit">
+          <Button loading={isSubmitted} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>
@@ -87,80 +87,82 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
   };
 
   return (
-    <Box>
-      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <Flex direction="column" gap="6">
-          <FormField
-            errorMessage={errors.username?.message}
-            helperText={t('signup.form.username.helper')}
-            isInvalid={errors.username}
-            label={t('signup.form.username.label')}
-            required
-          >
-            <Input {...register('username')} />
-          </FormField>
-
-          <FormField
-            errorMessage={errors.email?.message}
-            isInvalid={errors.email}
-            label={t('signup.form.email.label')}
-            required
-          >
-            <Input {...register('email')} type="email" />
-          </FormField>
-          <Box>
+    <>
+      <Center>
+        <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+          <Flex direction="column" maxW="420px">
             <FormField
-              errorMessage={errors.password?.message}
-              helperText={passwordHelperText}
-              isInvalid={errors.password}
-              label={t('signup.form.password.label')}
+              errorMessage={errors.username?.message}
+              helperText={t('signup.form.username.helper')}
+              // isInvalid={errors.username}
+              label={t('signup.form.username.label')}
               required
             >
-              <Input {...register('password')} type="password" />
+              <Input {...register('username')} />
             </FormField>
 
-            <Center mt="2">
-              <Text fontSize="xs" textAlign="center">
-                {t('signup.form.password.info')}
-              </Text>
-            </Center>
-          </Box>
-
-          {!hideTermsCheck && (
-            <FormField label={t('signup.form.terms.agreement')} required>
-              <Checkbox
-                checked={termsChecked}
-                id="is-terms-checked"
-                size="lg"
-                onChange={() => setTermsChecked(!termsChecked)}
-              >
-                <Link
-                  css={{
-                    color: 'var(--cocoso-colors-blue-500)',
-                    fontSize: '0.875rem',
-                    textDecoration: 'underline',
-                  }}
-                  onClick={() => setModalOpen(true)}
-                >
-                  {t('signup.form.terms.label', {
-                    terms: t('signup.form.terms.terms'),
-                  })}
-                </Link>
-              </Checkbox>
-            </FormField>
-          )}
-
-          <Flex justify="flex-end" py="4" w="100%">
-            <Button
-              disabled={!isDirty || (!termsChecked && !hideTermsCheck)}
-              loading={isSubmitting}
-              type="submit"
+            <FormField
+              errorMessage={errors.email?.message}
+              // isInvalid={errors.email}
+              label={t('signup.form.email.label')}
+              required
             >
-              {tc('actions.submit')}
-            </Button>
+              <Input {...register('email')} type="email" />
+            </FormField>
+            <Box>
+              <FormField
+                errorMessage={errors.password?.message}
+                helperText={passwordHelperText}
+                // isInvalid={errors.password}
+                label={t('signup.form.password.label')}
+                required
+              >
+                <Input {...register('password')} type="password" />
+              </FormField>
+
+              <Center mt="2">
+                <Text fontSize="xs" textAlign="center">
+                  {t('signup.form.password.info')}
+                </Text>
+              </Center>
+            </Box>
+
+            {!hideTermsCheck && (
+              <FormField label={t('signup.form.terms.agreement')} required>
+                <Checkbox
+                  checked={termsChecked}
+                  id="is-terms-checked"
+                  size="lg"
+                  onChange={() => setTermsChecked(!termsChecked)}
+                >
+                  <Link
+                    css={{
+                      color: 'var(--cocoso-colors-blue-500)',
+                      fontSize: '0.875rem',
+                      textDecoration: 'underline',
+                    }}
+                    onClick={() => setModalOpen(true)}
+                  >
+                    {t('signup.form.terms.label', {
+                      terms: t('signup.form.terms.terms'),
+                    })}
+                  </Link>
+                </Checkbox>
+              </FormField>
+            )}
+
+            <Flex justify="flex-end" py="4" w="100%">
+              <Button
+                disabled={!isDirty || (!termsChecked && !hideTermsCheck)}
+                loading={isSubmitting}
+                type="submit"
+              >
+                {tc('actions.submit')}
+              </Button>
+            </Flex>
           </Flex>
-        </Flex>
-      </form>
+        </form>
+      </Center>
 
       <Modal
         confirmText={tc('actions.confirmRead')}
@@ -175,7 +177,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
       >
         <Terms />
       </Modal>
-    </Box>
+    </>
   );
 };
 
@@ -199,7 +201,7 @@ const ForgotPassword = ({ onForgotPassword }) => {
       <Flex direction="column" gap="6">
         <FormField
           errorMessage={errors.email?.message}
-          isInvalid={errors.email}
+          // isInvalid={errors.email}
           label={t('password.form.email.label')}
         >
           <Input {...register('email')} type="email" />
@@ -238,7 +240,7 @@ const ResetPassword = ({ onResetPassword }) => {
         <FormField
           errorMessage={errors.password?.message}
           helperText={passwordHelperText}
-          isInvalid={errors.password}
+          // isInvalid={errors.password}
           label={t('login.form.password.label')}
         >
           <Input {...register('password')} type="password" />

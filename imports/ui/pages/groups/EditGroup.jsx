@@ -1,30 +1,34 @@
-import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useAtom } from 'jotai';
+
+import { call } from '/imports/api/_utils/shared';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { message } from '/imports/ui/generic/message';
 
 import GroupForm from './GroupForm';
-import { GroupContext } from './Group';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
+import { groupAtom } from './GroupItemHandler';
 
 export default function EditGroup() {
   const [updated, setUpdated] = useState(null);
-  const { group, getGroupById } = useContext(GroupContext);
-  const [, setSearchParams] = useSearchParams();
-  if (!group) {
-    return null;
-  }
+  const [group, setGroup] = useAtom(groupAtom);
 
   const updateGroup = async (newGroup) => {
     const groupId = group._id;
     try {
       await call('updateGroup', groupId, newGroup);
-      await getGroupById(groupId);
+      setGroup(await call('getGroupWithMeetings', groupId));
       setUpdated(groupId);
+      setTimeout(() => {
+        setUpdated(null);
+      }, 1000);
     } catch (error) {
       message.error(error.reason || error.error);
     }
   };
+
+  if (!group) {
+    return null;
+  }
 
   const groupFields = (({
     capacity,
@@ -42,15 +46,8 @@ export default function EditGroup() {
     title,
   }))(group);
 
-  if (!group) {
-    return null;
-  }
-
   return (
-    <SuccessRedirector
-      ping={updated}
-      onSuccess={() => setSearchParams({ edit: 'false' })}
-    >
+    <SuccessRedirector forEdit ping={updated}>
       <GroupForm group={groupFields} onFinalize={updateGroup} />
     </SuccessRedirector>
   );

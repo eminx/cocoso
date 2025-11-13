@@ -6,7 +6,7 @@ import Bolt from 'lucide-react/dist/esm/icons/bolt';
 import { Avatar, Box, Center, Flex, Tag, Text } from '/imports/ui/core';
 
 // import Popover from './Popover';
-import { getFullName } from '../utils/shared';
+import { getFullName } from '../../api/_utils/shared';
 
 const tagProps = {
   bg: 'white',

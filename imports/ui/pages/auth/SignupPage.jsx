@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -11,21 +12,27 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
+import { currentUserAtom, platformAtom } from '/imports/state';
 
-import { StateContext } from '/imports/ui/LayoutContainer';
 import { Signup } from './index';
 import { createAccount } from './functions';
 
 export default function SignupPage() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const platform = useAtomValue(platformAtom);
   const [t] = useTranslation('accounts');
-  const { currentUser, platform } = useContext(StateContext);
   const navigate = useNavigate();
 
-  if (currentUser && platform?.isFederationLayout) {
-    return <Navigate to="/intro" />;
-  } else if (currentUser) {
-    return <Navigate to={`/@${currentUser.username}`} />;
-  }
+  useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+    if (platform?.isFederationLayout) {
+      navigate('/intro');
+    } else {
+      navigate(`/@${currentUser.username}`);
+    }
+  }, [currentUser]);
 
   return (
     <Box pb="8">

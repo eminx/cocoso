@@ -2,13 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Center } from '/imports/ui/core';
-import NewHostForm from '../../forms/NewHostForm';
-import { message } from '../../generic/message';
-import Alert from '../../core/Alert';
-import { call } from '../../utils/shared';
+import { Alert, Center } from '/imports/ui/core';
+import NewHostForm from '/imports/ui/forms/NewHostForm';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
 
-function NewHost({ setFinished }) {
+export default function NewHost({ setFinished }) {
   const [tc] = useTranslation('common');
 
   const currentUser = Meteor.user();
@@ -51,11 +50,5 @@ function NewHost({ setFinished }) {
     );
   }
 
-  return (
-    <Box>
-      <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
-    </Box>
-  );
+  return <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />;
 }
-
-export default NewHost;

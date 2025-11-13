@@ -1,16 +1,16 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router';
 import ReactSelect from 'react-select';
 import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Box, Center, Flex, Link as CLink, Tag } from '/imports/ui/core';
 
 import ComposablePageSettings from './ComposablePageSettings';
+import { composablePageTitlesAtom } from '../index';
 
-export default function TopToolBar({
-  composablePageTitles,
-  getComposablePageTitles,
-}) {
+export default function TopToolBar() {
+  const composablePageTitles = useAtomValue(composablePageTitlesAtom);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -54,9 +54,7 @@ export default function TopToolBar({
           </Tag>
         </Box>
 
-        <ComposablePageSettings
-          getComposablePageTitles={getComposablePageTitles}
-        />
+        <ComposablePageSettings />
       </Flex>
 
       {isPublished ? (

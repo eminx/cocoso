@@ -1,16 +1,25 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router';
 import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Box, Button } from '/imports/ui/core';
-import { StateContext } from '../../../LayoutContainer';
-import { ResourceContext } from '../Resource';
-import { ChatButton } from '../../../chattery/ChatHandler';
-import SlideWidget from '../../../entry/SlideWidget';
+import {
+  canCreateContentAtom,
+  currentHostAtom,
+  currentUserAtom,
+  isDesktopAtom,
+  roleAtom,
+} from '/imports/state';
+import { ChatButton } from '/imports/ui/chattery/ChatHandler';
+import SlideWidget from '/imports/ui/entry/SlideWidget';
+
 import ResourceAdminFunctions from './ResourceAdminFunctions';
+import { resourceAtom } from '../ResourceItemHandler';
 
 function ReserveButton({ resource }) {
-  const { currentHost, isDesktop } = useContext(StateContext);
+  const currentHost = useAtomValue(currentHostAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
 
   const isSameHost = resource.host === currentHost.host;
 
@@ -31,13 +40,19 @@ function ReserveButton({ resource }) {
   );
 }
 
-export default function ResourceInteractionHandler({ slideStart }) {
-  const { canCreateContent, currentUser, role } = useContext(StateContext);
-  const { resource } = useContext(ResourceContext);
+export default function ResourceInteractionHandler() {
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const resource = useAtomValue(resourceAtom);
+  const role = useAtomValue(roleAtom);
+
+  if (!resource) {
+    return null;
+  }
 
   if (role === 'admin') {
     return (
-      <SlideWidget justify="space-between" slideStart={slideStart}>
+      <SlideWidget justify="space-between">
         <Box w="40px">
           <ResourceAdminFunctions />
         </Box>
@@ -56,7 +71,7 @@ export default function ResourceInteractionHandler({ slideStart }) {
 
   if (canCreateContent) {
     return (
-      <SlideWidget justify="space-between" slideStart={slideStart}>
+      <SlideWidget justify="space-between">
         <Box w="40px" />
         {resource.isBookable ? <ReserveButton resource={resource} /> : null}
         <Box>

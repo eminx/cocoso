@@ -1,12 +1,18 @@
-import React, { useContext, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
+import { useAtomValue } from 'jotai';
 
 import { Box, Drawer, Flex, IconButton, Text } from '/imports/ui/core';
 
 import ChangeLanguageMenu from './ChangeLanguageMenu';
-import { StateContext } from '../LayoutContainer';
+import {
+  currentHostAtom,
+  isDesktopAtom,
+  pageTitlesAtom,
+  platformAtom,
+} from '../../state';
 import { InfoPagesMenu } from './Header';
 
 function MenuContent({ menuItems, pageTitles, styles, onToggle }) {
@@ -94,8 +100,11 @@ const getRoute = (item) => {
 };
 
 export default function MenuDrawer() {
-  const { currentHost, isDesktop, pageTitles, platform } =
-    useContext(StateContext);
+  const currentHost = useAtomValue(currentHostAtom);
+  const pageTitles = useAtomValue(pageTitlesAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
+  const platform = useAtomValue(platformAtom);
+
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
 

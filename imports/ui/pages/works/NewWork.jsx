@@ -1,16 +1,16 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useAtomValue } from 'jotai';
 
-import { call } from '../../utils/shared';
+import { currentUserAtom } from '/imports/state';
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+
 import WorkForm from './WorkForm';
-import { StateContext } from '../../LayoutContainer';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
 
 export default function NewWork() {
   const [newEntryId, setNewEntryId] = useState(null);
-  const { currentUser } = useContext(StateContext);
-  const navigate = useNavigate();
+  const currentUser = useAtomValue(currentUserAtom);
 
   const createWork = async (newWork) => {
     try {
@@ -21,16 +21,11 @@ export default function NewWork() {
     }
   };
 
-  const handleSuccess = () => {
-    if (!currentUser) {
-      navigate('/login');
-      return;
-    }
-    navigate(`/@${currentUser.username}/works/${newEntryId}/info`);
-  };
-
   return (
-    <SuccessRedirector ping={newEntryId} onSuccess={handleSuccess}>
+    <SuccessRedirector
+      context={`@${currentUser.username}/works`}
+      ping={newEntryId}
+    >
       <WorkForm onFinalize={createWork} />
     </SuccessRedirector>
   );

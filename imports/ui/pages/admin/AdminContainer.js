@@ -1,14 +1,16 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Link,
   Route,
   Routes,
   useLocation,
   useNavigate,
-} from 'react-router-dom';
+  Outlet,
+} from 'react-router';
 import { useTranslation } from 'react-i18next';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
 import Eye from 'lucide-react/dist/esm/icons/eye';
+import { useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -21,60 +23,16 @@ import {
   Loader,
   Text,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
-import EditProfile from '/imports/ui/pages/profile/EditProfile';
+import {
+  currentHostAtom,
+  currentUserAtom,
+  isDesktopAtom,
+  roleAtom,
+} from '/imports/state';
+// import EditProfile from '/imports/ui/pages/profile/EditProfile';
 
 import AdminMenu from './AdminMenu';
 import getAdminRoutes from './getAdminRoutes';
-
-function RouteRenderer({ routes, currentRoute }) {
-  const { currentUser } = useContext(StateContext);
-
-  if (!routes || !currentUser) {
-    return null;
-  }
-
-  return (
-    <Box p="6">
-      <Box mb="8">
-        <Heading mb="2">{currentRoute?.label}</Heading>
-        {currentRoute?.description && (
-          <Heading css={{ fontWeight: '300' }} size="sm">
-            {currentRoute?.description}
-          </Heading>
-        )}
-      </Box>
-
-      <Routes>
-        {routes?.map((route) =>
-          route.isMulti ? (
-            route.content.map((routeSub) => (
-              <>
-                <Route
-                  key={routeSub.value}
-                  path={routeSub.value}
-                  element={routeSub.content}
-                />
-              </>
-            ))
-          ) : (
-            <Route
-              key={route.value}
-              path={route.value}
-              element={route.content}
-            />
-          )
-        )}
-
-        <Route
-          key="my-profile"
-          path="/my-profile/*"
-          element={<EditProfile />}
-        />
-      </Routes>
-    </Box>
-  );
-}
 
 const iconContainerProps = {
   align: 'center',
@@ -85,14 +43,16 @@ const iconContainerProps = {
   p: '2',
 };
 
-export default function AdminContainer() {
-  const { currentUser, currentHost, isDesktop, role } =
-    useContext(StateContext);
+export default function AdminContainer({ Host, ...props }) {
+  const currentHost = Host || useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
+  const role = useAtomValue(roleAtom);
+
   const [drawerMenuOpen, setDrawerMenuOpen] = useState(false);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
   const [ta] = useTranslation('accounts');
-
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -102,7 +62,7 @@ export default function AdminContainer() {
 
   const pathname = location?.pathname;
 
-  const getCurrentRoute = useCallback(() => {
+  const getCurrentRoute = () => {
     if (!routes) {
       return null;
     }
@@ -129,7 +89,7 @@ export default function AdminContainer() {
     });
 
     return allRoutes.find((r) => pathname.includes(r.value));
-  }, [routes, pathname]);
+  };
 
   const currentRoute = getCurrentRoute();
 
@@ -153,18 +113,6 @@ export default function AdminContainer() {
     }
   };
 
-  if (!currentHost) {
-    return <Loader />;
-  }
-
-  if (!currentUser || (!isAdmin && !pathname.includes('/admin/my-profile'))) {
-    return (
-      <Center p="12">
-        <Alert>{tc('message.access.deny')}</Alert>
-      </Center>
-    );
-  }
-
   if (!isDesktop) {
     return (
       <Box bg="bluegray.100" css={{ minHeight: '100vh' }}>
@@ -176,7 +124,11 @@ export default function AdminContainer() {
           title={t('menulabel')}
           onClose={() => setDrawerMenuOpen(false)}
         >
-          <AdminMenu routes={routes} onItemClick={handleItemClick} />
+          <AdminMenu
+            currentHost={currentHost}
+            routes={routes}
+            onItemClick={handleItemClick}
+          />
         </Drawer>
 
         <Box>
@@ -203,6 +155,7 @@ export default function AdminContainer() {
             >
               {isAdmin ? t('panel') : ta('profile.settings')}
             </Heading>
+
             <Link to="/">
               <Flex {...iconContainerProps}>
                 <Eye />
@@ -211,7 +164,9 @@ export default function AdminContainer() {
             </Link>
           </Flex>
 
-          <RouteRenderer routes={routes} currentRoute={currentRoute} />
+          <Box p="6">
+            <Outlet />
+          </Box>
         </Box>
       </Box>
     );
@@ -221,10 +176,26 @@ export default function AdminContainer() {
     <Box bg="bluegray.100" css={{ minHeight: '100vh' }}>
       <Grid h="100%" templateColumns="320px 50%">
         <Box>
-          <AdminMenu routes={routes} onItemClick={handleItemClick} />
+          <AdminMenu
+            currentHost={currentHost}
+            routes={routes}
+            onItemClick={handleItemClick}
+          />
         </Box>
 
-        <RouteRenderer routes={routes} currentRoute={currentRoute} />
+        <Box p="6">
+          <Box mb="8">
+            <Heading mb="2">{currentRoute?.label}</Heading>
+
+            {currentRoute?.description && (
+              <Heading css={{ fontWeight: '300' }} size="sm">
+                {currentRoute?.description}
+              </Heading>
+            )}
+          </Box>
+
+          <Outlet />
+        </Box>
       </Grid>
     </Box>
   );

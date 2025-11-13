@@ -1,6 +1,5 @@
 {
   "indent": ["error", 2],
-  // "printWidth": 72,
   "singleQuote": true,
   "trailingComma": "es5"
 }

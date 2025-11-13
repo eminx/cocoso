@@ -93,7 +93,7 @@ public:
       loading: Loading
       actions:
         create: Boka
-        update: Uppdatering
+        update: Uppdatera
         remove: Ta bort din bokning
     email: E-post redan bokad. Var vänlig att uppdatera din befintliga bokning istället.
     alreadyRegistered: Du är redan bokad för detta arrangemang. Var vänlig att uppdatera din befintliga bokning istället.

@@ -1,14 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+import { useAtomValue } from 'jotai';
 
+import { isDesktopAtom } from '/imports/state';
 import { Box, Center, Flex, Heading, Image, Text } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
-import useMediaQuery from '/imports/api/_utils/useMediaQuery';
-
-import { parseTitle } from '../utils/shared';
+import { parseTitle } from '/imports/api/_utils/shared';
 
 const isClient = Meteor?.isClient;
 
@@ -89,15 +89,20 @@ export function InfoPagesMenu({
         }}
       >
         {pageTitles.map((item) => (
-          <Link
+          <MenuItem
             key={item._id}
-            to={`/info/${parseTitle(item.title)}`}
-            onClick={onSelect}
+            as="span"
+            id={item._id}
+            style={{ padding: '0' }}
           >
-            <MenuItem as="span" id={item._id}>
+            <Link
+              style={{ padding: '0.5rem 1rem' }}
+              to={`/info/${parseTitle(item.title)}`}
+              onClick={onSelect}
+            >
               <Text css={textStyles}>{item.title}</Text>
-            </MenuItem>
-          </Link>
+            </Link>
+          </MenuItem>
         ))}
       </Box>
     </Menu>
@@ -106,11 +111,11 @@ export function InfoPagesMenu({
 
 function HeaderMenu({ Host, pageTitles }) {
   const location = useLocation();
-  const { pathname } = location;
-  const isDesktop = useMediaQuery('(min-width: 960px)');
+  const isDesktop = useAtomValue(isDesktopAtom);
 
   const settings = Host?.settings;
   const menuStyles = Host?.theme?.menu;
+  const pathname = location?.pathname;
 
   const { isBurgerMenuOnDesktop, isBurgerMenuOnMobile } = settings || {};
 
@@ -118,7 +123,7 @@ function HeaderMenu({ Host, pageTitles }) {
     return null;
   }
 
-  if (!isDesktop && isBurgerMenuOnMobile && isClient) {
+  if (!isDesktop && isBurgerMenuOnMobile) {
     return null;
   }
 
@@ -203,9 +208,11 @@ function HeaderMenu({ Host, pageTitles }) {
   );
 }
 
-export default function Header({ Host, pageTitles, isLogoSmall = false }) {
-  const currentHost = Host;
-
+export default function Header({
+  currentHost,
+  pageTitles,
+  isLogoSmall = false,
+}) {
   if (!currentHost) {
     return null;
   }
@@ -217,7 +224,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
           <Box css={{ maxHeight: isLogoSmall ? '48px' : '96px' }}>
             {currentHost.logo ? (
               <Image
-                src={Host.logo}
+                src={currentHost.logo}
                 css={{
                   height: isLogoSmall ? '48px' : '96px',
                   maxWidth: '360px',
@@ -238,7 +245,7 @@ export default function Header({ Host, pageTitles, isLogoSmall = false }) {
         </Link>
       </Center>
 
-      <HeaderMenu Host={Host} pageTitles={pageTitles} />
+      <HeaderMenu Host={currentHost} pageTitles={pageTitles} />
     </Box>
   );
 }

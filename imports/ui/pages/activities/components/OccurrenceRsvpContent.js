@@ -1,6 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import { useAtomValue, useSetAtom } from 'jotai';
 
 import {
   Box,
@@ -12,17 +14,29 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  canCreateContentAtom,
+  currentHostAtom,
+  currentUserAtom,
+} from '/imports/state';
 import FancyDate from '/imports/ui/entry/FancyDate';
-import { call, getComboResourcesWithColor } from '/imports/ui/utils/shared';
+import { call, getComboResourcesWithColor } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 
 import RsvpForm from './RsvpForm';
-import { ActivityContext } from '../Activity';
 import RsvpList from './CsvList';
+import { activityAtom } from '../ActivityItemHandler';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
+
+const getAttendeeCount = (attendees) => {
+  let count = 0;
+  attendees.forEach((att) => {
+    count += att.numberOfPeople;
+  });
+  return count;
+};
 
 export default function RsvpContent({
   activity,
@@ -30,6 +44,11 @@ export default function RsvpContent({
   occurrenceIndex,
   onCloseModal,
 }) {
+  const currentHost = useAtomValue(currentHostAtom);
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const setActivity = useSetAtom(activityAtom);
+  const { activityId } = useParams();
   const [state, setState] = useState({
     isRsvpCancelModalOn: false,
     rsvpCancelModalInfo: null,
@@ -37,8 +56,7 @@ export default function RsvpContent({
   });
   const [capacityGotFullByYou] = useState(false);
   const [t] = useTranslation('activities');
-  const { canCreateContent, currentUser } = useContext(StateContext);
-  const { getActivityById } = useContext(ActivityContext);
+
   const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } =
     state;
 
@@ -126,7 +144,7 @@ export default function RsvpContent({
         parsedValues,
         occurrenceIndex
       );
-      await getActivityById();
+      setActivity(await call('getActivityById', activityId));
       resetRsvpModal();
       message.success(t('public.attendance.create'));
     } catch (error) {
@@ -167,7 +185,7 @@ export default function RsvpContent({
         rsvpCancelModalInfo?.occurrenceIndex,
         rsvpCancelModalInfo?.attendeeIndex
       );
-      await getActivityById();
+      setActivity(await call('getActivityById', activityId));
       resetRsvpModal();
       message.success(t('public.attendance.update'));
     } catch (error) {
@@ -205,7 +223,7 @@ export default function RsvpContent({
         email,
         lastName
       );
-      await getActivityById();
+      setActivity(await call('getActivityById', activityId));
       resetRsvpModal();
       message.success(t('public.attendance.remove'));
       setState({
@@ -377,6 +395,9 @@ export default function RsvpContent({
       >
         <Heading as="h3" mb="2" size="md">
           {t('public.attendance.label')}
+          {selectedOccurrence
+            ? ` (${getAttendeeCount(selectedOccurrence.attendees)})`
+            : null}
         </Heading>
         <Box bg="white" p="2">
           <RsvpList occurrence={selectedOccurrence} title={activity?.title} />

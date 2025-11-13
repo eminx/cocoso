@@ -7,7 +7,6 @@ Package.describe({
 
 Package.onUse((api) => {
   api.use('ecmascript@0.15.0');
-  api.use('webapp@1.10.0', 'server');
   // make sure we come after livedata, so we load after the sockjs
   // server has been instantiated.
   api.use('ddp', 'server');

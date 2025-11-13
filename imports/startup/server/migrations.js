@@ -13,18 +13,41 @@ Migrations.add({
   version: 1,
   async up() {
     console.log('up to', this.version);
-    Resources.update({}, { $unset: { authorAvatar: true } }, { multi: true });
-    Resources.update({}, { $unset: { authorFirstName: true } }, { multi: true });
-    Resources.update({}, { $unset: { authorLastName: true } }, { multi: true });
+    await Resources.updateAsync(
+      {},
+      { $unset: { authorAvatar: true } },
+      { multi: true }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { authorFirstName: true } },
+      { multi: true }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { authorLastName: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
-    Resources.find({ authorId: { $exists: true } }).forEach((item) => {
-      const user = Meteor.users.findOne(item.authorId);
-      Resources.update({ _id: item._id }, { $set: { authorAvatar: user.avatar } });
-      Resources.update({ _id: item._id }, { $set: { authorFirstName: user.firstName } });
-      Resources.update({ _id: item._id }, { $set: { authorLastName: user.lastName } });
-    });
+    await Resources.find({ authorId: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const user = await Meteor.users.findOneAsync(item.authorId);
+        await Resources.updateAsync(
+          { _id: item._id },
+          { $set: { authorAvatar: user.avatar } }
+        );
+        await Resources.updateAsync(
+          { _id: item._id },
+          { $set: { authorFirstName: user.firstName } }
+        );
+        await Resources.updateAsync(
+          { _id: item._id },
+          { $set: { authorLastName: user.lastName } }
+        );
+      }
+    );
   },
 });
 
@@ -33,14 +56,20 @@ Migrations.add({
   version: 2,
   async up() {
     console.log('up to', this.version);
-    Resources.update({}, { $unset: { labelLowerCase: true } }, { multi: true });
+    await Resources.updateAsync(
+      {},
+      { $unset: { labelLowerCase: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
-    Resources.find({ _id: { $exists: true } }).forEach((item) => {
-      const labelLowerCase = item.label.toLowerCase();
-      Resources.update(item._id, { $set: { labelLowerCase } });
-    });
+    await Resources.find({ _id: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const labelLowerCase = item.label.toLowerCase();
+        await Resources.updateAsync(item._id, { $set: { labelLowerCase } });
+      }
+    );
   },
 });
 
@@ -49,22 +78,22 @@ Migrations.add({
   version: 3,
   async up() {
     console.log('up to', this.version);
-    Resources.find({ isCombo: true }).forEach((item) => {
+    await Resources.find({ isCombo: true }).forEachAsync(async (item) => {
       const resourcesForCombo = [];
       item.resourcesForCombo.forEach((res) => {
         resourcesForCombo.push(res._id);
       });
-      Resources.update(item._id, { $set: { resourcesForCombo } });
+      await Resources.updateAsync(item._id, { $set: { resourcesForCombo } });
     });
   },
   async down() {
     console.log('down to', this.version - 1);
-    Resources.find({ isCombo: true }).forEach((item) => {
+    await Resources.find({ isCombo: true }).forEachAsync(async (item) => {
       const resourcesForCombo = Resources.find(
         { _id: { $in: item.resourcesForCombo } },
         { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
-      ).fetch();
-      Resources.update(item._id, { $set: { resourcesForCombo } });
+      ).fetchAsync();
+      await Resources.updateAsync(item._id, { $set: { resourcesForCombo } });
     });
   },
 });
@@ -74,19 +103,31 @@ Migrations.add({
   version: 4,
   async up() {
     console.log('up to', this.version);
-    Resources.find({ creationDate: { $exists: true } }).forEach((item) => {
-      const createdAt = item.creationDate;
-      Resources.update(item._id, { $set: { createdAt } });
-    });
-    Resources.update({}, { $unset: { creationDate: true } }, { multi: true });
+    await Resources.find({ creationDate: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const createdAt = item.creationDate;
+        await Resources.updateAsync(item._id, { $set: { createdAt } });
+      }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { creationDate: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
-    Resources.find({ createdAt: { $exists: true } }).forEach((item) => {
-      const creationDate = item.createdAt;
-      Resources.update(item._id, { $set: { creationDate } });
-    });
-    Resources.update({}, { $unset: { createdAt: true } }, { multi: true });
+    await Resources.find({ createdAt: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const creationDate = item.createdAt;
+        await Resources.updateAsync(item._id, { $set: { creationDate } });
+      }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { createdAt: true } },
+      { multi: true }
+    );
   },
 });
 
@@ -95,19 +136,31 @@ Migrations.add({
   version: 5,
   async up() {
     console.log('up to', this.version);
-    Resources.find({ latestUpdate: { $exists: true } }).forEach((item) => {
-      const updatedAt = item.latestUpdate;
-      Resources.update(item._id, { $set: { updatedAt } });
-    });
-    Resources.update({}, { $unset: { latestUpdate: true } }, { multi: true });
+    await Resources.find({ latestUpdate: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const updatedAt = item.latestUpdate;
+        await Resources.updateAsync(item._id, { $set: { updatedAt } });
+      }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { latestUpdate: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
-    Resources.find({ updatedAt: { $exists: true } }).forEach((item) => {
-      const latestUpdate = item.updatedAt;
-      Resources.update(item._id, { $set: { latestUpdate } });
-    });
-    Resources.update({}, { $unset: { updatedAt: true } }, { multi: true });
+    await Resources.find({ updatedAt: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const latestUpdate = item.updatedAt;
+        await Resources.updateAsync(item._id, { $set: { latestUpdate } });
+      }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { updatedAt: true } },
+      { multi: true }
+    );
   },
 });
 
@@ -116,19 +169,31 @@ Migrations.add({
   version: 6,
   async up() {
     console.log('up to', this.version);
-    Resources.find({ authorId: { $exists: true } }).forEach((item) => {
-      const userId = item.authorId;
-      Resources.update(item._id, { $set: { userId } });
-    });
-    Resources.update({}, { $unset: { authorId: true } }, { multi: true });
+    await Resources.find({ authorId: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const userId = item.authorId;
+        await Resources.updateAsync(item._id, { $set: { userId } });
+      }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { authorId: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
-    Resources.find({ userId: { $exists: true } }).forEach((item) => {
-      const authorId = item.userId;
-      Resources.update(item._id, { $set: { authorId } });
-    });
-    Resources.update({}, { $unset: { userId: true } }, { multi: true });
+    await Resources.find({ userId: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const authorId = item.userId;
+        await Resources.updateAsync(item._id, { $set: { authorId } });
+      }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { userId: true } },
+      { multi: true }
+    );
   },
 });
 
@@ -137,19 +202,31 @@ Migrations.add({
   version: 7,
   async up() {
     console.log('up to', this.version);
-    Resources.find({ authorUsername: { $exists: true } }).forEach((item) => {
-      const createdBy = item.authorUsername;
-      Resources.update(item._id, { $set: { createdBy } });
-    });
-    Resources.update({}, { $unset: { authorUsername: true } }, { multi: true });
+    await Resources.find({ authorUsername: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const createdBy = item.authorUsername;
+        await Resources.updateAsync(item._id, { $set: { createdBy } });
+      }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { authorUsername: true } },
+      { multi: true }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
-    Resources.find({ createdBy: { $exists: true } }).forEach((item) => {
-      const authorUsername = item.createdBy;
-      Resources.update(item._id, { $set: { authorUsername } });
-    });
-    Resources.update({}, { $unset: { createdBy: true } }, { multi: true });
+    await Resources.find({ createdBy: { $exists: true } }).forEachAsync(
+      async (item) => {
+        const authorUsername = item.createdBy;
+        await Resources.updateAsync(item._id, { $set: { authorUsername } });
+      }
+    );
+    await Resources.updateAsync(
+      {},
+      { $unset: { createdBy: true } },
+      { multi: true }
+    );
   },
 });
 
@@ -158,32 +235,40 @@ Migrations.add({
   version: 8,
   async up() {
     console.log('up to', this.version);
-    Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
-      if (!item.settings.menu.find((menuItem) => menuItem?.name === 'resource')) {
-        const menu = [
-          ...item.settings.menu,
-          {
-            label: 'Resources',
-            name: 'resources',
-            isVisible: false,
-            isHomePage: false,
-          },
-        ];
-        Hosts.update(item._id, { $set: { 'settings.menu': menu } });
+    await Hosts.find({ 'settings.menu': { $exists: true } }).forEachAsync(
+      async (item) => {
+        if (
+          !item.settings.menu.find((menuItem) => menuItem?.name === 'resource')
+        ) {
+          const menu = [
+            ...item.settings.menu,
+            {
+              label: 'Resources',
+              name: 'resources',
+              isVisible: false,
+              isHomePage: false,
+            },
+          ];
+          await Hosts.updateAsync(item._id, {
+            $set: { 'settings.menu': menu },
+          });
+        }
       }
-    });
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
-    Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
-      const menu = [];
-      item.settings.menu.forEach((menuItem) => {
-        if (menuItem.name !== 'resources') {
-          menu.push(item);
-        }
-      });
-      Hosts.update(item._id, { $set: { 'settings.menu': menu } });
-    });
+    await Hosts.find({ 'settings.menu': { $exists: true } }).forEachAsync(
+      async (item) => {
+        const menu = [];
+        item.settings.menu.forEach((menuItem) => {
+          if (menuItem.name !== 'resources') {
+            menu.push(item);
+          }
+        });
+        await Hosts.updateAsync(item._id, { $set: { 'settings.menu': menu } });
+      }
+    );
   },
 });
 
@@ -192,22 +277,22 @@ Migrations.add({
   version: 9,
   async up() {
     console.log('up to', this.version);
-    Resources.find({ isCombo: true }).forEach((item) => {
-      const resourcesForCombo = Resources.find(
+    await Resources.find({ isCombo: true }).forEachAsync(async (item) => {
+      const resourcesForCombo = await Resources.find(
         { _id: { $in: item.resourcesForCombo } },
         { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
-      ).fetch();
-      Resources.update(item._id, { $set: { resourcesForCombo } });
+      ).fetchAsync();
+      await Resources.updateAsync(item._id, { $set: { resourcesForCombo } });
     });
   },
   async down() {
     console.log('down to', this.version - 1);
-    Resources.find({ isCombo: true }).forEach((item) => {
+    await Resources.find({ isCombo: true }).forEachAsync(async (item) => {
       const resourcesForCombo = [];
       item.resourcesForCombo.forEach((res) => {
         resourcesForCombo.push(res?._id);
       });
-      Resources.update(item._id, { $set: { resourcesForCombo } });
+      await Resources.updateAsync(item._id, { $set: { resourcesForCombo } });
     });
   },
 });
@@ -217,8 +302,8 @@ Migrations.add({
   version: 10,
   async up() {
     console.log('up to', this.version);
-    Activities.find().forEach((item) => {
-      Activities.update(
+    await Activities.find().forEachAsync(async (item) => {
+      await Activities.updateAsync(
         { _id: item._id },
         {
           $set: {
@@ -230,8 +315,8 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    Activities.find().forEach((item) => {
-      Activities.update(
+    await Activities.find().forEachAsync(async (item) => {
+      await Activities.updateAsync(
         { _id: item._id },
         {
           $unset: {
@@ -248,59 +333,63 @@ Migrations.add({
   version: 11,
   async up() {
     console.log('up to', this.version);
-    Groups.find({ meetings: { $exists: true } }).forEach(async (group) => {
-      await group.meetings.forEach(async (meeting, meetingIndex) => {
-        const newAttendees = [];
-        await meeting.attendees.forEach((attendee) => {
-          const theUser = Meteor.users.findOne(attendee.memberId);
-          const theAttendee = {
-            email: theUser.emails[0].address,
-            username: theUser.username,
-            firstName: theUser.firstName || '',
-            lastName: theUser.lastName || '',
-            numberOfPeople: 1,
-            registerDate: attendee.confirmDate,
-          };
-          newAttendees.push(theAttendee);
-        });
-        let newActivity = {
-          host: group.host,
-          authorId: group.adminId,
-          authorName: group.adminUsername,
-          title: group.title,
-          longDescription: group.description,
-          datesAndTimes: [
-            {
-              startDate: meeting.startDate,
-              endDate: meeting.startDate,
-              startTime: meeting.startTime,
-              endTime: meeting.endTime,
-              attendees: [...newAttendees],
-            },
-          ],
-          groupId: group._id,
-          isPublicActivity: false,
-          isRegistrationDisabled: true,
-          isGroupMeeting: true,
-          isSentForReview: group.isSentForReview || false,
-          isPublished: group.isPublished,
-          creationDate: group.creationDate,
-        };
-        try {
-          const theResource = Resources.findOne({ label: meeting.resource });
-          if (theResource) {
-            newActivity = {
-              ...newActivity,
-              resource: theResource.label || '',
-              resourceId: theResource._id || '',
+    await Groups.find({ meetings: { $exists: true } }).forEachAsync(
+      async (group) => {
+        await group.meetings.forEach(async (meeting, meetingIndex) => {
+          const newAttendees = [];
+          await meeting.attendees.forEach((attendee) => {
+            const theUser = Meteor.users.findOneAsync(attendee.memberId);
+            const theAttendee = {
+              email: theUser.emails[0].address,
+              username: theUser.username,
+              firstName: theUser.firstName || '',
+              lastName: theUser.lastName || '',
+              numberOfPeople: 1,
+              registerDate: attendee.confirmDate,
             };
+            newAttendees.push(theAttendee);
+          });
+          let newActivity = {
+            host: group.host,
+            authorId: group.adminId,
+            authorName: group.adminUsername,
+            title: group.title,
+            longDescription: group.description,
+            datesAndTimes: [
+              {
+                startDate: meeting.startDate,
+                endDate: meeting.startDate,
+                startTime: meeting.startTime,
+                endTime: meeting.endTime,
+                attendees: [...newAttendees],
+              },
+            ],
+            groupId: group._id,
+            isPublicActivity: false,
+            isRegistrationDisabled: true,
+            isGroupMeeting: true,
+            isSentForReview: group.isSentForReview || false,
+            isPublished: group.isPublished,
+            creationDate: group.creationDate,
+          };
+          try {
+            const theResource = await Resources.findOneAsync({
+              label: meeting.resource,
+            });
+            if (theResource) {
+              newActivity = {
+                ...newActivity,
+                resource: theResource.label || '',
+                resourceId: theResource._id || '',
+              };
+            }
+          } catch (error) {
+            console.error(error);
           }
-        } catch (error) {
-          console.error(error);
-        }
-        Activities.insert({ ...newActivity });
-      });
-    });
+          await Activities.insertAsync({ ...newActivity });
+        });
+      }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
@@ -313,9 +402,14 @@ Migrations.add({
   version: 12,
   async up() {
     console.log('up to', this.version);
-    Groups.find({ meetings: { $exists: true } }).forEach((group) => {
-      Groups.update({ _id: group._id }, { $unset: { meetings: 1 } });
-    });
+    await Groups.find({ meetings: { $exists: true } }).forEachAsync(
+      async (group) => {
+        await Groups.updateAsync(
+          { _id: group._id },
+          { $unset: { meetings: 1 } }
+        );
+      }
+    );
   },
   async down() {
     console.log('down to', this.version - 1);
@@ -330,8 +424,8 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    Hosts.find().forEach((host) => {
-      Pages.remove({
+    await Hosts.find().forEachAsync(async (host) => {
+      await Pages.removeAsync({
         host: host.host,
         isTermsPage: true,
       });
@@ -343,11 +437,11 @@ Migrations.add({
   version: 14,
   async up() {
     console.log('up to', this.version);
-    Groups.find().forEach((group) => {
-      const admin = Meteor.users.findOne({ _id: group.adminId });
+    await Groups.find().forEachAsync(async (group) => {
+      const admin = await Meteor.users.findOneAsync({ _id: group.adminId });
       const members = group.members;
-      const newMembers = members.map((m) => {
-        const member = Meteor.users.findOne({ _id: m.memberId });
+      const newMembers = members.map(async (m) => {
+        const member = await Meteor.users.findOneAsync({ _id: m.memberId });
         return {
           memberId: m.memberId,
           username: m.username,
@@ -356,7 +450,7 @@ Migrations.add({
           isAdmin: group.adminId === m.memberId,
         };
       });
-      Groups.update(
+      await Groups.updateAsync(
         { _id: group._id },
         {
           $set: {
@@ -373,10 +467,10 @@ Migrations.add({
       );
     });
 
-    Works.find().forEach(function (work) {
-      const user = Meteor.users.findOne({ _id: work.authorId });
+    await Works.find().forEachAsync(async function (work) {
+      const user = await Meteor.users.findOneAsync({ _id: work.authorId });
       const userAvatar = user && user.avatar ? user.avatar.src : '';
-      Works.update(
+      await Works.updateAsync(
         { _id: work._id },
         {
           $set: {
@@ -388,7 +482,7 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    Groups.find().forEach((group) => {
+    await Groups.find().forEachAsync(async (group) => {
       const members = group.members;
       const oldMembers = members.map((m) => ({
         memberId: m.memberId,
@@ -397,7 +491,7 @@ Migrations.add({
         profileImage: m.avatar,
       }));
       const admin = group.members.find((m) => m.isAdmin);
-      Groups.update(
+      await Groups.updateAsync(
         { _id: group._id },
         {
           $set: {
@@ -413,10 +507,10 @@ Migrations.add({
       );
     });
 
-    Works.find().forEach((work) => {
-      const user = Meteor.users.findOne({ _id: work.authorId });
+    await Works.find().forEachAsync(async (work) => {
+      const user = await Meteor.users.findOneAsync({ _id: work.authorId });
       const userAvatar = user ? user.avatar : null;
-      Works.update(
+      await Works.updateAsync(
         {
           _id: work._id,
         },
@@ -444,7 +538,7 @@ Migrations.add({
   version: 16,
   async up() {
     console.log('up to', this.version);
-    Meteor.users.update(
+    await Meteor.users.updateAsync(
       {},
       {
         $set: { isPublic: true },
@@ -452,13 +546,13 @@ Migrations.add({
       { multi: true }
     );
 
-    Hosts.find().forEach((host) => {
+    await Hosts.find().forEachAsync(async (host) => {
       const members = host.members;
       const membersAltered = members.map((m) => ({
         ...m,
         isPublic: true,
       }));
-      Hosts.update(
+      await Hosts.updateAsync(
         { _id: host._id },
         {
           $set: {
@@ -470,20 +564,20 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    Meteor.users.update(
+    await Meteor.users.updateAsync(
       {},
       {
         $unset: { isPublic: true },
       },
       { multi: true }
     );
-    Hosts.find().forEach((host) => {
+    await Hosts.find().forEachAsync(async (host) => {
       const members = host.members;
       const membersAltered = members.map((m) => {
         delete m.isPublic;
         return m;
       });
-      Hosts.update(
+      await Hosts.updateAsync(
         { _id: host._id },
         {
           $set: {
@@ -499,7 +593,7 @@ Migrations.add({
   version: 17,
   async up() {
     console.log('up to', this.version);
-    Resources.update(
+    await Resources.updateAsync(
       {},
       {
         $set: {
@@ -511,7 +605,7 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    Resources.update(
+    await Resources.updateAsync(
       {},
       {
         $unset: {

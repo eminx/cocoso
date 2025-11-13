@@ -1,25 +1,26 @@
 import React from 'react';
+import { Outlet } from 'react-router';
 import { Trans } from 'react-i18next';
 
-import { Box, Heading } from '/imports/ui/core';
-import TablyRouter from '/imports/ui/generic/TablyRouter';
+import { Box } from '/imports/ui/core';
 
-import MenuDesign from './MenuDesign';
-import ThemeHandler from './ThemeHandler';
+import AdminTabs from '../AdminTabs';
 
-export default function DesignOptions() {
+export default function AdminDesign() {
   const tabs = [
     {
       title: <Trans i18nKey="admin:design.tabs.theme" />,
-      path: 'theme',
-      content: <ThemeHandler />,
+      path: '/admin/settings/design/theme',
     },
     {
       title: <Trans i18nKey="admin:design.tabs.menu" />,
-      path: 'navigation',
-      content: <MenuDesign />,
+      path: '/admin/settings/design/navigation',
     },
   ];
 
-  return <TablyRouter tabs={tabs} />;
+  return (
+    <AdminTabs tabs={tabs}>
+      <Outlet />
+    </AdminTabs>
+  );
 }

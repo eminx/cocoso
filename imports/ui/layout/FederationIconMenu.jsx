@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -14,21 +15,33 @@ import {
   Modal,
 } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
-
-import { call } from '/imports/ui/utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import NiceSlider from '/imports/ui/generic/NiceSlider';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import {
+  allHostsAtom,
+  currentHostAtom,
+  currentUserAtom,
+  isDesktopAtom,
+  platformAtom,
+} from '/imports/state';
 
 export default function FederationIconMenu() {
+  const allHosts = useAtomValue(allHostsAtom);
+  const currentHost = useAtomValue(currentHostAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
+  const platform = useAtomValue(platformAtom);
+
   const [infoOpen, setInfoOpen] = useState(false);
   const [hostInfo, setHostInfo] = useState(null);
-  const { allHosts, currentHost, currentUser, isDesktop, platform } =
-    useContext(StateContext);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const navigate = useNavigate();
 
   const getInfo = async () => {
+    if (!platform?.isFederationLayout) {
+      return;
+    }
     const info = await call('getPortalHostInfoPage');
     setHostInfo(info);
   };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router';
 import LinkIcon from 'lucide-react/dist/esm/icons/link';
 import { Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet';
@@ -76,12 +76,14 @@ const Header: React.FC<HeaderProps> = ({
   title,
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
-  const location = useLocation();
 
   const handleCopyLink = async (): Promise<void> => {
-    const host = window?.location?.host;
-    await navigator.clipboard.writeText(`https://${host}${location.pathname}`);
+    const href = window.location.href;
+    await navigator.clipboard.writeText(href);
     setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   };
 
   const renderTitles = () => (
@@ -90,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({
         p="4"
         justify={author ? 'space-between' : 'center'}
         w="100%"
-        maxW="720px"
+        css={{ maxWidth: '720px' }}
       >
         <Box px="2">
           <Heading
@@ -180,11 +182,12 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
   title,
   url,
 }) => {
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
-  const pathnameLastPart = location.pathname.split('/').pop();
-  const tabIndex =
-    tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
+  const selectedTabValue = searchParams.get('tab');
+  let tabIndex = tabs?.findIndex((tab) => tab.path === selectedTabValue);
+  tabIndex === -1 ? (tabIndex = 0) : null;
+  const selectedTab = tabs?.find((tab, index) => index === tabIndex);
 
   const description = subTitle || content?.toString() || author?.username;
   const imageUrl = images && images[0];
@@ -229,31 +232,19 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
           </Box>
 
           <Center mb="8" mt="4">
-            <Box maxW="540px" w="100%">
-              <Box w="100%">
-                {tabs && (
-                  <Box mt="2">
-                    <Tabs justify="center" index={tabIndex ?? 0} tabs={tabs} />
-                  </Box>
-                )}
-
-                <Box mb="24">
-                  {tabs ? (
-                    <Routes>
-                      {tabs.map((tab) => (
-                        <Route
-                          key={tab.title}
-                          path={tab.path}
-                          element={<Box>{tab.content}</Box>}
-                        />
-                      ))}
-                      <Route path="*" element={tabs[0].content} />
-                    </Routes>
-                  ) : (
-                    <Box pt="2">{content}</Box>
-                  )}
+            <Box w="100%" css={{ maxWidth: '540px' }}>
+              {tabs && (
+                <Box mt="2">
+                  <Tabs
+                    justify="center"
+                    index={tabIndex ?? 0}
+                    tabs={tabs}
+                    withSearchParams
+                  />
                 </Box>
-              </Box>
+              )}
+
+              <Box mb="4">{selectedTab?.content}</Box>
             </Box>
           </Center>
         </Box>

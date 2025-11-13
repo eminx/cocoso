@@ -1,30 +1,34 @@
-import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useAtom } from 'jotai';
+
+import { call } from '/imports/api/_utils/shared';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+import { message } from '/imports/ui/generic/message';
 
 import ResourceForm from './ResourceForm';
-import { ResourceContext } from './Resource';
-import { call } from '../../utils/shared';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
+import { resourceAtom } from './ResourceItemHandler';
 
 export default function EditResource() {
   const [updated, setUpdated] = useState(null);
-  const { resource, getResourceById } = useContext(ResourceContext);
-  const [, setSearchParams] = useSearchParams();
-  if (!resource) {
-    return null;
-  }
+  const [resource, setResource] = useAtom(resourceAtom);
 
   const updateResource = async (newResource) => {
     const resourceId = resource._id;
     try {
       await call('updateResource', resourceId, newResource);
-      await getResourceById(resourceId);
+      setResource(await call('getResourceById', resourceId));
       setUpdated(resourceId);
+      setTimeout(() => {
+        setUpdated(null);
+      }, 1000);
     } catch (error) {
       message.error(error.reason || error.error);
     }
   };
+
+  if (!resource) {
+    return null;
+  }
 
   const resourceFields = (({
     label,
@@ -45,7 +49,7 @@ export default function EditResource() {
   }))(resource);
 
   return (
-    <SuccessRedirector ping={updated} onSuccess={() => setSearchParams({ edit: 'false' })}>
+    <SuccessRedirector forEdit ping={updated}>
       <ResourceForm resource={resourceFields} onFinalize={updateResource} />
     </SuccessRedirector>
   );

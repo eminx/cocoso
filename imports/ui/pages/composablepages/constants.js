@@ -89,7 +89,11 @@ export const rowTypes = [
   },
 ];
 
-export const getGridTemplateColumns = (gridType) => {
+export const getGridTemplateColumns = (gridType, isDesktop = true) => {
+  if (!isDesktop) {
+    return '1fr';
+  }
+
   switch (gridType) {
     case '1+1':
       return 'repeat(2, 1fr)';

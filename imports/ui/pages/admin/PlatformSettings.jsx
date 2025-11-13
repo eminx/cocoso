@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Routes, Navigate, Route, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Navigate, Route, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
+import { useAtom, useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -14,13 +15,13 @@ import {
   Loader,
   Text,
 } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentUserAtom, platformAtom } from '../../../state';
 import { message } from '/imports/ui/generic/message';
-import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
+import { call, resizeImage, uploadImage } from '../../../api/_utils/shared';
 import FormField from '/imports/ui/forms/FormField';
 import FileDropper from '/imports/ui/forms/FileDropper';
 import Tabs from '../../core/Tabs';
-import ReactQuill from '/imports/ui/forms/Quill';
+import Quill from '/imports/ui/forms/Quill';
 
 function PlatformSettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
@@ -82,12 +83,13 @@ function PlatformOptions({ initialValues, onSubmit }) {
 }
 
 export default function PlatformSettings() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const [platform, setPlatform] = useAtom(platformAtom);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
-  const [platform, setPlatform] = useState(null);
+  const [localPlatform, setLocalPlatform] = useState(null);
   const location = useLocation();
-  const { currentUser, getPlatform } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -95,16 +97,15 @@ export default function PlatformSettings() {
     try {
       const respond = await call('getPlatform');
       setPlatform(respond);
-      getPlatform();
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      message(error.error || error.reason);
     }
   };
 
   useEffect(() => {
-    getPlatformNow();
-  }, []);
+    setLocalPlatform(platform);
+  }, [platform]);
 
   if (!currentUser || !currentUser.isSuperAdmin) {
     return <Alert>{tc('message.access.deny')}</Alert>;
@@ -130,7 +131,6 @@ export default function PlatformSettings() {
       );
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -156,15 +156,15 @@ export default function PlatformSettings() {
   };
 
   const handleFooterChange = (value) => {
-    setPlatform({
-      ...platform,
+    setLocalPlatform((prevState) => ({
+      ...prevState,
       footer: value,
-    });
+    }));
   };
 
   const handleFooterSubmit = () => {
     const formValues = {
-      footer: platform?.footer,
+      footer: localPlatform?.footer,
     };
 
     updatePlatformSettings(formValues);
@@ -220,7 +220,7 @@ export default function PlatformSettings() {
             {t('info.platform.info')}
           </Text>
           <PlatformSettingsForm
-            initialValues={platform}
+            initialValues={localPlatform}
             onSubmit={handleFormSubmit}
           />
         </Box>
@@ -239,7 +239,7 @@ export default function PlatformSettings() {
               uploadableImageLocal={
                 localImage && localImage.uploadableImageLocal
               }
-              imageUrl={platform?.logo}
+              imageUrl={localPlatform?.logo}
               setUploadableImage={setUploadableImage}
               width={isImage && '120px'}
               height={isImage && '80px'}
@@ -264,7 +264,7 @@ export default function PlatformSettings() {
             {t('info.platform.options')}
           </Text>
           <PlatformOptions
-            initialValues={platform}
+            initialValues={localPlatform}
             onSubmit={handleOptionsSubmit}
           />
         </Box>
@@ -282,15 +282,12 @@ export default function PlatformSettings() {
             {t('info.platform.footer.description')}
           </Text>
           <Box w="100%">
-            <ReactQuill
-              value={platform.footer}
+            <Quill
+              value={localPlatform.footer}
               onChange={(value) => handleFooterChange(value)}
             />
             <Flex justify="flex-end" mt="4" w="100%">
-              <Button
-                type="submit"
-                onClick={() => handleFooterSubmit(platform)}
-              >
+              <Button type="submit" onClick={handleFooterSubmit}>
                 {tc('actions.submit')}
               </Button>
             </Flex>

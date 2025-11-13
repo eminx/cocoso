@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -12,18 +13,19 @@ import {
 } from '/imports/ui/core';
 import Tag from '/imports/ui/generic/Tag';
 import { message } from '/imports/ui/generic/message';
-import { StateContext } from '/imports/ui/LayoutContainer';
-import { call } from '/imports/ui/utils/shared';
+import { currentUserAtom, roleAtom } from '../../../state';
+import { call } from '../../../api/_utils/shared';
 
 import Boxling from './Boxling';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
 function Categories() {
+  const currentUser = useAtomValue(currentUserAtom);
+  const role = useAtomValue(roleAtom);
   const [categories, setCategories] = useState([]);
   const [categoryInput, setCategoryInput] = useState('');
   const [loading, setLoading] = useState(true);
-  const { currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -33,7 +35,6 @@ function Categories() {
       setCategories(latestCategories);
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -55,7 +56,6 @@ function Categories() {
       setCategoryInput('');
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
     }
   };
 
@@ -65,7 +65,6 @@ function Categories() {
       getCategories();
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
     }
   };
 

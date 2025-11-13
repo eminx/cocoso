@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
@@ -28,7 +28,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
     tabs.push({
       title: <Trans i18nKey="resources:labels.combo">Combo</Trans>,
       content: (
-        <Flex direction="column" gap="2" pt="4">
+        <Flex direction="column" gap="2" pt="6">
           {resource.resourcesForCombo.map((res) => (
             <Link key={res._id} to={`/resources/${res._id}/info`}>
               <Box
@@ -54,7 +54,7 @@ export default function ResourceHybrid({ documents, resource, Host }) {
     tabs.push({
       title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: (
-        <Box p="4">
+        <Box p="6">
           <DocumentsField contextType="works" contextId={resource?._id} />
         </Box>
       ),

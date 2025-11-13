@@ -12,7 +12,7 @@ if (typeof window !== 'undefined') {
 
 const defaultItemsPerPage = 12;
 
-function PaginatedItems({
+export default function PaginatedItems({
   canCreateContent = false,
   isMasonry = false,
   items,
@@ -101,5 +101,3 @@ function PaginatedItems({
     </>
   );
 }
-
-export default PaginatedItems;

@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { useAtom } from 'jotai';
 
 import { Box, Checkbox } from '/imports/ui/core';
-
-import { call } from '/imports/ui/utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
 import FormField from '/imports/ui/forms/FormField';
 import DatesAndTimes, {
   emptyDateAndTime,
 } from '/imports/ui/forms/DatesAndTimes';
-import { LoaderContext } from '/imports/ui/listing/NewEntryHandler';
+import { loaderAtom } from '/imports/ui/utils/loaderHandler';
 
 import calendarActivityFormFields from './calendarActivityFormFields';
 
@@ -34,7 +34,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
   });
   const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
 
-  const { loaders, setLoaders } = useContext(LoaderContext);
+  const [loaders, setLoaders] = useAtom(loaderAtom);
   const [t] = useTranslation('activities');
 
   const getResources = async () => {

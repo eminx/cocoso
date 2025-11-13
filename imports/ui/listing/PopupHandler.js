@@ -1,10 +1,12 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import { Box, Center, Flex, Heading, Modal, Tag } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { allHostsAtom } from '../../state';
+import { currentHostAtom } from '/imports/state';
 
 import ActionDates from '../entry/ActionDates';
 import NiceSlider from '../generic/NiceSlider';
@@ -89,29 +91,30 @@ const getLinkPath = (item, kind, isCurrentHost = false) => {
     if (kind === 'works') {
       return {
         isHref: false,
-        path: `/@${item.authorUsername}/${kind}/${item._id}/info`,
+        path: `/@${item.authorUsername}/${kind}/${item._id}`,
       };
     }
     return {
       isHref: false,
-      path: `/${kind}/${item._id}/info`,
+      path: `/${kind}/${item._id}`,
     };
   }
   if (kind === 'works') {
     return {
       isHref: true,
-      path: `https://${item.host}/@${item.authorUsername}/${kind}/${item._id}/info`,
+      path: `https://${item.host}/@${item.authorUsername}/${kind}/${item._id}`,
     };
   }
   return {
     isHref: true,
-    path: `https://${item.host}/${kind}/${item._id}/info`,
+    path: `https://${item.host}/${kind}/${item._id}`,
   };
 };
 
 export default function PopupHandler({ item, kind, showPast, onClose }) {
+  const allHosts = useAtomValue(allHostsAtom);
+  const currentHost = useAtomValue(currentHostAtom);
   const [copied, setCopied] = useState(false);
-  const { allHosts, currentHost } = useContext(StateContext);
   const navigate = useNavigate();
   const [tc] = useTranslation('common');
 
@@ -128,7 +131,7 @@ export default function PopupHandler({ item, kind, showPast, onClose }) {
 
   const handleCopyLink = async () => {
     const link = getLinkPath(item, kind);
-    await navigator.clipboard.writeText(link.path);
+    await navigator.clipboard.writeText(link);
     setCopied(true);
   };
 

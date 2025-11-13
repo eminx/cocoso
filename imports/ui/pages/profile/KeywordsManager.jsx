@@ -6,7 +6,7 @@ import makeAnimated from 'react-select/animated';
 import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
 
 import { message } from '../../generic/message';
-import { call } from '../../utils/shared';
+import { call } from '../../../api/_utils/shared';
 
 const animatedComponents = makeAnimated();
 
@@ -34,7 +34,7 @@ function KeywordsManager({ currentUser }) {
 
   useEffect(() => {
     getKeywords();
-  }, []);
+  }, [currentUser]);
 
   const saveKeywords = async () => {
     try {

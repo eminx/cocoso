@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Flex, Input } from '/imports/ui/core';
 
 import FormField from '../../forms/FormField';
-import ReactQuill from '../../forms/Quill';
+import Quill from '../../forms/Quill';
 
 function ProfileForm({ defaultValues, onSubmit }) {
   const { control, formState, handleSubmit, register } = useForm({
@@ -32,7 +32,7 @@ function ProfileForm({ defaultValues, onSubmit }) {
             <Controller
               control={control}
               name="bio"
-              render={({ field }) => <ReactQuill {...field} />}
+              render={({ field }) => <Quill {...field} />}
             />
           </FormField>
 
@@ -40,7 +40,7 @@ function ProfileForm({ defaultValues, onSubmit }) {
             <Controller
               control={control}
               name="contactInfo"
-              render={({ field }) => <ReactQuill {...field} />}
+              render={({ field }) => <Quill {...field} />}
             />
           </FormField>
 

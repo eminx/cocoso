@@ -1,22 +1,22 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
+import { useAtomValue } from 'jotai';
 
 import { Box, Center, Heading, Grid } from '/imports/ui/core';
 
-import { StateContext } from '../LayoutContainer';
+import { isDesktopAtom } from '../../state';
 
 const publicSettings = Meteor.settings.public;
 
-function Template({
+export default function Template({
   heading,
   leftContent,
   rightContent,
   titleCentered = false,
   children,
 }) {
-  const context = useContext(StateContext);
-  const isDesktop = context?.isDesktop;
+  const isDesktop = useAtomValue(isDesktopAtom);
 
   return (
     <>
@@ -40,7 +40,7 @@ function Template({
                 </Heading>
               </Box>
             )}
-            <Box maxW="520px">{children}</Box>
+            <Box css={{ maxWidth: '520px' }}>{children}</Box>
           </Box>
 
           <Box>{rightContent}</Box>
@@ -61,7 +61,7 @@ function Template({
                   </Heading>
                 </Box>
               )}
-              <Box maxW="520px">{children}</Box>
+              <Box css={{ maxWidth: '520px' }}>{children}</Box>
             </Box>
             <Box>{rightContent}</Box>
           </Box>
@@ -70,5 +70,3 @@ function Template({
     </>
   );
 }
-
-export default Template;

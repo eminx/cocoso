@@ -1,42 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useLoaderData } from 'react-router';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 
-import { StateContext } from '/imports/ui/LayoutContainer';
-import { call } from '/imports/ui/utils/shared';
-import { message } from '/imports/ui/generic/message';
-import ComposablePageForm from './ComposablePageForm';
+import { currentHostAtom } from '/imports/state';
+
 import ComposablePagesListing from './components/ComposablePagesListing';
-import ComposablePageCreator from '/imports/ui/pages/composablepages/components/ComposablePageCreator';
-import { Heading } from '/imports/ui/core';
+import ComposablePageCreator from './components/ComposablePageCreator';
+
+export const composablePageTitlesAtom = atom([]);
 
 export default function ComposablePages() {
-  const { currentHost } = useContext(StateContext);
-  const [composablePageTitles, setComposablePageTitles] = useState([]);
-
-  const getComposablePageTitles = async () => {
-    try {
-      const response = await call('getComposablePageTitles');
-      setComposablePageTitles(response);
-    } catch (error) {
-      message.error(error.reason || error.error);
-    }
-  };
+  const currentHost = useAtomValue(currentHostAtom);
+  const { composablePageTitles } = useLoaderData();
+  const setComposablePageTitles = useSetAtom(composablePageTitlesAtom);
 
   useEffect(() => {
-    getComposablePageTitles();
-  }, []);
+    if (composablePageTitles) {
+      setComposablePageTitles(composablePageTitles);
+    }
+  }, [composablePageTitles]);
 
   return (
-    <Routes>
-      <Route
-        path=":composablePageId"
-        element={
-          <ComposablePageForm
-            composablePageTitles={composablePageTitles}
-            getComposablePageTitles={getComposablePageTitles}
-          />
-        }
-      />
-    </Routes>
+    <>
+      <ComposablePageCreator />
+      <ComposablePagesListing />
+    </>
   );
 }

@@ -1,15 +1,19 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext } from 'react';
+import React from 'react';
 const publicSettings = Meteor.settings.public;
+import { useAtomValue } from 'jotai';
 
 import { Box, Divider, Heading } from '/imports/ui/core';
-import { StateContext } from '../LayoutContainer';
+import { currentHostAtom } from '/imports/state';
+
 import Template from '../layout/Template';
 
-function Terms() {
-  const context = StateContext && useContext(StateContext);
+export default function Terms() {
+  const currentHost = useAtomValue(currentHostAtom);
 
-  const currentHost = context?.currentHost || null;
+  if (!currentHost) {
+    return null;
+  }
 
   return (
     <Template>
@@ -706,5 +710,3 @@ function TermsForHost({ currentHost }) {
     </Box>
   );
 }
-
-export default Terms;

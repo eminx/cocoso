@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
+import { useAtomValue } from 'jotai';
 
-import AdminFunctions from '../../../entry/AdminFunctions';
-import { ResourceContext } from '../Resource';
-import DeleteEntryHandler from '../../../entry/DeleteEntryHandler';
+import AdminFunctions from '/imports/ui/entry/AdminFunctions';
+import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
+
+import { resourceAtom } from '../ResourceItemHandler';
 
 export default function ResourceAdminFunctions() {
   const [tc] = useTranslation('common');
-  const { resource } = useContext(ResourceContext);
+  const resource = useAtomValue(resourceAtom);
   const [, setSearchParams] = useSearchParams();
 
   const handleSelect = (item) => {

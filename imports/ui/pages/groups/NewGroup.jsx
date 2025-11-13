@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { call } from '../../utils/shared';
+import { call } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
+
 import GroupForm from './GroupForm';
-import SuccessRedirector from '../../forms/SuccessRedirector';
-import { message } from '../../generic/message';
 
 export default function NewGroup() {
   const [newEntryId, setNewEntryId] = useState(null);
-  const navigate = useNavigate();
 
   const createGroup = async (newGroup) => {
     try {
@@ -19,12 +18,8 @@ export default function NewGroup() {
     }
   };
 
-  const handleSuccess = () => {
-    navigate(`/groups/${newEntryId}/info`);
-  };
-
   return (
-    <SuccessRedirector ping={newEntryId} onSuccess={handleSuccess}>
+    <SuccessRedirector context="groups" ping={newEntryId}>
       <GroupForm onFinalize={createGroup} />
     </SuccessRedirector>
   );

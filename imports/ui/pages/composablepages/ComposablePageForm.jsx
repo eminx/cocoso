@@ -1,11 +1,5 @@
-import React, {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
+import { useLoaderData, useNavigate, useParams } from 'react-router';
 import { Trans } from 'react-i18next';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
@@ -13,6 +7,7 @@ import { arrayMoveImmutable } from 'array-move';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import PlusIcon from 'lucide-react/dist/esm/icons/plus';
+import { useAtom } from 'jotai';
 
 import {
   Box,
@@ -26,19 +21,18 @@ import {
 } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
 import { message } from '/imports/ui/generic/message';
-import { call } from '/imports/ui/utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 
 import TopToolBar from './components/TopToolbar';
 import { rowTypes } from './constants';
-import ComposablePageCreator from './components/ComposablePageCreator';
-import ComposablePagesListing from './components/ComposablePagesListing';
 import ContentHandler from './components/ContentHandler';
 import Row from './components/Row';
 import BottomToolbar from './components/BottomToolbar';
+import { composablePageTitlesAtom } from './index';
 
 const getNewRow = (rowType) => {
-  const selectedRowType = rowTypes.find((type) => type.value === rowType);
+  const selectedRowType = rowTypes?.find((type) => type.value === rowType);
   return {
     gridType: selectedRowType.value,
     columns: selectedRowType.columns,
@@ -62,18 +56,19 @@ const defaultEmptyContentModal = {
   rowIndex: null,
 };
 
-export default function ComposablePageForm({
-  composablePageTitles,
-  getComposablePageTitles,
-}) {
-  const [currentPage, setCurrentPage] = useState(null);
+export default function ComposablePageForm() {
+  const [composablePageTitles, setComposablePageTitles] = useAtom(
+    composablePageTitlesAtom
+  );
+  const { composablePage } = useLoaderData();
+  const [currentPage, setCurrentPage] = useState(composablePage);
   const [contentModal, setContentModal] = useState(defaultEmptyContentModal);
   const [deleteModuleModal, setDeleteModuleModal] = useState(emptyModuleModal);
   const [deleteWholePageModal, setDeleteWholePageModal] = useState(false);
   const { composablePageId } = useParams();
   const navigate = useNavigate();
 
-  const getComposablePageById = useCallback(async () => {
+  const getComposablePageById = async () => {
     if (!composablePageId || composablePageId === '*') {
       return;
     }
@@ -84,7 +79,7 @@ export default function ComposablePageForm({
     } catch (error) {
       message.error(error.reason || error.error);
     }
-  }, [composablePageId]);
+  };
 
   useEffect(() => {
     if (!composablePageId) {
@@ -100,7 +95,7 @@ export default function ComposablePageForm({
     updateComposablePage();
   }, [currentPage?.contentRows]);
 
-  const handleAddRow = useCallback((selectedRow) => {
+  const handleAddRow = (selectedRow) => {
     const newRow = getNewRow(selectedRow.value);
     setCurrentPage((prevPage) => ({
       ...prevPage,
@@ -110,17 +105,17 @@ export default function ComposablePageForm({
       ],
       pingSave: true,
     }));
-  });
+  };
 
-  const handleSortRows = useCallback((oldIndex, newIndex) => {
+  const handleSortRows = (oldIndex, newIndex) => {
     setCurrentPage((prevPage) => ({
       ...prevPage,
       contentRows: arrayMoveImmutable(prevPage.contentRows, oldIndex, newIndex),
       pingSave: true,
     }));
-  });
+  };
 
-  const handleDeleteRow = useCallback(() => {
+  const handleDeleteRow = () => {
     if (!deleteModuleModal || !deleteModuleModal.open) {
       return;
     }
@@ -133,9 +128,9 @@ export default function ComposablePageForm({
       pingSave: true,
     }));
     setDeleteModuleModal(emptyModuleModal);
-  });
+  };
 
-  const handleDeleteContent = useCallback(() => {
+  const handleDeleteContent = () => {
     if (!deleteModuleModal || !deleteModuleModal.open) {
       return;
     }
@@ -164,7 +159,7 @@ export default function ComposablePageForm({
       pingSave: true,
     }));
     setDeleteModuleModal(emptyModuleModal);
-  });
+  };
 
   const handleDeleteModule = () => {
     const { contentIndex, columnIndex, rowIndex, moduleType } =
@@ -181,7 +176,7 @@ export default function ComposablePageForm({
     }
   };
 
-  const saveContentModal = useCallback((content) => {
+  const saveContentModal = (content) => {
     if (!contentModal.open) {
       return;
     }
@@ -211,42 +206,36 @@ export default function ComposablePageForm({
       }),
       pingSave: true,
     }));
-  });
+  };
 
-  const cancelContentModal = useCallback(() => {
+  const cancelContentModal = () => {
     setContentModal(defaultEmptyContentModal);
-  });
+  };
 
-  const updateComposablePage = useCallback(
-    async (updateTitles = false) => {
-      const newPage = {
-        _id: currentPage._id,
-        title: currentPage.title,
-        contentRows: currentPage.contentRows,
-        settings: currentPage.settings,
-      };
+  const updateComposablePage = async (updateTitles = false) => {
+    const newPage = {
+      _id: currentPage._id,
+      title: currentPage.title,
+      contentRows: currentPage.contentRows,
+      settings: currentPage.settings,
+    };
 
-      try {
-        await call('updateComposablePage', newPage);
-        if (updateTitles) {
-          await getComposablePageTitles();
-        }
-        setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
-        setContentModal(defaultEmptyContentModal);
-      } catch (error) {
-        message.error(error.reason || error.error);
-      }
-    },
-    [currentPage, getComposablePageTitles]
-  );
+    try {
+      await call('updateComposablePage', newPage);
+      setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
+      setContentModal(defaultEmptyContentModal);
+    } catch (error) {
+      message.error(error.reason || error.error);
+    }
+  };
 
   const deleteComposablePage = async () => {
     try {
       await call('deleteComposablePage', currentPage._id);
-      await getComposablePageTitles();
+      setComposablePageTitles(await call('getComposablePageTitles'));
       setDeleteWholePageModal(false);
       message.success(<Trans i18nKey="common:message.success.remove" />);
-      navigate('/admin/composable-pages/*');
+      navigate('/admin/composable-pages');
     } catch (error) {
       message.error(error.reason || error.error);
     }
@@ -260,25 +249,10 @@ export default function ComposablePageForm({
       setCurrentPage,
       setDeleteModuleModal,
     }),
-    [currentPage]
+    [composablePageId, currentPage]
   );
 
   if (!currentPage && !composablePageTitles) {
-    return null;
-  }
-
-  if (!composablePageId || composablePageId === '*') {
-    return (
-      <>
-        <ComposablePageCreator
-          getComposablePageTitles={getComposablePageTitles}
-        />
-        <ComposablePagesListing composablePageTitles={composablePageTitles} />
-      </>
-    );
-  }
-
-  if (!currentPage) {
     return null;
   }
 
@@ -293,10 +267,7 @@ export default function ComposablePageForm({
     <div>
       <DndProvider backend={HTML5Backend}>
         <ComposablePageContext.Provider value={contextValue}>
-          <TopToolBar
-            composablePageTitles={composablePageTitles}
-            getComposablePageTitles={getComposablePageTitles}
-          />
+          <TopToolBar />
 
           <Heading size="lg" my="6" textAlign="center">
             {currentPage.title}
@@ -377,7 +348,6 @@ export default function ComposablePageForm({
         <BottomToolbar
           currentPage={currentPage}
           getComposablePageById={getComposablePageById}
-          getComposablePageTitles={getComposablePageTitles}
         />
       </Center>
 

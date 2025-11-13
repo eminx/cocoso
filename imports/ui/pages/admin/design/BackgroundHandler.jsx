@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import { Box, Button, Center, Flex, Checkbox, Text } from '/imports/ui/core';
 import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
 import FileDropper from '/imports/ui/forms/FileDropper';
-import { StateContext } from '/imports/ui/LayoutContainer';
-import { call, resizeImage, uploadImage } from '/imports/ui/utils/shared';
+import { currentHostAtom } from '../../../../state';
+import { call, resizeImage, uploadImage } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';
 import Menu from '/imports/ui/generic/Menu';
@@ -17,7 +18,7 @@ export default function BackgroundHandler({
   onStyleChange,
   onUploadFinish,
 }) {
-  const { currentHost, setCurrentHost } = useContext(StateContext);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [state, setState] = useState({
     uploadingBgImage: false,
     uploadableBgImage: null,

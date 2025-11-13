@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-import React, { memo, useContext } from 'react';
+import React, { memo } from 'react';
 import dayjs from 'dayjs';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useAtomValue } from 'jotai';
 
 import { Box, Flex, Tag } from '/imports/ui/core';
 
 import { DateJust } from '../entry/FancyDate';
-import { StateContext } from '../LayoutContainer';
+import { allHostsAtom } from '../../state';
 
 const isClient = Meteor?.isClient;
 
@@ -58,7 +59,7 @@ export function ThumbDate({ occurrence }) {
 }
 
 function SexyThumb({ activity, host, index, showPast = false, tags }) {
-  const { allHosts } = isClient && useContext(StateContext);
+  const allHosts = isClient && useAtomValue(allHostsAtom);
 
   if (!activity) {
     return null;

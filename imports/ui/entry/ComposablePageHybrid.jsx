@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
@@ -7,7 +7,6 @@ import HTMLReactParser from 'html-react-parser';
 import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
-import { StateContext } from '/imports/ui/LayoutContainer';
 
 function ContentViewModule({ module, Host }) {
   const currentHost = Host;
@@ -79,7 +78,7 @@ function ContentViewModule({ module, Host }) {
     case 'text':
       return (
         <Center>
-          <Box className="text-content" maxW="480px" p="4">
+          <Box className="text-content" p="4" css={{ maxWidth: '480px' }}>
             {value.html ? HTMLReactParser(value.html) : null}
           </Box>
         </Center>
@@ -106,7 +105,7 @@ function ContentViewModule({ module, Host }) {
   }
 }
 
-export default function ComposablePageHybrid({ composablePage, Host }) {
+export default function ComposablePageHybrid({ Host, composablePage }) {
   if (!composablePage) {
     return null;
   }

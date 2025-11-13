@@ -71,9 +71,9 @@ const StyledBadgeBase = styled('span', {});
 const StyledBadge = (props: BadgeProps) => {
   const {
     colorScheme = 'gray',
-    css,
-    variant = 'solid',
     size = 'md',
+    variant = 'solid',
+    css,
     children,
     ...rest
   } = props;
@@ -95,7 +95,7 @@ const StyledBadge = (props: BadgeProps) => {
 };
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ children, ...rest }, ref) => (
+  ({ children, colorScheme, ...rest }, ref) => (
     <StyledBadge ref={ref} {...rest}>
       {children}
     </StyledBadge>

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import FsLightbox from 'fslightbox-react';
 import { Fade, Slide } from 'react-slideshow-image';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Client, useHydrated } from 'react-hydration-provider';
 
 import { Box, Center, Flex, Image } from '/imports/ui/core';
 
@@ -82,8 +81,7 @@ function Dots({ images, currentSlideIndex }) {
 
 function ImageHandler({ height, width, images, children }) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const hydrated = useHydrated();
-  const isMobile = hydrated && window.innerWidth < 768;
+  const isMobile = Meteor.isClient && window.innerWidth < 768;
 
   if (!images || images.length < 2) {
     return null;
@@ -145,14 +143,14 @@ export default function NiceSlider({
           </Center>
         </Flex>
 
-        <Client>
+        {Meteor.isClient && (
           <FsLightbox
             toggler={toggler}
             sources={images.map((img) => (
               <img alt={img} src={img} />
             ))}
           />
-        </Client>
+        )}
       </>
     );
   }
@@ -173,14 +171,15 @@ export default function NiceSlider({
           </Center>
         )}
       </ImageHandler>
-      <Client>
+
+      {Meteor.isClient && (
         <FsLightbox
           toggler={toggler}
           sources={images.map((img) => (
             <img alt={img} src={img} />
           ))}
         />
-      </Client>
+      )}
     </>
   );
 }

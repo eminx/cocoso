@@ -24,6 +24,7 @@ export default function ActivityHybrid({ activity, Host }) {
 
   const tabs = [
     {
+      key: 'info',
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
@@ -37,6 +38,7 @@ export default function ActivityHybrid({ activity, Host }) {
 
   if (activity?.isPublicActivity) {
     tabs.push({
+      key: 'location',
       title: (
         <Trans i18nKey="activities:public.labels.location">Location</Trans>
       ),
@@ -80,6 +82,7 @@ export default function ActivityHybrid({ activity, Host }) {
 
   if (!activity.isPublicActivity) {
     tabs.push({
+      key: 'dates',
       title: <Trans i18nKey="activities:public.labels.dates">See Dates</Trans>,
       content: (
         <Box>

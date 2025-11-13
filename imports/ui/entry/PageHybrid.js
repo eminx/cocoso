@@ -1,11 +1,12 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet';
 import HTMLReactParser from 'html-react-parser';
 
 import { Box, Center, Heading } from '/imports/ui/core';
+
 import NiceSlider from '../generic/NiceSlider';
-import { parseTitle } from '../utils/shared';
+import { parseTitle } from '../../api/_utils/shared';
 
 function SimplePage({ description, images, imageUrl, title, url }) {
   return (
@@ -43,10 +44,10 @@ function SimplePage({ description, images, imageUrl, title, url }) {
           <Box
             bg="white"
             className="text-content"
-            maxW="540px"
             mt="2"
             mb="24"
             p="6"
+            css={{ maxWidth: '540px' }}
           >
             {description && HTMLReactParser(description)}
           </Box>
@@ -59,6 +60,11 @@ function SimplePage({ description, images, imageUrl, title, url }) {
 export default function PageHybrid({ pages }) {
   const { pageTitle } = useParams();
   const navigate = useNavigate();
+
+  if (!pages) {
+    return null;
+  }
+
   const currentPage = pages.find(
     (page) => parseTitle(page.title) === pageTitle
   );

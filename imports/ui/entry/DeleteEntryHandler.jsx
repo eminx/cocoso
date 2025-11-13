@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
 import Modal from '/imports/ui/core/Modal';
-import { Center, Text } from '/imports/ui/core';
-import { StateContext } from '../LayoutContainer';
-import { call } from '../utils/shared';
+import { Box, Center, Text } from '/imports/ui/core';
+import { canCreateContentAtom, currentUserAtom, roleAtom } from '../../state';
+import { call } from '../../api/_utils/shared';
 import { message } from '../generic/message';
 
 function getDeleteMethod(context) {
@@ -26,11 +27,13 @@ function getDeleteMethod(context) {
 }
 
 export default function DeleteEntryHandler({ item, context }) {
+  const canCreateContent = useAtomValue(canCreateContentAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const role = useAtomValue(roleAtom);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [tc] = useTranslation('common');
-
-  const { canCreateContent, currentUser, role } = useContext(StateContext);
 
   const deleteEntry = async () => {
     const deleteMethod = getDeleteMethod(context);
@@ -77,19 +80,26 @@ export default function DeleteEntryHandler({ item, context }) {
         setSearchParams((params) => ({ ...params, delete: 'false' }))
       }
     >
-      <Text fontSize="xl" mb="2">
-        {tc('modals.confirm.delete.body')}
-      </Text>
-      <Center
-        bg="red.200"
-        p="2"
-        css={{
-          borderRadius: '1rem',
-          color: 'var(--cocoso-colors-red-900)',
-          textAlign: 'center',
-        }}
-      >
-        <Text size="lg">{tc('modals.confirm.delete.cantundo')}</Text>
+      <Center>
+        <Box>
+          <Text fontSize="lg" textAlign="center">
+            {tc('modals.confirm.delete.body')}
+          </Text>
+          <Box
+            bg="red.200"
+            mt="4"
+            p="2"
+            css={{
+              borderRadius: '1rem',
+              color: 'var(--cocoso-colors-red-900)',
+              textAlign: 'center',
+            }}
+          >
+            <Text fontWeight="bold" size="lg">
+              {tc('modals.confirm.delete.cantundo')}
+            </Text>
+          </Box>
+        </Box>
       </Center>
     </Modal>
   );

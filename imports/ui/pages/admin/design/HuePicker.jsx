@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { HuePicker as HuePickerComponent } from 'react-color';
 import { Trans } from 'react-i18next';
+import { useAtom } from 'jotai';
 
 import { Box, Button, Center, Code, Flex, Text } from '/imports/ui/core';
-import { StateContext } from '/imports/ui/LayoutContainer';
+import { currentHostAtom } from '../../../../state';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 
 const getColorForPicker = (hue) => ({ h: hue, s: 80, l: 0.1, a: 0 });
@@ -16,7 +17,7 @@ const parseHue = (hue, lightness) => {
 };
 
 export default function HuePicker({ onChange }) {
-  const { currentHost, setCurrentHost } = useContext(StateContext);
+  const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [initialHue] = useState(currentHost?.theme?.hue);
 
   const handleChange = (pickedColor) => {

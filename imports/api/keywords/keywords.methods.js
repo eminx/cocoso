@@ -4,17 +4,17 @@ import Hosts from '../hosts/host';
 import { getHost } from '../_utils/shared';
 
 Meteor.methods({
-  getKeywords() {
-    return Keywords.find().fetch();
+  async getKeywords() {
+    return await Keywords.find().fetchAsync();
   },
 
-  saveKeywords(keywords) {
-    const user = Meteor.user();
+  async saveKeywords(keywords) {
+    const user = await Meteor.userAsync();
     if (!user) {
       return;
     }
     try {
-      Meteor.users.update(user._id, {
+      await Meteor.users.updateAsync(user._id, {
         $set: {
           keywords: keywords.map((k) => ({
             keywordId: k._id,
@@ -27,21 +27,21 @@ Meteor.methods({
     }
   },
 
-  createKeyword(keyword) {
-    const user = Meteor.user();
+  async createKeyword(keyword) {
+    const user = await Meteor.userAsync();
     if (!user) {
       return;
     }
 
-    if (Keywords.findOne({ label: keyword.toLowerCase() })) {
+    if (await Keywords.findOneAsync({ label: keyword.toLowerCase() })) {
       throw new Meteor.Error('Keyword already exists');
     }
 
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     try {
-      const keywordId = Keywords.insert({
+      const keywordId = await Keywords.insertAsync({
         creatorId: user._id,
         creatorUsername: user.username,
         creationDate: new Date(),
@@ -51,7 +51,6 @@ Meteor.methods({
       });
       return keywordId;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },

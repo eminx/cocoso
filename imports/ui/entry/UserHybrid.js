@@ -1,16 +1,15 @@
 import React from 'react';
-import { Route, Routes, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import { Helmet } from 'react-helmet';
+import { Trans } from 'react-i18next';
 
-import { Box, Center, Flex } from '/imports/ui/core';
-import MemberAvatarEtc from '../generic/MemberAvatarEtc';
-import MemberWorks from '../pages/works/MemberWorks';
-import MemberActivities from '../pages/activities/MemberActivities';
-import MemberGroups from '../pages/groups/MemberGroups';
-import Tabs from '../core/Tabs';
+import { Alert, Box, Center, Flex, Tabs } from '/imports/ui/core';
+import { stripHtml, getFullName } from '/imports/api/_utils/shared';
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
+import MemberAvatarEtc from '/imports/ui/generic/MemberAvatarEtc';
+
 import BackLink from './BackLink';
-import { stripHtml, getFullName } from '/imports/ui/utils/shared';
 
 export function Bio({ user }) {
   if (!user || !user.bio) {
@@ -37,21 +36,31 @@ export function Bio({ user }) {
 }
 
 export default function UserHybrid({ user, Host }) {
+  const { usernameSlug, workId } = useParams();
   const location = useLocation();
-  const { usernameSlug } = useParams();
 
   if (usernameSlug[0] !== '@') {
-    return null;
+    return <NotFoundPage />;
   }
 
   if (!user) {
-    return null;
+    return (
+      <Center p="8">
+        <Alert
+          message={
+            <Trans i18nKey="accounts:profile.message.notfound">
+              User with this username within this organization not found, or
+              chose to hide their profile
+            </Trans>
+          }
+        />
+      </Center>
+    );
   }
 
   const { menu } = Host?.settings;
 
   const tabs = [];
-
   menu
     ?.filter(
       (item) =>
@@ -64,9 +73,10 @@ export default function UserHybrid({ user, Host }) {
       });
     });
 
-  const pathnameLastPart = location.pathname.split('/').pop();
-  const tabIndex = tabs.findIndex((tab) => tab.path === pathnameLastPart);
-  const isPortalHost = Host?.isPortalHost;
+  const pathname = location?.pathname;
+  let tabIndex = tabs?.findIndex((tab) => pathname.includes(tab.path));
+  tabIndex === -1 ? (tabIndex = 0) : null;
+
   const members = menu?.find((item) => item.name === 'people');
   const title = `${getFullName(user)} | ${user.username} | ${
     Host?.settings?.name
@@ -94,61 +104,38 @@ export default function UserHybrid({ user, Host }) {
         <meta property="og:type" content="article" />
       </Helmet>
 
-      <Box p="2">
-        <BackLink backLink={{ label: members?.label, value: '/people' }} />
-      </Box>
-
-      <Center>
-        <Box maxW="600px">
-          <Center>
-            <MemberAvatarEtc isThumb={false} user={user} />
-          </Center>
-          <Center>
-            <Bio user={user} />
-          </Center>
-        </Box>
-      </Center>
-
-      <Center>
-        <Box maxW="600px">
-          <Tabs align="center" index={tabIndex} tabs={tabs} />
-
-          <Box pt="4">
-            <Routes>
-              <Route
-                path="activities"
-                element={
-                  <MemberActivities
-                    currentHost={Host}
-                    isPortalHost={isPortalHost}
-                    user={user}
-                  />
-                }
-              />
-              <Route
-                path="groups"
-                element={
-                  <MemberGroups
-                    currentHost={Host}
-                    isPortalHost={isPortalHost}
-                    user={user}
-                  />
-                }
-              />
-              <Route
-                path="works"
-                element={
-                  <MemberWorks
-                    currentHost={Host}
-                    isPortalHost={isPortalHost}
-                    user={user}
-                  />
-                }
-              />
-            </Routes>
+      {workId ? (
+        <Outlet />
+      ) : (
+        <>
+          <Box p="2">
+            <BackLink backLink={{ label: members?.label, value: '/people' }} />
           </Box>
-        </Box>
-      </Center>
+
+          <Center>
+            <Box css={{ maxWidth: '600px' }}>
+              <Center>
+                <MemberAvatarEtc isThumb={false} user={user} />
+              </Center>
+              <Center>
+                <Bio user={user} />
+              </Center>
+            </Box>
+          </Center>
+
+          <Center>
+            <Box>
+              <Center>
+                <Tabs align="center" index={tabIndex} tabs={tabs} />
+              </Center>
+
+              <Box css={{ maxWidth: '600px' }} pt="4" mb="24">
+                <Outlet />
+              </Box>
+            </Box>
+          </Center>
+        </>
+      )}
     </>
   );
 }

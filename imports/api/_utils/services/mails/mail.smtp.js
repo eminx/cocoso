@@ -8,28 +8,31 @@ import { isValidEmail, getEmailBody } from './mail.helpers';
 import { getWelcomeEmailBody } from './templates.mails';
 
 Meteor.methods({
-  sendEmail(id, subjectEmail, textEmail) {
+  async sendEmail(id, subjectEmail, textEmail) {
     check([id, subjectEmail, textEmail], [String]);
     const fromEmail = Meteor.settings.mailCredentials.smtp.fromEmail;
 
+    const isEmailValid = isValidEmail(id);
+
     let toEmail;
-    if (isValidEmail(id)) {
+    if (isEmailValid) {
       toEmail = id;
-    } else {
-      const user = Meteor.users.findOne({ $or: [{ _id: id }, { username: id }] });
-      if (user) {
-        toEmail = user.emails[0]?.address;
-      }
+    }
+    if (!isEmailValid) {
+      const user = await Meteor.users.findOneAsync({
+        $or: [{ _id: id }, { username: id }],
+      });
+      toEmail = user.emails?.[0]?.address;
     }
 
-    if (!isValidEmail(toEmail)) {
+    if (!toEmail) {
       return;
     }
 
     this.unblock();
 
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
 
     let fromEmailWithHostName = fromEmail;
     if (currentHost && currentHost.settings && currentHost.settings.name) {
@@ -43,13 +46,18 @@ Meteor.methods({
       html: textEmail,
     };
 
-    Email.send(data);
+    try {
+      await Email.sendAsync(data);
+    } catch (error) {
+      console.log('email error', error);
+      throw new Meteor.Error(error);
+    }
   },
 
-  sendWelcomeEmail(userId, hostToJoin) {
-    const user = Meteor.users.findOne(userId);
+  async sendWelcomeEmail(userId, hostToJoin) {
+    const user = await Meteor.users.findOneAsync(userId);
     const host = hostToJoin || getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const welcomeText = currentHost && currentHost.emails[0];
 
     const emailBody = getWelcomeEmailBody(
@@ -59,23 +67,22 @@ Meteor.methods({
       welcomeText?.body
     );
 
-    Meteor.call(
-      'sendEmail',
-      user?.emails[0].address,
-      welcomeText?.subject,
-      emailBody,
-      (error, respond) => {
-        if (error) {
-          console.log(error);
-        }
-      }
-    );
+    try {
+      await Meteor.callAsync(
+        'sendEmail',
+        user?.emails[0].address,
+        welcomeText?.subject,
+        emailBody
+      );
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 
-  sendNewContributorEmail(userId) {
-    const user = Meteor.users.findOne(userId);
+  async sendNewContributorEmail(userId) {
+    const user = await Meteor.users.findOneAsync(userId);
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const welcomeText = currentHost && currentHost.emails[1];
 
     const emailBody = getWelcomeEmailBody(
@@ -85,30 +92,33 @@ Meteor.methods({
       welcomeText?.body
     );
 
-    Meteor.call(
-      'sendEmail',
-      user?.emails[0].address,
-      welcomeText?.subject,
-      emailBody,
-      (error, respond) => {
-        if (error) {
-          console.log(error);
-        }
-      }
-    );
+    try {
+      await Meteor.callAsync(
+        'sendEmail',
+        user?.emails[0].address,
+        welcomeText?.subject,
+        emailBody
+      );
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 
-  sendNewAdminEmail(userId) {
-    const user = Meteor.users.findOne(userId);
+  async sendNewAdminEmail(userId) {
+    const user = await Meteor.users.findOneAsync(userId);
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    const currentHost = await Hosts.findOneAsync({ host });
     const email = currentHost && currentHost.emails[2];
 
-    Meteor.call(
-      'sendEmail',
-      user.emails[0].address,
-      email.subject,
-      getEmailBody(email, user.username)
-    );
+    try {
+      await Meteor.callAsync(
+        'sendEmail',
+        user.emails[0].address,
+        email.subject,
+        getEmailBody(email, user.username)
+      );
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 });

@@ -3,8 +3,9 @@ import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 
 import { Box, Text } from '/imports/ui/core';
-import TablyCentered from './TablyCentered';
 import DocumentsField from '/imports/ui/pages/resources/components/DocumentsField';
+
+import TablyCentered from './TablyCentered';
 
 export default function WorkHybrid({ documents, work, Host }) {
   if (!work) {
@@ -16,8 +17,7 @@ export default function WorkHybrid({ documents, work, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {work?.longDescription &&
-            HTMLReactParser(work?.longDescription)}
+          {work?.longDescription && HTMLReactParser(work?.longDescription)}
         </Box>
       ),
       path: 'info',
@@ -28,7 +28,7 @@ export default function WorkHybrid({ documents, work, Host }) {
     tabs.push({
       title: <Trans i18nKey="common:labels.extra">Extra</Trans>,
       content: (
-        <Box bg="white" p="4">
+        <Box bg="white" p="6">
           <Text textAlign="center">{work?.additionalInfo}</Text>
         </Box>
       ),
@@ -40,7 +40,7 @@ export default function WorkHybrid({ documents, work, Host }) {
     tabs.push({
       title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: (
-        <Box p="4">
+        <Box p="6">
           <DocumentsField contextType="works" contextId={work?._id} />
         </Box>
       ),
@@ -52,12 +52,7 @@ export default function WorkHybrid({ documents, work, Host }) {
     tabs.push({
       title: <Trans i18nKey="common:labels.contact">Contact</Trans>,
       content: (
-        <Box
-          bg="white"
-          className="text-content"
-          p="4"
-          textAlign="center"
-        >
+        <Box bg="white" className="text-content" p="6" textAlign="center">
           {work?.contactInfo && HTMLReactParser(work.contactInfo)}
         </Box>
       ),

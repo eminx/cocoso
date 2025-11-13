@@ -9,7 +9,7 @@ Meteor.publish('work', (id) =>
 );
 
 Meteor.publish('myworks', function () {
-  const currentUserId = Meteor.userId();
+  const currentUserId = this.userId;
   const host = getHost(this);
   // Works._ensureIndex({ host, authorId: currentUserId });
   return Works.find({

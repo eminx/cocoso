@@ -7,7 +7,13 @@ import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
 
 import { fontOptions } from './styleOptions';
 
-export default function FontSelector({ handleStyleChange, selectedFont }) {
+export default function FontSelector({
+  currentTheme,
+  handleStyleChange,
+  selectedFont,
+}) {
+  const fontFamily = currentTheme?.body?.fontFamily;
+
   return (
     <>
       <Text fontWeight="bold" mb="4">
@@ -40,7 +46,7 @@ export default function FontSelector({ handleStyleChange, selectedFont }) {
                   </Text>
                 </p>
               </Center>
-              <Text>
+              <Text style={{ fontFamily }}>
                 Cocoso doesn't feature tools for spying on users for tracking
                 their data. Each member of any community owns their data, and
                 are free to share only as much as they wish. No information is

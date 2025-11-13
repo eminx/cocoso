@@ -2,9 +2,9 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Center, Flex, Input, Text } from '/imports/ui/core';
+import { Box, Button, Center, Flex, Input, Text } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
-import ReactQuill from '/imports/ui/forms/Quill';
+import Quill from '/imports/ui/forms/Quill';
 import FileDropper from '/imports/ui/forms/FileDropper';
 
 import ContentInserter from './ContentInserter';
@@ -93,16 +93,18 @@ export default function EmailForm({
             label={t('emails.form.body.label')}
             mb="4"
           >
-            <ReactQuill
+            <Quill
               value={email.body}
               onChange={(value) => handleChange('body', value)}
             />
           </FormField>
 
-          {/* <ContentInserter currentHost={currentHost} onSelect={onSelectItems} /> */}
+          <Box mb="24">
+            <ContentInserter onSelect={onSelectItems} />
+          </Box>
 
           <FormField label={t('emails.form.footer.label')} mb="4">
-            <ReactQuill
+            <Quill
               className="ql-editor-text-align-center"
               value={email.footer}
               onChange={(value) => handleChange('footer', value)}

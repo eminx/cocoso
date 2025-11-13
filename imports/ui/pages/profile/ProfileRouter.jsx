@@ -1,9 +1,9 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import loadable from '@loadable/component';
 
 const EditProfile = loadable(() => import('./EditProfile'));
-const Work = loadable(() => import('../works/Work'));
+const Work = loadable(() => import('../works/WorkItemHandler'));
 const EditWork = loadable(() => import('../works/EditWork'));
 const Profile = loadable(() => import('../../entry/UserHybrid'));
 
