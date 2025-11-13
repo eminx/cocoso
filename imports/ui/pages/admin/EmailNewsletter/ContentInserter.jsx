@@ -80,11 +80,14 @@ function ListItemCheckbox({ item, children, onSelect }) {
           }}
           width="80px"
         />
-        <Box ml="2" css={{ flexShrink: '1' }}>
-          <Text fontSize="lg" fontWeight="bold">
-            {item.title}
-          </Text>
-          {children}
+        <Box px="2" css={{ flexShrink: '1' }}>
+          <Box mb="2">
+            <Text fontSize="xl" fontWeight="bold">
+              {item.title}
+            </Text>
+            <br />
+          </Box>
+          <Box>{children}</Box>
         </Box>
       </Flex>
     </ListItem>
