@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Flex, Heading, Text } from '/imports/ui/core';
 
 import Boxling from './Boxling';
 
-const shortCuts = [
+const shortCuts = () => [
   {
     label: <Trans i18nKey="admin:settings.tabs.logo" />,
     helper: <Trans i18nKey="admin:settings.tabs.logoHelper" />,
@@ -61,10 +61,11 @@ const shortCuts = [
 
 export default function AdminHome() {
   const navigate = useNavigate();
+  const [t] = useTranslation('admin');
 
   return (
     <Flex align="stretch" gap="4" wrap="wrap">
-      {shortCuts.map((item) => (
+      {shortCuts().map((item) => (
         <Boxling
           key={item.link}
           css={{
