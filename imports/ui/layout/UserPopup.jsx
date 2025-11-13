@@ -5,7 +5,7 @@ import { Trans } from 'react-i18next';
 import BoltIcon from 'lucide-react/dist/esm/icons/bolt';
 import CheckCircleIcon from 'lucide-react/dist/esm/icons/check-circle';
 import CircleIcon from 'lucide-react/dist/esm/icons/circle';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
 import {
   Avatar,
@@ -29,8 +29,8 @@ import {
   platformAtom,
   roleAtom,
 } from '/imports/state';
-
-import { getFullName } from '../../api/_utils/shared';
+import { getFullName } from '/imports/api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
 
 function NotificationLinkItem({ host, item, children }) {
   if (item.host && host === item.host) {
@@ -132,7 +132,7 @@ export function UserThumb({ notificationsCounter = 0 }) {
 export default function UserPopup({ isOpen, setIsOpen }) {
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentHost = useAtomValue(currentHostAtom);
-  const currentUser = useAtomValue(currentUserAtom);
+  const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const platform = useAtomValue(platformAtom);
   const role = useAtomValue(roleAtom);
@@ -154,6 +154,8 @@ export default function UserPopup({ isOpen, setIsOpen }) {
 
   const handleLogout = () => {
     Meteor.logout();
+    setCurrentUser(null);
+    message.info(<Trans i18nKey="accounts:logout.messages.success" />);
     navigate('/');
   };
 
