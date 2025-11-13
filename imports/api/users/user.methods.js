@@ -200,14 +200,17 @@ Meteor.methods({
   },
 
   async setAvatar(avatar) {
-    const userId = await Meteor.userAsync()?._id;
-    if (!userId) {
+    const user = await Meteor.userAsync();
+
+    if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
 
     if (!avatar) {
       throw new Meteor.Error('Not valid file');
     }
+
+    const userId = user._id;
 
     const newAvatar = {
       src: avatar,
