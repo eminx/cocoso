@@ -316,7 +316,7 @@ const getAdminRoutes = (props) => [
         element: createRouteElement(PagesAdmin, props),
       },
       {
-        path: 'info/*',
+        path: 'people/*',
         element: createRouteElement(PeopleAdmin, props),
       },
       {
