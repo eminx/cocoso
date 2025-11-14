@@ -1,21 +1,22 @@
-import React, { lazy, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import loadable from '@loadable/component';
 import { Navigate, useLoaderData, useSearchParams } from 'react-router';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 
-const EditEntryHandler = lazy(() =>
+const EditEntryHandler = loadable(() =>
   import('/imports/ui/forms/EditEntryHandler')
 );
 
-const ActivityInteractionHandler = lazy(() =>
+const ActivityInteractionHandler = loadable(() =>
   import('./components/ActivityInteractionHandler')
 );
-const EditCalendarActivity = lazy(() =>
+const EditCalendarActivity = loadable(() =>
   import('../calendar/EditCalendarActivity')
 );
-const EditPublicActivity = lazy(() => import('./EditPublicActivity'));
+const EditPublicActivity = loadable(() => import('./EditPublicActivity'));
 
 export const activityAtom = atom(null);
 

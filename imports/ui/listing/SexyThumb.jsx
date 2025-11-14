@@ -127,7 +127,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
             {tags && (
               <Flex my="2">
                 {tags.map((t) => (
-                  <Tag colorScheme="gray" key={t} size="sm">
+                  <Tag key={t} colorScheme="gray" size="sm">
                     {t}
                   </Tag>
                 ))}

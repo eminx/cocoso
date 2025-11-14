@@ -1,11 +1,14 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { useLoaderData } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import WorksHybrid from '/imports/ui/listing/WorksHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
-const NewEntryHandler = lazy(() => import('../../forms/NewEntryHandler'));
-const NewWork = lazy(() => import('./NewWork'));
+import WorksHybrid from '/imports/ui/listing/WorksHybrid';
+const NewEntryHandler = loadable(() =>
+  import('/imports/ui/forms/NewEntryHandler')
+);
+
+const NewWork = loadable(() => import('./NewWork'));
 
 export default function WorkListHandler({ Host }) {
   const { documents, works } = useLoaderData();

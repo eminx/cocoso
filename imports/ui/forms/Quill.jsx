@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import React, { lazy, useState } from 'react';
-const ReactQuill = lazy(() => import('react-quill-new'));
+import React, { useState } from 'react';
+import loadable from '@loadable/component';
+const ReactQuill = loadable(() => import('react-quill-new'));
 
 import { editorModules } from '../utils/constants/quillConfig';
 

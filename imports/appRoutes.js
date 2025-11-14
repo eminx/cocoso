@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { Suspense } from 'react';
+import React from 'react';
 import loadable from '@loadable/component';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
@@ -87,6 +87,9 @@ const GroupsAdmin = loadable(() =>
 );
 const PagesAdmin = loadable(() =>
   import('./ui/pages/admin/listing/PagesAdmin')
+);
+const PeopleAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/PeopleAdmin')
 );
 const ResourcesAdmin = loadable(() =>
   import('./ui/pages/admin/listing/ResourcesAdmin')
@@ -190,19 +193,10 @@ class RouteErrorBoundary extends React.Component {
 }
 
 // Use it in your route wrapper
-const createRouteElement = (Component, props, skipSuspense = false) => {
-  if (props.skipSuspense) {
-    return (
-      <RouteErrorBoundary>
-        <Component {...props} />
-      </RouteErrorBoundary>
-    );
-  }
+const createRouteElement = (Component, props) => {
   return (
     <RouteErrorBoundary>
-      <Suspense fallback={<Loader relative />}>
-        <Component {...props} />
-      </Suspense>
+      <Component {...props} />
     </RouteErrorBoundary>
   );
 };
@@ -316,6 +310,10 @@ const getAdminRoutes = (props) => [
         element: createRouteElement(PagesAdmin, props),
       },
       {
+        path: 'info/*',
+        element: createRouteElement(PeopleAdmin, props),
+      },
+      {
         path: 'resources/*',
         element: createRouteElement(ResourcesAdmin, props),
       },
@@ -348,11 +346,11 @@ export default function appRoutes(props) {
 
   return [
     {
-      element: createRouteElement(WrapperHybrid, props, true),
+      element: createRouteElement(WrapperHybrid, props),
       children: [
         {
           path: '',
-          element: createRouteElement(HomeHandler, props, true),
+          element: createRouteElement(HomeHandler, props),
           loader: async ({ params, request }) =>
             await getHomeLoader({ Host, params, request }),
         },
@@ -361,7 +359,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(ActivityListHandler, props, true),
+              element: createRouteElement(ActivityListHandler, props),
               loader: async ({ request }) =>
                 await getActivities({ request, host, isPortalHost }),
             },
@@ -377,7 +375,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(GroupListHandler, props, true),
+              element: createRouteElement(GroupListHandler, props),
               loader: async () => await getGroups({ host, isPortalHost }),
             },
             {
@@ -393,7 +391,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(CalendarHandler, props, true),
+              element: createRouteElement(CalendarHandler, props),
               loader: async ({ request }) =>
                 await getCalendarEntries({ host, isPortalHost }),
             },
@@ -409,14 +407,14 @@ export default function appRoutes(props) {
           children: [
             {
               path: ':pageTitle',
-              element: createRouteElement(PageItemHandler, props, true),
+              element: createRouteElement(PageItemHandler, props),
               loader: async () => await getPages({ host }),
             },
           ],
         },
         {
           path: 'people',
-          element: createRouteElement(UserListHandler, props, true),
+          element: createRouteElement(UserListHandler, props),
           loader: async () => await getPeople({ host, isPortalHost }),
         },
         {
@@ -424,7 +422,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(ResourceListHandler, props, true),
+              element: createRouteElement(ResourceListHandler, props),
               loader: async () => await getResources({ host, isPortalHost }),
             },
             {
@@ -440,7 +438,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(WorkListHandler, props, true),
+              element: createRouteElement(WorkListHandler, props),
               loader: async () => await getWorks({ host, isPortalHost }),
             },
           ],
@@ -477,18 +475,18 @@ export default function appRoutes(props) {
         },
         {
           path: 'cp/:composablePageId',
-          element: createRouteElement(ComposablePageHandler, props, true),
+          element: createRouteElement(ComposablePageHandler, props),
           loader: async ({ params }) =>
             await getComposablePage({ params, Host }),
         },
         {
           path: 'communities',
-          element: createRouteElement(CommunityListHandler, props, true),
+          element: createRouteElement(CommunityListHandler, props),
           loader: async () => getCommunities(),
         },
         {
           path: 'intro',
-          element: createRouteElement(RegistrationIntro, props, true),
+          element: createRouteElement(RegistrationIntro, props),
         },
         {
           path: 'login',
