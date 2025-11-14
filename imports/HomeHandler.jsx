@@ -10,6 +10,7 @@ import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler
 import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
 import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
 import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
+import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 
 // Lazy load only heavy/less-common handlers
 const CalendarHandler = loadable(
@@ -17,9 +18,6 @@ const CalendarHandler = loadable(
   {
     fallback: <Skeleton isEntry={false} count={4} />,
   }
-);
-const ComposablePageHandler = loadable(() =>
-  import('/imports/ui/pages/composablepages/ComposablePageHandler')
 );
 
 export default function HomeHandler(props) {
