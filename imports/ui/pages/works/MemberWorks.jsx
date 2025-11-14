@@ -21,7 +21,7 @@ export default function MemberWorks({ Host, isPortalHost }) {
           <Box key={work._id}>
             {isExternal ? (
               <a
-                href={`https://${work.host}/@${work.authorUsername}/works/${work._id}/info`}
+                href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
               >
                 <NewGridThumb
                   avatar={{
@@ -35,7 +35,7 @@ export default function MemberWorks({ Host, isPortalHost }) {
                 />
               </a>
             ) : (
-              <Link to={`/@${work.authorUsername}/works/${work._id}/info`}>
+              <Link to={`/@${work.authorUsername}/works/${work._id}`}>
                 <NewGridThumb
                   avatar={{
                     name: work.authorUsername,

@@ -3,8 +3,9 @@ import React, { Suspense } from 'react';
 import loadable from '@loadable/component';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
-import { Loader } from '/imports/ui/core';
 import HomeHandler from '/imports/HomeHandler';
+import { Loader } from '/imports/ui/core';
+
 import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
 import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
 import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
@@ -199,7 +200,7 @@ const createRouteElement = (Component, props, skipSuspense = false) => {
   }
   return (
     <RouteErrorBoundary>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader relative />}>
         <Component {...props} />
       </Suspense>
     </RouteErrorBoundary>

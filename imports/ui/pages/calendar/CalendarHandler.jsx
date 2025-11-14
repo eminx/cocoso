@@ -137,10 +137,10 @@ export default function CalendarHandler({ Host, pageTitles }) {
 
     if (selectedActivity.isGroupMeeting) {
       if (isSameHost) {
-        navigate(`/groups/${selectedActivity.groupId}/info`);
+        navigate(`/groups/${selectedActivity.groupId}`);
         return;
       }
-      window.location.href = `https://${selectedActivity.host}/groups/${selectedActivity.groupId}/info`;
+      window.location.href = `https://${selectedActivity.host}/groups/${selectedActivity.groupId}`;
       return;
     }
 
@@ -148,10 +148,10 @@ export default function CalendarHandler({ Host, pageTitles }) {
       ? 'activities'
       : 'calendar';
     if (isSameHost) {
-      navigate(`/${listing}/${selectedActivity.activityId}/info`);
+      navigate(`/${listing}/${selectedActivity.activityId}`);
       return;
     }
-    window.location.href = `https://${selectedActivity.host}/${listing}/${selectedActivity.activityId}/info`;
+    window.location.href = `https://${selectedActivity.host}/${listing}/${selectedActivity.activityId}`;
   };
 
   const handleSecondaryButtonClick = () => {

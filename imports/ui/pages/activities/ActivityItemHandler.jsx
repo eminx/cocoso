@@ -33,7 +33,7 @@ export default function ActivityItemHandler({ Host }) {
   const isGroupMeeting = activity?.isGroupMeeting;
 
   if (isGroupMeeting) {
-    return <Navigate to={`/groups/${activity.groupId}/info`} />;
+    return <Navigate to={`/groups/${activity.groupId}`} />;
   }
 
   return (

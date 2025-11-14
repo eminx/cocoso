@@ -22,9 +22,7 @@ export default function MemberActivities({ Host, isPortalHost }) {
         return (
           <Box key={activity._id}>
             {isExternal ? (
-              <a
-                href={`https://${activity.host}/activities/${activity._id}/info`}
-              >
+              <a href={`https://${activity.host}/activities/${activity._id}`}>
                 <NewGridThumb
                   host={isPortalHost && activity.host}
                   imageUrl={activity.imageUrl}
@@ -37,7 +35,7 @@ export default function MemberActivities({ Host, isPortalHost }) {
                 />
               </a>
             ) : (
-              <Link to={`/activities/${activity._id}/info`}>
+              <Link to={`/activities/${activity._id}`}>
                 <NewGridThumb
                   host={isPortalHost && activity.host}
                   imageUrl={activity.imageUrl}
