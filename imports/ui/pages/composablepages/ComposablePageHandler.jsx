@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHref, useLoaderData, useParams } from 'react-router';
+import { useLoaderData } from 'react-router';
 
 import ComposablePageHybrid from '/imports/ui/entry/ComposablePageHybrid';
 
