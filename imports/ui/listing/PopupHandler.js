@@ -86,8 +86,8 @@ function PopupContent({
   );
 }
 
-const getLinkPath = (item, kind, isCurrentHost = false) => {
-  if (isCurrentHost) {
+const getLinkPath = (item, kind, isAnotherHost = false) => {
+  if (isAnotherHost) {
     if (kind === 'works') {
       return {
         isHref: false,
@@ -132,7 +132,7 @@ export default function PopupHandler({ item, kind, showPast, onClose }) {
 
   const handleCopyLink = async () => {
     const link = getLinkPath(item, kind);
-    await navigator.clipboard.writeText(link);
+    await navigator.clipboard.writeText(link.path);
     setCopied(true);
   };
 
