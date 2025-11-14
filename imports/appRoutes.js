@@ -530,10 +530,10 @@ export default function appRoutes(props) {
           path: '404',
           element: createRouteElement(NotFoundPage, props),
         },
-        // {
-        //   path: '*',
-        //   element: createRouteElement(NotFoundPage, props),
-        // },
+        {
+          path: '*',
+          element: createRouteElement(NotFoundPage, props),
+        },
       ],
     },
   ];
