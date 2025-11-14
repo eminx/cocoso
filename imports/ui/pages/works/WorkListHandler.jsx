@@ -1,4 +1,5 @@
 import React from 'react';
+import loadable from '@loadable/component';
 import { useLoaderData } from 'react-router';
 import { useAtomValue } from 'jotai';
 

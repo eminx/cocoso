@@ -59,14 +59,13 @@ export function ThumbDate({ occurrence }) {
 }
 
 function SexyThumb({ activity, host, index, showPast = false, tags }) {
-  const allHosts = isClient && useAtomValue(allHostsAtom);
+  // const allHosts = isClient && useAtomValue(allHostsAtom);
 
   if (!activity) {
     return null;
   }
 
-  const { datesAndTimes, hostName, readingMaterial, subTitle, tag, title } =
-    activity;
+  const { datesAndTimes, readingMaterial, subTitle, tag, title } = activity;
   const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
 
   const dates = datesAndTimes;
@@ -79,8 +78,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
   const remainingFuture = futureDates && futureDates.length - 3;
   const remainingPast = futureDates && pastDates.length - 1;
 
-  const hostValue =
-    host && isClient ? allHosts?.find((h) => h?.host === host)?.name : host;
+  // const hostName = host && allHosts?.find((h) => h?.host === host)?.name;
 
   return (
     <Box
@@ -103,21 +101,6 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
           visibleByDefault={index < 6}
         />
       </div>
-
-      {host && (
-        <Box
-          p="1"
-          css={{
-            bottom: '8px',
-            position: 'absolute',
-            right: '12px',
-          }}
-        >
-          <Tag color="gray" size="sm">
-            {hostValue}
-          </Tag>
-        </Box>
-      )}
 
       <div className="thumb-text-container">
         <Flex direction="column" h="100%" justify="space-between">
@@ -179,7 +162,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
           )}
         </Flex>
 
-        {(hostName || tag) && (
+        {host && (
           <div
             style={{
               alignItems: 'center',
@@ -187,10 +170,10 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
               display: 'flex',
               flexDirection: 'column',
               position: 'absolute',
-              right: 12,
+              right: 24,
             }}
           >
-            <em style={{ color: '#fff' }}>{hostName || tag}</em>
+            <em style={{ color: '#fff' }}>{host}</em>
           </div>
         )}
       </div>
