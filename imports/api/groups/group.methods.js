@@ -1,7 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import { getHost } from '../_utils/shared';
+import {
+  compareDatesWithStartDateForSort,
+  parseGroupsWithMeetings,
+  getHost,
+} from '/imports/api/_utils/shared';
+
 import { isAdmin, isContributorOrAdmin, isMember } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Groups from './group';
@@ -11,10 +16,6 @@ import {
   getGroupRegistrationEmailBody,
   getInviteToPrivateGroupEmailBody,
 } from './group.mails';
-import {
-  compareDatesWithStartDateForSort,
-  parseGroupsWithMeetings,
-} from '../_utils/shared';
 
 const publicSettings = Meteor.settings.public;
 

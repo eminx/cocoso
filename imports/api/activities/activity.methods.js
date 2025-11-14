@@ -18,9 +18,12 @@ import {
   parseGroupActivities,
 } from './activity.helpers';
 
-const filterPrivateGroups = async (activities, user) =>
-  Promise.all(
-    await activities.map(async (act) => {
+const filterPrivateGroups = async (activities, user) => {
+  if (!activities) {
+    return [];
+  }
+  const filterResults = await Promise.all(
+    activities.map(async (act) => {
       if (!act.isGroupPrivate) {
         return true;
       }
@@ -38,6 +41,8 @@ const filterPrivateGroups = async (activities, user) =>
       );
     })
   );
+  return activities.filter((_, index) => filterResults[index]);
+};
 
 Meteor.methods({
   async getAllPublicActivitiesFromAllHosts(showPast = false) {
@@ -106,7 +111,7 @@ Meteor.methods({
     try {
       const allActs = await Activities.find().fetchAsync();
       const allActsParsed = parseGroupActivities(allActs);
-      return filterPrivateGroups(allActsParsed, user);
+      return await filterPrivateGroups(allActsParsed, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -121,7 +126,7 @@ Meteor.methods({
         host,
       }).fetchAsync();
       const allActsParsed = parseGroupActivities(allActs);
-      return filterPrivateGroups(allActsParsed, user);
+      return await filterPrivateGroups(allActsParsed, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
