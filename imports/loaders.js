@@ -13,6 +13,8 @@ export async function getHomeLoader({ Host, params, request }) {
       return await getCalendarEntries({ host, isPortalHost });
     case 'groups':
       return await getGroups({ host, isPortalHost });
+    case 'info':
+      return await getPages({ host });
     case 'resources':
       return await getResources({ host, isPortalHost });
     case 'works':

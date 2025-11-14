@@ -1,7 +1,6 @@
 import React, { lazy, useEffect } from 'react';
 import { useLoaderData, useParams, useSearchParams } from 'react-router';
-import { atom, useAtomValue, useSetAtom } from 'jotai';
-import { useHydrateAtoms } from 'jotai/utils';
+import { atom, useAtomValue, useAtom, useSetAtom } from 'jotai';
 
 import { renderedAtom, roleAtom } from '/imports/state';
 import PageHybrid from '/imports/ui/entry/PageHybrid';
@@ -22,28 +21,35 @@ export const currentPageAtom = atom(null);
 
 export default function PageItemHandler({ Host, pageTitles }) {
   const { pages } = useLoaderData();
-  useHydrateAtoms([[pagesAtom, pages]]);
+  const setPages = useSetAtom(pagesAtom);
+  const setCurrentPage = useSetAtom(currentPageAtom);
   const rendered = useAtomValue(renderedAtom);
   const role = useAtomValue(roleAtom);
-  const setCurrentPage = useSetAtom(currentPageAtom);
   const { pageTitle } = useParams();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    if (!pageTitle || !pages) {
-      return;
-    }
-    const currentPage = pages.find(
-      (page) => parseTitle(page.title) === pageTitle
+    setPages(pages);
+    if (!pages) return;
+    setCurrentPage(
+      pages.find((page) => parseTitle(page.title) === pageTitle) || pages[0]
     );
-    setCurrentPage(currentPage);
-  }, [pageTitle, pages]);
+  }, pages);
 
   const isEdit = role === 'admin' && searchParams.get('edit') === 'true';
 
+  if (!pages) {
+    return;
+  }
+
+  let currentPage = pages.find((page) => parseTitle(page.title) === pageTitle);
+  if (!currentPage) {
+    currentPage = pages[0];
+  }
+
   return (
     <>
-      <PageHybrid pages={pages} />
+      <PageHybrid currentPage={currentPage} />
 
       {rendered && (
         <>

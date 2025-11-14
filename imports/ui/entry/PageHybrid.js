@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet';
 import HTMLReactParser from 'html-react-parser';
 
@@ -57,26 +56,8 @@ function SimplePage({ description, images, imageUrl, title, url }) {
   );
 }
 
-export default function PageHybrid({ pages }) {
-  const { pageTitle } = useParams();
-  const navigate = useNavigate();
-
-  if (!pages) {
-    return null;
-  }
-
-  const currentPage = pages.find(
-    (page) => parseTitle(page.title) === pageTitle
-  );
-
-  if (!pages || pages.length === 0) {
-    return null;
-  }
-
-  const firstPage = `/info/${parseTitle(pages[0]?.title)}`;
-
+export default function PageHybrid({ currentPage }) {
   if (!currentPage) {
-    navigate(firstPage);
     return null;
   }
 
