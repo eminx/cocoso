@@ -26,6 +26,7 @@ import NumberInput from './NumberInput';
 import { Radio, RadioGroup } from './RadioButtons';
 import Select from './Select';
 import Spinner from './Spinner';
+import Skeleton from './Skeleton';
 import Tabs from './Tabs';
 import Progress from './Progress';
 import Textarea from './Textarea';
@@ -67,6 +68,7 @@ export {
   Select,
   Slide,
   Spinner,
+  Skeleton,
   Progress,
   Tabs,
   Tag,

@@ -20,7 +20,7 @@ function MemberGroups({ Host, isPortalHost }) {
         return (
           <Box key={group._id}>
             {isExternal ? (
-              <a href={`https://${group.host}/groups/${group._id}/info`}>
+              <a href={`https://${group.host}/groups/${group._id}`}>
                 <NewGridThumb
                   host={isPortalHost && group.host}
                   imageUrl={group.imageUrl}
@@ -29,7 +29,7 @@ function MemberGroups({ Host, isPortalHost }) {
                 />
               </a>
             ) : (
-              <Link to={`/groups/${group._id}/info`}>
+              <Link to={`/groups/${group._id}`}>
                 <NewGridThumb
                   host={isPortalHost && group.host}
                   imageUrl={group.imageUrl}

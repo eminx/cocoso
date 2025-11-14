@@ -1,18 +1,19 @@
-import React, { lazy, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import loadable from '@loadable/component';
 import { useLoaderData, useSearchParams } from 'react-router';
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import WorkHybrid from '/imports/ui/entry/WorkHybrid';
-const EditEntryHandler = lazy(() =>
+const EditEntryHandler = loadable(() =>
   import('/imports/ui/forms/EditEntryHandler')
 );
 
-const WorkInteractionHandler = lazy(() =>
+const WorkInteractionHandler = loadable(() =>
   import('./components/WorkInteractionHandler')
 );
-const EditWork = lazy(() => import('./EditWork'));
+const EditWork = loadable(() => import('./EditWork'));
 
 export const workAtom = atom(null);
 

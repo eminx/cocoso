@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -14,17 +15,18 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
+import { currentUserAtom } from '/imports/state';
+import PageHeading from '/imports/ui/listing/PageHeading';
+import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
+import NewGridThumb from '/imports/ui/listing/NewGridThumb';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
 
-import PageHeading from '../../listing/PageHeading';
-import InfiniteScroller from '../../listing/InfiniteScroller';
-import NewGridThumb from '../../listing/NewGridThumb';
-import { message } from '../../generic/message';
-import { call } from '../../../api/_utils/shared';
-
-export default function CommunitiesHybrid({ currentUser, hosts, Host }) {
+export default function CommunitiesHybrid({ hosts, Host }) {
   const [modalItem, setModalItem] = useState(null);
   const [tc] = useTranslation('common');
   const navigate = useNavigate();
+  const currentUser = useAtomValue(currentUserAtom);
 
   const sortValue = 'name';
 

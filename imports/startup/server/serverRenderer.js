@@ -19,9 +19,8 @@ let stitchesConfig = null;
 export default async function serverRenderer(sink) {
   const host = sink?.request?.headers?.['host'];
   const Host = await Hosts.findOneAsync({ host });
-  const allHosts = await call('getAllHosts');
+  const allHosts = await Meteor.callAsync('getAllHosts');
   const platform = await Platform.findOneAsync();
-  const currentUser = await Meteor.callAsync('getCurrentUser');
   const pages = await Meteor.callAsync('getPageTitles');
 
   if (!stitchesConfig) {

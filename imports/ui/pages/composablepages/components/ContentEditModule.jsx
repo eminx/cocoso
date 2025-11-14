@@ -1,13 +1,17 @@
 import React, { useContext } from 'react';
 import { Trans } from 'react-i18next';
+import loadable from '@loadable/component';
 import { Box, Button, Center, Code, Flex, IconButton } from '/imports/ui/core';
 import { SortableKnob } from 'react-easy-sort';
 import { useDrag } from 'react-dnd';
-import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
 import GripHorizontal from 'lucide-react/dist/esm/icons/grip-horizontal';
 import EditIcon from 'lucide-react/dist/esm/icons/edit';
 import TrashIcon from 'lucide-react/dist/esm/icons/trash';
+
+const ReactPlayer = loadable(() => import('react-player'), {
+  ssr: false, // react-player doesn't work on server
+});
 
 import { ComposablePageContext } from '../ComposablePageForm';
 import { Divider } from '/imports/ui/core';

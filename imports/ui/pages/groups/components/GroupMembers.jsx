@@ -88,7 +88,7 @@ export default function GroupMembers({ group }) {
       >
         <NiceList keySelector="username" list={group.members}>
           {(member) => (
-            <Link to={`/@${member.username}/bio`}>
+            <Link to={`/@${member.username}`}>
               <Flex align="center">
                 <Avatar
                   mr="2"

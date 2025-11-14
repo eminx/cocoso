@@ -1,18 +1,19 @@
-import React, { lazy, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import loadable from '@loadable/component';
 import { useLoaderData, useSearchParams } from 'react-router';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import ResourceHybrid from '/imports/ui/entry/ResourceHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
-const EditEntryHandler = lazy(() =>
+const EditEntryHandler = loadable(() =>
   import('/imports/ui/forms/EditEntryHandler')
 );
 
-const ResourceInteractionHandler = lazy(() =>
+const ResourceInteractionHandler = loadable(() =>
   import('./components/ResourceInteractionHandler')
 );
-const EditResource = lazy(() => import('./EditResource'));
+const EditResource = loadable(() => import('./EditResource'));
 
 export const resourceAtom = atom(null);
 

@@ -1,25 +1,32 @@
 import { Meteor } from 'meteor/meteor';
-import React, { Suspense } from 'react';
+import React from 'react';
 import loadable from '@loadable/component';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
-import { Loader } from '/imports/ui/core';
 import HomeHandler from '/imports/HomeHandler';
+import { Loader, Skeleton } from '/imports/ui/core';
+
+// Keep main public listing and entry pages eager for SSR compatibility
 import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
 import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
 import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
 import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
 import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
-import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
-import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
-import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
+// Entry/detail pages - keep eager for SSR
 import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
 import GroupItemHandler from '/imports/ui/pages/groups/GroupItemHandler';
 import ResourceItemHandler from '/imports/ui/pages/resources/ResourceItemHandler';
 import WorkItemHandler from '/imports/ui/pages/works/WorkItemHandler';
 import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
 import UserProfileHandler from '/imports/ui/pages/profile/UserProfileHandler';
+import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
+
+import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
+
+const CommunityListHandler = loadable(() =>
+  import('/imports/ui/pages/hosts/CommunityListHandler')
+);
 
 const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
 const SignupPage = loadable(() => import('/imports/ui/pages/auth/SignupPage'));
@@ -86,6 +93,9 @@ const GroupsAdmin = loadable(() =>
 );
 const PagesAdmin = loadable(() =>
   import('./ui/pages/admin/listing/PagesAdmin')
+);
+const PeopleAdmin = loadable(() =>
+  import('./ui/pages/admin/listing/PeopleAdmin')
 );
 const ResourcesAdmin = loadable(() =>
   import('./ui/pages/admin/listing/ResourcesAdmin')
@@ -189,19 +199,10 @@ class RouteErrorBoundary extends React.Component {
 }
 
 // Use it in your route wrapper
-const createRouteElement = (Component, props, skipSuspense = false) => {
-  if (props.skipSuspense) {
-    return (
-      <RouteErrorBoundary>
-        <Component {...props} />
-      </RouteErrorBoundary>
-    );
-  }
+const createRouteElement = (Component, props) => {
   return (
     <RouteErrorBoundary>
-      <Suspense fallback={<Loader />}>
-        <Component {...props} />
-      </Suspense>
+      <Component {...props} />
     </RouteErrorBoundary>
   );
 };
@@ -315,6 +316,10 @@ const getAdminRoutes = (props) => [
         element: createRouteElement(PagesAdmin, props),
       },
       {
+        path: 'info/*',
+        element: createRouteElement(PeopleAdmin, props),
+      },
+      {
         path: 'resources/*',
         element: createRouteElement(ResourcesAdmin, props),
       },
@@ -347,11 +352,11 @@ export default function appRoutes(props) {
 
   return [
     {
-      element: createRouteElement(WrapperHybrid, props, true),
+      element: createRouteElement(WrapperHybrid, props),
       children: [
         {
           path: '',
-          element: createRouteElement(HomeHandler, props, true),
+          element: createRouteElement(HomeHandler, props),
           loader: async ({ params, request }) =>
             await getHomeLoader({ Host, params, request }),
         },
@@ -360,7 +365,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(ActivityListHandler, props, true),
+              element: createRouteElement(ActivityListHandler, props),
               loader: async ({ request }) =>
                 await getActivities({ request, host, isPortalHost }),
             },
@@ -376,7 +381,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(GroupListHandler, props, true),
+              element: createRouteElement(GroupListHandler, props),
               loader: async () => await getGroups({ host, isPortalHost }),
             },
             {
@@ -392,7 +397,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(CalendarHandler, props, true),
+              element: createRouteElement(CalendarHandler, props),
               loader: async ({ request }) =>
                 await getCalendarEntries({ host, isPortalHost }),
             },
@@ -408,14 +413,14 @@ export default function appRoutes(props) {
           children: [
             {
               path: ':pageTitle',
-              element: createRouteElement(PageItemHandler, props, true),
+              element: createRouteElement(PageItemHandler, props),
               loader: async () => await getPages({ host }),
             },
           ],
         },
         {
           path: 'people',
-          element: createRouteElement(UserListHandler, props, true),
+          element: createRouteElement(UserListHandler, props),
           loader: async () => await getPeople({ host, isPortalHost }),
         },
         {
@@ -423,7 +428,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(ResourceListHandler, props, true),
+              element: createRouteElement(ResourceListHandler, props),
               loader: async () => await getResources({ host, isPortalHost }),
             },
             {
@@ -439,7 +444,7 @@ export default function appRoutes(props) {
           children: [
             {
               index: true,
-              element: createRouteElement(WorkListHandler, props, true),
+              element: createRouteElement(WorkListHandler, props),
               loader: async () => await getWorks({ host, isPortalHost }),
             },
           ],
@@ -476,18 +481,18 @@ export default function appRoutes(props) {
         },
         {
           path: 'cp/:composablePageId',
-          element: createRouteElement(ComposablePageHandler, props, true),
+          element: createRouteElement(ComposablePageHandler, props),
           loader: async ({ params }) =>
             await getComposablePage({ params, Host }),
         },
         {
           path: 'communities',
-          element: createRouteElement(CommunityListHandler, props, true),
+          element: createRouteElement(CommunityListHandler, props),
           loader: async () => getCommunities(),
         },
         {
           path: 'intro',
-          element: createRouteElement(RegistrationIntro, props, true),
+          element: createRouteElement(RegistrationIntro, props),
         },
         {
           path: 'login',

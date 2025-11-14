@@ -1,11 +1,12 @@
-import React, { lazy } from 'react';
+import React from 'react';
+import loadable from '@loadable/component';
 import { useLoaderData } from 'react-router';
 import { useAtomValue } from 'jotai';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
-const NewEntryHandler = lazy(() => import('../../forms/NewEntryHandler'));
-const NewGroup = lazy(() => import('./NewGroup'));
+const NewEntryHandler = loadable(() => import('../../forms/NewEntryHandler'));
+const NewGroup = loadable(() => import('./NewGroup'));
 
 export default function GroupListHandler({ Host }) {
   const { groups } = useLoaderData();

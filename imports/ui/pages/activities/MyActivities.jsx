@@ -83,7 +83,7 @@ export default function Activities({ history }) {
     return (
       <NiceList list={activities}>
         {(act) => (
-          <Link to={`/activities/${act._id}/info`}>
+          <Link to={`/activities/${act._id}`}>
             <ActivityItem act={act} />
           </Link>
         )}

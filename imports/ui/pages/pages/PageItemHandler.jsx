@@ -1,20 +1,23 @@
-import React, { lazy, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import loadable from '@loadable/component';
 import { useLoaderData, useParams, useSearchParams } from 'react-router';
 import { atom, useAtomValue, useAtom, useSetAtom } from 'jotai';
 
 import { renderedAtom, roleAtom } from '/imports/state';
 import PageHybrid from '/imports/ui/entry/PageHybrid';
 import { parseTitle } from '/imports/api/_utils/shared';
-const NewEntryHandler = lazy(() => import('/imports/ui/forms/NewEntryHandler'));
-const EditEntryHandler = lazy(() =>
+const NewEntryHandler = loadable(() =>
+  import('/imports/ui/forms/NewEntryHandler')
+);
+const EditEntryHandler = loadable(() =>
   import('/imports/ui/forms/EditEntryHandler')
 );
 
-const PageInteractionHandler = lazy(() =>
+const PageInteractionHandler = loadable(() =>
   import('./components/PageInteractionHandler')
 );
-const NewPage = lazy(() => import('./NewPage'));
-const EditPage = lazy(() => import('./EditPage'));
+const NewPage = loadable(() => import('./NewPage'));
+const EditPage = loadable(() => import('./EditPage'));
 
 export const pagesAtom = atom(null);
 export const currentPageAtom = atom(null);

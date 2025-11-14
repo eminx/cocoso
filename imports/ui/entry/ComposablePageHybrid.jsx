@@ -1,8 +1,9 @@
 import React from 'react';
+import loadable from '@loadable/component';
 import { Link, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
-import ReactPlayer from 'react-player';
 import HTMLReactParser from 'html-react-parser';
+const ReactPlayer = loadable(() => import('react-player'));
 
 import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';

@@ -843,6 +843,16 @@ body {
   }
 }
 
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
 #filtrer-sorter {
   @media (min-width: 960px) {
     margin-top: -88px;
