@@ -121,12 +121,13 @@ export default function PopupHandler({ item, kind, showPast, onClose }) {
   const isPortalHost = currentHost?.isPortalHost;
 
   const getButtonLabel = () => {
-    if (!isPortalHost || item?.host === currentHost?.host) {
-      return tc('actions.entryPage');
+    const hostName = allHosts?.find((h) => h?.host === item?.host)?.name;
+    if (isPortalHost) {
+      return tc('actions.toThePage', {
+        hostName,
+      });
     }
-    return tc('actions.toThePage', {
-      hostName: allHosts?.find((h) => h?.host === item?.host)?.name,
-    });
+    return tc('actions.entryPage');
   };
 
   const handleCopyLink = async () => {

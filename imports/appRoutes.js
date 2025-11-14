@@ -4,23 +4,29 @@ import loadable from '@loadable/component';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import HomeHandler from '/imports/HomeHandler';
-import { Loader } from '/imports/ui/core';
+import { Loader, Skeleton } from '/imports/ui/core';
 
+// Keep main public listing and entry pages eager for SSR compatibility
 import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
 import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
 import ResourceListHandler from '/imports/ui/pages/resources/ResourceListHandler';
 import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
 import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
-import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
-import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
-import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
+// Entry/detail pages - keep eager for SSR
 import ActivityItemHandler from '/imports/ui/pages/activities/ActivityItemHandler';
 import GroupItemHandler from '/imports/ui/pages/groups/GroupItemHandler';
 import ResourceItemHandler from '/imports/ui/pages/resources/ResourceItemHandler';
 import WorkItemHandler from '/imports/ui/pages/works/WorkItemHandler';
 import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
 import UserProfileHandler from '/imports/ui/pages/profile/UserProfileHandler';
+import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
+
+import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
+
+const CommunityListHandler = loadable(() =>
+  import('/imports/ui/pages/hosts/CommunityListHandler')
+);
 
 const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
 const SignupPage = loadable(() => import('/imports/ui/pages/auth/SignupPage'));

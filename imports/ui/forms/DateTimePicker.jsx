@@ -1,17 +1,35 @@
-import React from 'react';
-import AntTimePicker from 'antd/lib/time-picker';
-import AntDatePicker from 'antd/lib/date-picker';
-import ConfigProvider from 'antd/lib/config-provider';
+import React, { useState, useEffect } from 'react';
+import loadable from '@loadable/component';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import en from 'antd/locale/en_GB';
-import sv from 'antd/locale/sv_SE';
-import tr from 'antd/locale/tr_TR';
 
-import { Box, Flex, Text } from '/imports/ui/core';
+import { Box, Flex, Text, Skeleton } from '/imports/ui/core';
 
 dayjs.extend(customParseFormat);
+
+// Lazy load antd components - they're heavy!
+const AntTimePicker = loadable(() => import('antd/lib/time-picker'), {
+  ssr: false, // antd components don't work well with SSR
+});
+const AntDatePicker = loadable(() => import('antd/lib/date-picker'), {
+  ssr: false,
+});
+const ConfigProvider = loadable(() => import('antd/lib/config-provider'), {
+  ssr: false,
+});
+
+// Lazy load locales
+const loadLocale = async (lang) => {
+  switch (lang) {
+    case 'sv':
+      return (await import('antd/locale/sv_SE')).default;
+    case 'tr':
+      return (await import('antd/locale/tr_TR')).default;
+    default:
+      return (await import('antd/locale/en_GB')).default;
+  }
+};
 
 const antTheme = {
   components: {
@@ -24,11 +42,25 @@ const antTheme = {
   },
 };
 
-function DatePicker({ disabledDate, label, value, onChange }) {
+function DatePicker({
+  disabledDate,
+  label,
+  value,
+  onChange,
+  DatePickerComponent,
+}) {
+  if (!DatePickerComponent) {
+    return (
+      <Box mb="4">
+        <Text mb="2">{label}</Text>
+        <Box h="40px" w="170px" />
+      </Box>
+    );
+  }
   return (
     <Box mb="4">
       <Text mb="2">{label}</Text>
-      <AntDatePicker
+      <DatePickerComponent
         disabledDate={
           disabledDate ? (date) => date && date < dayjs(disabledDate) : null
         }
@@ -40,11 +72,19 @@ function DatePicker({ disabledDate, label, value, onChange }) {
   );
 }
 
-function TimePicker({ label, value, onChange }) {
+function TimePicker({ label, value, onChange, TimePickerComponent }) {
+  if (!TimePickerComponent) {
+    return (
+      <Box>
+        <Text mb="2">{label}</Text>
+        <Box h="40px" w="170px" />
+      </Box>
+    );
+  }
   return (
     <Box>
       <Text mb="2">{label}</Text>
-      <AntTimePicker
+      <TimePickerComponent
         format="HH:mm"
         minuteStep={5}
         needConfirm={false}
@@ -59,14 +99,14 @@ function TimePicker({ label, value, onChange }) {
 export default function DateTimePicker({ value, onChange }) {
   const [t] = useTranslation('activities');
   const { i18n } = useTranslation();
+  const [locale, setLocale] = useState(null);
 
   const isRange = value?.isRange || value.startDate !== value.endDate;
-  let locale = en;
-  if (i18n.language === 'sv') {
-    locale = sv;
-  } else if (i18n.language === 'tr') {
-    locale = tr;
-  }
+
+  // Load locale dynamically
+  useEffect(() => {
+    loadLocale(i18n.language).then(setLocale);
+  }, [i18n.language]);
 
   const handleDateChange = (date, entity) => {
     if (!date) {
@@ -114,12 +154,22 @@ export default function DateTimePicker({ value, onChange }) {
     onChange(parsedValue);
   };
 
+  // Show skeleton while antd components and locale load
+  if (!locale) {
+    return (
+      <Box w="100%" py="2">
+        <Skeleton isEntry={false} count={2} />
+      </Box>
+    );
+  }
+
   return (
     <Box w="100%" py="2">
       <ConfigProvider locale={locale} theme={antTheme}>
         <Flex>
           <Box w="170px" mr="2">
             <DatePicker
+              DatePickerComponent={AntDatePicker}
               label={isRange ? t('form.date.start') : t('form.days.single')}
               value={value?.startDate}
               onChange={(date) => handleDateChange(date, 'startDate')}
@@ -129,6 +179,7 @@ export default function DateTimePicker({ value, onChange }) {
           {isRange && (
             <Box w="170px" mr="2">
               <DatePicker
+                DatePickerComponent={AntDatePicker}
                 disabledDate={value.startDate}
                 label={t('form.date.finish')}
                 value={value?.endDate}
@@ -141,6 +192,7 @@ export default function DateTimePicker({ value, onChange }) {
         <Flex>
           <Box w="170px" mr="2">
             <TimePicker
+              TimePickerComponent={AntTimePicker}
               label={t('form.time.start')}
               value={value?.startTime}
               onChange={(time) => handleTimeChange(time, 'startTime')}
@@ -149,6 +201,7 @@ export default function DateTimePicker({ value, onChange }) {
 
           <Box w="170px">
             <TimePicker
+              TimePickerComponent={AntTimePicker}
               label={t('form.time.finish')}
               value={value?.endTime}
               onChange={(time) => handleTimeChange(time, 'endTime')}

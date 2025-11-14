@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Trans } from 'react-i18next';
-import ReactPlayer from 'react-player';
+import loadable from '@loadable/component';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
+
+const ReactPlayer = loadable(() => import('react-player'), {
+  ssr: false, // react-player doesn't work on server
+});
 
 import {
   Box,

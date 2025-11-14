@@ -8,7 +8,7 @@ interface SkeletonProps {
 }
 
 const SkeletonItem = styled('div', {
-  backgroundColor: 'var(--cocoso-colors-theme-200)',
+  backgroundColor: 'var(--cocoso-colors-theme-800)',
   borderRadius: 'var(--cocoso-border-radius)',
   width: '100%',
   height: '200px',
@@ -16,7 +16,7 @@ const SkeletonItem = styled('div', {
 });
 
 const SkeletonEntry = styled('div', {
-  backgroundColor: 'var(--cocoso-colors-theme-200)',
+  backgroundColor: 'var(--cocoso-colors-theme-800)',
   borderRadius: 'var(--cocoso-border-radius)',
   width: '100%',
   height: '300px',
@@ -43,15 +43,21 @@ const Skeleton: React.FC<SkeletonProps> = ({
   ...props
 }) => {
   if (isEntry) {
-    return <SkeletonEntry css={css} {...props} />;
+    return (
+      <div style={{ padding: '1rem' }}>
+        <SkeletonEntry css={css} {...props} />
+      </div>
+    );
   }
 
   return (
-    <SkeletonGrid css={css} {...props}>
-      {Array.from({ length: count }).map((_, index) => (
-        <SkeletonItem key={index} />
-      ))}
-    </SkeletonGrid>
+    <div style={{ padding: '1rem' }}>
+      <SkeletonGrid css={css} {...props}>
+        {Array.from({ length: count }).map((_, index) => (
+          <SkeletonItem key={index} />
+        ))}
+      </SkeletonGrid>
+    </div>
   );
 };
 

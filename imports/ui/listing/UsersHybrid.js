@@ -1,10 +1,15 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
+import loadable from '@loadable/component';
 import HTMLReactParser from 'html-react-parser';
-import Cascader from 'antd/lib/cascader';
 import { parse } from 'query-string';
 import { useAtomValue } from 'jotai';
+
+// Lazy load Cascader - only needed when showKeywordSearch is true
+const Cascader = loadable(() => import('antd/lib/cascader'), {
+  ssr: false, // antd components don't work well with SSR
+});
 
 import {
   Avatar,
@@ -33,6 +38,8 @@ export default function UsersHybrid({ Host, users, keywords }) {
   const navigate = useNavigate();
   const { search } = location;
   const { showKeywordSearch } = parse(search, { parseBooleans: true });
+
+  // Cascader will load automatically when rendered (when showKeywordSearch is true)
 
   const cascaderOptions =
     keywords &&

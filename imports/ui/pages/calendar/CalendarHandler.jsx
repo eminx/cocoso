@@ -7,9 +7,8 @@ import {
 } from 'react-router';
 import dayjs from 'dayjs';
 import parseHtml from 'html-react-parser';
-import AutoCompleteSelect from 'react-select';
-import makeAnimated from 'react-select/animated';
-import { useTranslation } from 'react-i18next';
+import loadable from '@loadable/component';
+import { Trans } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
 import {
@@ -20,6 +19,7 @@ import {
   Link as CLink,
   Loader,
   Text,
+  Skeleton,
 } from '/imports/ui/core';
 import Modal from '/imports/ui/core/Modal';
 import {
@@ -36,9 +36,10 @@ import {
 import PageHeading from '/imports/ui/listing/PageHeading';
 import Tag from '/imports/ui/generic/Tag';
 
-import CalendarView from './CalendarView';
+const CalendarView = loadable(() => import('./CalendarView'), {
+  fallback: <Skeleton isEntry />,
+});
 
-const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;
 
 const parseNewEntryParams = (slotInfo, selectedResource, type) => {
@@ -69,7 +70,6 @@ export default function CalendarHandler({ Host, pageTitles }) {
   const [calendarFilter, setCalendarFilter] = useState(null);
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
-  const [tc] = useTranslation('common');
 
   const activitiesParsed = useMemo(
     () => parseAllBookingsWithResources(activities, resources),
@@ -205,6 +205,22 @@ export default function CalendarHandler({ Host, pageTitles }) {
     ...nonComboResourcesWithColor,
   ]?.filter((r) => r.isBookable);
 
+  // Lazy load react-select components when selectFilterView is true
+  const [SelectComponent, setSelectComponent] = useState(null);
+  const [AnimatedComponents, setAnimatedComponents] = useState(null);
+
+  React.useEffect(() => {
+    if (selectFilterView && !SelectComponent) {
+      Promise.all([
+        import('react-select'),
+        import('react-select/animated'),
+      ]).then(([selectMod, animatedMod]) => {
+        setSelectComponent(() => selectMod.default);
+        setAnimatedComponents(animatedMod.default());
+      });
+    }
+  }, [selectFilterView, SelectComponent]);
+
   if (!currentHost) {
     return <Loader />;
   }
@@ -227,7 +243,7 @@ export default function CalendarHandler({ Host, pageTitles }) {
                   <Tag
                     key="All"
                     checkable
-                    label={tc('labels.all')}
+                    label={<Trans i18nKey="common:labels.all">All</Trans>}
                     filterColor="#484848"
                     checked={!calendarFilter}
                     css={{ alignSelf: 'center' }}
@@ -275,28 +291,32 @@ export default function CalendarHandler({ Host, pageTitles }) {
                 variant={calendarFilter ? 'outline' : 'solid'}
                 onClick={() => setCalendarFilter(null)}
               >
-                {tc('labels.all')}
+                {<Trans i18nKey="common:labels.all">All</Trans>}
               </Button>
 
               <Box w="100%">
-                <AutoCompleteSelect
-                  components={animatedComponents}
-                  isClearable
-                  options={allResourcesForSelect}
-                  style={{ width: '100%', marginTop: '1rem' }}
-                  styles={{
-                    option: (styles, { data }) => ({
-                      ...styles,
-                      borderLeft: `8px solid ${data.color}`,
-                      // background: data.color.replace('40%', '90%'),
-                      paddingLeft: !data.isCombo && 6,
-                      fontWeight: data.isCombo ? 'bold' : 'normal',
-                    }),
-                  }}
-                  value={calendarFilter}
-                  getOptionValue={(option) => option._id}
-                  onChange={(value) => setCalendarFilter(value)}
-                />
+                {SelectComponent ? (
+                  <SelectComponent
+                    components={AnimatedComponents || undefined}
+                    isClearable
+                    options={allResourcesForSelect}
+                    style={{ width: '100%', marginTop: '1rem' }}
+                    styles={{
+                      option: (styles, { data }) => ({
+                        ...styles,
+                        borderLeft: `8px solid ${data.color}`,
+                        // background: data.color.replace('40%', '90%'),
+                        paddingLeft: !data.isCombo && 6,
+                        fontWeight: data.isCombo ? 'bold' : 'normal',
+                      }),
+                    }}
+                    value={calendarFilter}
+                    getOptionValue={(option) => option._id}
+                    onChange={(value) => setCalendarFilter(value)}
+                  />
+                ) : (
+                  <Box h="2.5rem" w="100%" />
+                )}
               </Box>
             </Flex>
           )}
@@ -316,9 +336,22 @@ export default function CalendarHandler({ Host, pageTitles }) {
         id="calendar-item"
         open={Boolean(selectedActivity)}
         title={selectedActivity && selectedActivity.title}
-        confirmText={tc('actions.entryPage')}
+        confirmText={
+          currentHost?.isPortalHost ? (
+            <Trans
+              i18nKey="common:actions.toThePage"
+              values={{ hostName: currentHost?.settings?.name }}
+            />
+          ) : (
+            <Trans i18nKey="common:actions.entryPage" />
+          )
+        }
         cancelText={
-          isCreatorOrAdmin() ? tc('actions.update') : tc('actions.close')
+          isCreatorOrAdmin() ? (
+            <Trans i18nKey="common:actions.update">Edit</Trans>
+          ) : (
+            <Trans i18nKey="common:actions.close">Close</Trans>
+          )
         }
         onClose={() => setSelectedActivity(null)}
         onConfirm={() => handlePrimaryButtonClick()}
@@ -336,7 +369,9 @@ export default function CalendarHandler({ Host, pageTitles }) {
                 {selectedActivity && selectedActivity.authorName}
               </CLink>{' '}
             </Link>
-            <Text as="span">{tc('labels.booked')}</Text>{' '}
+            <Text as="span">
+              {<Trans i18nKey="common:labels.booked">booked</Trans>}
+            </Text>{' '}
             <Link to={`/resources/${selectedActivity?.resourceId}`}>
               <CLink as="span" fontWeight="bold">
                 {selectedActivity && selectedActivity.resource}
