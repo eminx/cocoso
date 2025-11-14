@@ -153,7 +153,6 @@ Meteor.methods({
   async getAllHosts() {
     try {
       const hosts = await Hosts.find().fetchAsync();
-      console.log('host: ', hosts);
       return (
         hosts
           // .filter((h) => !h.isPortalHost)

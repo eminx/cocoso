@@ -59,7 +59,7 @@ export function ThumbDate({ occurrence }) {
 }
 
 function SexyThumb({ activity, host, index, showPast = false, tags }) {
-  // const allHosts = isClient && useAtomValue(allHostsAtom);
+  const allHosts = useAtomValue(allHostsAtom);
 
   if (!activity) {
     return null;
@@ -78,7 +78,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
   const remainingFuture = futureDates && futureDates.length - 3;
   const remainingPast = futureDates && pastDates.length - 1;
 
-  // const hostName = host && allHosts?.find((h) => h?.host === host)?.name;
+  const hostName = host && allHosts?.find((h) => h?.host === host)?.name;
 
   return (
     <Box
@@ -162,7 +162,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
           )}
         </Flex>
 
-        {host && (
+        {hostName && (
           <div
             style={{
               alignItems: 'center',
@@ -173,7 +173,7 @@ function SexyThumb({ activity, host, index, showPast = false, tags }) {
               right: 24,
             }}
           >
-            <em style={{ color: '#fff' }}>{host}</em>
+            <em style={{ color: '#fff' }}>{hostName}</em>
           </div>
         )}
       </div>

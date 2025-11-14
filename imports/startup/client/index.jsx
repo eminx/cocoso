@@ -15,6 +15,7 @@ onPageLoad(async () => {
   const container = document.getElementById('root');
 
   const currentHost = await Meteor.callAsync('getCurrentHost');
+  const allHosts = await Meteor.callAsync('getAllHosts');
   const platform = await Meteor.callAsync('getPlatform');
   const pageTitles = await Meteor.callAsync('getPageTitles');
 
@@ -26,6 +27,7 @@ onPageLoad(async () => {
 
   const props = {
     Host: currentHost,
+    allHosts,
     pageTitles,
     platform,
   };
