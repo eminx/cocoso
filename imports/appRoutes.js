@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
+import { useNavigation } from 'react-router';
 import loadable from '@loadable/component';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
@@ -155,16 +156,6 @@ import {
   getWorksByUser,
 } from './loaders';
 
-const listingFeatures = [
-  'activities',
-  'calendar',
-  'groups',
-  'info',
-  'people',
-  'resources',
-  'works',
-];
-
 class RouteErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -198,11 +189,24 @@ class RouteErrorBoundary extends React.Component {
   }
 }
 
-// Use it in your route wrapper
+function LoadingHandler(props) {
+  const navigation = useNavigation();
+  const isLoading = navigation.state === 'loading';
+
+  return (
+    <>
+      {isLoading && <Loader />}
+      {props.children}
+    </>
+  );
+}
+
 const createRouteElement = (Component, props) => {
   return (
     <RouteErrorBoundary>
-      <Component {...props} />
+      <LoadingHandler>
+        <Component {...props} />
+      </LoadingHandler>
     </RouteErrorBoundary>
   );
 };
@@ -316,7 +320,7 @@ const getAdminRoutes = (props) => [
         element: createRouteElement(PagesAdmin, props),
       },
       {
-        path: 'people/*',
+        path: 'info/*',
         element: createRouteElement(PeopleAdmin, props),
       },
       {
