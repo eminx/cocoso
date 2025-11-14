@@ -35,14 +35,15 @@ const TagStyled = styled('span', {
 });
 
 export const Tag = (props: any) => {
-  const { children, ...rest } = props;
-  const colorScheme = props.colorScheme || 'theme';
+  const { children, colorScheme = 'theme', ...rest } = props;
   const borderColor = `var(--cocoso-colors-${colorScheme}-500)`;
   const color = `var(--cocoso-colors-${colorScheme}-800)`;
+  const backgroundColor = `var(--cocoso-colors-${colorScheme}-50)`;
 
   return (
     <TagStyled
       css={{
+        backgroundColor,
         borderColor,
         color,
       }}

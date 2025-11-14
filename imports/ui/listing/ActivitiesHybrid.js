@@ -14,7 +14,7 @@ import Tabs from '../core/Tabs';
 // import VirtualGridLister from './VirtualGridLister';
 
 export default function ActivitiesHybrid({ Host, activities, showPast }) {
-  const currentHost = useAtomValue(currentHostAtom);
+  const currentHost = { ...Host };
   const [modalItem, setModalItem] = useState(null);
   const [, setSearchParams] = useSearchParams();
 
@@ -34,8 +34,8 @@ export default function ActivitiesHybrid({ Host, activities, showPast }) {
   const groupsInMenu = currentHost?.settings?.menu?.find(
     (item) => item.name === 'groups'
   );
-  // const groupsLabel = groupsInMenu?.label;
-  // const getTags = (item) => (item.isGroupMeeting ? [groupsLabel] : null);
+
+  const groupsLabel = groupsInMenu?.label;
 
   return (
     <>
@@ -64,7 +64,7 @@ export default function ActivitiesHybrid({ Host, activities, showPast }) {
               host={currentHost?.isPortalHost ? item.host : null}
               index={index}
               showPast={showPast}
-              tags={item.isGroupMeeting ? [groupsInMenu?.label] : null}
+              tags={item.isGroupMeeting ? [groupsLabel] : null}
             />
           </Center>
         )}

@@ -76,7 +76,6 @@ Meteor.methods({
   async getAllPublicActivities(showPast = false, hostPredefined) {
     const host = hostPredefined || getHost(this);
     const user = await Meteor.userAsync();
-    console.log('user', user);
     const today = dayjs().format('YYYY-MM-DD');
 
     try {
