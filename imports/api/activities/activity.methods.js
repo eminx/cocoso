@@ -20,7 +20,7 @@ import {
 
 const filterPrivateGroups = async (activities, user) =>
   Promise.all(
-    await activities.filter(async (act) => {
+    await activities.map(async (act) => {
       if (!act.isGroupPrivate) {
         return true;
       }
