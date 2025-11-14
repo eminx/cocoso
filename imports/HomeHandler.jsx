@@ -16,7 +16,7 @@ import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposableP
 const CalendarHandler = loadable(
   () => import('/imports/ui/pages/calendar/CalendarHandler'),
   {
-    fallback: <Skeleton isEntry={false} count={4} />,
+    fallback: <Skeleton isEntry />,
   }
 );
 
