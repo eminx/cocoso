@@ -111,6 +111,8 @@ function MeetingDatesContent({
       message.success(t('meeting.success.remove'));
     } catch (error) {
       message.error(error.error);
+    } finally {
+      setDelButtonDisabled(false);
     }
   };
 
@@ -125,7 +127,7 @@ function MeetingDatesContent({
             .map((attendee) => attendee.username)
             .includes(currentUser.username);
         return {
-          key: meeting._id,
+          key: meeting.meetingId,
           header: <FancyDate occurrence={meeting} />,
           content: isAdmin ? (
             <Box>
