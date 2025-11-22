@@ -70,7 +70,9 @@ export default function GroupInteractionHandler() {
   if (isMember) {
     return (
       <>
-        <GroupLeaveButton />
+        <Box p="4">
+          <GroupLeaveButton />
+        </Box>
 
         <SlideWidget justify="space-between">
           <Box w="40px" />

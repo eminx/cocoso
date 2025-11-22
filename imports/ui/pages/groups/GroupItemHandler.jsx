@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import loadable from '@loadable/component';
 import { useLoaderData, useSearchParams } from 'react-router';
-import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtomValue, useAtom } from 'jotai';
 
 import GroupHybrid from '/imports/ui/entry/GroupHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
@@ -18,7 +18,7 @@ export const groupAtom = atom(null);
 
 export default function GroupItemHandler({ Host, pageTitles }) {
   const { group, documents } = useLoaderData();
-  const setGroup = useSetAtom(groupAtom);
+  const [groupItem, setGroup] = useAtom(groupAtom);
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const [searchParams] = useSearchParams();
@@ -29,7 +29,11 @@ export default function GroupItemHandler({ Host, pageTitles }) {
 
   return (
     <>
-      <GroupHybrid group={group} documents={documents} Host={Host} />
+      <GroupHybrid
+        group={groupItem || group}
+        documents={documents}
+        Host={Host}
+      />
 
       {rendered && (
         <>

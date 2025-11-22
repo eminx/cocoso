@@ -70,9 +70,9 @@ function MeetingDatesContent({
       numberOfPeople: 1,
     };
 
-    if (isAttending) {
-      const groupId = groupId;
-      try {
+    try {
+      const groupId = group._id;
+      if (isAttending) {
         await call(
           'removeAttendance',
           activityId,
@@ -84,24 +84,20 @@ function MeetingDatesContent({
         setRegButtonDisabled(false);
         message.success(t('meeting.attends.remove'));
         onClose();
-      } catch (error) {
-        message.error(error.error || error.reason);
-      }
-    } else {
-      try {
+      } else {
         await call('registerAttendance', activityId, meetingAttendee);
         setGroup(await call('getGroupWithMeetings', groupId));
         setRegButtonDisabled(false);
         message.success(t('meeting.attends.register'));
         onClose();
-      } catch (error) {
-        message.error(error.error || error.reason);
       }
+    } catch (error) {
+      message.error(error.error || error.reason);
     }
   };
 
   const deleteActivity = async (activityId) => {
-    if (!isAdmin) {
+    if (!isAdmin || !group) {
       message.error(t('meeting.access.remove'));
       return;
     }
@@ -110,8 +106,7 @@ function MeetingDatesContent({
 
     try {
       await call('deleteActivity', activityId);
-      const groupId = group?._id;
-      setGroup(await call('getGroupWithMeetings', groupId));
+      setGroup(await call('getGroupWithMeetings', group._id));
       setDelButtonDisabled(false);
       message.success(t('meeting.success.remove'));
     } catch (error) {
