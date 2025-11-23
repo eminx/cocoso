@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAtom, useAtomValue } from 'jotai';
 
@@ -12,21 +13,33 @@ import { groupAtom } from '../GroupItemHandler';
 export default function LeaveButton() {
   const currentUser = useAtomValue(currentUserAtom);
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [t] = useTranslation('groups');
   const [group, setGroup] = useAtom(groupAtom);
+  const navigate = useNavigate();
 
   if (!group || !currentUser) {
     return null;
   }
 
   const leaveGroup = async () => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+
+    setLoading(true);
+
     try {
       const groupId = group?._id;
       await call('leaveGroup', groupId);
       setGroup(await call('getGroupWithMeetings', groupId));
+      console.log(group);
       message.success(t('message.removed'));
     } catch (error) {
       message.error(error.error || error.reason);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,6 +58,7 @@ export default function LeaveButton() {
       <Modal
         confirmButtonProps={{
           colorScheme: 'red',
+          loading,
         }}
         id="group-leave-button"
         open={modalOpen}

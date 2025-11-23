@@ -43,6 +43,20 @@ const iconContainerProps = {
   p: '2',
 };
 
+function AdminHeader({ currentRoute }) {
+  return (
+    <Box mb="8">
+      <Heading mb="2">{currentRoute?.label}</Heading>
+
+      {currentRoute?.description && (
+        <Heading css={{ fontWeight: '300' }} size="sm">
+          {currentRoute?.description}
+        </Heading>
+      )}
+    </Box>
+  );
+}
+
 export default function AdminContainer({ Host, ...props }) {
   const currentHost = Host || useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
@@ -165,6 +179,8 @@ export default function AdminContainer({ Host, ...props }) {
           </Flex>
 
           <Box p="6">
+            <AdminHeader currentRoute={currentRoute} />
+
             <Outlet />
           </Box>
         </Box>
@@ -184,15 +200,7 @@ export default function AdminContainer({ Host, ...props }) {
         </Box>
 
         <Box p="6">
-          <Box mb="8">
-            <Heading mb="2">{currentRoute?.label}</Heading>
-
-            {currentRoute?.description && (
-              <Heading css={{ fontWeight: '300' }} size="sm">
-                {currentRoute?.description}
-              </Heading>
-            )}
-          </Box>
+          <AdminHeader currentRoute={currentRoute} />
 
           <Outlet />
         </Box>

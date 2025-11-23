@@ -10,8 +10,7 @@ import {
   Input,
   NumberInput,
 } from '/imports/ui/core';
-
-import FormField from '../../../forms/FormField';
+import FormField from '/imports/ui/forms/FormField';
 
 export default function RsvpForm({
   isUpdateMode = false,

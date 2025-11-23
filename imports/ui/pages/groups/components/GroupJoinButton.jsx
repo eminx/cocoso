@@ -15,6 +15,7 @@ export default function GroupJoinButton() {
   const isDesktop = useAtomValue(isDesktopAtom);
   const [group, setGroup] = useAtom(groupAtom);
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [t] = useTranslation('groups');
   const navigate = useNavigate();
 
@@ -28,6 +29,8 @@ export default function GroupJoinButton() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const groupId = group?._id;
       await call('joinGroup', groupId);
@@ -36,6 +39,8 @@ export default function GroupJoinButton() {
       message.success(t('message.added'));
     } catch (error) {
       message.error(error.error || error.reason);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,6 +56,9 @@ export default function GroupJoinButton() {
       </Center>
 
       <Modal
+        confirmButtonProps={{
+          loading,
+        }}
         id="group-join-button"
         open={modalOpen}
         title={t('modal.join.title')}
