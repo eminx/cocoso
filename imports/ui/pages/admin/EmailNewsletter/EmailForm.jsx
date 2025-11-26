@@ -33,10 +33,6 @@ export default function EmailForm({
       (!image || !uploadableImageLocal) &&
       (!items || items.length === 0));
 
-  const handleChange = (field, value) => {
-    onChange(field, value);
-  };
-
   return (
     <>
       <form onSubmit={handleSubmit((data) => onSubmit())}>
@@ -50,7 +46,7 @@ export default function EmailForm({
             <Input
               placeholder={t('emails.form.subject.holder')}
               value={email.subject}
-              onChange={(event) => handleChange('subject', event.target.value)}
+              onChange={(event) => onChange('subject', event.target.value)}
             />
           </FormField>
 
@@ -64,7 +60,7 @@ export default function EmailForm({
               <Input
                 placeholder={t('emails.form.appeal.holder')}
                 value={email.appeal}
-                onChange={(event) => handleChange('appeal', event.target.value)}
+                onChange={(event) => onChange('appeal', event.target.value)}
               />
               <Text>{t('emails.form.appeal.addon')}</Text>
             </Flex>
@@ -95,7 +91,7 @@ export default function EmailForm({
           >
             <Quill
               value={email.body}
-              onChange={(value) => handleChange('body', value)}
+              onChange={(value) => onChange('body', value)}
             />
           </FormField>
 
@@ -107,7 +103,7 @@ export default function EmailForm({
             <Quill
               className="ql-editor-text-align-center"
               value={email.footer}
-              onChange={(value) => handleChange('footer', value)}
+              onChange={(value) => onChange('footer', value)}
             />
           </FormField>
 
