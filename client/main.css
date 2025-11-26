@@ -858,3 +858,159 @@ body {
     margin-top: -88px;
   }
 }
+
+/* Big Calendar Styles */
+
+.rbc-calendar {
+  min-height: 800px;
+}
+
+.rbc-calendar .rbc-event-content,
+.rbc-calendar .rbc-agenda-date-cell,
+.rbc-calendar .rbc-agenda-time-cell,
+.rbc-calendar .rbc-agenda-event-cell {
+  color: #fff;
+  font-size: 13px;
+}
+
+.rbc-time-view,
+.rbc-month-view,
+.rbc-agenda-content {
+  background-color: transparent;
+}
+
+@media (max-width: 600px) {
+  .rbc-toolbar {
+    flex-direction: column;
+  }
+}
+
+.rbc-calendar .rbc-event {
+  border-radius: 0;
+}
+
+.rbc-calendar .rbc-toolbar,
+.rbc-calendar .rbc-time-view,
+.rbc-calendar .rbc-month-view,
+.rbc-calendar .rbc-month-view .rbc-header,
+.rbc-calendar .rbc-month-view > .rbc-month-row + .rbc-month-row,
+.rbc-calendar .rbc-row-bg > .rbc-day-bg + .rbc-day-bg,
+.rbc-calendar .rbc-month-view > .rbc-month-header .rbc-header + .rbc-header,
+.rbc-calendar .rbc-month-view .rbc-header,
+.rbc-calendar .rbc-time-header > .rbc-row > * + *,
+.rbc-calendar .rbc-time-header > .rbc-row:first-child {
+  /* border: none; */
+  border-color: #d7d7d7;
+  border-radius: 0;
+}
+
+.rbc-day-bg.rbc-off-range-bg {
+  background-color: transparent;
+}
+
+.rbc-day-bg:not(rbc-off-range-bg) {
+  background-color: #fff;
+}
+
+.rbc-day-bg.rbc-selected-cell:not(rbc-off-range-bg) {
+  background-color: #f0f0f0;
+}
+
+.rbc-calendar .rbc-row-bg .rbc-day-bg.rbc-today,
+.rbc-calendar .rbc-today {
+  background-color: #f7f7f7;
+  border: 1px solid #2d2d2d;
+}
+.rbc-calendar .rbc-time-content > * + * > * {
+  border-left: 1px dashed #2d2d2d;
+}
+.rbc-calendar .rbc-timeslot-group {
+  border-bottom: 1px solid #2d2d2d;
+}
+.rbc-calendar .rbc-time-content {
+  border-top: none;
+}
+
+.rbc-toolbar .rbc-btn-group button.rbc-active {
+  outline: none;
+  background-color: #2d2d2d;
+  color: #f6f6f6;
+  /* color: #ea3924; */
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  font-weight: bold;
+}
+
+.rbc-toolbar .rbc-btn-group button:hover {
+  background-color: #5d5d5d;
+  color: #f6f6f6;
+}
+
+.rbc-toolbar .rbc-btn-group button {
+  cursor: pointer;
+  background-color: #fff;
+  border: none;
+}
+
+.rbc-toolbar .rbc-btn-group + .rbc-toolbar-label {
+  text-transform: uppercase;
+  /* color: #ea3924; */
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.rbc-calendar .rbc-row-content {
+  z-index: 0;
+}
+
+/* Quill Editor */
+
+.ql-container .ql-editor {
+  min-height: 18em;
+}
+
+.ql-container .ql-editor {
+  p,
+  li,
+  blockquote {
+    line-height: 1.5;
+    margin-bottom: 1em;
+    font-size: 16px;
+    font-family: var(--cocoso-body-font-family);
+  }
+}
+
+.quill > .ql-toolbar.ql-snow {
+  border: none;
+}
+
+.quill-megacontainer .ql-container.ql-snow {
+  border: none;
+}
+
+.quill-megacontainer .ql-container.ql-snow .ql-editor {
+  background-color: #fff;
+  border-color: var(--cocoso-colors-theme-200);
+  border-radius: var(--cocoso-border-radius);
+  border-style: solid;
+  border-width: 2px;
+}
+
+.quill-megacontainer .ql-container.ql-snow .ql-editor {
+  transition: all 0.2s;
+}
+
+.quill-megacontainer:not(.is-focused) .ql-container.ql-snow .ql-editor:hover {
+  background-color: #fff;
+  border-color: var(--cocoso-colors-theme-300);
+}
+
+.quill-megacontainer:focus-within .ql-container.ql-snow .ql-editor,
+.quill-megacontainer.is-focused .ql-container.ql-snow .ql-editor {
+  border-color: var(--cocoso-colors-theme-400);
+}
+
+.quill.ql-editor-text-align-center .ql-editor {
+  text-align: center;
+}

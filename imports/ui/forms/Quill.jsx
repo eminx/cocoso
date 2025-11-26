@@ -7,7 +7,6 @@ import { editorModules } from '../utils/constants/quillConfig';
 
 if (Meteor.isClient) {
   import 'react-quill-new/dist/quill.snow.css';
-  import '../utils/styles/quilleditor-custom.css';
 }
 
 export default function Quill(props) {
