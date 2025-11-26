@@ -150,11 +150,18 @@ newsletter:
     subject:
       helper: Lütfen e-postanın konusu olacak metni gir (gerekli)
     appeal:
-      helper: Lütfen e-postanın başında her bir üyeyi nasıl çağırmak istediğini gir (gerekli)
+      helper: Lütfen e-postanın başında her bir üyeye nasıl seslenmek istediğini gir. Atlamak için boş bırak.
     body:
       helper: Lütfen e-postanın gövde metnini oluştur (içerik ögeleri ve yanı sıra resim seçilmemiş ise gerekli)
+    divider:
+      helper:
+      label: Ayraç
     image:
-      helper: Lütfen e-postanın en üstünde görünecek bir resim seçin (gövde metni sağlanmadıysa ve içerik ögesi seçilmediyse gereklidir)
+      helper: Bir ımaj seç
+      label: Imaj
+    text:
+      helper: Metin yaz...
+      label: Metin
   notification:
     success:
       emailsent: Eposta başarıyla tüm üyelere gönderildi.

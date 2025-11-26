@@ -381,6 +381,18 @@ export default function ContentHandler({
     onCancel();
   };
 
+  const content = state?.content;
+  const type = content?.type;
+  const value = content?.value;
+
+  const genericProps = useMemo(
+    () => ({
+      value,
+      onChange: handleChange,
+    }),
+    [value, handleChange]
+  );
+
   const renderContent = () => {
     if (type === 'button') {
       return <ButtonContent {...genericProps} />;
@@ -406,18 +418,6 @@ export default function ContentHandler({
       return <VideoContent {...genericProps} />;
     }
   };
-
-  const content = state?.content;
-  const type = content?.type;
-  const value = content?.value;
-
-  const genericProps = useMemo(
-    () => ({
-      value,
-      onChange: handleChange,
-    }),
-    [value, handleChange]
-  );
 
   return (
     <Box css={{ position: 'relative', paddingBottom: '80px' }}>

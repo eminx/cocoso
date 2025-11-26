@@ -1,37 +1,170 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
+import { useAtom } from 'jotai';
+import AddIcon from 'lucide-react/dist/esm/icons/plus';
 
-import { Box, Button, Center, Flex, Input, Text } from '/imports/ui/core';
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Input,
+  Text,
+} from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import Quill from '/imports/ui/forms/Quill';
 import FileDropper from '/imports/ui/forms/FileDropper';
+import ImageUploader from '/imports/ui/forms/ImageUploader';
+import Menu from '/imports/ui/generic/Menu';
 
 import ContentInserter from './ContentInserter';
+import { newsletterAtom } from './index';
+import { contentTypes } from './constants';
 
-export default function EmailForm({
-  currentHost,
-  email,
-  onChange,
-  onSelectItems,
-  onSubmit,
-  setUploadableImage,
-}) {
+function BodyContentHandler({ content }) {
+  const [state, setState] = useAtom(newsletterAtom);
+
+  if (!content) {
+    return null;
+  }
+  const { email } = state;
+  const { type, value } = content;
+
+  const handleUploadedImage = (images) => {
+    if (!images || images.length < 1) {
+      return;
+    }
+
+    const updatedEmailBody = email.body?.map((cont) => {
+      if (cont.id === content.id) {
+        return {
+          ...cont,
+          value: {
+            src: images[0],
+          },
+        };
+      }
+      return cont;
+    });
+
+    setState((prevState) => ({
+      ...state,
+      email: {
+        ...state.email,
+        body: updatedEmailBody,
+      },
+    }));
+  };
+
+  const handleChangeText = (value) => {
+    if (!value) {
+      return;
+    }
+
+    const updatedEmailBody = email.body.map((cont) => {
+      if (cont.id === content.id) {
+        return {
+          ...cont,
+          value: {
+            html: value,
+          },
+        };
+      }
+      return cont;
+    });
+
+    setState((prevState) => ({
+      ...prevState,
+      email: {
+        ...prevState.email,
+        body: updatedEmailBody,
+      },
+    }));
+  };
+
+  const renderContent = () => {
+    if (type === 'divider') {
+      return <Divider />;
+    }
+
+    if (type === 'image') {
+      return (
+        <ImageUploader
+          isMultiple={false}
+          ping={state.uploadingImages}
+          preExistingImages={value.src ? [value.src] : []}
+          onUploadedImages={handleUploadedImage}
+        />
+      );
+    }
+
+    if (type === 'text') {
+      return <Quill value={value.html} onChange={handleChangeText} />;
+    }
+  };
+
+  return (
+    <FormField
+      helperText={<Trans i18nKey={`admin:newsletter.form.${type}.helper`} />}
+      label={<Trans i18nKey={`admin:newsletter.form.${type}.label`} />}
+      mb="4"
+    >
+      {renderContent()}
+    </FormField>
+  );
+}
+
+export default function EmailForm({ currentHost, onSubmit }) {
+  const [state, setState] = useAtom(newsletterAtom);
+  const { email } = state;
   const { handleSubmit } = useForm({
     email,
   });
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  const { appeal, body, image, items, subject } = email;
-  const { imageUrl, uploadableImageLocal } = image;
+  const { appeal, body, items, subject } = email;
+
+  const handleChange = (field, value) => {
+    const newEmail = {
+      ...state.email,
+    };
+    newEmail[field] = value;
+    setState((prevState) => ({
+      ...prevState,
+      email: newEmail,
+    }));
+  };
+
+  const handleAddContent = (content) => {
+    const newContent = {
+      ...content,
+      id: Date.now().toString(),
+    };
+
+    setState((prevState) => ({
+      ...prevState,
+      email: {
+        ...prevState.email,
+        body: [...prevState.email.body, newContent],
+      },
+    }));
+  };
+
+  const handleSelectItems = (items) => {
+    setState((prevState) => ({
+      ...prevState,
+      email: {
+        ...prevState.email,
+        items,
+      },
+    }));
+  };
 
   const isButtonDisabled =
-    !appeal ||
-    !subject ||
-    ((!body || body.length < 3) &&
-      (!image || !uploadableImageLocal) &&
-      (!items || items.length === 0));
+    !subject || ((!body || body.length < 1) && (!items || items.length < 1));
 
   return (
     <>
@@ -46,13 +179,12 @@ export default function EmailForm({
             <Input
               placeholder={t('emails.form.subject.holder')}
               value={email.subject}
-              onChange={(event) => onChange('subject', event.target.value)}
+              onChange={(event) => handleChange('subject', event.target.value)}
             />
           </FormField>
 
           <FormField
             helperText={t('newsletter.form.appeal.helper')}
-            required
             label={t('emails.form.appeal.label')}
             mb="4"
           >
@@ -60,13 +192,33 @@ export default function EmailForm({
               <Input
                 placeholder={t('emails.form.appeal.holder')}
                 value={email.appeal}
-                onChange={(event) => onChange('appeal', event.target.value)}
+                onChange={(event) => handleChange('appeal', event.target.value)}
               />
               <Text>{t('emails.form.appeal.addon')}</Text>
             </Flex>
           </FormField>
 
-          <FormField
+          {body?.map((content) => (
+            <BodyContentHandler key={content.id} content={content} />
+          ))}
+
+          <Center p="4">
+            <Menu
+              buttonLabel={<Trans i18nKey="admin:composable.form.addContent" />}
+              leftIcon={<AddIcon size="18px" />}
+              options={contentTypes.map((content) => ({
+                ...content,
+                key: content.type,
+              }))}
+              onSelect={handleAddContent}
+            >
+              {(item) => (
+                <Trans i18nKey={`admin:composable.form.types.${item.type}`} />
+              )}
+            </Menu>
+          </Center>
+
+          {/* <FormField
             helperText={
               uploadableImageLocal || imageUrl
                 ? tc('plugins.fileDropper.replace')
@@ -93,10 +245,10 @@ export default function EmailForm({
               value={email.body}
               onChange={(value) => onChange('body', value)}
             />
-          </FormField>
+          </FormField> */}
 
           <Box mb="24">
-            <ContentInserter onSelect={onSelectItems} />
+            <ContentInserter onSelect={handleSelectItems} />
           </Box>
 
           <FormField label={t('emails.form.footer.label')} mb="4">

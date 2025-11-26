@@ -9,12 +9,22 @@ Newsletters.schema = new SimpleSchema({
   appeal: { type: String },
   authorId: Schemas.Id,
   authorUsername: { type: String },
-  body: { type: String, optional: true },
+  // body: { type: String, optional: true },
+  body: { type: Array },
+  'body.$': new SimpleSchema({
+    type: { type: String },
+    value: new SimpleSchema({
+      html: { type: String, optional: true },
+      kind: { type: String, optional: true },
+      linkValue: { type: String, optional: true },
+      label: { type: String, optional: true },
+      src: { type: String, optional: true },
+    }),
+  }),
   creationDate: { type: Date },
   footer: { type: String, optional: true },
   host: Schemas.Hostname,
   hostId: { type: String },
-  imageUrl: { type: String, optional: true },
   items: new SimpleSchema(
     {
       activities: { type: Array, optional: true },
