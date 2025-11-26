@@ -87,7 +87,7 @@ export function ActivityDates({ activity, currentHost, centered = false }) {
   );
 }
 
-export default function EmailPreview({ currentHost, email, imageUrl }) {
+export default function EmailPreview({ currentHost, email }) {
   const [tc] = useTranslation('common');
   const [t] = useTranslation('admin');
 
@@ -95,15 +95,16 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
     return null;
   }
 
-  const { appeal, body, footer, image, items, subject } = email;
-  const uploadableImageLocal = image?.uploadableImageLocal;
+  const { appeal, body, footer, items, subject } = email;
   const activities = items?.activities;
   const works = items?.works;
 
   const { host, logo, settings } = currentHost;
   const activitiesLabel =
-    settings?.menu?.find((item) => item.name === 'activities')?.label || 'Activities';
-  const worksLabel = settings?.menu?.find((item) => item.name === 'works')?.label || 'Works';
+    settings?.menu?.find((item) => item.name === 'activities')?.label ||
+    'Activities';
+  const worksLabel =
+    settings?.menu?.find((item) => item.name === 'works')?.label || 'Works';
 
   const address = `${settings.address}, ${settings.city}, ${settings.country}`;
 
@@ -114,7 +115,12 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         <Container style={{ margin: '0 auto', padding: '20px 0 48px' }}>
           <Link href={`https://${host}/newsletters/[newsletter-id]`}>
             <Text
-              style={{ color: '#0f64c0', fontSize: '12px', margin: '0 0 8px', textAlign: 'center' }}
+              style={{
+                color: '#0f64c0',
+                fontSize: '12px',
+                margin: '0 0 8px',
+                textAlign: 'center',
+              }}
             >
               {t('newsletter.labels.browserlink')}
               {/* Browser */}
@@ -141,27 +147,37 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             </Heading>
           )}
 
-          <Section style={{ marginBottom: 12 }}>
-            {(imageUrl || uploadableImageLocal) && (
-              <Img
-                style={{ margin: '24px auto', maxWidth: '456px' }}
-                src={imageUrl || uploadableImageLocal}
-                alt={subject}
-                height="auto"
-              />
-            )}
+          {appeal && (
+            <Text style={{ fontSize: 16 }}>{`${appeal} [username],`}</Text>
+          )}
 
-            {body && <Text style={{ fontSize: 16 }}>{`${appeal} [username],`}</Text>}
-
-            {body && <Text style={{ fontSize: 16 }}>{parseHtml(body)}</Text>}
-
-            <Hr />
-          </Section>
+          {body.map((content) =>
+            content?.type === 'image' && content?.value?.src ? (
+              <Section style={{ marginBottom: 12 }}>
+                <Img
+                  style={{ margin: '24px auto', maxWidth: '456px' }}
+                  src={content?.value?.src}
+                  alt={subject}
+                  height="auto"
+                />
+              </Section>
+            ) : content?.type === 'text' && content?.value?.html ? (
+              <Text style={{ fontSize: 16 }}>
+                {parseHtml(content.value.html)}
+              </Text>
+            ) : content?.type === 'divider' ? (
+              <Hr />
+            ) : null
+          )}
 
           {items && activities && (
             <>
+              <Hr />
               {activities && activities.length > 0 && (
-                <Heading as="h2" style={{ fontSize: 32, fontWeight: 'bold', marginBottom: 8 }}>
+                <Heading
+                  as="h2"
+                  style={{ fontSize: 32, fontWeight: 'bold', marginBottom: 8 }}
+                >
                   {activitiesLabel}
                 </Heading>
               )}
@@ -186,24 +202,39 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     </Heading>
                   </Link>
                   <Text
-                    style={{ fontSize: 20, marginTop: 0, marginBottom: 32, textAlign: 'center' }}
+                    style={{
+                      fontSize: 20,
+                      marginTop: 0,
+                      marginBottom: 32,
+                      textAlign: 'center',
+                    }}
                   >
                     {activity?.subTitle}
                   </Text>
 
                   {(activity.images || activity.imageUrl) && (
-                    <Link href={`https://${activity.host}/activities/${activity._id}`}>
+                    <Link
+                      href={`https://${activity.host}/activities/${activity._id}`}
+                    >
                       <Img
-                        src={(activity.images && activity.images[0]) || activity.imageUrl}
+                        src={
+                          (activity.images && activity.images[0]) ||
+                          activity.imageUrl
+                        }
                         width="100%"
                         height="auto"
                         style={{ marginBottom: 12 }}
                       />
                     </Link>
                   )}
-                  <ActivityDates activity={activity} centered currentHost={currentHost} />
+                  <ActivityDates
+                    activity={activity}
+                    centered
+                    currentHost={currentHost}
+                  />
                   <Text style={{ fontSize: 16 }}>
-                    {activity?.longDescription && stripAndShorten(activity.longDescription)}
+                    {activity?.longDescription &&
+                      stripAndShorten(activity.longDescription)}
                   </Text>
                   <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                     <Button
@@ -226,8 +257,12 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
 
           {items && works && (
             <>
+              <Hr />
               {works && works.length > 0 && (
-                <Heading as="h2" style={{ fontSize: 32, fontWeight: 'bold', marginBottom: 8 }}>
+                <Heading
+                  as="h2"
+                  style={{ fontSize: 32, fontWeight: 'bold', marginBottom: 8 }}
+                >
                   {worksLabel}
                 </Heading>
               )}
@@ -251,12 +286,19 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     </Heading>
                   </Link>
                   <Text
-                    style={{ fontSize: 20, marginTop: 0, marginBottom: 32, textAlign: 'center' }}
+                    style={{
+                      fontSize: 20,
+                      marginTop: 0,
+                      marginBottom: 32,
+                      textAlign: 'center',
+                    }}
                   >
                     {work?.shortDescription}
                   </Text>
                   {work.images && (
-                    <Link href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}>
+                    <Link
+                      href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
+                    >
                       <Img
                         src={work.images && work.images[0]}
                         width="100%"
@@ -266,7 +308,8 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     </Link>
                   )}
                   <Text style={{ fontSize: 16 }}>
-                    {work?.longDescription && stripAndShorten(work.longDescription)}{' '}
+                    {work?.longDescription &&
+                      stripAndShorten(work.longDescription)}{' '}
                   </Text>
                   <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                     <Button
@@ -288,7 +331,14 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
           )}
 
           <Section style={{ maxWidth: '456px', textAlign: 'center' }}>
-            <Heading as="h1" style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}>
+            <Heading
+              as="h1"
+              style={{
+                fontSize: '20px',
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}
+            >
               {settings?.name}
             </Heading>
             {footer && footer.length > 0 && (
@@ -300,7 +350,10 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             <Container style={{ color: '#6b6b6b' }}>
               <Text style={{ margin: 0 }}>{address}</Text>
               <Text style={{ margin: 0 }}>{settings.email}</Text>
-              <Link href={`https://${host}`} style={{ color: '#0f64c0', textAlign: 'center' }}>
+              <Link
+                href={`https://${host}`}
+                style={{ color: '#0f64c0', textAlign: 'center' }}
+              >
                 <Text>{host}</Text>
               </Link>
             </Container>

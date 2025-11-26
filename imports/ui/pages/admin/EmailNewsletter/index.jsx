@@ -186,7 +186,7 @@ export default function EmailNewsletter() {
         }
       >
         <Center>
-          {/* <EmailPreview currentHost={currentHost} email={state.email} /> */}
+          <EmailPreview currentHost={currentHost} email={state.email} />
         </Center>
       </Modal>
 
