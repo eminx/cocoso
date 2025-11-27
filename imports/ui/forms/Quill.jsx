@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
+import { Trans } from 'react-i18next';
 import loadable from '@loadable/component';
 const ReactQuill = loadable(() => import('react-quill-new'));
 

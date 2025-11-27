@@ -1,8 +1,8 @@
 export const contentTypes = [
   {
-    type: 'divider',
+    type: 'text',
     value: {
-      kind: 'line',
+      html: '',
     },
   },
   {
@@ -12,9 +12,9 @@ export const contentTypes = [
     },
   },
   {
-    type: 'text',
+    type: 'divider',
     value: {
-      html: '<p>Text</p>',
+      kind: 'line',
     },
   },
 ];

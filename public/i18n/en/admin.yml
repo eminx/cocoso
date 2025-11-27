@@ -160,7 +160,7 @@ newsletter:
       helper: Select an image
       label: Image
     text:
-      helper: Compose...
+      helper: Compose a piece
       label: Text
   notification:
     success:

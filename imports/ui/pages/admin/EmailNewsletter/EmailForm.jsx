@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { useAtom } from 'jotai';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
+import TrashIcon from 'lucide-react/dist/esm/icons/trash';
 
 import {
   Box,
@@ -10,6 +11,7 @@ import {
   Center,
   Divider,
   Flex,
+  IconButton,
   Input,
   Text,
 } from '/imports/ui/core';
@@ -84,6 +86,16 @@ function BodyContentHandler({ content }) {
     }));
   };
 
+  const handleRemove = () => {
+    setState((prevState) => ({
+      ...prevState,
+      email: {
+        ...prevState.email,
+        body: email.body.filter((cont) => cont.id !== content.id),
+      },
+    }));
+  };
+
   const renderContent = () => {
     if (type === 'divider') {
       return <Divider />;
@@ -106,13 +118,35 @@ function BodyContentHandler({ content }) {
   };
 
   return (
-    <FormField
-      helperText={<Trans i18nKey={`admin:newsletter.form.${type}.helper`} />}
-      label={<Trans i18nKey={`admin:newsletter.form.${type}.label`} />}
-      mb="4"
+    <Box
+      bg="white"
+      px="4"
+      w="100%"
+      css={{
+        borderRadius: '12px',
+        position: 'relative',
+      }}
     >
-      {renderContent()}
-    </FormField>
+      <IconButton
+        colorScheme="red"
+        icon={<TrashIcon size="16px" />}
+        size="xs"
+        variant="ghost"
+        type="button"
+        css={{
+          flexGrow: '0',
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+        }}
+        onClick={handleRemove}
+      />
+      <FormField
+        label={<Trans i18nKey={`admin:newsletter.form.${type}.label`} />}
+      >
+        {renderContent()}
+      </FormField>
+    </Box>
   );
 }
 
@@ -174,7 +208,6 @@ export default function EmailForm({ currentHost, onSubmit }) {
             helperText={t('newsletter.form.subject.helper')}
             required
             label={t('emails.form.subject.label')}
-            mb="4"
           >
             <Input
               placeholder={t('emails.form.subject.holder')}
@@ -186,7 +219,6 @@ export default function EmailForm({ currentHost, onSubmit }) {
           <FormField
             helperText={t('newsletter.form.appeal.helper')}
             label={t('emails.form.appeal.label')}
-            mb="4"
           >
             <Flex align="center" w="280px">
               <Input
@@ -217,35 +249,6 @@ export default function EmailForm({ currentHost, onSubmit }) {
               )}
             </Menu>
           </Center>
-
-          {/* <FormField
-            helperText={
-              uploadableImageLocal || imageUrl
-                ? tc('plugins.fileDropper.replace')
-                : t('newsletter.form.image.helper')
-            }
-            label={t('emails.form.image.label')}
-            mb="4"
-          >
-            <Center>
-              <FileDropper
-                imageUrl={imageUrl}
-                setUploadableImage={setUploadableImage}
-                uploadableImageLocal={uploadableImageLocal}
-              />
-            </Center>
-          </FormField>
-
-          <FormField
-            helperText={t('newsletter.form.body.helper')}
-            label={t('emails.form.body.label')}
-            mb="4"
-          >
-            <Quill
-              value={email.body}
-              onChange={(value) => onChange('body', value)}
-            />
-          </FormField> */}
 
           <Box mb="24">
             <ContentInserter onSelect={handleSelectItems} />

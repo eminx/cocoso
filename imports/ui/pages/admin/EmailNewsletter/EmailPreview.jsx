@@ -153,7 +153,7 @@ export default function EmailPreview({ currentHost, email }) {
 
           {body.map((content) =>
             content?.type === 'image' && content?.value?.src ? (
-              <Section style={{ marginBottom: 12 }}>
+              <Section key={content.id} style={{ marginBottom: 12 }}>
                 <Img
                   style={{ margin: '24px auto', maxWidth: '456px' }}
                   src={content?.value?.src}
