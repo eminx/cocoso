@@ -31,17 +31,34 @@ function stripAndShorten(html) {
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
-export function ActivityDate({ date }) {
+const stylesDateSign = { fontWeight: 'bold', margin: 0 };
+
+function DateSign({ date }) {
   return (
     <Column style={{ paddingRight: 8 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', margin: 0 }}>
-        {dayjs(date.startDate).format('DD')}
+      <Text style={{ ...stylesDateSign, fontSize: 36 }}>
+        {dayjs(date).format('DD')}
       </Text>
-      <Text style={{ fontSize: 18, margin: 0, marginTop: -4 }}>
-        {dayjs(date.startDate).format('MMM')}
+      <Text style={{ ...stylesDateSign, fontSize: 24 }}>
+        {dayjs(date).format('MMM')}
       </Text>
     </Column>
   );
+}
+
+export function ActivityDate({ date }) {
+  if (date.startDate !== date.endDate) {
+    return (
+      <>
+        <DateSign date={date.startDate} />
+        <Column>
+          <Text style={{ paddingRight: 8 }}>–</Text>
+        </Column>
+        <DateSign date={date.endDate} />
+      </>
+    );
+  }
+  return <DateSign date={date.startDate} />;
 }
 
 export function ActivityDates({ activity, currentHost, centered = false }) {
@@ -63,8 +80,9 @@ export function ActivityDates({ activity, currentHost, centered = false }) {
     <Row
       style={{
         margin: centered ? '0 auto' : 0,
-        width: 'auto',
+        padding: '12px',
         textAlign: centered ? 'center' : 'left',
+        width: 'auto',
       }}
     >
       {length < 4
@@ -74,11 +92,7 @@ export function ActivityDates({ activity, currentHost, centered = false }) {
         : futureDates
             .filter((d, i) => i < 3)
             .map((date) => (
-              <ActivityDate
-                key={date.startDate + date.startTime}
-                currentHost={currentHost}
-                date={date}
-              />
+              <ActivityDate key={date.startDate + date.startTime} date={date} />
             ))}
       <Column>
         <Text>{length > 3 && '+' + (length - 3).toString()}</Text>
