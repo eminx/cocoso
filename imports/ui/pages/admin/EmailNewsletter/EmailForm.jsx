@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { useAtom } from 'jotai';
@@ -24,6 +24,31 @@ import Menu from '/imports/ui/generic/Menu';
 import ContentInserter from './ContentInserter';
 import { newsletterAtom } from './index';
 import { contentTypes } from './constants';
+
+const getDefaultFooter = (currentHost) => {
+  if (!currentHost) {
+    return null;
+  }
+
+  const { host, settings } = currentHost;
+  const address = `${settings.address}, ${settings.city}, ${settings.country}`;
+
+  return `
+    <h1 style="margin-bottom: 24px;">${settings?.name}</h1>
+    <br />
+    <p>${address}</p>
+    <p>
+      <a href="mailto:${settings?.email}">
+        ${settings?.email}
+      </a>
+    </p>
+    <p>
+      <a href="https://${host}">
+        ${host}
+      </a>
+    </p>
+  `;
+};
 
 function BodyContentHandler({ content }) {
   const [state, setState] = useAtom(newsletterAtom);
@@ -158,6 +183,20 @@ export default function EmailForm({ currentHost, onSubmit }) {
 
   const { appeal, body, items, subject } = email;
 
+  useEffect(() => {
+    if (!currentHost) {
+      return;
+    }
+
+    setState((prevState) => ({
+      ...prevState,
+      email: {
+        ...prevState.email,
+        footer: getDefaultFooter(currentHost),
+      },
+    }));
+  }, [currentHost]);
+
   const handleChange = (field, value) => {
     const newEmail = {
       ...state.email,
@@ -256,7 +295,7 @@ export default function EmailForm({ currentHost, onSubmit }) {
             <Quill
               className="ql-editor-text-align-center"
               value={email.footer}
-              onChange={(value) => onChange('footer', value)}
+              onChange={(value) => handleChange('footer', value)}
             />
           </FormField>
 

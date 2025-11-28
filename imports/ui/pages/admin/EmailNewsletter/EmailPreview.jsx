@@ -101,8 +101,6 @@ export default function EmailPreview({ currentHost, email }) {
 
   const { host, logo, settings } = currentHost;
 
-  const address = `${settings.address}, ${settings.city}, ${settings.country}`;
-
   return (
     <Html style={{ backgroundColor: 'transparent' }}>
       <Head />
@@ -309,34 +307,18 @@ export default function EmailPreview({ currentHost, email }) {
             </>
           )}
 
-          <Section style={{ maxWidth: '456px', textAlign: 'center' }}>
-            <Heading
-              as="h1"
-              style={{
-                fontSize: '20px',
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}
-            >
-              {settings?.name}
-            </Heading>
-
+          <Section
+            style={{
+              maxWidth: '456px',
+              padding: '24px 0',
+              textAlign: 'center',
+            }}
+          >
             {footer && footer.length > 0 && (
               <Container style={{ color: '#424242' }}>
-                <Text style={{ textAlign: 'center' }}>{parseHtml(footer)}</Text>
+                {parseHtml(footer)}
               </Container>
             )}
-
-            <Container style={{ color: '#6b6b6b' }}>
-              <Text style={{ margin: 0 }}>{address}</Text>
-              <Text style={{ margin: 0 }}>{settings.email}</Text>
-              <Link
-                href={`https://${host}`}
-                style={{ color: '#0f64c0', textAlign: 'center' }}
-              >
-                <Text>{host}</Text>
-              </Link>
-            </Container>
           </Section>
         </Container>
       </Body>
