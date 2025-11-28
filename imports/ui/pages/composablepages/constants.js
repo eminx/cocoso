@@ -10,8 +10,8 @@ export const contentTypes = [
   {
     type: 'divider',
     value: {
-      kind: 'line', // or empty-space
-      height: 10, // only for empty-space
+      kind: 'line', // or space
+      height: 10, // only for space
     },
   },
   {

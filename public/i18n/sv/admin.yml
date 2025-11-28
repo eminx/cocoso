@@ -207,8 +207,8 @@ composable:
     addContent: Lägg till innehåll
     addToMenu: Lägg till en komponerbara sida
     addRow: Lägg till en rad
-    emptySpace: Tomt utrymme
-    emptySpaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
+    space: Tomt utrymme
+    spaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
     label: Etikett
     labelHelper: Ange etiketten för knappen. Denna etikett kommer att visas på knappen
     line: Linje

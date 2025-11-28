@@ -207,8 +207,8 @@ composable:
     addContent: Add Content
     addToMenu: Add a composable page
     addRow: Add a row
-    emptySpace: Empty Space
-    emptySpaceHelper: Please enter the height of the empty space in pixels
+    space: Empty Space
+    spaceHelper: Please enter the height of the empty space in pixels
     label: Label
     labelHelper: Please enter the label for the button. This label will be displayed on the button
     line: Line

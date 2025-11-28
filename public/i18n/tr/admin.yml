@@ -207,8 +207,8 @@ composable:
     addContent: 'İçerik ekle'
     addToMenu: 'Özelleştirilebilir sayfa ekle'
     addRow: Satır ekle
-    emptySpace: Boşluk
-    emptySpaceHelper: Lütfen boşluk için piksel bazlı bir yükseklik gir
+    space: Boşluk
+    spaceHelper: Lütfen boşluk için piksel bazlı bir yükseklik gir
     label: Etiket
     labelHelper: Lütfen buton için etiketi gir. Bu etiket buton üzerinde görünecek
     line: 'Çizgi'

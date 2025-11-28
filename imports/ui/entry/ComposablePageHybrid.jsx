@@ -50,7 +50,7 @@ function ContentViewModule({ module, Host }) {
         </Center>
       );
     case 'divider':
-      if (value.kind === 'empty-space') {
+      if (value.kind === 'space') {
         return <Box w="100%" h={`${value.height}px`} />;
       }
       return <Divider />;
