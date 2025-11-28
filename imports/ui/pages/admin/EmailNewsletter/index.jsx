@@ -4,6 +4,7 @@ import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
 import { atom, useAtom, useAtomValue } from 'jotai';
+import toast from 'react-hot-toast';
 
 import {
   Alert,
@@ -47,32 +48,74 @@ export const newsletterAtom = atom({
   uploadingImages: false,
 });
 
+const toastLoaderOptions = { id: 'loader-toast' };
+
 export default function EmailNewsletter() {
   const currentHost = useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const platform = useAtomValue(platformAtom);
   const role = useAtomValue(roleAtom);
   const [state, setState] = useAtom(newsletterAtom);
-
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    if (!state.uploadingImages) {
+      return;
+    }
+
+    const body = state.email.body;
+    const imageContent = body.filter((content) => content.type === 'image');
+    console.log('imageContent', imageContent);
+    if (imageContent.find((content) => content.value.src === '')) {
+      console.log('noluyo');
+      return;
+    }
+
+    toast.dismiss(toastLoaderOptions.id);
     setState((prevState) => ({
       ...prevState,
+      uploadingImages: false,
       preview: true,
     }));
+  }, [state.email.body]);
+
+  const handleSubmit = () => {
+    const { appeal, body, items, subject } = state.email;
+    if (!subject) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    if ((!body || body.length < 1) && items.length === 0) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    if (body.some((content) => content.type === 'image')) {
+      toast.loading(tc('message.loading.uploading'), toastLoaderOptions);
+      setState((prevState) => ({
+        ...prevState,
+        uploadingImages: true,
+      }));
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        preview: true,
+      }));
+    }
   };
 
-  const sendEmail = async (imageUrl) => {
-    const { email } = state;
+  const sendEmail = async () => {
+    toast.loading(tc('message.loading.sending'), toastLoaderOptions);
+    setState((prevState) => ({
+      ...prevState,
+      sending: true,
+    }));
+    const email = state.email;
 
     const emailHtml = renderEmail(
-      <EmailPreview
-        currentHost={currentHost}
-        email={email}
-        imageUrl={imageUrl}
-      />
+      <EmailPreview currentHost={currentHost} email={email} />
     );
 
     const emailValues = {
@@ -93,6 +136,7 @@ export default function EmailNewsletter() {
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {
+      toast.dismiss(toastLoaderOptions.id);
       setState((prevState) => ({
         ...prevState,
         lastConfirm: false,
@@ -100,24 +144,6 @@ export default function EmailNewsletter() {
         uploadingImages: false,
       }));
     }
-  };
-
-  const confirmSendingEmail = () => {
-    const { appeal, body, items, subject } = state.email;
-    if (!subject) {
-      message.error(t('newsletter.error.required'));
-      return;
-    }
-
-    if ((!body || body.length < 1) && items.length === 0) {
-      message.error(t('newsletter.error.required'));
-      return;
-    }
-
-    setState((prevState) => ({
-      ...prevState,
-      uploadingImages: true,
-    }));
   };
 
   if (!currentUser || role !== 'admin') {
@@ -167,6 +193,9 @@ export default function EmailNewsletter() {
 
       <Modal
         confirmButtonLabel={t('newsletter.modals.send')}
+        confirmButtonProps={{
+          loading: state.uploadingImages,
+        }}
         id="email-newsletter-preview"
         open={state.preview}
         size="3xl"
@@ -192,13 +221,13 @@ export default function EmailNewsletter() {
 
       <Modal
         confirmButtonProps={{
-          isLoading: state.sending,
+          loading: state.sending,
         }}
         confirmText={t('newsletter.modals.yes')}
         id="email-newsletter-confirm-sending"
         open={state.lastConfirm}
         title={t('newsletter.modals.title')}
-        onConfirm={() => confirmSendingEmail()}
+        onConfirm={sendEmail}
         onClose={() =>
           setState((prevState) => ({
             ...prevState,

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SmallCloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import { arrayMoveImmutable } from 'array-move';
+import toast from 'react-hot-toast';
 
 import { Box, Center, IconButton } from '/imports/ui/core';
 
@@ -47,7 +48,7 @@ export default function ImageUploader({
       );
       onUploadedImages(imagesReadyToSave);
     } catch (error) {
-      console.log('Error uploading:', error);
+      toast.dismissAll();
       message.error(error.reason || error.error);
     }
   };

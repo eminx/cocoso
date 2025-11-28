@@ -69,13 +69,13 @@ export function ActivityDates({ activity, currentHost, centered = false }) {
     >
       {length < 4
         ? futureDates.map((date) => (
-            <ActivityDate key={date.startDate + date.endTime} date={date} />
+            <ActivityDate key={date.startDate + date.startTime} date={date} />
           ))
         : futureDates
             .filter((d, i) => i < 3)
             .map((date) => (
               <ActivityDate
-                key={date.startDate + date.endTime}
+                key={date.startDate + date.startTime}
                 currentHost={currentHost}
                 date={date}
               />
@@ -91,7 +91,7 @@ export default function EmailPreview({ currentHost, email }) {
   const [tc] = useTranslation('common');
   const [t] = useTranslation('admin');
 
-  if (!email || !currentHost) {
+  if (!currentHost || !email) {
     return null;
   }
 
@@ -100,11 +100,6 @@ export default function EmailPreview({ currentHost, email }) {
   const works = items?.works;
 
   const { host, logo, settings } = currentHost;
-  const activitiesLabel =
-    settings?.menu?.find((item) => item.name === 'activities')?.label ||
-    'Activities';
-  const worksLabel =
-    settings?.menu?.find((item) => item.name === 'works')?.label || 'Works';
 
   const address = `${settings.address}, ${settings.city}, ${settings.country}`;
 
@@ -126,20 +121,21 @@ export default function EmailPreview({ currentHost, email }) {
               {/* Browser */}
             </Text>
           </Link>
+
           {logo ? (
             <Img
               alt={settings?.name}
-              height="50px"
+              height="180px"
               src={logo}
-              style={{ height: '50px', margin: '0 auto' }}
+              style={{ height: '180px', margin: '48px auto' }}
             />
           ) : (
             <Heading
               as="h1"
               style={{
-                fontSize: '28px',
+                fontSize: '42px',
                 fontWeight: 'bold',
-                marginBottom: '24px',
+                margin: '48px auto',
                 textAlign: 'center',
               }}
             >
@@ -147,13 +143,13 @@ export default function EmailPreview({ currentHost, email }) {
             </Heading>
           )}
 
-          {appeal && (
-            <Text style={{ fontSize: 16 }}>{`${appeal} [username],`}</Text>
+          {appeal && appeal.length > 1 && (
+            <Text style={{ fontSize: 18 }}>{`${appeal} [username],`}</Text>
           )}
 
           {body.map((content) =>
             content?.type === 'image' && content?.value?.src ? (
-              <Section key={content.id} style={{ marginBottom: 12 }}>
+              <Section key={content.id} style={{ marginBottom: 24 }}>
                 <Img
                   style={{ margin: '24px auto', maxWidth: '456px' }}
                   src={content?.value?.src}
@@ -162,26 +158,17 @@ export default function EmailPreview({ currentHost, email }) {
                 />
               </Section>
             ) : content?.type === 'text' && content?.value?.html ? (
-              <Text style={{ fontSize: 16 }}>
+              <Text style={{ fontSize: 18, marginBottom: 24 }}>
                 {parseHtml(content.value.html)}
               </Text>
             ) : content?.type === 'divider' ? (
-              <Hr />
+              <Hr style={{ margin: '48px 0' }} />
             ) : null
           )}
 
           {items && activities && (
             <>
               <Hr />
-              {activities && activities.length > 0 && (
-                <Heading
-                  as="h2"
-                  style={{ fontSize: 32, fontWeight: 'bold', marginBottom: 8 }}
-                >
-                  {activitiesLabel}
-                </Heading>
-              )}
-
               {activities?.map((activity) => (
                 <Section key={activity._id} style={{ marginBottom: 24 }}>
                   <Link
@@ -258,14 +245,6 @@ export default function EmailPreview({ currentHost, email }) {
           {items && works && (
             <>
               <Hr />
-              {works && works.length > 0 && (
-                <Heading
-                  as="h2"
-                  style={{ fontSize: 32, fontWeight: 'bold', marginBottom: 8 }}
-                >
-                  {worksLabel}
-                </Heading>
-              )}
               {works?.map((work) => (
                 <Section key={work._id} style={{ marginBottom: 24 }}>
                   <Link
@@ -341,6 +320,7 @@ export default function EmailPreview({ currentHost, email }) {
             >
               {settings?.name}
             </Heading>
+
             {footer && footer.length > 0 && (
               <Container style={{ color: '#424242' }}>
                 <Text style={{ textAlign: 'center' }}>{parseHtml(footer)}</Text>

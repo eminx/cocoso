@@ -35,27 +35,26 @@ function BodyContentHandler({ content }) {
   const { type, value } = content;
 
   const handleUploadedImage = (images) => {
+    console.log('image uploaded:', images?.[0]);
     if (!images || images.length < 1) {
       return;
     }
 
-    const updatedEmailBody = email.body?.map((cont) => {
-      if (cont.id === content.id) {
-        return {
-          ...cont,
-          value: {
-            src: images[0],
-          },
-        };
-      }
-      return cont;
-    });
-
     setState((prevState) => ({
-      ...state,
+      ...prevState,
       email: {
-        ...state.email,
-        body: updatedEmailBody,
+        ...prevState.email,
+        body: prevState.email.body?.map((cont) => {
+          if (cont.id === content.id) {
+            return {
+              ...cont,
+              value: {
+                src: images[0],
+              },
+            };
+          }
+          return cont;
+        }),
       },
     }));
   };
@@ -65,23 +64,21 @@ function BodyContentHandler({ content }) {
       return;
     }
 
-    const updatedEmailBody = email.body.map((cont) => {
-      if (cont.id === content.id) {
-        return {
-          ...cont,
-          value: {
-            html: value,
-          },
-        };
-      }
-      return cont;
-    });
-
     setState((prevState) => ({
       ...prevState,
       email: {
         ...prevState.email,
-        body: updatedEmailBody,
+        body: prevState.email.body.map((cont) => {
+          if (cont.id === content.id) {
+            return {
+              ...cont,
+              value: {
+                html: value,
+              },
+            };
+          }
+          return cont;
+        }),
       },
     }));
   };
@@ -91,7 +88,7 @@ function BodyContentHandler({ content }) {
       ...prevState,
       email: {
         ...prevState.email,
-        body: email.body.filter((cont) => cont.id !== content.id),
+        body: prevState.email.body.filter((cont) => cont.id !== content.id),
       },
     }));
   };
@@ -173,16 +170,17 @@ export default function EmailForm({ currentHost, onSubmit }) {
   };
 
   const handleAddContent = (content) => {
-    const newContent = {
-      ...content,
-      id: Date.now().toString(),
-    };
-
     setState((prevState) => ({
       ...prevState,
       email: {
         ...prevState.email,
-        body: [...prevState.email.body, newContent],
+        body: [
+          ...prevState.email.body,
+          {
+            ...content,
+            id: Date.now().toString(),
+          },
+        ],
       },
     }));
   };
@@ -263,7 +261,11 @@ export default function EmailForm({ currentHost, onSubmit }) {
           </FormField>
 
           <Flex justify="flex-end" py="2" w="100%">
-            <Button isDisabled={isButtonDisabled} type="submit">
+            <Button
+              disabled={isButtonDisabled}
+              loading={state.uploadingImages}
+              type="submit"
+            >
               {tc('actions.preview')}
             </Button>
           </Flex>

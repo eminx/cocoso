@@ -6,18 +6,16 @@ const Newsletters = new Mongo.Collection('newsletters');
 
 Newsletters.schema = new SimpleSchema({
   _id: Schemas.Id,
-  appeal: { type: String },
+  appeal: { type: String, optional: true },
   authorId: Schemas.Id,
   authorUsername: { type: String },
-  // body: { type: String, optional: true },
   body: { type: Array },
   'body.$': new SimpleSchema({
+    id: { type: String },
     type: { type: String },
     value: new SimpleSchema({
       html: { type: String, optional: true },
       kind: { type: String, optional: true },
-      linkValue: { type: String, optional: true },
-      label: { type: String, optional: true },
       src: { type: String, optional: true },
     }),
   }),
