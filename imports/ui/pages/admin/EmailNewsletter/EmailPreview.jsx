@@ -101,6 +101,39 @@ export function ActivityDates({ activity, currentHost, centered = false }) {
   );
 }
 
+const getTitleStyle = (theme) => ({
+  color: `hsl(${theme?.hue || 288}deg, 80%, 40%)`,
+  fontSize: 36,
+  fontWeight: 'bold',
+  lineHeight: 1.4,
+  marginBottom: 4,
+  marginTop: 12,
+  textAlign: 'center',
+  textShadow: 'rgb(255, 255, 255) 1px 1px 1px',
+});
+
+const getSubTitleStyle = (theme) => ({
+  color: `hsl(${theme?.hue || 288}deg, 60%, 28%)`,
+  fontSize: 20,
+  marginTop: 0,
+  marginBottom: 32,
+  textAlign: 'center',
+  textShadow: 'rgb(255, 255, 255) 1px 1px 1px',
+});
+
+const getButtonStyle = (theme) => ({
+  backgroundColor: `hsl(${theme?.hue || 288}deg, 80%, 40%)`,
+  border: `1px solid`,
+  borderColor: `hsl(${theme?.hue || 288}deg, 80%, 90%)`,
+  borderRadius: theme?.body?.borderRadius,
+  color: `hsl(${theme?.hue || 288}deg, 80%, 95%)`,
+  fontWeight: 'bold',
+  fontSize: 18,
+  margin: '12px auto',
+  padding: '12px 16px',
+  textAlign: 'center',
+});
+
 export default function EmailPreview({ currentHost, email }) {
   const [tc] = useTranslation('common');
   const [t] = useTranslation('admin');
@@ -113,18 +146,27 @@ export default function EmailPreview({ currentHost, email }) {
   const activities = items?.activities;
   const works = items?.works;
 
-  const { host, logo, settings } = currentHost;
+  const { host, logo, settings, theme } = currentHost;
+
+  const buttonStyle = getButtonStyle(theme);
+  const subTitleStyle = getSubTitleStyle(theme);
+  const titleStyle = getTitleStyle(theme);
 
   return (
-    <Html style={{ backgroundColor: 'transparent' }}>
+    <Html>
       <Head />
-      <Body style={{ backgroundColor: 'transparent' }}>
+      <Body
+        style={{
+          backgroundColor: theme?.body?.backgroundColor,
+          padding: '24px',
+        }}
+      >
         <Container style={{ margin: '0 auto', padding: '20px 0 48px' }}>
           <Link href={`https://${host}/newsletters/[newsletter-id]`}>
             <Text
               style={{
-                color: '#0f64c0',
-                fontSize: '12px',
+                color: '#044386',
+                fontSize: '13px',
                 margin: '0 0 8px',
                 textAlign: 'center',
               }}
@@ -187,29 +229,11 @@ export default function EmailPreview({ currentHost, email }) {
                     href={`https://${activity.host}/activities/${activity._id}`}
                     style={{ color: '#0f64c0' }}
                   >
-                    <Heading
-                      as="h3"
-                      style={{
-                        fontSize: 24,
-                        fontWeight: 'bold',
-                        lineHeight: 1.2,
-                        marginBottom: 8,
-                        textAlign: 'center',
-                      }}
-                    >
+                    <Heading as="h2" style={titleStyle}>
                       {activity?.title}
                     </Heading>
                   </Link>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      marginTop: 0,
-                      marginBottom: 32,
-                      textAlign: 'center',
-                    }}
-                  >
-                    {activity?.subTitle}
-                  </Text>
+                  <Text style={subTitleStyle}>{activity?.subTitle}</Text>
 
                   {(activity.images || activity.imageUrl) && (
                     <Link
@@ -235,19 +259,17 @@ export default function EmailPreview({ currentHost, email }) {
                     {activity?.longDescription &&
                       stripAndShorten(activity.longDescription)}
                   </Text>
-                  <Text style={{ marginBottom: 12, textAlign: 'right' }}>
+
+                  <Text style={{ textAlign: 'center' }}>
                     <Button
                       href={`https://${activity.host}/activities/${activity._id}`}
-                      style={{
-                        color: '#0f64c0',
-                        fontWeight: 'bold',
-                        fontSize: 16,
-                      }}
+                      style={buttonStyle}
                     >
                       {tc('actions.entryPage')}
                       {/* Visit */}
                     </Button>
                   </Text>
+
                   <Hr />
                 </Section>
               ))}
@@ -263,29 +285,11 @@ export default function EmailPreview({ currentHost, email }) {
                     href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
                     style={{ color: '#0f64c0' }}
                   >
-                    <Heading
-                      as="h3"
-                      style={{
-                        fontSize: 28,
-                        fontWeight: 'bold',
-                        lineHeight: 1.2,
-                        marginBottom: 8,
-                        textAlign: 'center',
-                      }}
-                    >
+                    <Heading as="h2" style={titleStyle}>
                       {work?.title}
                     </Heading>
                   </Link>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      marginTop: 0,
-                      marginBottom: 32,
-                      textAlign: 'center',
-                    }}
-                  >
-                    {work?.shortDescription}
-                  </Text>
+                  <Text style={subTitleStyle}>{work?.shortDescription}</Text>
                   {work.images && (
                     <Link
                       href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
@@ -302,19 +306,17 @@ export default function EmailPreview({ currentHost, email }) {
                     {work?.longDescription &&
                       stripAndShorten(work.longDescription)}{' '}
                   </Text>
-                  <Text style={{ marginBottom: 12, textAlign: 'right' }}>
+
+                  <Text style={{ textAlign: 'center' }}>
                     <Button
                       href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
-                      style={{
-                        color: '#0f64c0',
-                        fontWeight: 'bold',
-                        fontSize: 16,
-                      }}
+                      style={buttonStyle}
                     >
                       {tc('actions.entryPage')}
                       {/* Visit */}
                     </Button>
                   </Text>
+
                   <Hr />
                 </Section>
               ))}
