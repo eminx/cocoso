@@ -79,7 +79,6 @@ export default function QuillEditor(props) {
         ref={handleQuillInit}
         modules={editorModules}
         {...props}
-        theme="snow"
         onChangeSelection={changePickerLabel}
         onKeyDown={changePickerLabel}
         onFocus={() => setFocused(true)}
