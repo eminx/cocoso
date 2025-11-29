@@ -20,9 +20,7 @@ export default function QuillEditor(props) {
       '.ql-snow .ql-picker.ql-size .ql-picker-item'
     );
     sizePickerItems.forEach((item) => {
-      console.log('item', item);
       const dataValue = item.getAttribute('data-value') || '16px';
-      console.log('dataValue', dataValue);
       const option = sizeOptions.find((opt) => opt.value === dataValue);
       if (!option) return;
       item.textContent = option.label;
