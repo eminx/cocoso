@@ -66,9 +66,7 @@ export default function EmailNewsletter() {
 
     const body = state.email.body;
     const imageContent = body.filter((content) => content.type === 'image');
-    console.log('imageContent', imageContent);
     if (imageContent.find((content) => content.value.src === '')) {
-      console.log('noluyo');
       return;
     }
 

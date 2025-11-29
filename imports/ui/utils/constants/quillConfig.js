@@ -1,7 +1,20 @@
-const editorModules = {
+export const sizeOptions = [
+  { label: 'Small', value: '12px' },
+  { label: 'Medium', value: '16px' },
+  { label: 'Large', value: '20px' },
+  { label: 'X-large', value: '32px' },
+  { label: 'Huge', value: '48px' },
+];
+
+export const editorModules = {
   toolbar: [
     // [{ header: 1 }, { header: 2 }, { header: 3 }],
-    [{ size: ['small', false, 'large', 'huge'] }],
+    [
+      {
+        // size: sizeOptions.map((opt) => opt.label),
+        size: ['12px', false, '20px', '32px', '48px'],
+      },
+    ],
     ['bold', 'italic', 'underline', 'strike'],
     ['blockquote', 'code-block'],
     [{ list: 'ordered' }, { list: 'bullet' }],
@@ -17,7 +30,7 @@ const editorModules = {
   },
 };
 
-const editorFormats = [
+export const editorFormats = [
   'header',
   'font',
   'size',
@@ -32,5 +45,3 @@ const editorFormats = [
   'link',
   'color',
 ];
-
-export { editorModules, editorFormats };

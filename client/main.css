@@ -1014,3 +1014,8 @@ body {
 .quill.ql-editor-text-align-center .ql-editor {
   text-align: center;
 }
+
+.quill .ql-toolbar.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.quill .ql-toolbar.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: '';
+}
