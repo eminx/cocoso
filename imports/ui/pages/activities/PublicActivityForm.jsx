@@ -195,7 +195,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       onSubmit={handleSubmit}
     >
       <FormField
-        helperText={t('form.image.helper')}
+        helper={t('form.image.helper')}
         label={t('form.image.label')}
         mt="4"
         mb="8"
@@ -209,7 +209,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       </FormField>
 
       <FormField
-        helperText={t('form.exclusive.helper')}
+        helper={t('form.exclusive.helper')}
         label={t('form.exclusive.label')}
         my="8"
       >
@@ -224,7 +224,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       </FormField>
 
       <FormField
-        helperText={t('form.resource.helper')}
+        helper={t('form.resource.helper')}
         label={t('form.resource.label')}
         my="8"
       >
@@ -252,7 +252,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       </FormField>
 
       <FormField
-        helperText={t('form.occurrences.helper')}
+        helper={t('form.occurrences.helper')}
         label={t('form.occurrences.label')}
         my="8"
         required
@@ -267,7 +267,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
       </FormField>
 
       <FormField
-        helperText={t('form.rsvp.helper')}
+        helper={t('form.rsvp.helper')}
         label={t('form.rsvp.label')}
         my="8"
       >
@@ -283,7 +283,7 @@ export default function PublicActivityForm({ activity, onFinalize }) {
 
       {(!state.isRegistrationDisabled || state.isRegistrationEnabled) && (
         <FormField
-          helperText={t('form.capacity.helper')}
+          helper={t('form.capacity.helper')}
           label={t('form.capacity.label')}
           my="8"
         >

@@ -141,8 +141,6 @@ function BodyContentHandler({ content }) {
 
   return (
     <Box
-      bg="white"
-      px="4"
       w="100%"
       css={{
         borderRadius: '12px',
@@ -159,7 +157,7 @@ function BodyContentHandler({ content }) {
           flexGrow: '0',
           position: 'absolute',
           top: '12px',
-          right: '12px',
+          right: '0',
         }}
         onClick={handleRemove}
       />
@@ -242,7 +240,7 @@ export default function EmailForm({ currentHost, onSubmit }) {
       <form onSubmit={handleSubmit((data) => onSubmit())}>
         <Flex direction="column" gap="4">
           <FormField
-            helperText={t('newsletter.form.subject.helper')}
+            helper={t('newsletter.form.subject.helper')}
             required
             label={t('emails.form.subject.label')}
           >
@@ -254,7 +252,7 @@ export default function EmailForm({ currentHost, onSubmit }) {
           </FormField>
 
           <FormField
-            helperText={t('newsletter.form.appeal.helper')}
+            helper={t('newsletter.form.appeal.helper')}
             label={t('emails.form.appeal.label')}
           >
             <Flex align="center" w="280px">

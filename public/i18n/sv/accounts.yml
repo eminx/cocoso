@@ -91,8 +91,8 @@ profile:
   makePublic:
     labelGlobal: Din profil visas publikt
     label: Din profil visas publikt i den har community
-    helperText: Om reglaget är påslaget kommer din profil att vara synlig för allmänheten
-    helperTextGlobal: Om den stängs av kommer din profil att vara osynlig även internt
+    helper: Om reglaget är påslaget kommer din profil att vara synlig för allmänheten
+    helperGlobal: Om den stängs av kommer din profil att vara osynlig även internt
 
   menu:
     avatar: Profilbild

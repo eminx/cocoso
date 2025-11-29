@@ -91,8 +91,8 @@ profile:
   makePublic:
     labelGlobal: Profile is public globally
     label: Profile is public in this community
-    helperText: If switched on, your profile will be publicly visible in this community
-    helperTextGlobal: If switched off, your profile will be publicly invisible in all communities
+    helper: If switched on, your profile will be publicly visible in this community
+    helperGlobal: If switched off, your profile will be publicly invisible in all communities
 
   menu:
     avatar: Profile image

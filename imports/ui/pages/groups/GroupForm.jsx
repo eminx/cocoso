@@ -74,7 +74,7 @@ export default function GroupForm({ group, onFinalize }) {
       onSubmit={handleSubmit}
     >
       <FormField
-        helperText={t('form.image.helper')}
+        helper={t('form.image.helper')}
         label={t('form.image.label')}
         mt="4"
         mb="12"

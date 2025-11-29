@@ -67,7 +67,7 @@ export default function ComposablePageCreator() {
       >
         <FormField
           label={<Trans i18nKey="admin:composable.newTitleInputLabel" />}
-          helperText={<Trans i18nKey="admin:composable.newTitleInputHelper" />}
+          helper={<Trans i18nKey="admin:composable.newTitleInputHelper" />}
           required
         >
           <Input

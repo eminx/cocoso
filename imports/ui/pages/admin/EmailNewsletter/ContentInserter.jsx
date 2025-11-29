@@ -82,7 +82,9 @@ function ListItemCheckbox({ item, children, onSelect }) {
         />
         <Box px="2" css={{ flexShrink: '1' }}>
           <Box mb="2">
-            <Text fontSize="xl" fontWeight="bold">
+            <Text
+              css={{ fontSize: '24px', fontWeight: 'bold', marginLeft: '12px' }}
+            >
               {item.title}
             </Text>
             <br />
@@ -231,10 +233,10 @@ export default function ContentInserter({ onSelect }) {
 
   return (
     <>
-      <FormField label={t('newsletter.labels.insertcontent')} />
-      <Text color="gray.600" fontSize="sm">
-        {t('newsletter.contenthelper')}
-      </Text>
+      <FormField
+        helper={t('newsletter.contenthelper')}
+        label={t('newsletter.labels.insertcontent')}
+      />
 
       <Tabs mt="4" tabs={tabs} index={activeTab} />
 
@@ -286,7 +288,7 @@ export default function ContentInserter({ onSelect }) {
                     item={work}
                     onSelect={(item) => handleSelectItem(item, 'works')}
                   >
-                    {work.shortDescription}
+                    <Box pl="3">{work.shortDescription}</Box>
                   </ListItemCheckbox>
                 ))}
               </List>

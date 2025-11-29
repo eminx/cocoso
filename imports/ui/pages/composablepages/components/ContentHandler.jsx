@@ -45,7 +45,7 @@ function ButtonContent({ value, onChange }) {
     <Center>
       <Box>
         <FormField
-          helperText={<Trans i18nKey="admin:composable.form.labelHelper" />}
+          helper={<Trans i18nKey="admin:composable.form.labelHelper" />}
           label={<Trans i18nKey="admin:composable.form.label" />}
           mb="8"
           required
@@ -57,7 +57,7 @@ function ButtonContent({ value, onChange }) {
         </FormField>
 
         <FormField
-          helperText={<Trans i18nKey="admin:composable.form.linkHelper" />}
+          helper={<Trans i18nKey="admin:composable.form.linkHelper" />}
           label={<Trans i18nKey="admin:composable.form.link" />}
           required
         >
@@ -123,9 +123,7 @@ function Divider({ value, onChange }) {
           {value.kind === 'space' && (
             <Box>
               <FormField
-                helperText={
-                  <Trans i18nKey="admin:composable.form.spaceHelper" />
-                }
+                helper={<Trans i18nKey="admin:composable.form.spaceHelper" />}
                 label={<Trans i18nKey="admin:composable.form.space" />}
                 required
               >
@@ -211,7 +209,7 @@ function ImageContent({ value, ping, onChange }) {
 
         {value.isLink ? (
           <FormField
-            helperText={<Trans i18nKey="admin:composable.form.linkHelper" />}
+            helper={<Trans i18nKey="admin:composable.form.linkHelper" />}
             label={<Trans i18nKey="admin:composable.form.link" />}
             my="4"
             required
@@ -284,7 +282,7 @@ const VideoContent = function VideoContent({ value, onChange }) {
       <Box>
         <FormField
           label={<Trans i18nKey="admin:composable.form.video" />}
-          helperText={<Trans i18nKey="admin:composable.form.videoHelper" />}
+          helper={<Trans i18nKey="admin:composable.form.videoHelper" />}
           required
         >
           <Input
