@@ -221,10 +221,10 @@ Meteor.methods({
         host,
       },
       {
-        longDescription: 1,
-      },
-      {
-        $sort: { creationDate: 1 },
+        fields: {
+          longDescription: 1,
+        },
+        sort: { creationDate: 1 },
       }
     ).fetchAsync();
 
@@ -270,10 +270,30 @@ Meteor.methods({
     }
   },
 
-  async getNewslettersForHost() {
-    const host = getHost(this);
+  async getNewsletters(hostPredefined) {
+    const host = hostPredefined || getHost(this);
+    return await Newsletters.find(
+      { host },
+      {
+        fields: {
+          _id: 1,
+          authorUsername: 1,
+          creationDate: 1,
+          host: 1,
+          imageUrl: 1,
+          subject: 1,
+        },
+        sort: { creationDate: -1 },
+      }
+    ).fetchAsync();
+  },
 
-    return await Newsletters.find({ host }).fetchAsync();
+  async getNewsletterById(newsletterId, hostPredefined) {
+    const host = hostPredefined || getHost(this);
+    return await Newsletters.findOneAsync({
+      _id: newsletterId,
+      host,
+    });
   },
 
   async sendNewsletter(email, emailHtml) {
