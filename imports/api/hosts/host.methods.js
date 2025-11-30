@@ -280,7 +280,6 @@ Meteor.methods({
     check(email, Object);
     check(emailHtml, String);
 
-    // Validate required fields
     if (!email?.subject) {
       throw new Meteor.Error('Email subject is required');
     }
@@ -333,7 +332,8 @@ Meteor.methods({
           const emailAddress = isPortalHost
             ? member?.emails?.[0]?.address
             : member?.email;
-
+          console.log('member:', member);
+          console.log('emailAddress:', emailAddress);
           if (!emailAddress) {
             return {
               status: 'skipped',
@@ -354,8 +354,10 @@ Meteor.methods({
               email.subject,
               emailHtmlWithUsername
             );
+            console.log('sent to:', emailAddress);
             return { status: 'sent', member: member._id };
           } catch (error) {
+            console.error('failed to sent to:', emailAddress);
             return {
               status: 'failed',
               error: error.message,

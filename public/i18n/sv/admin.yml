@@ -155,7 +155,7 @@ newsletter:
       helper: Valfritt, lägg till en text till nyhetsbrevet
     divider:
       helper:
-      label: Delare
+      label: Avdelare
     image:
       helper: Välj en bild
       label: Bild

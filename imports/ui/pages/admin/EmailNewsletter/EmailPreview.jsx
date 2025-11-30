@@ -216,7 +216,7 @@ export default function EmailPreview({ currentHost, email }) {
                 {parseHtml(content.value.html)}
               </Text>
             ) : content?.type === 'divider' ? (
-              <Hr style={{ margin: '48px 0' }} />
+              <Hr style={{ margin: '24px 0' }} />
             ) : null
           )}
 
@@ -266,11 +266,8 @@ export default function EmailPreview({ currentHost, email }) {
                       style={buttonStyle}
                     >
                       {tc('actions.entryPage')}
-                      {/* Visit */}
                     </Button>
                   </Text>
-
-                  <Hr />
                 </Section>
               ))}
             </>
@@ -313,11 +310,8 @@ export default function EmailPreview({ currentHost, email }) {
                       style={buttonStyle}
                     >
                       {tc('actions.entryPage')}
-                      {/* Visit */}
                     </Button>
                   </Text>
-
-                  <Hr />
                 </Section>
               ))}
             </>

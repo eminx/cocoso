@@ -40,13 +40,15 @@ const emailModel = {
   },
 };
 
-export const newsletterAtom = atom({
+const initialNewsletterAtom = {
   email: emailModel,
   lastConfirm: false,
   preview: false,
   sending: false,
   uploadingImages: false,
-});
+};
+
+export const newsletterAtom = atom(initialNewsletterAtom);
 
 const toastLoaderOptions = { id: 'loader-toast' };
 
@@ -126,21 +128,17 @@ export default function EmailNewsletter() {
 
     try {
       await call('sendNewsletter', emailValues, emailHtml);
-      setState((prevState) => ({
-        ...prevState,
-        email: emailModel,
-      }));
+      setState(initialNewsletterAtom);
       message.success(t('newsletter.notification.success.emailsent'));
     } catch (error) {
       message.error(error.reason || error.error);
-    } finally {
-      toast.dismiss(toastLoaderOptions.id);
       setState((prevState) => ({
         ...prevState,
         lastConfirm: false,
         sending: false,
-        uploadingImages: false,
       }));
+    } finally {
+      toast.dismiss(toastLoaderOptions.id);
     }
   };
 
