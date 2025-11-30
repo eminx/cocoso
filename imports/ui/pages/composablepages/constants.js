@@ -31,7 +31,7 @@ export const contentTypes = [
   {
     type: 'text',
     value: {
-      html: '<p>Text</p>',
+      html: '',
     },
   },
   {
@@ -51,7 +51,7 @@ export const emtptyComposablePage = {
         {
           type: 'text',
           value: {
-            html: '<p>Text</p>',
+            html: '',
           },
         },
       ],
