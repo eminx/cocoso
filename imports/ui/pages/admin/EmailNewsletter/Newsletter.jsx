@@ -22,7 +22,6 @@ export default function NewsletterEmail() {
     <>
       <Modal
         hideFooter
-        hideHeader
         id="previous-newsletters-item"
         open={Boolean(email)}
         size="2xl"

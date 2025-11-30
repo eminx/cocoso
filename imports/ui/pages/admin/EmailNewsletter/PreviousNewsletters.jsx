@@ -21,8 +21,8 @@ export default function PreviousNewsletters() {
   if (!newsletters) return null;
 
   return (
-    <Center p="4">
-      <Box>
+    <Center>
+      <Box pb="4">
         <Heading
           color="gray.800"
           fontFamily="'Raleway', sans-serif"
@@ -31,11 +31,14 @@ export default function PreviousNewsletters() {
         >
           {tc('labels.newsletters')}
         </Heading>
+
         <NiceList
           actionsDisabled
           list={newsletters}
           keySelector="_id"
           spacing="0"
+          bg="theme.50"
+          p="8"
         >
           {(email) => {
             return (

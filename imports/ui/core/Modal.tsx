@@ -490,13 +490,13 @@ const Modal: React.FC<ModalProps> = ({
   hideHeader = false,
   id = 'modal-portal',
   noPadding,
+  open,
+  size = 'md',
+  title,
   onCancel,
   onClose,
   onConfirm,
   onSecondaryButtonClick,
-  open,
-  size = 'md',
-  title,
 }) => {
   const portalContainer = usePortal(open, onClose, id);
 

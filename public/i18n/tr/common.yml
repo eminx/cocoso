@@ -40,7 +40,7 @@ labels:
   all: Tümü
   book: Ayır
   booked: 'ayırdı:'
-  author: Yazar
+  author: yazar
   contact: İletişim
   content: İçerik
   create:
