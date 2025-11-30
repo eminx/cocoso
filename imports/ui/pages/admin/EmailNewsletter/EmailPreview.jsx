@@ -219,9 +219,15 @@ export default function EmailPreview({ currentHost, email }) {
           {logo ? (
             <Img
               alt={settings?.name}
-              height="180px"
+              height="150px"
               src={logo}
-              style={{ height: '180px', margin: '48px auto' }}
+              style={{
+                height: 'auto',
+                margin: '24px auto',
+                width: '80%',
+                maxWidth: 480,
+                objectFit: 'contain',
+              }}
             />
           ) : (
             <Heading
