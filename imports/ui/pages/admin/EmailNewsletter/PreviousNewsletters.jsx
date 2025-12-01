@@ -18,8 +18,6 @@ export default function PreviousNewsletters() {
   const { newsletters } = useLoaderData();
   const [tc] = useTranslation('common');
 
-  if (!newsletters) return null;
-
   return (
     <Center>
       <Box pb="4">
