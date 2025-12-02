@@ -46,9 +46,7 @@ export const Slide: React.FC<SlideProps> = ({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (ping) {
-      setShow(true);
-    }
+    setShow(ping);
   }, [ping]);
 
   let className = `cocoso-slide cocoso-slide-${direction}`;

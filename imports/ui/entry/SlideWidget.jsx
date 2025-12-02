@@ -62,29 +62,66 @@ export default function SlideWidget({ children, ...otherProps }) {
   const [widgetHeight, setWidgetHeight] = useState(0);
   const positionRef = useRef(position);
   const containerRef = useRef();
+  const initialSlideDone = useRef(false);
 
+  // Initial slide animation
   useEffect(() => {
     setTimeout(() => {
       setSlideStart(true);
+      initialSlideDone.current = true;
     }, 1200);
   }, []);
 
-  // Sync ref with position state
+  // Sync ref with position state and retrigger slide animation when transitioning back to fixed
   useEffect(() => {
+    const prevPosition = positionRef.current;
     positionRef.current = position;
+
+    // When transitioning from relative back to fixed, retrigger the slide animation
+    if (
+      initialSlideDone.current &&
+      prevPosition === 'relative' &&
+      position === 'fixed'
+    ) {
+      setSlideStart(false);
+      // Use requestAnimationFrame to ensure the state change is processed before retriggering
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          setSlideStart(true);
+        }, 50);
+      });
+    }
   }, [position]);
 
   useEffect(() => {
-    const newWidgetHeight =
-      document?.getElementById('slide-widget')?.offsetHeight || 0;
-    setWidgetHeight(newWidgetHeight);
+    const updateWidgetHeight = () => {
+      const widget = document?.getElementById('slide-widget');
+      if (widget) {
+        const newWidgetHeight = widget.offsetHeight || 0;
+        setWidgetHeight(newWidgetHeight);
 
-    // Get initial container height (adjust selector as needed)
-    const containerHeight = document.getElementById(
-      'main-content-container'
-    )?.offsetHeight;
-    containerRef.current =
-      containerHeight - (window.innerHeight - newWidgetHeight);
+        // Get initial container height (adjust selector as needed)
+        const containerHeight = document.getElementById(
+          'main-content-container'
+        )?.offsetHeight;
+        if (containerHeight) {
+          containerRef.current =
+            containerHeight - (window.innerHeight - newWidgetHeight);
+        }
+      }
+    };
+
+    // Initial measurement - wait for widget to be rendered and slide animation to complete
+    const timer = setTimeout(() => {
+      updateWidgetHeight();
+    }, 1800); // Wait for slide animation (1200ms) + some buffer
+
+    // Update on resize
+    window.addEventListener('resize', updateWidgetHeight);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', updateWidgetHeight);
+    };
   }, []);
 
   // Memoize scroll handler with useCallback
@@ -93,9 +130,13 @@ export default function SlideWidget({ children, ...otherProps }) {
     const threshold = containerRef.current || 0;
 
     if (scrollTop > threshold) {
-      setPosition('relative');
+      if (positionRef.current !== 'relative') {
+        setPosition('relative');
+      }
     } else {
-      setPosition('fixed');
+      if (positionRef.current !== 'fixed') {
+        setPosition('fixed');
+      }
     }
   }, []);
 
@@ -119,7 +160,12 @@ export default function SlideWidget({ children, ...otherProps }) {
         id="slide-widget"
         {...slideProps(slideStart)}
         style={{
-          position,
+          position: position === 'fixed' ? 'fixed' : 'relative',
+          bottom: position === 'fixed' ? 0 : 'auto',
+          width: '100%',
+          zIndex: 1000,
+          left: 0,
+          right: 0,
         }}
       >
         <Flex {...flexProps} {...otherProps}>
