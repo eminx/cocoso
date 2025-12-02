@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
+import { atom, useAtom, useAtomValue } from 'jotai';
+import toast from 'react-hot-toast';
 
 import {
   Alert,
@@ -30,13 +31,8 @@ import Boxling from '../Boxling';
 
 const emailModel = {
   appeal: '',
-  body: '',
+  body: [],
   footer: '',
-  image: {
-    imageUrl: '',
-    uploadableImage: null,
-    uploadableImageLocal: null,
-  },
   subject: '',
   items: {
     activities: [],
@@ -44,84 +40,82 @@ const emailModel = {
   },
 };
 
+const initialNewsletterAtom = {
+  email: emailModel,
+  lastConfirm: false,
+  preview: false,
+  sending: false,
+  uploadingImages: false,
+};
+
+export const newsletterAtom = atom(initialNewsletterAtom);
+
+const toastLoaderOptions = { id: 'loader-toast' };
+
 export default function EmailNewsletter() {
   const currentHost = useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const platform = useAtomValue(platformAtom);
   const role = useAtomValue(roleAtom);
-  const [state, setState] = useState({
-    sending: false,
-    email: emailModel,
-    preview: false,
-    lastConfirm: false,
-  });
+  const [state, setState] = useAtom(newsletterAtom);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  const handleFormChange = (field, value) => {
-    const newEmail = {
-      ...state.email,
-    };
-    newEmail[field] = value;
-    setState((prevState) => ({
-      ...prevState,
-      email: newEmail,
-    }));
-  };
-
-  const handleFormConfirm = () => {
-    setState((prevState) => ({
-      ...prevState,
-      preview: true,
-    }));
-  };
-
-  const setUploadableImage = (files) => {
-    if (files.length > 1) {
-      message.error(tc('plugins.fileDropper.single'));
+  useEffect(() => {
+    if (!state.uploadingImages) {
       return;
     }
-    const uploadableImage = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadableImage);
-    reader.addEventListener(
-      'load',
-      () => {
-        setState((prevState) => ({
-          ...prevState,
-          email: {
-            ...prevState.email,
-            image: {
-              uploadableImage,
-              uploadableImageLocal: reader.result,
-              imageUrl: null,
-            },
-          },
-        }));
-      },
-      false
-    );
-  };
 
-  const handleSelectItems = (items) => {
+    const body = state.email.body;
+    const imageContent = body.filter((content) => content.type === 'image');
+    if (imageContent.find((content) => content.value.src === '')) {
+      return;
+    }
+
+    toast.dismiss(toastLoaderOptions.id);
     setState((prevState) => ({
       ...prevState,
-      email: {
-        ...prevState.email,
-        items,
-      },
+      uploadingImages: false,
+      preview: true,
     }));
+  }, [state.email.body]);
+
+  const handleSubmit = () => {
+    const { appeal, body, items, subject } = state.email;
+    if (!subject) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    if ((!body || body.length < 1) && items.length === 0) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    if (body.some((content) => content.type === 'image')) {
+      toast.loading(tc('message.loading.uploading'), toastLoaderOptions);
+      setState((prevState) => ({
+        ...prevState,
+        uploadingImages: true,
+      }));
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        preview: true,
+      }));
+    }
   };
 
-  const sendEmail = async (imageUrl) => {
-    const { email } = state;
+  const sendEmail = async () => {
+    toast.loading(tc('message.loading.sending'), toastLoaderOptions);
+    setState((prevState) => ({
+      ...prevState,
+      sending: true,
+    }));
+    const email = state.email;
 
     const emailHtml = renderEmail(
-      <EmailPreview
-        currentHost={currentHost}
-        email={email}
-        imageUrl={imageUrl}
-      />
+      <EmailPreview currentHost={currentHost} email={email} />
     );
 
     const emailValues = {
@@ -129,76 +123,22 @@ export default function EmailNewsletter() {
       body: email.body,
       footer: email.footer,
       items: email.items,
-      imageUrl,
       subject: email.subject,
     };
 
     try {
-      await call('sendNewsletter', emailValues, emailHtml, imageUrl);
-      setState((prevState) => ({
-        ...prevState,
-        email: emailModel,
-      }));
+      await call('sendNewsletter', emailValues, emailHtml);
+      setState(initialNewsletterAtom);
       message.success(t('newsletter.notification.success.emailsent'));
     } catch (error) {
       message.error(error.reason || error.error);
-    } finally {
       setState((prevState) => ({
         ...prevState,
-        sending: false,
         lastConfirm: false,
+        sending: false,
       }));
-    }
-  };
-
-  const uploadLocalImage = async () => {
-    setState((prevState) => ({
-      ...prevState,
-      sending: true,
-      preview: false,
-    }));
-
-    const image = state.email?.image;
-    const { uploadableImage } = image;
-
-    try {
-      const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(
-        resizedImage,
-        'genericEntryImageUpload'
-      );
-      sendEmail(uploadedImage);
-    } catch (error) {
-      message.error(error.reason);
-    }
-  };
-
-  const handleConfirmSendingEmail = () => {
-    const { appeal, body, image, items, subject } = state.email;
-    if (!appeal || !subject) {
-      message.error(t('newsletter.error.required'));
-      return;
-    }
-
-    if (
-      (!body || body.length < 3) &&
-      !image &&
-      !image?.uploadableImageLocal &&
-      items.length === 0
-    ) {
-      message.error(t('newsletter.error.required'));
-      return;
-    }
-
-    setState((prevState) => ({
-      ...prevState,
-      sending: true,
-    }));
-
-    if (state.email?.image?.uploadableImage) {
-      uploadLocalImage();
-    } else {
-      sendEmail();
+    } finally {
+      toast.dismiss(toastLoaderOptions.id);
     }
   };
 
@@ -243,19 +183,15 @@ export default function EmailNewsletter() {
         <Text>{t('newsletter.subtitle')}</Text>
 
         <Boxling mt="4">
-          <EmailForm
-            currentHost={currentHost}
-            email={state.email}
-            onSelectItems={handleSelectItems}
-            onChange={handleFormChange}
-            onSubmit={handleFormConfirm}
-            setUploadableImage={setUploadableImage}
-          />
+          <EmailForm currentHost={currentHost} onSubmit={handleSubmit} />
         </Boxling>
       </Box>
 
       <Modal
         confirmButtonLabel={t('newsletter.modals.send')}
+        confirmButtonProps={{
+          loading: state.uploadingImages,
+        }}
         id="email-newsletter-preview"
         open={state.preview}
         size="3xl"
@@ -281,14 +217,13 @@ export default function EmailNewsletter() {
 
       <Modal
         confirmButtonProps={{
-          isLoading: state.sending,
+          loading: state.sending,
         }}
         confirmText={t('newsletter.modals.yes')}
         id="email-newsletter-confirm-sending"
         open={state.lastConfirm}
         title={t('newsletter.modals.title')}
-        // style={{ zIndex: 99999 }}
-        onConfirm={() => handleConfirmSendingEmail()}
+        onConfirm={sendEmail}
         onClose={() =>
           setState((prevState) => ({
             ...prevState,

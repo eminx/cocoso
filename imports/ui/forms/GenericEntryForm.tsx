@@ -128,7 +128,7 @@ export default function GenericEntryForm({
               {index === childrenIndex && children}
               <FormField
                 {...item.props}
-                helperText={item.helper}
+                helper={item.helper}
                 label={item.label}
               >
                 <FieldItemHandler

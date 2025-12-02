@@ -45,7 +45,7 @@ function ButtonContent({ value, onChange }) {
     <Center>
       <Box>
         <FormField
-          helperText={<Trans i18nKey="admin:composable.form.labelHelper" />}
+          helper={<Trans i18nKey="admin:composable.form.labelHelper" />}
           label={<Trans i18nKey="admin:composable.form.label" />}
           mb="8"
           required
@@ -57,7 +57,7 @@ function ButtonContent({ value, onChange }) {
         </FormField>
 
         <FormField
-          helperText={<Trans i18nKey="admin:composable.form.linkHelper" />}
+          helper={<Trans i18nKey="admin:composable.form.linkHelper" />}
           label={<Trans i18nKey="admin:composable.form.link" />}
           required
         >
@@ -78,9 +78,9 @@ const dividerMenuOptions = [
     key: 'line',
   },
   {
-    label: <Trans i18nKey="admin:composable.form.emptySpace" />,
-    kind: 'emptySpace',
-    key: 'emptySpace',
+    label: <Trans i18nKey="admin:composable.form.space" />,
+    kind: 'space',
+    key: 'space',
   },
 ];
 
@@ -92,7 +92,7 @@ function Divider({ value, onChange }) {
     });
   };
 
-  const handleEmptySpaceHeightChange = (e) => {
+  const handleSpaceHeightChange = (e) => {
     const height = e.target.value;
     onChange({
       ...value,
@@ -120,22 +120,20 @@ function Divider({ value, onChange }) {
             </Menu>
           </Flex>
 
-          {value.kind === 'emptySpace' && (
+          {value.kind === 'space' && (
             <Box>
               <FormField
-                helperText={
-                  <Trans i18nKey="admin:composable.form.emptySpaceHelper" />
-                }
-                label={<Trans i18nKey="admin:composable.form.emptySpace" />}
+                helper={<Trans i18nKey="admin:composable.form.spaceHelper" />}
+                label={<Trans i18nKey="admin:composable.form.space" />}
                 required
               >
                 <NumberInput
                   min={1}
                   max={100}
-                  maxWidth="100px"
                   step={1}
-                  value={localHeight}
-                  onChange={handleEmptySpaceHeightChange}
+                  value={value?.height || 10}
+                  css={{ maxWidth: '100px' }}
+                  onChange={handleSpaceHeightChange}
                 />
               </FormField>
             </Box>
@@ -211,7 +209,7 @@ function ImageContent({ value, ping, onChange }) {
 
         {value.isLink ? (
           <FormField
-            helperText={<Trans i18nKey="admin:composable.form.linkHelper" />}
+            helper={<Trans i18nKey="admin:composable.form.linkHelper" />}
             label={<Trans i18nKey="admin:composable.form.link" />}
             my="4"
             required
@@ -284,7 +282,7 @@ const VideoContent = function VideoContent({ value, onChange }) {
       <Box>
         <FormField
           label={<Trans i18nKey="admin:composable.form.video" />}
-          helperText={<Trans i18nKey="admin:composable.form.videoHelper" />}
+          helper={<Trans i18nKey="admin:composable.form.videoHelper" />}
           required
         >
           <Input
@@ -381,6 +379,18 @@ export default function ContentHandler({
     onCancel();
   };
 
+  const content = state?.content;
+  const type = content?.type;
+  const value = content?.value;
+
+  const genericProps = useMemo(
+    () => ({
+      value,
+      onChange: handleChange,
+    }),
+    [value, handleChange]
+  );
+
   const renderContent = () => {
     if (type === 'button') {
       return <ButtonContent {...genericProps} />;
@@ -406,18 +416,6 @@ export default function ContentHandler({
       return <VideoContent {...genericProps} />;
     }
   };
-
-  const content = state?.content;
-  const type = content?.type;
-  const value = content?.value;
-
-  const genericProps = useMemo(
-    () => ({
-      value,
-      onChange: handleChange,
-    }),
-    [value, handleChange]
-  );
 
   return (
     <Box css={{ position: 'relative', paddingBottom: '80px' }}>

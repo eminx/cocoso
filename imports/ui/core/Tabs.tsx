@@ -175,7 +175,7 @@ const Tabs: React.FC<TabsProps> = ({
 
           return (
             <TabButton
-              key={tab.key || tab.path}
+              key={tab.key || tab.path || tab.title}
               type="button"
               onClick={() => handleClick(tab)}
             >

@@ -175,7 +175,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       onSubmit={handleSubmit}
     >
       <FormField
-        helperText={t('form.exclusive.helper')}
+        helper={t('form.exclusive.helper')}
         label={t('form.exclusive.label')}
         my="4"
       >
@@ -192,7 +192,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       </FormField>
 
       <FormField
-        helperText={t('form.resource.helper')}
+        helper={t('form.resource.helper')}
         label={t('form.resource.label')}
         my="12"
       >
@@ -216,7 +216,7 @@ export default function CalendarActivityForm({ activity, onFinalize }) {
       </FormField>
 
       <FormField
-        helperText={t('form.occurrences.helper')}
+        helper={t('form.occurrences.helper')}
         label={t('form.occurrences.label')}
         mb="14"
         required

@@ -111,7 +111,7 @@ export default function EditProfilePrivacy() {
           </Checkbox>
           <p>
             <Text fontSize="sm" my="2">
-              {t('profile.makePublic.helperTextGlobal')}
+              {t('profile.makePublic.helperGlobal')}
             </Text>
           </p>
         </Box>
@@ -150,7 +150,7 @@ export default function EditProfilePrivacy() {
             </Checkbox>
             <p>
               <Text fontSize="sm" my="2">
-                {t('profile.makePublic.helperText')}
+                {t('profile.makePublic.helper')}
               </Text>
             </p>
           </Box>

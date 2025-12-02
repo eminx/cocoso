@@ -35,6 +35,7 @@ export const renderToasts = (loaders, tc, forEdit = false) => {
   }
 
   const options = { id: 'loader' };
+
   if (loaders.isSuccess) {
     toast.success(tc(`message.success.${forEdit ? 'update' : 'create'}`), {
       ...options,

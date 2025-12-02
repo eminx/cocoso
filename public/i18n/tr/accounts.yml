@@ -91,8 +91,8 @@ profile:
   makePublic:
     labelGlobal: Profilim global olarak görünür (halka açık)
     label: Profilim bu toplulukta görünür (halka açık)
-    helperText: Açık olduğunda profilin bu toplulukta görünür olacak
-    helperTextGlobal: Kapalı olduğunda profilin tüm topluluklarda ve portal uygulamada kapalı olacak
+    helper: Açık olduğunda profilin bu toplulukta görünür olacak
+    helperGlobal: Kapalı olduğunda profilin tüm topluluklarda ve portal uygulamada kapalı olacak
 
   menu:
     avatar: Profil resmi

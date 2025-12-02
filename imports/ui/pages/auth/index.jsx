@@ -93,7 +93,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
           <Flex direction="column" maxW="420px">
             <FormField
               errorMessage={errors.username?.message}
-              helperText={t('signup.form.username.helper')}
+              helper={t('signup.form.username.helper')}
               // isInvalid={errors.username}
               label={t('signup.form.username.label')}
               required
@@ -112,7 +112,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }) => {
             <Box>
               <FormField
                 errorMessage={errors.password?.message}
-                helperText={passwordHelperText}
+                helper={passwordHelperText}
                 // isInvalid={errors.password}
                 label={t('signup.form.password.label')}
                 required
@@ -239,7 +239,7 @@ const ResetPassword = ({ onResetPassword }) => {
       <Flex direction="column" gap="6">
         <FormField
           errorMessage={errors.password?.message}
-          helperText={passwordHelperText}
+          helper={passwordHelperText}
           // isInvalid={errors.password}
           label={t('login.form.password.label')}
         >

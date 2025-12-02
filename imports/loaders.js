@@ -264,3 +264,22 @@ export async function getWorksByUser({ params, host }) {
     works,
   };
 }
+
+export async function getNewsletters({ host }) {
+  const newsletters = await call('getNewsletters', host);
+  return {
+    newsletters,
+  };
+}
+
+export async function getNewsletterById({ params, host }) {
+  if (!params) {
+    return null;
+  }
+  const { newsletterId } = params;
+  const newsletter = await call('getNewsletterById', newsletterId, host);
+
+  return {
+    newsletter,
+  };
+}

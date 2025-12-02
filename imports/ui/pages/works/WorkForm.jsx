@@ -118,7 +118,7 @@ export default function WorkForm({ work, onFinalize }) {
       onSubmit={handleSubmit}
     >
       <FormField
-        helperText={t('works.image.helper')}
+        helper={t('works.image.helper')}
         label={t('works.image.label')}
         my="4"
       >
@@ -130,7 +130,7 @@ export default function WorkForm({ work, onFinalize }) {
       </FormField>
 
       <FormField
-        helperText={t('works.category.helper')}
+        helper={t('works.category.helper')}
         label={t('works.category.label')}
         mt="10"
         mb="12"

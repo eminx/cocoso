@@ -150,11 +150,18 @@ newsletter:
     subject:
       helper: Enter the text that will be the subject of the email (required)
     appeal:
-      helper: Enter how you would like to call each member in the beginning of the email (required)
+      helper: Optionally, enter how you would like to call each member in the beginning of the email. Leave empty to skip it
     body:
       helper: Compose the body text of the email (required if no image, as well as content items selected)
+    divider:
+      helper:
+      label: Divider
     image:
-      helper: Select an image to appear at the top of the email (required if no body text is provided, as well as no content items selected)
+      helper: Select an image
+      label: Image
+    text:
+      helper: Compose a piece
+      label: Text
   notification:
     success:
       emailsent: Your email is successfully sent to all members
@@ -200,8 +207,8 @@ composable:
     addContent: Add Content
     addToMenu: Add a composable page
     addRow: Add a row
-    emptySpace: Empty Space
-    emptySpaceHelper: Please enter the height of the empty space in pixels
+    space: Empty Space
+    spaceHelper: Please enter the height of the empty space in pixels
     label: Label
     labelHelper: Please enter the label for the button. This label will be displayed on the button
     line: Line

@@ -78,7 +78,7 @@ meeting:
     remove: Ta bort det här mötet
     makeAdmin: Gör till admin
   isAttending:
-    false: Kan inte klara det
+    false: Avboka
     true: Registrera närvaro
   info:
     empty: Inga möten är planerade ännu

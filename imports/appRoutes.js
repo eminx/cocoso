@@ -128,6 +128,12 @@ const MemberWorks = loadable(() =>
 const RegistrationIntro = loadable(() =>
   import('/imports/ui/pages/auth/RegistrationIntro')
 );
+const PreviousNewsletters = loadable(() =>
+  import('/imports/ui/pages/admin/EmailNewsletter/PreviousNewsletters')
+);
+const Newsletter = loadable(() =>
+  import('/imports/ui/pages/admin/EmailNewsletter/Newsletter')
+);
 const SetupHome = loadable(() => import('/imports/ui/pages/setup'));
 const NewHost = loadable(() => import('/imports/ui/pages/setup/NewHost'));
 
@@ -154,6 +160,8 @@ import {
   getActivitiesByUser,
   getGroupsByUser,
   getWorksByUser,
+  getNewsletters,
+  getNewsletterById,
 } from './loaders';
 
 class RouteErrorBoundary extends React.Component {
@@ -525,6 +533,19 @@ export default function appRoutes(props) {
         {
           path: 'terms-&-privacy-policy',
           element: createRouteElement(Terms, props),
+        },
+        {
+          path: 'newsletters',
+          element: createRouteElement(PreviousNewsletters, props),
+          loader: async () => await getNewsletters({ host }),
+          children: [
+            {
+              path: ':newsletterId',
+              element: createRouteElement(Newsletter, props),
+              loader: async ({ params }) =>
+                await getNewsletterById({ params, host }),
+            },
+          ],
         },
         {
           path: 'admin',

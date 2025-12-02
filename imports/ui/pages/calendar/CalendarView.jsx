@@ -8,7 +8,6 @@ import { useAtomValue } from 'jotai';
 
 if (Meteor.isClient) {
   import 'react-big-calendar/lib/css/react-big-calendar.css';
-  import '/imports/ui/utils/styles/bigcalendar-custom.css';
 }
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import NewEntryHandler from '/imports/ui/forms/NewEntryHandler';

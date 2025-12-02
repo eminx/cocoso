@@ -1,5 +1,3 @@
-import { Trans } from 'react-i18next';
-
 export const contentTypes = [
   {
     type: 'button',
@@ -12,8 +10,8 @@ export const contentTypes = [
   {
     type: 'divider',
     value: {
-      kind: 'line', // or empty-space
-      height: 10, // only for empty-space
+      kind: 'line', // or space
+      height: 10, // only for space
     },
   },
   {
@@ -33,7 +31,7 @@ export const contentTypes = [
   {
     type: 'text',
     value: {
-      html: '<p>Text</p>',
+      html: '',
     },
   },
   {
@@ -53,7 +51,7 @@ export const emtptyComposablePage = {
         {
           type: 'text',
           value: {
-            html: '<p>Text</p>',
+            html: '',
           },
         },
       ],

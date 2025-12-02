@@ -6,7 +6,7 @@ export default function FormField(props) {
   const {
     children,
     errorMessage = null,
-    helperText,
+    helper,
     label,
     required = false,
     ...otherProps
@@ -19,10 +19,10 @@ export default function FormField(props) {
           {required && ' *'}
         </Text>
       </Box>
-      {helperText && (
+      {helper && (
         <Box>
           <Text color="gray.600" fontSize="sm">
-            {helperText}
+            {helper}
           </Text>
         </Box>
       )}

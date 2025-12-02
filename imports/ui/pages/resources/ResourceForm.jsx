@@ -113,7 +113,7 @@ export default function ResourceForm({ resource, onFinalize }) {
       onSubmit={handleSubmit}
     >
       <FormField
-        helperText={t('form.image.helper')}
+        helper={t('form.image.helper')}
         label={t('form.image.label')}
         mb="12"
       >
@@ -125,7 +125,7 @@ export default function ResourceForm({ resource, onFinalize }) {
       </FormField>
 
       <FormField
-        helperText={t('form.combo.switch.helper')}
+        helper={t('form.combo.switch.helper')}
         label={t('form.combo.switch.label')}
         mt="6"
         mb="12"
@@ -164,7 +164,7 @@ export default function ResourceForm({ resource, onFinalize }) {
       </FormField>
 
       <FormField
-        helperText={t('form.bookable.helper')}
+        helper={t('form.bookable.helper')}
         label={t('form.bookable.label')}
         mt="6"
         mb="12"

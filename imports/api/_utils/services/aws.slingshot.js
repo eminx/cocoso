@@ -10,6 +10,7 @@ Slingshot.fileRestrictions('genericEntryImageUpload', {
     'image/jpg',
     'image/svg',
     'image/svg+xml',
+    'image/webp',
   ],
   maxSize: 30 * 1024 * 1024,
 });

@@ -150,11 +150,18 @@ newsletter:
     subject:
       helper: Ange en rubrik till nyhetsbrevet (obligatoriskt)
     appeal:
-      helper: Ange hur du vill tilltala de som kommer ta emot ditt nyhetsbrev
+      helper: Valfritt, ange hur du vill tilltala de som kommer ta emot ditt nyhetsbrev. Lämna tomt för att hoppa över det
     body:
-      helper: Valfritt, Lägg till en text till nyhetsbrevet
+      helper: Valfritt, lägg till en text till nyhetsbrevet
+    divider:
+      helper:
+      label: Avdelare
     image:
-      helper: Valfritt, lägg till en bild eller logotyp som kommer visas högst upp i nyhetsbrevet
+      helper: Välj en bild
+      label: Bild
+    text:
+      helper: Skriv...
+      label: Text
   notification:
     success:
       emailsent: Ditt e-postmeddelande har skickats till alla medlemmar
@@ -200,8 +207,8 @@ composable:
     addContent: Lägg till innehåll
     addToMenu: Lägg till en komponerbara sida
     addRow: Lägg till en rad
-    emptySpace: Tomt utrymme
-    emptySpaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
+    space: Tomt utrymme
+    spaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
     label: Etikett
     labelHelper: Ange etiketten för knappen. Denna etikett kommer att visas på knappen
     line: Linje
@@ -210,7 +217,7 @@ composable:
     imageAsLink: Bild som länk?
     video: Video-URL
     videoHelper: Ange en video-URL, vanligtvis länkadressen till en YouTube- eller Vimeo-videosida..
-    removeRow: Ta bort linjen
+    removeRow: Ta bort raden
     title: Titel
     types:
       button: Knapp

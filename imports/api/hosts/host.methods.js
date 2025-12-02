@@ -221,10 +221,10 @@ Meteor.methods({
         host,
       },
       {
-        longDescription: 1,
-      },
-      {
-        $sort: { creationDate: 1 },
+        fields: {
+          longDescription: 1,
+        },
+        sort: { creationDate: 1 },
       }
     ).fetchAsync();
 
@@ -270,14 +270,40 @@ Meteor.methods({
     }
   },
 
-  async getNewslettersForHost() {
-    const host = getHost(this);
+  async getNewsletters(hostPredefined) {
+    const host = hostPredefined || getHost(this);
+    return await Newsletters.find(
+      { host },
+      {
+        fields: {
+          _id: 1,
+          authorUsername: 1,
+          creationDate: 1,
+          host: 1,
+          imageUrl: 1,
+          subject: 1,
+        },
+        sort: { creationDate: -1 },
+      }
+    ).fetchAsync();
+  },
 
-    return await Newsletters.find({ host }).fetchAsync();
+  async getNewsletterById(newsletterId, hostPredefined) {
+    const host = hostPredefined || getHost(this);
+    return await Newsletters.findOneAsync({
+      _id: newsletterId,
+      host,
+    });
   },
 
   async sendNewsletter(email, emailHtml) {
+    check(email, Object);
     check(emailHtml, String);
+
+    if (!email?.subject) {
+      throw new Meteor.Error('Email subject is required');
+    }
+
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
     const currentUser = await Meteor.userAsync();
@@ -286,47 +312,102 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
 
-    const newEmailId = await Newsletters.insertAsync({
-      ...email,
-      authorId: currentUser._id,
-      authorUsername: currentUser.username,
-      creationDate: new Date(),
-      host,
-      hostId: currentHost._id.toString(),
-    });
-
-    const emailHtmlWithBrowserLink = emailHtml.replace(
-      '[newsletter-id]',
-      newEmailId
-    );
-
     const isPortalHost = currentHost.isPortalHost;
-    const members = isPortalHost
-      ? await Meteor.users.find().fetchAsync()
-      : currentHost.members;
 
     try {
-      await Promise.all(
+      const newEmailId = await Newsletters.insertAsync({
+        ...email,
+        authorId: currentUser._id,
+        authorUsername: currentUser.username,
+        creationDate: new Date(),
+        host,
+        hostId: currentHost._id.toString(),
+      });
+
+      const emailHtmlWithBrowserLink = emailHtml.replace(
+        '[newsletter-id]',
+        newEmailId
+      );
+
+      // Safer member fetching with limits
+      const members = isPortalHost
+        ? await Meteor.users
+            .find(
+              { 'emails.0': { $exists: true } },
+              {
+                fields: { username: 1, emails: 1 },
+                limit: 10000,
+              }
+            )
+            .fetchAsync()
+        : currentHost.members || [];
+
+      if (members.length === 0) {
+        throw new Meteor.Error('No members found to send newsletter to');
+      }
+
+      // Send emails with better error handling
+      const results = await Promise.allSettled(
         members.map(async (member) => {
+          const emailAddress = isPortalHost
+            ? member?.emails?.[0]?.address
+            : member?.email;
+          console.log('member:', member);
+          console.log('emailAddress:', emailAddress);
+          if (!emailAddress) {
+            return {
+              status: 'skipped',
+              reason: 'No email address',
+              member: member._id,
+            };
+          }
+
           const emailHtmlWithUsername = emailHtmlWithBrowserLink.replace(
             '[username]',
-            member.username
+            member.username || 'there'
           );
 
-          const emailAddress = isPortalHost
-            ? member?.emails?.[0]?.address || null
-            : member?.email;
-
-          await Meteor.callAsync(
-            'sendEmail',
-            emailAddress,
-            email.subject,
-            emailHtmlWithUsername
-          );
+          try {
+            await Meteor.callAsync(
+              'sendEmail',
+              emailAddress,
+              email.subject,
+              emailHtmlWithUsername
+            );
+            console.log('sent to:', emailAddress);
+            return { status: 'sent', member: member._id };
+          } catch (error) {
+            console.error('failed to sent to:', emailAddress);
+            return {
+              status: 'failed',
+              error: error.message,
+              member: member._id,
+            };
+          }
         })
       );
+
+      // Log summary
+      const sentCount = results.filter(
+        (r) => r.value?.status === 'sent'
+      ).length;
+      const failedCount = results.filter(
+        (r) => r.value?.status === 'failed'
+      ).length;
+
+      console.log(
+        `Newsletter ${newEmailId}: Sent ${sentCount}, Failed ${failedCount}`
+      );
+
+      return {
+        newsletterId: newEmailId,
+        sent: sentCount,
+        failed: failedCount,
+        total: members.length,
+      };
     } catch (error) {
-      throw new Meteor.Error(error);
+      console.error('Newsletter sending failed:', error);
+      throw error;
     }
   },
 

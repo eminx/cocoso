@@ -38,6 +38,7 @@ actions:
 labels:
   activity: Activity
   all: All
+  author: author
   book: Book
   booked: booked
   contact: Contact
