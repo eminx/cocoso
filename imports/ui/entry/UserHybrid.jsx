@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, useLocation, useParams } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 import { Helmet } from 'react-helmet';
 import { Trans } from 'react-i18next';
 
@@ -29,7 +30,7 @@ export function Bio({ user }) {
           maxWidth: '480px',
         }}
       >
-        {HTMLReactParser(user.bio)}
+        {HTMLReactParser(DOMPurify.sanitize(user.bio))}
       </Box>
     </Flex>
   );

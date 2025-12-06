@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 import { useTranslation } from 'react-i18next';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
 import { useAtomValue } from 'jotai';
@@ -209,7 +210,7 @@ export default function CommunitiesHybrid({ hosts, Host }) {
             <Box py="4" css={{ maxWidth: '520px' }}>
               {modalItem.info && (
                 <div className="text-content">
-                  {HTMLReactParser(modalItem?.info)}
+                  {HTMLReactParser(DOMPurify.sanitize(modalItem.info))}
                 </div>
               )}
             </Box>

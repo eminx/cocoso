@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Text } from '/imports/ui/core';
 import DocumentsField from '/imports/ui/pages/resources/components/DocumentsField';
@@ -17,7 +18,8 @@ export default function WorkHybrid({ documents, work, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {work?.longDescription && HTMLReactParser(work?.longDescription)}
+          {work?.longDescription &&
+            HTMLReactParser(DOMPurify.sanitize(work?.longDescription))}
         </Box>
       ),
       path: 'info',
@@ -53,7 +55,8 @@ export default function WorkHybrid({ documents, work, Host }) {
       title: <Trans i18nKey="common:labels.contact">Contact</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6" textAlign="center">
-          {work?.contactInfo && HTMLReactParser(work.contactInfo)}
+          {work?.contactInfo &&
+            HTMLReactParser(DOMPurify.sanitize(work.contactInfo))}
         </Box>
       ),
       path: 'contact',

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 import { useAtomValue } from 'jotai';
 
 import { platformAtom } from '/imports/state';
@@ -102,7 +103,7 @@ export function Footer({ currentHost }) {
                     maxWidth: '480px',
                   }}
                 >
-                  {HTMLReactParser(settings?.footer)}
+                  {HTMLReactParser(DOMPurify.sanitize(settings.footer))}
                 </Box>
               ) : (
                 <OldFooter host={currentHost.host} settings={settings} />
@@ -159,7 +160,7 @@ export function PlatformFooter() {
         </Box>
 
         <Box p="2" className="text-content">
-          {HTMLReactParser(platform.footer)}
+          {HTMLReactParser(DOMPurify.sanitize(platform.footer))}
         </Box>
 
         <Center>

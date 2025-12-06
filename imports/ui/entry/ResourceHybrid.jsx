@@ -2,10 +2,12 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Flex, Text } from '/imports/ui/core';
+import DocumentsField from '/imports/ui/pages/resources/components/DocumentsField';
+
 import TablyCentered from './TablyCentered';
-import DocumentsField from '../pages/resources/components/DocumentsField';
 
 export default function ResourceHybrid({ documents, resource, Host }) {
   if (!resource) {
@@ -17,7 +19,8 @@ export default function ResourceHybrid({ documents, resource, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {resource?.description && HTMLReactParser(resource?.description)}
+          {resource?.description &&
+            HTMLReactParser(DOMPurify.sanitize(resource?.description))}
         </Box>
       ),
       path: 'info',

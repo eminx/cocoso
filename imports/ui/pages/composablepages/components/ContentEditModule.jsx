@@ -5,6 +5,7 @@ import { Box, Button, Center, Code, Flex, IconButton } from '/imports/ui/core';
 import { SortableKnob } from 'react-easy-sort';
 import { useDrag } from 'react-dnd';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 import GripHorizontal from 'lucide-react/dist/esm/icons/grip-horizontal';
 import EditIcon from 'lucide-react/dist/esm/icons/edit';
 import TrashIcon from 'lucide-react/dist/esm/icons/trash';
@@ -33,7 +34,9 @@ function ModulePreview({ content }) {
         return (
           <Box px="2" style={{ fontSize: '12px' }}>
             {content.value?.html
-              ? HTMLReactParser(content.value.html.substring(0, 100))
+              ? HTMLReactParser(
+                  DOMPurify.sanitize(content.value.html.substring(0, 100))
+                )
               : null}
           </Box>
         );

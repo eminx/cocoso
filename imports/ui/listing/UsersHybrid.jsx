@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 import loadable from '@loadable/component';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 import { parse } from 'query-string';
 import { useAtomValue } from 'jotai';
 
@@ -131,7 +132,7 @@ export default function UsersHybrid({ Host, users, keywords }) {
                     borderColor: 'var(--cocoso-colors-theme-500)',
                   }}
                 >
-                  {HTMLReactParser(selectedProfile.bio)}
+                  {HTMLReactParser(DOMPurify.sanitize(selectedProfile.bio))}
                 </Box>
               )}
             </Box>

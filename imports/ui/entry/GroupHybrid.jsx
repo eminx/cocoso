@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
-
+import DOMPurify from 'isomorphic-dompurify';
 import { Box, Center } from '/imports/ui/core';
 import GroupDocuments from '/imports/ui/pages/groups/components/GroupDocuments';
 import GroupMembers from '/imports/ui/pages/groups/components/GroupMembers';
@@ -19,7 +19,8 @@ export default function GroupHybrid({ group, documents, Host }) {
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
-          {group?.description && HTMLReactParser(group?.description)}
+          {group?.description &&
+            HTMLReactParser(DOMPurify.sanitize(group?.description))}
         </Box>
       ),
       path: `/groups/${group._id}/info`,

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 import { useAtomValue } from 'jotai';
 
@@ -147,7 +148,9 @@ export default function FederationIconMenu() {
             {hostInfo.longDescription && (
               <Box className="text-content">
                 {typeof hostInfo.longDescription === 'string'
-                  ? HTMLReactParser(hostInfo.longDescription)
+                  ? HTMLReactParser(
+                      DOMPurify.sanitize(hostInfo.longDescription)
+                    )
                   : hostInfo.longDescription}
               </Box>
             )}

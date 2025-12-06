@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 import { useAtomValue } from 'jotai';
 
 import { Box, Button, Center, Modal, Loader } from '/imports/ui/core';
@@ -62,7 +63,7 @@ export default function ContactInfo({ username }) {
             p="4"
             css={{ textAlign: 'center' }}
           >
-            {HTMLReactParser(contactInfo)}
+            {HTMLReactParser(DOMPurify.sanitize(contactInfo))}
           </Box>
         ) : (
           <Loader />
