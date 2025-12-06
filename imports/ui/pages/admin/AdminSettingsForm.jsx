@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Center, Flex, Input, Text } from '/imports/ui/core';
+import { Box, Button, Flex, Heading, Input } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import ChangeLanguage from '/imports/ui/layout/ChangeLanguageMenu';
 import { currentHostAtom } from '/imports/state';
@@ -32,12 +32,10 @@ export default function AdminSettingsForm() {
   }, [currentHost]);
 
   return (
-    <>
-      <Center>
-        <Text mb="4" fontWeight="bold">
-          {ta('info.info')}
-        </Text>
-      </Center>
+    <Box py="6">
+      <Heading as="h3" size="sm" mb="4">
+        {ta('info.info')}
+      </Heading>
 
       <Boxling>
         <form
@@ -76,6 +74,6 @@ export default function AdminSettingsForm() {
           </Flex>
         </form>
       </Boxling>
-    </>
+    </Box>
   );
 }

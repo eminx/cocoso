@@ -4,7 +4,7 @@ import { Trans } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 
 import Quill from '/imports/ui/forms/Quill';
-import { Box, Button, Center, Flex, Text } from '/imports/ui/core';
+import { Box, Button, Center, Flex, Heading, Text } from '/imports/ui/core';
 import { currentHostAtom } from '/imports/state';
 import { updateHostSettings } from '/imports/actions';
 
@@ -27,12 +27,11 @@ export default function AdminSettingsFooter() {
   }, [currentHost]);
 
   return (
-    <>
-      <Center>
-        <Text mb="4" fontWeight="bold">
-          <Trans i18nKey="admin:settings.tabs.footer" />
-        </Text>
-      </Center>
+    <Box py="6">
+      <Heading as="h3" size="sm" mb="2">
+        <Trans i18nKey="admin:settings.tabs.footer" />
+      </Heading>
+
       <Box mb="4">
         <Text>
           <Trans i18nKey="admin:info.platform.footer.description" />
@@ -61,6 +60,6 @@ export default function AdminSettingsFooter() {
           </Flex>
         </form>
       </Boxling>
-    </>
+    </Box>
   );
 }

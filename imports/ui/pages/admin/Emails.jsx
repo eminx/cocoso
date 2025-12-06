@@ -35,7 +35,7 @@ function EmailForm({ defaultValues, onSubmit }) {
   const { isDirty, isSubmitting } = formState;
 
   return (
-    <Box py="8" mb="4">
+    <Box py="4" mb="4">
       <Heading size="md" mb="4">
         {defaultValues.title}
       </Heading>

@@ -86,8 +86,11 @@ export default function EditProfilePrivacy() {
   const currentMembership = currentUser?.memberships?.find(
     (m) => m.host === currentHost.host
   );
+  console.log('currentMembership:', currentMembership);
+
   const isUserPublic = Boolean(currentMembership?.isPublic);
   const isUserPublicGlobally = currentUser?.isPublic;
+  console.log('is publis globally:', isUserPublicGlobally);
   const communityName = currentHost?.settings?.name;
 
   const { username } = currentUser;
