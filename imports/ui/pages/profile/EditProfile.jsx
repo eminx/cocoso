@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
@@ -36,9 +36,11 @@ export default function EditProfile() {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
-  if (!currentUser) {
-    return <Navigate to="/login" />;
-  }
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/login');
+    }
+  }, [currentUser]);
 
   const deleteAccount = async () => {
     setIsDeleting(true);
@@ -81,9 +83,11 @@ export default function EditProfile() {
   const tabIndex =
     tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
-    return <Navigate to={tabs[0].path} />;
-  }
+  useEffect(() => {
+    if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
+      navigate(tabs[0].path);
+    }
+  }, [tabs, pathnameLastPart]);
 
   return (
     <>

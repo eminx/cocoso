@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Navigate, useNavigate, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
@@ -23,6 +23,12 @@ function ResetPasswordPage() {
   const navigate = useNavigate();
   const { token } = useParams();
 
+  useEffect(() => {
+    if (!currentUser) {
+      navigate(`/@${currentUser.username}/profile`);
+    }
+  }, [currentUser]);
+
   const handleResetPassword = async ({ password }) => {
     try {
       await call('resetPassword', token, password);
@@ -32,10 +38,6 @@ function ResetPasswordPage() {
       message.error(error.reason);
     }
   };
-
-  if (currentUser) {
-    return <Navigate to={`/@${currentUser.username}/profile`} />;
-  }
 
   return (
     <Box pb="8">

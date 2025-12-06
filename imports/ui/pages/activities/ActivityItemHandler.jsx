@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import loadable from '@loadable/component';
-import { Navigate, useLoaderData, useSearchParams } from 'react-router';
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
@@ -22,20 +22,19 @@ export const activityAtom = atom(null);
 
 export default function ActivityItemHandler({ Host }) {
   const { activity } = useLoaderData();
+  const navigate = useNavigate();
   const setActivity = useSetAtom(activityAtom);
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
+    if (activity?.isGroupMeeting) {
+      navigate(`/groups/${activity.groupId}`);
+      return;
+    }
     setActivity(activity);
   }, [activity]);
-
-  const isGroupMeeting = activity?.isGroupMeeting;
-
-  if (isGroupMeeting) {
-    return <Navigate to={`/groups/${activity.groupId}`} />;
-  }
 
   return (
     <>

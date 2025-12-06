@@ -80,12 +80,16 @@ export function InfoPagesMenu({
       }
     >
       <Box
+        id="some-menu"
         key="menu-content-x"
         css={{
           backgroundColor: menuStyles?.backgroundColor,
           maxHeight: '480px',
           maxWidth: '320px',
           overflowY: 'scroll',
+          ':hover': {
+            backgroundColor: `${menuStyles?.backgroundColor}80`,
+          },
         }}
       >
         {pageTitles.map((item) => (
@@ -93,10 +97,10 @@ export function InfoPagesMenu({
             key={item._id}
             as="span"
             id={item._id}
-            style={{ padding: '0' }}
+            style={{ padding: '0', width: '100%' }}
           >
             <Link
-              style={{ padding: '0.5rem 1rem' }}
+              style={{ padding: '0.5rem 1rem', width: '100%' }}
               to={`/info/${parseTitle(item.title)}`}
               onClick={onSelect}
             >

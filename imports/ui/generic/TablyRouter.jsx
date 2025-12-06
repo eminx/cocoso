@@ -1,5 +1,5 @@
-import React from 'react';
-import { Navigate, Routes, Route, useLocation } from 'react-router';
+import React, { useEffect } from 'react';
+import { Routes, Route, useLocation, useNav, useNavigate } from 'react-router';
 
 import { Box } from '/imports/ui/core';
 
@@ -7,14 +7,17 @@ import Tabs from '../core/Tabs';
 
 export default function TablyRouter({ tabs, children }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const pathname = location?.pathname;
   const pathnameLastPart = pathname?.split('/').pop();
   const tabIndex = tabs && tabs.findIndex((tab) => pathname.includes(tab.path));
 
-  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
-    return <Navigate to={tabs[0].path} />;
-  }
+  useEffect(() => {
+    if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
+      navigate(tabs[0].path);
+    }
+  }, [tabs, pathnameLastPart]);
 
   return (
     <Box>
