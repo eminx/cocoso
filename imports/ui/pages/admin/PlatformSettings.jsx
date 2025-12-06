@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Navigate, Route, useLocation } from 'react-router';
+import { Routes, Route, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { useAtom, useAtomValue } from 'jotai';
@@ -90,6 +90,7 @@ export default function PlatformSettings() {
   const [localImage, setLocalImage] = useState(null);
   const [localPlatform, setLocalPlatform] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -302,9 +303,11 @@ export default function PlatformSettings() {
   const tabIndex =
     tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
-    return <Navigate to={tabs[0].path} />;
-  }
+  useEffect(() => {
+    if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
+      navigate(tabs[0].path);
+    }
+  }, [tabs, pathnameLastPart]);
 
   return (
     <Box>

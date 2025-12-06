@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import ChevronLeftIcon from 'lucide-react/dist/esm/icons/chevron-left';
 import ChevronRightIcon from 'lucide-react/dist/esm/icons/chevron-right';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 import { Slide } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css';
 import { useAtomValue } from 'jotai';
+import 'react-slideshow-image/dist/styles.css';
 
 import { Box, Button, Center } from '/imports/ui/core';
 import { currentUserAtom, platformAtom } from '/imports/state';
@@ -16,10 +16,13 @@ export default function RegistrationIntro() {
   const platform = useAtomValue(platformAtom);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [tc] = useTranslation('common');
+  const navigate = useNavigate();
 
-  if (!currentUser) {
-    return <Navigate to="/register" />;
-  }
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/login');
+    }
+  }, [currentUser]);
 
   if (!platform || !platform.registrationIntro) {
     return null;
