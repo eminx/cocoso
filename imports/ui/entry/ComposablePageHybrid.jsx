@@ -3,6 +3,7 @@ import loadable from '@loadable/component';
 import { Link, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 const ReactPlayer = loadable(() => import('react-player'));
 
 import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
@@ -80,7 +81,9 @@ function ContentViewModule({ module, Host }) {
       return (
         <Center>
           <Box className="text-content" p="4" css={{ maxWidth: '480px' }}>
-            {value.html ? HTMLReactParser(value.html) : null}
+            {value.html
+              ? HTMLReactParser(DOMPurify.sanitize(value.html))
+              : null}
           </Box>
         </Center>
       );

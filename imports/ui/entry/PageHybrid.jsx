@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Center, Heading } from '/imports/ui/core';
 
@@ -48,7 +49,7 @@ function SimplePage({ description, images, imageUrl, title, url }) {
             p="6"
             css={{ maxWidth: '540px' }}
           >
-            {description && HTMLReactParser(description)}
+            {description && HTMLReactParser(DOMPurify.sanitize(description))}
           </Box>
         </Center>
       )}

@@ -12,8 +12,8 @@ import { Link } from '@react-email/link';
 import { Row } from '@react-email/row';
 import { Section } from '@react-email/section';
 import { Text } from '@react-email/text';
-
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
@@ -167,7 +167,9 @@ export default function EmailPreview({ currentHost, email }) {
               height="auto"
             />
           )}
-          <Text style={{ fontSize: 18 }}>{HTMLReactParser(body)}</Text>
+          <div style={{ fontSize: 18 }}>
+            {HTMLReactParser(DOMPurify.sanitize(body))}
+          </div>
         </Section>
       );
     }
@@ -183,9 +185,9 @@ export default function EmailPreview({ currentHost, email }) {
           />
         </Section>
       ) : content?.type === 'text' && content?.value?.html ? (
-        <Text key={content.id} style={{ fontSize: 18, marginBottom: 24 }}>
-          {HTMLReactParser(content.value.html)}
-        </Text>
+        <Section key={content.id} style={{ fontSize: 18, marginBottom: 24 }}>
+          {HTMLReactParser(DOMPurify.sanitize(content.value.html))}
+        </Section>
       ) : content?.type === 'divider' ? (
         <Hr key={content.id} style={{ margin: '24px 0' }} />
       ) : null
@@ -283,10 +285,10 @@ export default function EmailPreview({ currentHost, email }) {
                 centered
                 currentHost={currentHost}
               />
-              <Text style={{ fontSize: 16 }}>
+              <Container>
                 {activity?.longDescription &&
-                  stripAndShorten(activity.longDescription)}
-              </Text>
+                  HTMLReactParser(DOMPurify.sanitize(activity.longDescription))}
+              </Container>
 
               <Text style={{ textAlign: 'center' }}>
                 <Button
@@ -322,9 +324,10 @@ export default function EmailPreview({ currentHost, email }) {
                   />
                 </Link>
               )}
-              <Text style={{ fontSize: 16 }}>
-                {work?.longDescription && stripAndShorten(work.longDescription)}{' '}
-              </Text>
+              <Container>
+                {work?.longDescription &&
+                  HTMLReactParser(DOMPurify.sanitize(work.longDescription))}
+              </Container>
 
               <Text style={{ textAlign: 'center' }}>
                 <Button
@@ -346,7 +349,7 @@ export default function EmailPreview({ currentHost, email }) {
           >
             {footer && footer.length > 0 && (
               <Container style={{ color: '#424242' }}>
-                {HTMLReactParser(footer)}
+                {HTMLReactParser(DOMPurify.sanitize(footer))}
               </Container>
             )}
           </Section>

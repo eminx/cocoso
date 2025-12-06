@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
+import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Center, Tag, Text } from '/imports/ui/core';
 
@@ -29,7 +30,7 @@ export default function ActivityHybrid({ activity, Host }) {
       content: (
         <Box bg="white" className="text-content" p="6">
           {activity?.longDescription &&
-            HTMLReactParser(activity?.longDescription)}
+            HTMLReactParser(DOMPurify.sanitize(activity?.longDescription))}
         </Box>
       ),
       path: 'info',
