@@ -17,7 +17,7 @@ export default function AdminTabs({ tabs, children }) {
 
   return (
     <>
-      <Box mb="8">
+      <Box mb="2">
         <Tabs index={tabIndex} tabs={tabs} />
       </Box>
 

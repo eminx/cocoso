@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import FileDropper from '/imports/ui/forms/FileDropper';
 import { currentHostAtom } from '/imports/state';
-import { Button, Center, Text } from '/imports/ui/core';
+import { Box, Button, Center, Heading } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { call, resizeImage, uploadImage } from '../../../api/_utils/shared';
 
@@ -57,12 +57,10 @@ export default function AdminSettingsLogo() {
     (currentHost && currentHost.logo);
 
   return (
-    <>
-      <Center>
-        <Text fontWeight="bold" mb="4" textAlign="center">
-          {t('logo.info')}
-        </Text>
-      </Center>
+    <Box py="6">
+      <Heading as="h3" size="sm" mb="4">
+        {t('logo.info')}
+      </Heading>
 
       <Boxling>
         <Center>
@@ -83,6 +81,6 @@ export default function AdminSettingsLogo() {
           </Center>
         )}
       </Boxling>
-    </>
+    </Box>
   );
 }
