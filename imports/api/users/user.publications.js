@@ -26,6 +26,7 @@ Meteor.publish('currentUser', function () {
         emails: 1,
         firstName: 1,
         groups: 1,
+        isPublic: 1,
         keywords: 1,
         lang: 1,
         lastName: 1,

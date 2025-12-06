@@ -302,50 +302,37 @@ Meteor.methods({
   },
 
   async setProfilePublicGlobally(isPublic) {
-    const userId = await Meteor.userAsync()?._id;
-    const host = getHost(this);
+    check(isPublic, Boolean);
+    const currentUser = await Meteor.userAsync();
+    if (!currentUser) {
+      throw new Meteor.Error('Not allowed!');
+    }
+    const userId = currentUser._id;
 
     try {
       await Meteor.users.updateAsync(
         {
           _id: userId,
-          memberships: {
-            $elemMatch: {
-              host,
-            },
-          },
         },
         {
           $set: {
             isPublic,
-            'memberships.$.isPublic': isPublic,
           },
         }
       );
-      await Hosts.updateAsync(
-        {
-          members: {
-            $elemMatch: {
-              id: userId,
-            },
-          },
-        },
-        {
-          $set: {
-            'members.$.isPublic': isPublic,
-          },
-        },
-        {
-          multi: true,
-        }
-      );
+      await Meteor.call('setProfilePublic', isPublic);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't update");
     }
   },
 
   async setProfilePublic(isPublic) {
-    const userId = await Meteor.userAsync()?._id;
+    check(isPublic, Boolean);
+    const currentUser = await Meteor.userAsync();
+    if (!currentUser) {
+      throw new Meteor.Error('Not allowed!');
+    }
+    const userId = currentUser._id;
     const host = getHost(this);
 
     try {
