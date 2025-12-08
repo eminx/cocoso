@@ -519,7 +519,7 @@ export default function appRoutes(props) {
           element: createRouteElement(ForgotPasswordPage, props),
         },
         {
-          path: 'reset-password/*',
+          path: 'reset-password/:token',
           element: createRouteElement(ResetPasswordPage, props),
         },
         // {
