@@ -1,4 +1,5 @@
-import React from 'react';
+import { Accounts } from 'meteor/accounts-base';
+import React, { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
@@ -17,15 +18,15 @@ import { message } from '/imports/ui/generic/message';
 
 import { ResetPassword } from './index';
 
-function ResetPasswordPage() {
+export default function ResetPasswordPage() {
   const currentUser = useAtomValue(currentUserAtom);
   const [t] = useTranslation('accounts');
   const navigate = useNavigate();
   const { token } = useParams();
 
   useEffect(() => {
-    if (!currentUser) {
-      navigate(`/@${currentUser.username}/profile`);
+    if (currentUser) {
+      navigate(`/@${currentUser.username}`);
     }
   }, [currentUser]);
 
@@ -69,5 +70,3 @@ function ResetPasswordPage() {
     </Box>
   );
 }
-
-export default ResetPasswordPage;

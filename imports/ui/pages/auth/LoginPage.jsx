@@ -42,8 +42,6 @@ export default function LoginPage() {
     const hostWithinUser = currentUser?.memberships?.find(
       (membership) => membership?.host === window.location.host
     );
-    console.log('currentUsers', currentUser);
-    console.log('hostWithinUser', hostWithinUser);
     setRole(hostWithinUser?.role || null);
     if (
       ['participant', 'contributor', 'admin'].includes(hostWithinUser?.role)

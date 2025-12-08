@@ -28,7 +28,8 @@ export default function ForgotPasswordPage() {
     if (!currentUser) {
       return;
     }
-    navigate(`/@${currentUser.username}/profile`);
+    navigate(`/@${currentUser.username}`);
+    t('login.messages.success');
   }, [currentUser]);
 
   const handleForgotPassword = async (email) => {
