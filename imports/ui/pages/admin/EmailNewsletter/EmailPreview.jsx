@@ -16,18 +16,7 @@ import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
-
-function shorten(str) {
-  const strArray = str.split(/\s+/);
-  return [...strArray.slice(0, 100)].join(' ') + '...';
-}
-
-function stripAndShorten(html) {
-  let tmp = document.createElement('DIV');
-  tmp.innerHTML = html;
-  const stripped = tmp.textContent || tmp.innerText || '';
-  return shorten(stripped);
-}
+import truncate from 'html-truncate';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
@@ -133,6 +122,8 @@ const getButtonStyle = (theme) => ({
   padding: '12px 16px',
   textAlign: 'center',
 });
+
+const maxChCount = 360;
 
 export default function EmailPreview({ currentHost, email }) {
   const [tc] = useTranslation('common');
@@ -287,9 +278,13 @@ export default function EmailPreview({ currentHost, email }) {
               />
               <Container>
                 {activity?.longDescription &&
-                  HTMLReactParser(DOMPurify.sanitize(activity.longDescription))}
+                  HTMLReactParser(
+                    truncate(
+                      DOMPurify.sanitize(activity.longDescription),
+                      maxChCount
+                    )
+                  )}
               </Container>
-
               <Text style={{ textAlign: 'center' }}>
                 <Button
                   href={`https://${activity.host}/activities/${activity._id}`}
@@ -326,9 +321,13 @@ export default function EmailPreview({ currentHost, email }) {
               )}
               <Container>
                 {work?.longDescription &&
-                  HTMLReactParser(DOMPurify.sanitize(work.longDescription))}
+                  HTMLReactParser(
+                    truncate(
+                      DOMPurify.sanitize(work.longDescription),
+                      maxChCount
+                    )
+                  )}
               </Container>
-
               <Text style={{ textAlign: 'center' }}>
                 <Button
                   href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
