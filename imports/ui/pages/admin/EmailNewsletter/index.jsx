@@ -142,21 +142,6 @@ export default function EmailNewsletter() {
     }
   };
 
-  const sendEmailSkip100 = async () => {
-    const email = await call('getNewsletterById', 'sRxLyqM9bDeGkjQAd');
-    console.log(email);
-    const emailHtml = renderEmail(
-      <EmailPreview currentHost={currentHost} email={email} />
-    );
-
-    try {
-      await call('sendNewsletterSkip100', emailHtml);
-      console.log('success');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   if (!currentUser || role !== 'admin') {
     return <Alert>{tc('message.access.deny')}</Alert>;
   }
@@ -182,12 +167,6 @@ export default function EmailNewsletter() {
             />
           </Box>
         )}
-
-        <Center>
-          <Button colorScheme="red" onClick={sendEmailSkip100}>
-            Send Email Skip 100
-          </Button>
-        </Center>
 
         <Center p="4" mb="4">
           <Link target="_blank" to="/newsletters">
