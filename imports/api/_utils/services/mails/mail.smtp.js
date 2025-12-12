@@ -4,7 +4,11 @@ import { check } from 'meteor/check';
 
 import { getHost } from '../../shared';
 import Hosts from '../../../hosts/host';
-import { isValidEmail, getEmailBody } from './mail.helpers';
+import {
+  isValidEmail,
+  getEmailBody,
+  extractEmailAddress,
+} from './mail.helpers';
 import { getWelcomeEmailBody } from './templates.mails';
 
 Meteor.methods({
@@ -29,14 +33,13 @@ Meteor.methods({
       return;
     }
 
-    this.unblock();
-
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
     let fromEmailWithHostName = fromEmail;
     if (currentHost && currentHost.settings && currentHost.settings.name) {
-      fromEmailWithHostName = `${currentHost.settings.name} ${fromEmail}`;
+      const extractedEmail = extractEmailAddress(fromEmail);
+      fromEmailWithHostName = `${currentHost.settings.name} <${extractedEmail}>`;
     }
 
     const data = {
@@ -75,6 +78,7 @@ Meteor.methods({
         emailBody
       );
     } catch (error) {
+      console.log('email error', error);
       throw new Meteor.Error(error);
     }
   },

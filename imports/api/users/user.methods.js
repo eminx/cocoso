@@ -402,7 +402,6 @@ Meteor.methods({
     const userId = user?._id;
     const host = getHost(this);
 
-    console.log(userId);
     if (!userId) {
       return;
     }
@@ -449,7 +448,8 @@ Meteor.methods({
   },
 
   async deleteAccount() {
-    const userId = await Meteor.userAsync()?._id;
+    const currentUser = await Meteor.userAsync();
+    const userId = currentUser?._id;
     if (!userId) {
       throw new Meteor.Error('You are not a member anyways!');
     }

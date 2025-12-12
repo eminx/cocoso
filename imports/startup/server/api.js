@@ -52,6 +52,7 @@ import '../../api/keywords/keyword';
 import '../../api/keywords/keywords.methods';
 
 import '../../api/newsletters/newsletter';
+import '../../api/newsletters/newsletter.methods';
 
 import '../../api/composablepages/composablepage';
 import '../../api/composablepages/composablepage.methods';
