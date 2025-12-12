@@ -3,6 +3,13 @@ const isValidEmail = (email) => {
   return re.test(email);
 };
 
-const getEmailBody = (email, username) => `${email.appeal} ${username},\n${email.body}`;
+const getEmailBody = (email, username) =>
+  `${email.appeal} ${username},\n${email.body}`;
 
-export { isValidEmail, getEmailBody };
+const extractEmailAddress = (emailString) => {
+  // Match email in brackets: "Name <email@domain.com>" or just return the string if no brackets
+  const bracketMatch = emailString.match(/<([^>]+)>/);
+  return bracketMatch ? bracketMatch[1] : emailString;
+};
+
+export { isValidEmail, getEmailBody, extractEmailAddress };

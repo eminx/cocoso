@@ -22,9 +22,9 @@ const CalendarHandler = loadable(
 
 export default function HomeHandler(props) {
   const Host = props?.Host;
-  const menuItems = Host.settings?.menu;
+  const menuItems = Host?.settings?.menu;
   const visibleMenu = menuItems?.filter((item) => item.isVisible);
-  const firstRoute = visibleMenu && visibleMenu[0].name;
+  const firstRoute = visibleMenu?.[0]?.name;
 
   // Lazy load only the handler needed based on first route
   switch (firstRoute) {

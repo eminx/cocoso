@@ -38,7 +38,8 @@ export default function ForgotPasswordPage() {
       message.success(t('password.message.checkMail'));
       setEmailSent(true);
     } catch (error) {
-      message.error(error.reason);
+      console.log(error);
+      message.error(error?.error?.reason || error?.reason);
     }
   };
 
