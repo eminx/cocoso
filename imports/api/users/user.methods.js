@@ -43,7 +43,9 @@ Meteor.methods({
       // throw new Meteor.Error('User not found');
     }
 
-    if (user._id === (await Meteor.userAsync()?._id)) {
+    const currentUser = await Meteor.userAsync();
+
+    if (user._id === currentUser?._id) {
       return userModel(user);
     }
 

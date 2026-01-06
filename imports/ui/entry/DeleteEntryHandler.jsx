@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai';
 
 import Modal from '/imports/ui/core/Modal';
 import { Box, Center, Text } from '/imports/ui/core';
+
 import { canCreateContentAtom, currentUserAtom, roleAtom } from '../../state';
 import { call } from '../../api/_utils/shared';
 import { message } from '../generic/message';

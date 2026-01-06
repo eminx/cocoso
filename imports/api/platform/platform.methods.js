@@ -68,11 +68,13 @@ Meteor.methods({
   },
 
   async setUserSuperAdmin(userId) {
-    if (!(await Meteor.userAsync())) {
+    const currentUser = await Meteor.userAsync();
+
+    if (!currentUser || !currentUser.isSuperAdmin) {
       return;
     }
+    const currentUserId = currentUser._id;
 
-    const currentUserId = await Meteor.userAsync()?._id;
     if (currentUserId !== userId) {
       return;
     }
