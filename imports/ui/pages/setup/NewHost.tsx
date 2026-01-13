@@ -1,0 +1,69 @@
+import { Meteor } from 'meteor/meteor';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { Alert, Center } from '/imports/ui/core';
+import NewHostForm from '/imports/ui/forms/NewHostForm';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
+
+export interface HostFormValues {
+  host: string;
+  name: string;
+  email: string;
+  address: string;
+  city: string;
+  country: string;
+  about: string;
+  aboutTitle?: string;
+}
+
+export interface NewHostProps {
+  setFinished: () => void;
+}
+
+export default function NewHost({ setFinished }: NewHostProps) {
+  const [tc] = useTranslation('common');
+
+  const currentUser = Meteor.user();
+
+  const hostModel: Partial<HostFormValues> = {
+    host: window.location.host,
+    name: '',
+    email: currentUser?.emails && currentUser?.emails[0]?.address,
+    address: '',
+    city: '',
+    country: '',
+    about: '',
+  };
+
+  const handleSubmit = async (values: HostFormValues) => {
+    if (!currentUser.isSuperAdmin) {
+      message.error(tc('message.access.deny'));
+      return;
+    }
+
+    const parsedValues = {
+      ...values,
+      aboutTitle: `About ${values.name}`,
+    };
+
+    try {
+      await call('createNewHost', parsedValues);
+      window.scrollTo(0, 0);
+      setFinished();
+    } catch (error) {
+      message.error(error.reason || error.error);
+    }
+  };
+
+  if (!currentUser || !currentUser.isSuperAdmin) {
+    return (
+      <Center>
+        <Alert type="error">{tc('message.access.deny')}</Alert>
+      </Center>
+    );
+  }
+
+  return <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />;
+}

@@ -248,6 +248,8 @@ Files to migrate:
 ### Strategy
 Migrate utility functions, helpers, and shared code. These are used across the application, so careful typing is critical.
 
+**IMPORTANT**: Keep SimpleSchema utilities for MongoDB collections. Add Zod schemas for method/form validation.
+
 ### Prerequisites
 1. Create utility type definitions:
 ```typescript
@@ -275,30 +277,47 @@ export interface ValidationError {
 ### Migration Steps
 
 #### Step 2.1: Schema Utilities (2 files)
-**Risk: HIGH | Impact: Database models**
+**Risk: MEDIUM | Impact: Database models**
 
 Files to migrate:
 - `imports/api/_utils/schemas.js` → `.ts`
 - `imports/api/_utils/shared.js` → `.ts`
 
-**Migration to Zod Pattern**:
+**KEEP SimpleSchema + ADD Zod Pattern**:
 ```typescript
-// Before: schemas.js (SimpleSchema)
+// schemas.ts - HYBRID APPROACH
 import SimpleSchema from 'simpl-schema';
+import { z } from 'zod';
 
-const Schemas = {
+// KEEP SimpleSchema - for MongoDB collection validation
+export const Schemas = {
   Id: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
   },
+  Hostname: {
+    type: String,
+    regEx: /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]).)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/,
+  },
+  Email: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+    optional: true,
+  },
+  Src: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+  },
+  Avatar: {
+    src: { type: String },
+    date: { type: Date },
+  },
 };
 
-// After: schemas.ts (Zod - recommended)
-import { z } from 'zod';
-
-export const Schemas = {
-  Id: z.string().regex(/^[a-zA-Z0-9]{17}$/),
-  Hostname: z.string().regex(/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]).)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/),
+// ADD Zod schemas - for method inputs and TypeScript types
+export const ZodSchemas = {
+  Id: z.string().regex(/^[a-zA-Z0-9]{17}$/, 'Invalid ID format'),
+  Hostname: z.string().regex(/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]).)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/, 'Invalid hostname'),
   Email: z.string().email().optional(),
   Src: z.string().url(),
   Avatar: z.object({
@@ -307,11 +326,11 @@ export const Schemas = {
   }),
 };
 
-// For backwards compatibility with SimpleSchema during migration
-export const SimpleSchemas = {
-  Id: { type: String, regEx: SimpleSchema.RegEx.Id },
-  // ... keep old patterns until Phase 3 completes
-};
+// Type exports from Zod
+export type Avatar = z.infer<typeof ZodSchemas.Avatar>;
+
+// Re-export for backwards compatibility
+export { SimpleSchema };
 ```
 
 #### Step 2.2: Mail Services (3 files)
@@ -415,12 +434,12 @@ export interface AuthoredModel extends HostedModel {
 ### Migration Steps
 
 #### Step 3.1: Works Model (1 file)
-**Risk: HIGH | Dependencies: Categories, Documents**
+**Risk: MEDIUM | Dependencies: Categories, Documents**
 
 File to migrate:
 - `imports/api/works/work.js` → `.ts`
 
-**Migration Pattern**:
+**Migration Pattern - KEEP SimpleSchema for Collections**:
 ```typescript
 // Before: work.js
 import { Mongo } from 'meteor/mongo';
@@ -439,65 +458,100 @@ Works.attachSchema(Works.schema);
 
 export default Works;
 
-// After: work.ts
+// After: work.ts - HYBRID APPROACH
 import { Mongo } from 'meteor/mongo';
+import SimpleSchema from 'simpl-schema';
 import { z } from 'zod';
-import { Schemas } from '../_utils/schemas';
+import { Schemas, ZodSchemas } from '../_utils/schemas';
 
-// Zod schema for validation
-export const WorkSchema = z.object({
+// TypeScript interface for the document
+export interface WorkDocument {
+  _id: string;
+  title: string;
+  shortDescription?: string;
+  longDescription: string;
+  additionalInfo?: string;
+  authorId: string;
+  authorUsername: string;
+  authorAvatar?: string;
+  category?: {
+    categoryId: string;
+    label: string;
+    color?: string;
+  };
+  contactInfo?: string;
+  creationDate: Date;
+  documents?: Array<{
+    documentId: string;
+    downloadUrl: string;
+    label: string;
+  }>;
+  host: string;
+  images?: string[];
+  latestUpdate?: Date;
+  showAvatar?: boolean;
+}
+
+// KEEP SimpleSchema for collection validation
+const WorkSimpleSchema = new SimpleSchema({
   _id: Schemas.Id,
-  title: z.string().min(1),
+  additionalInfo: { type: String, defaultValue: '', optional: true },
+  authorAvatar: { type: String, optional: true },
+  authorId: Schemas.Id,
+  authorUsername: { type: String },
+  category: { type: Object, optional: true },
+  'category.categoryId': { type: Schemas.Id },
+  'category.label': { type: String },
+  'category.color': { type: String, optional: true },
+  contactInfo: { type: String, optional: true },
+  creationDate: { type: Date },
+  documents: { type: Array, optional: true, defaultValue: [] },
+  'documents.$': {
+    type: new SimpleSchema({
+      documentId: { type: String },
+      downloadUrl: { type: String },
+      label: { type: String },
+    }),
+    optional: true,
+  },
+  host: Schemas.Hostname,
+  images: { type: Array, optional: true },
+  'images.$': { type: String },
+  latestUpdate: { type: Date, optional: true },
+  longDescription: { type: String, defaultValue: '' },
+  shortDescription: { type: String, defaultValue: '', optional: true },
+  showAvatar: { type: Boolean, defaultValue: true, optional: true },
+  title: { type: String },
+});
+
+// ADD Zod schema for method inputs (creating/updating works)
+export const CreateWorkInputSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
   shortDescription: z.string().optional(),
   longDescription: z.string().default(''),
   additionalInfo: z.string().optional(),
-  authorId: Schemas.Id,
-  authorUsername: z.string(),
-  authorAvatar: z.string().optional(),
   category: z.object({
-    categoryId: Schemas.Id,
+    categoryId: ZodSchemas.Id,
     label: z.string(),
     color: z.string().optional(),
   }).optional(),
   contactInfo: z.string().optional(),
-  creationDate: z.date(),
   documents: z.array(z.object({
     documentId: z.string(),
     downloadUrl: z.string(),
     label: z.string(),
-  })).optional().default([]),
-  host: Schemas.Hostname,
+  })).optional(),
   images: z.array(z.string()).optional(),
-  latestUpdate: z.date().optional(),
-  showAvatar: z.boolean().default(true).optional(),
+  showAvatar: z.boolean().optional(),
 });
 
-// TypeScript type inferred from Zod schema
-export type Work = z.infer<typeof WorkSchema>;
+export type CreateWorkInput = z.infer<typeof CreateWorkInputSchema>;
 
-// Mongo collection with typed interface
-export interface WorkDocument extends Work {
-  _id: string;
-}
+// Typed Mongo collection
+const Works = new Mongo.Collection<WorkDocument>('works');
 
-class WorksCollection extends Mongo.Collection<WorkDocument> {
-  constructor() {
-    super('works');
-  }
-
-  // Type-safe insert
-  insertWork(doc: Omit<Work, '_id'>): string {
-    const validated = WorkSchema.parse(doc);
-    return this.insert(validated as WorkDocument);
-  }
-
-  // Type-safe update
-  updateWork(id: string, modifier: Mongo.Modifier<WorkDocument>): number {
-    return this.update(id, modifier);
-  }
-}
-
-const Works = new WorksCollection();
+// Attach SimpleSchema for automatic validation
+Works.attachSchema(WorkSimpleSchema);
 
 export default Works;
 ```
@@ -946,11 +1000,11 @@ Once migration is complete, tighten TypeScript settings:
 }
 ```
 
-### 2. Remove SimpleSchema Dependency
-After all models migrated to Zod:
-```bash
-npm uninstall simpl-schema
-```
+### 2. Keep SimpleSchema for Collections
+**Do NOT remove SimpleSchema** - it's essential for Meteor collection validation:
+- SimpleSchema stays for `attachSchema()` on collections
+- Zod is used for method inputs and form validation
+- Both libraries work together
 
 ### 3. Update package.json Scripts
 Add TypeScript checking to your workflow:
@@ -1201,7 +1255,7 @@ Track these metrics throughout migration:
 - ✅ Create shared type definitions early
 
 ### Open Questions
-1. Do you want to keep SimpleSchema alongside Zod during migration, or full replacement?
+1. ✅ **RESOLVED**: Keep SimpleSchema for collections, use Zod for methods/forms (hybrid approach)
 2. Should we create a custom Meteor method/publication typing library for reuse?
 3. Any specific components or features that are higher priority?
 4. What's the testing strategy - manual only or do you have automated tests?
