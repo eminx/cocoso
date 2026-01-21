@@ -36,7 +36,7 @@ function NewHost() {
   const [tc] = useTranslation('common');
 
   const handleSubmit = async (values: HostFormValues) => {
-    if (!currentUser.isSuperAdmin) {
+    if (!currentUser || !currentUser.isSuperAdmin) {
       message.error(tc('message.access.deny'));
       return;
     }

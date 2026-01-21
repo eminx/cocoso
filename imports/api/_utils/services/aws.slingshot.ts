@@ -1,7 +1,24 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
-const s3Settings = Meteor.settings.AWSs3;
+interface S3Settings {
+  AWSAccessKeyId: string;
+  AWSSecretAccessKey: string;
+  AWSBucketName: string;
+  AWSBucketReadingMaterials: string;
+  AWSRegion: string;
+}
+
+interface MeteorUser {
+  _id: string;
+  username?: string;
+}
+
+interface SlingshotContext {
+  userId: string | null;
+}
+
+const s3Settings = Meteor.settings.AWSs3 as S3Settings;
 
 Slingshot.fileRestrictions('genericEntryImageUpload', {
   allowedFileTypes: [
@@ -63,7 +80,7 @@ Slingshot.createDirective('avatarImageUpload', Slingshot.S3Storage, {
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize() {
+  authorize(this: SlingshotContext): boolean {
     if (!this.userId) {
       const message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -71,9 +88,9 @@ Slingshot.createDirective('avatarImageUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key(file) {
-    const currentUser = Meteor.user();
-    return `avatars/${currentUser.username}/${file.name}`;
+  key(file: File): string {
+    const currentUser = Meteor.user() as MeteorUser | null;
+    return `avatars/${currentUser?.username}/${file.name}`;
   },
 });
 
@@ -84,7 +101,7 @@ Slingshot.createDirective('genericEntryImageUpload', Slingshot.S3Storage, {
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize() {
+  authorize(this: SlingshotContext): boolean {
     if (!this.userId) {
       const message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -92,9 +109,9 @@ Slingshot.createDirective('genericEntryImageUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key(file) {
-    const currentUser = Meteor.user();
-    return `${currentUser.username}/${file.name}`;
+  key(file: File): string {
+    const currentUser = Meteor.user() as MeteorUser | null;
+    return `${currentUser?.username}/${file.name}`;
   },
 });
 
@@ -105,7 +122,7 @@ Slingshot.createDirective('hostLogoUpload', Slingshot.S3Storage, {
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize() {
+  authorize(this: SlingshotContext): boolean {
     if (!this.userId) {
       const message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -113,9 +130,9 @@ Slingshot.createDirective('hostLogoUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key(file) {
-    const currentUser = Meteor.user();
-    return `${currentUser.username}/${file.name}`;
+  key(file: File): string {
+    const currentUser = Meteor.user() as MeteorUser | null;
+    return `${currentUser?.username}/${file.name}`;
   },
 });
 
@@ -126,7 +143,7 @@ Slingshot.createDirective('platformLogoUpload', Slingshot.S3Storage, {
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize() {
+  authorize(this: SlingshotContext): boolean {
     if (!this.userId) {
       const message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -134,9 +151,9 @@ Slingshot.createDirective('platformLogoUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key(file) {
-    const currentUser = Meteor.user();
-    return `${currentUser.username}/${file.name}`;
+  key(file: File): string {
+    const currentUser = Meteor.user() as MeteorUser | null;
+    return `${currentUser?.username}/${file.name}`;
   },
 });
 
@@ -147,7 +164,7 @@ Slingshot.createDirective('groupDocumentUpload', Slingshot.S3Storage, {
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize() {
+  authorize(this: SlingshotContext): boolean {
     if (!this.userId) {
       const message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -155,8 +172,8 @@ Slingshot.createDirective('groupDocumentUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key(file) {
-    const currentUser = Meteor.user();
-    return `${currentUser.username}/${file.name}`;
+  key(file: File): string {
+    const currentUser = Meteor.user() as MeteorUser | null;
+    return `${currentUser?.username}/${file.name}`;
   },
 });

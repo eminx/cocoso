@@ -1,4 +1,20 @@
-const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
+interface HostSettings {
+  name: string;
+  address: string;
+}
+
+interface CurrentHost {
+  settings: HostSettings;
+  host: string;
+  logo: string;
+}
+
+const getWelcomeEmailBody = (
+  dear: string | undefined,
+  currentHost: CurrentHost,
+  firstName: string | undefined,
+  welcomeText: string | undefined
+): string => {
   const hostName = currentHost.settings.name,
     host = currentHost.host,
     hostLogo = currentHost.logo,
@@ -8,7 +24,7 @@ const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
       <title>
-        
+
       </title>
       <!--[if !mso]><!-->
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,7 +53,7 @@ const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
         .mj-outlook-group-fix { width:100% !important; }
       </style>
       <![endif]-->
-      
+
         <!--[if !mso]><!-->
           <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700" rel="stylesheet" type="text/css">
@@ -46,9 +62,9 @@ const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
   @import url(https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700);
           </style>
         <!--<![endif]-->
-  
-      
-      
+
+
+
       <style type="text/css">
         @media only screen and (min-width:480px) {
           .mj-column-per-100 { width:100% !important; max-width: 100%; }
@@ -57,36 +73,36 @@ const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
       <style media="screen and (min-width:480px)">
         .moz-text-html .mj-column-per-100 { width:100% !important; max-width: 100%; }
       </style>
-      
-    
+
+
       <style type="text/css">
-      
-      
-  
+
+
+
       @media only screen and (max-width:480px) {
         table.mj-full-width-mobile { width: 100% !important; }
         td.mj-full-width-mobile { width: auto !important; }
       }
-    
+
       </style>
       <style type="text/css">
-      
+
       </style>
-      
+
     </head>
     <body style="word-spacing:normal;">
-      
-      
+
+
         <div
            style=""
         >
-          
-        
+
+
         <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" bgcolor="white" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-      
-        
+
+
         <div  style="background:white;background-color:white;margin:0px auto;max-width:600px;">
-          
+
           <table
              align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:white;background-color:white;width:100%;"
           >
@@ -96,59 +112,59 @@ const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
                    style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;"
                 >
                   <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
-              
+
         <div
            class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;"
         >
-          
+
         <table
            border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%"
         >
           <tbody>
-            
+
                 <tr>
                   <td
                      align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
-                    
+
         <table
            border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;"
         >
           <tbody>
             <tr>
               <td  style="width:180px;">
-                
+
         <img
            height="auto" src="${hostLogo}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="180"
         />
-      
+
               </td>
             </tr>
           </tbody>
         </table>
-      
+
                   </td>
                 </tr>
-              
+
           </tbody>
         </table>
-      
+
         </div>
-      
+
             <!--[if mso | IE]></td></tr></table><![endif]-->
                 </td>
               </tr>
             </tbody>
           </table>
-          
+
         </div>
-      
-        
+
+
         <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" bgcolor="white" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-      
-        
+
+
         <div  style="background:white;background-color:white;margin:0px auto;max-width:600px;">
-          
+
           <table
              align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:white;background-color:white;width:100%;"
           >
@@ -158,47 +174,47 @@ const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
                    style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;"
                 >
                   <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
-              
+
         <div
            class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;"
         >
-          
+
         <table
            border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%"
         >
           <tbody>
-            
+
                 <tr>
                   <td
                      align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
-                    
+
         <div
            style="font-family:Sarabun, Arial;font-size:22px;font-weight:bold;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${hostName}</div>
-      
+
                   </td>
                 </tr>
-              
+
           </tbody>
         </table>
-      
+
         </div>
-      
+
             <!--[if mso | IE]></td></tr></table><![endif]-->
                 </td>
               </tr>
             </tbody>
           </table>
-          
+
         </div>
-      
-        
+
+
         <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" bgcolor="white" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-      
-        
+
+
         <div  style="background:white;background-color:white;margin:0px auto;max-width:600px;">
-          
+
           <table
              align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:white;background-color:white;width:100%;"
           >
@@ -208,45 +224,45 @@ const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
                    style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;"
                 >
                   <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
-              
+
         <div
            class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;"
         >
-          
+
         <table
            border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%"
         >
           <tbody>
-            
+
                 <tr>
                   <td
                      align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
-                    
+
         <div
            style="font-family:Sarabun, Arial;font-size:16px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${dear} ${firstName}, <br /></b></div>
-      
+
                   </td>
                 </tr>
-              
+
                 <tr>
                   <td
                      align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
-                    
+
         <div
            style="font-family:Sarabun, Arial;font-size:16px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${welcomeText} <br /></div>
-      
+
                   </td>
                 </tr>
-              
+
                 <tr>
                   <td
                      align="center" vertical-align="middle" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
-                    
+
         <table
            border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;"
         >
@@ -264,29 +280,29 @@ const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
             </tr>
           </tbody>
         </table>
-      
+
                   </td>
                 </tr>
-              
+
           </tbody>
         </table>
-      
+
         </div>
-      
+
             <!--[if mso | IE]></td></tr></table><![endif]-->
                 </td>
               </tr>
             </tbody>
           </table>
-          
+
         </div>
-      
-        
+
+
         <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" bgcolor="white" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-      
-        
+
+
         <div  style="background:white;background-color:white;margin:0px auto;max-width:600px;">
-          
+
           <table
              align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:white;background-color:white;width:100%;"
           >
@@ -296,62 +312,63 @@ const getWelcomeEmailBody = (dear, currentHost, firstName, welcomeText) => {
                    style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;"
                 >
                   <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
-              
+
         <div
            class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;"
         >
-          
+
         <table
            border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%"
         >
           <tbody>
-            
+
                 <tr>
                   <td
                      align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
-                    
+
         <div
            style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${hostName}</div>
-      
+
                   </td>
                 </tr>
-              
+
                 <tr>
                   <td
                      align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
-                    
+
         <div
            style="font-family:Sarabun, Arial;font-size:14px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${hostAddress}</div>
-      
+
                   </td>
                 </tr>
-              
+
           </tbody>
         </table>
-      
+
         </div>
-      
+
             <!--[if mso | IE]></td></tr></table><![endif]-->
                 </td>
               </tr>
             </tbody>
           </table>
-          
+
         </div>
-      
-        
+
+
         <!--[if mso | IE]></td></tr></table><![endif]-->
-      
-      
+
+
         </div>
-      
+
     </body>
   </html>
     `;
 };
 
 export { getWelcomeEmailBody };
+export type { CurrentHost, HostSettings };
