@@ -4,14 +4,9 @@ import AutoCompleteSelect, { ActionMeta } from 'react-select';
 import makeAnimated from 'react-select/animated';
 
 import { Box, Text } from '/imports/ui/core';
+import type { Host } from '/imports/ui/types';
 
 const animatedComponents = makeAnimated();
-
-interface Host {
-  host: string;
-  name: string;
-  color?: string;
-}
 
 export interface HostFiltrerProps {
   allHosts: Host[];

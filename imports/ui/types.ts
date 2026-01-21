@@ -48,4 +48,118 @@ export interface Work extends BaseDocument {
   title: string;
 }
 
-// Add more domain types as needed during migration
+/**
+ * MenuItem represents a navigation menu item in the host settings
+ */
+export interface MenuItem {
+  name: string;
+  label?: string;
+  description?: string;
+  isVisible?: boolean;
+}
+
+/**
+ * Host represents a platform/organization host with its settings
+ * Used across entry pages and listing components
+ */
+export interface Host {
+  host?: string;
+  name?: string;
+  logo?: string;
+  color?: string;
+  settings?: {
+    name?: string;
+    menu?: MenuItem[];
+  };
+}
+
+/**
+ * Document represents a generic document attachment
+ * Used in Groups, Resources, and Works
+ */
+export interface Document {
+  _id: string;
+  name?: string;
+}
+
+/**
+ * DotsProps for slider dot indicators
+ * Used in EmblaSlider and NiceSlider
+ */
+export interface DotsProps {
+  images: string[];
+  currentSlideIndex: number;
+}
+
+/**
+ * SelectedResource for resource selection in forms
+ * Used in CalendarActivityForm and PublicActivityForm
+ */
+export interface SelectedResource {
+  _id: string;
+  label: string;
+  value?: string;
+  isCombo?: boolean;
+  isBookable?: boolean;
+}
+
+/**
+ * Message for chat/chattery components
+ * Used in Chattery and ChatteryWindow
+ */
+export interface Message {
+  _id?: string;
+  content: string;
+  createdDate: Date;
+  senderUsername: string;
+  isSeen?: boolean;
+  isFromMe?: boolean;
+}
+
+/**
+ * MeteorUser for server-side user references
+ * Used in mail.methods.ts and aws.slingshot.ts
+ */
+export interface MeteorUser {
+  _id: string;
+  username?: string;
+  emails?: Array<{ address: string; verified?: boolean }>;
+}
+
+/**
+ * DateAndTime for activity date/time occurrences in forms
+ * Used in DatesAndTimes, CalendarActivityForm, PublicActivityForm
+ */
+export interface DateAndTime {
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  attendees?: string[];
+  isRange?: boolean;
+  conflict?: any;
+  isConflictHard?: boolean;
+}
+
+/**
+ * CategoryItem for category management (with MongoDB _id)
+ * Used in CategoriesAdmin and WorkForm
+ * Note: Different from Category which uses categoryId for embedded documents
+ */
+export interface CategoryItem {
+  _id: string;
+  label: string;
+  categoryId?: string;
+  color?: string;
+}
+
+// Re-export types from shared.ts for convenience
+export type {
+  Activity,
+  Resource,
+  ResourceForCombo,
+  Booking,
+  DateTimeOccurrence,
+  Group,
+  CategoryLabel,
+} from '/imports/api/_utils/shared';

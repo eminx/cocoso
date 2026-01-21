@@ -10,6 +10,7 @@ import ImageUploader from '/imports/ui/forms/ImageUploader';
 import FormField from '/imports/ui/forms/FormField';
 import { loaderAtom } from '/imports/ui/utils/loaderHandler';
 import { message } from '/imports/ui/generic/message';
+import type { CategoryItem } from '/imports/ui/types';
 
 import workFormFields from './workFormFields';
 
@@ -23,14 +24,8 @@ interface WorkFormValues {
   title: string;
 }
 
-interface Category {
-  _id: string;
-  label: string;
-  categoryId?: string;
-}
-
 interface WorkData extends WorkFormValues {
-  category?: Category;
+  category?: CategoryItem;
   images?: string[];
 }
 
@@ -131,7 +126,7 @@ export default function WorkForm({ work, onFinalize }) {
     parseWork(images);
   };
 
-  const handleAutoCompleteSelectChange = (newValue: Category) => {
+  const handleAutoCompleteSelectChange = (newValue: CategoryItem) => {
     setState((prevState) => ({
       ...prevState,
       selectedCategory: newValue,

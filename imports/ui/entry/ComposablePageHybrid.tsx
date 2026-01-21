@@ -9,6 +9,7 @@ const ReactPlayer = loadable(() => import('react-player'));
 import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
+import type { Host } from '/imports/ui/types';
 
 interface ModuleValue {
   label?: string;
@@ -22,21 +23,13 @@ interface ModuleValue {
   images?: string[];
   src?: string;
   html?: string;
+  isLink?: boolean;
 }
 
 interface Module {
+  id?: string;
   type?: string;
   value?: ModuleValue;
-}
-
-interface Host {
-  host?: string;
-  settings?: {
-    menu?: Array<{
-      name: string;
-      label?: string;
-    }>;
-  };
 }
 
 interface ContentViewModuleProps {

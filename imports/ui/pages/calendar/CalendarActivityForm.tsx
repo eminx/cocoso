@@ -12,20 +12,11 @@ import DatesAndTimes, {
   emptyDateAndTime,
 } from '/imports/ui/forms/DatesAndTimes';
 import { loaderAtom } from '/imports/ui/utils/loaderHandler';
+import type { SelectedResource, DateAndTime } from '/imports/ui/types';
 
 import calendarActivityFormFields from './calendarActivityFormFields';
 
 const animatedComponents = makeAnimated();
-
-interface DateAndTime {
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  isRange?: boolean;
-  conflict?: boolean;
-  isConflictHard?: boolean;
-}
 
 interface CalendarActivityFormValues {
   title: string;
@@ -38,14 +29,6 @@ interface CalendarActivity extends CalendarActivityFormValues {
   resource?: string;
   resourceId?: string;
   isExclusiveActivity?: boolean;
-}
-
-interface SelectedResource {
-  _id: string;
-  label: string;
-  value?: string;
-  isCombo?: boolean;
-  isBookable?: boolean;
 }
 
 interface CalendarActivityFormProps {

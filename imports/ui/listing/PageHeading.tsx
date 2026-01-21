@@ -2,20 +2,9 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import { Box, Center, Divider, Heading, Text } from '/imports/ui/core';
+import type { Host } from '/imports/ui/types';
 
 import NewButton from './NewButton';
-
-interface Host {
-  host?: string;
-  logo?: string;
-  settings?: {
-    menu?: Array<{
-      name: string;
-      label?: string;
-      description?: string;
-    }>;
-  };
-}
 
 export interface PageHeadingProps {
   currentHost: Host;

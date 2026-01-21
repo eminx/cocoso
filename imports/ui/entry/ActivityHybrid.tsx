@@ -4,6 +4,7 @@ import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Center, Tag, Text } from '/imports/ui/core';
+import type { Host } from '/imports/ui/types';
 
 import ActionDates from './ActionDates';
 import FancyDate from './FancyDate';
@@ -13,12 +14,14 @@ import { DateOccurrence } from './ActionDates';
 interface Activity {
   _id: string;
   title?: string;
+  subTitle?: string;
   host?: string;
   authorUsername?: string;
   authorAvatar?: string;
   shortDescription?: string;
   longDescription?: string;
   imageUrl?: string;
+  images?: string[];
   isPublicActivity?: boolean;
   place?: string;
   resource?: string;
@@ -28,15 +31,6 @@ interface Activity {
   isActivitiesDisabled?: boolean;
   category?: {
     label?: string;
-  };
-}
-
-interface Host {
-  settings?: {
-    menu?: Array<{
-      name: string;
-      label?: string;
-    }>;
   };
 }
 

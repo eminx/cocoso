@@ -14,6 +14,7 @@ import DatesAndTimes, {
   emptyDateAndTime,
 } from '/imports/ui/forms/DatesAndTimes';
 import { message } from '/imports/ui/generic/message';
+import type { SelectedResource, DateAndTime } from '/imports/ui/types';
 
 import publicActivityFormFields from './publicActivityFormFields';
 
@@ -21,29 +22,12 @@ const animatedComponents = makeAnimated();
 const defaultCapacity = 40;
 const maxAttendees = 1000;
 
-interface DateAndTime {
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  attendees?: any[];
-  conflict?: boolean;
-  isConflictHard?: boolean;
-}
-
 interface ActivityFormValues {
   address: string;
   longDescription: string;
   place: string;
   subTitle: string;
   title: string;
-}
-
-interface SelectedResource {
-  _id: string;
-  label: string;
-  isCombo?: boolean;
-  isBookable?: boolean;
 }
 
 interface ActivityData extends ActivityFormValues {

@@ -15,20 +15,16 @@ import Tag from '/imports/ui/generic/Tag';
 import { message } from '/imports/ui/generic/message';
 import { currentUserAtom, roleAtom } from '../../../state';
 import { call } from '../../../api/_utils/shared';
+import type { CategoryItem } from '/imports/ui/types';
 
 import Boxling from './Boxling';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
-interface Category {
-  _id: string;
-  label: string;
-}
-
 export default function CategoriesAdmin() {
   const currentUser = useAtomValue(currentUserAtom);
   const role = useAtomValue(roleAtom);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [categoryInput, setCategoryInput] = useState('');
   const [loading, setLoading] = useState(true);
   const [t] = useTranslation('admin');

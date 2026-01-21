@@ -5,13 +5,9 @@ import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Text } from '/imports/ui/core';
 import DocumentsField from '/imports/ui/pages/resources/components/DocumentsField';
+import type { Document, Host } from '/imports/ui/types';
 
 import TablyCentered from './TablyCentered';
-
-interface Document {
-  _id: string;
-  name?: string;
-}
 
 interface Work {
   _id: string;
@@ -24,18 +20,10 @@ interface Work {
   additionalInfo?: string;
   contactInfo?: string;
   imageUrl?: string;
+  images?: string[];
   showAvatar?: boolean;
   category?: {
     label?: string;
-  };
-}
-
-interface Host {
-  settings?: {
-    menu?: Array<{
-      name: string;
-      label?: string;
-    }>;
   };
 }
 

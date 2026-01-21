@@ -11,6 +11,7 @@ import {
   EmailTemplate,
 } from './mail.helpers';
 import { getWelcomeEmailBody } from './templates.mails';
+import type { MeteorUser } from '/imports/ui/types';
 
 interface MailCredentials {
   smtp: {
@@ -36,12 +37,6 @@ interface HostDocument {
   };
   emails?: HostEmail[];
   logo?: string;
-}
-
-interface MeteorUser {
-  _id: string;
-  username?: string;
-  emails?: Array<{ address: string; verified?: boolean }>;
 }
 
 Meteor.methods({

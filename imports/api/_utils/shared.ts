@@ -634,6 +634,7 @@ export {
 export type {
   Activity,
   Resource,
+  ResourceForCombo,
   Booking,
   DateTimeOccurrence,
   Group,

@@ -5,15 +5,11 @@ import DOMPurify from 'isomorphic-dompurify';
 import { Box, Center } from '/imports/ui/core';
 import GroupDocuments from '/imports/ui/pages/groups/components/GroupDocuments';
 import GroupMembers from '/imports/ui/pages/groups/components/GroupMembers';
+import type { Document, Host } from '/imports/ui/types';
 
 import TablyCentered from './TablyCentered';
 import ActionDates from './ActionDates';
 import { DateOccurrence } from './ActionDates';
-
-interface Document {
-  _id: string;
-  name?: string;
-}
 
 interface Group {
   _id: string;
@@ -24,15 +20,6 @@ interface Group {
   imageUrl?: string;
   isPrivate?: boolean;
   meetings?: DateOccurrence[];
-}
-
-interface Host {
-  settings?: {
-    menu?: Array<{
-      name: string;
-      label?: string;
-    }>;
-  };
 }
 
 export interface GroupHybridProps {

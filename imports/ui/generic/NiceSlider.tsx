@@ -5,6 +5,7 @@ import { Fade, Slide } from 'react-slideshow-image';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { Box, Center, Flex, Image } from '/imports/ui/core';
+import type { DotsProps } from '/imports/ui/types';
 
 if (Meteor.isClient) {
   import('react-slideshow-image/dist/styles.css');
@@ -59,11 +60,6 @@ function FilledCircle() {
       />
     </svg>
   );
-}
-
-interface DotsProps {
-  images: string[];
-  currentSlideIndex: number;
 }
 
 function Dots({ images, currentSlideIndex }: DotsProps) {

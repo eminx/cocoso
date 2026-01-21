@@ -3,6 +3,7 @@ import React from 'react';
 
 import ChatteryWindow from './ChatteryWindow';
 import ChatteryInput from './ChatteryInput';
+import type { Message } from '/imports/ui/types';
 
 if (Meteor.isClient) {
   import './chattery.css';
@@ -10,13 +11,6 @@ if (Meteor.isClient) {
 
 const noMemberText =
   'If you want to participate to the discussion, please join the group.';
-
-interface Message {
-  _id: string;
-  content: string;
-  senderUsername: string;
-  createdDate: Date;
-}
 
 interface ChatteryProps {
   messages: Message[];

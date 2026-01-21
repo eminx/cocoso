@@ -9,6 +9,7 @@ import { Alert, Box, Center, Flex, Tabs } from '/imports/ui/core';
 import { stripHtml, getFullName } from '/imports/api/_utils/shared';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 import MemberAvatarEtc from '/imports/ui/generic/MemberAvatarEtc';
+import type { Host } from '/imports/ui/types';
 
 import BackLink from './BackLink';
 
@@ -47,15 +48,8 @@ export function Bio({ user }: BioProps) {
 interface User {
   username?: string;
   bio?: string;
-}
-
-interface Host {
-  settings?: {
-    menu?: Array<{
-      name: string;
-      label?: string;
-    }>;
-  };
+  avatar?: { src?: string } | string;
+  keywords?: Array<{ keywordLabel?: string }>;
 }
 
 export interface UserHybridProps {

@@ -5,6 +5,7 @@ import FsLightbox from 'fslightbox-react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { Flex, Center } from '/imports/ui/core';
+import type { DotsProps } from '/imports/ui/types';
 
 const imageStyle: React.CSSProperties = {
   cursor: 'pointer',
@@ -55,11 +56,6 @@ function FilledCircle() {
       />
     </svg>
   );
-}
-
-interface DotsProps {
-  images: string[];
-  currentSlideIndex: number;
 }
 
 function Dots({ images, currentSlideIndex }: DotsProps) {

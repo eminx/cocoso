@@ -14,21 +14,14 @@ import {
   Text,
   Wrap,
 } from '/imports/ui/core';
+import type { DateAndTime } from '/imports/ui/types';
 
 import { call } from '../../api/_utils/shared';
 import DateTimePicker from './DateTimePicker';
 
 const today = new Date().toISOString().substring(0, 10);
 
-export interface DateAndTime {
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  attendees?: string[];
-  isRange?: boolean;
-  conflict?: any;
-}
+export type { DateAndTime };
 
 export const emptyDateAndTime: DateAndTime = {
   startDate: today,

@@ -6,18 +6,9 @@ import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Flex, Text } from '/imports/ui/core';
 import DocumentsField from '/imports/ui/pages/resources/components/DocumentsField';
+import type { Document, Host, ResourceForCombo } from '/imports/ui/types';
 
 import TablyCentered from './TablyCentered';
-
-interface Document {
-  _id: string;
-  name?: string;
-}
-
-interface ResourceForCombo {
-  _id: string;
-  label?: string;
-}
 
 interface Resource {
   _id: string;
@@ -25,19 +16,11 @@ interface Resource {
   host?: string;
   description?: string;
   imageUrl?: string;
+  images?: string[];
   capacity?: number;
   isBookable?: boolean;
   isCombo?: boolean;
   resourcesForCombo?: ResourceForCombo[];
-}
-
-interface Host {
-  settings?: {
-    menu?: Array<{
-      name: string;
-      label?: string;
-    }>;
-  };
 }
 
 export interface ResourceHybridProps {

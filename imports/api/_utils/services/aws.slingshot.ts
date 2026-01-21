@@ -1,17 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
+import type { MeteorUser } from '/imports/ui/types';
+
 interface S3Settings {
   AWSAccessKeyId: string;
   AWSSecretAccessKey: string;
   AWSBucketName: string;
   AWSBucketReadingMaterials: string;
   AWSRegion: string;
-}
-
-interface MeteorUser {
-  _id: string;
-  username?: string;
 }
 
 interface SlingshotContext {
