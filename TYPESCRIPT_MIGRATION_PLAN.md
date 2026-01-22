@@ -968,6 +968,76 @@ When you refactor methods/publications, consider:
 
 ---
 
+## Type Consolidation (Completed)
+
+As part of the migration, duplicate and inconsistent type definitions across the codebase were consolidated into `/imports/ui/types.ts`. This ensures a single source of truth for shared types.
+
+### Consolidated Types in `/imports/ui/types.ts`
+
+| Type | Used In | Notes |
+|------|---------|-------|
+| `User` | User-related components | Extends `Meteor.User` |
+| `BaseDocument` | All document types | Base for MongoDB documents |
+| `Category` | Works, embedded categories | Uses `categoryId` for embedded docs |
+| `DocumentFile` | Works, Groups | File attachments |
+| `Work` | Work-related components | Extends `BaseDocument` |
+| `MenuItem` | Host settings, navigation | Menu configuration |
+| `Host` | Entry pages, listing components | Platform/organization host |
+| `Document` | Groups, Resources, Works | Generic document attachment |
+| `DotsProps` | `EmblaSlider`, `NiceSlider` | Slider dot indicators |
+| `SelectedResource` | `CalendarActivityForm`, `PublicActivityForm` | Resource selection in forms |
+| `Message` | `Chattery`, `ChatteryWindow` | Chat messages |
+| `MeteorUser` | `mail.methods.ts`, `aws.slingshot.ts` | Server-side user references |
+| `DateAndTime` | `DatesAndTimes`, `CalendarActivityForm`, `PublicActivityForm` | Activity date/time occurrences |
+| `CategoryItem` | `CategoriesAdmin`, `WorkForm` | MongoDB category documents (with `_id`) |
+
+### Re-exported Types from `/imports/api/_utils/shared.ts`
+
+These types are re-exported from `types.ts` for convenience:
+- `Activity`, `Resource`, `ResourceForCombo`, `Booking`, `DateTimeOccurrence`, `Group`, `CategoryLabel`
+
+### Why This Won't Break the App
+
+1. **Same type shapes** - All consolidated types maintain the same properties as the original local definitions. Extended properties are made optional where needed.
+
+2. **Re-exports maintained** - Files like `DatesAndTimes.tsx` still re-export types for backward compatibility with existing imports.
+
+3. **Backward compatible** - The shared types are supersets of the original local types:
+   - `DateAndTime` includes both `attendees` (from PublicActivityForm) and `isConflictHard` (from CalendarActivityForm)
+   - `CategoryItem` includes both `_id`/`label` (from CategoriesAdmin) and optional `categoryId`/`color` (from WorkForm)
+   - `MeteorUser` includes `emails` array (from mail.methods) while aws.slingshot only used `username`
+
+4. **Import paths work** - Meteor resolves `/imports/...` paths correctly, so both UI and API files can import from `/imports/ui/types`.
+
+### Files Updated to Use Shared Types
+
+**UI Components:**
+- `imports/ui/chattery/ChatteryWindow.tsx` - `Message`
+- `imports/ui/chattery/Chattery.tsx` - `Message`
+- `imports/ui/generic/EmblaSlider.tsx` - `DotsProps`
+- `imports/ui/generic/NiceSlider.tsx` - `DotsProps`
+- `imports/ui/listing/HostFiltrer.tsx` - `Host`
+- `imports/ui/entry/GroupHybrid.tsx` - `Host`
+- `imports/ui/entry/ResourceHybrid.tsx` - `Host`
+- `imports/ui/entry/WorkHybrid.tsx` - `Host`
+- `imports/ui/entry/ActivityHybrid.tsx` - `Host`
+- `imports/ui/entry/UserHybrid.tsx` - `Host`
+- `imports/ui/entry/ComposablePageHybrid.tsx` - `Host`
+- `imports/ui/listing/PageHeading.tsx` - `Host`
+
+**Form Components:**
+- `imports/ui/forms/DatesAndTimes.tsx` - `DateAndTime` (re-exports)
+- `imports/ui/pages/calendar/CalendarActivityForm.tsx` - `SelectedResource`, `DateAndTime`
+- `imports/ui/pages/activities/PublicActivityForm.tsx` - `SelectedResource`, `DateAndTime`
+- `imports/ui/pages/admin/CategoriesAdmin.tsx` - `CategoryItem`
+- `imports/ui/pages/works/WorkForm.tsx` - `CategoryItem`
+
+**API/Server Files:**
+- `imports/api/_utils/services/mails/mail.methods.ts` - `MeteorUser`
+- `imports/api/_utils/services/aws.slingshot.ts` - `MeteorUser`
+
+---
+
 ## Post-Migration Tasks
 
 ### 1. Update tsconfig.json
