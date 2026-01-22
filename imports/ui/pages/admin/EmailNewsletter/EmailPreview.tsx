@@ -50,7 +50,7 @@ export function ActivityDate({ date }) {
   return <DateSign date={date.startDate} />;
 }
 
-export function ActivityDates({ activity, currentHost, centered = false }) {
+export function ActivityDates({ activity, centered = false }) {
   if (!activity) {
     return null;
   }
@@ -123,6 +123,16 @@ const getButtonStyle = (theme) => ({
   textAlign: 'center',
 });
 
+const imageStyle = {
+  margin: '24px auto',
+  width: '100%',
+};
+
+const hrStyle = {
+  borderColor: '#252525',
+  margin: '36px 0',
+};
+
 const maxChCount = 360;
 
 export default function EmailPreview({ currentHost, email }) {
@@ -149,38 +159,44 @@ export default function EmailPreview({ currentHost, email }) {
 
     if (typeof body === 'string') {
       return (
-        <Section style={{ marginBottom: 12 }}>
-          {email.imageUrl && (
-            <Img
-              style={{ margin: '24px auto', maxWidth: '456px' }}
-              src={email.imageUrl}
-              alt={subject}
-              height="auto"
-            />
-          )}
-          <div style={{ fontSize: 18 }}>
-            {HTMLReactParser(DOMPurify.sanitize(body))}
-          </div>
-        </Section>
+        <Container>
+          <Section style={{ marginBottom: 12 }}>
+            {email.imageUrl && (
+              <Img
+                alt={subject}
+                height="auto"
+                src={email.imageUrl}
+                style={imageStyle}
+              />
+            )}
+            <div style={{ fontSize: 16 }}>
+              {HTMLReactParser(DOMPurify.sanitize(body))}
+            </div>
+          </Section>
+        </Container>
       );
     }
 
     return body.map((content) =>
       content?.type === 'image' && content?.value?.src ? (
-        <Section key={content.id} style={{ marginBottom: 24 }}>
-          <Img
-            style={{ margin: '24px auto', maxWidth: '456px' }}
-            src={content?.value?.src}
-            alt={subject}
-            height="auto"
-          />
-        </Section>
+        <Container>
+          <Section key={content.id} style={{ marginBottom: 24 }}>
+            <Img
+              alt={subject}
+              height="auto"
+              src={content?.value?.src}
+              style={imageStyle}
+            />
+          </Section>
+        </Container>
       ) : content?.type === 'text' && content?.value?.html ? (
-        <Section key={content.id} style={{ fontSize: 18, marginBottom: 24 }}>
-          {HTMLReactParser(DOMPurify.sanitize(content.value.html))}
-        </Section>
+        <Container>
+          <Section key={content.id} style={{ fontSize: 16, marginBottom: 24 }}>
+            {HTMLReactParser(DOMPurify.sanitize(content.value.html))}
+          </Section>
+        </Container>
       ) : content?.type === 'divider' ? (
-        <Hr key={content.id} style={{ margin: '24px 0' }} />
+        <Hr key={content.id} style={hrStyle} />
       ) : null
     );
   };
@@ -191,10 +207,10 @@ export default function EmailPreview({ currentHost, email }) {
       <Body
         style={{
           backgroundColor: theme?.body?.backgroundColor,
-          padding: '24px',
+          padding: '18px',
         }}
       >
-        <Container style={{ margin: '0 auto', padding: '20px 0 48px' }}>
+        <Container>
           <Link href={`https://${host}/newsletters/[newsletter-id]`}>
             <Text
               style={{
@@ -205,7 +221,6 @@ export default function EmailPreview({ currentHost, email }) {
               }}
             >
               {t('newsletter.labels.browserlink')}
-              {/* Browser */}
             </Text>
           </Link>
 
@@ -218,7 +233,7 @@ export default function EmailPreview({ currentHost, email }) {
                 height: 'auto',
                 margin: '24px auto',
                 width: '80%',
-                maxWidth: 480,
+                maxWidth: 360,
                 objectFit: 'contain',
               }}
             />
@@ -242,106 +257,117 @@ export default function EmailPreview({ currentHost, email }) {
 
           {renderBody()}
 
-          <Hr />
+          <Hr style={hrStyle} />
 
           {activities?.map((activity) => (
-            <Section key={activity._id} style={{ marginBottom: 24 }}>
-              <Link
-                href={`https://${activity.host}/activities/${activity._id}`}
-                style={{ color: '#0f64c0' }}
-              >
-                <Heading as="h2" style={titleStyle}>
-                  {activity?.title}
-                </Heading>
-              </Link>
-              <Text style={subTitleStyle}>{activity?.subTitle}</Text>
-
-              {(activity.images || activity.imageUrl) && (
+            <Container>
+              <Section key={activity._id} style={{ marginBottom: 24 }}>
                 <Link
                   href={`https://${activity.host}/activities/${activity._id}`}
+                  style={{ color: '#0f64c0' }}
                 >
-                  <Img
-                    src={
-                      (activity.images && activity.images[0]) ||
-                      activity.imageUrl
-                    }
-                    width="100%"
-                    height="auto"
-                    style={{ marginBottom: 12 }}
-                  />
+                  <Heading as="h2" style={titleStyle}>
+                    {activity?.title}
+                  </Heading>
                 </Link>
-              )}
-              <ActivityDates
-                activity={activity}
-                centered
-                currentHost={currentHost}
-              />
-              <Container>
-                {activity?.longDescription &&
-                  HTMLReactParser(
-                    truncate(
-                      DOMPurify.sanitize(activity.longDescription),
-                      maxChCount
-                    )
-                  )}
-              </Container>
-              <Text style={{ textAlign: 'center' }}>
-                <Button
-                  href={`https://${activity.host}/activities/${activity._id}`}
-                  style={buttonStyle}
-                >
-                  {tc('actions.entryPage')}
-                </Button>
-              </Text>
-            </Section>
+                <Text style={subTitleStyle}>{activity?.subTitle}</Text>
+
+                {(activity.images || activity.imageUrl) && (
+                  <Link
+                    href={`https://${activity.host}/activities/${activity._id}`}
+                  >
+                    <Img
+                      alt={activity?.title}
+                      height="auto"
+                      src={
+                        (activity.images && activity.images[0]) ||
+                        activity.imageUrl
+                      }
+                      style={imageStyle}
+                      width="100%"
+                    />
+                  </Link>
+                )}
+                <ActivityDates
+                  activity={activity}
+                  centered
+                  currentHost={currentHost}
+                />
+                <Container>
+                  {activity?.longDescription &&
+                    HTMLReactParser(
+                      truncate(
+                        DOMPurify.sanitize(activity.longDescription),
+                        maxChCount
+                      )
+                    )}
+                </Container>
+                <Text style={{ textAlign: 'center' }}>
+                  <Button
+                    href={`https://${activity.host}/activities/${activity._id}`}
+                    style={buttonStyle}
+                  >
+                    {tc('actions.entryPage')}
+                  </Button>
+                </Text>
+
+                <Hr style={hrStyle} />
+              </Section>
+            </Container>
           ))}
 
           {works?.map((work) => (
-            <Section key={work._id} style={{ marginBottom: 24 }}>
-              <Link
-                href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
-                style={{ color: '#0f64c0' }}
-              >
-                <Heading as="h2" style={titleStyle}>
-                  {work?.title}
-                </Heading>
-              </Link>
-              <Text style={subTitleStyle}>{work?.shortDescription}</Text>
-              {work.images && (
+            <Container>
+              <Section key={work._id} style={{ marginBottom: 24 }}>
                 <Link
                   href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
+                  style={{ color: '#0f64c0' }}
                 >
-                  <Img
-                    src={work.images && work.images[0]}
-                    width="100%"
-                    height="auto"
-                    style={{ marginBottom: 12 }}
-                  />
+                  <Heading as="h2" style={titleStyle}>
+                    {work?.title}
+                  </Heading>
                 </Link>
-              )}
-              <Container>
-                {work?.longDescription &&
-                  HTMLReactParser(
-                    truncate(
-                      DOMPurify.sanitize(work.longDescription),
-                      maxChCount
-                    )
-                  )}
-              </Container>
-              <Text style={{ textAlign: 'center' }}>
-                <Button
-                  href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
-                  style={buttonStyle}
-                >
-                  {tc('actions.entryPage')}
-                </Button>
-              </Text>
-            </Section>
+                <Text style={subTitleStyle}>{work?.shortDescription}</Text>
+                {work.images && (
+                  <Link
+                    href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
+                  >
+                    <Img
+                      alt={work?.title}
+                      height="auto"
+                      src={work.images && work.images[0]}
+                      style={imageStyle}
+                      width="100%"
+                    />
+                  </Link>
+                )}
+                <Container>
+                  {work?.longDescription &&
+                    HTMLReactParser(
+                      truncate(
+                        DOMPurify.sanitize(work.longDescription),
+                        maxChCount
+                      )
+                    )}
+                </Container>
+                <Text style={{ textAlign: 'center' }}>
+                  <Button
+                    href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
+                    style={buttonStyle}
+                  >
+                    {tc('actions.entryPage')}
+                  </Button>
+                </Text>
+
+                <Hr style={hrStyle} />
+              </Section>
+            </Container>
           ))}
 
           <Section
             style={{
-              maxWidth: '456px',
+              width: 280,
+              margin: '0 auto',
               padding: '24px 0',
               textAlign: 'center',
             }}

@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useLoaderData, useLocation, useSearchParams } from 'react-router';
+import {
+  useLoaderData,
+  useLocation,
+  useRevalidator,
+  useSearchParams,
+} from 'react-router';
 import dayjs from 'dayjs';
 import { Trans, useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
@@ -107,6 +112,7 @@ export default function Members() {
   const isDesktop = useAtomValue(isDesktopAtom);
   const role = useAtomValue(roleAtom);
   const { members } = useLoaderData();
+  const revalidator = useRevalidator();
   const [sortBy, setSortBy] = useState('join-date');
   const [filterWord, setFilterWord] = useState('');
   const [userForUsageReport, setUserForUsageReport] = useState(null);
@@ -120,7 +126,7 @@ export default function Members() {
   const setAsParticipant = async (user) => {
     try {
       await call('setAsParticipant', user.id);
-      getMembers();
+      revalidator.revalidate();
       message.success(
         t('message.success.participant', { username: user.username })
       );
@@ -135,7 +141,7 @@ export default function Members() {
   const setAsContributor = async (user) => {
     try {
       await call('setAsContributor', user.id);
-      getMembers();
+      revalidator.revalidate();
       message.success(
         t('message.success.contributor', { username: user.username })
       );
@@ -147,13 +153,12 @@ export default function Members() {
     }
   };
 
-  const setAsAdmin = async (user) => {
+  const setAsAdmin = async (user: any) => {
     try {
       await call('setAsAdmin', user.id);
-      getMembers();
+      revalidator.revalidate();
       message.success(t('message.success.admin', { username: user.username }));
     } catch (error: any) {
-      console.log(error);
       message.error({
         title: error.reason || error.error,
         status: 'error',
