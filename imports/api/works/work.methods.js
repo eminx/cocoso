@@ -131,11 +131,12 @@ Meteor.methods({
   },
 
   async deleteWork(workId) {
-    const userId = await Meteor.userAsync()?._id;
+    const user = await Meteor.userAsync();
 
-    if (!userId) {
+    if (!user) {
       throw new Meteor.Error('You are not allowed!');
     }
+    const userId = user._id;
 
     const work = await Works.findOneAsync(workId);
     if (work.authorId !== userId) {

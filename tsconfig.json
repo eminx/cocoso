@@ -22,13 +22,7 @@
     "noFallthroughCasesInSwitch": false,
 
     /* Module Resolution Options */
-    "baseUrl": ".",
     "jsxImportSource": "react",
-    "paths": {
-      /* Support absolute /imports/* with a leading '/' */
-      "/*": ["*"]
-    },
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "types": [],
     "esModuleInterop": true,
