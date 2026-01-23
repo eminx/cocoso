@@ -456,17 +456,17 @@ Meteor.methods({
       throw new Meteor.Error('You are not a member anyways!');
     }
     try {
-      await Promise.all(
-        Hosts.find({ 'members.id': userId })
-          .fetch()
-          .forEachAsync(async (host) => {
-            await Hosts.updateAsync(host._id, {
-              $pull: { members: { id: userId } },
-            });
-          })
+      await Hosts.updateAsync(
+        { 'members.id': userId },
+        {
+          $pull: { members: { id: userId } },
+        },
+        { multi: true }
       );
       await Meteor.users.removeAsync(userId);
+      return true;
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error);
     }
   },

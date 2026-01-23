@@ -45,11 +45,14 @@ export default function EditProfile() {
   const deleteAccount = async () => {
     setIsDeleting(true);
     try {
-      await call('deleteAccount');
-      message.success(tc('message.success.remove'));
-      navigate('/');
+      const deleted = await call('deleteAccount');
+      if (deleted) {
+        message.success(tc('message.success.remove'));
+        navigate('/');
+      }
     } catch (error) {
-      message.error(error.reason);
+      console.log(error);
+      message.error(error?.error || error?.reason);
     }
   };
 
