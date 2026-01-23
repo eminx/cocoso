@@ -1,13 +1,10 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
+
+import type { Message } from '/imports/ui/types';
 
 import ChatteryWindow from './ChatteryWindow';
 import ChatteryInput from './ChatteryInput';
-import type { Message } from '/imports/ui/types';
-
-if (Meteor.isClient) {
-  import './chattery.css';
-}
+import './chattery.css';
 
 const noMemberText =
   'If you want to participate to the discussion, please join the group.';

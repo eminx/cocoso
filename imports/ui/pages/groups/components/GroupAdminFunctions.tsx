@@ -20,12 +20,12 @@ export default function GroupAdminFunctions() {
   const [tc] = useTranslation('common');
 
   useEffect(() => {
-    if (group.isPrivate) {
+    if (group && group.isPrivate) {
       setSearchParams({ invite: 'true' });
     }
   }, []);
 
-  const handleSelect = (item) => {
+  const handleSelect = (item: any) => {
     if (item.kind === 'edit') {
       setSearchParams({ edit: 'true' });
       return;
@@ -58,7 +58,7 @@ export default function GroupAdminFunctions() {
     },
   ];
 
-  if (group.isPrivate) {
+  if (group && group.isPrivate) {
     menuItems.push({
       kind: 'invite',
       label: t('actions.invite'),
@@ -69,6 +69,7 @@ export default function GroupAdminFunctions() {
     kind: 'edit',
     label: tc('actions.update'),
   });
+
   menuItems.push({
     kind: 'delete',
     label: tc('actions.remove'),
@@ -82,7 +83,7 @@ export default function GroupAdminFunctions() {
       {popup === 'meeting' ? <AddMeeting onClose={handleClose} /> : null}
       {popup === 'members' ? <ManageMembers onClose={handleClose} /> : null}
 
-      {group.isPrivate ? <InviteManager /> : null}
+      {group?.isPrivate ? <InviteManager /> : null}
       <DeleteEntryHandler item={group} context="groups" />
     </>
   );

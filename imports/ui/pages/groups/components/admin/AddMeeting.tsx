@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useRevalidator } from 'react-router';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { useAtom, useAtomValue } from 'jotai';
 
-import { currentUserAtom, currentHostAtom } from '/imports/state';
+import { currentHostAtom } from '/imports/state';
 import {
   Box,
   Button,
@@ -94,7 +95,6 @@ function AddMeetingForm({
 }
 
 export default function AddMeeting({ onClose }) {
-  const currentUser = useAtomValue(currentUserAtom);
   const currentHost = useAtomValue(currentHostAtom);
   const [state, setState] = useState({
     activities: [],
@@ -107,8 +107,9 @@ export default function AddMeeting({ onClose }) {
   const [group, setGroup] = useAtom(groupAtom);
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
-  const { activities, conflictingBooking, isFormValid, newMeeting, resources } =
-    state;
+  const revalidator = useRevalidator();
+
+  const { conflictingBooking, isFormValid, newMeeting, resources } = state;
 
   const getData = async () => {
     try {
@@ -119,8 +120,8 @@ export default function AddMeeting({ onClose }) {
         activities: activitiesReceived,
         resources: resourcesReceived,
       });
-    } catch (error) {
-      message.error(error.reason || error.error);
+    } catch (error: any) {
+      message.error(error?.reason || error?.error);
     }
   };
 
@@ -129,7 +130,7 @@ export default function AddMeeting({ onClose }) {
   }, []);
 
   const checkDatesForConflict = async () => {
-    const { resourceId, resource, startDate, startTime, endDate, endTime } =
+    const { resourceId, resource, startDate, startTime, endTime } =
       state.newMeeting;
     if (!resourceId || !startDate || !startTime || !endTime) {
       if (resource) {
@@ -232,9 +233,10 @@ export default function AddMeeting({ onClose }) {
     };
 
     try {
-      const response = await call('createActivity', activityValues);
+      await call('createActivity', activityValues);
       const groupId = group?._id;
       setGroup(await call('getGroupWithMeetings', groupId));
+      revalidator.revalidate();
       setState((prevState) => ({
         ...prevState,
         isSubmitted: false,

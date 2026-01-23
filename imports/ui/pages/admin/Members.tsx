@@ -1,10 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import {
-  useLoaderData,
-  useLocation,
-  useRevalidator,
-  useSearchParams,
-} from 'react-router';
+import React, { useMemo, useState } from 'react';
+import { useLoaderData, useRevalidator, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { Trans, useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
@@ -18,7 +13,6 @@ import {
   Flex,
   Heading,
   Input,
-  Loader,
   Select,
   Tabs,
   Text,
@@ -118,7 +112,6 @@ export default function Members() {
   const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Keep hooks order stable; avoid early returns. Use conditional rendering below.

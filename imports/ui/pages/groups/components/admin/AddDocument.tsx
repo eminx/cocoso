@@ -1,9 +1,8 @@
-import { Meteor } from 'meteor/meteor';
-import { Slingshot } from 'meteor/edgee:slingshot';
 import React, { useState } from 'react';
+import { useRevalidator } from 'react-router';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 
 import {
   Box,
@@ -14,7 +13,6 @@ import {
   Spinner,
   Text,
 } from '/imports/ui/core';
-
 import DocumentUploadHelper from '/imports/ui/forms/UploadHelpers';
 import { message } from '/imports/ui/generic/message';
 import { call, uploadImage } from '/imports/api/_utils/shared';
@@ -26,12 +24,13 @@ export default function AddDocument({ onClose }) {
   const [isUploading, setIsUploading] = useState(false);
   const [tc] = useTranslation('common');
   const [group, setGroup] = useAtom(groupAtom);
+  const revalidator = useRevalidator();
 
   if (!group) {
     return null;
   }
 
-  const handleFileDrop = async (files) => {
+  const handleFileDrop = async (files: File[]) => {
     if (files.length !== 1) {
       message.error(tc('plugins.fileDropper.single'));
       return;
@@ -43,7 +42,7 @@ export default function AddDocument({ onClose }) {
     const uploadableFile = new File([file], parsedName, {
       type: file.type,
     });
-    const groupId = group._id;
+    const groupId = group?._id;
 
     try {
       const uploadedDocument = await uploadImage(
@@ -63,10 +62,10 @@ export default function AddDocument({ onClose }) {
         { name: parsedName, downloadUrl: uploadedDocument },
         groupId
       );
+      revalidator.revalidate();
       message.success(tc('message.success.create'));
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason || error.error);
+    } catch (error: any) {
+      message.error(error?.reason || error?.error);
     } finally {
       setIsUploading(false);
       setGroup(await call('getGroupWithMeetings', groupId));

@@ -2,7 +2,7 @@ import React from 'react';
 import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
-import { Box, Center } from '/imports/ui/core';
+import { Box } from '/imports/ui/core';
 import GroupDocuments from '/imports/ui/pages/groups/components/GroupDocuments';
 import GroupMembers from '/imports/ui/pages/groups/components/GroupMembers';
 import type { Document, Host } from '/imports/ui/types';
@@ -28,7 +28,11 @@ export interface GroupHybridProps {
   Host: Host;
 }
 
-export default function GroupHybrid({ group, documents, Host }: GroupHybridProps) {
+export default function GroupHybrid({
+  group,
+  documents,
+  Host,
+}: GroupHybridProps) {
   if (!group) {
     return null;
   }
@@ -57,7 +61,7 @@ export default function GroupHybrid({ group, documents, Host }: GroupHybridProps
   }
 
   const groupsInMenu = Host.settings?.menu.find(
-    (item) => item.name === 'groups'
+    (item: any) => item.name === 'groups'
   );
   const tags = [];
   if (group.isPrivate) {

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
 import {
-  Badge,
   Box,
   Center,
   Drawer,
@@ -16,7 +15,30 @@ import {
 import { call } from '/imports/api/_utils/shared';
 import Chats from '/imports/api/chats/chat';
 
-import { Chattery } from '../chattery';
+import Chattery from './ChatteryContainer';
+
+interface Notification {
+  unSeenIndexes?: number[];
+}
+
+interface CurrentUser {
+  _id: string;
+  notifications?: Notification[];
+}
+
+interface Item {
+  _id: string;
+}
+
+interface ChatUIProps {
+  context: string;
+  currentUser: CurrentUser | null;
+  item: Item | null;
+  open: boolean;
+  title?: string;
+  withInput: boolean;
+  setOpen: (open: boolean) => void;
+}
 
 export function ChatUI({
   context,
@@ -26,7 +48,7 @@ export function ChatUI({
   title,
   withInput,
   setOpen,
-}) {
+}: ChatUIProps) {
   const [tc] = useTranslation('common');
 
   if (!currentUser || !item) {
@@ -43,7 +65,7 @@ export function ChatUI({
     isFromMe: currentUser && message && message.senderId === currentUser._id,
   }));
 
-  const addNewChatMessage = async (messageContent) => {
+  const addNewChatMessage = async (messageContent: string) => {
     const values = {
       context,
       contextId,
@@ -57,7 +79,7 @@ export function ChatUI({
     }
   };
 
-  const removeNotification = async (messageIndex) => {
+  const removeNotification = async (messageIndex: number) => {
     const shouldRun = currentUser?.notifications?.find((notification) => {
       if (!notification.unSeenIndexes) {
         return false;
@@ -97,6 +119,15 @@ export function ChatUI({
   );
 }
 
+interface ChatButtonProps {
+  context: string;
+  currentUser: CurrentUser | null;
+  item: Item | null;
+  notificationCount?: number;
+  title?: string;
+  withInput: boolean;
+}
+
 export function ChatButton({
   context,
   currentUser,
@@ -104,11 +135,11 @@ export function ChatButton({
   notificationCount,
   title,
   withInput,
-}) {
+}: ChatButtonProps) {
   const [open, setOpen] = useState(false);
   const [tc] = useTranslation('common');
 
-  const props = {
+  const props: ChatUIProps = {
     context,
     currentUser,
     item,

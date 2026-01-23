@@ -9,8 +9,8 @@ import {
 } from '/imports/state';
 import { Box, Flex, Text } from '/imports/ui/core';
 import SlideWidget from '/imports/ui/entry/SlideWidget';
-import { ChatButton } from '/imports/ui/chattery/ChatHandler';
 
+import { ChatButton } from '../../../chattery/ChatHandler';
 import ActivityAdminFunctions from './ActivityAdminFunctions';
 import RsvpHandler from './RsvpHandler';
 import { activityAtom } from '../ActivityItemHandler';
