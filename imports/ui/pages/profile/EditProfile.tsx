@@ -18,7 +18,7 @@ import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/api/_utils/shared';
 import { currentUserAtom, platformAtom, roleAtom } from '/imports/state';
 
-export const subSpanStyle = {
+export const subSpanStyle: React.CSSProperties = {
   fontSize: '0.875rem',
   fontWeight: 300,
   textTransform: 'lowercase',
@@ -50,8 +50,7 @@ export default function EditProfile() {
         message.success(tc('message.success.remove'));
         navigate('/');
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
       message.error(error?.error || error?.reason);
     }
   };
@@ -96,14 +95,14 @@ export default function EditProfile() {
     <>
       <Box mb="8" css={{ minHeight: '100vh' }}>
         <Box w="100%">
-          <Heading size="md" mb="4">
+          <Heading size="md">
             {platform?.name}{' '}
             <span style={subSpanStyle}>{tc('domains.platform')}</span>
           </Heading>
 
           <Box mb="4">
             <Alert bg="bluegray.50" mb="8" type="info">
-              <Text fontSize="sm" mr="4">
+              <Text fontSize="sm">
                 {t('profile.message.platform', {
                   platform: platform?.name,
                 })}

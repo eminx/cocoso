@@ -4,7 +4,7 @@ import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { useAtom } from 'jotai';
 
-import { Box, Checkbox, NumberInput } from '/imports/ui/core';
+import { Checkbox, NumberInput } from '/imports/ui/core';
 import { loaderAtom } from '/imports/ui/utils/loaderHandler';
 import { call } from '/imports/api/_utils/shared';
 import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
@@ -55,7 +55,10 @@ export const emptyFormValues: ActivityFormValues = {
   title: '',
 };
 
-export default function PublicActivityForm({ activity, onFinalize }: PublicActivityFormProps) {
+export default function PublicActivityForm({
+  activity,
+  onFinalize,
+}: PublicActivityFormProps) {
   const [state, setState] = useState({
     capacity: activity ? activity.capacity : defaultCapacity,
     datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
@@ -64,9 +67,7 @@ export default function PublicActivityForm({ activity, onFinalize }: PublicActiv
       ? { label: activity.resource, _id: activity.resourceId }
       : null,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
-    isRegistrationEnabled: activity
-      ? !activity.isRegistrationDisabled || activity.isRegistrationEnabled
-      : true,
+    isRegistrationEnabled: activity ? activity.isRegistrationEnabled : true,
     resources: [],
   });
   const [loaders, setLoaders] = useAtom(loaderAtom);
