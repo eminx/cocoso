@@ -67,7 +67,7 @@ export default function PublicActivityForm({
       ? { label: activity.resource, _id: activity.resourceId }
       : null,
     isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
-    isRegistrationEnabled: activity ? activity.isRegistrationEnabled : true,
+    isRegistrationEnabled: activity ? activity.isRegistrationEnabled : false,
     resources: [],
   });
   const [loaders, setLoaders] = useAtom(loaderAtom);
