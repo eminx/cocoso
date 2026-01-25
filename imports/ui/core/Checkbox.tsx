@@ -15,7 +15,8 @@ const CheckboxContainerStyled = styled('label', {
   gap: '0.5rem',
 });
 
-interface CheckboxContainerProps extends React.ComponentProps<typeof CheckboxContainerStyled> {
+interface CheckboxContainerProps
+  extends React.ComponentProps<typeof CheckboxContainerStyled> {
   disabled?: boolean;
   children?: React.ReactNode;
 }
@@ -51,7 +52,8 @@ const CheckboxBoxStyled = styled('span', {
   },
 });
 
-interface CheckboxBoxProps extends React.ComponentProps<typeof CheckboxBoxStyled> {
+interface CheckboxBoxProps
+  extends React.ComponentProps<typeof CheckboxBoxStyled> {
   checked?: boolean;
   indeterminate?: boolean;
   size?: CheckboxSize;
@@ -59,13 +61,19 @@ interface CheckboxBoxProps extends React.ComponentProps<typeof CheckboxBoxStyled
   children?: React.ReactNode;
 }
 
-const CheckboxBox = ({ checked, indeterminate, size, ...rest }: CheckboxBoxProps) => (
+const CheckboxBox = ({
+  checked,
+  indeterminate,
+  size,
+  ...rest
+}: CheckboxBoxProps) => (
   <CheckboxBoxStyled
     css={{
       background: checked ? 'var(--cocoso-colors-theme-500)' : '#fff',
       border: `2px solid ${
         checked ? 'var(--cocoso-colors-theme-500)' : '#b3b3b3'
       }`,
+      flexShrink: 0,
       height: size === 'sm' ? '1rem' : size === 'lg' ? '1.5rem' : '1.25rem',
       width: size === 'sm' ? '1rem' : size === 'lg' ? '1.5rem' : '1.25rem',
       ...(indeterminate && {
@@ -92,7 +100,12 @@ interface CheckboxIconProps extends React.SVGProps<SVGSVGElement> {
   size?: CheckboxSize;
 }
 
-const CheckboxIcon = ({ checked, indeterminate, size, ...rest }: CheckboxIconProps) => (
+const CheckboxIcon = ({
+  checked,
+  indeterminate,
+  size,
+  ...rest
+}: CheckboxIconProps) => (
   <CheckboxIconStyled
     css={{
       display: checked || indeterminate ? 'block' : 'none',
@@ -117,7 +130,11 @@ const IndeterminateIcon = ({ size }: { size?: CheckboxSize }) => (
   </CheckboxIcon>
 );
 
-export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
+export interface CheckboxProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'size' | 'onChange'
+  > {
   checked?: boolean;
   indeterminate?: boolean;
   disabled?: boolean;
@@ -188,7 +205,8 @@ export function Checkbox({
   );
 }
 
-export interface CheckboxGroupProps extends Omit<React.ComponentProps<typeof Flex>, 'onChange'> {
+export interface CheckboxGroupProps
+  extends Omit<React.ComponentProps<typeof Flex>, 'onChange'> {
   direction?: 'row' | 'column';
   spacing?: string;
   children?: React.ReactNode;
