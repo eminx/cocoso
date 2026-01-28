@@ -8,7 +8,7 @@ import { Slide } from 'react-slideshow-image';
 import { useAtomValue } from 'jotai';
 import 'react-slideshow-image/dist/styles.css';
 
-import { Box, Button, Center } from '/imports/ui/core';
+import { Box, Button, Center, Link as CLink } from '/imports/ui/core';
 import { currentUserAtom, platformAtom } from '/imports/state';
 
 export default function RegistrationIntro() {
@@ -33,11 +33,10 @@ export default function RegistrationIntro() {
   const isLastSlide = currentSlide + 1 === registrationIntro?.length;
 
   const arrowButtonProps = {
-    mt: '512px',
     size: 'sm',
-    variant: 'link',
     css: {
       color: 'var(--cocoso-colors-gray-200)',
+      marginTop: '512px',
     },
   };
 
@@ -101,16 +100,14 @@ export default function RegistrationIntro() {
         </Center>
       </Box>
 
-      <Center p="4" mt="-82px">
+      <Center mb="8" p="4" css={{ marginTop: '-78px' }}>
         <Link to={isLastSlide ? '/communities' : '/'}>
-          <Button
-            as="div"
-            colorScheme="green"
+          <CLink
             size="sm"
-            variant={isLastSlide ? 'solid' : 'ghost'}
+            css={{ color: 'var(--cocoso-colors-blue-300)', fontSize: '0.9rem' }}
           >
             {isLastSlide ? tc('actions.start') : tc('actions.skip')}
-          </Button>
+          </CLink>
         </Link>
       </Center>
     </Box>

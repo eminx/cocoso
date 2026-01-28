@@ -166,8 +166,7 @@ export interface Platform {
   logo?: string;
   isFederationLayout?: boolean;
   footer?: string;
-  registrationIntro?: string;
-  isRegistrationEnabled?: boolean;
+  registrationIntro?: string[];
 }
 
 /**

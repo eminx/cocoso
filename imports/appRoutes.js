@@ -136,6 +136,24 @@ const Newsletter = loadable(() =>
 );
 const SetupHome = loadable(() => import('/imports/ui/pages/setup'));
 const NewHost = loadable(() => import('/imports/ui/pages/setup/NewHost'));
+const PlatformSettings = loadable(() =>
+  import('./ui/pages/superadmin/PlatformSettings')
+);
+const PlatformSettingsLogo = loadable(() =>
+  import('./ui/pages/superadmin/PlatformSettingsLogo')
+);
+const PlatformSettingsForm = loadable(() =>
+  import('./ui/pages/superadmin/PlatformSettingsForm')
+);
+const PlatformSettingsOptions = loadable(() =>
+  import('./ui/pages/superadmin/PlatformSettingsOptions')
+);
+const PlatformSettingsFooter = loadable(() =>
+  import('./ui/pages/superadmin/PlatformSettingsFooter')
+);
+const PlatformRegistrationIntro = loadable(() =>
+  import('./ui/pages/superadmin/PlatformRegistrationIntro')
+);
 
 import { call } from '/imports/api/_utils/shared';
 import {
@@ -354,6 +372,32 @@ const getAdminRoutes = (props) => [
   {
     path: 'email-newsletter',
     element: createRouteElement(EmailNewsletter, props),
+  },
+  {
+    path: 'platform',
+    element: createRouteElement(PlatformSettings, props),
+    children: [
+      {
+        path: 'logo',
+        element: createRouteElement(PlatformSettingsLogo, props),
+      },
+      {
+        path: 'info',
+        element: createRouteElement(PlatformSettingsForm, props),
+      },
+      {
+        path: 'options',
+        element: createRouteElement(PlatformSettingsOptions, props),
+      },
+      {
+        path: 'footer',
+        element: createRouteElement(PlatformSettingsFooter, props),
+      },
+      {
+        path: 'intro',
+        element: createRouteElement(PlatformRegistrationIntro, props),
+      },
+    ],
   },
 ];
 

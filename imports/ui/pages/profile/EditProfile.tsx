@@ -110,7 +110,7 @@ export default function EditProfile() {
             </Alert>
           </Box>
 
-          <Tabs align="center" index={tabIndex} tabs={tabs} />
+          <Tabs index={tabIndex} tabs={tabs} />
 
           <Box mt="8">
             <Outlet />

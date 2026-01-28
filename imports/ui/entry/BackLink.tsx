@@ -23,7 +23,7 @@ export default function BackLink({ backLink }: BackLinkProps) {
   return (
     <Link to={link}>
       <Button
-        leftIcon={<ChevronLeftIcon size={18} />}
+        leftIcon={<ChevronLeftIcon fontSize={18} />}
         size="lg"
         variant="ghost"
         css={{

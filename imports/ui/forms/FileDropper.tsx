@@ -15,11 +15,12 @@ const containerStyle: React.CSSProperties & Record<string, any> = {
 };
 
 export interface FileDropperProps extends React.ComponentProps<typeof Flex> {
-  height?: string;
+  height?: string | null;
+  width?: string | null;
   imageFit?: 'contain' | 'cover';
   imageUrl?: string;
   round?: boolean;
-  uploadableImageLocal?: string;
+  uploadableImageLocal?: string | null;
   setUploadableImage: (files: File[]) => void;
   isMultiple?: boolean;
 }

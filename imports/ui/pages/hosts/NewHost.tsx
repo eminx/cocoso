@@ -30,7 +30,7 @@ const hostModel: HostFormValues = {
   about: '',
 };
 
-function NewHost() {
+export default function NewHost() {
   const currentUser = useAtomValue(currentUserAtom);
   const [isSuccess, setIsSuccess] = useState(false);
   const [tc] = useTranslation('common');
@@ -81,5 +81,3 @@ function NewHost() {
     </Box>
   );
 }
-
-export default NewHost;

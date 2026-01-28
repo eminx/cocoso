@@ -124,7 +124,7 @@ export const Text = (props: TextProps) => {
 // Heading
 interface HeadingProps extends TextProps {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  css: CSSProperties;
+  css?: CSSProperties;
   color?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 }
