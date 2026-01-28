@@ -1,14 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 import ChatteryBubble from './ChatteryBubble';
-
-interface Message {
-  content: string;
-  createdDate: Date;
-  senderUsername: string;
-  isSeen: boolean;
-  isFromMe: boolean;
-}
+import type { Message } from '/imports/ui/types';
 
 interface ChatteryWindowProps {
   messages: Message[];

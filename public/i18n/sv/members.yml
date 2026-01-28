@@ -1,6 +1,7 @@
 # ADMIN MEMBERS PAGE
 label: Användare
 dashboard: Adminpanel
+super: Superadminpanel
 all: Alla
 
 joinedAt: Gick med {{ date }}

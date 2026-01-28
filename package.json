@@ -118,9 +118,13 @@
     "modern": true
   },
   "devDependencies": {
+    "@types/react-big-calendar": "^1.16.3",
+    "@types/react-color": "^3.0.13",
+    "@types/react-csv": "^1.1.10",
     "@types/react-dom": "^19.1.6",
     "@types/react-helmet": "^6.1.11",
     "@types/react-router-dom": "^5.3.3",
+    "@types/react-table": "^7.7.20",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "postcss-load-config": "^6.0.1",

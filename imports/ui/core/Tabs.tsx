@@ -138,7 +138,7 @@ const CoTab: React.FC<CoTabProps> = ({ tab, selected }) => {
 interface TabsProps extends TabsListProps {
   index: number;
   tabs: TabType[];
-  withSearchParams: boolean;
+  withSearchParams?: boolean;
   children?: ReactNode;
 }
 

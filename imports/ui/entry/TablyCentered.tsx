@@ -19,7 +19,7 @@ import {
 
 import NiceSlider from '../generic/NiceSlider';
 import Tabs from '../core/Tabs';
-import BackLink from './BackLink';
+import BackLink, { BackLinkData } from './BackLink';
 
 interface Author {
   username: string;
@@ -32,7 +32,7 @@ interface AvatarHolderProps {
 
 interface HeaderProps {
   author?: Author | null;
-  backLink?: string;
+  backLink?: BackLinkData;
   dates?: React.ReactNode;
   subTitle?: string;
   tags?: string[] | null;

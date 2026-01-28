@@ -1,0 +1,200 @@
+import { Meteor } from 'meteor/meteor';
+import React, { useState } from 'react';
+import FsLightbox from 'fslightbox-react';
+import { Fade, Slide } from 'react-slideshow-image';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+import { Box, Center, Flex, Image } from '/imports/ui/core';
+import type { DotsProps } from '/imports/ui/types';
+
+if (Meteor.isClient) {
+  import('react-slideshow-image/dist/styles.css');
+}
+
+const imageStyle: React.CSSProperties = {
+  cursor: 'pointer',
+  maxHeight: '480px',
+  objectFit: 'contain',
+  position: 'relative',
+};
+
+function EmptyCircle() {
+  return (
+    <svg
+      width="8"
+      height="8"
+      viewBox="-2 -2 8 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="2"
+        cy="2"
+        r="2.5"
+        transform="matrix(1 0 0 -1 1.10059 2.81995)"
+        fill="white"
+        stroke="black"
+        strokeWidth="1"
+      />
+    </svg>
+  );
+}
+
+function FilledCircle() {
+  return (
+    <svg
+      width="8"
+      height="8"
+      viewBox="-2 -2 8 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="2"
+        cy="2"
+        r="2.5"
+        transform="matrix(1 0 0 -1 0.940552 2.81995)"
+        fill="#212121"
+        stroke="black"
+        strokeWidth="1"
+      />
+    </svg>
+  );
+}
+
+function Dots({ images, currentSlideIndex }: DotsProps) {
+  return (
+    <Center>
+      {images.length > 1 && (
+        <Flex p="2">
+          {images.map((image, index) =>
+            index === currentSlideIndex ? (
+              <FilledCircle key={image} />
+            ) : (
+              <EmptyCircle key={image} />
+            )
+          )}
+        </Flex>
+      )}
+    </Center>
+  );
+}
+
+interface ImageHandlerProps {
+  height: string | number;
+  width: string | number;
+  images: string[];
+  children: (image: string, index: number) => React.ReactNode;
+}
+
+function ImageHandler({ height, width, images, children }: ImageHandlerProps) {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const isMobile = Meteor.isClient && window.innerWidth < 768;
+
+  if (!images || images.length < 2) {
+    return null;
+  }
+
+  if (!isMobile) {
+    return (
+      <Box className="slide-container" h={height} w={width}>
+        <Fade
+          arrows
+          canSwipe
+          pauseOnHover={false}
+          transitionDuration={400}
+          onStartChange={(from: number, to: number) => setCurrentSlideIndex(to)}
+        >
+          {images.map((image, index) => children(image, index))}
+        </Fade>
+        <Dots currentSlideIndex={currentSlideIndex} images={images} />
+      </Box>
+    );
+  }
+  return (
+    <Box className="slide-container" h={height} w={width}>
+      <Slide
+        arrows
+        easing="cubic"
+        transitionDuration={800}
+        onStartChange={(from: number, to: number) => setCurrentSlideIndex(to)}
+      >
+        {images.map((image, index) => children(image, index))}
+      </Slide>
+      <Dots currentSlideIndex={currentSlideIndex} images={images} />
+    </Box>
+  );
+}
+
+export interface NiceSliderProps {
+  alt?: string;
+  images?: string[];
+  height?: string | number;
+  width?: string | number;
+}
+
+export default function NiceSlider({
+  alt,
+  images,
+  height = 'auto',
+  width = '100%',
+}: NiceSliderProps) {
+  const [toggler, setToggler] = useState(false);
+
+  if (!images || images.length === 0) {
+    return null;
+  }
+
+  if (images.length === 1) {
+    return (
+      <>
+        <Flex h={height} justify="center">
+          <Center>
+            <Image
+              src={images[0]}
+              style={imageStyle}
+              onClick={() => setToggler(!toggler)}
+            />
+          </Center>
+        </Flex>
+
+        {Meteor.isClient && (
+          <FsLightbox
+            toggler={toggler}
+            sources={images.map((img) => (
+              <img key={img} alt={img} src={img} />
+            ))}
+          />
+        )}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <ImageHandler height={height} images={images} width={width}>
+        {(image, index) => (
+          <Center key={image + index}>
+            <Flex direction="column" justify="center">
+              <LazyLoadImage
+                alt={`${alt} ${image}`}
+                src={image}
+                style={{ ...imageStyle, height }}
+                onClick={() => setToggler(!toggler)}
+              />
+            </Flex>
+          </Center>
+        )}
+      </ImageHandler>
+
+      {Meteor.isClient && (
+        <FsLightbox
+          toggler={toggler}
+          sources={images.map((img) => (
+            <img key={img} alt={img} src={img} />
+          ))}
+        />
+      )}
+    </>
+  );
+}

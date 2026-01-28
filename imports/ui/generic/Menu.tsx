@@ -19,6 +19,7 @@ interface GenericMenuProps {
   buttonLabel?: React.ReactNode;
   direction?: 'top' | 'bottom' | 'left' | 'right';
   leftIcon?: React.ReactNode;
+  open?: boolean;
   options?: MenuOption[];
   rightIcon?: React.ReactNode;
   children?: ((item: MenuOption) => React.ReactNode) | React.ReactNode;

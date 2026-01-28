@@ -1,0 +1,238 @@
+import React from 'react';
+import { Link, useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import Eye from 'lucide-react/dist/esm/icons/eye';
+import { useAtomValue } from 'jotai';
+
+import {
+  Avatar,
+  Box,
+  Code,
+  Flex,
+  Heading,
+  List,
+  ListItem,
+  Text,
+} from '/imports/ui/core';
+import { currentUserAtom, isDesktopAtom, roleAtom } from '/imports/state';
+import { getFullName } from '../../../api/_utils/shared';
+
+export function AdminMenuHeader({ currentHost }) {
+  return (
+    <Link to="/" style={{ width: '100%' }}>
+      <Box
+        bg="white"
+        px="4"
+        py="2"
+        css={{
+          '&:hover': {
+            backgroundColor: 'var(--cocoso-colors-bluegray-200)',
+          },
+          ':focus': {
+            backgroundColor: 'var(--cocoso-colors-bluegray-300)',
+          },
+        }}
+      >
+        <Flex
+          align="center"
+          gap="2"
+          css={{ color: 'var(--cocoso-colors-bluegray-900)' }}
+        >
+          <Eye />
+          <Text color="bluegray.900" fontWeight="bold" fontSize="lg">
+            {currentHost.settings?.name}
+          </Text>
+        </Flex>
+        <Code bg="bluegray.50" color="bluegray.900" fontSize="xs">
+          {currentHost.host}
+        </Code>
+      </Box>
+    </Link>
+  );
+}
+
+export function AdminUserThumb({ currentUser }) {
+  const location = useLocation();
+
+  if (!currentUser) {
+    return null;
+  }
+
+  const isCurrentRoute = location?.pathname?.includes('my-profile');
+
+  return (
+    <Box
+      bg={isCurrentRoute ? 'bluegray.900' : 'bluegray.700'}
+      p="4"
+      css={{
+        '&:hover': {
+          backgroundColor: 'var(--cocoso-colors-bluegray-800)',
+        },
+      }}
+    >
+      <Flex align="center">
+        <Avatar
+          name={currentUser.username}
+          size="lg"
+          src={currentUser.avatar && currentUser.avatar.src}
+          css={{
+            backgroundColor: 'var(--cocoso-colors-theme-100)',
+            borderRadius: 'var(--cocoso-border-radius)',
+            '&:hover': {
+              backgroundColor: 'var(--cocoso-colors-theme-200)',
+            },
+          }}
+        />
+
+        <Flex direction="column" pl="2">
+          <Box>
+            <Text fontSize="lg" css={{ color: 'white', fontWeight: 'bold' }}>
+              {currentUser.username}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontWeight="light" css={{ color: 'white' }}>
+              {getFullName(currentUser)}
+            </Text>
+          </Box>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+}
+
+function AdminMenuItem({ item, isSub = false, parentValue, onClick }) {
+  if (!item) {
+    return null;
+  }
+
+  const location = useLocation();
+  const pathname = location?.pathname;
+  const isCurrentRoute = pathname.includes(item.value);
+
+  if (isSub && !pathname.includes(parentValue)) {
+    return null;
+  }
+
+  return (
+    <Box
+      cursor="pointer"
+      p="2.5"
+      css={{
+        backgroundColor:
+          isCurrentRoute && !item.isMulti
+            ? 'var(--cocoso-colors-bluegray-100)'
+            : null,
+        borderRightColor: 'var(--cocoso-colors-bluegray-500)',
+        borderRightStyle: 'solid',
+        borderRightWidth: isCurrentRoute && !item.isMulti ? '3px' : '0',
+        marginLeft: isSub ? '1rem' : '0',
+        '&:hover': {
+          backgroundColor: 'var(--cocoso-colors-bluegray-100)',
+        },
+      }}
+      onClick={onClick}
+    >
+      <Text
+        css={{
+          color: 'var(--cocoso-colors-bluegray-800)',
+          fontWeight: isCurrentRoute ? 'bold' : 'normal',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {item.label}
+      </Text>
+    </Box>
+  );
+}
+
+export default function AdminMenu({ currentHost, routes, onItemClick }) {
+  const currentUser = useAtomValue(currentUserAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
+  const role = useAtomValue(roleAtom);
+  const [t] = useTranslation('admin');
+
+  const isAdmin = role === 'admin';
+
+  if (!currentHost || !currentUser) {
+    return null;
+  }
+
+  const handleUserThumbClick = () => {
+    onItemClick({ value: '/admin/my-profile' });
+  };
+
+  // const { isPortalHost } = currentHost;
+  // const { isSuperAdmin } = currentUser;
+
+  return (
+    <Flex
+      bg="bluegray.50"
+      h={isDesktop ? '100%' : 'calc(100% - 80px)'}
+      w={isDesktop ? '320px' : '100%'}
+      css={{
+        position: 'fixed',
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+      }}
+    >
+      {isDesktop && <AdminMenuHeader currentHost={currentHost} />}
+
+      <Flex
+        direction="column"
+        justify="space-between"
+        h="100%"
+        w="100%"
+        css={{ overflowY: 'auto' }}
+      >
+        {isDesktop && isAdmin && (
+          <Heading
+            p="2"
+            css={{
+              color: 'var(--cocoso-colors-bluegray-800)',
+              flexGrow: '0',
+              fontSize: '1.25rem',
+              textAlign: 'center',
+              width: '100%',
+            }}
+          >
+            {t('panel')}
+          </Heading>
+        )}
+
+        <Box h="100%" p="4" w="100%" css={{ flexGrow: '1', overflowY: 'auto' }}>
+          <List w="100%">
+            {routes?.map((item) => (
+              <ListItem key={item.value} p="0">
+                <AdminMenuItem item={item} onClick={() => onItemClick(item)} />
+                {item.isMulti &&
+                  item.content.map((itemSub) => (
+                    <AdminMenuItem
+                      key={itemSub.value}
+                      item={itemSub}
+                      isSub
+                      parentValue={item.value}
+                      onClick={() => onItemClick(itemSub)}
+                    />
+                  ))}
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+
+        <Box
+          w="100%"
+          css={{
+            cursor: 'pointer',
+            flexGrow: '0',
+          }}
+          onClick={handleUserThumbClick}
+        >
+          <AdminUserThumb currentUser={currentUser} />
+        </Box>
+      </Flex>
+    </Flex>
+  );
+}
