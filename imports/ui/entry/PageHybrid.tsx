@@ -16,7 +16,13 @@ interface SimplePageProps {
   url?: string;
 }
 
-function SimplePage({ description, images, imageUrl, title, url }: SimplePageProps) {
+function SimplePage({
+  description,
+  images,
+  imageUrl,
+  title,
+  url,
+}: SimplePageProps) {
   return (
     <>
       <Helmet>
@@ -36,7 +42,7 @@ function SimplePage({ description, images, imageUrl, title, url }: SimplePagePro
       </Helmet>
 
       <Center>
-        <Heading css={{ margin: '1rem 0.5rem 0' }} size="lg">
+        <Heading css={{ margin: '1rem 0.5rem 0' }} size="lg" textAlign="center">
           {title}
         </Heading>
       </Center>

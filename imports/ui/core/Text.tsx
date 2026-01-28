@@ -154,6 +154,8 @@ export const Heading = (props: HeadingProps) => {
   } = props;
   const color = props.color?.split('.');
 
+  console.log('textAlign:', textAlign);
+
   return (
     <HeadingStyled
       css={{

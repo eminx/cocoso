@@ -11,7 +11,10 @@ export interface PageHeadingProps {
   listing: string;
 }
 
-export default function PageHeading({ currentHost, listing }: PageHeadingProps) {
+export default function PageHeading({
+  currentHost,
+  listing,
+}: PageHeadingProps) {
   const listingInMenu = currentHost?.settings?.menu?.find(
     (item) => item.name === listing
   );
