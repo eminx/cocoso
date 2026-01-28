@@ -12,37 +12,22 @@ import {
   Flex,
   Heading,
   IconButton,
+  Loader,
   Text,
 } from '/imports/ui/core';
 
-import { currentUserAtom, platformAtom } from '../../../state';
-import Loader from '../../core/Loader';
-import { message } from '../../generic/message';
-import { call } from '../../../api/_utils/shared';
-import Quill from '../../forms/Quill';
-import Template from '../../layout/Template';
+import { currentUserAtom, platformAtom } from '/imports/state';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
+import Quill from '/imports/ui/forms/Quill';
 
 export default function PlatformRegistrationIntro() {
   const currentUser = useAtomValue(currentUserAtom);
   const [platform, setPlatform] = useAtom(platformAtom);
-  const [loading, setLoading] = useState(true);
   const [registrationIntro, setRegistrationIntro] = useState(['']);
   const [saving, setSaving] = useState(false);
 
   const [tc] = useTranslation('common');
-
-  const getPlatformNow = async () => {
-    try {
-      const respond = await call('getPlatform');
-      setPlatform(respond);
-      if (respond && respond.registrationIntro) {
-        setRegistrationIntro(respond.registrationIntro);
-      }
-      setLoading(false);
-    } catch (error: any) {
-      message(error.error || error.reason);
-    }
-  };
 
   useEffect(() => {
     setRegistrationIntro(platform.registrationIntro);
@@ -67,7 +52,7 @@ export default function PlatformRegistrationIntro() {
     return <Alert>{tc('message.access.deny')}</Alert>;
   }
 
-  if (loading) {
+  if (!platform) {
     return <Loader />;
   }
 
@@ -78,10 +63,10 @@ export default function PlatformRegistrationIntro() {
     }
 
     setSaving(true);
-
     try {
       await call('updatePlatformRegistrationIntro', registrationIntro);
-      await getPlatformNow();
+      const respond = await call('getPlatform');
+      setPlatform(respond);
       message.success(
         tc('message.success.update', { domain: 'Platform settings' })
       );
@@ -94,75 +79,74 @@ export default function PlatformRegistrationIntro() {
 
   return (
     <Box>
-      <Template heading={tc('menu.superadmin.intro')}>
-        <Text mb="2">
+      <Box pb="4">
+        <Text>
           {parseHtml(
             tc('platform.registrationIntro.notice1', {
               platform: platform.name,
             })
           )}
         </Text>
+      </Box>
 
-        <Text mb="4">
-          {tc('platform.registrationIntro.notice2')}:
-          <Button
-            variant="ghost"
-            ml="2"
-            onClick={() => {
-              window.open(`https://${platform.portalHost}/intro`, '_blank');
-            }}
-          >
-            {tc('platform.registrationIntro.linkLabel')}
-          </Button>
-        </Text>
-        <Flex align="center" direction="column" gap="4">
-          {registrationIntro.map((slide, index) => (
-            <Box key={index} py="2" w="100%">
-              <Heading mb="2" size="sm">
-                Slide {index + 1}
-              </Heading>
-              <Quill
-                value={slide}
-                onChange={(value) =>
-                  handleChangeRegistrationIntro(value, index)
-                }
-              />
-              {registrationIntro.length > 1 && (
-                <Center p="1">
-                  <Button
-                    variant="ghost"
-                    colorScheme="red"
-                    size="sm"
-                    onClick={() =>
-                      setRegistrationIntro(
-                        registrationIntro.filter((s, i) => i !== index)
-                      )
-                    }
-                  >
-                    {tc('actions.remove')}
-                  </Button>
-                </Center>
-              )}
-            </Box>
-          ))}
+      <Box mb="4">
+        {tc('platform.registrationIntro.notice2')}:
+        <Button
+          variant="ghost"
+          ml="2"
+          onClick={() => {
+            window.open(`https://${platform.portalHost}/intro`, '_blank');
+          }}
+        >
+          {tc('platform.registrationIntro.linkLabel')}
+        </Button>
+      </Box>
 
-          <Center bg="white" p="4" mb="8" w="100%">
-            <IconButton
-              icon={<PlusSquareIcon fontSize="xl" />}
-              onClick={() => handleAddSlide()}
+      <Flex align="center" direction="column" gap="4">
+        {registrationIntro.map((slide, index) => (
+          <Box key={index} py="2" w="100%">
+            <Heading mb="2" size="sm">
+              Slide {index + 1}
+            </Heading>
+            <Quill
+              value={slide}
+              onChange={(value) => handleChangeRegistrationIntro(value, index)}
             />
-          </Center>
-        </Flex>
+            {registrationIntro.length > 1 && (
+              <Center p="1">
+                <Button
+                  variant="ghost"
+                  colorScheme="red"
+                  size="sm"
+                  onClick={() =>
+                    setRegistrationIntro(
+                      registrationIntro.filter((s, i) => i !== index)
+                    )
+                  }
+                >
+                  {tc('actions.remove')}
+                </Button>
+              </Center>
+            )}
+          </Box>
+        ))}
 
-        <Center mb="8">
-          <Button
-            loading={saving}
-            onClick={() => updatePlatformRegistrationIntro()}
-          >
-            {tc('actions.submit')}
-          </Button>
+        <Center bg="white" p="4" mb="8" w="100%">
+          <IconButton
+            icon={<PlusSquareIcon fontSize="xl" />}
+            onClick={() => handleAddSlide()}
+          />
         </Center>
-      </Template>
+      </Flex>
+
+      <Center pb="8">
+        <Button
+          loading={saving}
+          onClick={() => updatePlatformRegistrationIntro()}
+        >
+          {tc('actions.submit')}
+        </Button>
+      </Center>
     </Box>
   );
 }

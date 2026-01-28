@@ -348,7 +348,7 @@ platform:
     settings: Plattformsinställningar
     description: Konfigurera globala plattformsinställningar som påverkar alla medlemsgrupper
   intro:
-    title: Plattformsintroduktion
+    title: Registrationsintro
     description: Lägg till en introduktionstext för den globala plattformen
   logo:
     title: Plattformslogotyp

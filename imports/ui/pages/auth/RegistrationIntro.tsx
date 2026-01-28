@@ -55,7 +55,10 @@ export default function RegistrationIntro() {
             className="slide-container"
             p="4"
             w="100%"
-            css={{ maxWidth: '420px' }}
+            css={{
+              borderRadius: 'var(--cocoso-border-radius)',
+              maxWidth: '420px',
+            }}
           >
             <Slide
               autoplay={false}
