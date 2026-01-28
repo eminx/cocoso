@@ -1,6 +1,7 @@
 # ADMIN MEMBERS PAGE
 label: Kullanıcılar
 dashboard: Admin Paneli
+super: Superadmin Paneli
 all: Tümü
 
 joinedAt: '{{ date }} katıldı'

@@ -1,6 +1,10 @@
 import type { Meteor } from 'meteor/meteor';
 
 export interface User extends Meteor.User {
+  avatar?: {
+    src: string;
+    date: Date;
+  };
   username?: string;
   emails?: Array<{ address: string; verified: boolean }>;
   isSuperAdmin?: boolean;

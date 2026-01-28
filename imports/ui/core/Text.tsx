@@ -60,6 +60,7 @@ interface TextProps {
   css?: CSSProperties;
   fontSize?: string;
   fontWeight?: string;
+  href?: string;
   lineHeight?: string;
   textAlign?: string;
   size?: string;

@@ -3,8 +3,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 import BoltIcon from 'lucide-react/dist/esm/icons/bolt';
+import CogIcon from 'lucide-react/dist/esm/icons/cog';
 import CheckCircleIcon from 'lucide-react/dist/esm/icons/check-circle';
-import CircleIcon from 'lucide-react/dist/esm/icons/circle';
 import { useAtom, useAtomValue } from 'jotai';
 
 import {
@@ -18,7 +18,6 @@ import {
   Link as CLink,
   NotificationBadge,
   Text,
-  Modal,
 } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 import {
@@ -26,7 +25,6 @@ import {
   currentHostAtom,
   currentUserAtom,
   isDesktopAtom,
-  platformAtom,
   roleAtom,
 } from '/imports/state';
 import { getFullName } from '/imports/api/_utils/shared';
@@ -38,7 +36,11 @@ interface NotificationLinkItemProps {
   children: React.ReactNode;
 }
 
-function NotificationLinkItem({ host, item, children }: NotificationLinkItemProps) {
+function NotificationLinkItem({
+  host,
+  item,
+  children,
+}: NotificationLinkItemProps) {
   if (item.host && host === item.host) {
     return <Link to={`/${item.context}/${item.contextId}`}>{children}</Link>;
   }
@@ -110,9 +112,9 @@ export function UserThumb({ notificationsCounter = 0 }: UserThumbProps) {
           </NotificationBadge>
         ) : // <CircleIcon color="red" fill="red" size="16" />
         role === 'admin' ? (
-          <BoltIcon color="#010101" size="16" />
+          <BoltIcon color="#010101" size={16} />
         ) : role === 'contributor' ? (
-          <CheckCircleIcon color="#010101" size="16" />
+          <CheckCircleIcon color="#010101" size={16} />
         ) : null}
       </Avatar>
 
@@ -144,12 +146,10 @@ export interface UserPopupProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-export default function UserPopup({ isOpen, setIsOpen }: UserPopupProps) {
+export default function UserPopup({ isOpen }: UserPopupProps) {
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentHost = useAtomValue(currentHostAtom);
   const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
-  const isDesktop = useAtomValue(isDesktopAtom);
-  const platform = useAtomValue(platformAtom);
   const role = useAtomValue(roleAtom);
   const navigate = useNavigate();
 
@@ -179,7 +179,7 @@ export default function UserPopup({ isOpen, setIsOpen }: UserPopupProps) {
   const isNotification = notifications && notifications.length > 0;
   let notificationsCounter = 0;
   if (isNotification) {
-    notifications.forEach((notification) => {
+    notifications.forEach((notification: any) => {
       notificationsCounter = notification.count + notificationsCounter;
     });
   }
@@ -188,6 +188,7 @@ export default function UserPopup({ isOpen, setIsOpen }: UserPopupProps) {
   const roleTranslated = <Trans i18nKey={`roles.${role}`} ns="members" />;
 
   const isAdmin = role === 'admin';
+  const isSuperAdmin = currentUser?.isSuperAdmin;
 
   return (
     <Box>
@@ -211,7 +212,7 @@ export default function UserPopup({ isOpen, setIsOpen }: UserPopupProps) {
           </Text>
         </Box>
 
-        {isAdmin && <Divider />}
+        <Divider />
 
         {isAdmin && (
           <Link to="/admin/home">
@@ -227,6 +228,21 @@ export default function UserPopup({ isOpen, setIsOpen }: UserPopupProps) {
         )}
 
         {isAdmin && <Divider />}
+
+        {isSuperAdmin && (
+          <Link to="/superadmin">
+            <MenuItem>
+              <Text>
+                <Flex align="center" gap="2">
+                  <CogIcon size={18} />
+                  <Trans i18nKey="members:super">Superadmin</Trans>
+                </Flex>
+              </Text>
+            </MenuItem>
+          </Link>
+        )}
+
+        {isSuperAdmin && <Divider />}
 
         {isNotification && (
           <>

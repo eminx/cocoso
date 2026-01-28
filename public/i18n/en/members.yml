@@ -1,6 +1,7 @@
 # ADMIN MEMBERS PAGE
 label: Users
 dashboard: Admin Panel
+super: Superadmin Panel
 all: All
 
 joinedAt: joined {{ date }}
