@@ -3,6 +3,7 @@ import type { Meteor } from 'meteor/meteor';
 export interface User extends Meteor.User {
   username?: string;
   emails?: Array<{ address: string; verified: boolean }>;
+  isSuperAdmin?: boolean;
   profile?: {
     firstName?: string;
     lastName?: string;
@@ -152,6 +153,37 @@ export interface CategoryItem {
   categoryId?: string;
   color?: string;
 }
+
+/**
+ * Platform represents the global platform configuration
+ * Used in state atoms and platform settings
+ */
+export interface Platform {
+  _id?: string;
+  name?: string;
+  email?: string;
+  portalHost?: string;
+  logo?: string;
+  isFederationLayout?: boolean;
+  footer?: string;
+  registrationIntro?: string;
+  isRegistrationEnabled?: boolean;
+}
+
+/**
+ * PageTitle for page navigation in menus
+ * Used in pageTitlesAtom and Header/MenuDrawer components
+ */
+export interface PageTitle {
+  _id: string;
+  title: string;
+}
+
+/**
+ * Role type for user roles in the application
+ * Used in roleAtom and permission checks
+ */
+export type Role = 'admin' | 'contributor' | 'participant' | null;
 
 // Re-export types from shared.ts for convenience
 export type {
