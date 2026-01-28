@@ -49,7 +49,7 @@ export default function PlatformSettingsForm() {
           <FormField label={t('info.platform.email')} required>
             <Input type="email" {...register('email')} />
           </FormField>
-          <Flex justify="flex-end" py="4">
+          <Flex justify="flex-end" py="4" w="100%">
             <Button disabled={!isDirty || isSubmitting} type="submit">
               {tc('actions.submit')}
             </Button>

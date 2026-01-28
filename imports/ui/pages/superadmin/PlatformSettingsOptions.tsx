@@ -49,7 +49,7 @@ export default function PlatformSettingsOptions() {
             </Box>
           </Checkbox>
         </Box>
-        <Flex justify="flex-end" py="4">
+        <Flex justify="flex-end" py="4" w="100%">
           <Button type="submit" onClick={onSubmit}>
             {tc('actions.submit')}
           </Button>
