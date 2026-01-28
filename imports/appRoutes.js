@@ -154,6 +154,9 @@ const PlatformSettingsFooter = loadable(() =>
 const PlatformRegistrationIntro = loadable(() =>
   import('./ui/pages/superadmin/PlatformRegistrationIntro')
 );
+const NewHostAdmin = loadable(() =>
+  import('./ui/pages/superadmin/NewHostAdmin')
+);
 
 import { call } from '/imports/api/_utils/shared';
 import {
@@ -373,31 +376,32 @@ const getAdminRoutes = (props) => [
     path: 'email-newsletter',
     element: createRouteElement(EmailNewsletter, props),
   },
+];
+
+const getSuperAdminRoutes = (props) => [
   {
-    path: 'platform',
-    element: createRouteElement(PlatformSettings, props),
-    children: [
-      {
-        path: 'logo',
-        element: createRouteElement(PlatformSettingsLogo, props),
-      },
-      {
-        path: 'info',
-        element: createRouteElement(PlatformSettingsForm, props),
-      },
-      {
-        path: 'options',
-        element: createRouteElement(PlatformSettingsOptions, props),
-      },
-      {
-        path: 'footer',
-        element: createRouteElement(PlatformSettingsFooter, props),
-      },
-      {
-        path: 'intro',
-        element: createRouteElement(PlatformRegistrationIntro, props),
-      },
-    ],
+    path: 'platform/logo',
+    element: createRouteElement(PlatformSettingsLogo, props),
+  },
+  {
+    path: 'platform/info',
+    element: createRouteElement(PlatformSettingsForm, props),
+  },
+  {
+    path: 'platform/options',
+    element: createRouteElement(PlatformSettingsOptions, props),
+  },
+  {
+    path: 'platform/footer',
+    element: createRouteElement(PlatformSettingsFooter, props),
+  },
+  {
+    path: 'new-host',
+    element: createRouteElement(NewHostAdmin, props),
+  },
+  {
+    path: 'intro',
+    element: createRouteElement(PlatformRegistrationIntro, props),
   },
 ];
 
@@ -595,6 +599,11 @@ export default function appRoutes(props) {
           path: 'admin',
           element: createRouteElement(AdminContainer, props),
           children: Meteor.isServer ? null : [...getAdminRoutes(props)],
+        },
+        {
+          path: 'superadmin',
+          element: createRouteElement(AdminContainer, props),
+          children: Meteor.isServer ? null : [...getSuperAdminRoutes(props)],
         },
         {
           path: 'not-found',

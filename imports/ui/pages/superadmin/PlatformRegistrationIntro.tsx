@@ -87,7 +87,6 @@ export default function PlatformRegistrationIntro() {
       );
     } catch (error: any) {
       message.error(error.reason);
-      console.log(error);
     } finally {
       setSaving(false);
     }

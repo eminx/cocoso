@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
 import { useAtom } from 'jotai';
 
 import { platformAtom } from '/imports/state';
@@ -11,19 +10,15 @@ import { message } from '/imports/ui/generic/message';
 
 export default function PlatformSettingsOptions() {
   const [platform, setPlatform] = useAtom(platformAtom);
-  const initialValues = {
+  const [state, setState] = useState({
     isFederationLayout: platform?.isFederationLayout || false,
-  };
-  const { handleSubmit, register, formState } = useForm({
-    defaultValues: initialValues,
   });
-  const { isDirty, isSubmitting } = formState;
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  const onSubmit = async (data: Platform) => {
+  const onSubmit = async () => {
     try {
-      await call('updatePlatformSettings', data);
+      await call('updatePlatformSettings', state);
       const respond = (await call('getPlatform')) as Platform;
       setPlatform(respond);
       message.success(
@@ -36,25 +31,30 @@ export default function PlatformSettingsOptions() {
 
   return (
     <>
-      <Text fontWeight="bold">{t('info.platform.options')}</Text>
-      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <Flex direction="column" gap="4">
-          <Flex>
-            <Box pr="2" pt="2">
-              <Checkbox {...register('isFederationLayout')} />
-            </Box>
+      <Box pb="4">
+        <Text fontWeight="bold">{t('info.platform.options')}</Text>
+      </Box>
+      <Flex direction="column" gap="4">
+        <Box pr="2" pt="2">
+          <Checkbox
+            checked={state.isFederationLayout}
+            onChange={(e) =>
+              setState({ ...state, isFederationLayout: e.target.checked })
+            }
+          >
             <Box>
               <Text fontSize="lg">{t('info.platform.federationLabel')}</Text>
+              <br />
               <Text fontSize="sm">{t('info.platform.federationText')}</Text>
             </Box>
-          </Flex>
-          <Flex justify="flex-end" py="4">
-            <Button isDisabled={!isDirty || isSubmitting} type="submit">
-              {tc('actions.submit')}
-            </Button>
-          </Flex>
+          </Checkbox>
+        </Box>
+        <Flex justify="flex-end" py="4">
+          <Button type="submit" onClick={onSubmit}>
+            {tc('actions.submit')}
+          </Button>
         </Flex>
-      </form>
+      </Flex>
     </>
   );
 }

@@ -341,3 +341,27 @@ messages:
   upload:
     helper: Välj en bild som har tilldelats den storlek du vill att den ska visas med och se till att den är mindre än 400 kb
     imageTooLarge: Bilden är för stor. Välj en bild som är mindre än 400 kb.
+
+platform:
+  main:
+    title: Plattformen
+    settings: Plattformsinställningar
+    description: Konfigurera globala plattformsinställningar som påverkar alla medlemsgrupper
+  intro:
+    title: Plattformsintroduktion
+    description: Lägg till en introduktionstext för den globala plattformen
+  logo:
+    title: Plattformslogotyp
+    description: Ladda upp logotypen för den globala plattformen
+  info:
+    title: Plattformsinformation
+    description: Lägg till information om den globala plattformen
+  options:
+    title: Plattformsalternativ
+    description: Välj önskade alternativ och bekräfta
+  footer:
+    title: Plattformsidfot
+    description: Skriv in plattformsidfoten här
+  newhost:
+    title: Ny värdcommunity
+    description: Skapa en ny värdcommunity inom plattformen

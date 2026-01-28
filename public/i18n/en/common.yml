@@ -206,7 +206,7 @@ menu:
     email-newsletter: Email Newsletter
     categories: Categories
   superadmin:
-    platform: Settings
+    platform: The Platform
     settings: Platform Settings
     intro: Registration Intro
     registrationIntro: Intro

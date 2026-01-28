@@ -12,16 +12,16 @@ export interface NewHostFormProps {
   onSubmit: (data: any) => void;
 }
 
-function NewHostForm({ defaultValues, onSubmit }: NewHostFormProps) {
+export default function NewHostForm({
+  defaultValues,
+  onSubmit,
+}: NewHostFormProps) {
   const { formState, handleSubmit, register } = useForm({
     defaultValues,
   });
   const { isDirty, isSubmitting } = formState;
-
   const [t] = useTranslation('hosts');
   const [tc] = useTranslation('common');
-
-  console.log(defaultValues);
 
   return (
     <Box>
@@ -59,5 +59,3 @@ function NewHostForm({ defaultValues, onSubmit }: NewHostFormProps) {
     </Box>
   );
 }
-
-export default NewHostForm;

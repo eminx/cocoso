@@ -30,7 +30,7 @@ const hostModel: HostFormValues = {
   about: '',
 };
 
-export default function NewHost() {
+export default function NewHostAdmin() {
   const currentUser = useAtomValue(currentUserAtom);
   const [isSuccess, setIsSuccess] = useState(false);
   const [tc] = useTranslation('common');
@@ -73,11 +73,9 @@ export default function NewHost() {
 
   return (
     <Box w="100%">
-      <Template heading={tc('labels.create.host')}>
-        <Box py="6">
-          <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
-        </Box>
-      </Template>
+      <Box py="6">
+        <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
+      </Box>
     </Box>
   );
 }

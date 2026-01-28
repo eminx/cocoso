@@ -1,12 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { I18nextProvider } from 'react-i18next';
 import { useHydrateAtoms } from 'jotai/utils';
 import { useAtom, useSetAtom } from 'jotai';
 import { Toaster } from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en-gb';
 import 'dayjs/locale/sv';
@@ -124,7 +123,7 @@ export default function WrapperHybrid({
     if (!currentUser) return;
     setCurrentUser(currentUser);
     const hostWithinUser = currentUser?.memberships?.find(
-      (membership) => membership?.host === window.location.host
+      (membership: any) => membership?.host === window.location.host
     );
     setRole(hostWithinUser?.role || null);
     changeLang();
@@ -132,7 +131,7 @@ export default function WrapperHybrid({
 
   const pathname = location?.pathname;
   const pathnameSplitted = pathname.split('/');
-  const adminPage = pathnameSplitted[1] === 'admin';
+  const adminPage = ['admin', 'superadmin'].includes(pathnameSplitted[1]);
 
   useEffect(() => {
     if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
@@ -140,9 +139,6 @@ export default function WrapperHybrid({
     }
     window.scrollTo(0, 0);
   }, [pathnameSplitted[2]]);
-
-  const hostLang = currentHost?.settings?.lang || 'en';
-  const userLang = currentUser?.lang || 'en';
 
   return (
     <>
@@ -165,8 +161,12 @@ export default function WrapperHybrid({
             <Outlet />
           </Box>
 
-          <Footer currentHost={currentHost || Host} />
-          <PlatformFooter />
+          {!adminPage && (
+            <>
+              <Footer currentHost={currentHost || Host} />
+              <PlatformFooter />
+            </>
+          )}
         </DummyWrapper>
 
         {rendered && (

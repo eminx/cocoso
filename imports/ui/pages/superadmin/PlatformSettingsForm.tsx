@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 
 import { platformAtom } from '/imports/state';
 import { Platform } from '/imports/ui/types';
-import { Button, Flex, Input, Text } from '/imports/ui/core';
+import { Box, Button, Flex, Input, Text } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
@@ -38,7 +38,9 @@ export default function PlatformSettingsForm() {
 
   return (
     <>
-      <Text fontWeight="bold">{t('info.platform.info')}</Text>
+      <Box pb="4">
+        <Text fontWeight="bold">{t('info.platform.info')}</Text>
+      </Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <Flex direction="column" gap="4">
           <FormField label={t('info.platform.name')} required>

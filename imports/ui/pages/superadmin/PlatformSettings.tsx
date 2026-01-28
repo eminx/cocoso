@@ -3,7 +3,7 @@ import { useLocation, useNavigate, Outlet } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAtom, useAtomValue } from 'jotai';
 
-import { Alert, Box, Heading, Loader, Tabs } from '/imports/ui/core';
+import { Alert, Box, Center, Heading, Loader, Tabs } from '/imports/ui/core';
 import { currentUserAtom, platformAtom } from '/imports/state';
 
 export default function PlatformSettings() {
@@ -15,7 +15,11 @@ export default function PlatformSettings() {
   const [tc] = useTranslation('common');
 
   if (!currentUser || !currentUser.isSuperAdmin) {
-    return <Alert>{tc('message.access.deny')}</Alert>;
+    return (
+      <Center p="4" h="100vh">
+        <Alert type="error">{tc('message.access.deny')}</Alert>
+      </Center>
+    );
   }
 
   if (!platform) {
@@ -54,7 +58,7 @@ export default function PlatformSettings() {
 
   return (
     <Box mb="8" css={{ minHeight: '100vh' }}>
-      <Heading size="md">{platform?.name}</Heading>
+      <Heading size="lg">{platform?.name}</Heading>
 
       <Tabs index={tabIndex} tabs={tabs} />
 

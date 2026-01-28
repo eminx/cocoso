@@ -9,10 +9,10 @@ import { message } from '/imports/ui/generic/message';
 import { call, resizeImage, uploadImage } from '/imports/api/_utils/shared';
 import FileDropper from '/imports/ui/forms/FileDropper';
 
-export function PlatformSettingsLogo() {
+export default function PlatformSettingsLogo() {
   const [platform, setPlatform] = useAtom(platformAtom);
   const [uploading, setUploading] = useState(false);
-  const [localImage, setLocalImage] = useState(null);
+  const [localImage, setLocalImage] = useState(platform?.logo || null);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -60,7 +60,9 @@ export function PlatformSettingsLogo() {
 
   return (
     <>
-      <Text fontWeight="bold">{t('logo.info')}</Text>
+      <Box pb="4">
+        <Text fontWeight="bold">{t('logo.info')}</Text>
+      </Box>
       <Box>
         <FileDropper
           uploadableImageLocal={localImage && localImage.uploadableImageLocal}

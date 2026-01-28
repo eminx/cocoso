@@ -341,3 +341,27 @@ messages:
   upload:
     helper: Please select an image that is assigned the size you want it to appear with, and make sure it's less than 400 kb
     imageTooLarge: Image is too large. Please select an image less than 400kb
+
+platform:
+  main:
+    title: Platform
+    settings: Platform Settings
+    description: Configure global platform settings that affect all member communities
+  intro:
+    title: Registration Intro
+    description: Enter the introduction text for the platform registration intro page
+  logo:
+    title: Platform Logo
+    description: Upload the logo for the global platform
+  info:
+    title: Platform Information
+    description: Enter information about the global platform
+  options:
+    title: Platform Options
+    description: Configure global platform options
+  footer:
+    title: Platform Footer
+    description: Compose the footer for the global platform
+  newhost:
+    title: New Host Community
+    description: Create a new host community within the platform

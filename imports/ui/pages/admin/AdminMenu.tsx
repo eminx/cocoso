@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import Eye from 'lucide-react/dist/esm/icons/eye';
 import { useAtomValue } from 'jotai';
@@ -14,12 +14,7 @@ import {
   ListItem,
   Text,
 } from '/imports/ui/core';
-import {
-  currentHostAtom,
-  currentUserAtom,
-  isDesktopAtom,
-  roleAtom,
-} from '/imports/state';
+import { currentUserAtom, isDesktopAtom, roleAtom } from '/imports/state';
 import { getFullName } from '../../../api/_utils/shared';
 
 export function AdminMenuHeader({ currentHost }) {
@@ -112,7 +107,6 @@ function AdminMenuItem({ item, isSub = false, parentValue, onClick }) {
   }
 
   const location = useLocation();
-  const navigate = useNavigate();
   const pathname = location?.pathname;
   const isCurrentRoute = pathname.includes(item.value);
 
@@ -155,12 +149,10 @@ function AdminMenuItem({ item, isSub = false, parentValue, onClick }) {
 }
 
 export default function AdminMenu({ currentHost, routes, onItemClick }) {
-  // const currentHost = useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const role = useAtomValue(roleAtom);
   const [t] = useTranslation('admin');
-  const navigate = useNavigate();
 
   const isAdmin = role === 'admin';
 

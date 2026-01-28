@@ -9,7 +9,7 @@ import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/api/_utils/shared';
 import Quill from '/imports/ui/forms/Quill';
 
-export function PlatformSettingsFooter() {
+export default function PlatformSettingsFooter() {
   const [platform, setPlatform] = useAtom(platformAtom);
   const [value, setValue] = useState(platform?.footer || '');
   const [t] = useTranslation('admin');
@@ -30,8 +30,11 @@ export function PlatformSettingsFooter() {
 
   return (
     <>
-      <Text fontWeight="bold">{t('info.platform.footer.label')}</Text>
-      <Text>{t('info.platform.footer.description')}</Text>
+      <Box pb="4">
+        <Text fontWeight="bold">{t('info.platform.footer.label')}</Text>
+        <br />
+        <Text>{t('info.platform.footer.description')}</Text>
+      </Box>
 
       <Box w="100%">
         <Quill value={value} onChange={(value) => setValue(value)} />

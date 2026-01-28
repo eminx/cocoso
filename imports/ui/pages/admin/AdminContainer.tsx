@@ -1,12 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import {
-  Link,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  Outlet,
-} from 'react-router';
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate, Outlet } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
 import Eye from 'lucide-react/dist/esm/icons/eye';
@@ -20,7 +13,6 @@ import {
   Flex,
   Heading,
   Grid,
-  Loader,
   Text,
 } from '/imports/ui/core';
 import {
@@ -29,10 +21,9 @@ import {
   isDesktopAtom,
   roleAtom,
 } from '/imports/state';
-// import EditProfile from '/imports/ui/pages/profile/EditProfile';
 
 import AdminMenu from './AdminMenu';
-import getAdminRoutes from './getAdminRoutes';
+import getAdminRoutes, { getSuperAdminRoutes } from './getAdminRoutes';
 
 const iconContainerProps = {
   align: 'center',
@@ -57,9 +48,9 @@ function AdminHeader({ currentRoute }) {
   );
 }
 
-export default function AdminContainer({ Host, ...props }) {
-  const currentHost = Host || useAtomValue(currentHostAtom);
+export default function AdminContainer({ Host }) {
   const currentUser = useAtomValue(currentUserAtom);
+  const currentHost = Host || useAtomValue(currentHostAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const role = useAtomValue(roleAtom);
 
@@ -72,9 +63,13 @@ export default function AdminContainer({ Host, ...props }) {
 
   const menuItems = currentHost?.settings?.menu;
   const isAdmin = role === 'admin';
-  const routes = isAdmin ? getAdminRoutes(menuItems) : [];
-
   const pathname = location?.pathname;
+  const routes = [];
+  if (currentUser?.isSuperAdmin && pathname.split('/')[1] === 'superadmin') {
+    routes.push(...getSuperAdminRoutes());
+  } else if (isAdmin) {
+    routes.push(...getAdminRoutes(menuItems));
+  }
 
   const getCurrentRoute = () => {
     if (!routes) {
@@ -93,7 +88,7 @@ export default function AdminContainer({ Host, ...props }) {
       }
       allRoutes.push({
         ...item,
-        value: item.value.replace('*', ''),
+        value: item.value?.replace('*', ''),
       });
     });
 
@@ -107,7 +102,7 @@ export default function AdminContainer({ Host, ...props }) {
 
   const currentRoute = getCurrentRoute();
 
-  const handleItemClick = (item) => {
+  const handleItemClick = (item: any) => {
     if (!item) {
       return;
     }
@@ -126,6 +121,14 @@ export default function AdminContainer({ Host, ...props }) {
       setDrawerMenuOpen(false);
     }
   };
+
+  if (!isAdmin) {
+    return (
+      <Center p="4" h="100vh">
+        <Alert type="error">{tc('message.access.deny')}</Alert>
+      </Center>
+    );
+  }
 
   if (!isDesktop) {
     return (

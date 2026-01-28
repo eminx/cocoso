@@ -341,3 +341,27 @@ design:
 messages:
   upload: Lütfen görünmesini istediğin boyutta bir imaj seç ve boyutunun 400kb'tan küçük olduğundan emin ol
     imageTooLarge: 'İmaj çok büyük. Lütfen 400 KB'den küçük bir imaj seçin'
+
+platform:
+  main:
+    title: Platform
+    settings: Platform Ayarları
+    description: Tüm üye toplulukları etkileyen genel platform ayarlarını yapılandır
+  intro:
+    title: Kayıt Giriş Sayfası
+    description: Platform kayıt giriş sayfasını yapılandır
+  logo:
+    title: Platform Logosu
+    description: Platform genelinde kullanılacak logoyu yükle
+  info:
+    title: Platform Bilgisi
+    description: Platform hakkında bilgi gir
+  options:
+    title: Platform Seçenekleri
+    description: Genel platform seçeneklerini yapılandır
+  footer:
+    title: Platform Footer
+    description: Platform alt bilgisini yapılandır
+  newhost:
+    title: Yeni Host Topluluğu
+    description: Platform içinde yeni bir ev sahibi topluluk oluşturun.
