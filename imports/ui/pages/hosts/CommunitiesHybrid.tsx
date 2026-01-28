@@ -11,13 +11,14 @@ import {
   Button,
   Center,
   Code,
+  Divider,
+  Heading,
   Image,
   Link as CLink,
   Modal,
   Text,
 } from '/imports/ui/core';
 import { currentUserAtom } from '/imports/state';
-import PageHeading from '/imports/ui/listing/PageHeading';
 import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
 import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 import { message } from '/imports/ui/generic/message';
@@ -31,7 +32,7 @@ export default function CommunitiesHybrid({ hosts, Host }) {
 
   const sortValue = 'name';
 
-  const handleSetModalHost = async (host) => {
+  const handleSetModalHost = async (host: any) => {
     try {
       const info = await call('getHostInfoPage', host.host);
       setModalItem({ ...host, info });
@@ -54,12 +55,12 @@ export default function CommunitiesHybrid({ hosts, Host }) {
     });
   };
 
-  const getHostsDivided = (hostsSorted) => {
+  const getHostsDivided = (hostsSorted: any) => {
     if (!currentUser) {
       return hostsSorted;
     }
 
-    const myHosts = currentUser.memberships;
+    const myHosts = currentUser?.memberships;
     const myHostsSorted = myHosts.sort((a, b) => {
       if (sortValue === 'name') {
         const nameA = a?.hostname;
@@ -85,13 +86,13 @@ export default function CommunitiesHybrid({ hosts, Host }) {
       return;
     }
 
-    const host = modalItem.host;
+    const host = modalItem?.host;
 
     try {
       await call('setSelfAsParticipant', host);
       message.success(tc('communities.success', { community: modalItem.name }));
       setModalItem(null);
-    } catch (error) {
+    } catch (error: any) {
       message.error(error.reason || error.error);
     }
   };
@@ -107,7 +108,17 @@ export default function CommunitiesHybrid({ hosts, Host }) {
 
   return (
     <>
-      <PageHeading heading={tc('platform.communities')} />
+      <Heading as="h1" size="lg" textAlign="center">
+        {tc('platform.communities')}
+      </Heading>
+      <Center py="2">
+        <Divider
+          css={{
+            borderColor: 'var(--cocoso-colors-theme-500)',
+            width: '280px',
+          }}
+        />
+      </Center>
 
       <Box px="2" mt="4">
         <InfiniteScroller hideFiltrerSorter items={hostsRendered}>
