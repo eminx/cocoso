@@ -110,8 +110,7 @@ export function UserThumb({ notificationsCounter = 0 }: UserThumbProps) {
           >
             {notificationsCounter?.toString()}
           </NotificationBadge>
-        ) : // <CircleIcon color="red" fill="red" size="16" />
-        role === 'admin' ? (
+        ) : role === 'admin' ? (
           <BoltIcon color="#010101" size={16} />
         ) : role === 'contributor' ? (
           <CheckCircleIcon color="#010101" size={16} />

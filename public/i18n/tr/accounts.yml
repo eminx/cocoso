@@ -117,3 +117,6 @@ delete:
   label: Silmeyi onayla
   title: Emin misin?
   body: Tüm hesabını ve onunla ilişkili ilgili verileri kalıcı olarak silmek üzeresin. Bu geri dönüşü olmayan bir eylemdir. Emin misin?
+  successTitle: Hesap Silme Planlandı
+  successBody: Hesabın bir dakika içinde silinmek üzere planlandı. Bizim için burada olduğun için teşekkürler. Gitmeni görmek bizi üzüyor.
+  successRedirect: Ana sayfaya yönlendiriliyorsun...

@@ -117,3 +117,6 @@ delete:
   label: Confirm Deletion
   title: Are you sure?
   body: You are about to permanently delete your entire account and all data associated with that. This is an irreversible action. Are you sure?
+  successTitle: Account Deletion Scheduled
+  successBody: Your account is scheduled to be deleted in a minute. Thank you for being with us. We're sorry to see you go.
+  successRedirect: Redirecting to homepage...

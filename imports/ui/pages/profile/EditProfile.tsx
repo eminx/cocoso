@@ -1,7 +1,8 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -25,11 +26,12 @@ export const subSpanStyle: React.CSSProperties = {
 };
 
 export default function EditProfile() {
-  const currentUser = useAtomValue(currentUserAtom);
+  const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
   const platform = useAtomValue(platformAtom);
   const role = useAtomValue(roleAtom);
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -38,20 +40,30 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate('/login');
+      if (isDeleting) {
+        message.success(tc('message.success.remove'));
+        navigate('/');
+      } else {
+        navigate('/login');
+      }
     }
   }, [currentUser]);
 
   const deleteAccount = async () => {
     setIsDeleting(true);
+
     try {
-      const deleted = await call('deleteAccount');
-      if (deleted) {
-        message.success(tc('message.success.remove'));
-        navigate('/');
-      }
+      await call('deleteAccount');
+      Meteor.logout();
+      localStorage.clear();
+      sessionStorage.clear();
+      setIsDeleted(true);
+      setTimeout(() => {
+        window.location.href = '/?deleted=' + Date.now();
+      }, 6000);
     } catch (error: any) {
       message.error(error?.error || error?.reason);
+      setIsDeleting(false);
     }
   };
 
@@ -145,6 +157,21 @@ export default function EditProfile() {
           onClose={() => setIsDeleteModalOn(false)}
         >
           <Text>{t('delete.body')}</Text>
+        </Modal>
+
+        <Modal
+          title={t('delete.successTitle')}
+          hideFooter
+          id="delete-success-modal"
+          open={isDeleted}
+        >
+          <Box pb="4">
+            <Text fontWeight="bold" size="lg">
+              {t('delete.successBody')}
+            </Text>
+          </Box>
+
+          <Text size="lg">{t('delete.successRedirect')}</Text>
         </Modal>
       </Box>
     </>

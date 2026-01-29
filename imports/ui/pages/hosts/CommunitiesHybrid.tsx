@@ -45,7 +45,7 @@ export default function CommunitiesHybrid({ hosts, Host }) {
     if (!hosts || hosts.length === 0) {
       return [];
     }
-    return hosts.sort((a, b) => {
+    return hosts?.sort((a, b) => {
       if (sortValue === 'name') {
         const nameA = a?.name;
         const nameB = b?.name;
@@ -61,7 +61,7 @@ export default function CommunitiesHybrid({ hosts, Host }) {
     }
 
     const myHosts = currentUser?.memberships;
-    const myHostsSorted = myHosts.sort((a, b) => {
+    const myHostsSorted = myHosts?.sort((a, b) => {
       if (sortValue === 'name') {
         const nameA = a?.hostname;
         const nameB = b?.hostname;
