@@ -18,7 +18,7 @@ interface BaseProps {
   id: string;
   noPadding?: boolean;
   onCancel?: () => void;
-  onClose: () => void;
+  onClose?: () => void;
   onConfirm?: () => void;
   onSecondaryButtonClick?: () => void;
   open: boolean;

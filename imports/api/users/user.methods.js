@@ -463,7 +463,13 @@ Meteor.methods({
         },
         { multi: true }
       );
-      await Meteor.users.removeAsync(userId);
+
+      Meteor.defer(async () => {
+        Meteor.setTimeout(async () => {
+          await Meteor.users.removeAsync(userId);
+        }, 60000);
+      });
+
       return true;
     } catch (error) {
       console.log(error);

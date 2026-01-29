@@ -117,3 +117,6 @@ delete:
   label: Bekräfta radering
   title: Är du säker?
   body: Du är på väg att permanent radera hela ditt konto och all data som är kopplad till det. Detta är en oåterkallelig handling. Är du säker?
+  successTitle: Konto radering schemalagd
+  successBody: Ditt konto är schemalagt att raderas om en minut. Tack för att du varit med oss. Vi är ledsna att se dig gå.
+  successRedirect: Omdirigerar till startsidan...

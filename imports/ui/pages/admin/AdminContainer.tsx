@@ -122,7 +122,11 @@ export default function AdminContainer({ Host }) {
     }
   };
 
-  if (!isAdmin) {
+  if (
+    !isAdmin &&
+    !currentUser?.isSuperAdmin &&
+    pathname.split('/')[2] !== 'my-profile'
+  ) {
     return (
       <Center p="4" h="100vh">
         <Alert type="error">{tc('message.access.deny')}</Alert>
@@ -134,6 +138,7 @@ export default function AdminContainer({ Host }) {
     return (
       <Box bg="bluegray.100" css={{ minHeight: '100vh' }}>
         <Drawer
+          id="admin-menu-drawer"
           open={drawerMenuOpen}
           noPadding
           position="left"

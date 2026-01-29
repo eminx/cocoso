@@ -14,7 +14,12 @@ import {
   ListItem,
   Text,
 } from '/imports/ui/core';
-import { currentUserAtom, isDesktopAtom, roleAtom } from '/imports/state';
+import {
+  currentHostAtom,
+  currentUserAtom,
+  isDesktopAtom,
+  roleAtom,
+} from '/imports/state';
 import { getFullName } from '../../../api/_utils/shared';
 
 export function AdminMenuHeader({ currentHost }) {
@@ -148,8 +153,9 @@ function AdminMenuItem({ item, isSub = false, parentValue, onClick }) {
   );
 }
 
-export default function AdminMenu({ currentHost, routes, onItemClick }) {
+export default function AdminMenu({ routes, onItemClick }) {
   const currentUser = useAtomValue(currentUserAtom);
+  const currentHost = useAtomValue(currentHostAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const role = useAtomValue(roleAtom);
   const [t] = useTranslation('admin');
@@ -164,18 +170,15 @@ export default function AdminMenu({ currentHost, routes, onItemClick }) {
     onItemClick({ value: '/admin/my-profile' });
   };
 
-  // const { isPortalHost } = currentHost;
-  // const { isSuperAdmin } = currentUser;
-
   return (
     <Flex
       bg="bluegray.50"
       h={isDesktop ? '100%' : 'calc(100% - 80px)'}
       w={isDesktop ? '320px' : '100%'}
       css={{
-        position: 'fixed',
-        justifyContent: 'space-between',
         flexDirection: 'column',
+        justifyContent: 'space-between',
+        position: 'fixed',
       }}
     >
       {isDesktop && <AdminMenuHeader currentHost={currentHost} />}
