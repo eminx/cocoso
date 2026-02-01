@@ -2,7 +2,7 @@
   "name": "cocoso",
   "private": true,
   "description": "![Cocoso logo](https://www.cocoso.info/cocoso-logo.png)",
-  "version": "0.1.0",
+  "version": "3.1.2",
   "main": "server/main.js",
   "directories": {
     "lib": "lib"
@@ -29,7 +29,12 @@
     "e2e": "METEOR_LOCAL_DIR=.meteor/test BABEL_ENV=test DISABLE_REACT_FAST_REFRESH=1 meteor run --port 4000",
     "analyze": "meteor run --settings private/settings.json --extra-packages bundle-visualizer --production",
     "lint": "eslint . --ext .js --ext .jsx --ext .ts --ext .tsx",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "release": "standard-version",
+    "release:patch": "standard-version --release-as patch",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major",
+    "release:first": "standard-version --first-release"
   },
   "theme": {
     "primary-color": "orange"
@@ -129,6 +134,7 @@
     "postcss": "^8.5.6",
     "postcss-load-config": "^6.0.1",
     "prettier": "^2.6.2",
+    "standard-version": "^9.5.0",
     "typescript": "^4.6.3"
   },
   "browserslist": [

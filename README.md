@@ -2,6 +2,18 @@
 
 ![Cocoso logo](https://www.cocoso.info/cocoso-logo.png)
 
+[![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/eminx/cocoso/releases)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Meteor](https://img.shields.io/badge/Meteor-3.x-DE4F4F?logo=meteor&logoColor=white)](https://www.meteor.com/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/eminx/cocoso/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/eminx/cocoso?style=social)](https://github.com/eminx/cocoso)
+[![GitHub issues](https://img.shields.io/github/issues/eminx/cocoso)](https://github.com/eminx/cocoso/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/eminx/cocoso)](https://github.com/eminx/cocoso/commits)
+
 [https://cocoso.info/](https://www.cocoso.info/)
 
 ## Intro
@@ -24,7 +36,7 @@ Every user can easily create an account and continue their operations from there
 
 Accounts feature can easily be extended to have further information for each user such as an avatar, phone number, account number etc. Passwords are automatically encrypted in the database so system admins won't be able to track them.
 
-The way accounts work for the multi tenancy feature in Cocoso is each account is global, but can have different privileges in different spaces. This will allow users to have relation to each other in between spaces while keeping their privileges only in their own spaces. It is designed for autonomy in mind.
+The way accounts work for the multi tenancy feature in Cocoso is each account is global, but can have different privileges in different spaces. This allows users to have relation to each other in between spaces while keeping their privileges only in their own spaces. It is designed for autonomy in mind.
 
 ### Public Activities (Events)
 
@@ -47,11 +59,9 @@ Resource Sharing and Calendar work with one another very tightly. Indeed Calenda
 
 ### Calendar
 
-The calendar is shown with _Month_ (default), _Week_, _Day_ and _Agenda_ views using Big Calendar, open source React component library. One can navigate to previous or next month/week/day with a click. It's just like the calendar app you're using but embedded on a webpage.
+The calendar is shown with _Month_ (default), _Week_, _Day_ and _Agenda_ views using [React Big Calendar](https://github.com/jquense/react-big-calendar). One can navigate to previous or next month/week/day with a click. It's just like the calendar app you're using but embedded on a webpage.
 
 Each entry in calendar could be assigned a different category such as a _resource_ booked or a type of activity such as _yoga_. It'd be useful for both presenting different kinds of entries as well different kinds of bookings. Like every each feature in Cocoso, intentionally made very abstract so that it can be applied to different use cases.
-
-See Big Calendar: https://github.com/jquense/react-big-calendar
 
 ### Groups
 
@@ -89,28 +99,217 @@ With this feature one can easily create a page only with a _title_ and a _descri
 
 ### Main Framework
 
-Cocoso is built using Meteor JS framework which is built on top of Node JS. Meteor is an open source and free development framework that has been used for nearly 10 years so far. It is actively being built and maintained by Meteor Development Group (MDG). Meteor works with MongoDB by default and it provides first class support for it on top of the DDP protocol featuring reactive programming super easily with Web Sockets. So MongoDB is the chosen database. Using Meteor, it is also relatively easy to create native apps by buit-in usage of Cordova, which runs on a web-view within a downloaded and installed app, and features customisations via plugins such as to enable push notifications and other relevant features that may be wished to have in a typical native app.
-
-MDG is also the group behind a widespread used product called _Apollo_, which is a technology built for complementing another open source technology called _GraphQL_ developed and maintained by Facebook. The usage of both GraphQL and Apollo are extremely widespread nowadays.
-
-The reason MeteorJS has been chosen is not only the values behind MDG are in line with that of ours; but also the technology they have built is so powerful and simple. Long before web apps were a trend and reactive programming was a thing (as in now); one could, with relatively little programming knowledge, easily create web apps that feature these characteristics using Meteor.
+Cocoso is built using [Meteor.js](https://www.meteor.com/), a full-stack JavaScript framework built on top of Node.js. Meteor is an open source and free development framework that has been actively maintained for over a decade. It works with MongoDB by default and provides first-class support for it on top of the DDP protocol, featuring reactive programming with WebSockets out of the box. Using Meteor, it is also relatively easy to create native apps via built-in Cordova support.
 
 ### Database
 
-Cocoso requires a MongoDB database to work with, since Meteor JS provides first class support for it. User accounts system is also powered by Meteor's built-in modules and saved in a dedicated collection in MongoDB. Passwords of users are always stored encrypted so system admins do not have the ability the see them.
+Cocoso uses MongoDB as its database, with Meteor providing first-class support for it. User accounts are powered by Meteor's built-in accounts modules and stored in a dedicated collection. Passwords are always stored encrypted so system admins cannot view them.
 
 ### User Interface
 
-**ReactJS** has been the main user interface framework chosen to build the UI for Cocoso. ReactJS is probably the most widespread used client framework that is currently used worldwide, along with _VueJS_. It's been developed and actively maintained by a dedicated team at Facebook; but doesn't necessarily have any affiliation with them. Its licenced with MIT licence.
+The UI is built with **React 18** as the primary frontend framework. A custom component library is built using:
+
+- **[Stitches](https://stitches.dev/)** - CSS-in-JS library for styling with a utility-first approach
+- **[Ant Design](https://ant.design/)** - For complex UI components (tables, forms, etc.)
+- **[Lucide React](https://lucide.dev/)** - Icon library
+
+### State Management
+
+**[Jotai](https://jotai.org/)** is used for atomic state management, providing a minimal and flexible approach to global state.
+
+### Routing
+
+**[React Router 7](https://reactrouter.com/)** handles client-side routing with support for data loading and nested routes.
+
+### Forms
+
+Forms are managed with **[React Hook Form](https://react-hook-form.com/)** combined with **[Zod](https://zod.dev/)** for schema validation.
+
+### Internationalization
+
+**[i18next](https://www.i18next.com/)** with **react-i18next** provides full internationalization support with browser language detection.
+
+### Rich Text Editing
+
+**[React Quill](https://github.com/zenoamaro/react-quill)** is used for rich text editing in content areas.
+
+### Email
+
+**[React Email](https://react.email/)** is used for building and rendering email templates.
 
 ### Image Storage
 
-Images are currently stored in Amazon S3 buckets, because it has been the easiest way to make the solution. With some smart open source solution called Slingshot, clients get authorized and then can directly upload to S3 buckets without having to go through the server.
+Images are stored in Amazon S3 buckets. Using the [Slingshot](https://github.com/CulturalMe/meteor-slingshot) Meteor package, clients get authorized and can directly upload to S3 buckets without going through the server.
+
+## Project Structure
+
+```
+imports/
+├── api/              # Server-side collections and methods
+│   ├── activities/   # Public events/activities
+│   ├── categories/   # Category management
+│   ├── chats/        # Chat/messaging system
+│   ├── composablepages/  # Dynamic page builder
+│   ├── documents/    # Document attachments
+│   ├── groups/       # Group management
+│   ├── hosts/        # Multi-tenancy hosts
+│   ├── pages/        # Static pages CMS
+│   ├── platform/     # Platform settings
+│   ├── resources/    # Shared resources
+│   ├── users/        # User management
+│   └── works/        # Portfolio works
+├── ui/               # React components
+│   ├── core/         # Core UI components (Box, Button, Modal, etc.)
+│   ├── chattery/     # Chat components
+│   ├── entry/        # Entry detail views
+│   ├── forms/        # Form components
+│   ├── generic/      # Shared utility components
+│   ├── layout/       # Layout components (Header, Footer, Template)
+│   ├── listing/      # List view components
+│   └── pages/        # Page-level components
+└── state.ts          # Jotai atoms for global state
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (LTS version recommended)
+- Meteor.js
+- MongoDB
+- AWS S3 bucket (for image storage)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/eminx/cocoso.git
+   cd cocoso
+   ```
+
+2. Install dependencies:
+   ```bash
+   meteor npm install
+   ```
+
+3. Create a settings file at `private/settings.json` with your configuration (S3 credentials, SMTP settings, etc.)
+
+4. Run the development server:
+   ```bash
+   npm start
+   ```
+
+The app will be available at `http://localhost:3000`.
+
+## Scripts
+
+- `npm start` - Start the development server
+- `npm run lint` - Run ESLint
+- `npm run analyze` - Analyze bundle size
+- `npm run release` - Create a new release (auto-determines version from commits)
+- `npm run release:patch` - Create a patch release (3.0.0 → 3.0.1)
+- `npm run release:minor` - Create a minor release (3.0.0 → 3.1.0)
+- `npm run release:major` - Create a major release (3.0.0 → 4.0.0)
+
+## Contributing
+
+We welcome contributions! Please follow the conventional commits format for your commit messages.
+
+### Conventional Commits
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) for automated changelog generation. Your commit messages should follow this format:
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+#### Types
+
+| Type | Description | Version Bump |
+|------|-------------|--------------|
+| `feat` | A new feature | Minor (3.0.0 → 3.1.0) |
+| `fix` | A bug fix | Patch (3.0.0 → 3.0.1) |
+| `docs` | Documentation only changes | No release |
+| `style` | Code style changes (formatting, semicolons, etc.) | No release |
+| `refactor` | Code change that neither fixes a bug nor adds a feature | No release |
+| `perf` | Performance improvement | Patch |
+| `test` | Adding or updating tests | No release |
+| `chore` | Maintenance tasks (dependencies, build, etc.) | No release |
+
+#### Breaking Changes
+
+For breaking changes, add `!` after the type or add `BREAKING CHANGE:` in the footer:
+
+```bash
+feat!: remove deprecated API endpoints
+
+# or
+
+feat: change authentication flow
+
+BREAKING CHANGE: JWT tokens are now required for all API calls
+```
+
+Breaking changes trigger a **major** version bump (3.0.0 → 4.0.0).
+
+#### Examples
+
+```bash
+# Feature
+git commit -m "feat(calendar): add week view for mobile devices"
+
+# Bug fix
+git commit -m "fix(auth): resolve session timeout issue"
+
+# Documentation
+git commit -m "docs: update installation instructions"
+
+# Refactor with scope
+git commit -m "refactor(api): simplify user validation logic"
+
+# Chore
+git commit -m "chore(deps): update React to v18.3"
+
+# Breaking change
+git commit -m "feat(api)!: change response format for activities endpoint"
+```
+
+### Creating a Release
+
+After making commits with conventional messages:
+
+```bash
+# Auto-determine version based on commits
+npm run release
+
+# Or specify the release type
+npm run release:patch  # Bug fixes
+npm run release:minor  # New features
+npm run release:major  # Breaking changes
+
+# Then push with tags
+git push --follow-tags origin main
+```
+
+This will:
+1. Bump the version in `package.json`
+2. Generate/update `CHANGELOG.md`
+3. Create a git commit and tag
 
 ## Documentation
 
-### Main libraries used
+- [React](https://react.dev/)
+- [Meteor](https://docs.meteor.com/)
+- [Ant Design](https://ant.design/components/overview)
+- [Jotai](https://jotai.org/docs/introduction)
+- [React Router](https://reactrouter.com/)
+- [React Hook Form](https://react-hook-form.com/get-started)
+- [Zod](https://zod.dev/)
 
-React JS: https://reactjs.org/docs
+## License
 
-Meteor: http://docs.meteor.com/#/full/
+GPL-3.0
