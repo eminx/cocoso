@@ -2,7 +2,7 @@
 
 ![Cocoso logo](https://www.cocoso.info/cocoso-logo.png)
 
-[![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/eminx/cocoso/releases)
+[![Version](https://img.shields.io/badge/version-3.1.npm2-blue.svg)](https://github.com/eminx/cocoso/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Meteor](https://img.shields.io/badge/Meteor-3.x-DE4F4F?logo=meteor&logoColor=white)](https://www.meteor.com/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -182,12 +182,14 @@ imports/
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/eminx/cocoso.git
    cd cocoso
    ```
 
 2. Install dependencies:
+
    ```bash
    meteor npm install
    ```
@@ -229,16 +231,16 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/) f
 
 #### Types
 
-| Type | Description | Version Bump |
-|------|-------------|--------------|
-| `feat` | A new feature | Minor (3.0.0 → 3.1.0) |
-| `fix` | A bug fix | Patch (3.0.0 → 3.0.1) |
-| `docs` | Documentation only changes | No release |
-| `style` | Code style changes (formatting, semicolons, etc.) | No release |
-| `refactor` | Code change that neither fixes a bug nor adds a feature | No release |
-| `perf` | Performance improvement | Patch |
-| `test` | Adding or updating tests | No release |
-| `chore` | Maintenance tasks (dependencies, build, etc.) | No release |
+| Type       | Description                                             | Version Bump          |
+| ---------- | ------------------------------------------------------- | --------------------- |
+| `feat`     | A new feature                                           | Minor (3.0.0 → 3.1.0) |
+| `fix`      | A bug fix                                               | Patch (3.0.0 → 3.0.1) |
+| `docs`     | Documentation only changes                              | No release            |
+| `style`    | Code style changes (formatting, semicolons, etc.)       | No release            |
+| `refactor` | Code change that neither fixes a bug nor adds a feature | No release            |
+| `perf`     | Performance improvement                                 | Patch                 |
+| `test`     | Adding or updating tests                                | No release            |
+| `chore`    | Maintenance tasks (dependencies, build, etc.)           | No release            |
 
 #### Breaking Changes
 
@@ -296,6 +298,7 @@ git push --follow-tags origin main
 ```
 
 This will:
+
 1. Bump the version in `package.json`
 2. Generate/update `CHANGELOG.md`
 3. Create a git commit and tag
