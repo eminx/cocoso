@@ -13,14 +13,14 @@
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  height: calc(100vh - 183px);
+  height: calc(100vh - 240px);
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
 .chattery-inputform-container {
   flex-grow: 0;
-  padding: 12px 0;
+  padding-top: 12px;
   border-top: 1px solid #aaa;
 }
 
