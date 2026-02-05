@@ -3,11 +3,12 @@ import { useLoaderData, useNavigate } from 'react-router';
 import { useAtomValue } from 'jotai';
 
 import { Box, Center, Modal, Text } from '/imports/ui/core';
-import { currentHostAtom } from '/imports/state';
+import { allHostsAtom, currentHostAtom } from '/imports/state';
 
 import EmailPreview from './EmailPreview';
 
 export default function NewsletterEmail() {
+  const allHosts = useAtomValue(allHostsAtom);
   const currentHost = useAtomValue(currentHostAtom);
   const { newsletter } = useLoaderData();
   const navigate = useNavigate();
@@ -36,7 +37,11 @@ export default function NewsletterEmail() {
               </Text>
             </Center>
 
-            <EmailPreview currentHost={currentHost} email={email} />
+            <EmailPreview
+              allHosts={allHosts}
+              currentHost={currentHost}
+              email={email}
+            />
           </Box>
         </Center>
       </Modal>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
 import { render as renderEmail } from '@react-email/render';
@@ -11,14 +11,14 @@ import {
   Box,
   Button,
   Center,
-  Link as CLink,
   Loader,
   Modal,
   Text,
 } from '/imports/ui/core';
-import { call, resizeImage, uploadImage } from '/imports/api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import {
+  allHostsAtom,
   currentHostAtom,
   currentUserAtom,
   platformAtom,
@@ -53,6 +53,7 @@ export const newsletterAtom = atom(initialNewsletterAtom);
 const toastLoaderOptions = { id: 'loader-toast' };
 
 export default function EmailNewsletter() {
+  const allHosts = useAtomValue(allHostsAtom);
   const currentHost = useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const platform = useAtomValue(platformAtom);
@@ -115,7 +116,11 @@ export default function EmailNewsletter() {
     const email = state.email;
 
     const emailHtml = renderEmail(
-      <EmailPreview currentHost={currentHost} email={email} />
+      <EmailPreview
+        allHosts={allHosts}
+        currentHost={currentHost}
+        email={email}
+      />
     );
 
     const emailValues = {
@@ -211,7 +216,11 @@ export default function EmailNewsletter() {
         }
       >
         <Center>
-          <EmailPreview currentHost={currentHost} email={state.email} />
+          <EmailPreview
+            allHosts={allHosts}
+            currentHost={currentHost}
+            email={state.email}
+          />
         </Center>
       </Modal>
 

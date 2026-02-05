@@ -149,7 +149,10 @@ function compareForSort(a: DatedItem, b: DatedItem): number {
   return dateA.getTime() - dateB.getTime();
 }
 
-const compareDatesWithStartDateForSort = (a: StartDateItem, b: StartDateItem): number => {
+const compareDatesWithStartDateForSort = (
+  a: StartDateItem,
+  b: StartDateItem
+): number => {
   const dateA = dayjs(a.startDate, 'YYYY-MM-DD');
   const dateB = dayjs(b.startDate, 'YYYY-MM-DD');
   return dateA.diff(dateB);
@@ -283,7 +286,10 @@ function parseAllBookingsWithResources(
     );
     if (!resourceSelected) {
       activity.datesAndTimes.forEach((recurrence) => {
-        const parsed = helper_parseAllBookingsWithResources(activity, recurrence);
+        const parsed = helper_parseAllBookingsWithResources(
+          activity,
+          recurrence
+        );
         if (parsed) {
           allBookings.push({
             ...parsed,
@@ -306,7 +312,10 @@ function parseAllBookingsWithResources(
           if (!resourceForComboReal?.isBookable) {
             return;
           }
-          const parsed = helper_parseAllBookingsWithResources(activity, recurrence);
+          const parsed = helper_parseAllBookingsWithResources(
+            activity,
+            recurrence
+          );
           if (parsed) {
             allBookings.push({
               ...parsed,
@@ -323,7 +332,10 @@ function parseAllBookingsWithResources(
         if (!resourceSelected.isBookable) {
           return;
         }
-        const parsed = helper_parseAllBookingsWithResources(activity, recurrence);
+        const parsed = helper_parseAllBookingsWithResources(
+          activity,
+          recurrence
+        );
         if (parsed) {
           allBookings.push({
             ...parsed,
@@ -507,7 +519,10 @@ function parseHtmlEntities(input: string): string {
   );
 }
 
-function compareMeetingDatesForSort(a: StartDateItem, b: StartDateItem): number {
+function compareMeetingDatesForSort(
+  a: StartDateItem,
+  b: StartDateItem
+): number {
   const dateA = new Date(a.startDate);
   const dateB = new Date(b.startDate);
   return dateA.getTime() - dateB.getTime();
@@ -533,7 +548,10 @@ interface Meeting {
   datesAndTimes: DateTimeOccurrence[];
 }
 
-function parseGroupsWithMeetings(groups: Group[], meetings: Meeting[]): Group[] {
+function parseGroupsWithMeetings(
+  groups: Group[],
+  meetings: Meeting[]
+): Group[] {
   const allGroups = groups.map((group) => {
     const groupId = group._id;
     const allGroupActivities = meetings.filter(
@@ -564,7 +582,9 @@ function parseGroupsWithMeetings(groups: Group[], meetings: Meeting[]): Group[] 
   ];
 }
 
-const getCategoriesAssignedToWorks = (works: Work[] | undefined): CategoryLabel[] => {
+const getCategoriesAssignedToWorks = (
+  works: Work[] | undefined
+): CategoryLabel[] => {
   const labels = Array.from(
     new Set(works?.map((work) => work.category && work.category.label))
   );

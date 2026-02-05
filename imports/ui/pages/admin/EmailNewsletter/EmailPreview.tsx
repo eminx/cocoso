@@ -18,11 +18,13 @@ import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import truncate from 'html-truncate';
 
+import { DateTimeOccurrence } from '/imports/ui/types';
+
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
 const stylesDateSign = { fontWeight: 'bold', margin: 0 };
 
-function DateSign({ date }) {
+function DateSign({ date }: { date: string }) {
   return (
     <Column style={{ paddingRight: 8 }}>
       <Text style={{ ...stylesDateSign, fontSize: 36 }}>
@@ -35,7 +37,10 @@ function DateSign({ date }) {
   );
 }
 
-export function ActivityDate({ date }) {
+export function ActivityDate({ date }: { date: DateTimeOccurrence }) {
+  if (!date || !date.startDate || !date.endDate) {
+    return null;
+  }
   if (date.startDate !== date.endDate) {
     return (
       <>
@@ -50,13 +55,21 @@ export function ActivityDate({ date }) {
   return <DateSign date={date.startDate} />;
 }
 
-export function ActivityDates({ activity, centered = false }) {
+interface ActivityDatesProps {
+  activity: { datesAndTimes: DateTimeOccurrence[] };
+  centered?: boolean;
+}
+
+export function ActivityDates({
+  activity,
+  centered = false,
+}: ActivityDatesProps) {
   if (!activity) {
     return null;
   }
 
-  const futureDates = activity.datesAndTimes.filter((date) =>
-    dayjs(date.endDate).isAfter(yesterday)
+  const futureDates = activity.datesAndTimes.filter(
+    (date: DateTimeOccurrence) => dayjs(date.endDate).isAfter(yesterday)
   );
 
   if (!futureDates || futureDates.length === 0) {
@@ -90,7 +103,7 @@ export function ActivityDates({ activity, centered = false }) {
   );
 }
 
-const getTitleStyle = (theme) => ({
+const getTitleStyle = (theme: any) => ({
   color: `hsl(${theme?.hue || 288}deg, 80%, 40%)`,
   fontSize: 36,
   fontWeight: 'bold',
@@ -109,6 +122,14 @@ const getSubTitleStyle = (theme) => ({
   textAlign: 'center',
   textShadow: 'rgb(255, 255, 255) 1px 1px 1px',
 });
+
+const hostNameStyle = {
+  color: '#1a52e6',
+  fontSize: 16,
+  fontStyle: 'italic',
+  textAlign: 'center',
+  textDecoration: 'underline',
+};
 
 const getButtonStyle = (theme) => ({
   backgroundColor: `hsl(${theme?.hue || 288}deg, 80%, 40%)`,
@@ -135,7 +156,7 @@ const hrStyle = {
 
 const maxChCount = 360;
 
-export default function EmailPreview({ currentHost, email }) {
+export default function EmailPreview({ allHosts, currentHost, email }) {
   const [tc] = useTranslation('common');
   const [t] = useTranslation('admin');
 
@@ -143,7 +164,7 @@ export default function EmailPreview({ currentHost, email }) {
     return null;
   }
 
-  const { appeal, body, footer, items, subject } = email;
+  const { appeal, footer, items, subject } = email;
   const activities = items?.activities;
   const works = items?.works;
 
@@ -199,6 +220,11 @@ export default function EmailPreview({ currentHost, email }) {
         <Hr key={content.id} style={hrStyle} />
       ) : null
     );
+  };
+
+  const getHostName = (entity) => {
+    const entityHost = allHosts.find((h) => h.host === entity.host);
+    return entityHost ? entityHost.name : entity.host;
   };
 
   return (
@@ -271,6 +297,11 @@ export default function EmailPreview({ currentHost, email }) {
                   </Heading>
                 </Link>
                 <Text style={subTitleStyle}>{activity?.subTitle}</Text>
+                {currentHost.isPortalHost && (
+                  <Link href={`https://${activity.host}`}>
+                    <Text style={hostNameStyle}>{getHostName(activity)}</Text>
+                  </Link>
+                )}
 
                 {(activity.images || activity.imageUrl) && (
                   <Link
@@ -288,11 +319,7 @@ export default function EmailPreview({ currentHost, email }) {
                     />
                   </Link>
                 )}
-                <ActivityDates
-                  activity={activity}
-                  centered
-                  currentHost={currentHost}
-                />
+                <ActivityDates activity={activity} centered />
                 <Container>
                   {activity?.longDescription &&
                     HTMLReactParser(
@@ -328,6 +355,12 @@ export default function EmailPreview({ currentHost, email }) {
                   </Heading>
                 </Link>
                 <Text style={subTitleStyle}>{work?.shortDescription}</Text>
+                {currentHost.isPortalHost && (
+                  <Link href={`https://${work.host}`}>
+                    <Text style={hostNameStyle}>{getHostName(work)}</Text>
+                  </Link>
+                )}
+
                 {work.images && (
                   <Link
                     href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
