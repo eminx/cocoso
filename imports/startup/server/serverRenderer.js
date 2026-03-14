@@ -28,15 +28,6 @@ export default async function serverRenderer(sink) {
   }
   const globalCssString = Host ? getGlobalStyles(Host.theme) : '';
   const { getCssText } = stitchesConfig;
-  const helmet = Helmet.renderStatic();
-
-  sink.appendToHead(`
-    ${helmet.title.toString()}
-    ${helmet.meta.toString()}
-    ${helmet.link.toString()}
-    <style id="global-theme">${globalCssString}</style>
-    <style id="stitches">${getCssText()}</style>
-  `);
 
   const pageTitles = pages.map((p) => p.title);
 
@@ -73,6 +64,16 @@ export default async function serverRenderer(sink) {
   const appHtml = renderToString(
     <StaticRouterProvider router={router} context={context} />
   );
+
+  const helmet = Helmet.renderStatic();
+
+  sink.appendToHead(`
+    ${helmet.title.toString()}
+    ${helmet.meta.toString()}
+    ${helmet.link.toString()}
+    <style id="global-theme">${globalCssString}</style>
+    <style id="stitches">${getCssText()}</style>
+  `);
 
   sink.renderIntoElementById('root', appHtml);
 }
