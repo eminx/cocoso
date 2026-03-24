@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
 import { useAtomValue } from 'jotai';
 
@@ -24,7 +24,7 @@ import NewGridThumb from '/imports/ui/listing/NewGridThumb';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/api/_utils/shared';
 
-export default function CommunitiesHybrid({ hosts, Host }) {
+export default function CommunitiesHybrid({ Host, hosts }) {
   const [modalItem, setModalItem] = useState(null);
   const [tc] = useTranslation('common');
   const navigate = useNavigate();
@@ -70,13 +70,17 @@ export default function CommunitiesHybrid({ hosts, Host }) {
       return new Date(b?.createdAt) - new Date(a?.createdAt);
     });
 
+    const myHostsParsed = myHostsSorted
+      ? myHostsSorted.map((mh) => ({
+          ...mh,
+          logo: hostsSorted.find((h) => mh.host === h.host)?.logo,
+          isMember: true,
+        }))
+      : [];
+
     return [
-      ...myHostsSorted.map((mh) => ({
-        ...mh,
-        logo: hostsSorted.find((h) => mh.host === h.host)?.logo,
-        isMember: true,
-      })),
-      ...hostsSorted.filter((h) => !myHosts.some((mh) => h.host === mh.host)),
+      ...myHostsParsed,
+      ...hostsSorted.filter((h) => !myHosts?.some((mh) => h.host === mh.host)),
     ];
   };
 
@@ -102,14 +106,14 @@ export default function CommunitiesHybrid({ hosts, Host }) {
   };
 
   const hostsSorted = getHostsSorted();
-  const hostsRendered = getHostsDivided(hostsSorted).filter(
+  const hostsRendered = getHostsDivided(hostsSorted)?.filter(
     (h) => h.host !== Host.host
   );
 
   return (
     <>
       <Heading as="h1" size="lg" textAlign="center">
-        {tc('platform.communities')}
+        <Trans i18nKey="common:platform.communities">Communities</Trans>
       </Heading>
       <Center py="2">
         <Divider
@@ -135,10 +139,12 @@ export default function CommunitiesHybrid({ hosts, Host }) {
 
               <Box p="2">
                 {host.isMember ? (
-                  <Text textAlign="center" my="1">
-                    {tc('communities.member')}{' '}
-                    <CheckIcon color="green.100" fontSize="md" mt="-1" />
-                  </Text>
+                  <Center>
+                    <Text textAlign="center" my="1">
+                      <Trans i18nKey="common:communities.member" />
+                      <CheckIcon color="green.100" fontSize="md" mt="-1" />
+                    </Text>
+                  </Center>
                 ) : (
                   <Center>
                     <Button
@@ -147,7 +153,7 @@ export default function CommunitiesHybrid({ hosts, Host }) {
                       variant="outline"
                       onClick={() => handleSetModalHost(host)}
                     >
-                      {tc('communities.join')}
+                      <Trans i18nKey="common:communities.join">Join</Trans>
                     </Button>
                   </Center>
                 )}
@@ -174,7 +180,11 @@ export default function CommunitiesHybrid({ hosts, Host }) {
         {modalItem && (
           <Modal
             confirmText={
-              modalItem.isMember ? tc('actions.toHost') : tc('communities.join')
+              modalItem.isMember ? (
+                <Trans i18nKey="common:actions.toHost">Visit</Trans>
+              ) : (
+                <Trans i18nKey="common:communities.join">Join</Trans>
+              )
             }
             id="communities-hybrid"
             size="lg"
@@ -188,18 +198,17 @@ export default function CommunitiesHybrid({ hosts, Host }) {
             <Center bg="gray.100" p="2">
               <Box>
                 <Center>
-                  <Text fontSize="sm">{tc('actions.toHost')}:</Text>
+                  <Text>
+                    <Trans i18nKey="common:actions.toHost">Visit</Trans>:
+                  </Text>
                   <Code
-                    fontSize="sm"
-                    linebreak="anywhere"
-                    mb="-3px"
-                    noOfLines={1}
+                    css={{
+                      linebreak: 'anywhere',
+                      marginBottom: '-3px',
+                      noOfLines: '1',
+                    }}
                   >
-                    <CLink
-                      as="span"
-                      color="blue.600"
-                      onClick={handleActionButtonClick}
-                    >
+                    <CLink color="blue.600" onClick={handleActionButtonClick}>
                       {modalItem.host}
                     </CLink>
                   </Code>
@@ -214,7 +223,12 @@ export default function CommunitiesHybrid({ hosts, Host }) {
 
             <Box bg="white" p="4" css={{ maxWidth: '520px' }}>
               <Text fontSize="sm" fontWeight="bold" textAlign="center">
-                {tc('communities.info', { community: modalItem.name })}
+                <Trans
+                  i18nKey="common:communities.info"
+                  values={{ community: modalItem.name }}
+                >
+                  INFO
+                </Trans>
               </Text>
             </Box>
 

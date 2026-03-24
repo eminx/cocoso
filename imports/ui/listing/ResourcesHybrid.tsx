@@ -10,11 +10,14 @@ import InfiniteScroller from './InfiniteScroller';
 import NewGridThumb from './NewGridThumb';
 
 export interface ResourcesHybridProps {
-  Host: any;
-  resources: any[];
+  Host: object;
+  resources: object[];
 }
 
-export default function ResourcesHybrid({ Host, resources }: ResourcesHybridProps) {
+export default function ResourcesHybrid({
+  Host,
+  resources,
+}: ResourcesHybridProps) {
   const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
 

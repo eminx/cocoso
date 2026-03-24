@@ -12,7 +12,7 @@ interface BaseProps {
   children: React.ReactNode;
   closeOnOverlayClick?: boolean;
   confirmButtonProps?: object;
-  confirmText?: string;
+  confirmText?: string | React.ReactNode;
   hideFooter?: boolean;
   hideHeader?: boolean;
   id: string;

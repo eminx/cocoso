@@ -182,6 +182,7 @@ interface CodeProps {
   fontSize?: string;
   size?: string;
   color?: string;
+  css?: object;
 }
 
 const CodeStyled = styled('span', {
