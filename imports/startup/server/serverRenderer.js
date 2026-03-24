@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { memo } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import {
@@ -12,7 +12,6 @@ import Hosts from '/imports/api/hosts/host';
 import Platform from '/imports/api/platform/platform';
 import appRoutes from '/imports/appRoutes';
 import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';
-import { call } from '/imports/api/_utils/shared';
 
 let stitchesConfig = null;
 
