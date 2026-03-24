@@ -288,7 +288,7 @@ const DrawerContent = styled('div', {
     {
       position: 'left',
       visible: true,
-      css: { transform: 'translateX(0)' },
+      css: { transform: 'translateX(0) !important' },
     },
     {
       position: 'right',
@@ -302,7 +302,7 @@ const DrawerContent = styled('div', {
     {
       position: 'right',
       visible: true,
-      css: { transform: 'translateX(0)' },
+      css: { transform: 'translateX(0) !important' },
     },
   ],
   defaultVariants: {
