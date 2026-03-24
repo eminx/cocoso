@@ -5,7 +5,7 @@ import loadable from '@loadable/component';
 
 import WrapperHybrid from '/imports/ui/layout/WrapperHybrid';
 import HomeHandler from '/imports/HomeHandler';
-import { Loader, Skeleton } from '/imports/ui/core';
+import { Loader } from '/imports/ui/core';
 
 // Keep main public listing and entry pages eager for SSR compatibility
 import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
@@ -134,11 +134,6 @@ const PreviousNewsletters = loadable(() =>
 const Newsletter = loadable(() =>
   import('/imports/ui/pages/admin/EmailNewsletter/Newsletter')
 );
-const SetupHome = loadable(() => import('/imports/ui/pages/setup'));
-const NewHost = loadable(() => import('/imports/ui/pages/setup/NewHost'));
-const PlatformSettings = loadable(() =>
-  import('./ui/pages/superadmin/PlatformSettings')
-);
 const PlatformSettingsLogo = loadable(() =>
   import('./ui/pages/superadmin/PlatformSettingsLogo')
 );
@@ -158,7 +153,6 @@ const NewHostAdmin = loadable(() =>
   import('./ui/pages/superadmin/NewHostAdmin')
 );
 
-import { call } from '/imports/api/_utils/shared';
 import {
   getHomeLoader,
   getActivities,
@@ -192,7 +186,9 @@ class RouteErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true };
+    if (error) {
+      return { hasError: true };
+    }
   }
 
   componentDidCatch(error, errorInfo) {
@@ -570,14 +566,6 @@ export default function appRoutes(props) {
           path: 'reset-password/:token',
           element: createRouteElement(ResetPasswordPage, props),
         },
-        // {
-        //   path: '/setup',
-        //   element: createRouteElement(SetupHome, props),
-        // },
-        // {
-        //   path: '/new-host',
-        //   element: createRouteElement(NewHost, props),
-        // },
         {
           path: 'terms-&-privacy-policy',
           element: createRouteElement(Terms, props),
