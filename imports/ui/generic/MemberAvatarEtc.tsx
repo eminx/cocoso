@@ -79,13 +79,13 @@ export default function MemberAvatarEtc({
       <Box>
         <Center>
           <Flex spacing="0.5">
-            <Text fontWeight="bold" fontSize="xl">
+            <Text fontSize="xl" fontWeight="bold" textAlign="center">
               {user.username}
             </Text>
           </Flex>
         </Center>
         <Center mb="4">
-          <Text>{getFullName(user)}</Text>
+          <Text textAlign="center">{getFullName(user)}</Text>
         </Center>
 
         {!isThumb && user.keywords && (

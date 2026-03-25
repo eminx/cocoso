@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 import loadable from '@loadable/component';
@@ -42,7 +42,11 @@ export interface UsersHybridProps {
   keywords?: any[];
 }
 
-export default function UsersHybrid({ Host, users, keywords }: UsersHybridProps) {
+export default function UsersHybrid({
+  Host,
+  users,
+  keywords,
+}: UsersHybridProps) {
   const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
   const [, setFilterKeyword] = useState(null);
@@ -157,7 +161,8 @@ export default function UsersHybrid({ Host, users, keywords }: UsersHybridProps)
   const filterCascaderOptions = (inputValue: string, path: CascaderOption[]) =>
     path.some(
       (option) =>
-        String(option.label).toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+        String(option.label).toLowerCase().indexOf(inputValue.toLowerCase()) >
+        -1
     );
 
   const handleCascaderSelect = (value: string[]) => {
