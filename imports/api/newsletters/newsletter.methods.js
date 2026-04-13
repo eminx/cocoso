@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { Email } from 'meteor/email';
 
-import { extractEmailAddress } from '/imports/api/_utils/services/mails/mail.helpers';
 import Hosts from '/imports/api/hosts/host';
 
 import Newsletters from './newsletter';
@@ -85,46 +83,51 @@ Meteor.methods({
         throw new Meteor.Error('No members found to send newsletter to');
       }
 
-      // Send emails with better error handling
-      const results = await Promise.allSettled(
-        members.map(async (member) => {
-          const emailAddress = isPortalHost
-            ? member?.emails?.[0]?.address
-            : member?.email;
-          console.log('member:', member);
-          console.log('emailAddress:', emailAddress);
-          if (!emailAddress) {
-            return {
-              status: 'skipped',
-              reason: 'No email address',
-              member: member._id,
-            };
-          }
+      // Send emails in batches to avoid memory overflow on large member lists
+      const BATCH_SIZE = 20;
+      const results = [];
 
-          const emailHtmlWithUsername = emailHtmlWithBrowserLink.replace(
-            '[username]',
-            member.username || 'there'
-          );
+      for (let i = 0; i < members.length; i += BATCH_SIZE) {
+        const batch = members.slice(i, i + BATCH_SIZE);
+        const batchResults = await Promise.allSettled(
+          batch.map(async (member) => {
+            const emailAddress = isPortalHost
+              ? member?.emails?.[0]?.address
+              : member?.email;
+            if (!emailAddress) {
+              return {
+                status: 'skipped',
+                reason: 'No email address',
+                member: member._id,
+              };
+            }
 
-          try {
-            await Meteor.callAsync(
-              'sendEmail',
-              emailAddress,
-              email.subject,
-              emailHtmlWithUsername
+            const emailHtmlWithUsername = emailHtmlWithBrowserLink.replace(
+              '[username]',
+              member.username || 'there'
             );
-            console.log('sent to:', emailAddress);
-            return { status: 'sent', member: member._id };
-          } catch (error) {
-            console.error('failed to sent to:', emailAddress);
-            return {
-              status: 'failed',
-              error: error.message,
-              member: member._id,
-            };
-          }
-        })
-      );
+
+            try {
+              await Meteor.callAsync(
+                'sendEmail',
+                emailAddress,
+                email.subject,
+                emailHtmlWithUsername
+              );
+              console.log('sent to:', emailAddress);
+              return { status: 'sent', member: member._id };
+            } catch (error) {
+              console.error('failed to send to:', emailAddress);
+              return {
+                status: 'failed',
+                error: error.message,
+                member: member._id,
+              };
+            }
+          })
+        );
+        results.push(...batchResults);
+      }
 
       // Log summary
       const sentCount = results.filter(
