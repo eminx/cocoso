@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, Outlet, useLoaderData } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -20,22 +19,24 @@ export default function PreviousNewsletters() {
 
   return (
     <Center>
-      <Box pb="4">
-        <Heading
-          color="gray.800"
-          fontFamily="'Raleway', sans-serif"
-          mb="8"
-          size="lg"
-        >
-          {tc('labels.newsletters')}
-        </Heading>
+      <Box pb="4" maxW="800px">
+        <Center>
+          <Heading
+            color="gray.800"
+            size="lg"
+            css={{ marginBottom: '16px' }}
+            textAlign="center"
+          >
+            {tc('labels.newsletters')}
+          </Heading>
+        </Center>
 
         <NiceList
           actionsDisabled
           list={newsletters}
           keySelector="_id"
           spacing="0"
-          bg="theme.50"
+          bg="white"
           p="8"
         >
           {(email) => {
@@ -44,13 +45,11 @@ export default function PreviousNewsletters() {
                 <Flex alignItems="flex-start" mb="4">
                   <Box>
                     <Link to={`/newsletters/${email._id}`}>
-                      <CLink as="span">
-                        <Heading size="md" mb="1">
-                          {email.subject}
-                        </Heading>
+                      <CLink>
+                        <Heading size="md">{email.subject}</Heading>
                       </CLink>
                     </Link>
-                    <Box mb="1">
+                    <Box mb="1" mt="2">
                       <Text>{tc('labels.author')}: </Text>
                       <Text fontWeight="bold">{email.authorUsername}</Text>
                     </Box>

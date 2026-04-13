@@ -3,7 +3,7 @@ import loadable from '@loadable/component';
 
 import EllipsisVertical from 'lucide-react/dist/esm/icons/ellipsis-vertical';
 import { Box, Flex, IconButton } from '/imports/ui/core';
-import Menu, { MenuItem } from '/imports/ui/generic/Menu';
+import Menu from '/imports/ui/generic/Menu';
 const List = loadable(() => import('rc-virtual-list'));
 
 function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
