@@ -13,7 +13,8 @@ export default {
     activityRegister: {
       activityPage: 'Visit the page',
       confirmedApprovalText: 'Your registration is confirmed',
-      confirmedApprovalTextUpdate: 'The update to your registration is confirmed',
+      confirmedApprovalTextUpdate:
+        'The update to your registration is confirmed',
       confirmedApprovalTextLong:
         'May you prefer to make changes to your registration or cancel it; please go to the activity page, open the date you signed up for, and then click the "Change/cancel existing registration" link. Then follow the instructions there to update your details or entirely cancel your registration for this event.',
       visitPage: 'Visit the page',
@@ -24,6 +25,14 @@ export default {
       confirmedApprovalTextLong:
         'If you want to register again, you can do so at the activity page',
       visitPage: 'Visit the page',
+    },
+    newGroupMessage: {
+      subject: (groupTitle) => `New message in ${groupTitle}`,
+      text: (groupTitle, host, groupId) =>
+        `You have a new message in the ${groupTitle} group discussion. <br />
+        Go to the group page <a href="https://${host}/groups/${groupId}">${groupTitle}</a> to see the message and join the conversation.
+        <br /><br />
+        <a href="https://${host}/groups/${groupId}">https://${host}/groups/${groupId}</a>`,
     },
   },
   sv: {
@@ -40,7 +49,8 @@ export default {
     activityRegister: {
       activityPage: 'Besök sidan',
       confirmedApprovalText: 'Din registrering är bekräftad',
-      confirmedApprovalTextUpdate: 'Uppdateringen av din registrering är bekräftad',
+      confirmedApprovalTextUpdate:
+        'Uppdateringen av din registrering är bekräftad',
       confirmedApprovalTextLong:
         'Om du vill göra ändringar i din registrering eller avbryta den; vänligen gå till arrangemangets sida, öppna datumet du registrerade dig till och klicka sedan på länken "Ändra/avbryt befintlig registrering". Följ sedan instruktionerna för att uppdatera dina uppgifter eller radera din registrering för detta arrangemang.',
       visitPage: 'Besök sidan',
@@ -48,8 +58,17 @@ export default {
     activityUnregister: {
       activityPage: 'Besök sidan',
       confirmedApprovalText: 'Din registrering tas bort',
-      confirmedApprovalTextLong: 'Om du vill OSA igen kan du göra det på arrangemangets sida',
+      confirmedApprovalTextLong:
+        'Om du vill OSA igen kan du göra det på arrangemangets sida',
       visitPage: 'Besök sidan',
+    },
+    newGroupMessage: {
+      subject: (groupTitle) => `Ny meddelande i ${groupTitle}`,
+      text: (groupTitle, host, groupId) =>
+        `Du har ett nytt meddelande i ${groupTitle} gruppdiskussionen. <br />
+        Gå till gruppsidan <a href="https://${host}/groups/${groupId}">${groupTitle}</a> för att se meddelandet och gå med i diskussionen.
+        <br /><br />
+        <a href="https://${host}/groups/${groupId}">https://${host}/groups/${groupId}</a>`,
     },
   },
   tr: {
@@ -74,8 +93,17 @@ export default {
     activityUnregister: {
       activityPage: 'Sayfayı ziyaret et',
       confirmedApprovalText: 'Kaydın silindi',
-      confirmedApprovalTextLong: 'Tekrar kayıt yapmak istersen, etkinlik sayfasından yapabilirsin',
+      confirmedApprovalTextLong:
+        'Tekrar kayıt yapmak istersen, etkinlik sayfasından yapabilirsin',
       visitPage: 'Sayfayı ziyaret et',
+    },
+    newGroupMessage: {
+      subject: (groupTitle) => `${groupTitle} grubunda yeni mesaj`,
+      text: (groupTitle, host, groupId) =>
+        `${groupTitle} grubunda yeni bir mesaj var. <br />
+        Mesajı görmek ve tartışmaya katılmak için <a href="https://${host}/groups/${groupId}">${groupTitle}</a> sayfasına git.
+        <br /><br />
+        <a href="https://${host}/groups/${groupId}">https://${host}/groups/${groupId}</a>`,
     },
   },
 };

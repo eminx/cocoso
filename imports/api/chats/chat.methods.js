@@ -1,4 +1,7 @@
 import { Meteor } from 'meteor/meteor';
+
+import mailtranslations from '/imports/api/activities/mailtranslations';
+
 import { getHost } from '../_utils/shared';
 import { isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
@@ -143,14 +146,13 @@ Meteor.methods({
           if (!memberEmail) {
             return;
           }
+          const lang = member.lang || 'en';
+          const tr = mailtranslations[lang];
           await Meteor.callAsync(
             'sendEmail',
             memberEmail,
-            `New message in ${theGroup.title}`,
-            `You have a new message in the ${theGroup.title} group discussion. <br />
-            Go to the group page <a href="https://${host}/groups/${theGroup._id}">${theGroup.title}</a> to see the message and join the conversation.
-            <br /><br />
-            <a href="https://${host}/groups/${theGroup._id}">https://${host}/groups/${theGroup._id}</a>`
+            tr.newGroupMessage.subject(theGroup.title),
+            tr.newGroupMessage.text(theGroup.title, host, theGroup._id)
           );
         })
       );
