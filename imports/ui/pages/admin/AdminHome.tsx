@@ -40,7 +40,7 @@ const shortCuts = () => [
   {
     label: <Trans i18nKey="admin:listings.title" />,
     helper: <Trans i18nKey="admin:listings.shortcutHelper" />,
-    link: '/admin/features/activities',
+    link: '/admin/listing/activities',
   },
   {
     label: <Trans i18nKey="admin:emails.title" />,
@@ -50,7 +50,7 @@ const shortCuts = () => [
   {
     label: <Trans i18nKey="admin:users.title" />,
     helper: <Trans i18nKey="admin:users.shortcutHelper" />,
-    link: '/admin/users/all',
+    link: '/admin/users?show=all',
   },
   {
     label: <Trans i18nKey="admin:newsletter.title" />,
