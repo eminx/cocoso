@@ -306,6 +306,7 @@ Meteor.methods({
         {
           $set: {
             title: values.title,
+            subTitle: values.readingMaterial,
             longDescription: values.description,
             images: [values.imageUrl],
           },
