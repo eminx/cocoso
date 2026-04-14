@@ -139,6 +139,19 @@ Meteor.methods({
               },
             });
           }
+          const memberEmail = member.emails[0]?.address;
+          if (!memberEmail) {
+            return;
+          }
+          await Meteor.callAsync(
+            'sendEmail',
+            memberEmail,
+            `New message in ${theGroup.title}`,
+            `You have a new message in the ${theGroup.title} group discussion. <br />
+            Go to the group page <a href="https://${host}/groups/${theGroup._id}">${theGroup.title}</a> to see the message and join the conversation.
+            <br /><br />
+            <a href="https://${host}/groups/${theGroup._id}">https://${host}/groups/${theGroup._id}</a>`
+          );
         })
       );
     } catch (error) {
