@@ -1186,3 +1186,7 @@ body {
 .quill .ql-toolbar.ql-snow .ql-picker.ql-size .ql-picker-item::before {
   content: '';
 }
+
+.pageheading-container {
+  transition: width 0.5s ease;
+}
