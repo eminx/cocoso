@@ -843,6 +843,173 @@ body {
   }
 }
 
+/* === New Button === */
+
+.new-button-wrapper {
+  border-radius: var(--cocoso-border-radius);
+  display: inline-flex;
+  position: relative;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.new-button-wrapper:hover {
+  transform: scale(1.12);
+}
+
+/* SVG ring — sits exactly on the button border, hidden by default */
+.new-button-ring {
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  overflow: visible;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.new-button-ring-path {
+  fill: none;
+  stroke: var(--cocoso-colors-theme-500);
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  stroke-linecap: round;
+  stroke-width: 4;
+}
+
+/* --- Pending: in DOM for FLIP measurement but invisible until heading settles --- */
+
+.new-button-pending {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px) scale(1);
+  transition: none;
+}
+
+/* --- Intro animation (first page visit only) --- */
+
+.new-button-intro .new-button-ring {
+  opacity: 1;
+}
+
+.new-button-intro .new-button-ring-path {
+  /* 300 ms delay so button finishes scaling before the border starts drawing */
+  animation: new-button-border-seq 2.5s linear 300ms both;
+}
+
+.new-button-intro {
+  animation: new-button-scale-intro 2.5s linear 300ms both;
+}
+
+/*
+ * Draw easing:  slow start → very fast → creeps to close
+ *               cubic-bezier(0.6, 0, 0.05, 1)
+ *
+ * Erase easing: mathematical reverse of draw = cubic-bezier(0.95, 0, 0.4, 1)
+ *               very fast opening → decelerates → slow erase at origin
+ *
+ * Negative dashoffset reverses the draw direction → counter-clockwise erase
+ *
+ * 0–28% of the 2500 ms animation = 700 ms = heading-slide duration.
+ * The button scales in during that window; the border draws afterwards.
+ */
+@keyframes new-button-border-seq {
+  /* 0–28 %: button sliding in from below — border stays hidden */
+  0% {
+    stroke-dashoffset: 100;
+  }
+  /* 28–55 %: draw clockwise, slow → very fast → creeps to close */
+  28% {
+    stroke-dashoffset: 100;
+    animation-timing-function: cubic-bezier(0.6, 0, 0.05, 1);
+  }
+  55% {
+    stroke-dashoffset: 0;
+  }
+  /* 55–75 %: hold fully drawn while scale spring plays */
+  75% {
+    stroke-dashoffset: 0;
+    animation-timing-function: cubic-bezier(0.95, 0, 0.4, 1);
+  }
+  /* 75–100 %: erase counter-clockwise, fast open → slows at origin */
+  100% {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes new-button-scale-intro {
+  /* 0–28 %: slide up from below alongside the heading slide */
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(1);
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  28% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  /* 28–55 %: hold at rest while border draws */
+  55% {
+    transform: translateY(0) scale(1);
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  /* 55–65 %: spring up */
+  65% {
+    transform: translateY(0) scale(1.14);
+    animation-timing-function: ease-out;
+  }
+  /* 65–75 %: settle back */
+  75%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --- Subtle animation (page navigation) --- */
+
+.new-button-subtle {
+  animation: new-button-fade-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.new-button-subtle::after {
+  animation: new-button-bloom 0.8s ease-out forwards;
+  background: radial-gradient(
+    ellipse at center,
+    var(--cocoso-colors-theme-200) 0%,
+    transparent 65%
+  );
+  border-radius: calc(var(--cocoso-border-radius) + 8px);
+  content: '';
+  inset: -8px;
+  pointer-events: none;
+  position: absolute;
+}
+
+@keyframes new-button-fade-in {
+  from {
+    opacity: 0.5;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes new-button-bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  35% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
 @keyframes pulse {
   0%,
   100% {

@@ -19,7 +19,13 @@ const getRoute = (item: MenuItem): string => {
   return `/${item.name}/new`;
 };
 
-export default function NewButton() {
+export type NewButtonAnimState = 'pending' | 'idle' | 'intro' | 'subtle';
+
+interface NewButtonProps {
+  animState?: NewButtonAnimState;
+}
+
+export default function NewButton({ animState = 'idle' }: NewButtonProps) {
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentHost = useAtomValue(currentHostAtom);
   const role = useAtomValue(roleAtom);
@@ -27,27 +33,21 @@ export default function NewButton() {
   const location = useLocation();
   const [, setSearchParams] = useSearchParams();
 
+  const { pathname } = location;
   const menu = currentHost?.settings?.menu;
-
-  if (!currentHost || !canCreateContent || !menu) {
-    return null;
-  }
-
   const isAdmin = role === 'admin';
 
-  const menuItems = menu
+  const menuItems = (menu ?? [])
     .filter((item) => {
       if (isAdmin) {
         return item.isVisible;
       }
       return item.isVisible && !['info', 'resources'].includes(item.name);
     })
-    .map((item, index) => ({
+    .map((item) => ({
       ...item,
-      route: getRoute(item, index),
+      route: getRoute(item),
     }));
-
-  const { pathname } = location;
 
   const activeMenuItem = menuItems.find((item, index) => {
     if (pathname === '/') {
@@ -56,18 +56,48 @@ export default function NewButton() {
     return pathname.includes(item?.name);
   });
 
-  if (!activeMenuItem || ['members', 'people'].includes(activeMenuItem.name)) {
+  const isVisible =
+    Boolean(currentHost) &&
+    Boolean(canCreateContent) &&
+    Boolean(menu) &&
+    Boolean(activeMenuItem) &&
+    !['members', 'people'].includes(activeMenuItem?.name ?? '');
+
+  if (!isVisible) {
     return null;
   }
 
   return (
-    <IconButton
-      css={{ margin: '0 1rem' }}
-      icon={<AddIcon />}
-      mx="2"
-      size="sm"
-      variant="outline"
-      onClick={() => setSearchParams({ new: 'true' })}
-    />
+    <div className={`new-button-wrapper new-button-${animState}`}>
+      <svg
+        className="new-button-ring"
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        {/*
+          r=48 + stroke-width=4: stroke spans r=46–r=50.
+          r=50 = SVG boundary = button outer edge → stroke sits on the border.
+          rotate(-90) shifts start point from 3 o'clock to 12 o'clock.
+        */}
+        <circle
+          className="new-button-ring-path"
+          cx="50"
+          cy="50"
+          r="48"
+          pathLength={100}
+          transform="rotate(-90 50 50)"
+        />
+      </svg>
+      <IconButton
+        aria-label="Create new"
+        css={{ margin: '0 1rem' }}
+        icon={<AddIcon />}
+        mx="2"
+        size="sm"
+        variant="outline"
+        onClick={() => setSearchParams({ new: 'true' })}
+      />
+    </div>
   );
 }
