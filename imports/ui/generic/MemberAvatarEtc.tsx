@@ -47,7 +47,11 @@ export default function MemberAvatarEtc({
   return (
     <Box mb="6">
       <Center mb="2">
-        <Avatar name={user?.username} size="6xl" src={avatarSrc} />
+        <Avatar
+          name={user?.username}
+          size={!avatarSrc || isThumb ? '4xl' : '6xl'}
+          src={avatarSrc}
+        />
       </Center>
 
       {/* {['contributor', 'admin'].includes(role) && (
