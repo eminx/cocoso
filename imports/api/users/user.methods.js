@@ -38,9 +38,8 @@ Meteor.methods({
     const currentHost = await Hosts.findOneAsync({ host });
     const user = await Meteor.users.findOneAsync({ username });
 
-    if (!user) {
+    if (!user && !currentHost.isPortalHost) {
       return null;
-      // throw new Meteor.Error('User not found');
     }
 
     const currentUser = await Meteor.userAsync();
@@ -51,12 +50,10 @@ Meteor.methods({
 
     if (currentHost.isPortalHost && !user.isPublic) {
       return null;
-      // throw new Meteor.Error('User not found');
     }
 
     if (!user.memberships.find((m) => m.host === host)?.isPublic) {
       return null;
-      // throw new Meteor.Error('User not found');
     }
 
     return userModel(user);
