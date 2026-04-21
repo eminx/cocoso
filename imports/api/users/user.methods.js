@@ -38,6 +38,10 @@ Meteor.methods({
     const currentHost = await Hosts.findOneAsync({ host });
     const user = await Meteor.users.findOneAsync({ username });
 
+    if (!user) {
+      return null;
+    }
+
     if (currentHost.isPortalHost) {
       if (user.isPublic) {
         return userModel(user);
@@ -472,5 +476,37 @@ Meteor.methods({
       console.log(error);
       throw new Meteor.Error(error);
     }
+  },
+
+  async saveEncryptionKeys({ publicKey, encryptedPrivateKey, keySalt }) {
+    check(publicKey, String);
+    check(encryptedPrivateKey, String);
+    check(keySalt, String);
+
+    const user = await Meteor.userAsync();
+    if (!user) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    await Meteor.users.updateAsync(user._id, {
+      $set: { publicKey, encryptedPrivateKey, keySalt },
+    });
+  },
+
+  async getEncryptionKeyBackup() {
+    const user = await Meteor.userAsync();
+    if (!user) throw new Meteor.Error('not-authorized');
+    const doc = await Meteor.users.findOneAsync(user._id, {
+      fields: { publicKey: 1, encryptedPrivateKey: 1, keySalt: 1 },
+    });
+    return doc || null;
+  },
+
+  async getPublicKey(targetUserId) {
+    check(targetUserId, String);
+    const user = await Meteor.users.findOneAsync(targetUserId, {
+      fields: { publicKey: 1 },
+    });
+    return user?.publicKey || null;
   },
 });

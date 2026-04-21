@@ -97,6 +97,11 @@ export default function AdminContainer({ Host }) {
       value: 'my-profile',
     });
 
+    allRoutes.push({
+      label: ta('messages.title'),
+      value: 'messages',
+    });
+
     return allRoutes.find((r) => pathname.includes(r.value));
   };
 
@@ -125,7 +130,8 @@ export default function AdminContainer({ Host }) {
   if (
     !isAdmin &&
     !currentUser?.isSuperAdmin &&
-    pathname.split('/')[2] !== 'my-profile'
+    pathname.split('/')[2] !== 'my-profile' &&
+    pathname.split('/')[2] !== 'messages'
   ) {
     return (
       <Center p="4" h="100vh">
@@ -146,11 +152,7 @@ export default function AdminContainer({ Host }) {
           title={t('menulabel')}
           onClose={() => setDrawerMenuOpen(false)}
         >
-          <AdminMenu
-            currentHost={currentHost}
-            routes={routes}
-            onItemClick={handleItemClick}
-          />
+          <AdminMenu routes={routes} onItemClick={handleItemClick} />
         </Drawer>
 
         <Box>

@@ -106,6 +106,9 @@ profile:
       description: Here you can select and create some keywords that explains you and your skills well. They will be shown on your profile page, as well as be filterable on the members page.
       placeholder: Type something...
 
+messages:
+  title: Message Inbox
+
 leave:
   action: Leave Community
   label: Confirm Leaving

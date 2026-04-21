@@ -86,6 +86,11 @@ Users.schema.UserProfile = {
     optional: true,
   },
 
+  // E2EE messaging keys
+  publicKey: { type: String, optional: true },
+  encryptedPrivateKey: { type: String, optional: true },
+  keySalt: { type: String, optional: true },
+
   verifiedBy: {
     type: new SimpleSchema({
       userId: Schemas.Id,

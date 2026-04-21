@@ -56,8 +56,9 @@ export function AdminMenuHeader({ currentHost }) {
   );
 }
 
-export function AdminUserThumb({ currentUser }) {
+export function AdminUserThumb() {
   const location = useLocation();
+  const currentUser = useAtomValue(currentUserAtom);
 
   if (!currentUser) {
     return null;
@@ -228,12 +229,33 @@ export default function AdminMenu({ routes, onItemClick }) {
         <Box
           w="100%"
           css={{
-            cursor: 'pointer',
             flexGrow: '0',
           }}
-          onClick={handleUserThumbClick}
         >
-          <AdminUserThumb currentUser={currentUser} />
+          <List
+            bg={
+              location?.pathname?.includes('messages')
+                ? 'bluegray.900'
+                : 'bluegray.700'
+            }
+            p="0"
+            css={{
+              borderBottom: '1px solid var(--cocoso-colors-bluegray-600)',
+              width: '100%',
+              '&:hover': {
+                backgroundColor: 'var(--cocoso-colors-bluegray-800)',
+              },
+            }}
+          >
+            <Link to="/admin/messages">
+              <ListItem css={{ color: 'white', width: '100%' }} px="4" py="2">
+                Messages (beta)
+              </ListItem>
+            </Link>
+          </List>
+          <Box css={{ cursor: 'pointer' }} onClick={handleUserThumbClick}>
+            <AdminUserThumb />
+          </Box>
         </Box>
       </Flex>
     </Flex>

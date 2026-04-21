@@ -106,6 +106,9 @@ profile:
       description: Burada seni ve becerilerini iyi açıklayan bazı anahtar kelimeleri seçip oluşturabilirsin. Bunlar profil sayfanda gösterilecek ve üyeler sayfasında filtrelenebilecektir.
       placeholder: Birşeyler yaz...
 
+messages:
+  title: Mesaj Kutusu
+
 leave:
   action: Topluluktan Ayrıl
   label: Ayrılmayı onayla

@@ -33,6 +33,7 @@ Meteor.publish('currentUser', function () {
         lastName: 1,
         memberships: 1,
         notifications: 1,
+        publicKey: 1,
         username: 1,
       },
     }

@@ -26,6 +26,7 @@ import {
   renderedAtom,
 } from '/imports/state';
 import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
+import { restoreKeyFromSession } from '/imports/utils/setupEncryption';
 import { call } from '/imports/api/_utils/shared';
 import { Box } from '/imports/ui/core';
 
@@ -90,6 +91,7 @@ export default function WrapperHybrid({
 
   useEffect(() => {
     setValues();
+    restoreKeyFromSession();
     setTimeout(() => {
       setRendered(true);
     }, 1000);

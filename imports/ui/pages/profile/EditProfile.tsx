@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai';
 
 import {
   Alert,
@@ -26,7 +26,7 @@ export const subSpanStyle: React.CSSProperties = {
 };
 
 export default function EditProfile() {
-  const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
+  const currentUser = useAtomValue(currentUserAtom);
   const platform = useAtomValue(platformAtom);
   const role = useAtomValue(roleAtom);
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);

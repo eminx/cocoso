@@ -106,6 +106,9 @@ profile:
       description: Här kan du lägga till nyckelord som visar dina kunskaper och intressen, eller vad du vill att andra personer kontaktar dig om. Nyckelorden kommer fungera som sökord för att hitta din profil. Skriv ett ord i taget!
       placeholder: Skriv något...
 
+messages:
+  title: Meddelandeinkorg
+
 leave:
   action: Lämna Community
   label: Bekräfta att du lämnar

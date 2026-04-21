@@ -33,6 +33,10 @@ import '../../api/chats/chat';
 import '../../api/chats/chat.methods';
 import '../../api/chats/chat.publications';
 
+import '../../api/directChats/directChat';
+import '../../api/directChats/directChat.methods';
+import '../../api/directChats/directChat.publications';
+
 import '../../api/documents/document';
 import '../../api/documents/document.methods';
 import '../../api/documents/document.publications';
