@@ -38,22 +38,16 @@ export interface MemberAvatarEtcProps {
 export default function MemberAvatarEtc({
   isThumb = true,
   user,
-  role,
 }: MemberAvatarEtcProps) {
   if (!user) return null;
 
   const avatarSrc =
     typeof user.avatar === 'object' ? user.avatar?.src : user.avatar;
-  const [t] = useTranslation('members');
 
   return (
     <Box mb="6">
       <Center mb="2">
-        <Avatar
-          name={user?.username}
-          size={!avatarSrc || isThumb ? '2xl' : '6xl'}
-          src={avatarSrc}
-        />
+        <Avatar name={user?.username} size="6xl" src={avatarSrc} />
       </Center>
 
       {/* {['contributor', 'admin'].includes(role) && (

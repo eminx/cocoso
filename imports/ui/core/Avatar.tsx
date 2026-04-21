@@ -7,7 +7,7 @@ import { Flex } from './Box';
 export interface AvatarProps {
   borderRadius?: string;
   name?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl' | '6xl';
   src?: string;
   children?: React.ReactNode; // for badge or status
 }
@@ -21,6 +21,7 @@ const sizeMap = {
   xl: '5.5rem',
   '2xl': '8rem',
   '4xl': '12rem',
+  '6xl': '18rem',
 };
 
 // Font size mapping for initials
