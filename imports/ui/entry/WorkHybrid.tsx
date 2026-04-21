@@ -75,19 +75,6 @@ export default function WorkHybrid({ documents, work, Host }: WorkHybridProps) {
     });
   }
 
-  if (work.contactInfo) {
-    tabs.push({
-      title: <Trans i18nKey="common:labels.contact">Contact</Trans>,
-      content: (
-        <Box bg="white" className="text-content" p="6" textAlign="center">
-          {work?.contactInfo &&
-            HTMLReactParser(DOMPurify.sanitize(work.contactInfo))}
-        </Box>
-      ),
-      path: 'contact',
-    });
-  }
-
   const tags = work && [work.category?.label];
   const worksInMenu = Host?.settings?.menu.find(
     (item) => item.name === 'works'
