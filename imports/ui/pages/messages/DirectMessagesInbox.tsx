@@ -3,6 +3,7 @@ import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
 import React, { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
+import { Trans } from 'react-i18next';
 import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
 
 import {
@@ -12,17 +13,28 @@ import {
   Flex,
   IconButton,
   Input,
+  Link as CLink,
+  Loader,
+  Modal,
   Text,
 } from '/imports/ui/core';
 import DirectChats from '/imports/api/directChats/directChat';
 import { currentUserAtom } from '/imports/state';
-import DirectMessageConversations from '/imports/ui/pages/messages/DirectMessageConversations';
+import { Bio } from '/imports/ui/entry/UserHybrid';
+import MemberAvatarEtc from '/imports/ui/generic/MemberAvatarEtc';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
+
+import DirectMessageConversations from './DirectMessageConversations';
 
 export default function DirectMessagesInbox() {
   const currentUser = useAtomValue(currentUserAtom);
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [starting, setStarting] = useState(false);
+  const [modalItem, setModalItem] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(false);
   const { conversationId } = useParams();
 
   useSubscribe('directChats');
@@ -71,6 +83,26 @@ export default function DirectMessagesInbox() {
     }
   };
 
+  const handleFetchUser = async (username) => {
+    setLoadingUser(true);
+    try {
+      const user = await call('getUserInfo', username);
+      setModalItem(user);
+      setModalOpen(true);
+    } catch (error) {
+      message.error(error.error || error.reason);
+    } finally {
+      setLoadingUser(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setTimeout(() => {
+      setModalItem(null);
+    }, 400);
+  };
+
   const currentConversation = conversations?.find(
     (conv) => conv._id === conversationId
   );
@@ -80,6 +112,8 @@ export default function DirectMessagesInbox() {
 
   return (
     <Box css={{ maxWidth: '540px' }}>
+      {loadingUser && <Loader />}
+
       <Box mb="4" css={{ position: 'relative' }}>
         <Box mb="4">
           {isIndexPage ? (
@@ -95,9 +129,12 @@ export default function DirectMessagesInbox() {
                   <IconButton icon={<ArrowLeft size="44" />} variant="ghost" />
                 </Center>
               </Link>
-              <Center css={{ transform: 'translateX(-12px)' }}>
+              <Center
+                css={{ transform: 'translateX(-12px)' }}
+                onClick={() => handleFetchUser(currentOtherUsername)}
+              >
                 <Text fontWeight="bold" size="lg">
-                  {currentOtherUsername}
+                  <CLink>{currentOtherUsername}</CLink>
                 </Text>
               </Center>
             </Flex>
@@ -146,6 +183,26 @@ export default function DirectMessagesInbox() {
       </Box>
 
       <DirectMessageConversations conversations={conversations} />
+
+      <Modal
+        cancelText={<Trans i18nKey="common:actions.close">Close</Trans>}
+        confirmText={
+          <Trans i18nKey="members:actions.visit">Visit Profile</Trans>
+        }
+        hideHeader
+        id="users-hybrid"
+        open={modalOpen}
+        size="xl"
+        onConfirm={() => navigate(`/@${modalItem?.username}`)}
+        onClose={handleCloseModal}
+      >
+        <Box pt="8">
+          <MemberAvatarEtc isThumb={false} user={modalItem} />
+        </Box>
+        <Center>
+          <Bio user={modalItem} />
+        </Center>
+      </Modal>
     </Box>
   );
 }

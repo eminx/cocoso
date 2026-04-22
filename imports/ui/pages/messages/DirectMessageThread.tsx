@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
 import { useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import { Box, Loader } from '/imports/ui/core';
+import { Box, Center, Loader, Modal } from '/imports/ui/core';
 import DirectChats from '/imports/api/directChats/directChat';
 import { currentUserAtom, privateKeyAtom } from '/imports/state';
 import { encryptMessage, decryptMessage } from '/imports/utils/crypto';
