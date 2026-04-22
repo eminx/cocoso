@@ -1,10 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
+import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
 
-import { Avatar, Box, Flex, Input, Text } from '/imports/ui/core';
+import {
+  Avatar,
+  Box,
+  Center,
+  Flex,
+  IconButton,
+  Input,
+  Text,
+} from '/imports/ui/core';
 import DirectChats from '/imports/api/directChats/directChat';
 import { currentUserAtom } from '/imports/state';
 import DirectMessageConversations from '/imports/ui/pages/messages/DirectMessageConversations';
@@ -12,12 +21,14 @@ import DirectMessageConversations from '/imports/ui/pages/messages/DirectMessage
 export default function DirectMessagesInbox() {
   const currentUser = useAtomValue(currentUserAtom);
   const navigate = useNavigate();
-
   const [search, setSearch] = useState('');
   const [starting, setStarting] = useState(false);
+  const { conversationId } = useParams();
 
   useSubscribe('directChats');
   useSubscribe('membersForPublic');
+
+  const isIndexPage = typeof conversationId !== 'string';
 
   const conversations = useTracker(() => {
     if (!currentUser) return [];
@@ -60,15 +71,35 @@ export default function DirectMessagesInbox() {
     }
   };
 
+  const currentConversation = conversations?.find(
+    (conv) => conv._id === conversationId
+  );
+  const currentOtherUsername = currentConversation?.participantUsernames.find(
+    (u) => u !== currentUser.username
+  );
+
   return (
     <Box css={{ maxWidth: '540px' }}>
       <Box mb="4" css={{ position: 'relative' }}>
-        <Box mb="12">
-          <Input
-            placeholder="Start a new conversation..."
-            value={search}
-            onChange={(e: any) => setSearch(e.target.value)}
-          />
+        <Box mb="4">
+          {isIndexPage ? (
+            <Input
+              placeholder="Start a new conversation..."
+              value={search}
+              onChange={(e: any) => setSearch(e.target.value)}
+            />
+          ) : (
+            <Flex align="center">
+              <Link to="/admin/messages">
+                <Center w="72px">
+                  <IconButton icon={<ArrowLeft size="44" />} variant="ghost" />
+                </Center>
+              </Link>
+              <Center>
+                <Text size="lg">{currentOtherUsername}</Text>
+              </Center>
+            </Flex>
+          )}
         </Box>
 
         {members.length > 0 && (

@@ -31,7 +31,6 @@ export default function DirectMessageConversations({ conversations }: Props) {
   const navigate = useNavigate();
   const { conversationId } = useParams();
 
-  console.log('conversationId:', conversationId);
   const isIndexPage = typeof conversationId !== 'string';
 
   if (conversations.length === 0) {
@@ -88,6 +87,7 @@ export default function DirectMessageConversations({ conversations }: Props) {
               align="center"
               bg={isCurrentThread ? 'bluegray.300' : 'none'}
               gap="4"
+              w="100%"
               css={{
                 borderBottom: '1px solid var(--cocoso-colors-bluegray-200)',
                 cursor: 'pointer',
