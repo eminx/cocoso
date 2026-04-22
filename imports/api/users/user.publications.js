@@ -53,6 +53,7 @@ Meteor.publish('membersForPublic', function () {
         avatar: true,
         firstName: true,
         lastName: true,
+        publicKey: true,
       },
     }
   );

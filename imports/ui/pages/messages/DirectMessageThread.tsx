@@ -1,7 +1,7 @@
 import React from 'react';
-import { useParams } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
+import { useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 
 import { Box, Loader } from '/imports/ui/core';
@@ -26,7 +26,7 @@ export default function DirectMessageThread() {
   const isLoading = useSubscribe('directChat', conversationId);
 
   const conversation = useTracker(
-    () => (conversationId ? DirectChats.findOne(conversationId) : null),
+    () => DirectChats.findOne(conversationId),
     [conversationId]
   );
 
@@ -50,9 +50,6 @@ export default function DirectMessageThread() {
       const isFromMe = msg.senderId === myId;
       const ciphertext = isFromMe ? msg.senderCiphertext : msg.recipientCiphertext;
 
-      // nacl.box shared secret = curve25519(myPrivateKey, theirPublicKey).
-      // Sender copy was encrypted with (senderPrivateKey, senderPublicKey) — own pubkey as "their" key.
-      // So sender must decrypt own copy using own pubkey, not the recipient's.
       const decryptWithKey = isFromMe
         ? (currentUser as any)?.publicKey
         : (otherUser as any)?.publicKey;
@@ -75,10 +72,7 @@ export default function DirectMessageThread() {
   const handleSend = async (plaintext: string) => {
     const myPublicKey: string | undefined = (currentUser as any)?.publicKey;
     const otherPublicKey: string | undefined = (otherUser as any)?.publicKey;
-    if (!myPublicKey || !otherPublicKey || !privateKey) {
-      console.warn('[DM] send blocked — missing:', { myPublicKey: !!myPublicKey, otherPublicKey: !!otherPublicKey, privateKey: !!privateKey });
-      return;
-    }
+    if (!myPublicKey || !otherPublicKey || !privateKey) return;
 
     const { recipientCiphertext, senderCiphertext } = encryptMessage(
       plaintext,
@@ -100,14 +94,13 @@ export default function DirectMessageThread() {
     return <Box p="4">Encryption keys not loaded. Please log out and back in.</Box>;
   }
 
-  const otherPublicKey: string | undefined = (otherUser as any)?.publicKey;
-  const canSend = Boolean(otherPublicKey);
+  const canSend = Boolean((otherUser as any)?.publicKey);
 
   return (
     <Box h="100%">
       {!canSend && otherUser && (
         <Box p="3" css={{ background: 'var(--cocoso-colors-orange-50)', borderBottom: '1px solid var(--cocoso-colors-orange-200)', fontSize: '0.85rem', textAlign: 'center' }}>
-          {(otherUser as any)?.username} hasn't set up encryption yet — they need to log in once before you can exchange messages.
+          {(otherUser as any)?.username} hasn't set up encryption yet.
         </Box>
       )}
       <Chattery

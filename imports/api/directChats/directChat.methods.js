@@ -11,7 +11,7 @@ Meteor.methods({
     if (!user) throw new Meteor.Error('not-authorized');
 
     const otherUser = await Meteor.users.findOneAsync(otherUserId, {
-      fields: { username: 1 },
+      fields: { username: 1, avatar: 1 },
     });
     if (!otherUser) throw new Meteor.Error('user-not-found');
 
@@ -24,7 +24,7 @@ Meteor.methods({
       id === user._id ? user.username : otherUser.username
     );
     const participantAvatars = participantIds.map((id) =>
-      id === user._id ? (user.avatar?.src ?? '') : (otherUser.avatar?.src ?? '')
+      id === user._id ? (user.avatar?.src ?? null) : (otherUser.avatar?.src ?? null)
     );
 
     return DirectChats.insertAsync({
@@ -57,7 +57,7 @@ Meteor.methods({
     const now = new Date();
     const senderIndex = conversation.participantIds.indexOf(user._id);
     const avatarUpdate = senderIndex !== -1
-      ? { [`participantAvatars.${senderIndex}`]: user.avatar?.src ?? '' }
+      ? { [`participantAvatars.${senderIndex}`]: user.avatar?.src ?? null }
       : {};
 
     await DirectChats.updateAsync(conversationId, {
