@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { Outlet, useNavigate, useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -29,17 +29,29 @@ export default function DirectMessageConversations({ conversations }: Props) {
   const currentUser = useAtomValue(currentUserAtom);
   const privateKey = useAtomValue(privateKeyAtom);
   const navigate = useNavigate();
+  const { conversationId } = useParams();
+
+  console.log('conversationId:', conversationId);
+  const isIndexPage = typeof conversationId !== 'string';
+
+  if (conversations.length === 0) {
+    return (
+      <Center p="8">
+        <Text color="gray.500">
+          No conversations yet. Search for someone above.
+        </Text>
+      </Center>
+    );
+  }
 
   return (
-    <Box>
-      {conversations.length === 0 ? (
-        <Center p="8">
-          <Text color="gray.500">
-            No conversations yet. Search for someone above.
-          </Text>
-        </Center>
-      ) : (
-        conversations.map((conv) => {
+    <Flex gap="0" w="100%">
+      <Flex
+        direction="column"
+        gap="0"
+        css={{ flexGrow: isIndexPage ? '1' : '0' }}
+      >
+        {conversations.map((conv) => {
           const otherIndex = conv.participantIds.findIndex(
             (id: string) => id !== currentUser?._id
           );
@@ -52,6 +64,8 @@ export default function DirectMessageConversations({ conversations }: Props) {
           const lastCiphertext = isLastFromMe
             ? conv.lastMessageSenderCiphertext
             : conv.lastMessageRecipientCiphertext;
+
+          const isCurrentThread = conv._id === conversationId;
 
           if (lastCiphertext && privateKey) {
             const otherUser = otherUserId
@@ -72,6 +86,7 @@ export default function DirectMessageConversations({ conversations }: Props) {
             <Flex
               key={conv._id}
               align="center"
+              bg={isCurrentThread ? 'bluegray.300' : 'none'}
               gap="4"
               css={{
                 borderBottom: '1px solid var(--cocoso-colors-bluegray-200)',
@@ -79,31 +94,41 @@ export default function DirectMessageConversations({ conversations }: Props) {
                 padding: '0.6rem 0.5rem',
                 position: 'relative',
                 transition: 'background 0.15s ease',
-                '&:hover': { background: 'var(--cocoso-colors-bluegray-50)' },
+                '&:hover': { background: 'var(--cocoso-colors-bluegray-200)' },
               }}
               onClick={() => navigate(`/admin/messages/${conv._id}`)}
             >
-              <Box css={{ flexShrink: 0, width: '52px' }}>
-                <Avatar name={otherUsername} size="md" src={otherAvatar ?? undefined} />
+              <Box
+                css={{
+                  flexShrink: 0,
+                }}
+              >
+                <Avatar
+                  name={otherUsername}
+                  size="md"
+                  src={otherAvatar ?? undefined}
+                />
               </Box>
 
-              <Box css={{ flex: 1, minWidth: 0 }}>
-                <Text fontWeight="bold" size="md">
-                  {otherUsername}
-                </Text>
-                <br />
-                <Text
-                  color="gray.600"
-                  size="xs"
-                  css={{ position: 'absolute', bottom: '0.6rem' }}
-                >
-                  {conv.lastMessageAt
-                    ? dayjs(conv.lastMessageAt).fromNow()
-                    : '—'}
-                </Text>
-              </Box>
+              {isIndexPage ? (
+                <Box css={{ flex: 1, minWidth: 0 }}>
+                  <Text fontWeight="bold" size="md">
+                    {otherUsername}
+                  </Text>
+                  <br />
+                  <Text
+                    color="gray.600"
+                    size="xs"
+                    css={{ position: 'absolute', bottom: '0.6rem' }}
+                  >
+                    {conv.lastMessageAt
+                      ? dayjs(conv.lastMessageAt).fromNow()
+                      : '—'}
+                  </Text>
+                </Box>
+              ) : null}
 
-              {preview ? (
+              {isIndexPage && preview ? (
                 <Box css={{ flex: 3 }}>
                   <Text
                     size="sm"
@@ -121,8 +146,14 @@ export default function DirectMessageConversations({ conversations }: Props) {
               ) : null}
             </Flex>
           );
-        })
+        })}
+      </Flex>
+
+      {isIndexPage ? null : (
+        <Box css={{ flexGrow: 1 }}>
+          <Outlet />
+        </Box>
       )}
-    </Box>
+    </Flex>
   );
 }

@@ -14,13 +14,9 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
-import {
-  canCreateContentAtom,
-  currentHostAtom,
-  currentUserAtom,
-} from '/imports/state';
+import { canCreateContentAtom, currentUserAtom } from '/imports/state';
 import FancyDate from '/imports/ui/entry/FancyDate';
-import { call, getComboResourcesWithColor } from '/imports/api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
 
@@ -44,7 +40,6 @@ export default function RsvpContent({
   occurrenceIndex,
   onCloseModal,
 }) {
-  const currentHost = useAtomValue(currentHostAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const setActivity = useSetAtom(activityAtom);

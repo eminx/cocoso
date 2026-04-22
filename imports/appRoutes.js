@@ -247,11 +247,8 @@ const getAdminRoutes = (props) => [
   },
   {
     path: 'messages',
+    element: createRouteElement(DirectMessagesInbox, props),
     children: [
-      {
-        index: true,
-        element: createRouteElement(DirectMessagesInbox, props),
-      },
       {
         path: ':conversationId',
         element: createRouteElement(DirectMessageThread, props),

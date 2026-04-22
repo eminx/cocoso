@@ -31,14 +31,18 @@ export default function DirectMessageThread() {
   );
 
   const myId = currentUser?._id;
-  const otherUserId = conversation?.participantIds?.find((id: string) => id !== myId);
+  const otherUserId = conversation?.participantIds?.find(
+    (id: string) => id !== myId
+  );
 
   useSubscribe('dmParticipant', otherUserId);
 
   const otherUser = useTracker(
     () =>
       otherUserId
-        ? Meteor.users.findOne(otherUserId, { fields: { username: 1, publicKey: 1 } })
+        ? Meteor.users.findOne(otherUserId, {
+            fields: { username: 1, publicKey: 1 },
+          })
         : null,
     [otherUserId]
   );
@@ -48,7 +52,9 @@ export default function DirectMessageThread() {
 
     return (conversation.messages ?? []).map((msg: any) => {
       const isFromMe = msg.senderId === myId;
-      const ciphertext = isFromMe ? msg.senderCiphertext : msg.recipientCiphertext;
+      const ciphertext = isFromMe
+        ? msg.senderCiphertext
+        : msg.recipientCiphertext;
 
       const decryptWithKey = isFromMe
         ? (currentUser as any)?.publicKey
@@ -56,7 +62,9 @@ export default function DirectMessageThread() {
 
       let content = '…';
       if (ciphertext && decryptWithKey) {
-        content = decryptMessage(ciphertext, decryptWithKey, privateKey) ?? '(unreadable)';
+        content =
+          decryptMessage(ciphertext, decryptWithKey, privateKey) ??
+          '(unreadable)';
       }
 
       return {
@@ -64,7 +72,9 @@ export default function DirectMessageThread() {
         createdDate: msg.createdAt,
         isFromMe,
         senderId: msg.senderId,
-        senderUsername: isFromMe ? (currentUser?.username ?? 'me') : ((otherUser as any)?.username ?? '?'),
+        senderUsername: isFromMe
+          ? currentUser?.username ?? 'me'
+          : (otherUser as any)?.username ?? '?',
       };
     });
   }, [conversation, privateKey, myId, otherUser]);
@@ -91,7 +101,9 @@ export default function DirectMessageThread() {
   if (isLoading()) return <Loader />;
 
   if (!privateKey) {
-    return <Box p="4">Encryption keys not loaded. Please log out and back in.</Box>;
+    return (
+      <Box p="4">Encryption keys not loaded. Please log out and back in.</Box>
+    );
   }
 
   const canSend = Boolean((otherUser as any)?.publicKey);
@@ -99,16 +111,26 @@ export default function DirectMessageThread() {
   return (
     <Box h="100%">
       {!canSend && otherUser && (
-        <Box p="3" css={{ background: 'var(--cocoso-colors-orange-50)', borderBottom: '1px solid var(--cocoso-colors-orange-200)', fontSize: '0.85rem', textAlign: 'center' }}>
+        <Box
+          p="3"
+          css={{
+            background: 'var(--cocoso-colors-orange-50)',
+            borderBottom: '1px solid var(--cocoso-colors-orange-200)',
+            fontSize: '0.85rem',
+            textAlign: 'center',
+          }}
+        >
           {(otherUser as any)?.username} hasn't set up encryption yet.
         </Box>
       )}
-      <Chattery
-        messages={messages}
-        withInput={canSend}
-        onNewMessage={handleSend}
-        removeNotification={() => {}}
-      />
+      <Box bg="bluegray.300" p="2">
+        <Chattery
+          messages={messages}
+          withInput={canSend}
+          onNewMessage={handleSend}
+          removeNotification={() => {}}
+        />
+      </Box>
     </Box>
   );
 }

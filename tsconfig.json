@@ -6,7 +6,7 @@
     "lib": ["esnext", "dom"],
     "allowJs": true,
     "checkJs": false,
-    "jsx": "preserve",
+    "jsx": "react",
     "incremental": true,
     "noEmit": true,
 
@@ -26,7 +26,6 @@
     "paths": {
       "/*": ["./*"]
     },
-    "jsxImportSource": "react",
     "resolveJsonModule": true,
     "types": [],
     "esModuleInterop": true,
