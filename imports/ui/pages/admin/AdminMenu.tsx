@@ -248,7 +248,7 @@ export default function AdminMenu({ routes, onItemClick }) {
             }}
           >
             <Link to="/admin/messages">
-              <ListItem css={{ color: 'white', width: '100%' }} px="4" py="2">
+              <ListItem css={{ color: 'white', width: '100%' }} p="4">
                 Messages (beta)
               </ListItem>
             </Link>

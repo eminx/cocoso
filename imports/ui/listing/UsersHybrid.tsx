@@ -49,6 +49,7 @@ export default function UsersHybrid({
 }: UsersHybridProps) {
   const currentHost = useAtomValue(currentHostAtom);
   const [modalItem, setModalItem] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const [, setFilterKeyword] = useState(null);
   const [selectedProfile] = useState(null);
   const location = useLocation();
@@ -118,7 +119,10 @@ export default function UsersHybrid({
           mx="2"
           p="2"
           w="310px"
-          onClick={() => setModalItem(selectedProfile)}
+          onClick={() => {
+            setModalItem(selectedProfile);
+            setModalOpen(true);
+          }}
         >
           <Center>
             <Box>
@@ -170,6 +174,7 @@ export default function UsersHybrid({
     const selectedItem = users.find((u) => u.username === username);
     if (selectedItem) {
       setModalItem(selectedItem);
+      setModalOpen(true);
     }
   };
 
@@ -184,6 +189,13 @@ export default function UsersHybrid({
     const membership = modalItem.memberships.find((m) => m.host === Host.host);
     const userHost = membership?.host;
     window.location.href = `https://${userHost}/@${modalItem.username}`;
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setTimeout(() => {
+      setModalItem(null);
+    }, 400);
   };
 
   return (
@@ -230,7 +242,10 @@ export default function UsersHybrid({
                   cursor: 'pointer',
                   flexBasis: '240px',
                 }}
-                onClick={() => setModalItem(user)}
+                onClick={() => {
+                  setModalItem(user);
+                  setModalOpen(true);
+                }}
               >
                 <MemberAvatarEtc user={user} />
               </Box>
@@ -240,15 +255,16 @@ export default function UsersHybrid({
       )}
 
       <Modal
+        cancelText={<Trans i18nKey="common:actions.close">Close</Trans>}
         confirmText={
           <Trans i18nKey="members:actions.visit">Visit Profile</Trans>
         }
         hideHeader
         id="users-hybrid"
-        open={Boolean(modalItem)}
+        open={modalOpen}
         size="xl"
         onConfirm={handleNavigateUserPage}
-        onClose={() => setModalItem(null)}
+        onClose={handleCloseModal}
       >
         <Box pt="8">
           <MemberAvatarEtc isThumb={false} user={modalItem} />

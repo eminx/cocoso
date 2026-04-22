@@ -8,7 +8,7 @@ import { Box, Button } from '/imports/ui/core';
 // Common props interface
 interface BaseProps {
   cancelButtonProps?: object;
-  cancelText?: string;
+  cancelText?: string | React.ReactNode;
   children: React.ReactNode;
   closeOnOverlayClick?: boolean;
   confirmButtonProps?: object;

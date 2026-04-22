@@ -95,8 +95,10 @@ export default function DirectMessagesInbox() {
                   <IconButton icon={<ArrowLeft size="44" />} variant="ghost" />
                 </Center>
               </Link>
-              <Center>
-                <Text size="lg">{currentOtherUsername}</Text>
+              <Center css={{ transform: 'translateX(-12px)' }}>
+                <Text fontWeight="bold" size="lg">
+                  {currentOtherUsername}
+                </Text>
               </Center>
             </Flex>
           )}
