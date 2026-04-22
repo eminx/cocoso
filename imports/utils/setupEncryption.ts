@@ -5,24 +5,26 @@ import { getDefaultStore } from 'jotai';
 import { privateKeyAtom } from '../state';
 import { generateKeyPair, encryptPrivateKey, decryptPrivateKey } from './crypto';
 
-const SESSION_KEY = 'e2ee_pk';
+const LOCAL_KEY = 'e2ee_pk';
 
-function saveKeyToSession(privateKey: Uint8Array) {
-  sessionStorage.setItem(SESSION_KEY, encodeBase64(privateKey));
+function saveKeyLocally(privateKey: Uint8Array) {
+  localStorage.setItem(LOCAL_KEY, encodeBase64(privateKey));
 }
 
-// Called on every app load — restores the key from sessionStorage if available.
-// sessionStorage is cleared when the tab/browser is closed.
+export function clearEncryptionKey() {
+  localStorage.removeItem(LOCAL_KEY);
+  getDefaultStore().set(privateKeyAtom, null);
+}
+
+// Called on every app load — restores the key from localStorage if available.
 export function restoreKeyFromSession() {
-  const stored = sessionStorage.getItem(SESSION_KEY);
-  console.log('[E2EE] restoreKeyFromSession — stored key present:', Boolean(stored));
+  const stored = localStorage.getItem(LOCAL_KEY);
   if (!stored) return;
   try {
     const privateKey = decodeBase64(stored);
     getDefaultStore().set(privateKeyAtom, privateKey);
-    console.log('[E2EE] Key restored from sessionStorage ✓');
   } catch {
-    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(LOCAL_KEY);
   }
 }
 
@@ -57,7 +59,7 @@ export async function setupEncryption(_userId: string, password: string) {
       privateKey = keyPair.secretKey;
     }
 
-    saveKeyToSession(privateKey);
+    saveKeyLocally(privateKey);
     getDefaultStore().set(privateKeyAtom, privateKey);
   } catch (error) {
     console.error('[E2EE] setupEncryption failed:', error);

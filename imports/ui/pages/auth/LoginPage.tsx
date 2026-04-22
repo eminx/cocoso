@@ -24,6 +24,7 @@ import {
 
 import { loginWithPassword } from './functions';
 import { Login } from './index';
+import { clearEncryptionKey } from '/imports/utils/setupEncryption';
 
 export default function LoginPage() {
   const currentHost = useAtomValue(currentHostAtom);
@@ -67,6 +68,7 @@ export default function LoginPage() {
   };
 
   const cancelJoin = () => {
+    clearEncryptionKey();
     Meteor.logout();
     setJoinModal(false);
     setSubmitted(false);

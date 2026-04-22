@@ -7,6 +7,8 @@ import CogIcon from 'lucide-react/dist/esm/icons/cog';
 import CheckCircleIcon from 'lucide-react/dist/esm/icons/check-circle';
 import { useAtom, useAtomValue } from 'jotai';
 
+import { clearEncryptionKey } from '/imports/utils/setupEncryption';
+
 import {
   Avatar,
   Badge,
@@ -167,6 +169,7 @@ export default function UserPopup({ isOpen }: UserPopupProps) {
   }
 
   const handleLogout = () => {
+    clearEncryptionKey();
     Meteor.logout();
     setCurrentUser(null);
     message.info(<Trans i18nKey="accounts:logout.messages.success" />);
