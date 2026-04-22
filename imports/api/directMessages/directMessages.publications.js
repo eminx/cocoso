@@ -1,19 +1,19 @@
 import { Meteor } from 'meteor/meteor';
-import DirectChats from './directChat';
+import DirectMessages from './directMessage';
 
 // All conversations the current user is part of (metadata only — no messages)
-Meteor.publish('directChats', function () {
+Meteor.publish('directMessages', function () {
   if (!this.userId) return this.ready();
-  return DirectChats.find(
+  return DirectMessages.find(
     { participantIds: this.userId },
     { fields: { messages: 0 } }
   );
 });
 
 // Full message list for one conversation
-Meteor.publish('directChat', function (conversationId) {
+Meteor.publish('directMessage', function (conversationId) {
   if (!this.userId) return this.ready();
-  return DirectChats.find({
+  return DirectMessages.find({
     _id: conversationId,
     participantIds: this.userId,
   });

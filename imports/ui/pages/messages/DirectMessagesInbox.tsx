@@ -18,7 +18,7 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
-import DirectChats from '/imports/api/directChats/directChat';
+import DirectMessages from '../../../api/directMessages/directMessage';
 import { currentUserAtom } from '/imports/state';
 import { Bio } from '/imports/ui/entry/UserHybrid';
 import MemberAvatarEtc from '/imports/ui/generic/MemberAvatarEtc';
@@ -37,14 +37,14 @@ export default function DirectMessagesInbox() {
   const [loadingUser, setLoadingUser] = useState(false);
   const { conversationId } = useParams();
 
-  useSubscribe('directChats');
+  useSubscribe('directMessages');
   useSubscribe('membersForPublic');
 
   const isIndexPage = typeof conversationId !== 'string';
 
   const conversations = useTracker(() => {
     if (!currentUser) return [];
-    return DirectChats.find(
+    return DirectMessages.find(
       { participantIds: currentUser._id },
       { sort: { lastMessageAt: -1 } }
     ).fetch();
@@ -73,7 +73,7 @@ export default function DirectMessagesInbox() {
     setStarting(true);
     try {
       const conversationId = await Meteor.callAsync(
-        'directChats_findOrCreate',
+        'directMessages_findOrCreate',
         userId
       );
       navigate(`/admin/messages/${conversationId}`);

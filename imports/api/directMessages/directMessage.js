@@ -2,9 +2,9 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Schemas } from '../_utils/schemas';
 
-const DirectChats = new Mongo.Collection('directChats');
+const DirectMessages = new Mongo.Collection('directmessages');
 
-DirectChats.schema = new SimpleSchema({
+DirectMessages.schema = new SimpleSchema({
   _id: Schemas.Id,
   // Sorted array of exactly two userIds — used as a unique conversation key
   participantIds: { type: Array },
@@ -30,6 +30,6 @@ DirectChats.schema = new SimpleSchema({
   'messages.$.createdAt': { type: Date },
 });
 
-DirectChats.attachSchema(DirectChats.schema);
+DirectMessages.attachSchema(DirectMessages.schema);
 
-export default DirectChats;
+export default DirectMessages;

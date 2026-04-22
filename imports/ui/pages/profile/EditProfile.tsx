@@ -112,7 +112,7 @@ export default function EditProfile() {
             <span style={subSpanStyle}>{tc('domains.platform')}</span>
           </Heading>
 
-          <Box mb="4">
+          <Box my="4">
             <Alert bg="bluegray.50" mb="8" type="info">
               <Text fontSize="sm">
                 {t('profile.message.platform', {

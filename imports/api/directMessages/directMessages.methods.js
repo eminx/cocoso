@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import DirectChats from './directChat';
+import DirectMessages from './directMessage';
 
 Meteor.methods({
-  async directChats_findOrCreate(otherUserId) {
+  async directMessages_findOrCreate(otherUserId) {
     check(otherUserId, String);
 
     const user = await Meteor.userAsync();
@@ -17,17 +17,17 @@ Meteor.methods({
 
     // Canonical participant order — always sorted so the pair maps to one doc
     const participantIds = [user._id, otherUserId].sort();
-    const existing = await DirectChats.findOneAsync({ participantIds });
+    const existing = await DirectMessages.findOneAsync({ participantIds });
     if (existing) return existing._id;
 
     const participantUsernames = participantIds.map((id) =>
       id === user._id ? user.username : otherUser.username
     );
     const participantAvatars = participantIds.map((id) =>
-      id === user._id ? (user.avatar?.src ?? null) : (otherUser.avatar?.src ?? null)
+      id === user._id ? user.avatar?.src ?? null : otherUser.avatar?.src ?? null
     );
 
-    return DirectChats.insertAsync({
+    return DirectMessages.insertAsync({
       participantIds,
       participantUsernames,
       participantAvatars,
@@ -36,7 +36,7 @@ Meteor.methods({
     });
   },
 
-  async directChats_sendMessage({
+  async directMessages_sendMessage({
     conversationId,
     recipientCiphertext,
     senderCiphertext,
@@ -48,7 +48,7 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     if (!user) throw new Meteor.Error('not-authorized');
 
-    const conversation = await DirectChats.findOneAsync(conversationId);
+    const conversation = await DirectMessages.findOneAsync(conversationId);
     if (!conversation) throw new Meteor.Error('conversation-not-found');
     if (!conversation.participantIds.includes(user._id)) {
       throw new Meteor.Error('not-authorized');
@@ -56,11 +56,12 @@ Meteor.methods({
 
     const now = new Date();
     const senderIndex = conversation.participantIds.indexOf(user._id);
-    const avatarUpdate = senderIndex !== -1
-      ? { [`participantAvatars.${senderIndex}`]: user.avatar?.src ?? null }
-      : {};
+    const avatarUpdate =
+      senderIndex !== -1
+        ? { [`participantAvatars.${senderIndex}`]: user.avatar?.src ?? null }
+        : {};
 
-    await DirectChats.updateAsync(conversationId, {
+    await DirectMessages.updateAsync(conversationId, {
       $push: {
         messages: {
           senderId: user._id,

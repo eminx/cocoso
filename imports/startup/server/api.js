@@ -33,9 +33,9 @@ import '../../api/chats/chat';
 import '../../api/chats/chat.methods';
 import '../../api/chats/chat.publications';
 
-import '../../api/directChats/directChat';
-import '../../api/directChats/directChat.methods';
-import '../../api/directChats/directChat.publications';
+import '../../api/directMessages/directMessage';
+import '../../api/directMessages/directMessages.methods';
+import '../../api/directMessages/directMessages.publications';
 
 import '../../api/documents/document';
 import '../../api/documents/document.methods';

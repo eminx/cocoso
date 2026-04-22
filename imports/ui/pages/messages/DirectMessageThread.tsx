@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
 import { useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import { Box, Center, Loader, Modal } from '/imports/ui/core';
-import DirectChats from '/imports/api/directChats/directChat';
+import { Box, Loader } from '/imports/ui/core';
+import DirectMessages from '../../../api/directMessages/directMessage';
 import { currentUserAtom, privateKeyAtom } from '/imports/state';
 import { encryptMessage, decryptMessage } from '/imports/utils/crypto';
 import Chattery from '/imports/ui/chattery/ChatteryContainer';
@@ -23,10 +23,10 @@ export default function DirectMessageThread() {
   const currentUser = useAtomValue(currentUserAtom);
   const privateKey = useAtomValue(privateKeyAtom);
 
-  const isLoading = useSubscribe('directChat', conversationId);
+  const isLoading = useSubscribe('directMessage', conversationId);
 
   const conversation = useTracker(
-    () => DirectChats.findOne(conversationId),
+    () => DirectMessages.findOne(conversationId),
     [conversationId]
   );
 
@@ -91,7 +91,7 @@ export default function DirectMessageThread() {
       privateKey
     );
 
-    await Meteor.callAsync('directChats_sendMessage', {
+    await Meteor.callAsync('directMessages_sendMessage', {
       conversationId,
       recipientCiphertext,
       senderCiphertext,
