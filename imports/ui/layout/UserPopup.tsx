@@ -6,6 +6,7 @@ import BoltIcon from 'lucide-react/dist/esm/icons/bolt';
 import CogIcon from 'lucide-react/dist/esm/icons/cog';
 import CheckCircleIcon from 'lucide-react/dist/esm/icons/check-circle';
 import { useAtom, useAtomValue } from 'jotai';
+import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
 import { clearEncryptionKey } from '/imports/utils/setupEncryption';
 
@@ -216,12 +217,25 @@ export default function UserPopup({ isOpen }: UserPopupProps) {
 
         <Divider />
 
+        <Link to="/admin/messages">
+          <MenuItem>
+            <Text>
+              <Flex align="center" gap="2">
+                <MessagesSquare />
+                <Trans i18nKey="accounts:messages.label">Messages</Trans>
+              </Flex>
+            </Text>
+          </MenuItem>
+        </Link>
+
+        <Divider />
+
         {isAdmin && (
           <Link to="/admin/home">
             <MenuItem>
               <Text>
                 <Flex align="center" gap="2">
-                  <BoltIcon size="18" />
+                  <BoltIcon fontSize="18" />
                   <Trans i18nKey="members:dashboard">Admin Panel</Trans>
                 </Flex>
               </Text>
@@ -236,7 +250,7 @@ export default function UserPopup({ isOpen }: UserPopupProps) {
             <MenuItem>
               <Text>
                 <Flex align="center" gap="2">
-                  <CogIcon size={18} />
+                  <CogIcon fontSize="18" />
                   <Trans i18nKey="members:super">Superadmin</Trans>
                 </Flex>
               </Text>

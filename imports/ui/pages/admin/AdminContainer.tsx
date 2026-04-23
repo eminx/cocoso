@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai';
 
 import {
   Alert,
+  Badge,
   Box,
   Center,
   Drawer,
@@ -98,7 +99,12 @@ export default function AdminContainer({ Host }) {
     });
 
     allRoutes.push({
-      label: ta('messages.title'),
+      label: (
+        <Flex gap="4" align="flex-start">
+          {ta('messages.title')}
+          <Badge size="lg">beta</Badge>
+        </Flex>
+      ),
       value: 'messages',
     });
 
