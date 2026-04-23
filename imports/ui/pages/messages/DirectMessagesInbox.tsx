@@ -3,8 +3,9 @@ import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
 import React, { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
+import EllipsisVertical from 'lucide-react/dist/esm/icons/ellipsis-vertical';
 
 import {
   Avatar,
@@ -17,17 +18,22 @@ import {
   Loader,
   Modal,
   Text,
+  Alert,
 } from '/imports/ui/core';
-import DirectMessages from '../../../api/directMessages/directMessage';
+
 import { currentUserAtom } from '/imports/state';
 import { Bio } from '/imports/ui/entry/UserHybrid';
 import MemberAvatarEtc from '/imports/ui/generic/MemberAvatarEtc';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/api/_utils/shared';
+import DirectMessages from '/imports/api/directMessages/directMessage';
+import GenericMenu, { MenuItem } from '/imports/ui/generic/Menu';
+import ReportModal from '/imports/ui/generic/ReportModal';
 
 import DirectMessageConversations from './DirectMessageConversations';
 
 export default function DirectMessagesInbox() {
+  const [t] = useTranslation('accounts');
   const currentUser = useAtomValue(currentUserAtom);
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
@@ -35,6 +41,7 @@ export default function DirectMessagesInbox() {
   const [modalItem, setModalItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loadingUser, setLoadingUser] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
   const { conversationId } = useParams();
 
   useSubscribe('directMessages');
@@ -51,6 +58,7 @@ export default function DirectMessagesInbox() {
   }, [currentUser]);
 
   const members = useTracker(() => {
+    if (!currentUser) return [];
     if (!search.trim()) return [];
     const q = search.trim().toLowerCase();
     return Meteor.users
@@ -107,8 +115,40 @@ export default function DirectMessagesInbox() {
     (conv) => conv._id === conversationId
   );
   const currentOtherUsername = currentConversation?.participantUsernames.find(
-    (u) => u !== currentUser.username
+    (u) => u !== currentUser?.username
   );
+  const currentOtherUserId = currentConversation?.participantIds.find(
+    (id) => id !== currentUser?._id
+  );
+  const isOtherUserBlocked = (
+    (currentUser as any)?.blockedUserIds ?? []
+  ).includes(currentOtherUserId);
+
+  const handleBlock = async () => {
+    try {
+      await Meteor.callAsync('users_blockUser', currentOtherUserId);
+      message.info(t('messages.notify.blocked', { username: currentOtherUsername }));
+    } catch (err: any) {
+      message.error(err.reason || err.message);
+    }
+  };
+
+  const handleUnblock = async () => {
+    try {
+      await Meteor.callAsync('users_unblockUser', currentOtherUserId);
+      message.info(t('messages.notify.unblocked', { username: currentOtherUsername }));
+    } catch (err: any) {
+      message.error(err.reason || err.message);
+    }
+  };
+
+  if (!currentUser) {
+    return (
+      <Alert>
+        <Trans i18nKey="common:message.access.deny" />
+      </Alert>
+    );
+  }
 
   return (
     <Box css={{ maxWidth: '540px' }}>
@@ -118,15 +158,19 @@ export default function DirectMessagesInbox() {
         <Box mb="4">
           {isIndexPage ? (
             <Input
-              placeholder="Start a new conversation..."
+              placeholder={t('messages.search')}
               value={search}
               onChange={(e: any) => setSearch(e.target.value)}
             />
           ) : (
-            <Flex align="center">
+            <Flex align="center" justify="space-between" gap="2">
               <Link to="/admin/messages">
-                <Center w="72px">
-                  <IconButton icon={<ArrowLeft size="44" />} variant="ghost" />
+                <Center w="80px">
+                  <IconButton
+                    aria-label="Back to inbox"
+                    icon={<ArrowLeft fontSize="44px" />}
+                    variant="ghost"
+                  />
                 </Center>
               </Link>
               <Center
@@ -137,6 +181,40 @@ export default function DirectMessagesInbox() {
                   <CLink>{currentOtherUsername}</CLink>
                 </Text>
               </Center>
+              <Box css={{ position: 'relative' }}>
+                <GenericMenu
+                  align="end"
+                  button={
+                    <IconButton
+                      aria-label="Chat Menu"
+                      icon={<EllipsisVertical fontSize="44px" />}
+                      variant="ghost"
+                    />
+                  }
+                >
+                  {isOtherUserBlocked ? (
+                    <MenuItem onClick={handleUnblock}>
+                      {t('messages.actions.unblock', { username: currentOtherUsername })}
+                    </MenuItem>
+                  ) : (
+                    <MenuItem onClick={handleBlock}>
+                      {t('messages.actions.block', { username: currentOtherUsername })}
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={() => setReportOpen(true)}>
+                    {t('messages.actions.report', { username: currentOtherUsername })}
+                  </MenuItem>
+                </GenericMenu>
+
+                <ReportModal
+                  contentId={conversationId}
+                  contentType="directMessage"
+                  isOpen={reportOpen}
+                  reportedUserId={currentOtherUserId}
+                  reportedUsername={currentOtherUsername}
+                  onClose={() => setReportOpen(false)}
+                />
+              </Box>
             </Flex>
           )}
         </Box>

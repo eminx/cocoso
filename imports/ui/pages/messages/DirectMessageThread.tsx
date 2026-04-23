@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
 import { useParams } from 'react-router';
@@ -19,6 +20,7 @@ interface DmMessage {
 }
 
 export default function DirectMessageThread() {
+  const [t] = useTranslation('accounts');
   const { conversationId } = useParams<{ conversationId: string }>();
   const currentUser = useAtomValue(currentUserAtom);
   const privateKey = useAtomValue(privateKeyAtom);
@@ -102,15 +104,24 @@ export default function DirectMessageThread() {
 
   if (!privateKey) {
     return (
-      <Box p="4">Encryption keys not loaded. Please log out and back in.</Box>
+      <Box p="4">{t('messages.encryption.notLoaded')}</Box>
     );
   }
 
   const canSend = Boolean((otherUser as any)?.publicKey);
+  const isOtherUserBlocked = ((currentUser as any)?.blockedUserIds ?? []).includes(otherUserId);
+
+  const handleUnblock = async () => {
+    try {
+      await Meteor.callAsync('users_unblockUser', otherUserId);
+    } catch {
+      // handled silently; user will see no change if it fails
+    }
+  };
 
   return (
     <Box h="100%">
-      {!canSend && otherUser && (
+      {!canSend && otherUser && !isOtherUserBlocked && (
         <Box
           p="3"
           css={{
@@ -120,13 +131,32 @@ export default function DirectMessageThread() {
             textAlign: 'center',
           }}
         >
-          {(otherUser as any)?.username} hasn't set up encryption yet.
+          {t('messages.encryption.notSetUp', { username: (otherUser as any)?.username })}
+        </Box>
+      )}
+      {isOtherUserBlocked && (
+        <Box
+          p="3"
+          css={{
+            background: 'var(--cocoso-colors-gray-50)',
+            borderBottom: '1px solid var(--cocoso-colors-gray-200)',
+            fontSize: '0.85rem',
+            textAlign: 'center',
+          }}
+        >
+          {t('messages.blocked.notice')}{' '}
+          <span
+            style={{ cursor: 'pointer', textDecoration: 'underline' }}
+            onClick={handleUnblock}
+          >
+            {t('messages.actions.unblockLink')}
+          </span>
         </Box>
       )}
       <Box bg="bluegray.300" p="2">
         <Chattery
           messages={messages}
-          withInput={canSend}
+          withInput={canSend && !isOtherUserBlocked}
           onNewMessage={handleSend}
           removeNotification={() => {}}
         />
