@@ -107,6 +107,7 @@ profile:
       placeholder: Type something...
 
 messages:
+  label: Messages
   title: Message Inbox
   search: Start a new conversation...
   empty: No conversations yet. Search for someone above.
@@ -121,8 +122,8 @@ messages:
   blocked:
     notice: You blocked this user.
   notify:
-    blocked: "{{ username }} blocked."
-    unblocked: "{{ username }} unblocked."
+    blocked: '{{ username }} blocked.'
+    unblocked: '{{ username }} unblocked.'
 
 report:
   title: Report {{ username }}

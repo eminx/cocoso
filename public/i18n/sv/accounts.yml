@@ -107,12 +107,13 @@ profile:
       placeholder: Skriv något...
 
 messages:
+  label: Meddelanden
   title: Meddelandeinkorg
   search: Starta ett nytt samtal...
   empty: Inga konversationer ännu. Sök efter någon ovan.
   encryption:
     notLoaded: Krypteringsnycklar inte laddade. Logga ut och logga in igen.
-    notSetUp: "{{ username }} har inte konfigurerat kryptering ännu."
+    notSetUp: '{{ username }} har inte konfigurerat kryptering ännu.'
   actions:
     block: Blockera {{ username }}
     unblock: Avblockera {{ username }}
@@ -121,8 +122,8 @@ messages:
   blocked:
     notice: Du har blockerat den här användaren.
   notify:
-    blocked: "{{ username }} blockerad."
-    unblocked: "{{ username }} avblockerad."
+    blocked: '{{ username }} blockerad.'
+    unblocked: '{{ username }} avblockerad.'
 
 report:
   title: Rapportera {{ username }}

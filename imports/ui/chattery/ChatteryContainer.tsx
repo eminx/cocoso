@@ -6,9 +6,6 @@ import ChatteryWindow from './ChatteryWindow';
 import ChatteryInput from './ChatteryInput';
 import './chattery.css';
 
-const noMemberText =
-  'If you want to participate to the discussion, please join the group.';
-
 interface ChatteryProps {
   messages: Message[];
   withInput: boolean;
@@ -28,11 +25,7 @@ export default function Chattery({
         messages={messages}
         removeNotification={removeNotification}
       />
-      {withInput ? (
-        <ChatteryInput onNewMessage={onNewMessage} />
-      ) : (
-        <p style={{ padding: 24, textAlign: 'center' }}>{noMemberText}</p>
-      )}
+      {withInput ? <ChatteryInput onNewMessage={onNewMessage} /> : null}
     </div>
   );
 }

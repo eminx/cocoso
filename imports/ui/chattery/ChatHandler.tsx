@@ -60,7 +60,7 @@ export function ChatUI({
   const chat = useTracker(() => {
     return Chats.findOne({ contextId });
   }, []);
-  const discussion = chat?.messages?.map((message) => ({
+  const discussion = chat?.messages?.map((message: any) => ({
     ...message,
     isFromMe: currentUser && message && message.senderId === currentUser._id,
   }));
@@ -102,6 +102,7 @@ export function ChatUI({
 
   return (
     <Drawer
+      id="chat-drawer"
       open={open}
       size="xl"
       title={title || tc('labels.discussion')}
@@ -162,6 +163,7 @@ export function ChatButton({
         >
           <Box mb="1">
             <IconButton
+              aria-label="Chat button"
               icon={<MessagesSquare />}
               variant="outline"
               onClick={() => setOpen(true)}

@@ -6,6 +6,7 @@ import { useAtomValue } from 'jotai';
 
 import {
   Avatar,
+  Badge,
   Box,
   Code,
   Flex,
@@ -20,7 +21,7 @@ import {
   isDesktopAtom,
   roleAtom,
 } from '/imports/state';
-import { getFullName } from '../../../api/_utils/shared';
+import { getFullName } from '/imports/api/_utils/shared';
 
 export function AdminMenuHeader({ currentHost }) {
   return (
@@ -160,6 +161,7 @@ export default function AdminMenu({ routes, onItemClick }) {
   const isDesktop = useAtomValue(isDesktopAtom);
   const role = useAtomValue(roleAtom);
   const [t] = useTranslation('admin');
+  const [ta] = useTranslation('accounts');
 
   const isAdmin = role === 'admin';
 
@@ -248,8 +250,8 @@ export default function AdminMenu({ routes, onItemClick }) {
             }}
           >
             <Link to="/admin/messages">
-              <ListItem css={{ color: 'white', width: '100%' }} p="4">
-                Messages (beta)
+              <ListItem css={{ color: 'white', width: '100%' }} px="6" py="4">
+                {ta('messages.label')} <Badge>beta</Badge>
               </ListItem>
             </Link>
           </List>
