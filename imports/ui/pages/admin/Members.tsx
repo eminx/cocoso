@@ -124,10 +124,7 @@ export default function Members() {
         t('message.success.participant', { username: user.username })
       );
     } catch (error: any) {
-      message.error({
-        title: error.reason || error.error,
-        status: 'error',
-      });
+      message.error(error.reason || error.error);
     }
   };
 
@@ -139,10 +136,7 @@ export default function Members() {
         t('message.success.contributor', { username: user.username })
       );
     } catch (error: any) {
-      message.error({
-        title: error.reason || error.error,
-        status: 'error',
-      });
+      message.error(error.reason || error.error);
     }
   };
 
@@ -152,10 +146,7 @@ export default function Members() {
       revalidator.revalidate();
       message.success(t('message.success.admin', { username: user.username }));
     } catch (error: any) {
-      message.error({
-        title: error.reason || error.error,
-        status: 'error',
-      });
+      message.error(error.reason || error.error);
     }
   };
 

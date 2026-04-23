@@ -107,6 +107,9 @@ const DirectMessagesInbox = loadable(() =>
 const DirectMessageThread = loadable(() =>
   import('/imports/ui/pages/messages/DirectMessageThread')
 );
+const Reports = loadable(() =>
+  import('/imports/ui/pages/admin/Reports')
+);
 
 const EditProfile = loadable(() =>
   import('/imports/ui/pages/profile/EditProfile')
@@ -181,6 +184,7 @@ import {
   getWorksByUser,
   getNewsletters,
   getNewsletterById,
+  getReports,
 } from './loaders';
 
 class RouteErrorBoundary extends React.Component {
@@ -385,6 +389,11 @@ const getAdminRoutes = (props) => [
   {
     path: 'email-newsletter',
     element: createRouteElement(EmailNewsletter, props),
+  },
+  {
+    path: 'reports',
+    element: createRouteElement(Reports, props),
+    loader: async () => await getReports(),
   },
 ];
 

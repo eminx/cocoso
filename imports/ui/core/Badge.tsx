@@ -96,7 +96,7 @@ const StyledBadge = (props: BadgeProps) => {
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ children, colorScheme, ...rest }, ref) => (
-    <StyledBadge ref={ref} {...rest}>
+    <StyledBadge ref={ref} colorScheme={colorScheme} {...rest}>
       {children}
     </StyledBadge>
   )

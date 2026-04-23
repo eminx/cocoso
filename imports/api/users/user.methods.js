@@ -509,4 +509,23 @@ Meteor.methods({
     });
     return user?.publicKey || null;
   },
+
+  async users_blockUser(targetUserId) {
+    check(targetUserId, String);
+    const user = await Meteor.userAsync();
+    if (!user) throw new Meteor.Error('not-authorized');
+    if (targetUserId === user._id) throw new Meteor.Error('invalid', 'Cannot block yourself.');
+    await Meteor.users.updateAsync(user._id, {
+      $addToSet: { blockedUserIds: targetUserId },
+    });
+  },
+
+  async users_unblockUser(targetUserId) {
+    check(targetUserId, String);
+    const user = await Meteor.userAsync();
+    if (!user) throw new Meteor.Error('not-authorized');
+    await Meteor.users.updateAsync(user._id, {
+      $pull: { blockedUserIds: targetUserId },
+    });
+  },
 });

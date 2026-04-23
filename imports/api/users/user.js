@@ -91,6 +91,10 @@ Users.schema.UserProfile = {
   encryptedPrivateKey: { type: String, optional: true },
   keySalt: { type: String, optional: true },
 
+  // Blocked users
+  blockedUserIds: { type: Array, optional: true, defaultValue: [] },
+  'blockedUserIds.$': { type: String },
+
   verifiedBy: {
     type: new SimpleSchema({
       userId: Schemas.Id,

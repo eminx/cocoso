@@ -108,6 +108,11 @@ const getAdminRoutes = (menuItems) => [
     value: '/admin/email-newsletter',
     description: <Trans i18nKey="admin:newsletter.description" />,
   },
+  {
+    label: <Trans i18nKey="admin:reports.title" />,
+    value: '/admin/reports',
+    description: <Trans i18nKey="admin:reports.description" />,
+  },
 ];
 
 export const getSuperAdminRoutes = () => [

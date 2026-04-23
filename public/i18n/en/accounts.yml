@@ -108,6 +108,32 @@ profile:
 
 messages:
   title: Message Inbox
+  search: Start a new conversation...
+  empty: No conversations yet. Search for someone above.
+  encryption:
+    notLoaded: Encryption keys not loaded. Please log out and back in.
+    notSetUp: "{{ username }} hasn't set up encryption yet."
+  actions:
+    block: Block {{ username }}
+    unblock: Unblock {{ username }}
+    report: Report {{ username }}
+    unblockLink: Unblock
+  blocked:
+    notice: You blocked this user.
+  notify:
+    blocked: "{{ username }} blocked."
+    unblocked: "{{ username }} unblocked."
+
+report:
+  title: Report {{ username }}
+  titleGeneric: Submit a report
+  e2eeWarning: Messages are end-to-end encrypted — we cannot read them. Please describe what happened and take a screenshot of the conversation to share with admins if needed.
+  form:
+    label: Describe the issue
+    placeholder: What happened? Please be as specific as possible…
+  messages:
+    required: Please describe the issue before submitting.
+    success: Report submitted. Thank you.
 
 leave:
   action: Leave Community

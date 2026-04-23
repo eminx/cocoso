@@ -365,3 +365,25 @@ platform:
   newhost:
     title: Ny värdcommunity
     description: Skapa en ny värdcommunity inom plattformen
+
+reports:
+  title: Rapporter
+  description: Granska användarrapporter och modereringsärenden
+  empty: Inga rapporter ännu.
+  status:
+    pending: Väntande
+    reviewed: Granskad
+    resolved: Löst
+    dismissed: Avfärdad
+  fields:
+    reporter: Anmälare
+    reportedUser: Anmäld användare
+    contentId: Innehålls-ID
+    description: Beskrivning
+    status: Status
+    reviewNote: Granskninsanteckning (valfri)
+    reviewNotePlaceholder: Interna anteckningar för administratörer…
+  actions:
+    save: Spara
+  messages:
+    success: Rapport uppdaterad.

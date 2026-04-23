@@ -108,6 +108,32 @@ profile:
 
 messages:
   title: Mesaj Kutusu
+  search: Yeni bir sohbet başlat...
+  empty: Henüz konuşma yok. Yukarıdan birini ara.
+  encryption:
+    notLoaded: Şifreleme anahtarları yüklenmedi. Lütfen çıkış yapıp tekrar giriş yapın.
+    notSetUp: "{{ username }} henüz şifrelemeyi etkinleştirmemiş."
+  actions:
+    block: "{{ username }} kişisini engelle"
+    unblock: "{{ username }} engelini kaldır"
+    report: "{{ username }} kişisini şikayet et"
+    unblockLink: Engeli kaldır
+  blocked:
+    notice: Bu kullanıcıyı engellediniz.
+  notify:
+    blocked: "{{ username }} engellendi."
+    unblocked: "{{ username }} engeli kaldırıldı."
+
+report:
+  title: "{{ username }} kişisini şikayet et"
+  titleGeneric: Şikayet gönder
+  e2eeWarning: Mesajlar uçtan uca şifreleniyor — onları okuyamayız. Ne olduğunu açıklayın ve gerekirse konuşmanın ekran görüntüsünü yöneticilerle paylaşın.
+  form:
+    label: Sorunu açıkla
+    placeholder: Ne oldu? Lütfen mümkün olduğunca ayrıntılı açıklayın…
+  messages:
+    required: Göndermeden önce lütfen sorunu açıklayın.
+    success: Şikayet gönderildi. Teşekkürler.
 
 leave:
   action: Topluluktan Ayrıl

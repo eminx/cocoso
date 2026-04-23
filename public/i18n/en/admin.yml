@@ -365,3 +365,25 @@ platform:
   newhost:
     title: New Host Community
     description: Create a new host community within the platform
+
+reports:
+  title: Reports
+  description: Review member reports and moderation requests
+  empty: No reports yet.
+  status:
+    pending: Pending
+    reviewed: Reviewed
+    resolved: Resolved
+    dismissed: Dismissed
+  fields:
+    reporter: Reporter
+    reportedUser: Reported user
+    contentId: Content ID
+    description: Description
+    status: Status
+    reviewNote: Review note (optional)
+    reviewNotePlaceholder: Internal notes for admins…
+  actions:
+    save: Save
+  messages:
+    success: Report updated.

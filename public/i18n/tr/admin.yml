@@ -365,3 +365,24 @@ platform:
   newhost:
     title: Yeni Host Topluluğu
     description: Platform içinde yeni bir ev sahibi topluluk oluşturun.
+reports:
+  title: Raporlar
+  description: Üye raporlarını ve moderasyon taleplerini incele
+  empty: Henüz rapor yok.
+  status:
+    pending: Beklemede
+    reviewed: İncelendi
+    resolved: Çözüldü
+    dismissed: Reddedildi
+  fields:
+    reporter: Şikayet Eden
+    reportedUser: Şikayet Edilen Kullanıcı
+    contentId: İçerik ID
+    description: Açıklama
+    status: Durum
+    reviewNote: İnceleme notu (isteğe bağlı)
+    reviewNotePlaceholder: Yöneticiler için dahili notlar…
+  actions:
+    save: Kaydet
+  messages:
+    success: Rapor güncellendi.

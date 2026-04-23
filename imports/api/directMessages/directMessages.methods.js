@@ -10,10 +10,17 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     if (!user) throw new Meteor.Error('not-authorized');
 
+    // Block check — either party may have blocked the other
+    const blockedByMe = (user.blockedUserIds ?? []).includes(otherUserId);
+    if (blockedByMe) throw new Meteor.Error('user-blocked', 'You have blocked this user.');
+
     const otherUser = await Meteor.users.findOneAsync(otherUserId, {
-      fields: { username: 1, avatar: 1 },
+      fields: { username: 1, avatar: 1, blockedUserIds: 1 },
     });
     if (!otherUser) throw new Meteor.Error('user-not-found');
+
+    const blockedByThem = (otherUser.blockedUserIds ?? []).includes(user._id);
+    if (blockedByThem) throw new Meteor.Error('user-blocked', 'This user is not available.');
 
     // Canonical participant order — always sorted so the pair maps to one doc
     const participantIds = [user._id, otherUserId].sort();
@@ -53,6 +60,17 @@ Meteor.methods({
     if (!conversation.participantIds.includes(user._id)) {
       throw new Meteor.Error('not-authorized');
     }
+
+    // Block check — prevent sending if either party has blocked the other
+    const otherUserId = conversation.participantIds.find((id) => id !== user._id);
+    const blockedByMe = (user.blockedUserIds ?? []).includes(otherUserId);
+    if (blockedByMe) throw new Meteor.Error('user-blocked');
+
+    const otherUser = otherUserId
+      ? await Meteor.users.findOneAsync(otherUserId, { fields: { blockedUserIds: 1 } })
+      : null;
+    const blockedByThem = (otherUser?.blockedUserIds ?? []).includes(user._id);
+    if (blockedByThem) throw new Meteor.Error('user-blocked');
 
     const now = new Date();
     const senderIndex = conversation.participantIds.indexOf(user._id);

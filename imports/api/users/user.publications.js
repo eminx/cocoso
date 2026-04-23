@@ -35,6 +35,7 @@ Meteor.publish('currentUser', function () {
         notifications: 1,
         publicKey: 1,
         username: 1,
+        blockedUserIds: 1,
       },
     }
   );

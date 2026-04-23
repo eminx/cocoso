@@ -37,6 +37,10 @@ import '../../api/directMessages/directMessage';
 import '../../api/directMessages/directMessages.methods';
 import '../../api/directMessages/directMessages.publications';
 
+import '../../api/reports/report';
+import '../../api/reports/report.methods';
+import '../../api/reports/report.publications';
+
 import '../../api/documents/document';
 import '../../api/documents/document.methods';
 import '../../api/documents/document.publications';

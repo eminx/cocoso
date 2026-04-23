@@ -283,3 +283,14 @@ export async function getNewsletterById({ params, host }) {
     newsletter,
   };
 }
+
+// getReports — server method enforces admin-only access.
+// Returns null on auth errors (DDP not yet authenticated on refresh); component revalidates once ready.
+export async function getReports() {
+  try {
+    const reports = await call('getReports');
+    return { reports };
+  } catch {
+    return { reports: null };
+  }
+}

@@ -11,19 +11,16 @@ import {
   Flex,
   Heading,
   Input,
-  Loader,
   Tabs,
   Text,
 } from '/imports/ui/core';
-import { call } from '../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
-import { currentUserAtom, roleAtom } from '../../../state';
+import { currentUserAtom, roleAtom } from '/imports/state';
 import FormField from '/imports/ui/forms/FormField';
-import { defaultEmails } from '/imports/startup/constants';
 import Quill from '/imports/ui/forms/Quill';
+import { call } from '/imports/api/_utils/shared';
 
 import Boxling from './Boxling';
-import AdminTabs from './AdminTabs';
 
 function EmailForm({ defaultValues, onSubmit }) {
   const { control, handleSubmit, register, formState } = useForm({

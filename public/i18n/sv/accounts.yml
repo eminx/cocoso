@@ -108,6 +108,32 @@ profile:
 
 messages:
   title: Meddelandeinkorg
+  search: Starta ett nytt samtal...
+  empty: Inga konversationer ännu. Sök efter någon ovan.
+  encryption:
+    notLoaded: Krypteringsnycklar inte laddade. Logga ut och logga in igen.
+    notSetUp: "{{ username }} har inte konfigurerat kryptering ännu."
+  actions:
+    block: Blockera {{ username }}
+    unblock: Avblockera {{ username }}
+    report: Rapportera {{ username }}
+    unblockLink: Avblockera
+  blocked:
+    notice: Du har blockerat den här användaren.
+  notify:
+    blocked: "{{ username }} blockerad."
+    unblocked: "{{ username }} avblockerad."
+
+report:
+  title: Rapportera {{ username }}
+  titleGeneric: Skicka en rapport
+  e2eeWarning: Meddelanden är end-to-end-krypterade — vi kan inte läsa dem. Beskriv vad som hände och ta en skärmdump av konversationen att dela med administratörer om det behövs.
+  form:
+    label: Beskriv problemet
+    placeholder: Vad hände? Var så specifik som möjligt…
+  messages:
+    required: Beskriv problemet innan du skickar in.
+    success: Rapport inskickad. Tack.
 
 leave:
   action: Lämna Community
