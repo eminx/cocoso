@@ -91,7 +91,7 @@ export default function NewButton({ animState = 'idle' }: NewButtonProps) {
       </svg>
       <IconButton
         aria-label="Create new"
-        css={{ margin: '0 1rem' }}
+        css={{ borderRadius: '50%', margin: '0 1rem' }}
         icon={<AddIcon />}
         mx="2"
         size="sm"

@@ -210,7 +210,6 @@ export const IconButton = (props: IconButtonProps) => {
       disabled={isDisabledFinal}
       onClick={isDisabledFinal ? undefined : props.onClick}
       style={{
-        borderRadius: 'var(--cocoso-border-radius)',
         padding:
           size === 'xs'
             ? '0.25rem'
