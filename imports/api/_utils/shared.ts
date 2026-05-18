@@ -24,6 +24,8 @@ interface DateTimeOccurrence {
   endDate: string;
   endTime: string;
   isMultipleDay?: boolean;
+  resourceId?: string;
+  resource?: string;
 }
 
 interface Activity {
@@ -281,15 +283,13 @@ function parseAllBookingsWithResources(
     if (!activity.datesAndTimes) {
       return;
     }
-    const resourceSelected = resources.find(
-      (res) => res?._id === activity?.resourceId
-    );
-    if (!resourceSelected) {
-      activity.datesAndTimes.forEach((recurrence) => {
-        const parsed = helper_parseAllBookingsWithResources(
-          activity,
-          recurrence
-        );
+    activity.datesAndTimes.forEach((recurrence) => {
+      const effectiveResourceId = recurrence.resourceId ?? activity.resourceId;
+      const resourceSelected = resources.find(
+        (res) => res?._id === effectiveResourceId
+      );
+      if (!resourceSelected) {
+        const parsed = helper_parseAllBookingsWithResources(activity, recurrence);
         if (parsed) {
           allBookings.push({
             ...parsed,
@@ -297,10 +297,8 @@ function parseAllBookingsWithResources(
             conflict: null,
           });
         }
-      });
-      return;
-    }
-    activity.datesAndTimes.forEach((recurrence) => {
+        return;
+      }
       if (resourceSelected.isCombo) {
         resourceSelected.resourcesForCombo?.forEach((resourceForCombo) => {
           if (!resourceForCombo) {
@@ -312,17 +310,14 @@ function parseAllBookingsWithResources(
           if (!resourceForComboReal?.isBookable) {
             return;
           }
-          const parsed = helper_parseAllBookingsWithResources(
-            activity,
-            recurrence
-          );
+          const parsed = helper_parseAllBookingsWithResources(activity, recurrence);
           if (parsed) {
             allBookings.push({
               ...parsed,
               isWithComboResource: true,
               resource: resourceForCombo.label,
               resourceId: resourceForCombo._id,
-              comboResource: activity.resource,
+              comboResource: recurrence.resource ?? activity.resource,
               comboResourceId: resourceSelected._id,
               conflict: null,
             });
@@ -332,10 +327,7 @@ function parseAllBookingsWithResources(
         if (!resourceSelected.isBookable) {
           return;
         }
-        const parsed = helper_parseAllBookingsWithResources(
-          activity,
-          recurrence
-        );
+        const parsed = helper_parseAllBookingsWithResources(activity, recurrence);
         if (parsed) {
           allBookings.push({
             ...parsed,
