@@ -108,7 +108,7 @@ profile:
 
 messages:
   label: Meddelanden
-  title: Meddelandeinkorg
+  title: Meddelanden
   search: Starta ett nytt samtal...
   empty: Inga konversationer ännu. Sök efter någon ovan.
   encryption:
