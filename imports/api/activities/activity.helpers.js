@@ -27,7 +27,11 @@ export function parseGroupActivities(activities) {
       if (indexParsed === -1) {
         activitiesParsed.push(act);
       } else {
-        activitiesParsed[indexParsed].datesAndTimes.push(act.datesAndTimes[0]);
+        activitiesParsed[indexParsed].datesAndTimes.push({
+          ...act.datesAndTimes[0],
+          resourceId: act.resourceId,
+          resource: act.resource,
+        });
       }
     }
   });
