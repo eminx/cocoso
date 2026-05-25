@@ -1,12 +1,17 @@
 import React from 'react';
 import loadable from '@loadable/component';
-import { Link, useNavigate } from 'react-router';
-import { Trans } from 'react-i18next';
+import { Link } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+if (Meteor.isClient) {
+  import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+}
+
 const ReactPlayer = loadable(() => import('react-player'));
 
-import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
+import { Box, Button, Center, Flex, Grid } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import type { Host } from '/imports/ui/types';
@@ -42,8 +47,6 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
   if (!module || !module.value || !module.type) {
     return null;
   }
-
-  const navigate = useNavigate();
 
   const { type, value } = module;
   const host = currentHost?.host;
@@ -86,14 +89,14 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
       return (
         <Center py="4">
           {!value.isLink ? (
-            <Image src={value.src} />
+            <LazyLoadImage alt="image" src={value.src} />
           ) : isImageLinkExternal ? (
             <a href={imageLink}>
-              <Image src={value.src} />
+              <LazyLoadImage alt="image" src={value.src} />
             </a>
           ) : (
             <Link to={imageLink}>
-              <Image src={value.src} />
+              <LazyLoadImage alt="image" src={value.src} />
             </Link>
           )}
         </Center>
@@ -151,7 +154,10 @@ export interface ComposablePageHybridProps {
   composablePage: ComposablePage;
 }
 
-export default function ComposablePageHybrid({ Host, composablePage }: ComposablePageHybridProps) {
+export default function ComposablePageHybrid({
+  Host,
+  composablePage,
+}: ComposablePageHybridProps) {
   if (!composablePage) {
     return null;
   }
