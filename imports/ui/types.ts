@@ -77,6 +77,7 @@ export interface Host {
   settings?: {
     name?: string;
     menu?: MenuItem[];
+    lang?: string;
   };
 }
 

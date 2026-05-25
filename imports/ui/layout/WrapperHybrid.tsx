@@ -105,7 +105,14 @@ export default function WrapperHybrid({
   useEffect(() => {
     if (!currentHost) return;
     applyGlobalStyles(currentHost.theme);
-    changeLang();
+    // Only apply host language if no user preference has been detected/stored yet.
+    // User language is applied in the currentUser effect with higher priority.
+    if (!currentUser) {
+      const hostLang = currentHost?.settings?.lang;
+      if (hostLang && hostLang !== i18n.language) {
+        i18n.changeLanguage(hostLang);
+      }
+    }
   }, [currentHost]);
 
   useEffect(() => {

@@ -71,35 +71,6 @@ function MemberList({ members }) {
   );
 }
 
-const filterOptions = [
-  {
-    label: <Trans i18nKey="members:all" />,
-    value: 'all',
-  },
-  {
-    label: <Trans i18nKey="members:roles.participant" />,
-    value: 'participant',
-  },
-  {
-    label: <Trans i18nKey="members:roles.contributor" />,
-    value: 'contributor',
-  },
-  {
-    label: <Trans i18nKey="members:roles.admin" />,
-    value: 'admin',
-  },
-];
-
-const sortOptions = [
-  {
-    label: <Trans i18nKey="members:form.sort.date" />,
-    value: 'join-date',
-  },
-  {
-    label: <Trans i18nKey="members:form.sort.user" />,
-    value: 'username',
-  },
-];
 
 export default function Members() {
   const currentUser = useAtomValue(currentUserAtom);
@@ -113,6 +84,24 @@ export default function Members() {
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const filterOptions = useMemo(
+    () => [
+      { label: t('all'), value: 'all' },
+      { label: t('roles.participant'), value: 'participant' },
+      { label: t('roles.contributor'), value: 'contributor' },
+      { label: t('roles.admin'), value: 'admin' },
+    ],
+    [t]
+  );
+
+  const sortOptions = useMemo(
+    () => [
+      { label: t('form.sort.date'), value: 'join-date' },
+      { label: t('form.sort.user'), value: 'username' },
+    ],
+    [t]
+  );
 
   // Keep hooks order stable; avoid early returns. Use conditional rendering below.
 

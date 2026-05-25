@@ -60,7 +60,7 @@ const options = {
   interpolation: {
     escapeValue: false,
   },
-  lng: defaultLang,
+  lng: isServer ? defaultLang : undefined,
   load: 'languageOnly',
   ns: ['common'],
   preload: ['en'],
