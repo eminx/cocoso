@@ -17,7 +17,6 @@ import {
 } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import Quill from '/imports/ui/forms/Quill';
-import FileDropper from '/imports/ui/forms/FileDropper';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
 import Menu from '/imports/ui/generic/Menu';
 
@@ -25,7 +24,7 @@ import ContentInserter from './ContentInserter';
 import { newsletterAtom } from './index';
 import { contentTypes } from './constants';
 
-const getDefaultFooter = (currentHost) => {
+const getDefaultFooter = (currentHost: any) => {
   if (!currentHost) {
     return null;
   }

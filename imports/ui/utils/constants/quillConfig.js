@@ -27,6 +27,12 @@ export const editorModules = {
   ],
   clipboard: {
     matchVisual: false,
+    matchers: [
+      [
+        1, // Node.ELEMENT_NODE
+        (node, delta) => ({ ops: delta.ops.map((op) => ({ insert: op.insert })) }),
+      ],
+    ],
   },
 };
 
