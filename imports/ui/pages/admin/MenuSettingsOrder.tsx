@@ -10,12 +10,11 @@ import { useAtom } from 'jotai';
 import { currentHostAtom } from '/imports/state';
 import { updateHostSettings } from '/imports/actions';
 import { Box, Button, Flex, Heading, IconButton, Text } from '/imports/ui/core';
-import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/api/_utils/shared';
 
 import Boxling from './Boxling';
 
-export default function MenuSettingsOrder({ Host }) {
+export default function MenuSettingsOrder() {
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [localMenu, setLocalMenu] = useState(currentHost?.settings?.menu);
   const [composablePageTitles, setComposablePageTitles] = useState([]);
@@ -77,6 +76,7 @@ export default function MenuSettingsOrder({ Host }) {
     await updateHostSettings({ values: { menu: localMenu } });
     setCurrentHost(await call('getCurrentHost'));
     setSubmitting(false);
+    window.location.reload();
   };
 
   return (
