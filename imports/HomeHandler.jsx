@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react';
 import loadable from '@loadable/component';
+import { useAtomValue } from 'jotai';
 
+import { currentHostAtom } from '/imports/state';
 import { Skeleton } from '/imports/ui/core';
 
 // Keep main public listing pages eager for SSR
@@ -22,7 +24,8 @@ const CalendarHandler = loadable(
 
 export default function HomeHandler(props) {
   const Host = props?.Host;
-  const menuItems = Host?.settings?.menu;
+  const currentHost = useAtomValue(currentHostAtom) || Host;
+  const menuItems = currentHost?.settings?.menu;
   const visibleMenu = menuItems?.filter((item) => item.isVisible);
   const firstRoute = visibleMenu?.[0]?.name;
 

@@ -2,9 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Fade from 'embla-carousel-fade';
 import FsLightbox from 'fslightbox-react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import { Flex, Center } from '/imports/ui/core';
+import { Center, Flex, Image } from '/imports/ui/core';
 import type { DotsProps } from '/imports/ui/types';
 
 const imageStyle: React.CSSProperties = {
@@ -192,7 +191,9 @@ export default function EmblaSlider({
 
   const lightBoxProps = {
     toggler: state.lightboxToggle,
-    sources: images.map((img) => <img key={img} alt={img} src={img} />),
+    sources: images.map((img) => (
+      <img loading="lazy" key={img} alt={img} src={img} />
+    )),
     sourceIndex: state.currentSlideIndex,
   };
 
@@ -201,7 +202,7 @@ export default function EmblaSlider({
       <>
         <Flex h={height} justify="center">
           <Center>
-            <LazyLoadImage {...imageProps(images[0])} />
+            <Image {...imageProps(images[0])} />
           </Center>
         </Flex>
 
@@ -216,7 +217,7 @@ export default function EmblaSlider({
         <div className="embla__container">
           {images.map((image) => (
             <div className="embla__slide" key={image}>
-              <LazyLoadImage {...imageProps(image)} />
+              <Image {...imageProps(image)} />
             </div>
           ))}
         </div>

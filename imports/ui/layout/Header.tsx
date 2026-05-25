@@ -5,7 +5,7 @@ import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 import { useAtomValue } from 'jotai';
 
-import { isDesktopAtom } from '/imports/state';
+import { currentHostAtom, isDesktopAtom } from '/imports/state';
 import { Box, Center, Flex, Heading, Image, Text } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 import { parseTitle } from '/imports/api/_utils/shared';
@@ -198,7 +198,8 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
             </Link>
           )
         )}
-        {Host.isPortalHost && (
+
+        {Host?.isPortalHost && (
           <Link key="communities" className="main-menu-item" to="/communities">
             <Box as="span" px="2">
               <Text
@@ -261,7 +262,7 @@ export default function Header({
                 fontWeight="400"
                 fontFamily="Raleway, sans-serif"
               >
-                {currentHost.settings?.name}
+                {currentHost?.settings?.name}
               </Heading>
             )}
           </Box>
