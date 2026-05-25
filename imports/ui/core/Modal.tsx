@@ -22,7 +22,7 @@ interface BaseProps {
   onConfirm?: () => void;
   onSecondaryButtonClick?: () => void;
   open: boolean;
-  title?: string;
+  title?: string | React.ReactNode;
 }
 
 // Drawer-specific props

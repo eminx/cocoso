@@ -200,27 +200,30 @@ export async function getCommunities() {
 }
 
 export async function getHostMembersForAdmin() {
-  const members = await call('getHostMembersForAdmin');
-
-  return {
-    members,
-  };
+  try {
+    const members = await call('getHostMembersForAdmin');
+    return { members };
+  } catch {
+    return { members: null };
+  }
 }
 
 export async function getEmails() {
-  const emails = await call('getEmails');
-
-  return {
-    emails,
-  };
+  try {
+    const emails = await call('getEmails');
+    return { emails };
+  } catch {
+    return { emails: null };
+  }
 }
 
 export async function getComposablePageTitles() {
-  const composablePageTitles = await call('getComposablePageTitles');
-
-  return {
-    composablePageTitles,
-  };
+  try {
+    const composablePageTitles = await call('getComposablePageTitles');
+    return { composablePageTitles };
+  } catch {
+    return { composablePageTitles: null };
+  }
 }
 
 export async function getActivitiesByUser({ params, host }) {

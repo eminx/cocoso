@@ -22,6 +22,7 @@ import {
   isDesktopAtom,
   roleAtom,
 } from '/imports/state';
+import FeedbackForm from '/imports/ui/layout/FeedbackForm';
 
 import AdminMenu from './AdminMenu';
 import getAdminRoutes, { getSuperAdminRoutes } from './getAdminRoutes';
@@ -133,6 +134,10 @@ export default function AdminContainer({ Host }) {
     }
   };
 
+  if (currentUser === null && role === null) {
+    return null;
+  }
+
   if (
     !isAdmin &&
     !currentUser?.isSuperAdmin &&
@@ -206,7 +211,7 @@ export default function AdminContainer({ Host }) {
 
   return (
     <Box bg="bluegray.100" css={{ minHeight: '100vh' }}>
-      <Grid h="100%" templateColumns="320px 50%">
+      <Grid h="100%" templateColumns="320px 50% 1fr">
         <Box>
           <AdminMenu
             currentHost={currentHost}
@@ -217,8 +222,11 @@ export default function AdminContainer({ Host }) {
 
         <Box p="6">
           <AdminHeader currentRoute={currentRoute} />
-
           <Outlet />
+        </Box>
+
+        <Box>
+          <FeedbackForm />
         </Box>
       </Grid>
     </Box>

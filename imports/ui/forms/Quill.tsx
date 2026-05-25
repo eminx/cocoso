@@ -6,7 +6,7 @@ const ReactQuill = loadable(() => import('react-quill-new'));
 import { editorModules, sizeOptions } from '../utils/constants/quillConfig';
 
 if (Meteor.isClient) {
-  import 'react-quill-new/dist/quill.snow.css';
+  import('react-quill-new/dist/quill.snow.css');
 }
 
 let quillSizeRegistered = false;
@@ -76,9 +76,12 @@ export default function QuillEditor(props: QuillEditorProps) {
       }
 
       const Delta = QuillClass.import('delta');
-      quillInstance.clipboard.addMatcher(Node.ELEMENT_NODE, (_node: any, delta: any) => {
-        return new Delta(delta.ops.map((op: any) => ({ insert: op.insert })));
-      });
+      quillInstance.clipboard.addMatcher(
+        Node.ELEMENT_NODE,
+        (_node: any, delta: any) => {
+          return new Delta(delta.ops.map((op: any) => ({ insert: op.insert })));
+        }
+      );
 
       initRef.current = true;
       setInitialized(true);

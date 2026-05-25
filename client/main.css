@@ -111,7 +111,6 @@ body {
 
 .wrapper {
   background-color: var(--cocoso-colors-gray-100);
-  min-height: 100vh;
   padding-top: 0;
   transition: all 0.5s ease;
 }

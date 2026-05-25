@@ -1,11 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Outlet, useLoaderData, useSearchParams } from 'react-router';
+import { Outlet, useLoaderData, useRevalidator, useSearchParams } from 'react-router';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
 import {
-  Alert,
   Box,
   Button,
   Flex,
@@ -81,16 +80,19 @@ export default function Emails() {
   const currentUser = useAtomValue(currentUserAtom);
   const role = useAtomValue(roleAtom);
   const { emails } = useLoaderData();
+  const { revalidate, state } = useRevalidator();
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
   const [searchParams, setSearchParams] = useSearchParams();
 
-  if (!currentUser || role !== 'admin') {
-    return <Alert>{tc('message.access.deny')}</Alert>;
-  }
+  useEffect(() => {
+    if (currentUser && role === 'admin' && !emails && state === 'idle') {
+      revalidate();
+    }
+  }, [currentUser, role, emails, state]);
 
-  if (!emails) {
-    return 'no data';
+  if (!currentUser || role !== 'admin' || !emails) {
+    return null;
   }
 
   const handleSubmit = async (values, emailIndex) => {
