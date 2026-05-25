@@ -241,6 +241,7 @@ composable:
     titleTooLong: Başlık 50 karakterden fazla olamaz
   toolbar:
     preview: 'Önizleme'
+    edit: Düzenle
     publish: Yayınla
     published: 'Yayınlandı'
     unpublish: Yayından kaldır

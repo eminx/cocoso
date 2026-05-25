@@ -241,6 +241,7 @@ composable:
     titleTooLong: Titeln måste vara kortare än 50 tecken
   toolbar:
     preview: Förhandsgranska
+    edit: Redigera
     publish: Publicera
     published: Publicerad
     unpublish: Återställ som utkast

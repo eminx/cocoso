@@ -241,6 +241,7 @@ composable:
     titleTooLong: Title must be less than 50 characters
   toolbar:
     preview: Preview
+    edit: Edit
     publish: Publish
     published: Published
     unpublish: Revert as draft
