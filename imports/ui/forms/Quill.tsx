@@ -9,6 +9,8 @@ if (Meteor.isClient) {
   import 'react-quill-new/dist/quill.snow.css';
 }
 
+let quillSizeRegistered = false;
+
 export interface QuillEditorProps {
   value?: string;
   onChange?: (value: string) => void;
@@ -19,6 +21,7 @@ export default function QuillEditor(props: QuillEditorProps) {
   const [focused, setFocused] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const quillRef = useRef<any>(null);
+  const initRef = useRef(false);
 
   const changePickerValues = useCallback(() => {
     const sizePickerItems = document.querySelectorAll(
@@ -54,23 +57,34 @@ export default function QuillEditor(props: QuillEditorProps) {
     changePickerLabel();
   }, [props.value]);
 
-  const handleQuillInit = (quill) => {
-    if (!quill || initialized) return;
+  const handleQuillInit = (quill: any) => {
+    if (!quill || initRef.current) return;
 
     quillRef.current = quill;
 
-    setTimeout(() => {
-      try {
-        const quillInstance = quill.getEditor();
-        const QuillClass = quillInstance.constructor;
+    try {
+      const quillInstance = quill.getEditor();
+      if (!quillInstance) return;
+
+      const QuillClass = quillInstance.constructor;
+
+      if (!quillSizeRegistered) {
         const SizeStyle = QuillClass.import('attributors/style/size');
         SizeStyle.whitelist = sizeOptions.map((opt) => opt.value);
         QuillClass.register(SizeStyle, true);
-        setInitialized(true);
-      } catch (error) {
-        console.error('Error configuring Quill sizes:', error);
+        quillSizeRegistered = true;
       }
-    }, 100);
+
+      const Delta = QuillClass.import('delta');
+      quillInstance.clipboard.addMatcher(Node.ELEMENT_NODE, (_node: any, delta: any) => {
+        return new Delta(delta.ops.map((op: any) => ({ insert: op.insert })));
+      });
+
+      initRef.current = true;
+      setInitialized(true);
+    } catch (error) {
+      console.error('Error configuring Quill sizes:', error);
+    }
   };
 
   let quillContainer = 'text-container quill-megacontainer';
