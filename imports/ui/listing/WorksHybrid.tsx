@@ -14,6 +14,7 @@ import PopupHandler from './PopupHandler';
 import Tag from '../generic/Tag';
 import { getCategoriesAssignedToWorks } from '../../api/_utils/shared';
 import NewGridThumb from '/imports/ui/listing/NewGridThumb';
+import ShowContentFromOtherHosts from '/imports/ui/listing/ShowContentFromOtherHosts';
 
 interface WorkThumbProps {
   index: number;
@@ -201,6 +202,11 @@ export default function WorksHybrid({ Host, works }: WorksHybridProps) {
           )}
         </InfiniteScroller>
       </Box>
+
+      <ShowContentFromOtherHosts
+        isPortalHost={currentHost?.isPortalHost}
+        listing="works"
+      />
 
       {modalItem && (
         <PopupHandler

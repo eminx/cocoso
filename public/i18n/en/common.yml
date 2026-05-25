@@ -295,3 +295,8 @@ auth:
     passwordMin: Password must be at least 8 characters long
     passwordRegex: Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters
     usernameOrEmail: Please enter your username or email address
+
+public:
+  labels:
+    more: Wanna see more?
+    portal: '{{listing}} in the Portal'

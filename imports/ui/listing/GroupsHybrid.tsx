@@ -9,6 +9,7 @@ import InfiniteScroller from './InfiniteScroller';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 import SexyThumb from './SexyThumb';
+import ShowContentFromOtherHosts from '/imports/ui/listing/ShowContentFromOtherHosts';
 // import VirtualGridLister from './VirtualGridLister';
 
 export interface GroupsHybridProps {
@@ -50,6 +51,11 @@ export default function GroupsHybrid({ Host, groups }: GroupsHybridProps) {
           </Center>
         )}
       </InfiniteScroller>
+
+      <ShowContentFromOtherHosts
+        isPortalHost={currentHost?.isPortalHost}
+        listing="groups"
+      />
 
       {modalItem && (
         <PopupHandler

@@ -293,3 +293,8 @@ auth:
     passwordMin: Lösenordet måste vara minst 8 tecken långt
     passwordRegex: Se till att ange minst en liten bokstav, en versal, en siffra och totalt minst 8 tecken
     usernameOrEmail: Ange ditt användarnamn eller e-postadress
+
+public:
+  labels:
+    more: Vill du se mer?
+    portal: '{{listing}} i portalen'

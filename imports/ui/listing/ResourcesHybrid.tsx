@@ -8,6 +8,7 @@ import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 import InfiniteScroller from './InfiniteScroller';
 import NewGridThumb from './NewGridThumb';
+import ShowContentFromOtherHosts from '/imports/ui/listing/ShowContentFromOtherHosts';
 
 export interface ResourcesHybridProps {
   Host: object;
@@ -47,6 +48,11 @@ export default function ResourcesHybrid({
             </Box>
           )}
         </InfiniteScroller>
+
+        <ShowContentFromOtherHosts
+          isPortalHost={currentHost?.isPortalHost}
+          listing="resources"
+        />
 
         {modalItem && (
           <PopupHandler

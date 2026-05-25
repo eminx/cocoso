@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { Trans } from 'react-i18next';
-import { useAtomValue } from 'jotai';
 
-import { currentHostAtom } from '/imports/state';
-import { Box, Center } from '/imports/ui/core';
+import { Center } from '/imports/ui/core';
 
 import InfiniteScroller from './InfiniteScroller';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 import SexyThumb from './SexyThumb';
 import Tabs from '../core/Tabs';
-// import VirtualGridLister from './VirtualGridLister';
+import ShowContentFromOtherHosts from '/imports/ui/listing/ShowContentFromOtherHosts';
 
 export interface ActivitiesHybridProps {
   Host: any;
@@ -19,7 +17,11 @@ export interface ActivitiesHybridProps {
   showPast?: boolean;
 }
 
-export default function ActivitiesHybrid({ Host, activities, showPast }: ActivitiesHybridProps) {
+export default function ActivitiesHybrid({
+  Host,
+  activities,
+  showPast,
+}: ActivitiesHybridProps) {
   const currentHost = { ...Host };
   const [modalItem, setModalItem] = useState(null);
   const [, setSearchParams] = useSearchParams();
@@ -75,6 +77,11 @@ export default function ActivitiesHybrid({ Host, activities, showPast }: Activit
           </Center>
         )}
       </InfiniteScroller>
+
+      <ShowContentFromOtherHosts
+        isPortalHost={currentHost?.isPortalHost}
+        listing="activities"
+      />
 
       {modalItem ? (
         <PopupHandler

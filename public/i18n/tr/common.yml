@@ -292,3 +292,8 @@ auth:
     passwordMin: Şifre en az 8 karakter uzunluğunda olmalıdır
     passwordRegex: Lütfen en az bir küçük harf, bir büyük harf, bir rakam ve toplamda en az 8 karakter girdiğinizden emin olun
     usernameOrEmail: Lütfen kullanıcı adınızı veya e-posta adresinizi girin
+
+public:
+  labels:
+    more: Daha fazla?
+    portal: 'Portaldaki {{listing}}'
