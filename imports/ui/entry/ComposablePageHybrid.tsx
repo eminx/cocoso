@@ -3,15 +3,10 @@ import loadable from '@loadable/component';
 import { Link } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-
-if (Meteor.isClient) {
-  import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-}
 
 const ReactPlayer = loadable(() => import('react-player'));
 
-import { Box, Button, Center, Flex, Grid } from '/imports/ui/core';
+import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import type { Host } from '/imports/ui/types';
@@ -89,14 +84,14 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
       return (
         <Center py="4">
           {!value.isLink ? (
-            <LazyLoadImage alt="image" src={value.src} />
+            <Image alt="image" loading="lazy" src={value.src} />
           ) : isImageLinkExternal ? (
             <a href={imageLink}>
-              <LazyLoadImage alt="image" src={value.src} />
+              <Image alt="image" loading="lazy" src={value.src} />
             </a>
           ) : (
             <Link to={imageLink}>
-              <LazyLoadImage alt="image" src={value.src} />
+              <Image alt="image" loading="lazy" src={value.src} />
             </Link>
           )}
         </Center>
