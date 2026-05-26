@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Link,
   useLoaderData,
@@ -29,7 +29,6 @@ import {
 } from '/imports/api/_utils/shared';
 import {
   canCreateContentAtom,
-  currentHostAtom,
   currentUserAtom,
   roleAtom,
 } from '/imports/state';
@@ -79,7 +78,6 @@ interface Activity {
 
 interface CalendarHandlerProps {
   Host: any;
-  pageTitles: any;
 }
 
 const parseNewEntryParams = (
@@ -103,7 +101,7 @@ const parseNewEntryParams = (
   return params;
 };
 
-export default function CalendarHandler({ Host, pageTitles }: CalendarHandlerProps) {
+export default function CalendarHandler({ Host }: CalendarHandlerProps) {
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentHost = Host;
   const currentUser = useAtomValue(currentUserAtom);
@@ -113,7 +111,9 @@ export default function CalendarHandler({ Host, pageTitles }: CalendarHandlerPro
     resources: Resource[];
   };
 
-  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
+    null
+  );
   const [calendarFilter, setCalendarFilter] = useState<Resource | null>(null);
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
@@ -151,7 +151,11 @@ export default function CalendarHandler({ Host, pageTitles }: CalendarHandlerPro
       type = 'month-multipledays';
     }
 
-    const dateParams = parseNewEntryParams(slotInfo, selectedResource || null, type);
+    const dateParams = parseNewEntryParams(
+      slotInfo,
+      selectedResource || null,
+      type
+    );
 
     setSearchParams((params) => ({
       ...params,
@@ -261,7 +265,7 @@ export default function CalendarHandler({ Host, pageTitles }: CalendarHandlerPro
   const [SelectComponent, setSelectComponent] = useState<any>(null);
   const [AnimatedComponents, setAnimatedComponents] = useState<any>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectFilterView && !SelectComponent) {
       Promise.all([
         import('react-select'),

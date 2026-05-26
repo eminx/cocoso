@@ -19,7 +19,14 @@ const breakpointColumnsObj = (isLarger: boolean) => ({
 const defaultItemsPerPage = 12;
 
 const filterHelper = (item: any, lowerCaseFilterValue: string): boolean => {
-  const { title, subTitle, shortDescription, label, readingMaterial } = item;
+  const {
+    title,
+    subTitle,
+    shortDescription,
+    label,
+    readingMaterial,
+    username,
+  } = item;
 
   const checker = (field?: string) => {
     if (!field) {
@@ -33,7 +40,8 @@ const filterHelper = (item: any, lowerCaseFilterValue: string): boolean => {
     checker(readingMaterial) ||
     checker(subTitle) ||
     checker(shortDescription) ||
-    checker(title);
+    checker(title) ||
+    checker(username);
 
   return itemFiltered;
 };
@@ -63,7 +71,9 @@ const sortItems = (items: any[], sortValue: string) => {
     if (sortValue === 'name') {
       return a.label
         ? a.label?.localeCompare(b.label)
-        : a.title?.localeCompare(b.title);
+        : a.title
+        ? a.title?.localeCompare(b.title)
+        : a.username?.localeCompare(b.username);
     }
     return (
       new Date(b.createdAt || b.creationDate) -

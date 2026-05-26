@@ -72,7 +72,7 @@ labels:
   combo: Combo
   sortBy:
     placeholder: Sort by
-    date: Date
+    date: Date/Default
     name: Name
     random: Random
   unselected: No resource
@@ -82,6 +82,7 @@ labels:
   upcoming: Upcoming
   filterAndSort: Filter & Sort
   filter: Filter
+  filterKeyword: Filter by keyword
   sort: Sort
   notfound:
     info: What you look for could not be found

@@ -72,7 +72,7 @@ labels:
   combo: Combo
   sortBy:
     placeholder: Sortera med
-    date: Datum
+    date: Datum/Standard
     name: Namn
     random: Slumpmässigt
   unselected: Ej resurs
@@ -82,6 +82,7 @@ labels:
   upcoming: Kommande
   filterAndSort: Filtrera & sortera
   filter: Filtrera
+  filterKeyword: Filtrera efter nyckelord
   sort: Sortera
   notfound:
     info: Det du letade efter kunde inte hittas

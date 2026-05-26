@@ -72,7 +72,7 @@ labels:
   combo: Kombo
   sortBy:
     placeholder: Sırala
-    date: Tarih
+    date: Tarih/Varsayılan
     name: İsim
     random: Rastgele
   unselected: Kaynak seçilmedi
@@ -82,6 +82,7 @@ labels:
   upcoming: Gelecek
   filterAndSort: Filtrele & Sırala
   filter: Filtrele
+  filterKeyword: Anahtar kelimeye göre filtrele
   sort: Sırala
   notfound:
     info: Aradığın içerik bulunamadı

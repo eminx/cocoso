@@ -1,16 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 import ListFilter from 'lucide-react/dist/esm/icons/list-filter';
 
-import {
-  Accordion,
-  Box,
-  Button,
-  Flex,
-  Input,
-  Select,
-  Text,
-} from '/imports/ui/core';
+import { Accordion, Box, Flex, Input, Select, Text } from '/imports/ui/core';
 
 interface InputsProps {
   filterValue?: string;
@@ -19,7 +11,12 @@ interface InputsProps {
   setSortValue: (value: string) => void;
 }
 
-function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }: InputsProps) {
+function Inputs({
+  filterValue,
+  setFilterValue,
+  sortValue,
+  setSortValue,
+}: InputsProps) {
   return (
     <Flex justify="space-between" w="100">
       <Box>
@@ -51,7 +48,7 @@ function Inputs({ filterValue, setFilterValue, sortValue, setSortValue }: Inputs
         >
           <option value="date">
             <Trans i18nKey="labels.sortBy.date" ns="common">
-              Date
+              Date/Default
             </Trans>
           </option>
           <option value="name">
@@ -74,15 +71,6 @@ export interface FiltrerSorterProps {
 }
 
 export default function FiltrerSorter(props: FiltrerSorterProps) {
-  const [open, setOpen] = useState(false);
-
-  const handleToggle = () => {
-    if (open) {
-      props.setFilterValue('');
-    }
-    setOpen(!open);
-  };
-
   return (
     <Flex justify="flex-end" my="2" w="300px" px="2">
       <Accordion
