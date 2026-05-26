@@ -782,15 +782,14 @@ body {
 .szh-accordion__item-btn:hover {
   background-color: var(--cocoso-colors-theme-200);
 }
+.szh-accordion__item-btn--open {
+  background-color: var(--cocoso-colors-theme-500);
+  color: white;
+}
 .szh-accordion__item-content {
   background-color: var(--cocoso-colors-theme-100);
   border-radius: var(--cocoso-border-radius);
   padding: 1rem;
-  transition: height 0.25s cubic-bezier(0, 0, 0, 1);
-}
-.szh-accordion__item--expanded .szh-accordion__item-btn {
-  background-color: var(--cocoso-colors-theme-500);
-  color: white;
 }
 
 .szh-menu-container {
