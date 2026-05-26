@@ -166,7 +166,7 @@ newsletter:
     success:
       emailsent: Eposta başarıyla tüm üyelere gönderildi.
   portalHost:
-    info: Bu federasyonun portal uygulaması olduğu için, e-posta tüm {{ platform }} platformu üyelerine gönderilecektir
+    info: Bu federasyonun portalı olduğu için, e-posta tüm {{ platform }} platformu üyelerine gönderilecektir
 
 listings:
   title: 'Listeleme Sayfaları'

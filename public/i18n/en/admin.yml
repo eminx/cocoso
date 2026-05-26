@@ -166,7 +166,7 @@ newsletter:
     success:
       emailsent: Your email is successfully sent to all members
   portalHost:
-    info: Since this is the portal app of the federation, your email will be sent to all {{ platform }} platform members
+    info: Since this is the portal of the federation, your email will be sent to all {{ platform }} platform members
 
 listings:
   title: Listing pages

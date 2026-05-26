@@ -179,7 +179,7 @@ modals:
       details:
         label: Message
 
-  toPortalApp: Fortsätt till portalappen
+  toPortalApp: Fortsätt till portalen
 
 # GUEST | MEMBER | ADMIN MENU LABELS
 menu:
