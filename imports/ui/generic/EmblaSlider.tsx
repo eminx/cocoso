@@ -180,6 +180,7 @@ export default function EmblaSlider({
   const imageProps = (image: string) => ({
     alt: image,
     src: image,
+    loading: 'lazy',
     style: { ...imageStyle, height },
     onClick: () => {
       setState((prevState) => ({
