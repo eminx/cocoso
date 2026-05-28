@@ -35,7 +35,7 @@ export default function ShowContentFromOtherHosts({
           <Button rightIcon={<RightIcon />} variant="outline">
             <Trans
               i18nKey="common:public.labels.portal"
-              values={{ listing: t('domains.activities') }}
+              values={{ listing: t(`domains.${listing}`) }}
             >
               <span className="capitalize-first-letter">
                 {listing} in the Portal
