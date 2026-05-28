@@ -11,6 +11,14 @@ function saveKeyLocally(privateKey: Uint8Array) {
   localStorage.setItem(LOCAL_KEY, encodeBase64(privateKey));
 }
 
+async function sha256hex(password: string): Promise<string> {
+  const data = new TextEncoder().encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 export function clearEncryptionKey() {
   localStorage.removeItem(LOCAL_KEY);
   getDefaultStore().set(privateKeyAtom, null);
@@ -35,6 +43,15 @@ export async function setupEncryption(
   password: string
 ): Promise<'ok' | 'wrong-password' | 'error'> {
   try {
+    // Verify the password against the Meteor account before touching any keys
+    const hashedPw = await sha256hex(password);
+    try {
+      await Meteor.callAsync('users_checkPassword', hashedPw);
+    } catch (err: any) {
+      if (err.error === 'wrong-password') return 'wrong-password';
+      return 'error';
+    }
+
     const backup = await Meteor.callAsync('getEncryptionKeyBackup');
 
     let privateKey: Uint8Array | null = null;

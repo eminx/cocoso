@@ -67,7 +67,6 @@ export default function ContactInfo({
     }
   };
 
-  console.log('userId:', userId);
   const showMessageButton = userId && currentUser && currentUser._id !== userId;
 
   return (
