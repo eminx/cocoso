@@ -114,6 +114,10 @@ messages:
   encryption:
     notLoaded: Şifreleme anahtarları yüklenmedi. Lütfen çıkış yapıp tekrar giriş yapın.
     notSetUp: '{{ username }} henüz şifrelemeyi etkinleştirmemiş.'
+    needsRelogin: Şifreleme anahtarların yüklenmedi. Mesajlarına tekrar erişmek için çıkış yapıp yeniden giriş yap.
+    logoutAction: Çıkış yap & giriş sayfasına git
+  sendPrivate: Özel mesaj gönder
+  e2eeNote: Uçtan uca şifreli — yöneticiler mesajlarını okuyamaz
   actions:
     block: '{{ username }} kişisini engelle'
     unblock: '{{ username }} engelini kaldır'

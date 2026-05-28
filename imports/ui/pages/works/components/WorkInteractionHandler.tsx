@@ -11,7 +11,7 @@ import ContactInfo from '../../profile/ContactInfo';
 
 export default function WorkInteractionHandler() {
   const currentUser = useAtomValue(currentUserAtom);
-  const work = useAtomValue(workAtom);
+  const work = useAtomValue(workAtom) as any;
 
   if (!work) {
     return null;
@@ -20,7 +20,7 @@ export default function WorkInteractionHandler() {
   if (!currentUser || currentUser._id !== work.authorId) {
     return (
       <SlideWidget justify="center">
-        <ContactInfo username={work.authorUsername} />
+        <ContactInfo username={work.authorUsername} userId={work.authorId} />
       </SlideWidget>
     );
   } else {
@@ -29,7 +29,7 @@ export default function WorkInteractionHandler() {
         <Box w="40px">
           <WorkAdminFunctions />
         </Box>
-        <ContactInfo username={work.authorUsername} />
+        <ContactInfo username={work.authorUsername} userId={work.authorId} />
         <Box w="40px" />
       </SlideWidget>
     );

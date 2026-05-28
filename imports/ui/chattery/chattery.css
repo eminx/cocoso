@@ -326,6 +326,7 @@
   -webkit-margin-before: 0em;
   -webkit-margin-after: 0em;
   white-space: pre-line;
+  margin-bottom: 0.2em;
 }
 
 .talktext-senderinfo {

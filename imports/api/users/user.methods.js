@@ -4,6 +4,7 @@ import { check } from 'meteor/check';
 
 import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
+import Platform from '../platform/platform';
 import Works from '../works/work';
 import Groups from '../groups/group';
 
@@ -527,5 +528,57 @@ Meteor.methods({
     await Meteor.users.updateAsync(user._id, {
       $pull: { blockedUserIds: targetUserId },
     });
+  },
+
+  async users_searchForMessages(query) {
+    check(query, String);
+    const caller = await Meteor.userAsync();
+    if (!caller) throw new Meteor.Error('not-authorized');
+
+    const host = getHost(this);
+    const platform = await Platform.findOneAsync();
+    const isFederation = Boolean(platform?.isFederationLayout);
+    const q = query.trim().toLowerCase();
+
+    const filter = isFederation
+      ? { _id: { $ne: caller._id } }
+      : { _id: { $ne: caller._id }, 'memberships.host': host };
+
+    const users = await Meteor.users
+      .find(filter, {
+        fields: {
+          _id: 1,
+          username: 1,
+          avatar: 1,
+          firstName: 1,
+          lastName: 1,
+          memberships: 1,
+        },
+      })
+      .fetchAsync();
+
+    const matched = users
+      .filter((u) => {
+        const full =
+          `${u.firstName ?? ''} ${u.lastName ?? ''} ${u.username ?? ''}`.toLowerCase();
+        return full.includes(q);
+      })
+      .map((u) => ({
+        _id: u._id,
+        username: u.username,
+        avatar: u.avatar,
+        firstName: u.firstName,
+        lastName: u.lastName,
+        memberHosts: (u.memberships ?? []).map((m) => m.host),
+      }));
+
+    if (!isFederation) {
+      return matched.slice(0, 8);
+    }
+
+    // Federation: same-host members first, then other communities
+    const sameHost = matched.filter((u) => u.memberHosts.includes(host));
+    const otherHosts = matched.filter((u) => !u.memberHosts.includes(host));
+    return [...sameHost, ...otherHosts].slice(0, 12);
   },
 });

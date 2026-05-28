@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 import { Trans, useTranslation } from 'react-i18next';
@@ -20,8 +20,7 @@ import {
   Text,
   Alert,
 } from '/imports/ui/core';
-
-import { currentUserAtom } from '/imports/state';
+import { allHostsAtom, currentUserAtom } from '/imports/state';
 import { Bio } from '/imports/ui/entry/UserHybrid';
 import MemberAvatarEtc from '/imports/ui/generic/MemberAvatarEtc';
 import { message } from '/imports/ui/generic/message';
@@ -35,8 +34,11 @@ import DirectMessageConversations from './DirectMessageConversations';
 export default function DirectMessagesInbox() {
   const [t] = useTranslation('accounts');
   const currentUser = useAtomValue(currentUserAtom);
+  const allHosts = useAtomValue(allHostsAtom);
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
+  const [members, setMembers] = useState<any[]>([]);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const [starting, setStarting] = useState(false);
   const [modalItem, setModalItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -45,7 +47,6 @@ export default function DirectMessagesInbox() {
   const { conversationId } = useParams();
 
   useSubscribe('directMessages');
-  useSubscribe('membersForPublic');
 
   const isIndexPage = typeof conversationId !== 'string';
 
@@ -57,24 +58,59 @@ export default function DirectMessagesInbox() {
     ).fetch();
   }, [currentUser]);
 
-  const members = useTracker(() => {
-    if (!currentUser) return [];
-    if (!search.trim()) return [];
-    const q = search.trim().toLowerCase();
-    return Meteor.users
-      .find(
-        { _id: { $ne: currentUser?._id } },
-        { fields: { username: 1, firstName: 1, lastName: 1, avatar: 1 } }
-      )
-      .fetch()
-      .filter((u: any) => {
-        const full = `${u.firstName ?? ''} ${u.lastName ?? ''} ${
-          u.username ?? ''
-        }`.toLowerCase();
-        return full.includes(q);
+  useEffect(() => {
+    if (!conversationId || !currentUser) return;
+    Meteor.callAsync('directMessages_markAsRead', conversationId).catch(() => {});
+  }, [conversationId, currentUser]);
+
+  useEffect(() => {
+    if (!search.trim() || !currentUser) {
+      setMembers([]);
+      setFocusedIndex(-1);
+      return;
+    }
+    let cancelled = false;
+    Meteor.callAsync('users_searchForMessages', search.trim())
+      .then((results: any[]) => {
+        if (!cancelled) {
+          setMembers(results ?? []);
+          setFocusedIndex(-1);
+        }
       })
-      .slice(0, 8);
+      .catch(() => {
+        if (!cancelled) setMembers([]);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [search, currentUser]);
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (members.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setFocusedIndex((prev) => Math.min(prev + 1, members.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setFocusedIndex((prev) => Math.max(prev - 1, -1));
+    } else if (e.key === 'Enter') {
+      if (focusedIndex >= 0 && members[focusedIndex]) {
+        handleStartConversation(members[focusedIndex]._id);
+      }
+    } else if (e.key === 'Escape') {
+      setSearch('');
+    }
+  };
+
+  const getCommunityLabel = (memberHosts: string[]) => {
+    if (!memberHosts?.length) return null;
+    const names = memberHosts
+      .map((h) => allHosts.find((ah: any) => ah.host === h)?.name)
+      .filter(Boolean);
+    if (!names.length) return null;
+    const [first, ...rest] = names;
+    return rest.length > 0 ? `${first} +${rest.length}` : first;
+  };
 
   const handleStartConversation = async (userId: string) => {
     if (starting) return;
@@ -114,12 +150,21 @@ export default function DirectMessagesInbox() {
   const currentConversation = conversations?.find(
     (conv) => conv._id === conversationId
   );
-  const currentOtherUsername = currentConversation?.participantUsernames.find(
-    (u) => u !== currentUser?.username
-  );
-  const currentOtherUserId = currentConversation?.participantIds.find(
+  const currentOtherIndex = currentConversation?.participantIds.findIndex(
     (id) => id !== currentUser?._id
   );
+  const currentOtherUsername =
+    currentOtherIndex !== undefined && currentOtherIndex !== -1
+      ? currentConversation?.participantUsernames[currentOtherIndex]
+      : undefined;
+  const currentOtherUserId =
+    currentOtherIndex !== undefined && currentOtherIndex !== -1
+      ? currentConversation?.participantIds[currentOtherIndex]
+      : undefined;
+  const currentOtherAvatar =
+    currentOtherIndex !== undefined && currentOtherIndex !== -1
+      ? currentConversation?.participantAvatars?.[currentOtherIndex]
+      : undefined;
   const isOtherUserBlocked = (
     (currentUser as any)?.blockedUserIds ?? []
   ).includes(currentOtherUserId);
@@ -127,7 +172,9 @@ export default function DirectMessagesInbox() {
   const handleBlock = async () => {
     try {
       await Meteor.callAsync('users_blockUser', currentOtherUserId);
-      message.info(t('messages.notify.blocked', { username: currentOtherUsername }));
+      message.info(
+        t('messages.notify.blocked', { username: currentOtherUsername })
+      );
     } catch (err: any) {
       message.error(err.reason || err.message);
     }
@@ -136,7 +183,9 @@ export default function DirectMessagesInbox() {
   const handleUnblock = async () => {
     try {
       await Meteor.callAsync('users_unblockUser', currentOtherUserId);
-      message.info(t('messages.notify.unblocked', { username: currentOtherUsername }));
+      message.info(
+        t('messages.notify.unblocked', { username: currentOtherUsername })
+      );
     } catch (err: any) {
       message.error(err.reason || err.message);
     }
@@ -161,6 +210,7 @@ export default function DirectMessagesInbox() {
               placeholder={t('messages.search')}
               value={search}
               onChange={(e: any) => setSearch(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
             />
           ) : (
             <Flex align="center" justify="space-between" gap="2">
@@ -173,14 +223,21 @@ export default function DirectMessagesInbox() {
                   />
                 </Center>
               </Link>
-              <Center
-                css={{ transform: 'translateX(-12px)' }}
+              <Flex
+                align="center"
+                gap="2"
+                css={{ cursor: 'pointer', transform: 'translateX(-12px)' }}
                 onClick={() => handleFetchUser(currentOtherUsername)}
               >
+                <Avatar
+                  name={currentOtherUsername}
+                  size="sm"
+                  src={currentOtherAvatar ?? undefined}
+                />
                 <Text fontWeight="bold" size="lg">
                   <CLink>{currentOtherUsername}</CLink>
                 </Text>
-              </Center>
+              </Flex>
               <Box css={{ position: 'relative' }}>
                 <GenericMenu
                   align="end"
@@ -194,15 +251,21 @@ export default function DirectMessagesInbox() {
                 >
                   {isOtherUserBlocked ? (
                     <MenuItem onClick={handleUnblock}>
-                      {t('messages.actions.unblock', { username: currentOtherUsername })}
+                      {t('messages.actions.unblock', {
+                        username: currentOtherUsername,
+                      })}
                     </MenuItem>
                   ) : (
                     <MenuItem onClick={handleBlock}>
-                      {t('messages.actions.block', { username: currentOtherUsername })}
+                      {t('messages.actions.block', {
+                        username: currentOtherUsername,
+                      })}
                     </MenuItem>
                   )}
                   <MenuItem onClick={() => setReportOpen(true)}>
-                    {t('messages.actions.report', { username: currentOtherUsername })}
+                    {t('messages.actions.report', {
+                      username: currentOtherUsername,
+                    })}
                   </MenuItem>
                 </GenericMenu>
 
@@ -233,25 +296,40 @@ export default function DirectMessagesInbox() {
               zIndex: 10,
             }}
           >
-            {members.map((u: any) => (
+            {members.map((u: any, index: number) => (
               <Flex
                 key={u._id}
                 align="center"
                 css={{
                   cursor: 'pointer',
                   padding: '0.6rem 0.75rem',
+                  background:
+                    index === focusedIndex
+                      ? 'var(--cocoso-colors-bluegray-100)'
+                      : 'transparent',
                   '&:hover': { background: 'var(--cocoso-colors-bluegray-50)' },
                 }}
                 gap="1"
                 onClick={() => handleStartConversation(u._id)}
               >
                 <Avatar name={u.username} size="sm" src={u.avatar?.src} />
-                <Text fontWeight="bold" size="md">
-                  {u.username}
-                </Text>
-                {(u.firstName || u.lastName) && (
-                  <Text size="sm" color="gray.500">
-                    {[u.firstName, u.lastName].filter(Boolean).join(' ')}
+                <Box css={{ flex: 1 }}>
+                  <Text
+                    fontWeight="bold"
+                    size="md"
+                    css={{ marginRight: '0.2rem' }}
+                  >
+                    {u.username}
+                  </Text>
+                  {(u.firstName || u.lastName) && (
+                    <Text size="sm" color="gray.500">
+                      {[u.firstName, u.lastName].filter(Boolean).join(' ')}
+                    </Text>
+                  )}
+                </Box>
+                {getCommunityLabel(u.memberHosts) && (
+                  <Text size="xs" color="gray.400" css={{ flexShrink: 0 }}>
+                    {getCommunityLabel(u.memberHosts)}
                   </Text>
                 )}
               </Flex>

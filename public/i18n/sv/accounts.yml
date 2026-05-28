@@ -114,6 +114,10 @@ messages:
   encryption:
     notLoaded: Krypteringsnycklar inte laddade. Logga ut och logga in igen.
     notSetUp: '{{ username }} har inte konfigurerat kryptering ännu.'
+    needsRelogin: Dina krypteringsnycklar är inte laddade. Logga ut och logga in igen för att återfå åtkomst till dina meddelanden.
+    logoutAction: Logga ut & gå till inloggning
+  sendPrivate: Skicka ett privat meddelande
+  e2eeNote: End-to-end-krypterat — administratörer kan inte läsa dina meddelanden
   actions:
     block: Blockera {{ username }}
     unblock: Avblockera {{ username }}

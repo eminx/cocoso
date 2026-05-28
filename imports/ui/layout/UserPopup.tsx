@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import BoltIcon from 'lucide-react/dist/esm/icons/bolt';
 import CogIcon from 'lucide-react/dist/esm/icons/cog';
 import CheckCircleIcon from 'lucide-react/dist/esm/icons/check-circle';
@@ -149,6 +149,7 @@ export interface UserPopupProps {
 }
 
 export default function UserPopup({ isOpen }: UserPopupProps) {
+  const [t] = useTranslation('members');
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentHost = useAtomValue(currentHostAtom);
   const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
@@ -186,6 +187,11 @@ export default function UserPopup({ isOpen }: UserPopupProps) {
       notificationsCounter = notification.count + notificationsCounter;
     });
   }
+  const unreadMessageCount = Math.max(
+    0,
+    (currentUser as any)?.unreadMessageCount ?? 0
+  );
+  notificationsCounter += unreadMessageCount;
 
   const host = currentHost?.host;
   const roleTranslated = <Trans i18nKey={`roles.${role}`} ns="members" />;
@@ -222,7 +228,12 @@ export default function UserPopup({ isOpen }: UserPopupProps) {
             <Text>
               <Flex align="center" gap="2">
                 <MessagesSquare />
-                <Trans i18nKey="accounts:messages.label">Messages</Trans>
+                {t('labels.messages')}
+                {unreadMessageCount > 0 && (
+                  <Badge colorScheme="red" size="sm">
+                    {unreadMessageCount}
+                  </Badge>
+                )}
               </Flex>
             </Text>
           </MenuItem>

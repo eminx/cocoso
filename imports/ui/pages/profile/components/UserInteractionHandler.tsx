@@ -10,7 +10,7 @@ export default function UserInteractionHandler({ user, slideStart }) {
 
   return (
     <SlideWidget justify="center" slideStart={slideStart}>
-      <ContactInfo username={user.username} />
+      <ContactInfo username={user.username} userId={user._id} />
     </SlideWidget>
   );
 }

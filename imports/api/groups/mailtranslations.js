@@ -1,5 +1,11 @@
 export default {
   en: {
+    directMessage: {
+      subject: 'New message from',
+      body: 'You have received a new message from',
+      bodyLong: 'Click the button below to open your messages and reply.',
+      visitPage: 'Go to messages',
+    },
     general: {
       dateAndTime: 'Date & Time',
       dear: 'Dear',
@@ -33,6 +39,12 @@ export default {
     },
   },
   sv: {
+    directMessage: {
+      subject: 'Nytt meddelande från',
+      body: 'Du har fått ett nytt meddelande från',
+      bodyLong: 'Klicka på knappen nedan för att öppna dina meddelanden och svara.',
+      visitPage: 'Gå till meddelanden',
+    },
     general: {
       dateAndTime: 'Datum & tid',
       dear: 'Hej',
@@ -66,6 +78,12 @@ export default {
     },
   },
   tr: {
+    directMessage: {
+      subject: 'Yeni mesaj',
+      body: 'Sana şu kişiden yeni bir mesaj geldi:',
+      bodyLong: 'Mesajlarını okumak ve yanıtlamak için aşağıdaki düğmeye tıkla.',
+      visitPage: 'Mesajlara git',
+    },
     general: {
       dateAndTime: 'Zaman ve tarih',
       dear: 'Merhaba',

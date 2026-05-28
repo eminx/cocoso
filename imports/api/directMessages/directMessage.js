@@ -21,6 +21,9 @@ DirectMessages.schema = new SimpleSchema({
   lastMessageAt: { type: Date, optional: true },
   lastMessageBy: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
 
+  // { [userId]: Number } — unread message count per participant
+  unreadCounts: { type: Object, optional: true, blackbox: true },
+
   messages: { type: Array, defaultValue: [] },
   'messages.$': { type: Object },
   'messages.$.senderId': Schemas.Id,

@@ -5,10 +5,9 @@ import { useAtomValue } from 'jotai';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
-
 import { useTranslation } from 'react-i18next';
 
-import { Avatar, Box, Center, Flex, Text } from '/imports/ui/core';
+import { Avatar, Badge, Box, Center, Flex, Text } from '/imports/ui/core';
 import { decryptMessage } from '/imports/utils/crypto';
 import { currentUserAtom, privateKeyAtom } from '/imports/state';
 import ChatteryBubble from '/imports/ui/chattery/ChatteryBubble';
@@ -23,6 +22,7 @@ interface DirectConversation {
   lastMessageAt?: Date;
   lastMessageSenderCiphertext?: string;
   lastMessageRecipientCiphertext?: string;
+  unreadCounts?: Record<string, number>;
 }
 
 interface Props {
@@ -44,9 +44,7 @@ export default function DirectMessageConversations({ conversations }: Props) {
   if (conversations.length === 0) {
     return (
       <Center p="8">
-        <Text color="gray.500">
-          {t('messages.empty')}
-        </Text>
+        <Text color="gray.500">{t('messages.empty')}</Text>
       </Center>
     );
   }
@@ -67,6 +65,7 @@ export default function DirectMessageConversations({ conversations }: Props) {
           const otherUserId = conv.participantIds[otherIndex];
           const isCurrentThread = conv._id === conversationId;
           const isUserBlocked = blockedIds.includes(otherUserId);
+          const unreadCount = (conv.unreadCounts ?? {})[currentUser?._id ?? ''] ?? 0;
 
           let preview = '';
           const isLastFromMe = conv.lastMessageBy === currentUser?._id;
@@ -108,7 +107,12 @@ export default function DirectMessageConversations({ conversations }: Props) {
               }}
               onClick={() => navigate(`/admin/messages/${conv._id}`)}
             >
-              <Box css={{ flexShrink: 0 }}>
+              <Box
+                css={{
+                  flexShrink: 0,
+                  '@media (max-width: 480px)': { display: 'none' },
+                }}
+              >
                 <Avatar
                   name={otherUsername}
                   size="md"
@@ -148,6 +152,14 @@ export default function DirectMessageConversations({ conversations }: Props) {
                   >
                     {`${getFirst4Words(preview)}..`}
                   </ChatteryBubble>
+                </Box>
+              ) : null}
+
+              {isIndexPage && unreadCount > 0 ? (
+                <Box css={{ flexShrink: 0 }}>
+                  <Badge colorScheme="red" size="sm">
+                    {unreadCount}
+                  </Badge>
                 </Box>
               ) : null}
             </Flex>

@@ -2,12 +2,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
-import { useParams } from 'react-router';
-import { useAtomValue } from 'jotai';
+import { useNavigate, useParams } from 'react-router';
+import { useAtom, useAtomValue } from 'jotai';
 
-import { Box, Loader } from '/imports/ui/core';
+import { Box, Button, Center, Loader, Text } from '/imports/ui/core';
 import DirectMessages from '../../../api/directMessages/directMessage';
 import { currentUserAtom, privateKeyAtom } from '/imports/state';
+import { clearEncryptionKey } from '/imports/utils/setupEncryption';
 import { encryptMessage, decryptMessage } from '/imports/utils/crypto';
 import Chattery from '/imports/ui/chattery/ChatteryContainer';
 
@@ -22,8 +23,9 @@ interface DmMessage {
 export default function DirectMessageThread() {
   const [t] = useTranslation('accounts');
   const { conversationId } = useParams<{ conversationId: string }>();
-  const currentUser = useAtomValue(currentUserAtom);
+  const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
   const privateKey = useAtomValue(privateKeyAtom);
+  const navigate = useNavigate();
 
   const isLoading = useSubscribe('directMessage', conversationId);
 
@@ -102,9 +104,23 @@ export default function DirectMessageThread() {
 
   if (isLoading()) return <Loader />;
 
+  const handleRelogin = () => {
+    clearEncryptionKey();
+    Meteor.logout();
+    setCurrentUser(null);
+    navigate('/login');
+  };
+
   if (!privateKey) {
     return (
-      <Box p="4">{t('messages.encryption.notLoaded')}</Box>
+      <Center p="8">
+        <Box css={{ textAlign: 'center', maxWidth: '360px' }}>
+          <Box mb="3"><Text>{t('messages.encryption.needsRelogin')}</Text></Box>
+          <Button colorScheme="theme" size="sm" onClick={handleRelogin}>
+            {t('messages.encryption.logoutAction')}
+          </Button>
+        </Box>
+      </Center>
     );
   }
 

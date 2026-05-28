@@ -113,3 +113,4 @@ report:
 labels:
   list: List
   search: Search
+  messages: Messages
