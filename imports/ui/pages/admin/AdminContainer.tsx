@@ -134,10 +134,6 @@ export default function AdminContainer({ Host }) {
     }
   };
 
-  if (currentUser === null && role === null) {
-    return null;
-  }
-
   if (
     !isAdmin &&
     !currentUser?.isSuperAdmin &&

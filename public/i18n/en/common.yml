@@ -104,6 +104,7 @@ labels:
   chat:
     onlymembers: Only for group members
     onlyverified: Only for verified users
+  clickToLogin: Click here to go to the login page
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

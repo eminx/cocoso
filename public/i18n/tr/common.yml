@@ -104,6 +104,7 @@ labels:
   chat:
     onlymembers: Yalnızca grup üyeleri için
     onlyverified: Yalnızca onaylanmış kullanıcılar için
+  clickToLogin: Giriş sayfasına gitmek için buraya tıkla
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

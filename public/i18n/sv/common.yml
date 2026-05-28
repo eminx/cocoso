@@ -104,6 +104,7 @@ labels:
   chat:
     onlymembers: Endast för gruppmedlemmar
     onlyverified: Endast för verifierade användare
+  clickToLogin: Klicka här för att gå till inloggningssidan
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

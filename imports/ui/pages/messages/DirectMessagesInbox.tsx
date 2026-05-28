@@ -8,6 +8,7 @@ import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
 import EllipsisVertical from 'lucide-react/dist/esm/icons/ellipsis-vertical';
 
 import {
+  Alert,
   Avatar,
   Box,
   Center,
@@ -18,7 +19,6 @@ import {
   Loader,
   Modal,
   Text,
-  Alert,
 } from '/imports/ui/core';
 import { allHostsAtom, currentUserAtom } from '/imports/state';
 import { Bio } from '/imports/ui/entry/UserHybrid';
@@ -60,7 +60,9 @@ export default function DirectMessagesInbox() {
 
   useEffect(() => {
     if (!conversationId || !currentUser) return;
-    Meteor.callAsync('directMessages_markAsRead', conversationId).catch(() => {});
+    Meteor.callAsync('directMessages_markAsRead', conversationId).catch(
+      () => {}
+    );
   }, [conversationId, currentUser]);
 
   useEffect(() => {
@@ -195,6 +197,13 @@ export default function DirectMessagesInbox() {
     return (
       <Alert>
         <Trans i18nKey="common:message.access.deny" />
+        <Box>
+          <Link to="/login">
+            <CLink>
+              <Trans i18nKey="common:labels.clickToLogin" />
+            </CLink>
+          </Link>
+        </Box>
       </Alert>
     );
   }
