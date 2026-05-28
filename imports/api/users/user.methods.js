@@ -9,6 +9,7 @@ import Works from '../works/work';
 import Groups from '../groups/group';
 
 const userModel = (user) => ({
+  _id: user._id,
   avatar: user.avatar,
   bio: user.bio,
   contactInfo: user.contactInfo,
@@ -515,7 +516,8 @@ Meteor.methods({
     check(targetUserId, String);
     const user = await Meteor.userAsync();
     if (!user) throw new Meteor.Error('not-authorized');
-    if (targetUserId === user._id) throw new Meteor.Error('invalid', 'Cannot block yourself.');
+    if (targetUserId === user._id)
+      throw new Meteor.Error('invalid', 'Cannot block yourself.');
     await Meteor.users.updateAsync(user._id, {
       $addToSet: { blockedUserIds: targetUserId },
     });
@@ -559,8 +561,9 @@ Meteor.methods({
 
     const matched = users
       .filter((u) => {
-        const full =
-          `${u.firstName ?? ''} ${u.lastName ?? ''} ${u.username ?? ''}`.toLowerCase();
+        const full = `${u.firstName ?? ''} ${u.lastName ?? ''} ${
+          u.username ?? ''
+        }`.toLowerCase();
         return full.includes(q);
       })
       .map((u) => ({
