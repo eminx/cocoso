@@ -54,13 +54,11 @@ export default function ResourcesHybrid({
           listing="resources"
         />
 
-        {modalItem && (
-          <PopupHandler
-            item={modalItem}
-            kind="resources"
-            onClose={() => setModalItem(null)}
-          />
-        )}
+        <PopupHandler
+          item={modalItem}
+          kind="resources"
+          onClose={() => setModalItem(null)}
+        />
       </Box>
     </>
   );

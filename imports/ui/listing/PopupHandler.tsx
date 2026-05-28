@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
@@ -140,10 +140,25 @@ export default function PopupHandler({ item, kind, showPast, onClose }: PopupHan
   const navigate = useNavigate();
   const [tc] = useTranslation('common');
 
+  const [displayedItem, setDisplayedItem] = useState(item);
+  const lingerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (item) {
+      if (lingerRef.current) clearTimeout(lingerRef.current);
+      setDisplayedItem(item);
+    } else {
+      lingerRef.current = setTimeout(() => setDisplayedItem(null), 350);
+    }
+    return () => {
+      if (lingerRef.current) clearTimeout(lingerRef.current);
+    };
+  }, [item]);
+
   const isPortalHost = currentHost?.isPortalHost;
 
   const getButtonLabel = () => {
-    const hostName = allHosts?.find((h) => h?.host === item?.host)?.name;
+    const hostName = allHosts?.find((h) => h?.host === displayedItem?.host)?.name;
     if (isPortalHost) {
       return tc('actions.toThePage', {
         hostName,
@@ -153,13 +168,15 @@ export default function PopupHandler({ item, kind, showPast, onClose }: PopupHan
   };
 
   const handleCopyLink = async () => {
-    const link = getLinkPath(item, kind);
+    if (!displayedItem) return;
+    const link = getLinkPath(displayedItem, kind);
     await navigator.clipboard.writeText(link.path);
     setCopied(true);
   };
 
   const handleActionButtonClick = () => {
-    const link = getLinkPath(item, kind, item.host === currentHost.host);
+    if (!displayedItem) return;
+    const link = getLinkPath(displayedItem, kind, displayedItem.host === currentHost?.host);
     if (link.isHref) {
       window.open(link.path, '_self');
       return;
@@ -168,14 +185,11 @@ export default function PopupHandler({ item, kind, showPast, onClose }: PopupHan
   };
 
   const tags = [];
-  if (isPortalHost) {
-    if (!item) {
-      return;
-    }
-    const hostName = allHosts?.find((h) => h.host === item.host)?.name;
+  if (isPortalHost && displayedItem) {
+    const hostName = allHosts?.find((h) => h.host === displayedItem.host)?.name;
     tags.push(hostName);
   }
-  if (item && item.isPrivate) {
+  if (displayedItem?.isPrivate) {
     tags.push(tc('labels.private'));
   }
 
@@ -191,22 +205,22 @@ export default function PopupHandler({ item, kind, showPast, onClose }: PopupHan
       onClose={onClose}
       onSecondaryButtonClick={handleCopyLink}
     >
-      {item && (
+      {displayedItem && (
         <PopupContent
-          action={<ActionDates activity={item} showPast={showPast} showTime />}
+          action={<ActionDates activity={displayedItem} showPast={showPast} showTime />}
           content={
-            (item.longDescription && parseHtml(item.longDescription)) ||
-            (item.description && parseHtml(item.description))
+            (displayedItem.longDescription && parseHtml(displayedItem.longDescription)) ||
+            (displayedItem.description && parseHtml(displayedItem.description))
           }
-          images={item.images || [item.imageUrl]}
+          images={displayedItem.images || [displayedItem.imageUrl]}
           subTitle={
-            item.subTitle ||
-            item.readingMaterial ||
-            item.shortDescription ||
+            displayedItem.subTitle ||
+            displayedItem.readingMaterial ||
+            displayedItem.shortDescription ||
             null
           }
           tags={tags}
-          title={item.title || item.label}
+          title={displayedItem.title || displayedItem.label}
         />
       )}
     </Modal>

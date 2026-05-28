@@ -57,13 +57,11 @@ export default function GroupsHybrid({ Host, groups }: GroupsHybridProps) {
         listing="groups"
       />
 
-      {modalItem && (
-        <PopupHandler
-          item={modalItem}
-          kind="groups"
-          onClose={() => setModalItem(null)}
-        />
-      )}
+      <PopupHandler
+        item={modalItem}
+        kind="groups"
+        onClose={() => setModalItem(null)}
+      />
     </>
   );
 }

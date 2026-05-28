@@ -120,13 +120,11 @@ export default function WorksHybrid({ Host, works }: WorksHybridProps) {
         listing="works"
       />
 
-      {modalItem && (
-        <PopupHandler
-          item={modalItem}
-          kind="works"
-          onClose={() => setModalItem(null)}
-        />
-      )}
+      <PopupHandler
+        item={modalItem}
+        kind="works"
+        onClose={() => setModalItem(null)}
+      />
     </>
   );
 }

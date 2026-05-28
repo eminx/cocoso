@@ -83,14 +83,12 @@ export default function ActivitiesHybrid({
         listing="activities"
       />
 
-      {modalItem ? (
-        <PopupHandler
-          item={modalItem}
-          kind="activities"
-          showPast={showPast}
-          onClose={() => setModalItem(null)}
-        />
-      ) : null}
+      <PopupHandler
+        item={modalItem}
+        kind="activities"
+        showPast={showPast}
+        onClose={() => setModalItem(null)}
+      />
     </>
   );
 }
