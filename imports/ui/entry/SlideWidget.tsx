@@ -43,7 +43,7 @@ export default function SlideWidget({
         isVisibleRef.current = true;
         setIsVisible(true);
       }
-    }, 1200);
+    }, 200);
     return () => clearTimeout(timer);
   }, []);
 
