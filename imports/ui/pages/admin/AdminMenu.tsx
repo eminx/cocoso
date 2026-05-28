@@ -173,6 +173,10 @@ export default function AdminMenu({ routes, onItemClick }) {
     onItemClick({ value: '/admin/my-profile' });
   };
 
+  const handleMessagesClick = () => {
+    onItemClick({ value: '/admin/messages' });
+  };
+
   return (
     <Flex
       bg="bluegray.50"
@@ -249,11 +253,14 @@ export default function AdminMenu({ routes, onItemClick }) {
               },
             }}
           >
-            <Link to="/admin/messages">
-              <ListItem css={{ color: 'white', width: '100%' }} px="6" py="4">
-                {ta('messages.label')} <Badge>beta</Badge>
-              </ListItem>
-            </Link>
+            <ListItem
+              css={{ color: 'white', cursor: 'pointer', width: '100%' }}
+              px="6"
+              py="4"
+              onClick={handleMessagesClick}
+            >
+              {ta('messages.label')} <Badge>beta</Badge>
+            </ListItem>
           </List>
           <Box css={{ cursor: 'pointer' }} onClick={handleUserThumbClick}>
             <AdminUserThumb />

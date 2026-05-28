@@ -20,6 +20,7 @@ DirectMessages.schema = new SimpleSchema({
   lastMessageSenderCiphertext: { type: String, optional: true },
   lastMessageAt: { type: Date, optional: true },
   lastMessageBy: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
+  lastMessageSenderPublicKey: { type: String, optional: true },
 
   // { [userId]: Number } — unread message count per participant
   unreadCounts: { type: Object, optional: true, blackbox: true },

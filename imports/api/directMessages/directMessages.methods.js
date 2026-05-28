@@ -5,6 +5,7 @@ import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
 import DirectMessages from './directMessage';
 import { getDirectMessageEmailBody } from './directMessages.mails';
+import mailtranslations from '../groups/mailtranslations';
 
 Meteor.methods({
   async directMessages_findOrCreate(otherUserId) {
@@ -94,6 +95,7 @@ Meteor.methods({
       $set: {
         lastMessageRecipientCiphertext: recipientCiphertext,
         lastMessageSenderCiphertext: senderCiphertext,
+        lastMessageSenderPublicKey: user.publicKey ?? null,
         lastMessageAt: now,
         lastMessageBy: user._id,
         ...avatarUpdate,
@@ -140,7 +142,9 @@ Meteor.methods({
             }
           }
 
-          const subject = `${user.username} — ${currentHost?.settings?.name ?? host}`;
+          const lang = recipient.lang || currentHost?.settings?.lang || 'en';
+          const dmTr = (mailtranslations[lang] ?? mailtranslations.en).directMessage ?? mailtranslations.en.directMessage;
+          const subject = `${user.username} ${dmTr.subjectVerb ?? dmTr.subject}`;
           const emailBody = getDirectMessageEmailBody(user.username, currentHost, recipient, linkHost);
           await Meteor.callAsync('sendEmail', otherUserId, subject, emailBody);
         } catch (e) {

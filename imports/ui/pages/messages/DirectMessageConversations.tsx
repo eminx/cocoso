@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router';
 import { useAtomValue } from 'jotai';
@@ -22,6 +21,7 @@ interface DirectConversation {
   lastMessageAt?: Date;
   lastMessageSenderCiphertext?: string;
   lastMessageRecipientCiphertext?: string;
+  lastMessageSenderPublicKey?: string;
   unreadCounts?: Record<string, number>;
 }
 
@@ -74,17 +74,12 @@ export default function DirectMessageConversations({ conversations }: Props) {
             : conv.lastMessageRecipientCiphertext;
 
           if (lastCiphertext && privateKey) {
-            const otherUser = otherUserId
-              ? Meteor.users.findOne(otherUserId, {
-                  fields: { publicKey: 1 },
-                })
-              : null;
-            const decryptKey = isLastFromMe
+            const senderPublicKey = isLastFromMe
               ? (currentUser as any)?.publicKey
-              : (otherUser as any)?.publicKey;
-            if (decryptKey) {
+              : conv.lastMessageSenderPublicKey;
+            if (senderPublicKey) {
               preview =
-                decryptMessage(lastCiphertext, decryptKey, privateKey) ?? '';
+                decryptMessage(lastCiphertext, senderPublicKey, privateKey) ?? '';
             }
           }
 
