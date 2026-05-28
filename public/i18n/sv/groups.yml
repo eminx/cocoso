@@ -139,7 +139,7 @@ modal:
 
 private:
   title: privat
-  info: Privata grouper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer.
+  info: Privata grupper är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer.
 
 admin:
   admin: Admin

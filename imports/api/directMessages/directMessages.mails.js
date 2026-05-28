@@ -8,8 +8,10 @@ const escapeHtml = (str) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
-export const getDirectMessageEmailBody = (senderUsername, currentHost, recipient) => {
-  const host = currentHost?.host;
+export const getDirectMessageEmailBody = (senderUsername, currentHost, recipient, linkHost) => {
+  const resolvedLinkHost = linkHost ?? currentHost;
+  const linkHostDomain = resolvedLinkHost?.host ?? currentHost?.host;
+  const linkHostName = escapeHtml(resolvedLinkHost?.settings?.name ?? linkHostDomain);
   const firstName = escapeHtml(recipient?.firstName || recipient?.username || '');
   const safeSenderUsername = escapeHtml(senderUsername);
 
@@ -19,7 +21,11 @@ export const getDirectMessageEmailBody = (senderUsername, currentHost, recipient
   const dm = tr.directMessage ?? mailtranslations.en.directMessage;
   const { dear } = tr.general;
 
-  const { body, bodyLong, visitPage } = dm;
+  const { body, bodyLong, bodyLongFederation, visitPage } = dm;
+
+  const bodyLongHtml = currentHost?.isPortalHost && bodyLongFederation
+    ? `${bodyLongFederation} <strong>${linkHostName}</strong>`
+    : bodyLong;
 
   return `<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -37,9 +43,9 @@ export const getDirectMessageEmailBody = (senderUsername, currentHost, recipient
 
       <div style="font-size:16px; color:#323232; margin-bottom:8px;">${body} <strong>${safeSenderUsername}</strong>.</div>
 
-      <div style="font-size:15px; color:#555555; margin-bottom:28px;">${bodyLong}</div>
+      <div style="font-size:15px; color:#555555; margin-bottom:28px;">${bodyLongHtml}</div>
 
-      <a href="https://${host}/admin/messages"
+      <a href="https://${linkHostDomain}/admin/messages"
          style="display:inline-block; background:#414141; color:#ffffff; font-family:Arial, sans-serif;
                 font-size:14px; line-height:120%; text-decoration:none;
                 padding:11px 24px; border-radius:4px;" target="_blank">

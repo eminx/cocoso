@@ -118,11 +118,30 @@ Meteor.methods({
         try {
           const currentHost = await Hosts.findOneAsync({ host });
           const recipient = await Meteor.users.findOneAsync(otherUserId, {
-            fields: { emails: 1, firstName: 1, username: 1, lang: 1 },
+            fields: { emails: 1, firstName: 1, username: 1, lang: 1, memberships: 1 },
           });
           if (!recipient) return;
+
+          // Federation: if sender is on the portal host, link to a host the recipient belongs to
+          let linkHost = currentHost;
+          if (currentHost?.isPortalHost) {
+            const isMemberOfSenderHost = (recipient.memberships ?? []).some(
+              (m) => m.host === host
+            );
+            if (!isMemberOfSenderHost) {
+              const firstMembership = (recipient.memberships ?? [])[0];
+              if (firstMembership) {
+                const recipientHost = await Hosts.findOneAsync(
+                  { host: firstMembership.host },
+                  { fields: { host: 1, settings: 1 } }
+                );
+                if (recipientHost) linkHost = recipientHost;
+              }
+            }
+          }
+
           const subject = `${user.username} — ${currentHost?.settings?.name ?? host}`;
-          const emailBody = getDirectMessageEmailBody(user.username, currentHost, recipient);
+          const emailBody = getDirectMessageEmailBody(user.username, currentHost, recipient, linkHost);
           await Meteor.callAsync('sendEmail', otherUserId, subject, emailBody);
         } catch (e) {
           console.error('[DM email]', e);

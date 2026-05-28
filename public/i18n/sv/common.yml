@@ -228,12 +228,12 @@ domains:
   activity: Aktivitet
   activities: Aktiviteter
   event: Evenemang
-  group: Group
-  groups: Grouper
+  group: Grupp
+  groups: Grupper
   resource: Resurs
   resources: Resurser
-  work: arbete
-  works: Arbetar
+  work: Inlägg
+  works: Inlägg
   host: Community
   page: sida
   pageOrder: Sidordning
