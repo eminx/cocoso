@@ -11,14 +11,6 @@ function saveKeyLocally(privateKey: Uint8Array) {
   localStorage.setItem(LOCAL_KEY, encodeBase64(privateKey));
 }
 
-function verifyPassword(password: string): Promise<boolean> {
-  const user = Meteor.user();
-  const identifier = user?.username || user?.emails?.[0]?.address;
-  if (!identifier) return Promise.resolve(false);
-  return new Promise((resolve) => {
-    Meteor.loginWithPassword(identifier, password, (err) => resolve(!err));
-  });
-}
 
 export function clearEncryptionKey() {
   localStorage.removeItem(LOCAL_KEY);
@@ -44,10 +36,6 @@ export async function setupEncryption(
   password: string
 ): Promise<'ok' | 'wrong-password' | 'error'> {
   try {
-    // Verify the password before touching any keys
-    const isValid = await verifyPassword(password);
-    if (!isValid) return 'wrong-password';
-
     const backup = await Meteor.callAsync('getEncryptionKeyBackup');
 
     let privateKey: Uint8Array | null = null;
