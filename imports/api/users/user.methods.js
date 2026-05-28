@@ -480,18 +480,6 @@ Meteor.methods({
     }
   },
 
-  async users_checkPassword(hashedPassword) {
-    check(hashedPassword, String);
-    const user = await Meteor.userAsync();
-    if (!user) throw new Meteor.Error('not-authorized');
-    const result = Accounts._checkPassword(user, {
-      digest: hashedPassword,
-      algorithm: 'sha-256',
-    });
-    if (result.error) throw new Meteor.Error('wrong-password', 'Incorrect password');
-    return true;
-  },
-
   async saveEncryptionKeys({ publicKey, encryptedPrivateKey, keySalt }) {
     check(publicKey, String);
     check(encryptedPrivateKey, String);
