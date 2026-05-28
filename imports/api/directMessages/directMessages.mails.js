@@ -8,7 +8,7 @@ const escapeHtml = (str) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
-export const getDirectMessageEmailBody = (senderUsername, currentHost, recipient, linkHost) => {
+export const getDirectMessageEmailBody = (senderUsername, currentHost, recipient, linkHost, isFederation) => {
   const resolvedLinkHost = linkHost ?? currentHost;
   const linkHostDomain = resolvedLinkHost?.host ?? currentHost?.host;
   const linkHostName = escapeHtml(resolvedLinkHost?.settings?.name ?? linkHostDomain);
@@ -23,7 +23,7 @@ export const getDirectMessageEmailBody = (senderUsername, currentHost, recipient
 
   const { body, bodyLong, bodyLongFederation, visitPage } = dm;
 
-  const bodyLongHtml = currentHost?.isPortalHost && bodyLongFederation
+  const bodyLongHtml = isFederation && bodyLongFederation
     ? `${bodyLongFederation} <strong>${linkHostName}</strong>`
     : bodyLong;
 

@@ -3,6 +3,7 @@ import { check } from 'meteor/check';
 
 import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
+import Platform from '../platform/platform';
 import DirectMessages from './directMessage';
 import { getDirectMessageEmailBody } from './directMessages.mails';
 import mailtranslations from '../groups/mailtranslations';
@@ -118,15 +119,20 @@ Meteor.methods({
       const host = getHost(this);
       Meteor.defer(async () => {
         try {
-          const currentHost = await Hosts.findOneAsync({ host });
+          const [currentHost, platform] = await Promise.all([
+            Hosts.findOneAsync({ host }),
+            Platform.findOneAsync(),
+          ]);
           const recipient = await Meteor.users.findOneAsync(otherUserId, {
             fields: { emails: 1, firstName: 1, username: 1, lang: 1, memberships: 1 },
           });
           if (!recipient) return;
 
-          // Federation: if sender is on the portal host, link to a host the recipient belongs to
+          const isFederation = Boolean(platform?.isFederationLayout);
+
+          // Federation: link to a host the recipient is actually a member of
           let linkHost = currentHost;
-          if (currentHost?.isPortalHost) {
+          if (isFederation) {
             const isMemberOfSenderHost = (recipient.memberships ?? []).some(
               (m) => m.host === host
             );
@@ -145,7 +151,7 @@ Meteor.methods({
           const lang = recipient.lang || currentHost?.settings?.lang || 'en';
           const dmTr = (mailtranslations[lang] ?? mailtranslations.en).directMessage ?? mailtranslations.en.directMessage;
           const subject = `${user.username} ${dmTr.subjectVerb ?? dmTr.subject}`;
-          const emailBody = getDirectMessageEmailBody(user.username, currentHost, recipient, linkHost);
+          const emailBody = getDirectMessageEmailBody(user.username, currentHost, recipient, linkHost, isFederation);
           await Meteor.callAsync('sendEmail', otherUserId, subject, emailBody);
         } catch (e) {
           console.error('[DM email]', e);
