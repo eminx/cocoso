@@ -114,8 +114,10 @@ messages:
   encryption:
     notLoaded: Şifreleme anahtarları yüklenmedi. Lütfen çıkış yapıp tekrar giriş yapın.
     notSetUp: '{{ username }} henüz şifrelemeyi etkinleştirmemiş.'
-    needsRelogin: Şifreleme anahtarların yüklenmedi. Mesajlarına tekrar erişmek için çıkış yapıp yeniden giriş yap.
-    logoutAction: Çıkış yap & giriş sayfasına git
+    needsRelogin: Bu sitede uçtan uca şifreli mesajlaşmayı etkinleştirmek için şifreni gir.
+    passwordPlaceholder: Şifren
+    unlockAction: Mesajları aç
+    wrongPassword: Yanlış şifre. Lütfen tekrar dene.
   sendPrivate: Özel mesaj gönder
   e2eeNote: Uçtan uca şifreli — yöneticiler mesajlarını okuyamaz
   actions:

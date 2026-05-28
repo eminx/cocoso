@@ -28,8 +28,12 @@ export function restoreKeyFromSession() {
   }
 }
 
-// Called immediately after login while the plaintext password is in scope.
-export async function setupEncryption(_userId: string, password: string) {
+// Called immediately after login while the plaintext password is in scope,
+// or manually when restoring the key on a new host without re-logging in.
+export async function setupEncryption(
+  _userId: string,
+  password: string
+): Promise<'ok' | 'wrong-password' | 'error'> {
   try {
     const backup = await Meteor.callAsync('getEncryptionKeyBackup');
 
@@ -42,8 +46,7 @@ export async function setupEncryption(_userId: string, password: string) {
         password
       );
       if (!privateKey) {
-        console.error('[E2EE] Failed to decrypt private key');
-        return;
+        return 'wrong-password';
       }
     } else {
       const keyPair = generateKeyPair();
@@ -61,7 +64,9 @@ export async function setupEncryption(_userId: string, password: string) {
 
     saveKeyLocally(privateKey);
     getDefaultStore().set(privateKeyAtom, privateKey);
+    return 'ok';
   } catch (error) {
     console.error('[E2EE] setupEncryption failed:', error);
+    return 'error';
   }
 }

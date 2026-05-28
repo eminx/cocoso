@@ -114,8 +114,10 @@ messages:
   encryption:
     notLoaded: Encryption keys not loaded. Please log out and back in.
     notSetUp: "{{ username }} hasn't set up encryption yet."
-    needsRelogin: Your encryption keys are not loaded. Please log out and log back in to restore access to your messages.
-    logoutAction: Log out & go to login
+    needsRelogin: Enter your password to unlock end-to-end encrypted messaging on this site.
+    passwordPlaceholder: Your password
+    unlockAction: Unlock messages
+    wrongPassword: Wrong password. Please try again.
   sendPrivate: Send a private message
   e2eeNote: End-to-end encrypted — admins cannot read your messages
   actions:

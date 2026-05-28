@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { useAtom, useAtomValue } from 'jotai';
 
-import { Box, Button, Center, Loader, Text } from '/imports/ui/core';
+import { Box, Button, Center, Input, Loader, Text } from '/imports/ui/core';
 import DirectMessages from '../../../api/directMessages/directMessage';
 import { currentUserAtom, privateKeyAtom } from '/imports/state';
-import { clearEncryptionKey } from '/imports/utils/setupEncryption';
+import { setupEncryption } from '/imports/utils/setupEncryption';
 import { encryptMessage, decryptMessage } from '/imports/utils/crypto';
 import Chattery from '/imports/ui/chattery/ChatteryContainer';
 
@@ -23,9 +23,11 @@ interface DmMessage {
 export default function DirectMessageThread() {
   const [t] = useTranslation('accounts');
   const { conversationId } = useParams<{ conversationId: string }>();
-  const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
+  const [currentUser] = useAtom(currentUserAtom);
   const privateKey = useAtomValue(privateKeyAtom);
-  const navigate = useNavigate();
+  const [unlockPassword, setUnlockPassword] = useState('');
+  const [unlockLoading, setUnlockLoading] = useState(false);
+  const [unlockError, setUnlockError] = useState<string | null>(null);
 
   const isLoading = useSubscribe('directMessage', conversationId);
 
@@ -104,20 +106,48 @@ export default function DirectMessageThread() {
 
   if (isLoading()) return <Loader />;
 
-  const handleRelogin = () => {
-    clearEncryptionKey();
-    Meteor.logout();
-    setCurrentUser(null);
-    navigate('/login');
+  const handleUnlock = async () => {
+    if (!unlockPassword || !currentUser) return;
+    setUnlockLoading(true);
+    setUnlockError(null);
+    const result = await setupEncryption(currentUser._id, unlockPassword);
+    setUnlockLoading(false);
+    if (result === 'wrong-password') {
+      setUnlockError(t('messages.encryption.wrongPassword'));
+    } else if (result === 'error') {
+      setUnlockError(t('messages.encryption.wrongPassword'));
+    }
+    // 'ok': privateKeyAtom is now set, component re-renders
   };
 
   if (!privateKey) {
     return (
       <Center p="8">
-        <Box css={{ textAlign: 'center', maxWidth: '360px' }}>
-          <Box mb="3"><Text>{t('messages.encryption.needsRelogin')}</Text></Box>
-          <Button colorScheme="theme" size="sm" onClick={handleRelogin}>
-            {t('messages.encryption.logoutAction')}
+        <Box css={{ textAlign: 'center', maxWidth: '320px' }}>
+          <Box mb="4">
+            <Text color="gray.600">{t('messages.encryption.needsRelogin')}</Text>
+          </Box>
+          <Box mb="2">
+            <Input
+              type="password"
+              placeholder={t('messages.encryption.passwordPlaceholder')}
+              value={unlockPassword}
+              onChange={(e) => setUnlockPassword(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleUnlock(); }}
+            />
+          </Box>
+          {unlockError && (
+            <Box mb="2">
+              <Text color="red.500" fontSize="sm">{unlockError}</Text>
+            </Box>
+          )}
+          <Button
+            colorScheme="theme"
+            isLoading={unlockLoading}
+            size="sm"
+            onClick={handleUnlock}
+          >
+            {t('messages.encryption.unlockAction')}
           </Button>
         </Box>
       </Center>
