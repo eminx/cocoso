@@ -84,7 +84,11 @@ export default function UsersHybrid({
             closeMenuOnSelect={false}
             isMulti
             options={keywordsUsed}
-            placeholder="Filter by keyword..."
+            placeholder={
+              <Trans i18nKey="common:labels.filterKeyword">
+                Filter by skills & interests
+              </Trans>
+            }
             styles={{
               control: (base) => ({
                 ...base,

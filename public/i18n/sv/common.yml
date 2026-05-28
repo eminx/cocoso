@@ -82,7 +82,7 @@ labels:
   upcoming: Kommande
   filterAndSort: Filtrera & sortera
   filter: Filtrera
-  filterKeyword: Filtrera efter nyckelord
+  filterKeyword: Filtrera efter kompetenser & intressen
   sort: Sortera
   notfound:
     info: Det du letade efter kunde inte hittas

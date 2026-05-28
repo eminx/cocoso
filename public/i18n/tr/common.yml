@@ -82,7 +82,7 @@ labels:
   upcoming: Gelecek
   filterAndSort: Filtrele & Sırala
   filter: Filtrele
-  filterKeyword: Anahtar kelimeye göre filtrele
+  filterKeyword: Yeteneklere & ilgi alanlarına göre filtrele
   sort: Sırala
   notfound:
     info: Aradığın içerik bulunamadı

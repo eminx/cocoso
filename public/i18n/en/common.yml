@@ -82,7 +82,7 @@ labels:
   upcoming: Upcoming
   filterAndSort: Filter & Sort
   filter: Filter
-  filterKeyword: Filter by keyword
+  filterKeyword: Filter by skills & interests
   sort: Sort
   notfound:
     info: What you look for could not be found
