@@ -5,12 +5,7 @@ import { getHost } from '../_utils/shared';
 
 Meteor.methods({
   async getKeywords() {
-    const host = getHost(this);
-    const Host = await Hosts.findOneAsync({ host }, { sort: { label: 1 } });
-    if (Host?.isPortalHost) {
-      return await Keywords.find().fetchAsync();
-    }
-    return await Keywords.find({ host }, { sort: { label: 1 } }).fetchAsync();
+    return await Keywords.find({}, { sort: { label: 1 } }).fetchAsync();
   },
 
   async saveKeywords(keywords) {
