@@ -172,16 +172,17 @@ export default function BottomToolbar({
           )}
         </Flex>
 
-        <Tag colorScheme={isPublished ? 'green' : 'orange'} variant="solid">
-          <Trans
-            i18nKey={`admin:composable.toolbar.${
-              isPublished ? 'published' : 'unpublished'
-            }`}
-          />
-        </Tag>
+        {!isPublicView && (
+          <Tag colorScheme={isPublished ? 'green' : 'orange'} variant="solid">
+            <Trans
+              i18nKey={`admin:composable.toolbar.${
+                isPublished ? 'published' : 'unpublished'
+              }`}
+            />
+          </Tag>
+        )}
 
         <Button
-          // colorScheme={isPublished ? 'orange' : 'green'}
           mx="4"
           size="sm"
           variant="outline"

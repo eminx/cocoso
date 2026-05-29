@@ -1,18 +1,10 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { Outlet, useLoaderData, useRevalidator, useSearchParams } from 'react-router';
+import React, { useMemo, useEffect } from 'react';
+import { useLoaderData, useRevalidator, useSearchParams } from 'react-router';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Input,
-  Tabs,
-  Text,
-} from '/imports/ui/core';
+import { Button, Flex, Input, Tabs, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { currentUserAtom, roleAtom } from '/imports/state';
 import FormField from '/imports/ui/forms/FormField';
@@ -21,7 +13,13 @@ import { call } from '/imports/api/_utils/shared';
 
 import Boxling from './Boxling';
 
-function EmailForm({ defaultValues, onSubmit }) {
+function EmailForm({
+  defaultValues,
+  onSubmit,
+}: {
+  defaultValues: any;
+  onSubmit: (values: any) => void;
+}) {
   const { control, handleSubmit, register, formState } = useForm({
     defaultValues,
   });
@@ -31,48 +29,42 @@ function EmailForm({ defaultValues, onSubmit }) {
   const { isDirty, isSubmitting } = formState;
 
   return (
-    <Box py="4" mb="4">
-      <Heading size="md" mb="4">
-        {defaultValues.title}
-      </Heading>
+    <Boxling my="8">
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <Flex direction="column">
+          <FormField label={t('emails.form.subject.label')} required>
+            <Input
+              {...register('subject')}
+              placeholder={t('emails.form.subject.holder')}
+            />
+          </FormField>
 
-      <Boxling>
-        <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-          <Flex direction="column">
-            <FormField label={t('emails.form.subject.label')} required>
+          <FormField label={t('emails.form.appeal.label')} required>
+            <Flex align="center" w="280px">
               <Input
-                {...register('subject')}
-                placeholder={t('emails.form.subject.holder')}
+                {...register('appeal')}
+                placeholder={t('emails.form.appeal.holder')}
               />
-            </FormField>
-
-            <FormField label={t('emails.form.appeal.label')} required>
-              <Flex align="center" w="280px">
-                <Input
-                  {...register('appeal')}
-                  placeholder={t('emails.form.appeal.holder')}
-                />
-                <Text>{t('emails.form.appeal.addon')}</Text>
-              </Flex>
-            </FormField>
-
-            <FormField label={t('emails.form.body.label')} required>
-              <Controller
-                control={control}
-                name="body"
-                render={({ field }) => <Quill {...field} />}
-              />
-            </FormField>
-
-            <Flex justify="flex-end" py="2" w="100%">
-              <Button disabled={!isDirty} loading={isSubmitting} type="submit">
-                {tc('actions.submit')}
-              </Button>
+              <Text>{t('emails.form.appeal.addon')}</Text>
             </Flex>
+          </FormField>
+
+          <FormField label={t('emails.form.body.label')} required>
+            <Controller
+              control={control}
+              name="body"
+              render={({ field }) => <Quill {...field} />}
+            />
+          </FormField>
+
+          <Flex justify="flex-end" py="2" w="100%">
+            <Button disabled={!isDirty} loading={isSubmitting} type="submit">
+              {tc('actions.submit')}
+            </Button>
           </Flex>
-        </form>
-      </Boxling>
-    </Box>
+        </Flex>
+      </form>
+    </Boxling>
   );
 }
 
@@ -95,20 +87,18 @@ export default function Emails() {
     return null;
   }
 
-  const handleSubmit = async (values, emailIndex) => {
+  const handleSubmit = async (values: any, emailIndex: number) => {
     try {
       await call('updateEmail', values, emailIndex);
       message.success(tc('message.success.update'));
     } catch (error: any) {
       message.error(error.reason || error.error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const parsedEmails = useMemo(
     () =>
-      emails.map((email, index) => {
+      emails.map((email: any, index: number) => {
         let key = 'new';
         if (index === 1) {
           key = 'verified';
@@ -130,7 +120,7 @@ export default function Emails() {
   const key = ['new', 'verified', 'admin'].includes(show) ? show : 'new';
 
   const tabIndex = show
-    ? parsedEmails.findIndex((email) => email.key === show)
+    ? parsedEmails.findIndex((email: any) => email.key === show)
     : 0;
 
   const selectedEmail =

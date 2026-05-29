@@ -134,6 +134,9 @@ function AdminMenuItem({ item, isSub = false, parentValue, onClick }) {
         borderRightStyle: 'solid',
         borderRightWidth: isCurrentRoute && !item.isMulti ? '3px' : '0',
         marginLeft: isSub ? '1rem' : '0',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
         '&:hover': {
           backgroundColor: 'var(--cocoso-colors-bluegray-100)',
         },
@@ -255,6 +258,7 @@ export default function AdminMenu({ routes, onItemClick }) {
           >
             <ListItem
               css={{ color: 'white', cursor: 'pointer', width: '100%' }}
+              mb="0"
               px="6"
               py="4"
               onClick={handleMessagesClick}
