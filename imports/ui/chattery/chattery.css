@@ -61,7 +61,7 @@
 }
 
 .talk-bubble {
-  border-radius: 12px;
+  border-radius: var(--cocoso-border-radius);
   display: inline-block;
   height: auto;
   margin: 10px 20px;
@@ -69,8 +69,6 @@
   padding-left: 4px;
   position: relative;
   width: 80%;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
 }
 .talk-bubble.right-in {
   background-color: var(--cocoso-colors-theme-500);
