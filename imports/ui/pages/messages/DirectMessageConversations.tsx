@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Avatar, Badge, Box, Center, Flex, Text } from '/imports/ui/core';
 import { decryptMessage } from '/imports/utils/crypto';
-import { currentUserAtom, privateKeyAtom } from '/imports/state';
+import { currentUserAtom, isDesktopAtom, privateKeyAtom } from '/imports/state';
 import ChatteryBubble from '/imports/ui/chattery/ChatteryBubble';
 import '/imports/ui/chattery/chattery.css';
 
@@ -35,6 +35,7 @@ export default function DirectMessageConversations({ conversations }: Props) {
   const [t] = useTranslation('accounts');
   const currentUser = useAtomValue(currentUserAtom);
   const privateKey = useAtomValue(privateKeyAtom);
+  const isDesktop = useAtomValue(isDesktopAtom);
   const navigate = useNavigate();
   const { conversationId } = useParams();
 
@@ -91,31 +92,32 @@ export default function DirectMessageConversations({ conversations }: Props) {
               align="center"
               bg={isCurrentThread ? 'bluegray.300' : 'bluegray.50'}
               gap="2"
-              p="3"
+              p={isDesktop || isIndexPage ? '4' : '0'}
               w="100%"
               css={{
                 borderBottom: '1px solid var(--cocoso-colors-bluegray-200)',
                 cursor: 'pointer',
+                opacity: isUserBlocked ? 0.5 : 1,
                 transition: 'background 0.15s ease',
                 '&:hover': {
                   background: 'var(--cocoso-colors-bluegray-200)',
                 },
-                opacity: isUserBlocked ? 0.5 : 1,
               }}
               onClick={() => navigate(`/admin/messages/${conv._id}`)}
             >
-              <Box
-                css={{
-                  flexShrink: 0,
-                  '@media (max-width: 480px)': { display: 'none' },
-                }}
-              >
-                <Avatar
-                  name={otherUsername}
-                  size="sm"
-                  src={otherAvatar ?? undefined}
-                />
-              </Box>
+              {(isDesktop || isIndexPage) && (
+                <Box
+                  css={{
+                    flexShrink: 0,
+                  }}
+                >
+                  <Avatar
+                    name={otherUsername}
+                    size="sm"
+                    src={otherAvatar ?? undefined}
+                  />
+                </Box>
+              )}
 
               {isIndexPage ? (
                 <Box css={{ flex: 1, lineHeight: '0.6' }}>
