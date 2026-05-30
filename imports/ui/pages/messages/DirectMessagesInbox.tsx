@@ -224,7 +224,7 @@ export default function DirectMessagesInbox() {
           ) : (
             <Flex align="center" justify="space-between" gap="2">
               <Link to="/admin/messages">
-                <Center w="80px">
+                <Center px="3">
                   <IconButton
                     aria-label="Back to inbox"
                     icon={<ArrowLeft fontSize="44px" />}
