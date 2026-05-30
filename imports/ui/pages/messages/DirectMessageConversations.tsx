@@ -65,7 +65,8 @@ export default function DirectMessageConversations({ conversations }: Props) {
           const otherUserId = conv.participantIds[otherIndex];
           const isCurrentThread = conv._id === conversationId;
           const isUserBlocked = blockedIds.includes(otherUserId);
-          const unreadCount = (conv.unreadCounts ?? {})[currentUser?._id ?? ''] ?? 0;
+          const unreadCount =
+            (conv.unreadCounts ?? {})[currentUser?._id ?? ''] ?? 0;
 
           let preview = '';
           const isLastFromMe = conv.lastMessageBy === currentUser?._id;
@@ -79,7 +80,8 @@ export default function DirectMessageConversations({ conversations }: Props) {
               : conv.lastMessageSenderPublicKey;
             if (senderPublicKey) {
               preview =
-                decryptMessage(lastCiphertext, senderPublicKey, privateKey) ?? '';
+                decryptMessage(lastCiphertext, senderPublicKey, privateKey) ??
+                '';
             }
           }
 
@@ -110,7 +112,7 @@ export default function DirectMessageConversations({ conversations }: Props) {
               >
                 <Avatar
                   name={otherUsername}
-                  size="md"
+                  size="sm"
                   src={otherAvatar ?? undefined}
                 />
               </Box>

@@ -109,6 +109,7 @@ profile:
 messages:
   label: Meddelanden
   title: Meddelanden
+  description: Meddelande med andra användare. Ditt meddelande är crypterad, dessutom systemadminer har inte kåll på de
   search: Starta ett nytt samtal...
   empty: Inga konversationer ännu. Sök efter någon ovan.
   encryption:

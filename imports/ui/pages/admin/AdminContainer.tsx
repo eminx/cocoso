@@ -100,6 +100,11 @@ export default function AdminContainer({ Host }) {
     });
 
     allRoutes.push({
+      description: (
+        <Heading css={{ fontWeight: '300' }} size="sm">
+          {ta('messages.description')}
+        </Heading>
+      ),
       label: (
         <Flex gap="4" align="flex-start">
           {ta('messages.title')}

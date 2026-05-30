@@ -109,6 +109,7 @@ profile:
 messages:
   label: Mesajlar
   title: Mesaj Kutusu
+  description: Diğer kullanıcılar ile güvenlice mesajlaş. Mesajların uçtan uca şifrelenir, yani sistem adminleri içeriklerine erişemez
   search: Yeni bir sohbet başlat...
   empty: Henüz konuşma yok. Yukarıdan birini ara.
   encryption:

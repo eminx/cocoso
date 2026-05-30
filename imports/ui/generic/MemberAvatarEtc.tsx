@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { Avatar, Box, Center, Flex, Tag, Text } from '/imports/ui/core';
 

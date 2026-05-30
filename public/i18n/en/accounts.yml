@@ -109,6 +109,7 @@ profile:
 messages:
   label: Messages
   title: Message Inbox
+  description: Privately message with other users. Your messages are one-to-one encrypted, so systemadmins cannot access the content of your messages
   search: Start a new conversation...
   empty: No conversations yet. Search for someone above.
   encryption:

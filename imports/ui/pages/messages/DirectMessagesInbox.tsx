@@ -240,7 +240,7 @@ export default function DirectMessagesInbox() {
               >
                 <Avatar
                   name={currentOtherUsername}
-                  size="sm"
+                  size="md"
                   src={currentOtherAvatar ?? undefined}
                 />
                 <Text fontWeight="bold" size="lg">
