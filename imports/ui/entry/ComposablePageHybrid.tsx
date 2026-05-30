@@ -37,6 +37,10 @@ interface ContentViewModuleProps {
   Host: Host;
 }
 
+const imageStyle = {
+  borderRadius: 'var(--cocoso-border-radius)',
+};
+
 function ContentViewModule({ module, Host }: ContentViewModuleProps) {
   const currentHost = Host;
   if (!module || !module.value || !module.type) {
@@ -44,19 +48,22 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
   }
 
   const { type, value } = module;
-  const host = currentHost?.host;
+  const host = currentHost?.host || '';
 
   let buttonLink = type === 'button' ? value.linkValue : null,
     isButtonLinkExternal = true;
+  if (buttonLink?.substring(0, 4) !== 'http') {
+    buttonLink = `https://${buttonLink}`;
+  }
   if (buttonLink && buttonLink.includes(host)) {
-    buttonLink = value.linkValue.split(host)[1];
+    buttonLink = value?.linkValue?.split(host)[1];
     isButtonLinkExternal = false;
   }
 
   let imageLink = type === 'image' ? value.linkValue : null,
     isImageLinkExternal = true;
   if (imageLink && imageLink.includes(host)) {
-    imageLink = value.linkValue.split(host)[1];
+    imageLink = value?.linkValue?.split(host)[1];
     isImageLinkExternal = false;
   }
 
@@ -81,17 +88,23 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
       }
       return <Divider />;
     case 'image':
+      const imageProps = {
+        alt: 'image',
+        loading: 'lazy',
+        css: imageStyle,
+        src: value.src,
+      };
       return (
         <Center py="4">
           {!value.isLink ? (
-            <Image alt="image" loading="lazy" src={value.src} />
+            <Image {...imageProps} />
           ) : isImageLinkExternal ? (
             <a href={imageLink}>
-              <Image alt="image" loading="lazy" src={value.src} />
+              <Image {...imageProps} />
             </a>
           ) : (
             <Link to={imageLink}>
-              <Image alt="image" loading="lazy" src={value.src} />
+              <Image {...imageProps} />
             </Link>
           )}
         </Center>
