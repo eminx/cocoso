@@ -1,9 +1,3 @@
-.main-chatter-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
 .chattery-window-container {
   flex-grow: 1;
   width: 100%;
@@ -66,263 +60,39 @@
   width: 100%;
 }
 
-.talk-bubble.right-in {
-  float: right;
-  background-color: var(--cocoso-colors-theme-500);
-  color: #fff;
-}
-
-/* container */
-.container {
-  padding: 5% 5%;
-}
-
-/* CSS talk bubble */
 .talk-bubble {
-  margin: 10px 20px;
+  border-radius: 12px;
   display: inline-block;
+  height: auto;
+  margin: 10px 20px;
+  padding-top: 8px;
+  padding-left: 4px;
   position: relative;
   width: 80%;
-  height: auto;
-  background-color: #fff;
-}
-.border {
-  border: 8px solid #666;
-}
-.round {
-  border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
 }
-
-/* Right triangle placed top left flush. */
-.tri-right.border.left-top:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: -40px;
-  right: auto;
-  top: -8px;
-  bottom: auto;
-  border: 32px solid;
-  border-color: #434343 transparent transparent #434343;
-}
-.tri-right.left-top:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: -12px;
-  right: auto;
-  top: 0px;
-  bottom: auto;
-  border: 22px solid;
-  border-color: #fff transparent transparent transparent;
-}
-
-/* Right triangle, left side slightly down */
-.tri-right.border.left-in:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: -40px;
-  right: auto;
-  top: 30px;
-  bottom: auto;
-  border: 20px solid;
-  border-color: #666 #666 transparent transparent;
-}
-.tri-right.left-in:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: -12px;
-  right: auto;
-  top: 10px;
-  bottom: auto;
-  border: 12px solid;
-  border-color: #fff #fff transparent transparent;
-}
-
-/*Right triangle, placed bottom left side slightly in*/
-.tri-right.border.btm-left:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: -8px;
-  right: auto;
-  top: auto;
-  bottom: -40px;
-  border: 32px solid;
-  border-color: transparent transparent transparent #666;
-}
-.tri-right.btm-left:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 0px;
-  right: auto;
-  top: auto;
-  bottom: -20px;
-  border: 22px solid;
-  border-color: transparent transparent transparent #fff;
-}
-
-/*Right triangle, placed bottom left side slightly in*/
-.tri-right.border.btm-left-in:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 30px;
-  right: auto;
-  top: auto;
-  bottom: -40px;
-  border: 20px solid;
-  border-color: #666 transparent transparent #666;
-}
-.tri-right.btm-left-in:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 38px;
-  right: auto;
-  top: auto;
-  bottom: -20px;
-  border: 12px solid;
-  border-color: #fff transparent transparent #fff;
-}
-
-/*Right triangle, placed bottom right side slightly in*/
-.tri-right.border.btm-right-in:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: auto;
-  right: 30px;
-  bottom: -40px;
-  border: 20px solid;
-  border-color: var(--cocoso-colors-theme-500) transparent transparent
-    var(--cocoso-colors-theme-500);
-}
-.tri-right.btm-right-in:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: auto;
-  right: 38px;
-  bottom: -20px;
-  border: 12px solid;
-  border-color: var(--cocoso-colors-theme-500) transparent transparent
-    var(--cocoso-colors-theme-500);
-}
-/*
-	left: -8px;
-  right: auto;
-  top: auto;
-	bottom: -40px;
-	border: 32px solid;
-	border-color: transparent transparent transparent #666;
-	left: 0px;
-  right: auto;
-  top: auto;
-	bottom: -20px;
-	border: 22px solid;
-	border-color: transparent transparent transparent #fff;
-
-/*Right triangle, placed bottom right side slightly in*/
-.tri-right.border.btm-right:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: auto;
-  right: -8px;
-  bottom: -40px;
-  border: 20px solid;
-  border-color: #666 #666 transparent transparent;
-}
-.tri-right.btm-right:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: auto;
-  right: 0px;
-  bottom: -20px;
-  border: 12px solid;
-  border-color: #fff #fff transparent transparent;
-}
-
-/* Right triangle, right side slightly down*/
-.tri-right.border.right-in:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: auto;
-  right: -40px;
-  top: 30px;
-  bottom: auto;
-  border: 20px solid;
-  border-color: #666 transparent transparent #666;
-}
-.tri-right.right-in:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: auto;
-  right: -12px;
-  top: 10px;
-  bottom: auto;
-  border: 12px solid;
-  border-color: var(--cocoso-colors-theme-500) transparent transparent
-    var(--cocoso-colors-theme-500);
-}
-
-/* Right triangle placed top right flush. */
-.tri-right.border.right-top:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: auto;
-  right: -40px;
-  top: -8px;
-  bottom: auto;
-  border: 32px solid;
-}
-.tri-right.right-top:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: auto;
-  right: -12px;
-  top: 0px;
-  bottom: auto;
-  border: 20px solid;
-  border-color: #fff transparent transparent transparent;
-}
-
-/* talk bubble contents */
-.talktext {
+.talk-bubble.right-in {
+  background-color: var(--cocoso-colors-theme-500);
+  border-top-right-radius: 0;
   color: #fff;
+  float: right;
+}
+.talk-bubble.left-in {
+  background-color: #fff;
+  border-color: var(--cocoso-colors-theme-500);
+  border-width: 1px;
+  border-style: solid;
+  border-top-left-radius: 0;
+  color: #222;
+}
+
+.talktext {
   padding: 0.5em 1em;
   text-align: left;
-  line-height: 16px;
+  line-height: 20px;
 }
 .talktext p {
-  /* remove webkit p margins */
   -webkit-margin-before: 0em;
   -webkit-margin-after: 0em;
   white-space: pre-line;
@@ -330,26 +100,14 @@
 }
 
 .talktext-senderinfo {
-  color: #fff;
-  font-size: 0.8em;
+  font-size: 0.9em;
   font-weight: bold;
-  padding-bottom: 0.2rem;
+  margin-bottom: 0.2rem;
 }
 
 .talktext-dateinfo {
-  color: #fff;
-  font-size: 0.7em;
+  font-size: 0.8em;
   text-align: right;
-}
-
-.talk-bubble.left-in {
-  background-color: #fff;
-}
-
-.talk-bubble.left-in .talktext,
-.talk-bubble.left-in .talktext-senderinfo,
-.talk-bubble.left-in .talktext-dateinfo {
-  color: #222;
 }
 
 /* width */

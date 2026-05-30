@@ -42,18 +42,15 @@ class ChatteryBubble extends React.Component<ChatteryBubbleProps> {
 
   render() {
     const { senderUsername, createdDate, isFromMe, children } = this.props;
-    let bubbleClass = 'talk-bubble tri-right round ';
-    let bubbleClassContainer = 'talk-bubble-container ';
+    let bubbleClass = 'talk-bubble ';
     if (isFromMe) {
       bubbleClass += 'right-in';
-      bubbleClassContainer += 'right-in';
     } else {
       bubbleClass += 'left-in';
-      bubbleClassContainer += 'left-in';
     }
 
     return (
-      <div className={bubbleClassContainer}>
+      <div className="talk-bubble-container">
         <VisibilitySensor
           partialVisibility="bottom"
           onChange={this.removeNotification}
