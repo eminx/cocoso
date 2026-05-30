@@ -209,7 +209,7 @@ export default function DirectMessageThread() {
           </span>
         </Box>
       )}
-      <Box bg="bluegray.300" p="2">
+      <Box bg="gray.100" p="2">
         <Chattery
           messages={messages}
           withInput={canSend && !isOtherUserBlocked}

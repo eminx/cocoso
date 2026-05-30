@@ -90,17 +90,17 @@ export default function DirectMessageConversations({ conversations }: Props) {
             <Flex
               key={conv._id}
               align="center"
-              bg={isCurrentThread ? 'bluegray.300' : 'bluegray.50'}
+              bg={isCurrentThread ? 'gray.100' : 'gray.50'}
               gap="2"
               p={isDesktop || isIndexPage ? '4' : '0'}
               w="100%"
               css={{
-                borderBottom: '1px solid var(--cocoso-colors-bluegray-200)',
+                borderBottom: '1px solid var(--cocoso-colors-gray-200)',
                 cursor: 'pointer',
                 opacity: isUserBlocked ? 0.5 : 1,
                 transition: 'background 0.15s ease',
                 '&:hover': {
-                  background: 'var(--cocoso-colors-bluegray-200)',
+                  background: 'var(--cocoso-colors-gray-200)',
                 },
               }}
               onClick={() => navigate(`/admin/messages/${conv._id}`)}

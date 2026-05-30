@@ -224,7 +224,7 @@ export default function DirectMessagesInbox() {
           ) : (
             <Flex align="center" justify="space-between" gap="2">
               <Link to="/admin/messages">
-                <Center px="3">
+                <Center px="4">
                   <IconButton
                     aria-label="Back to inbox"
                     icon={<ArrowLeft fontSize="44px" />}
@@ -314,9 +314,9 @@ export default function DirectMessagesInbox() {
                   padding: '0.6rem 0.75rem',
                   background:
                     index === focusedIndex
-                      ? 'var(--cocoso-colors-bluegray-100)'
+                      ? 'var(--cocoso-colors-gray-100)'
                       : 'transparent',
-                  '&:hover': { background: 'var(--cocoso-colors-bluegray-50)' },
+                  '&:hover': { background: 'var(--cocoso-colors-gray-50)' },
                 }}
                 gap="1"
                 onClick={() => handleStartConversation(u._id)}
