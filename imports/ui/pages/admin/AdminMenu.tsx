@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import Eye from 'lucide-react/dist/esm/icons/eye';
+import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
 import { useAtomValue } from 'jotai';
 
 import {
@@ -44,7 +44,7 @@ export function AdminMenuHeader({ currentHost }) {
           gap="2"
           css={{ color: 'var(--cocoso-colors-bluegray-900)' }}
         >
-          <Eye />
+          <ArrowLeft />
           <Text color="bluegray.900" fontWeight="bold" fontSize="lg">
             {currentHost.settings?.name}
           </Text>

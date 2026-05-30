@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
-import Eye from 'lucide-react/dist/esm/icons/eye';
+import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
 import { useAtomValue } from 'jotai';
 
 import {
@@ -194,7 +194,7 @@ export default function AdminContainer({ Host }) {
 
             <Link to="/">
               <Flex {...iconContainerProps}>
-                <Eye />
+                <ArrowLeft />
                 <Text fontSize="xs">{t('admin:site')}</Text>
               </Flex>
             </Link>

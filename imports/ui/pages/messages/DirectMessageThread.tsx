@@ -1,6 +1,6 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
 import { useParams } from 'react-router';
 import { useAtom, useAtomValue } from 'jotai';
