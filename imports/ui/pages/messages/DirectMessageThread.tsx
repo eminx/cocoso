@@ -125,7 +125,9 @@ export default function DirectMessageThread() {
       <Center p="8">
         <Box css={{ textAlign: 'center', maxWidth: '320px' }}>
           <Box mb="4">
-            <Text color="gray.600">{t('messages.encryption.needsRelogin')}</Text>
+            <Text color="gray.600">
+              {t('messages.encryption.needsRelogin')}
+            </Text>
           </Box>
           <Box mb="2">
             <Input
@@ -133,12 +135,16 @@ export default function DirectMessageThread() {
               placeholder={t('messages.encryption.passwordPlaceholder')}
               value={unlockPassword}
               onChange={(e) => setUnlockPassword(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleUnlock(); }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleUnlock();
+              }}
             />
           </Box>
           {unlockError && (
             <Box mb="2">
-              <Text color="red.500" fontSize="sm">{unlockError}</Text>
+              <Text color="red.500" fontSize="sm">
+                {unlockError}
+              </Text>
             </Box>
           )}
           <Button
@@ -155,7 +161,9 @@ export default function DirectMessageThread() {
   }
 
   const canSend = Boolean((otherUser as any)?.publicKey);
-  const isOtherUserBlocked = ((currentUser as any)?.blockedUserIds ?? []).includes(otherUserId);
+  const isOtherUserBlocked = (
+    (currentUser as any)?.blockedUserIds ?? []
+  ).includes(otherUserId);
 
   const handleUnblock = async () => {
     try {
@@ -177,7 +185,9 @@ export default function DirectMessageThread() {
             textAlign: 'center',
           }}
         >
-          {t('messages.encryption.notSetUp', { username: (otherUser as any)?.username })}
+          {t('messages.encryption.notSetUp', {
+            username: (otherUser as any)?.username,
+          })}
         </Box>
       )}
       {isOtherUserBlocked && (
