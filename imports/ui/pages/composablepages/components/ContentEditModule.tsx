@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import { Trans } from 'react-i18next';
-import loadable from '@loadable/component';
 import { Box, Button, Center, Code, Flex, IconButton } from '/imports/ui/core';
-import { SortableKnob } from 'react-easy-sort';
 import { useDrag } from 'react-dnd';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
@@ -10,38 +8,43 @@ import GripHorizontal from 'lucide-react/dist/esm/icons/grip-horizontal';
 import EditIcon from 'lucide-react/dist/esm/icons/edit';
 import TrashIcon from 'lucide-react/dist/esm/icons/trash';
 
-const ReactPlayer = loadable(() => import('react-player'), {
-  ssr: false, // react-player doesn't work on server
-});
-
-import { ComposablePageContext } from '../ComposablePageForm';
+import type { Module } from '/imports/ui/entry/ComposablePageHybrid';
 import { Divider } from '/imports/ui/core';
 
-function ModulePreview({ content }) {
+import { ComposablePageContext } from '../ComposablePageForm';
+
+interface ModuleType {
+  content: Module;
+}
+
+function ModulePreview({ content }: ModuleType) {
   const renderContent = () => {
+    const value = content?.value;
     switch (content.type) {
       case 'button':
-        return <Button size="xs">{content.value?.label}</Button>;
+        return (
+          <Button size={value?.size} variant={value?.variant}>
+            {value?.label}
+          </Button>
+        );
       case 'divider':
         return <Divider />;
       case 'image':
-        return <img src={content.value?.src} style={{ borderRadius: '6px' }} />;
+        return <img src={value?.src} style={{ borderRadius: '6px' }} />;
       case 'image-slider':
-        return (
-          <img src={content.value?.images[0]} style={{ borderRadius: '6px' }} />
-        );
+        return <img src={value?.images?.[0]} style={{ borderRadius: '6px' }} />;
       case 'text':
         return (
           <Box px="2" style={{ fontSize: '12px' }}>
-            {content.value?.html
+            {value?.html
               ? HTMLReactParser(
-                  DOMPurify.sanitize(content.value.html.substring(0, 100))
+                  DOMPurify.sanitize(value.html.substring(0, 100))
                 )
               : null}
           </Box>
         );
       case 'video':
-        return <Code>{content.value?.src}</Code>;
+        return <Code>{value?.src}</Code>;
       default:
         return null;
     }

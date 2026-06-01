@@ -109,7 +109,7 @@ profile:
 messages:
   label: Messages
   title: Message Inbox
-  description: Privately message with other users. Your messages are one-to-one encrypted, so systemadmins cannot access the content of your messages
+  description: Private messages between users. Your messages are end-to-end encrypted, which means that only you and the recipient can read them
   search: Start a new conversation...
   empty: No conversations yet. Search for someone above.
   encryption:

@@ -109,7 +109,7 @@ profile:
 messages:
   label: Meddelanden
   title: Meddelanden
-  description: Meddelande med andra användare. Ditt meddelande är end-to-end-krypterade, dessutom systemadminer har inte kåll på de
+  description: Privata meddelanden mellan användare. Dina meddelanden är end-to-end-krypterade, vilket innebär att endast du och mottagaren kan läsa dem
   search: Starta ett nytt samtal...
   empty: Inga konversationer ännu. Sök efter någon ovan.
   encryption:

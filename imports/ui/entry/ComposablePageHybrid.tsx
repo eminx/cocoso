@@ -11,28 +11,30 @@ import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import type { Host } from '/imports/ui/types';
 
-interface ModuleValue {
+export interface ModuleValue {
+  alt?: string;
+  height?: number;
+  html?: string;
+  images?: string[];
+  imageUrl?: string;
+  isLink?: boolean;
+  kind?: string;
   label?: string;
   linkValue?: string;
-  kind?: string;
-  height?: number;
-  imageUrl?: string;
-  alt?: string;
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  variant?: 'solid' | 'ghost' | 'outline';
+  src?: string;
   text?: string;
   video?: string;
-  images?: string[];
-  src?: string;
-  html?: string;
-  isLink?: boolean;
 }
 
-interface Module {
+export interface Module {
   id?: string;
   type?: string;
   value?: ModuleValue;
 }
 
-interface ContentViewModuleProps {
+export interface ContentViewModuleProps {
   module: Module;
   Host: Host;
 }
@@ -50,13 +52,15 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
   const { type, value } = module;
   const host = currentHost?.host || '';
 
-  let buttonLink = type === 'button' ? value.linkValue : null,
+  if (!value) return null;
+
+  let buttonLink = type === 'button' ? value.linkValue || '/' : '/',
     isButtonLinkExternal = true;
   if (buttonLink?.substring(0, 4) !== 'http') {
     buttonLink = `https://${buttonLink}`;
   }
   if (buttonLink && buttonLink.includes(host)) {
-    buttonLink = value?.linkValue?.split(host)[1];
+    buttonLink = value?.linkValue?.split(host)[1] || buttonLink;
     isButtonLinkExternal = false;
   }
 
@@ -69,15 +73,20 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
 
   switch (type) {
     case 'button':
+      const buttonProps = {
+        size: value.size,
+        variant: value.variant,
+        children: value.label,
+      };
       return (
         <Center py="4">
           {isButtonLinkExternal ? (
             <a href={buttonLink}>
-              <Button>{value.label}</Button>
+              <Button {...buttonProps} />
             </a>
           ) : (
             <Link to={buttonLink}>
-              <Button>{value.label}</Button>
+              <Button {...buttonProps} />
             </Link>
           )}
         </Center>

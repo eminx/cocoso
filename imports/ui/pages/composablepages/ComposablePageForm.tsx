@@ -15,14 +15,12 @@ import {
   Center,
   Flex,
   Heading,
-  IconButton,
   Modal,
   Text,
 } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/api/_utils/shared';
-import Boxling from '/imports/ui/pages/admin/Boxling';
 
 import TopToolBar from './components/TopToolbar';
 import { rowTypes } from './constants';
@@ -31,11 +29,12 @@ import Row from './components/Row';
 import BottomToolbar from './components/BottomToolbar';
 import { composablePageTitlesAtom } from './index';
 
-const getNewRow = (rowType) => {
+const getNewRow = (rowType: string) => {
   const selectedRowType = rowTypes?.find((type) => type.value === rowType);
+
   return {
-    gridType: selectedRowType.value,
-    columns: selectedRowType.columns,
+    gridType: selectedRowType?.value,
+    columns: selectedRowType?.columns,
   };
 };
 
@@ -162,8 +161,7 @@ export default function ComposablePageForm() {
   };
 
   const handleDeleteModule = () => {
-    const { contentIndex, columnIndex, rowIndex, moduleType } =
-      deleteModuleModal;
+    const { moduleType } = deleteModuleModal;
     switch (moduleType) {
       case 'row':
         handleDeleteRow();
@@ -212,7 +210,7 @@ export default function ComposablePageForm() {
     setContentModal(defaultEmptyContentModal);
   };
 
-  const updateComposablePage = async (updateTitles = false) => {
+  const updateComposablePage = async () => {
     const newPage = {
       _id: currentPage._id,
       title: currentPage.title,

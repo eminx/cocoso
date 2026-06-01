@@ -5,6 +5,8 @@ export const contentTypes = [
       linkValue: '',
       isExternal: false,
       label: 'Click me',
+      size: 'md', // or 'lg' or 'sm'
+      type: 'solid', // or 'outline' or 'ghost'
     },
   },
   {

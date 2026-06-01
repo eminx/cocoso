@@ -5,8 +5,8 @@ import { Box, Text } from '/imports/ui/core';
 export interface FormFieldProps extends React.ComponentProps<typeof Box> {
   children?: React.ReactNode;
   errorMessage?: string | null;
-  helper?: string;
-  label?: string;
+  helper?: string | React.ReactNode;
+  label?: string | React.ReactNode;
   required?: boolean;
 }
 

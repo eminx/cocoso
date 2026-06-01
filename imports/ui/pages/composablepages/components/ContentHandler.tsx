@@ -3,51 +3,95 @@ import { Trans } from 'react-i18next';
 import loadable from '@loadable/component';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
-const ReactPlayer = loadable(() => import('react-player'), {
-  ssr: false, // react-player doesn't work on server
-});
-
 import {
   Box,
   Button,
   Center,
   Checkbox,
   Flex,
-  FormLabel,
   Input,
   NumberInput,
+  Select,
   Text,
 } from '/imports/ui/core';
 import Quill from '/imports/ui/forms/Quill';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
 import FormField from '/imports/ui/forms/FormField';
-import { message } from '/imports/ui/generic/message';
 import Menu from '/imports/ui/generic/Menu';
 
-import { ComposablePageContext } from '../ComposablePageForm';
+const ReactPlayer = loadable(() => import('react-player'), {
+  ssr: false, // react-player doesn't work on server
+});
+
+const sizeOptions = [
+  {
+    label: <Trans>Extra Small</Trans>,
+    value: 'xs',
+  },
+  {
+    label: <Trans>Small</Trans>,
+    value: 'sm',
+  },
+  {
+    label: <Trans>Medium</Trans>,
+    value: 'md',
+  },
+  {
+    label: <Trans>Large</Trans>,
+    value: 'lg',
+  },
+];
+
+const variantOptions = [
+  {
+    label: <Trans>Solid</Trans>,
+    value: 'solid',
+  },
+  {
+    label: <Trans>Outline</Trans>,
+    value: 'outline',
+  },
+  {
+    label: <Trans>Ghost</Trans>,
+    value: 'ghost',
+  },
+];
 
 function ButtonContent({ value, onChange }) {
-  const handleLinkValueChange = (linkValue) => {
+  const handleLinkValueChange = (linkValue: string) => {
     onChange({
       ...value,
       linkValue,
     });
   };
 
-  const handleLabelChange = (label) => {
+  const handleLabelChange = (label: string) => {
     onChange({
       ...value,
       label,
     });
   };
 
+  const handleSizeValueChange = (size: string) => {
+    onChange({
+      ...value,
+      size,
+    });
+  };
+
+  const handleVariantValueChange = (variant: string) => {
+    onChange({
+      ...value,
+      variant,
+    });
+  };
+
   return (
     <Center>
-      <Box>
+      <Flex direction="column" gap="4">
         <FormField
           helper={<Trans i18nKey="admin:composable.form.labelHelper" />}
           label={<Trans i18nKey="admin:composable.form.label" />}
-          mb="8"
           required
         >
           <Input
@@ -66,7 +110,39 @@ function ButtonContent({ value, onChange }) {
             onChange={(e) => handleLinkValueChange(e.target.value)}
           />
         </FormField>
-      </Box>
+
+        <FormField
+          helper={<Trans i18nKey="admin:composable.form.linkHelper" />}
+          label={<Trans i18nKey="admin:composable.form.link" />}
+        >
+          <Select
+            value={value.variant || 'solid'}
+            onChange={(e) => handleVariantValueChange(e.target.value)}
+          >
+            {variantOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </Select>
+        </FormField>
+
+        <FormField
+          helper={<Trans i18nKey="admin:composable.form.linkHelper" />}
+          label={<Trans i18nKey="admin:composable.form.link" />}
+        >
+          <Select
+            value={value.size || 'md'}
+            onChange={(e) => handleSizeValueChange(e.target.value)}
+          >
+            {sizeOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </Select>
+        </FormField>
+      </Flex>
     </Center>
   );
 }
@@ -85,13 +161,6 @@ const dividerMenuOptions = [
 ];
 
 function Divider({ value, onChange }) {
-  const handleSelect = (item) => {
-    onChange({
-      ...value,
-      kind: item.kind,
-    });
-  };
-
   const handleSpaceHeightChange = (e) => {
     const height = e.target.value;
     onChange({
@@ -321,7 +390,6 @@ const initialState = {
 
 export default function ContentHandler({
   initialContent,
-  open,
   onConfirm,
   onCancel,
 }) {
