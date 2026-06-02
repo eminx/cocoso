@@ -9,6 +9,7 @@ import { Center, Flex } from '/imports/ui/core';
 import type { DotsProps } from '/imports/ui/types';
 
 const imageStyle: React.CSSProperties = {
+  borderRadius: 'var(--cocoso-border-radius)',
   cursor: 'pointer',
   maxHeight: '480px',
   objectFit: 'contain',
