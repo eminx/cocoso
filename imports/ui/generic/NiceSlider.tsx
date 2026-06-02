@@ -150,8 +150,7 @@ export default function NiceSlider({
       <>
         <Flex h={height} justify="center">
           <Center>
-            <LazyLoadImage
-              // <Image
+            <Image
               src={images[0]}
               style={imageStyle}
               onClick={() => setToggler(!toggler)}
@@ -163,7 +162,7 @@ export default function NiceSlider({
           <FsLightbox
             toggler={toggler}
             sources={images.map((img) => (
-              <LazyLoadImage key={img} alt={img} src={img} />
+              <img key={img} alt={img} src={img} />
             ))}
           />
         )}
@@ -192,7 +191,7 @@ export default function NiceSlider({
         <FsLightbox
           toggler={toggler}
           sources={images.map((img) => (
-            <LazyLoadImage key={img} alt={img} src={img} />
+            <img key={img} alt={img} src={img} />
           ))}
         />
       )}

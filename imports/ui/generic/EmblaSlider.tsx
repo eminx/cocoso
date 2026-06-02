@@ -193,9 +193,7 @@ export default function EmblaSlider({
 
   const lightBoxProps = {
     toggler: state.lightboxToggle,
-    sources: images.map((img) => (
-      <LazyLoadImage key={img} {...imageProps(img)} />
-    )),
+    sources: images.map((img) => <img key={img} {...imageProps(img)} />),
     sourceIndex: state.currentSlideIndex,
   };
 
@@ -251,7 +249,7 @@ export default function EmblaSlider({
         </button>
       </Flex>
 
-      <FsLightbox {...lightBoxProps} />
+      {Meteor.isClient && <FsLightbox {...lightBoxProps} />}
     </div>
   );
 }
