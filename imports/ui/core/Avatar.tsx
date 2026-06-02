@@ -83,6 +83,7 @@ const AvatarImage = styled('img', {
   width: '100%',
   height: '100%',
   objectFit: 'cover',
+  loading: 'lazy',
 });
 
 // Avatar initials (fallback when no image)
@@ -130,7 +131,7 @@ const Avatar: React.FC<AvatarProps> = ({
     <AvatarWrapper size={size}>
       <AvatarContainer size={size} {...props}>
         {src ? (
-          <AvatarImage src={src} alt={name} />
+          <AvatarImage alt={name} src={src} />
         ) : (
           <AvatarInitials size={size}>{initials}</AvatarInitials>
         )}
