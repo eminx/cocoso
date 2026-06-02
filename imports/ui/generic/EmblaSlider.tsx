@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Fade from 'embla-carousel-fade';
 import FsLightbox from 'fslightbox-react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { Center, Flex } from '/imports/ui/core';
 import type { DotsProps } from '/imports/ui/types';
@@ -112,6 +111,9 @@ export default function EmblaSlider({
 }: EmblaSliderProps) {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [loadedIndices, setLoadedIndices] = useState<Set<number>>(
+    () => new Set(images && images.length > 1 ? [0, 1] : [0])
+  );
 
   useEffect(() => {
     setIsTouchDevice(checkTouchDevice());
@@ -162,38 +164,48 @@ export default function EmblaSlider({
     if (!emblaApi) {
       return;
     }
-    // Clear any existing interval before setting a new one
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-
     intervalRef.current = setInterval(() => {
       scrollNext();
     }, 4000);
-
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
-        intervalRef.current = null; // Reset ref
+        intervalRef.current = null;
       }
     };
   }, [emblaApi, scrollNext]);
 
-  const imageProps = (image: string) => ({
-    alt: image,
-    src: image,
-    style: { ...imageStyle, height },
-    onClick: () => {
-      setState((prevState) => ({
-        ...prevState,
-        lightboxToggle: !state.lightboxToggle,
-      }));
-    },
-  });
+  useEffect(() => {
+    if (!emblaApi) {
+      return;
+    }
+    const onSelect = () => {
+      const idx = emblaApi.selectedScrollSnap();
+      setLoadedIndices((prev) => {
+        const next = new Set(prev);
+        next.add(idx);
+        next.add((idx + 1) % images.length);
+        next.add((idx - 1 + images.length) % images.length);
+        return next;
+      });
+    };
+    emblaApi.on('select', onSelect);
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi, images.length]);
+
+  const toggleLightbox = () =>
+    setState((prev) => ({ ...prev, lightboxToggle: !prev.lightboxToggle }));
 
   const lightBoxProps = {
     toggler: state.lightboxToggle,
-    sources: images.map((img) => <img key={img} {...imageProps(img)} />),
+    sources: images.map((img) => (
+      <img key={img} alt={img} src={img} style={{ ...imageStyle, height }} />
+    )),
     sourceIndex: state.currentSlideIndex,
   };
 
@@ -202,7 +214,13 @@ export default function EmblaSlider({
       <>
         <Flex h={height} justify="center">
           <Center>
-            <LazyLoadImage {...imageProps(images[0])} />
+            <img
+              alt={images[0]}
+              loading="lazy"
+              src={images[0]}
+              style={{ ...imageStyle, height }}
+              onClick={toggleLightbox}
+            />
           </Center>
         </Flex>
 
@@ -215,9 +233,14 @@ export default function EmblaSlider({
     <div className="embla">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {images.map((img) => (
+          {images.map((img, index) => (
             <div className="embla__slide" key={img}>
-              <LazyLoadImage {...imageProps(img)} />
+              <img
+                alt={img}
+                src={loadedIndices.has(index) ? img : undefined}
+                style={{ ...imageStyle, height }}
+                onClick={toggleLightbox}
+              />
             </div>
           ))}
         </div>

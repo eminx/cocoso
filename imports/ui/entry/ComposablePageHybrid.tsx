@@ -3,10 +3,9 @@ import loadable from '@loadable/component';
 import { Link } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 const ReactPlayer = loadable(() => import('react-player'));
 
-import { Box, Button, Center, Flex, Grid, Image } from '/imports/ui/core';
+import { Box, Button, Center, Flex, Grid } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import type { Host } from '/imports/ui/types';
@@ -99,21 +98,21 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
     case 'image':
       const imageProps = {
         alt: 'image',
-        // loading: 'lazy',
+        loading: 'lazy' as const,
         src: value.src,
         style: imageStyle,
       };
       return (
         <Center py="4">
           {!value.isLink ? (
-            <LazyLoadImage {...imageProps} />
+            <img {...imageProps} />
           ) : isImageLinkExternal ? (
             <a href={imageLink}>
-              <LazyLoadImage {...imageProps} />
+              <img {...imageProps} />
             </a>
           ) : (
             <Link to={imageLink}>
-              <LazyLoadImage {...imageProps} />
+              <img {...imageProps} />
             </Link>
           )}
         </Center>
