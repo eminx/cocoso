@@ -1,9 +1,11 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Fade from 'embla-carousel-fade';
 import FsLightbox from 'fslightbox-react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import { Center, Flex, Image } from '/imports/ui/core';
+import { Center, Flex } from '/imports/ui/core';
 import type { DotsProps } from '/imports/ui/types';
 
 const imageStyle: React.CSSProperties = {
@@ -106,7 +108,6 @@ export interface EmblaSliderProps {
 export default function EmblaSlider({
   images,
   height = 'auto',
-  width = '100%',
 }: EmblaSliderProps) {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -180,7 +181,6 @@ export default function EmblaSlider({
   const imageProps = (image: string) => ({
     alt: image,
     src: image,
-    loading: 'lazy',
     style: { ...imageStyle, height },
     onClick: () => {
       setState((prevState) => ({
@@ -193,7 +193,7 @@ export default function EmblaSlider({
   const lightBoxProps = {
     toggler: state.lightboxToggle,
     sources: images.map((img) => (
-      <img loading="lazy" key={img} alt={img} src={img} />
+      <LazyLoadImage key={img} {...imageProps(img)} />
     )),
     sourceIndex: state.currentSlideIndex,
   };
@@ -203,11 +203,11 @@ export default function EmblaSlider({
       <>
         <Flex h={height} justify="center">
           <Center>
-            <Image {...imageProps(images[0])} />
+            <LazyLoadImage {...imageProps(images[0])} />
           </Center>
         </Flex>
 
-        <FsLightbox {...lightBoxProps} />
+        {Meteor.isClient && <FsLightbox {...lightBoxProps} />}
       </>
     );
   }
@@ -216,9 +216,9 @@ export default function EmblaSlider({
     <div className="embla">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {images.map((image) => (
-            <div className="embla__slide" key={image}>
-              <Image {...imageProps(image)} />
+          {images.map((img) => (
+            <div className="embla__slide" key={img}>
+              <LazyLoadImage {...imageProps(img)} />
             </div>
           ))}
         </div>
