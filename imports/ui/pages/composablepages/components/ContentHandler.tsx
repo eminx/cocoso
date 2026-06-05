@@ -112,8 +112,8 @@ function ButtonContent({ value, onChange }) {
         </FormField>
 
         <FormField
-          helper={<Trans i18nKey="admin:composable.form.linkHelper" />}
-          label={<Trans i18nKey="admin:composable.form.link" />}
+          helper={<Trans i18nKey="admin:composable.form.variantHelper" />}
+          label={<Trans i18nKey="admin:composable.form.variant" />}
         >
           <Select
             value={value.variant || 'solid'}
@@ -128,8 +128,8 @@ function ButtonContent({ value, onChange }) {
         </FormField>
 
         <FormField
-          helper={<Trans i18nKey="admin:composable.form.linkHelper" />}
-          label={<Trans i18nKey="admin:composable.form.link" />}
+          helper={<Trans i18nKey="admin:composable.form.sizeHelper" />}
+          label={<Trans i18nKey="admin:composable.form.size" />}
         >
           <Select
             value={value.size || 'md'}

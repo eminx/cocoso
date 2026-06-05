@@ -214,6 +214,10 @@ composable:
     line: Line
     link: Link address
     linkHelper: Please enter the link address. This link will be opened when the button is clicked
+    variant: Variant
+    variantHelper: Please select the variant of the element
+    size: Size
+    sizeHelper: Please select the size of the element
     imageAsLink: Image as link?
     video: Video URL
     videoHelper: Please enter a video URL, typically the link address for a YouTube or Vimeo video page..

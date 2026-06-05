@@ -214,6 +214,10 @@ composable:
     line: Linje
     link: Länkadressen
     linkHelper: Ange länkadressen. Denna länk öppnas när knappen klickas
+    variant: Variant
+    variantHelper: Välj önskade alternativ
+    size: Storlek
+    sizeHelper: Välj önskade alternativ
     imageAsLink: Bild som länk?
     video: Video-URL
     videoHelper: Ange en video-URL, vanligtvis länkadressen till en YouTube- eller Vimeo-videosida..
