@@ -1,55 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import HTMLReactParser from 'html-react-parser';
-import DOMPurify from 'isomorphic-dompurify';
-import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 import { useAtomValue } from 'jotai';
 
-import {
-  Box,
-  Button,
-  Center,
-  Divider,
-  Flex,
-  Image,
-  Modal,
-} from '/imports/ui/core';
+import { Button, Divider, Flex, Image, Modal } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
-import { call } from '/imports/api/_utils/shared';
-import NiceSlider from '/imports/ui/generic/NiceSlider';
 import {
-  allHostsAtom,
   currentHostAtom,
   currentUserAtom,
   isDesktopAtom,
   platformAtom,
 } from '/imports/state';
+import RegistrationIntro from '/imports/ui/pages/auth/RegistrationIntro';
 
 export default function FederationIconMenu() {
-  const allHosts = useAtomValue(allHostsAtom);
   const currentHost = useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const platform = useAtomValue(platformAtom);
 
   const [infoOpen, setInfoOpen] = useState(false);
-  const [hostInfo, setHostInfo] = useState(null);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const navigate = useNavigate();
-
-  const getInfo = async () => {
-    if (!platform?.isFederationLayout) {
-      return;
-    }
-    const info = await call('getPortalHostInfoPage');
-    setHostInfo(info);
-  };
-
-  useEffect(() => {
-    getInfo();
-  }, []);
 
   const isPortalHost = currentHost?.isPortalHost;
 
@@ -123,7 +96,9 @@ export default function FederationIconMenu() {
 
       <Modal
         confirmText={tc('modals.toPortalApp')}
+        cancelText={tc('actions.close')}
         hideFooter={isPortalHost}
+        hideHeader
         id="federation-icon-menu"
         open={infoOpen}
         size="2xl"
@@ -133,29 +108,7 @@ export default function FederationIconMenu() {
         }
         onClose={() => setInfoOpen(false)}
       >
-        {hostInfo && (
-          <Box>
-            {hostInfo.images && (
-              <Center mb="6">
-                <NiceSlider
-                  alt={hostInfo.title}
-                  height="auto"
-                  images={hostInfo.images}
-                />
-              </Center>
-            )}
-
-            {hostInfo.longDescription && (
-              <Box className="text-content">
-                {typeof hostInfo.longDescription === 'string'
-                  ? HTMLReactParser(
-                      DOMPurify.sanitize(hostInfo.longDescription)
-                    )
-                  : hostInfo.longDescription}
-              </Box>
-            )}
-          </Box>
-        )}
+        <RegistrationIntro isModal />
       </Modal>
     </>
   );
