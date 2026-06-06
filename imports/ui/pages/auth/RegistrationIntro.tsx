@@ -8,14 +8,7 @@ import parseHtml from 'html-react-parser';
 import { Slide } from 'react-slideshow-image';
 import { useAtomValue } from 'jotai';
 
-import {
-  Box,
-  Button,
-  Center,
-  Heading,
-  Image,
-  IconButton,
-} from '/imports/ui/core';
+import { Box, Button, Center, Image, IconButton } from '/imports/ui/core';
 import { platformAtom } from '/imports/state';
 
 if (Meteor.isClient) {
@@ -40,9 +33,9 @@ export default function RegistrationIntro({ isModal = false }) {
         <Image className="logo" fit="contain" src={platform.logo} />
       </Center>
       <Box pb={isModal ? '0' : '20'}>
-        <Center mb="4">
+        {/* <Center mb="4">
           <Heading>{platform.name}</Heading>
-        </Center>
+        </Center> */}
         <Center>
           <Box
             bg="white"
