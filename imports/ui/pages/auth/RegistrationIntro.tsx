@@ -29,7 +29,7 @@ export default function RegistrationIntro({ isModal = false }) {
 
   return (
     <Box>
-      <Center mb="2">
+      <Center mb="4">
         <Image className="logo" fit="contain" src={platform.logo} />
       </Center>
       <Box pb={isModal ? '0' : '20'}>
