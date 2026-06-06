@@ -1,4 +1,5 @@
 import React from 'react';
+import ArrowDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 export interface SelectProps
   extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
@@ -40,19 +41,24 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     const isSelectRequired = required || isRequired;
     const sizeClass = `cocoso-select--${size}`;
     return (
-      <select
-        ref={ref}
-        className={`cocoso-select ${sizeClass}`}
-        defaultValue={value}
-        disabled={isSelectDisabled}
-        required={isSelectRequired}
-        onChange={onChange}
-        aria-invalid={isSelectInvalid}
-        style={style}
-        {...rest}
+      <div
+        style={{ display: 'flex', alignItems: 'center', position: 'relative' }}
       >
-        {children}
-      </select>
+        <select
+          ref={ref}
+          className={`cocoso-select ${sizeClass}`}
+          defaultValue={value}
+          disabled={isSelectDisabled}
+          required={isSelectRequired}
+          onChange={onChange}
+          aria-invalid={isSelectInvalid}
+          style={style}
+          {...rest}
+        >
+          {children}
+        </select>
+        <ArrowDownIcon style={{ position: 'absolute', right: '12px' }} />
+      </div>
     );
   }
 );

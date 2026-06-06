@@ -664,7 +664,7 @@ body {
   width: 100%;
   border-radius: var(--cocoso-border-radius, 0.375rem);
   border: 2px solid var(--cocoso-colors-theme-200, #ccc);
-  background: white;
+  background: var(--cocoso-colors-theme-50);
   color: var(--cocoso-colors-gray-900, #222);
   outline: none;
   transition: border-color 0.2s;
