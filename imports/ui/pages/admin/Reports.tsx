@@ -112,7 +112,9 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
       </Flex>
 
       <Box mb="3">
-        <Text color="gray.500">{t('reports.fields.description')}:</Text>
+        <Text color="gray.500" css={{ marginInlineEnd: '0.3rem' }}>
+          {t('reports.fields.description')}:
+        </Text>
         <Text>
           <em>{report.description}</em>
         </Text>
@@ -160,7 +162,12 @@ export default function Reports() {
   const { revalidate, state } = useRevalidator();
 
   useEffect(() => {
-    if (currentUser && role === 'admin' && reports === null && state === 'idle') {
+    if (
+      currentUser &&
+      role === 'admin' &&
+      reports === null &&
+      state === 'idle'
+    ) {
       revalidate();
     }
   }, [currentUser, role, reports, state]);
