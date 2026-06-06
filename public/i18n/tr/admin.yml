@@ -338,14 +338,13 @@ design:
     success: Tema başarıyla kaydedildi!
     error: Tema kaydedilemedi
   fonts:
-    body: 
+    body:
       title: 'Fontlar'
       select: 'Font seç'
-  
 
 messages:
   upload: Lütfen görünmesini istediğin boyutta bir imaj seç ve boyutunun 400kb'tan küçük olduğundan emin ol
-    imageTooLarge: 'İmaj çok büyük. Lütfen 400 KB'den küçük bir imaj seçin'
+  imageTooLarge: 'İmaj çok büyük. Lütfen 400 KB tan küçük bir imaj seçin'
 
 platform:
   main:

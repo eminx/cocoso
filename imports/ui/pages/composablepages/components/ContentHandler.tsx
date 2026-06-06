@@ -88,7 +88,7 @@ function ButtonContent({ value, onChange }) {
 
   return (
     <Center>
-      <Flex direction="column" gap="4">
+      <Flex direction="column" gap="2">
         <FormField
           helper={<Trans i18nKey="admin:composable.form.labelHelper" />}
           label={<Trans i18nKey="admin:composable.form.label" />}
