@@ -358,6 +358,17 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
                     options={allResourcesForSelect}
                     style={{ width: '100%', marginTop: '1rem' }}
                     styles={{
+                      control: (base: any) => ({
+                        ...base,
+                        borderRadius: 'var(--cocoso-border-radius)',
+                        borderColor: 'var(--cocoso-colors-theme-200)',
+                        ':hover': {
+                          borderColor: 'var(--cocoso-colors-theme-300)',
+                        },
+                        ':focus': {
+                          borderColor: 'var(--cocoso-colors-theme-500)',
+                        },
+                      }),
                       option: (styles, { data }) => ({
                         ...styles,
                         borderLeft: `8px solid ${data.color}`,

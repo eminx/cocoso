@@ -257,7 +257,6 @@ export default function PublicActivityForm({
       >
         <AutoCompleteSelect
           isClearable
-          onChange={handleSelectResource}
           components={animatedComponents}
           options={state.resources}
           placeholder={t('form.resource.holder')}
@@ -267,6 +266,10 @@ export default function PublicActivityForm({
             width: '100%',
           }}
           styles={{
+            control: (base) => ({
+              ...base,
+              borderRadius: 'var(--cocoso-border-radius)',
+            }),
             option: (styles, { data }) => ({
               ...styles,
               fontWeight: data.isCombo ? 'bold' : 'normal',
@@ -275,6 +278,7 @@ export default function PublicActivityForm({
           }}
           value={state.selectedResource}
           getOptionValue={(option) => option._id}
+          onChange={handleSelectResource}
         />
       </FormField>
 

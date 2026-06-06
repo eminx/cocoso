@@ -41,7 +41,10 @@ export const emptyFormValues: CalendarActivityFormValues = {
   title: '',
 };
 
-export default function CalendarActivityForm({ activity, onFinalize }: CalendarActivityFormProps) {
+export default function CalendarActivityForm({
+  activity,
+  onFinalize,
+}: CalendarActivityFormProps) {
   const [state, setState] = useState<{
     datesAndTimes: DateAndTime[];
     formValues: CalendarActivityFormValues;
@@ -52,7 +55,11 @@ export default function CalendarActivityForm({ activity, onFinalize }: CalendarA
     datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
     formValues: activity || emptyFormValues,
     selectedResource: activity
-      ? { label: activity.resource || '', _id: activity.resourceId || '', value: activity.resourceId }
+      ? {
+          label: activity.resource || '',
+          _id: activity.resourceId || '',
+          value: activity.resourceId,
+        }
       : null,
     isExclusiveActivity: activity ? activity.isExclusiveActivity || true : true,
     resources: [],
@@ -223,12 +230,15 @@ export default function CalendarActivityForm({ activity, onFinalize }: CalendarA
       >
         <AutoCompleteSelect
           isClearable
-          onChange={handleSelectResource}
           components={animatedComponents}
           options={state.resources}
           placeholder={t('form.resource.holder')}
           style={{ width: '100%', marginTop: '1rem' }}
           styles={{
+            control: (base) => ({
+              ...base,
+              borderRadius: 'var(--cocoso-border-radius)',
+            }),
             option: (styles, { data }) => ({
               ...styles,
               fontWeight: data.isCombo ? 'bold' : 'normal',
@@ -237,6 +247,7 @@ export default function CalendarActivityForm({ activity, onFinalize }: CalendarA
           }}
           value={state.selectedResource}
           getOptionValue={(option) => option._id}
+          onChange={handleSelectResource}
         />
       </FormField>
 
