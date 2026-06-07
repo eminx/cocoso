@@ -3,7 +3,11 @@ import { Random } from 'meteor/random';
 import { check } from 'meteor/check';
 
 import Images from './image.collection';
-import { processImage, ImageVariantUrls, ImageContext } from '../_utils/services/imageProcessor';
+import {
+  processImage,
+  ImageVariantUrls,
+  ImageContext,
+} from '../_utils/services/imageProcessor';
 import { uploadToS3 } from '../_utils/services/aws.upload';
 import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
@@ -23,7 +27,10 @@ async function uploadImageMethod(
 }> {
   const user = await Meteor.userAsync();
   if (!user) {
-    throw new Meteor.Error('not-authorized', 'You must be logged in to upload images');
+    throw new Meteor.Error(
+      'not-authorized',
+      'You must be logged in to upload images'
+    );
   }
 
   const host = getHost(this);
@@ -41,13 +48,13 @@ async function uploadImageMethod(
 
   // Generate a unique folder key for S3
   const uniqueId = Random.id();
-  const folderKey = `images/${user._id}/${uniqueId}`;
+  const folderKey = `images/${user.username}/${uniqueId}`;
 
-  // Upload all variants to S3 in parallel
+  // Upload all variants to S3 in parallel (pass the variant buffer first)
   const uploadResults = await Promise.all(
     variants.map(async (variant) => {
       const key = `${folderKey}/${variant.suffix}.webp`;
-      const url = await uploadToS3(key, 'image/webp');
+      const url = await uploadToS3(variant.buffer, key, 'image/webp');
       return { suffix: variant.suffix, url };
     })
   );
@@ -108,7 +115,9 @@ async function deleteImageMethod(imageId: string) {
 
   // Delete all variants from S3
   const variantUrls = Object.values(image.variants) as string[];
-  const { deleteMultipleFromS3 } = await import('../_utils/services/aws.upload');
+  const { deleteMultipleFromS3 } = await import(
+    '../_utils/services/aws.upload'
+  );
   await deleteMultipleFromS3(variantUrls);
 
   // Remove from DB
@@ -116,8 +125,17 @@ async function deleteImageMethod(imageId: string) {
 }
 
 Meteor.methods({
-  'images.upload'(fileBufferBase64: string, originalName: string, context: ImageContext) {
-    return uploadImageMethod.call(this, fileBufferBase64, originalName, context);
+  'images.upload'(
+    fileBufferBase64: string,
+    originalName: string,
+    context: ImageContext
+  ) {
+    return uploadImageMethod.call(
+      this,
+      fileBufferBase64,
+      originalName,
+      context
+    );
   },
 
   'images.delete'(imageId: string) {

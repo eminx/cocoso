@@ -22,6 +22,7 @@ import {
   NotificationBadge,
   Text,
 } from '/imports/ui/core';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 import {
   canCreateContentAtom,
@@ -81,6 +82,8 @@ export function UserThumb({ notificationsCounter = 0 }: UserThumbProps) {
   }
 
   const isNotification = notificationsCounter && notificationsCounter !== 0;
+  const currentUserAvatarUrl =
+    getImageUrl(currentUser.avatar?.src, 'thumb') || undefined;
 
   return (
     <Flex
@@ -99,7 +102,7 @@ export function UserThumb({ notificationsCounter = 0 }: UserThumbProps) {
       <Avatar
         name={currentUser.username}
         size={isDesktop ? 'md' : 'sm'}
-        src={currentUser.avatar && currentUser.avatar.src}
+        src={currentUserAvatarUrl}
       >
         {isNotification ? (
           <NotificationBadge

@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import { Center, Flex, Heading, Image, Text } from '/imports/ui/core';
+import { getImageUrl, getImageUrlBest } from '../utils/imageHelper';
 
 export interface GridderProps {
   items: any[];
@@ -13,14 +14,15 @@ export default function Gridder({ items }: GridderProps) {
   }
 
   const imageUrl =
-    items.find((item) => item.imageUrl)?.imageUrl ||
-    items.find((item) => {
-      if (item.images) {
-        return item.images[0];
-      }
-      return null;
-    })?.images[0] ||
-    null;
+    getImageUrlBest(
+      items.find((item) => item.imageUrl)?.imageUrl ||
+        items.find((item) => {
+          if (item.images) {
+            return item.images[0];
+          }
+          return null;
+        })?.images[0]
+    ) || null;
 
   return (
     <>
@@ -40,9 +42,10 @@ export default function Gridder({ items }: GridderProps) {
               <Image
                 w={360}
                 h={240}
-                src={
-                  item.imageUrl || (item.images && item.images[0]) || item.logo
-                }
+                src={getImageUrl(
+                  item.imageUrl || (item.images && item.images[0]) || item.logo,
+                  'small'
+                )}
               />
               <Heading fontSize={18}>
                 {item.title || item.label || item.settings?.name}

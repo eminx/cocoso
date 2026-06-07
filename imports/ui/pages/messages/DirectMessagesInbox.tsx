@@ -20,6 +20,7 @@ import {
   Modal,
   Text,
 } from '/imports/ui/core';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 import { allHostsAtom, currentUserAtom } from '/imports/state';
 import { Bio } from '/imports/ui/entry/UserHybrid';
 import MemberAvatarEtc from '/imports/ui/generic/MemberAvatarEtc';
@@ -305,44 +306,48 @@ export default function DirectMessagesInbox() {
               zIndex: 10,
             }}
           >
-            {members.map((u: any, index: number) => (
-              <Flex
-                key={u._id}
-                align="center"
-                css={{
-                  cursor: 'pointer',
-                  padding: '0.6rem 0.75rem',
-                  background:
-                    index === focusedIndex
-                      ? 'var(--cocoso-colors-gray-100)'
-                      : 'transparent',
-                  '&:hover': { background: 'var(--cocoso-colors-gray-50)' },
-                }}
-                gap="1"
-                onClick={() => handleStartConversation(u._id)}
-              >
-                <Avatar name={u.username} size="sm" src={u.avatar?.src} />
-                <Box css={{ flex: 1 }}>
-                  <Text
-                    fontWeight="bold"
-                    size="md"
-                    css={{ marginRight: '0.2rem' }}
-                  >
-                    {u.username}
-                  </Text>
-                  {(u.firstName || u.lastName) && (
-                    <Text size="sm" color="gray.500">
-                      {[u.firstName, u.lastName].filter(Boolean).join(' ')}
+            {members.map((u: any, index: number) => {
+              const avatarUrl = getImageUrl(u.avatar, 'thumb') || undefined;
+
+              return (
+                <Flex
+                  key={u._id}
+                  align="center"
+                  css={{
+                    cursor: 'pointer',
+                    padding: '0.6rem 0.75rem',
+                    background:
+                      index === focusedIndex
+                        ? 'var(--cocoso-colors-gray-100)'
+                        : 'transparent',
+                    '&:hover': { background: 'var(--cocoso-colors-gray-50)' },
+                  }}
+                  gap="1"
+                  onClick={() => handleStartConversation(u._id)}
+                >
+                  <Avatar name={u.username} size="sm" src={avatarUrl} />
+                  <Box css={{ flex: 1 }}>
+                    <Text
+                      fontWeight="bold"
+                      size="md"
+                      css={{ marginRight: '0.2rem' }}
+                    >
+                      {u.username}
+                    </Text>
+                    {(u.firstName || u.lastName) && (
+                      <Text size="sm" color="gray.500">
+                        {[u.firstName, u.lastName].filter(Boolean).join(' ')}
+                      </Text>
+                    )}
+                  </Box>
+                  {getCommunityLabel(u.memberHosts) && (
+                    <Text size="xs" color="gray.400" css={{ flexShrink: 0 }}>
+                      {getCommunityLabel(u.memberHosts)}
                     </Text>
                   )}
-                </Box>
-                {getCommunityLabel(u.memberHosts) && (
-                  <Text size="xs" color="gray.400" css={{ flexShrink: 0 }}>
-                    {getCommunityLabel(u.memberHosts)}
-                  </Text>
-                )}
-              </Flex>
-            ))}
+                </Flex>
+              );
+            })}
           </Box>
         )}
       </Box>

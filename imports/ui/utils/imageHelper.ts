@@ -20,14 +20,25 @@ interface ImageDocument {
   variants: ImageVariants;
 }
 
+interface ImageSrcObject {
+  src?: string;
+}
+
 /**
  * An image reference can be:
  * - A plain string URL (legacy format from before the migration)
+ * - An object with a `src` URL (avatar preview / legacy upload shape)
  * - An object with variants (new format from the Images collection)
  * - An Images collection document fetched from minimongo
  * - null/undefined
  */
-export type ImageRef = string | ImageVariants | ImageDocument | null | undefined;
+export type ImageRef =
+  | string
+  | ImageSrcObject
+  | ImageVariants
+  | ImageDocument
+  | null
+  | undefined;
 
 /**
  * Resolve an image reference to the most appropriate URL for a given display size.
@@ -42,9 +53,10 @@ export function getImageUrl(
 ): string | null {
   if (!image) return null;
 
-  // Case 1: It's a plain string — legacy format, pass through
+  // Case 1: It's a plain string — legacy format or S3 URL. Try to derive a variant,
+  // otherwise return the string unchanged.
   if (typeof image === 'string') {
-    return image;
+    return getImageUrlFromString(image, size);
   }
 
   // Case 2: It's an ImageDocument with _id and variants
@@ -52,13 +64,36 @@ export function getImageUrl(
     return image.variants[size] || image.variants.full || null;
   }
 
-  // Case 3: It's just a variants object directly
-  if ('thumb' in image || 'small' in image || 'medium' in image || 'full' in image) {
+  // Case 3: It's an object with `src` property, such as legacy avatar shape.
+  if ('src' in image && typeof image.src === 'string') {
+    return getImageUrlFromString(image.src, size);
+  }
+
+  // Case 4: It's just a variants object directly
+  if (
+    'thumb' in image ||
+    'small' in image ||
+    'medium' in image ||
+    'full' in image
+  ) {
     const variants = image as ImageVariants;
     return variants[size] || variants.full || null;
   }
 
   return null;
+}
+
+function getImageUrlFromString(imageUrl: string, size: ImageSize): string {
+  const variantPattern =
+    /^(https?:\/\/[^/]+\/images\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+\/)(thumb|small|medium|full)(\.[a-zA-Z0-9]+)$/;
+  const match = imageUrl.match(variantPattern);
+
+  if (!match) {
+    return imageUrl;
+  }
+
+  const [, prefix, , extension] = match;
+  return `${prefix}${size}${extension}`;
 }
 
 /**

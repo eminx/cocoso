@@ -14,14 +14,6 @@ import {
 import DocumentUploadHelper from './UploadHelpers';
 import { message } from '../generic/message';
 
-interface LocalImage {
-  src: string;
-  /** The image _id from the Images collection (after upload) */
-  imageId?: string;
-  resizableData?: File;
-  uploaded: boolean;
-}
-
 const thumbStyle = (backgroundImage?: string): React.CSSProperties => ({
   backgroundImage: backgroundImage ? `url('${backgroundImage}')` : undefined,
 });
@@ -32,7 +24,7 @@ export interface ImageUploaderProps {
   ping?: boolean;
   /** Upload context: 'entry', 'avatar', or 'logo' */
   uploadParam?: 'entry' | 'avatar' | 'logo';
-  /** Called with the image _ids after successful upload */
+  /** Called with the image URLs after successful upload */
   onUploadedImages: (images: string[]) => void;
 }
 
@@ -66,7 +58,8 @@ export default function ImageUploader({
           );
           // Upload through server: Sharp → WebP variants → S3
           const result = await uploadImage(resizedImage!, uploadParam);
-          return result._id;
+          // Return the actual stored image URL instead of the Images collection _id.
+          return result.variants.full;
         })
       );
       onUploadedImages(imagesReadyToSave);

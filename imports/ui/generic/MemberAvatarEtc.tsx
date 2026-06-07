@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Avatar, Box, Center, Flex, Tag, Text } from '/imports/ui/core';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 import { getFullName } from '../../api/_utils/shared';
 
@@ -18,6 +19,7 @@ interface UserKeyword {
 interface UserAvatar {
   src?: string;
   date?: Date;
+  [key: string]: any;
 }
 
 interface User {
@@ -41,7 +43,7 @@ export default function MemberAvatarEtc({
   if (!user) return null;
 
   const avatarSrc =
-    typeof user.avatar === 'object' ? user.avatar?.src : user.avatar;
+    getImageUrl(user.avatar, isThumb ? 'thumb' : 'full') || undefined;
 
   return (
     <Box mb="6">

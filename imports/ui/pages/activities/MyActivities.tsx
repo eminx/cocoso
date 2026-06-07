@@ -12,16 +12,12 @@ import {
   Tag,
   Text,
 } from '/imports/ui/core';
-import { useAtomValue } from 'jotai';
 
-import { currentHostAtom } from '../../../state';
+import TablyRouter from '/imports/ui/generic/TablyRouter';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
+
 import NiceList from '../../generic/NiceList';
 import Template from '../../layout/Template';
-import TablyRouter from '/imports/ui/generic/TablyRouter';
-
-const focusStyle = {
-  boxShadow: 'none',
-};
 
 function ActivityItem({ act }) {
   const [t] = useTranslation('activities');
@@ -34,7 +30,10 @@ function ActivityItem({ act }) {
             fit="cover"
             w="xs"
             fill
-            src={act.imageUrl || (act.images && act.images[0])}
+            src={getImageUrl(
+              act.imageUrl || (act.images && act.images[0]),
+              'small'
+            )}
           />
         </Box>
       )}
@@ -52,8 +51,7 @@ function ActivityItem({ act }) {
   );
 }
 
-export default function Activities({ history }) {
-  let currentHost = useAtomValue(currentHostAtom);
+export default function Activities() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
 import CheckIcon from 'lucide-react/dist/esm/icons/check';
 import { useAtomValue } from 'jotai';
 
@@ -19,11 +18,10 @@ import {
 import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import FormField from '/imports/ui/forms/FormField';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 import { ActivityDates } from './EmailPreview';
 import { currentHostAtom } from '/imports/state';
-
-const yesterday = dayjs(new Date()).add(-1, 'days');
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -36,9 +34,6 @@ function ListItemCheckbox({ item, children, onSelect }) {
     return null;
   }
 
-  const { isSelected } = item;
-
-  const selectedBgContainer = item.isSelected ? 'green.100' : 'white';
   const selectedBgCheck = item.isSelected ? 'green.500' : 'white';
 
   return (
@@ -73,8 +68,10 @@ function ListItemCheckbox({ item, children, onSelect }) {
         </Box>
         <Image
           fit="cover"
-          height="80px"
-          src={(item.images && item.images[0]) || item.imageUrl}
+          src={getImageUrl(
+            (item.images && item.images[0]) || item.imageUrl,
+            'thumb'
+          )}
           css={{
             backgroundColor: 'var(--cocoso-colors-theme-100)',
           }}

@@ -40,9 +40,12 @@ export default function AdminSettingsLogo() {
   const uploadLogo = async () => {
     setUploading(true);
     try {
-      const resizedImage = await resizeImage(localImage.uploadableImage, 800);
-      const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
-      await call('assignHostLogo', uploadedImage);
+      const resizedImage = await resizeBeforeUpload(
+        localImage.uploadableImage,
+        800
+      );
+      const result = await uploadImage(resizedImage!, 'logo');
+      await call('assignHostLogo', result.variants.full);
       setCurrentHost(await call('getCurrentHost'));
       message.success(t('logo.message.success'));
     } catch (error: any) {

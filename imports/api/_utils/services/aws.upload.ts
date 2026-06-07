@@ -52,7 +52,6 @@ export async function uploadToS3(
   });
 
   await client.send(command);
-
   // Construct the public URL
   return `https://${s3Settings.AWSBucketName}.s3.${s3Settings.AWSRegion}.amazonaws.com/${key}`;
 }

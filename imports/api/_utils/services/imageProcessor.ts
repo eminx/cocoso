@@ -33,10 +33,12 @@ const CONTEXT_SIZES: Record<ImageContext, SizeConfig[]> = {
   avatar: [
     { suffix: 'thumb', width: 150, quality: 75 },
     { suffix: 'small', width: 300, quality: 80 },
+    { suffix: 'medium', width: 600, quality: 85 },
     { suffix: 'full', width: 600, quality: 85 },
   ],
   // Used for both hostLogo and platformLogo
   logo: [
+    { suffix: 'thumb', width: 150, quality: 75 },
     { suffix: 'small', width: 200, quality: 80 },
     { suffix: 'medium', width: 400, quality: 85 },
     { suffix: 'full', width: 800, quality: 85 },

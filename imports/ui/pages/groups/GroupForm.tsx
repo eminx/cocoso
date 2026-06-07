@@ -6,6 +6,7 @@ import GenericEntryForm from '/imports/ui/forms/GenericEntryForm';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
 import FormField from '/imports/ui/forms/FormField';
 import { loaderAtom } from '/imports/ui/utils/loaderHandler';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 import groupFormFields from './groupFormFields';
 
@@ -80,7 +81,7 @@ export default function GroupForm({ group, onFinalize }: GroupFormProps) {
       isSendingForm: true,
     }));
 
-    parseGroup(images?.length && images[0]);
+    parseGroup(images?.length && (getImageUrl(images[0], 'full') || images[0]));
   };
 
   return (

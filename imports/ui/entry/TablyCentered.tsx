@@ -20,6 +20,7 @@ import {
 import NiceSlider from '../generic/NiceSlider';
 import Tabs from '../core/Tabs';
 import BackLink, { BackLinkData } from './BackLink';
+import { getImageUrlBest } from '../utils/imageHelper';
 
 interface Author {
   username: string;
@@ -193,7 +194,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
   const selectedTab = tabs?.find((tab, index) => index === tabIndex);
 
   const description = subTitle || content?.toString() || author?.username;
-  const imageUrl = images && images[0];
+  const imageUrl = getImageUrlBest(images && images[0]);
 
   return (
     <>

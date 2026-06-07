@@ -8,11 +8,12 @@ import { Box, Flex, Tag } from '/imports/ui/core';
 
 import { DateJust } from '../entry/FancyDate';
 import { allHostsAtom } from '../../state';
+import { getImageUrl } from '../utils/imageHelper';
 
 const isClient = Meteor?.isClient;
 
 if (isClient) {
-  import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+  import('react-lazy-load-image-component/src/effects/black-and-white.css');
 }
 
 const today = dayjs().format('YYYY-MM-DD');
@@ -87,7 +88,13 @@ export interface SexyThumbProps {
   tags?: string[];
 }
 
-function SexyThumb({ activity, host, index, showPast = false, tags }: SexyThumbProps) {
+function SexyThumb({
+  activity,
+  host,
+  index,
+  showPast = false,
+  tags,
+}: SexyThumbProps) {
   const allHosts = useAtomValue(allHostsAtom);
 
   if (!activity) {
@@ -95,7 +102,9 @@ function SexyThumb({ activity, host, index, showPast = false, tags }: SexyThumbP
   }
 
   const { datesAndTimes, readingMaterial, subTitle, tag, title } = activity;
-  const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
+  // Resolve image: handles both legacy URLs and new Images collection references
+  const imageRef = (activity.images && activity.images[0]) || activity.imageUrl;
+  const imageUrl = getImageUrl(imageRef, 'medium');
 
   const dates = datesAndTimes;
   const futureDates = dates.filter((date) =>

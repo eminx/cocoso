@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { useAtom } from 'jotai';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
@@ -19,6 +19,7 @@ import FormField from '/imports/ui/forms/FormField';
 import Quill from '/imports/ui/forms/Quill';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
 import Menu from '/imports/ui/generic/Menu';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 import ContentInserter from './ContentInserter';
 import { newsletterAtom } from './index';
@@ -73,7 +74,7 @@ function BodyContentHandler({ content }) {
             return {
               ...cont,
               value: {
-                src: images[0],
+                src: getImageUrl(images[0], 'full') || images[0],
               },
             };
           }

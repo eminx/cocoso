@@ -3,6 +3,7 @@
     /* Basic Options */
     "target": "es2018",
     "module": "esNext",
+    "moduleResolution": "node",
     "lib": ["esnext", "dom"],
     "allowJs": true,
     "checkJs": false,

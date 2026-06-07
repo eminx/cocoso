@@ -6,6 +6,7 @@ import { useAtomValue } from 'jotai';
 import { currentHostAtom } from '/imports/state';
 import { Box, Center, Flex } from '/imports/ui/core';
 import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
@@ -105,7 +106,7 @@ export default function WorksHybrid({ Host, works }: WorksHybridProps) {
                     ?.color
                 }
                 host={currentHost?.isPortalHost ? work.host : null}
-                imageUrl={work?.images && work.images[0]}
+                imageUrl={getImageUrl(work?.images?.[0], 'small')}
                 index={index}
                 tag={work.category?.label}
                 title={work.title}

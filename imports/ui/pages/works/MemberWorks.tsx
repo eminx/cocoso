@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, useLoaderData } from 'react-router';
 
 import { Box } from '/imports/ui/core';
-import { message } from '/imports/ui/generic/message';
 import Paginate from '/imports/ui/listing/Paginate';
 import NewGridThumb from '/imports/ui/listing/NewGridThumb';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 export default function MemberWorks({ Host, isPortalHost }) {
   const { works } = useLoaderData();
@@ -29,7 +29,7 @@ export default function MemberWorks({ Host, isPortalHost }) {
                     url: work.authorAvatar,
                   }}
                   host={isPortalHost && work.host}
-                  imageUrl={work.images[0]}
+                  imageUrl={getImageUrl(work.images?.[0], 'small')}
                   tag={work.category?.label}
                   title={work.title}
                 />
@@ -42,7 +42,7 @@ export default function MemberWorks({ Host, isPortalHost }) {
                     url: work.authorAvatar,
                   }}
                   host={isPortalHost && work.host}
-                  imageUrl={work.images[0]}
+                  imageUrl={getImageUrl(work.images?.[0], 'small')}
                   tag={work.category?.label}
                   title={work.title}
                 />

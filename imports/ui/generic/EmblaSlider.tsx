@@ -6,6 +6,7 @@ import FsLightbox from 'fslightbox-react';
 
 import { Center, Flex } from '/imports/ui/core';
 import type { DotsProps } from '/imports/ui/types';
+import { getImageUrl } from '../utils/imageHelper';
 
 const imageStyle: React.CSSProperties = {
   borderRadius: 'var(--cocoso-border-radius)',
@@ -138,6 +139,9 @@ export default function EmblaSlider({
     return null;
   }
 
+  // Resolve image references to URLs (handles both legacy strings and image _ids)
+  const resolvedImages = images.map((img) => getImageUrl(img, 'medium') || img);
+
   const scrollPrev = useCallback(() => {
     if (!emblaApi) {
       return;
@@ -187,8 +191,8 @@ export default function EmblaSlider({
       setLoadedIndices((prev) => {
         const next = new Set(prev);
         next.add(idx);
-        next.add((idx + 1) % images.length);
-        next.add((idx - 1 + images.length) % images.length);
+        next.add((idx + 1) % resolvedImages.length);
+        next.add((idx - 1 + resolvedImages.length) % resolvedImages.length);
         return next;
       });
     };
@@ -196,28 +200,35 @@ export default function EmblaSlider({
     return () => {
       emblaApi.off('select', onSelect);
     };
-  }, [emblaApi, images.length]);
+  }, [emblaApi, resolvedImages.length]);
 
   const toggleLightbox = () =>
     setState((prev) => ({ ...prev, lightboxToggle: !prev.lightboxToggle }));
 
   const lightBoxProps = {
     toggler: state.lightboxToggle,
-    sources: images.map((img) => (
-      <img key={img} alt={img} src={img} style={{ ...imageStyle, height }} />
+    sources: resolvedImages.map((img) => (
+      <img
+        key={img}
+        alt={img}
+        loading="lazy"
+        src={img}
+        style={{ ...imageStyle, height }}
+      />
     )),
     sourceIndex: state.currentSlideIndex,
   };
 
-  if (images.length === 1) {
+
+  if (resolvedImages.length === 1) {
     return (
       <>
         <Flex h={height} justify="center">
           <Center>
             <img
-              alt={images[0]}
+              alt={resolvedImages[0]}
               loading="lazy"
-              src={images[0]}
+              src={resolvedImages[0]}
               style={{ ...imageStyle, height }}
               onClick={toggleLightbox}
             />
@@ -233,7 +244,7 @@ export default function EmblaSlider({
     <div className="embla">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {images.map((img, index) => (
+          {resolvedImages.map((img, index) => (
             <div className="embla__slide" key={img}>
               <img
                 alt={img}
@@ -260,7 +271,7 @@ export default function EmblaSlider({
           </svg>
         </button>
 
-        <Dots currentSlideIndex={state.currentSlideIndex} images={images} />
+        <Dots currentSlideIndex={state.currentSlideIndex} images={resolvedImages} />
 
         <button className="embla__next embla__button" onClick={scrollNext}>
           <svg className="embla__button__svg" viewBox="0 0 532 532">

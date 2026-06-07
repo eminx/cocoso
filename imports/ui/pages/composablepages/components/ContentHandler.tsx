@@ -18,6 +18,7 @@ import Quill from '/imports/ui/forms/Quill';
 import ImageUploader from '/imports/ui/forms/ImageUploader';
 import FormField from '/imports/ui/forms/FormField';
 import Menu from '/imports/ui/generic/Menu';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 const ReactPlayer = loadable(() => import('react-player'), {
   ssr: false, // react-player doesn't work on server
@@ -220,7 +221,7 @@ function ImageContent({ value, ping, onChange }) {
     onChange(
       {
         ...value,
-        src: images[0],
+        src: getImageUrl(images[0], 'full') || images[0],
       },
       true
     );

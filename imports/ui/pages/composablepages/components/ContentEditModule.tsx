@@ -10,6 +10,7 @@ import TrashIcon from 'lucide-react/dist/esm/icons/trash';
 
 import type { Module } from '/imports/ui/entry/ComposablePageHybrid';
 import { Divider } from '/imports/ui/core';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 import { ComposablePageContext } from '../ComposablePageForm';
 
@@ -30,9 +31,19 @@ function ModulePreview({ content }: ModuleType) {
       case 'divider':
         return <Divider />;
       case 'image':
-        return <img src={value?.src} style={{ borderRadius: '6px' }} />;
+        return (
+          <img
+            src={getImageUrl(value?.src, 'full') || value?.src}
+            style={{ borderRadius: '6px' }}
+          />
+        );
       case 'image-slider':
-        return <img src={value?.images?.[0]} style={{ borderRadius: '6px' }} />;
+        return (
+          <img
+            src={getImageUrl(value?.images?.[0], 'medium') || value?.images?.[0]}
+            style={{ borderRadius: '6px' }}
+          />
+        );
       case 'text':
         return (
           <Box px="2" style={{ fontSize: '12px' }}>

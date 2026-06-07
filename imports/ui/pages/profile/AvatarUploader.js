@@ -2,8 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, Button, Flex, Text } from '/imports/ui/core';
-
-import FileDropper from '../../forms/FileDropper';
+import FileDropper from '/imports/ui/forms/FileDropper';
 
 export default function AvatarUploader({
   imageUrl,
@@ -22,7 +21,9 @@ export default function AvatarUploader({
       <Box>
         <Box h="120px" w="120px">
           <FileDropper
-            imageUrl={imageUrl}
+            imageUrl={
+              imageUrl && typeof imageUrl === 'object' ? imageUrl.src : imageUrl
+            }
             label={t('profile.form.avatar.fileDropper')}
             height="100%"
             imageFit="cover"

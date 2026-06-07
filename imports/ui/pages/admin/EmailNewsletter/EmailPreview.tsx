@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 import truncate from 'html-truncate';
 
 import { DateTimeOccurrence } from '/imports/ui/types';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
@@ -186,7 +187,7 @@ export default function EmailPreview({ allHosts, currentHost, email }) {
               <Img
                 alt={subject}
                 height="auto"
-                src={email.imageUrl}
+                src={getImageUrl(email.imageUrl, 'full') || undefined}
                 style={imageStyle}
               />
             )}
@@ -205,7 +206,7 @@ export default function EmailPreview({ allHosts, currentHost, email }) {
             <Img
               alt={subject}
               height="auto"
-              src={content?.value?.src}
+              src={getImageUrl(content?.value?.src, 'full') || undefined}
               style={imageStyle}
             />
           </Section>
@@ -254,7 +255,7 @@ export default function EmailPreview({ allHosts, currentHost, email }) {
             <Img
               alt={settings?.name}
               height="150px"
-              src={logo}
+              src={getImageUrl(logo, 'full') || undefined}
               style={{
                 height: 'auto',
                 margin: '24px auto',
@@ -311,8 +312,11 @@ export default function EmailPreview({ allHosts, currentHost, email }) {
                       alt={activity?.title}
                       height="auto"
                       src={
-                        (activity.images && activity.images[0]) ||
-                        activity.imageUrl
+                        getImageUrl(
+                          (activity.images && activity.images[0]) ||
+                            activity.imageUrl,
+                          'full'
+                        ) || undefined
                       }
                       style={imageStyle}
                       width="100%"
@@ -368,7 +372,7 @@ export default function EmailPreview({ allHosts, currentHost, email }) {
                     <Img
                       alt={work?.title}
                       height="auto"
-                      src={work.images && work.images[0]}
+                      src={getImageUrl(work.images[0], 'full') || undefined}
                       style={imageStyle}
                       width="100%"
                     />

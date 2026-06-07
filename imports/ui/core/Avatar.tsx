@@ -8,7 +8,7 @@ export interface AvatarProps {
   borderRadius?: string;
   name?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl' | '6xl';
-  src?: string;
+  src?: string | null;
   children?: React.ReactNode; // for badge or status
 }
 

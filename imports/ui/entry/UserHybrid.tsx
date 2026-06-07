@@ -9,6 +9,7 @@ import { Alert, Box, Center, Flex, Tabs } from '/imports/ui/core';
 import { stripHtml, getFullName } from '/imports/api/_utils/shared';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 import MemberAvatarEtc from '/imports/ui/generic/MemberAvatarEtc';
+import { getImageUrlBest } from '/imports/ui/utils/imageHelper';
 import type { Host } from '/imports/ui/types';
 
 import BackLink from './BackLink';
@@ -58,7 +59,10 @@ export interface UserHybridProps {
 }
 
 export default function UserHybrid({ user, Host }: UserHybridProps) {
-  const { usernameSlug, workId } = useParams<{ usernameSlug: string; workId?: string }>();
+  const { usernameSlug, workId } = useParams<{
+    usernameSlug: string;
+    workId?: string;
+  }>();
   const location = useLocation();
 
   if (usernameSlug && usernameSlug[0] !== '@') {
@@ -104,7 +108,7 @@ export default function UserHybrid({ user, Host }: UserHybridProps) {
     Host?.settings?.name
   }`;
   const url = `https://${Host.host}/@${user.username}`;
-  const imageUrl = user?.avatar?.src || user?.avatar || Host.logo;
+  const imageUrl = getImageUrlBest(user.avatar || Host.logo) || undefined;
   const tags = user.keywords?.map((k) => k.keywordLabel);
   const description = user.bio && stripHtml(user.bio)?.substring(0, 150);
 

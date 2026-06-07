@@ -6,7 +6,11 @@ import { Box, Button, Center, Text } from '/imports/ui/core';
 import { Platform } from '/imports/ui/types';
 import { platformAtom } from '/imports/state';
 import { message } from '/imports/ui/generic/message';
-import { call, resizeImage, uploadImage } from '/imports/api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
+import {
+  resizeBeforeUpload,
+  uploadImage,
+} from '/imports/api/_utils/services/clientUpload';
 import FileDropper from '/imports/ui/forms/FileDropper';
 
 export default function PlatformSettingsLogo() {
@@ -39,12 +43,12 @@ export default function PlatformSettingsLogo() {
   const uploadLogo = async () => {
     setUploading(true);
     try {
-      const resizedImage = await resizeImage(localImage.uploadableImage, 800);
-      const uploadedImage = await uploadImage(
-        resizedImage,
-        'platformLogoUpload'
+      const resizedImage = await resizeBeforeUpload(
+        localImage?.uploadableImage,
+        800
       );
-      await call('updatePlatformSettings', { logo: uploadedImage });
+      const result = await uploadImage(resizedImage!, 'logo');
+      await call('updatePlatformSettings', { logo: result.variants.full });
       const respond = (await call('getPlatform')) as Platform;
       setPlatform(respond);
       message.success(t('logo.message.success'));

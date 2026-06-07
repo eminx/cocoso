@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useAtom } from 'jotai';
 
-import { Box, Button, Center, Flex, Checkbox, Text } from '/imports/ui/core';
-import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
+import { Button, Center, Flex, Checkbox, Text } from '/imports/ui/core';
+import Boxling from '/imports/ui/pages/admin/Boxling';
 import FileDropper from '/imports/ui/forms/FileDropper';
-import { currentHostAtom } from '../../../../state';
-import { call, resizeImage, uploadImage } from '../../../../api/_utils/shared';
+import { currentHostAtom } from '/imports/state';
+import {
+  resizeBeforeUpload,
+  uploadImage,
+} from '/imports/api/_utils/services/clientUpload';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 import { message } from '/imports/ui/generic/message';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';
-import Menu from '/imports/ui/generic/Menu';
-
-import ColorPicker from './HuePicker';
 
 export default function BackgroundHandler({
   uploadPing,
@@ -100,13 +101,13 @@ export default function BackgroundHandler({
     }
 
     try {
-      const resizedImage = await resizeImage(state.uploadableBgImage, 1200);
-      const uploadedImage = await uploadImage(
-        resizedImage,
-        'genericEntryImageUpload'
+      const resizedImage = await resizeBeforeUpload(
+        state.uploadableBgImage,
+        1200
       );
-      onStyleChange('backgroundImage', uploadedImage);
-      onUploadFinish(uploadedImage);
+      const result = await uploadImage(resizedImage!, 'entry');
+      onStyleChange('backgroundImage', result.variants.full);
+      onUploadFinish(result.variants.full);
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
@@ -124,7 +125,7 @@ export default function BackgroundHandler({
         ...prevState.theme,
         body: {
           ...prevState.theme.body,
-          backgroundImage: images[0],
+          backgroundImage: getImageUrl(images[0], 'full') || images[0],
         },
       },
     }));

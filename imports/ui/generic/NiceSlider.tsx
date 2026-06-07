@@ -6,6 +6,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { Box, Center, Flex, Image } from '/imports/ui/core';
 import type { DotsProps } from '/imports/ui/types';
+import { getImageUrl } from '../utils/imageHelper';
 
 if (Meteor.isClient) {
   import('react-slideshow-image/dist/styles.css');
@@ -145,13 +146,17 @@ export default function NiceSlider({
     return null;
   }
 
-  if (images.length === 1) {
+  // Resolve image references to URLs (handles both legacy strings and image _ids)
+  const resolvedImages = images.map((img) => getImageUrl(img, 'medium') || img);
+
+  if (resolvedImages.length === 1) {
     return (
       <>
         <Flex h={height} justify="center">
           <Center>
             <Image
-              src={images[0]}
+              loading="lazy"
+              src={resolvedImages[0]}
               style={imageStyle}
               onClick={() => setToggler(!toggler)}
             />
@@ -161,8 +166,8 @@ export default function NiceSlider({
         {Meteor.isClient && (
           <FsLightbox
             toggler={toggler}
-            sources={images.map((img) => (
-              <img key={img} alt={img} src={img} />
+            sources={resolvedImages.map((img) => (
+              <img key={img} alt={img} loading="lazy" src={img} />
             ))}
           />
         )}
@@ -172,7 +177,7 @@ export default function NiceSlider({
 
   return (
     <>
-      <ImageHandler height={height} images={images} width={width}>
+      <ImageHandler height={height} images={resolvedImages} width={width}>
         {(image, index) => (
           <Center key={image + index}>
             <Flex direction="column" justify="center">
@@ -190,8 +195,8 @@ export default function NiceSlider({
       {Meteor.isClient && (
         <FsLightbox
           toggler={toggler}
-          sources={images.map((img) => (
-            <img key={img} alt={img} src={img} />
+          sources={resolvedImages.map((img) => (
+            <img key={img} alt={img} loading="lazy" src={img} />
           ))}
         />
       )}

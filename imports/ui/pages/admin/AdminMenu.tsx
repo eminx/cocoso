@@ -15,6 +15,7 @@ import {
   ListItem,
   Text,
 } from '/imports/ui/core';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 import {
   currentHostAtom,
   currentUserAtom,
@@ -66,6 +67,7 @@ export function AdminUserThumb() {
   }
 
   const isCurrentRoute = location?.pathname?.includes('my-profile');
+  const avatarSrc = getImageUrl(currentUser.avatar?.src, 'medium') || undefined;
 
   return (
     <Box
@@ -81,7 +83,7 @@ export function AdminUserThumb() {
         <Avatar
           name={currentUser.username}
           size="lg"
-          src={currentUser.avatar && currentUser.avatar.src}
+          src={avatarSrc}
           css={{
             backgroundColor: 'var(--cocoso-colors-theme-100)',
             borderRadius: 'var(--cocoso-border-radius)',

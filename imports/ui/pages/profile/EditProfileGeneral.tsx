@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useAtomValue } from 'jotai';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { currentUserAtom } from '/imports/state';
 import { Box, Heading } from '/imports/ui/core';
 import AvatarUploader from '/imports/ui/pages/profile/AvatarUploader';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 import { call } from '/imports/api/_utils/shared';
 import {
@@ -110,7 +111,7 @@ export default function EditProfileGeneral() {
         <AvatarUploader
           imageUrl={
             uploadableAvatarLocal ||
-            (currentUser.avatar && currentUser.avatar.src)
+            getImageUrl(currentUser?.avatar?.src, 'medium')
           }
           isUploading={isUploading}
           uploadableAvatarLocal={uploadableAvatarLocal}

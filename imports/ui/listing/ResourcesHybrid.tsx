@@ -3,6 +3,7 @@ import { useAtomValue } from 'jotai';
 
 import { currentHostAtom } from '/imports/state';
 import { Box } from '/imports/ui/core';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
@@ -41,7 +42,7 @@ export default function ResourcesHybrid({
               <NewGridThumb
                 fixedImageHeight
                 host={currentHost?.isPortalHost ? resource.host : null}
-                imageUrl={resource.images?.[0]}
+                imageUrl={getImageUrl(resource.images?.[0], 'small')}
                 index={index}
                 title={resource.label}
               />
