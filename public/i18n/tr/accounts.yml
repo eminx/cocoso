@@ -49,15 +49,15 @@ password:
   labels:
     title: Şifreyi yenile
     subtitle:
-      forgot: Parolanı unuttuysan, e-postana gönderilen bir link aracılığıyla sıfırla.
+      forgot: Parolanı unuttuysan, e-postana gönderilen bir link aracılığıyla yenile.
       reset: Arzuladığın şifreyi oluştur
   form:
     email:
       label: Lütfen eposta adresini yaz
   message:
     linkSend: Yenileme linki eposta adresine gönderildi
-    checkMail: Lütfen e-postanı kontrol et ve şifreni sıfırlamak için gönderilen linke tıkla.
-    reset: Parolan başarıyla sıfırlandı. Şimdi giriş yapabilirsin.
+    checkMail: Lütfen e-postanı kontrol et ve şifreni yenilemek için gönderilen linke tıkla.
+    reset: Parolan başarıyla yenilendi. Şimdi giriş yapabilirsin.
 
 profile:
   label: Kişisel bilgiler
