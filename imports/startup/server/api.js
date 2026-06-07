@@ -4,27 +4,26 @@ import '../../api/_utils/schemas';
 import '../../api/_utils/services/mails/mail.methods';
 import '../../api/_utils/services/aws.slingshot';
 
+// Image processing — replaces Slingshot for image uploads
+import '../../api/images/image.collection';
+import '../../api/images/image.methods';
 import '../../api/hosts/host';
 import '../../api/hosts/host.methods';
 import '../../api/hosts/host.publications';
-
 import '../../api/users/user';
 import '../../api/users/user.roles';
 import '../../api/users/user.admin';
 import '../../api/users/user.methods';
 import '../../api/users/user.publications';
-
 import '../../api/pages/page';
 import '../../api/pages/page.methods';
 import '../../api/pages/page.publications';
 
 import '../../api/categories/category';
 import '../../api/categories/category.methods';
-
 import '../../api/works/work';
 import '../../api/works/work.methods';
 import '../../api/works/work.publications';
-
 import '../../api/groups/group';
 import '../../api/groups/group.methods';
 import '../../api/groups/group.publications';

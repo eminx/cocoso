@@ -6,7 +6,11 @@ import { currentUserAtom } from '/imports/state';
 import { Box, Heading } from '/imports/ui/core';
 import AvatarUploader from '/imports/ui/pages/profile/AvatarUploader';
 import Boxling from '/imports/ui/pages/admin/Boxling';
-import { call, resizeImage, uploadImage } from '/imports/api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
+import {
+  resizeBeforeUpload,
+  uploadImage,
+} from '/imports/api/_utils/services/clientUpload';
 import { message } from '/imports/ui/generic/message';
 
 import ProfileForm from './ProfileForm';
@@ -64,12 +68,13 @@ export default function EditProfileGeneral() {
     setIsUploading(true);
 
     try {
-      const resizedAvatar = await resizeImage(uploadableAvatar, 1200);
-      const uploadedAvatar = await uploadImage(
-        resizedAvatar,
-        'avatarImageUpload'
-      );
-      await call('setAvatar', uploadedAvatar);
+      // Client-side resize first pass
+      const resizedAvatar = await resizeBeforeUpload(uploadableAvatar, 1200);
+      // Upload through server: Sharp → WebP variants → S3
+      const result = await uploadImage(resizedAvatar!, 'avatar');
+      // Store the full variant URL (best quality) for now — schema expects a string
+      // Variants are still generated in S3 for future use
+      await call('setAvatar', result.variants.full);
       message.success(
         tc('message.success.save', {
           domain: `${tc('domains.your')} ${tc('domains.avatar')}`,

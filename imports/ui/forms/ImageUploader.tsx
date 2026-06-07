@@ -7,12 +7,17 @@ import toast from 'react-hot-toast';
 import { Box, Center, IconButton } from '/imports/ui/core';
 
 import FileDropper from './FileDropper';
-import { resizeImage, uploadImage } from '../../api/_utils/shared';
+import {
+  resizeBeforeUpload,
+  uploadImage,
+} from '../../api/_utils/services/clientUpload';
 import DocumentUploadHelper from './UploadHelpers';
 import { message } from '../generic/message';
 
 interface LocalImage {
   src: string;
+  /** The image _id from the Images collection (after upload) */
+  imageId?: string;
   resizableData?: File;
   uploaded: boolean;
 }
@@ -25,7 +30,9 @@ export interface ImageUploaderProps {
   preExistingImages?: string[];
   isMultiple?: boolean;
   ping?: boolean;
-  uploadParam?: string;
+  /** Upload context: 'entry', 'avatar', or 'logo' */
+  uploadParam?: 'entry' | 'avatar' | 'logo';
+  /** Called with the image _ids after successful upload */
   onUploadedImages: (images: string[]) => void;
 }
 
@@ -33,7 +40,7 @@ export default function ImageUploader({
   preExistingImages = [],
   isMultiple = true,
   ping = false,
-  uploadParam = 'genericEntryImageUpload',
+  uploadParam = 'entry',
   onUploadedImages,
 }: ImageUploaderProps) {
   const [localImages, setLocalImages] = useState(
@@ -52,12 +59,14 @@ export default function ImageUploader({
           if (uploadableImage.uploaded) {
             return uploadableImage.src;
           }
-          const resizedImage = await resizeImage(
+          // Client-side resize as first pass for large files
+          const resizedImage = await resizeBeforeUpload(
             uploadableImage.resizableData,
             1600
           );
-          const uploadedImage = await uploadImage(resizedImage, uploadParam);
-          return uploadedImage;
+          // Upload through server: Sharp → WebP variants → S3
+          const result = await uploadImage(resizedImage!, uploadParam);
+          return result._id;
         })
       );
       onUploadedImages(imagesReadyToSave);
