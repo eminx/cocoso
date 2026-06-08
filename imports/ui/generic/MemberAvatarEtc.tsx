@@ -24,7 +24,7 @@ interface UserAvatar {
 
 interface User {
   username?: string;
-  avatar?: UserAvatar | string;
+  avatar?: UserAvatar;
   keywords?: UserKeyword[];
   firstName?: string;
   lastName?: string;
@@ -42,8 +42,9 @@ export default function MemberAvatarEtc({
 }: MemberAvatarEtcProps) {
   if (!user) return null;
 
-  const avatarSrc =
-    getImageUrl(user.avatar, isThumb ? 'thumb' : 'full') || undefined;
+  const avatarSrc = user.avatar
+    ? getImageUrl(user.avatar.src, isThumb ? 'thumb' : 'full')
+    : undefined;
 
   return (
     <Box mb="6">

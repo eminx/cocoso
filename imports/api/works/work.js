@@ -28,6 +28,8 @@ Works.schema = new SimpleSchema({
   host: Schemas.Hostname,
   images: { type: Array, optional: true },
   'images.$': { type: String },
+  imagesLegacy: { type: Array, optional: true },
+  'imagesLegacy.$': { type: String, optional: true },
   latestUpdate: { type: Date, optional: true },
   longDescription: { type: String, defaultValue: '' },
   shortDescription: { type: String, defaultValue: '', optional: true },

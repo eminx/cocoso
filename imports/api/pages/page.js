@@ -20,6 +20,8 @@ Pages.schema = new SimpleSchema({
 
   images: { type: Array, optional: true },
   'images.$': { type: String },
+  imagesLegacy: { type: Array, optional: true },
+  'imagesLegacy.$': { type: String, optional: true },
 
   order: { type: Number },
 

@@ -42,6 +42,8 @@ ComposablePages.schema = new SimpleSchema({
     allowedValues: contentTypes.map((content) => content.type),
   },
   'contentRows.$.columns.$.$.value': { type: Object, blackbox: true },
+  imagesLegacy: { type: Array, optional: true },
+  'imagesLegacy.$': { type: String, optional: true },
 
   isPublished: {
     type: Boolean,

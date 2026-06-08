@@ -15,6 +15,9 @@ Groups.schema = new SimpleSchema({
   description: { type: String },
   readingMaterial: { type: String },
   imageUrl: { type: String },
+  imageUrlLegacy: { type: String, optional: true },
+  imagesLegacy: { type: Array, optional: true },
+  'imagesLegacy.$': { type: String, optional: true },
   capacity: { type: SimpleSchema.Integer, defaultValue: 20 },
 
   members: { type: Array },

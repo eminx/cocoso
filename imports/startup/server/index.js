@@ -3,6 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { onPageLoad } from 'meteor/server-render';
 import React from 'react';
 
+import './migrateImagesToCollection';
 import { call } from '/imports/api/_utils/shared';
 
 import serverRenderer from './serverRenderer';

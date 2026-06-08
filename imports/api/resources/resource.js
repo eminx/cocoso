@@ -22,6 +22,8 @@ Resources.schema = new SimpleSchema({
   },
   images: { type: Array, optional: true },
   'images.$': { type: String },
+  imagesLegacy: { type: Array, optional: true },
+  'imagesLegacy.$': { type: String, optional: true },
 
   isBookable: { type: Boolean, defaultValue: true },
   isCombo: { type: Boolean, defaultValue: false },

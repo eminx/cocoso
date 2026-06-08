@@ -1,9 +1,12 @@
+import Images from '/imports/api/images/image.collection';
+
 /**
  * Client-side helper to resolve an image to its display URL.
  *
- * Handles two formats:
+ * Handles multiple formats:
  * 1. New format: an object with { _id, variants: { thumb, small, medium, full } }
  * 2. Legacy format: a plain string URL (passed through as-is)
+ * 3. Images collection _id string — resolved via Minimongo lookup
  */
 
 export type ImageSize = 'thumb' | 'small' | 'medium' | 'full';
@@ -83,17 +86,41 @@ export function getImageUrl(
   return null;
 }
 
-function getImageUrlFromString(imageUrl: string, size: ImageSize): string {
+function getImageUrlFromString(
+  imageUrl: string,
+  size: ImageSize
+): string | null {
+  // 1. Already an S3 variant URL? Derive the requested size.
   const variantPattern =
     /^(https?:\/\/[^/]+\/images\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+\/)(thumb|small|medium|full)(\.[a-zA-Z0-9]+)$/;
   const match = imageUrl.match(variantPattern);
+  if (match) {
+    const [, prefix, , extension] = match;
+    return `${prefix}${size}${extension}`;
+  }
 
-  if (!match) {
+  // 2. Looks like an HTTP URL (legacy / external)? Return as-is.
+  if (/^https?:\/\//i.test(imageUrl)) {
     return imageUrl;
   }
 
-  const [, prefix, , extension] = match;
-  return `${prefix}${size}${extension}`;
+  // 3. Looks like an Images collection _id (alphanumeric, 17+ chars)?
+  //    Try to resolve via the local Images collection.
+  if (/^[a-zA-Z0-9]{17,}$/.test(imageUrl)) {
+    try {
+      const doc = Images.findOne(imageUrl);
+      if (doc?.variants) {
+        return doc.variants[size] || doc.variants.full || null;
+      }
+    } catch (_) {
+      // Collection not available (e.g. on client without subscription)
+    }
+    // Can't resolve the _id — return null so the UI falls back to initials
+    return null;
+  }
+
+  // 4. Unknown format — return as-is (defensive fallback)
+  return imageUrl;
 }
 
 /**

@@ -13,7 +13,7 @@ import { getImageUrl } from '../utils/imageHelper';
 const isClient = Meteor?.isClient;
 
 if (isClient) {
-  import('react-lazy-load-image-component/src/effects/black-and-white.css');
+  import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 }
 
 const today = dayjs().format('YYYY-MM-DD');

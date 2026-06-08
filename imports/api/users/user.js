@@ -23,6 +23,7 @@ Users.schema.UserProfile = {
   contactInfo: { type: String, defaultValue: '', optional: true },
   lang: { type: String, optional: true },
   avatar: { type: new SimpleSchema(Schemas.Avatar), optional: true },
+  avatarLegacy: { type: new SimpleSchema(Schemas.Avatar), optional: true },
   isPublic: { type: Boolean, defaultValue: true, optional: true },
   isSuperAdmin: { type: Boolean, defaultValue: false, optional: true },
 
