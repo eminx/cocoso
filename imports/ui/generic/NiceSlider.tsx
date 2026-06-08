@@ -147,7 +147,7 @@ export default function NiceSlider({
   }
 
   // Resolve image references to URLs (handles both legacy strings and image _ids)
-  const resolvedImages = images.map((img) => getImageUrl(img, 'medium') || img);
+  const resolvedImages = images.map((img) => getImageUrl(img, 'full') || img);
 
   if (resolvedImages.length === 1) {
     return (

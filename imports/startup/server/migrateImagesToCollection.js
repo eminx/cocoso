@@ -377,9 +377,48 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
       const imagesLegacy = [];
       let anyMigrated = false;
 
-      for (const { field, isArray } of imageFields) {
+      for (const { field, isArray, fallbackField } of imageFields) {
         // --- Skip if field is absent, null, or an empty array ---
-        if (!(field in doc) || doc[field] == null) continue;
+        const fieldMissing = !(field in doc) || doc[field] == null;
+        const arrayEmpty =
+          isArray && Array.isArray(doc[field]) && doc[field].length === 0;
+
+        if (fieldMissing || arrayEmpty) {
+          // Fallback: if the array field is empty/missing and a fallbackField
+          // is provided, use that single-value field as the image source.
+          if (isArray && fallbackField) {
+            const fallbackRaw = doc[fallbackField];
+            if (!fallbackRaw) continue;
+
+            let fallbackUrl = null;
+            if (typeof fallbackRaw === 'string') {
+              fallbackUrl = fallbackRaw;
+            } else if (
+              fallbackRaw &&
+              typeof fallbackRaw === 'object' &&
+              fallbackRaw.src
+            ) {
+              fallbackUrl = fallbackRaw.src;
+            }
+            if (!fallbackUrl || isAlreadyImageId(fallbackUrl)) continue;
+
+            imagesLegacy.push(fallbackUrl);
+            const newUrl = await migrateOneUrl(fallbackUrl, urlCache, {
+              host,
+              uploadedBy: doc.authorId || 'system',
+              uploadedByUsername:
+                doc.authorName || doc.authorUsername || 'migration',
+              context: 'entry',
+            });
+
+            if (newUrl) {
+              updateData[field] = [newUrl];
+              migratedCount++;
+              anyMigrated = true;
+            }
+          }
+          continue;
+        }
 
         const rawValue = doc[field];
 
@@ -545,10 +584,10 @@ Meteor.startup(async () => {
       urlCache
     );
 
-    // 5. Activities – images array
+    // 5. Activities – images array (fallback to imageUrl if images is empty)
     await migrateCollection(
       'activities',
-      [{ field: 'images', isArray: true }],
+      [{ field: 'images', isArray: true, fallbackField: 'imageUrl' }],
       urlCache
     );
 
