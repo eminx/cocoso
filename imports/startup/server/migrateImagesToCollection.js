@@ -7,6 +7,7 @@ import Resources from '/imports/api/resources/resource';
 import Groups from '/imports/api/groups/group';
 import Activities from '/imports/api/activities/activity';
 import Pages from '/imports/api/pages/page';
+import ComposablePages from '/imports/api/composablepages/composablepage';
 import Images from '/imports/api/images/image.collection';
 
 /**
@@ -544,6 +545,158 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
 }
 
 // ---------------------------------------------------------------------------
+// Composable pages – deep-nested image migration
+// ---------------------------------------------------------------------------
+async function migrateComposablePages(urlCache) {
+  console.log('[ImageMigration] Starting migration for composablepages...');
+
+  const docs = await ComposablePages.find({}).fetchAsync();
+  let migratedCount = 0;
+  let errorCount = 0;
+
+  for (const doc of docs) {
+    try {
+      const host = doc.host;
+      if (!host) {
+        console.warn(
+          `[ImageMigration] Skipping composablepages/${doc._id}: no host field`
+        );
+        continue;
+      }
+
+      let anyMigrated = false;
+      const rows = doc.contentRows || [];
+
+      for (const row of rows) {
+        const columns = row.columns || [];
+        for (const colModules of columns) {
+          if (!Array.isArray(colModules)) continue;
+
+          for (const mod of colModules) {
+            if (!mod || !mod.type) continue;
+
+            // --- Single image module ---
+            if (
+              mod.type === 'image' &&
+              mod.value?.src &&
+              isUrl(mod.value.src)
+            ) {
+              const src = mod.value.src;
+
+              if (isAlreadyImageId(src)) {
+                const existing = await Images.findOneAsync(src);
+                if (existing?.variants?.full) {
+                  mod.value.src = existing.variants.full;
+                  anyMigrated = true;
+                }
+                continue;
+              }
+
+              // Skip already-migrated variant URLs
+              if (
+                /\/images\/.*\/(thumb|small|medium|full)\.(webp|jpg)/.test(src)
+              )
+                continue;
+
+              const newUrl = await migrateOneUrl(src, urlCache, {
+                host,
+                uploadedBy: doc.authorId || 'system',
+                uploadedByUsername: doc.authorUsername || 'migration',
+                context: 'entry',
+              });
+
+              if (newUrl) {
+                mod.value.srcLegacy = src;
+                mod.value.src = newUrl;
+                migratedCount++;
+                anyMigrated = true;
+              }
+            }
+
+            // --- Image slider module ---
+            if (
+              mod.type === 'image-slider' &&
+              Array.isArray(mod.value?.images)
+            ) {
+              const legacyImages = [];
+              const newImages = [];
+              for (const img of mod.value.images) {
+                const url = typeof img === 'string' ? img : img?.src;
+                if (!url) {
+                  newImages.push(img);
+                  continue;
+                }
+
+                if (isAlreadyImageId(url)) {
+                  const existing = await Images.findOneAsync(url);
+                  newImages.push(existing?.variants?.full || url);
+                  if (existing?.variants?.full) anyMigrated = true;
+                  continue;
+                }
+
+                if (
+                  /\/images\/.*\/(thumb|small|medium|full)\.(webp|jpg)/.test(
+                    url
+                  )
+                ) {
+                  newImages.push(url);
+                  continue;
+                }
+
+                legacyImages.push(url);
+                const newUrl = await migrateOneUrl(url, urlCache, {
+                  host,
+                  uploadedBy: doc.authorId || 'system',
+                  uploadedByUsername: doc.authorUsername || 'migration',
+                  context: 'entry',
+                });
+
+                if (newUrl) {
+                  newImages.push(newUrl);
+                  migratedCount++;
+                  anyMigrated = true;
+                } else {
+                  newImages.push(url); // keep original on failure
+                }
+              }
+
+              if (legacyImages.length > 0) {
+                mod.value.imagesLegacy = legacyImages;
+              }
+              mod.value.images = newImages;
+            }
+          }
+        }
+      }
+
+      if (anyMigrated) {
+        try {
+          await ComposablePages.updateAsync(doc._id, {
+            $set: { contentRows: rows },
+          });
+        } catch (updErr) {
+          console.error(
+            `[ImageMigration] Error updating composablepages/${doc._id}:`,
+            updErr.message
+          );
+          errorCount++;
+        }
+      }
+    } catch (err) {
+      console.error(
+        `[ImageMigration] Error processing composablepages/${doc._id}:`,
+        err.message
+      );
+      errorCount++;
+    }
+  }
+
+  console.log(
+    `[ImageMigration] Completed composablepages: ${migratedCount} images migrated, ${errorCount} errors`
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Startup
 // ---------------------------------------------------------------------------
 Meteor.startup(async () => {
@@ -597,6 +750,9 @@ Meteor.startup(async () => {
       [{ field: 'images', isArray: true }],
       urlCache
     );
+
+    // 7. Composable pages – deep-nested image & image-slider modules
+    await migrateComposablePages(urlCache);
 
     console.log('[ImageMigration] Migration completed successfully!');
   } catch (err) {
