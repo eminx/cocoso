@@ -261,55 +261,62 @@ async function migrateOneUrl(
 
 // ---------------------------------------------------------------------------
 // Users – avatar migration (special shape: { src, date })
+// Processes in batches to keep memory low.
 // ---------------------------------------------------------------------------
 async function migrateUsers(urlCache) {
   console.log('[ImageMigration] Starting migration for users...');
 
-  const docs = await Meteor.users.find({}).fetchAsync();
+  const BATCH = 50;
   let migratedCount = 0;
   let errorCount = 0;
+  let skip = 0;
+  let batch;
 
-  for (const doc of docs) {
-    try {
-      const avatar = doc.avatar;
-      if (!avatar) continue;
+  do {
+    batch = await Meteor.users
+      .find({}, { skip, limit: BATCH, sort: { _id: 1 } })
+      .fetchAsync();
 
-      let avatarUrl = null;
-      let originalDate = null;
-      let legacyAvatar = null;
+    for (const doc of batch) {
+      try {
+        const avatar = doc.avatar;
+        if (!avatar) continue;
 
-      if (typeof avatar === 'string') {
-        avatarUrl = avatar;
-        legacyAvatar = { src: avatar, date: new Date() };
-      } else if (typeof avatar === 'object' && avatar.src) {
-        avatarUrl = avatar.src;
-        originalDate = avatar.date;
-        legacyAvatar = { src: avatar.src, date: avatar.date || new Date() };
-      }
+        let avatarUrl = null;
+        let originalDate = null;
+        let legacyAvatar = null;
 
-      if (!avatarUrl) continue;
+        if (typeof avatar === 'string') {
+          avatarUrl = avatar;
+          legacyAvatar = { src: avatar, date: new Date() };
+        } else if (typeof avatar === 'object' && avatar.src) {
+          avatarUrl = avatar.src;
+          originalDate = avatar.date;
+          legacyAvatar = { src: avatar.src, date: avatar.date || new Date() };
+        }
 
-      // Already an image ID? Skip.
-      if (isAlreadyImageId(avatarUrl)) {
-        continue;
-      }
+        if (!avatarUrl) continue;
 
-      const host = doc.memberships?.[0]?.host;
-      if (!host) {
-        console.warn(
-          `[ImageMigration] User ${doc._id}: no membership host, skipping avatar`
-        );
-        continue;
-      }
+        // Already an image ID? Skip.
+        if (isAlreadyImageId(avatarUrl)) continue;
 
-      const newUrl = await migrateOneUrl(avatarUrl, urlCache, {
-        host,
-        uploadedBy: doc._id,
-        uploadedByUsername: doc.username || 'unknown',
-        context: 'avatar',
-      });
+        const host = doc.memberships?.[0]?.host;
+        if (!host) {
+          console.warn(
+            `[ImageMigration] User ${doc._id}: no membership host, skipping avatar`
+          );
+          continue;
+        }
 
-      if (newUrl) {
+        const newUrl = await migrateOneUrl(avatarUrl, urlCache, {
+          host,
+          uploadedBy: doc._id,
+          uploadedByUsername: doc.username || 'unknown',
+          context: 'avatar',
+        });
+
+        if (!newUrl) continue;
+
         await Meteor.users.updateAsync(doc._id, {
           $set: {
             avatar: { src: newUrl, date: originalDate || new Date() },
@@ -317,15 +324,58 @@ async function migrateUsers(urlCache) {
           },
         });
         migratedCount++;
+
+        // --- Propagate to embedded avatar copies ---
+        const [grpAuthor, wrkAuthor] = await Promise.all([
+          Groups.updateMany(
+            { authorAvatar: avatarUrl },
+            { $set: { authorAvatar: newUrl } }
+          ),
+          Works.updateMany(
+            { authorAvatar: avatarUrl },
+            { $set: { authorAvatar: newUrl } }
+          ),
+        ]);
+
+        // Update members[].avatar in groups where it matches the old URL
+        const groupsWithMember = await Groups.find(
+          { 'members.avatar': avatarUrl },
+          { limit: 500 }
+        ).fetchAsync();
+        let memberUpdates = 0;
+        for (const g of groupsWithMember) {
+          let changed = false;
+          for (const m of g.members) {
+            if (m.avatar === avatarUrl) {
+              m.avatar = newUrl;
+              changed = true;
+            }
+          }
+          if (changed) {
+            await Groups.updateAsync(g._id, { $set: { members: g.members } });
+            memberUpdates++;
+          }
+        }
+
+        if (grpAuthor || wrkAuthor || memberUpdates) {
+          console.log(
+            `[ImageMigration] Propagated avatar to ${grpAuthor} group author(s), ${wrkAuthor} work author(s), ${memberUpdates} group member(s)`
+          );
+        }
+      } catch (err) {
+        console.error(
+          `[ImageMigration] Error processing user ${doc._id}:`,
+          err.message
+        );
+        errorCount++;
       }
-    } catch (err) {
-      console.error(
-        `[ImageMigration] Error processing user ${doc._id}:`,
-        err.message
-      );
-      errorCount++;
     }
-  }
+
+    skip += BATCH;
+    console.log(
+      `[ImageMigration] Users progress: ${skip} scanned, ${migratedCount} avatars migrated so far`
+    );
+  } while (batch.length === BATCH);
 
   console.log(
     `[ImageMigration] Completed users: ${migratedCount} avatars migrated, ${errorCount} errors`
@@ -360,97 +410,151 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
     return;
   }
 
-  const docs = await collection.find({}).fetchAsync();
+  const BATCH = 50;
   let migratedCount = 0;
   let errorCount = 0;
+  let skip = 0;
+  let batch;
 
-  for (const doc of docs) {
-    try {
-      const host = doc.host;
-      if (!host) {
-        console.warn(
-          `[ImageMigration] Skipping ${collectionName}/${doc._id}: no host field`
-        );
-        continue;
-      }
+  do {
+    batch = await collection
+      .find({}, { skip, limit: BATCH, sort: { _id: 1 } })
+      .fetchAsync();
 
-      const updateData = {};
-      const imagesLegacy = [];
-      let anyMigrated = false;
-
-      for (const { field, isArray, fallbackField } of imageFields) {
-        // --- Skip if field is absent, null, or an empty array ---
-        const fieldMissing = !(field in doc) || doc[field] == null;
-        const arrayEmpty =
-          isArray && Array.isArray(doc[field]) && doc[field].length === 0;
-
-        if (fieldMissing || arrayEmpty) {
-          // Fallback: if the array field is empty/missing and a fallbackField
-          // is provided, use that single-value field as the image source.
-          if (isArray && fallbackField) {
-            const fallbackRaw = doc[fallbackField];
-            if (!fallbackRaw) continue;
-
-            let fallbackUrl = null;
-            if (typeof fallbackRaw === 'string') {
-              fallbackUrl = fallbackRaw;
-            } else if (
-              fallbackRaw &&
-              typeof fallbackRaw === 'object' &&
-              fallbackRaw.src
-            ) {
-              fallbackUrl = fallbackRaw.src;
-            }
-            if (!fallbackUrl || isAlreadyImageId(fallbackUrl)) continue;
-
-            imagesLegacy.push(fallbackUrl);
-            const newUrl = await migrateOneUrl(fallbackUrl, urlCache, {
-              host,
-              uploadedBy: doc.authorId || 'system',
-              uploadedByUsername:
-                doc.authorName || doc.authorUsername || 'migration',
-              context: 'entry',
-            });
-
-            if (newUrl) {
-              updateData[field] = [newUrl];
-              migratedCount++;
-              anyMigrated = true;
-            }
-          }
+    for (const doc of batch) {
+      try {
+        const host = doc.host;
+        if (!host) {
+          console.warn(
+            `[ImageMigration] Skipping ${collectionName}/${doc._id}: no host field`
+          );
           continue;
         }
 
-        const rawValue = doc[field];
+        const updateData = {};
+        const imagesLegacy = [];
+        let anyMigrated = false;
 
-        if (isArray) {
-          // Array field: migrate each string URL in the array.
-          // If the array contains objects we extract .src; otherwise treat as URL.
-          if (!Array.isArray(rawValue) || rawValue.length === 0) continue;
+        for (const { field, isArray, fallbackField } of imageFields) {
+          // --- Skip if field is absent, null, or an empty array ---
+          const fieldMissing = !(field in doc) || doc[field] == null;
+          const arrayEmpty =
+            isArray && Array.isArray(doc[field]) && doc[field].length === 0;
 
-          const newImageIds = [];
-          for (const item of rawValue) {
-            const url = typeof item === 'string' ? item : item?.src;
-            if (!url) {
-              // Preserve non-url items as-is
-              newImageIds.push(item);
-              continue;
+          if (fieldMissing || arrayEmpty) {
+            // Fallback: if the array field is empty/missing and a fallbackField
+            // is provided, use that single-value field as the image source.
+            if (isArray && fallbackField) {
+              const fallbackRaw = doc[fallbackField];
+              if (!fallbackRaw) continue;
+
+              let fallbackUrl = null;
+              if (typeof fallbackRaw === 'string') {
+                fallbackUrl = fallbackRaw;
+              } else if (
+                fallbackRaw &&
+                typeof fallbackRaw === 'object' &&
+                fallbackRaw.src
+              ) {
+                fallbackUrl = fallbackRaw.src;
+              }
+              if (!fallbackUrl || isAlreadyImageId(fallbackUrl)) continue;
+
+              imagesLegacy.push(fallbackUrl);
+              const newUrl = await migrateOneUrl(fallbackUrl, urlCache, {
+                host,
+                uploadedBy: doc.authorId || 'system',
+                uploadedByUsername:
+                  doc.authorName || doc.authorUsername || 'migration',
+                context: 'entry',
+              });
+
+              if (newUrl) {
+                updateData[field] = [newUrl];
+                migratedCount++;
+                anyMigrated = true;
+              }
+            }
+            continue;
+          }
+
+          const rawValue = doc[field];
+
+          if (isArray) {
+            // Array field: migrate each string URL in the array.
+            // If the array contains objects we extract .src; otherwise treat as URL.
+            if (!Array.isArray(rawValue) || rawValue.length === 0) continue;
+
+            const newImageIds = [];
+            for (const item of rawValue) {
+              const url = typeof item === 'string' ? item : item?.src;
+              if (!url) {
+                // Preserve non-url items as-is
+                newImageIds.push(item);
+                continue;
+              }
+
+              // Already an image ID? Resolve it to the full variant URL.
+              if (isAlreadyImageId(url)) {
+                const existingDoc = await Images.findOneAsync(url);
+                if (existingDoc?.variants?.full) {
+                  newImageIds.push(existingDoc.variants.full);
+                  // Don't add to imagesLegacy — it was already migrated
+                } else {
+                  // Can't resolve, keep as-is (already broken)
+                  newImageIds.push(url);
+                }
+                continue;
+              }
+
+              imagesLegacy.push(url);
+              const newUrl = await migrateOneUrl(url, urlCache, {
+                host,
+                uploadedBy: doc.authorId || 'system',
+                uploadedByUsername:
+                  doc.authorName || doc.authorUsername || 'migration',
+                context: 'entry',
+              });
+
+              if (newUrl) {
+                newImageIds.push(newUrl);
+                migratedCount++;
+                anyMigrated = true;
+              } else {
+                // Migration failed – keep original URL so we don't lose data
+                newImageIds.push(url);
+              }
+            }
+            updateData[field] = newImageIds;
+          } else {
+            // Single-value field (e.g. groups.imageUrl)
+            let url = null;
+            if (typeof rawValue === 'string') {
+              url = rawValue;
+            } else if (
+              rawValue &&
+              typeof rawValue === 'object' &&
+              rawValue.src
+            ) {
+              url = rawValue.src;
             }
 
-            // Already an image ID? Resolve it to the full variant URL.
+            if (!url) continue;
+
+            // Already an image ID? Resolve to full variant URL.
             if (isAlreadyImageId(url)) {
               const existingDoc = await Images.findOneAsync(url);
               if (existingDoc?.variants?.full) {
-                newImageIds.push(existingDoc.variants.full);
-                // Don't add to imagesLegacy — it was already migrated
-              } else {
-                // Can't resolve, keep as-is (already broken)
-                newImageIds.push(url);
+                updateData[field] = existingDoc.variants.full;
+                if (collectionName === 'groups') {
+                  // Can't recover the legacy URL, skip imageUrlLegacy
+                }
+                migratedCount++;
+                anyMigrated = true;
               }
               continue;
             }
 
-            imagesLegacy.push(url);
             const newUrl = await migrateOneUrl(url, urlCache, {
               host,
               uploadedBy: doc.authorId || 'system',
@@ -460,84 +564,47 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
             });
 
             if (newUrl) {
-              newImageIds.push(newUrl);
-              migratedCount++;
-              anyMigrated = true;
-            } else {
-              // Migration failed – keep original URL so we don't lose data
-              newImageIds.push(url);
-            }
-          }
-          updateData[field] = newImageIds;
-        } else {
-          // Single-value field (e.g. groups.imageUrl)
-          let url = null;
-          if (typeof rawValue === 'string') {
-            url = rawValue;
-          } else if (rawValue && typeof rawValue === 'object' && rawValue.src) {
-            url = rawValue.src;
-          }
-
-          if (!url) continue;
-
-          // Already an image ID? Resolve to full variant URL.
-          if (isAlreadyImageId(url)) {
-            const existingDoc = await Images.findOneAsync(url);
-            if (existingDoc?.variants?.full) {
-              updateData[field] = existingDoc.variants.full;
+              updateData[field] = newUrl;
+              // Groups: save legacy URL as single string, not in imagesLegacy array
               if (collectionName === 'groups') {
-                // Can't recover the legacy URL, skip imageUrlLegacy
+                updateData.imageUrlLegacy = url;
               }
               migratedCount++;
               anyMigrated = true;
             }
-            continue;
-          }
-
-          const newUrl = await migrateOneUrl(url, urlCache, {
-            host,
-            uploadedBy: doc.authorId || 'system',
-            uploadedByUsername:
-              doc.authorName || doc.authorUsername || 'migration',
-            context: 'entry',
-          });
-
-          if (newUrl) {
-            updateData[field] = newUrl;
-            // Groups: save legacy URL as single string, not in imagesLegacy array
-            if (collectionName === 'groups') {
-              updateData.imageUrlLegacy = url;
-            }
-            migratedCount++;
-            anyMigrated = true;
           }
         }
-      }
 
-      // Persist changes
-      if (anyMigrated) {
-        // Only set imagesLegacy on collections whose schema includes it
-        if (collectionName !== 'groups' && imagesLegacy.length > 0) {
-          updateData.imagesLegacy = imagesLegacy;
+        // Persist changes
+        if (anyMigrated) {
+          // Only set imagesLegacy on collections whose schema includes it
+          if (collectionName !== 'groups' && imagesLegacy.length > 0) {
+            updateData.imagesLegacy = imagesLegacy;
+          }
+          try {
+            await collection.updateAsync(doc._id, { $set: updateData });
+          } catch (updErr) {
+            console.error(
+              `[ImageMigration] Error updating ${collectionName}/${doc._id}:`,
+              updErr.message
+            );
+            errorCount++;
+          }
         }
-        try {
-          await collection.updateAsync(doc._id, { $set: updateData });
-        } catch (updErr) {
-          console.error(
-            `[ImageMigration] Error updating ${collectionName}/${doc._id}:`,
-            updErr.message
-          );
-          errorCount++;
-        }
+      } catch (err) {
+        console.error(
+          `[ImageMigration] Error processing ${collectionName}/${doc._id}:`,
+          err.message
+        );
+        errorCount++;
       }
-    } catch (err) {
-      console.error(
-        `[ImageMigration] Error processing ${collectionName}/${doc._id}:`,
-        err.message
-      );
-      errorCount++;
     }
-  }
+
+    skip += BATCH;
+    console.log(
+      `[ImageMigration] ${collectionName} progress: ${skip} scanned, ${migratedCount} images migrated so far`
+    );
+  } while (batch.length === BATCH);
 
   console.log(
     `[ImageMigration] Completed ${collectionName}: ${migratedCount} images migrated, ${errorCount} errors`
@@ -550,101 +617,65 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
 async function migrateComposablePages(urlCache) {
   console.log('[ImageMigration] Starting migration for composablepages...');
 
-  const docs = await ComposablePages.find({}).fetchAsync();
+  const BATCH = 25;
   let migratedCount = 0;
   let errorCount = 0;
+  let skip = 0;
+  let batch;
 
-  for (const doc of docs) {
-    try {
-      const host = doc.host;
-      if (!host) {
-        console.warn(
-          `[ImageMigration] Skipping composablepages/${doc._id}: no host field`
-        );
-        continue;
-      }
+  do {
+    batch = await ComposablePages.find(
+      {},
+      { skip, limit: BATCH, sort: { _id: 1 } }
+    ).fetchAsync();
 
-      let anyMigrated = false;
-      const rows = doc.contentRows || [];
+    for (const doc of batch) {
+      try {
+        const host = doc.host;
+        if (!host) {
+          console.warn(
+            `[ImageMigration] Skipping composablepages/${doc._id}: no host field`
+          );
+          continue;
+        }
 
-      for (const row of rows) {
-        const columns = row.columns || [];
-        for (const colModules of columns) {
-          if (!Array.isArray(colModules)) continue;
+        let anyMigrated = false;
+        const rows = doc.contentRows || [];
 
-          for (const mod of colModules) {
-            if (!mod || !mod.type) continue;
+        for (const row of rows) {
+          const columns = row.columns || [];
+          for (const colModules of columns) {
+            if (!Array.isArray(colModules)) continue;
 
-            // --- Single image module ---
-            if (
-              mod.type === 'image' &&
-              mod.value?.src &&
-              isUrl(mod.value.src)
-            ) {
-              const src = mod.value.src;
+            for (const mod of colModules) {
+              if (!mod || !mod.type) continue;
 
-              if (isAlreadyImageId(src)) {
-                const existing = await Images.findOneAsync(src);
-                if (existing?.variants?.full) {
-                  mod.value.src = existing.variants.full;
-                  anyMigrated = true;
-                }
-                continue;
-              }
-
-              // Skip already-migrated variant URLs
+              // --- Single image module ---
               if (
-                /\/images\/.*\/(thumb|small|medium|full)\.(webp|jpg)/.test(src)
-              )
-                continue;
+                mod.type === 'image' &&
+                mod.value?.src &&
+                isUrl(mod.value.src)
+              ) {
+                const src = mod.value.src;
 
-              const newUrl = await migrateOneUrl(src, urlCache, {
-                host,
-                uploadedBy: doc.authorId || 'system',
-                uploadedByUsername: doc.authorUsername || 'migration',
-                context: 'entry',
-              });
-
-              if (newUrl) {
-                mod.value.srcLegacy = src;
-                mod.value.src = newUrl;
-                migratedCount++;
-                anyMigrated = true;
-              }
-            }
-
-            // --- Image slider module ---
-            if (
-              mod.type === 'image-slider' &&
-              Array.isArray(mod.value?.images)
-            ) {
-              const legacyImages = [];
-              const newImages = [];
-              for (const img of mod.value.images) {
-                const url = typeof img === 'string' ? img : img?.src;
-                if (!url) {
-                  newImages.push(img);
+                if (isAlreadyImageId(src)) {
+                  const existing = await Images.findOneAsync(src);
+                  if (existing?.variants?.full) {
+                    mod.value.src = existing.variants.full;
+                    anyMigrated = true;
+                  }
                   continue;
                 }
 
-                if (isAlreadyImageId(url)) {
-                  const existing = await Images.findOneAsync(url);
-                  newImages.push(existing?.variants?.full || url);
-                  if (existing?.variants?.full) anyMigrated = true;
-                  continue;
-                }
-
+                // Skip already-migrated variant URLs
                 if (
                   /\/images\/.*\/(thumb|small|medium|full)\.(webp|jpg)/.test(
-                    url
+                    src
                   )
-                ) {
-                  newImages.push(url);
+                )
                   continue;
-                }
 
-                legacyImages.push(url);
-                const newUrl = await migrateOneUrl(url, urlCache, {
+                const newUrl = await migrateOneUrl(src, urlCache, {
                   host,
                   uploadedBy: doc.authorId || 'system',
                   uploadedByUsername: doc.authorUsername || 'migration',
@@ -652,44 +683,96 @@ async function migrateComposablePages(urlCache) {
                 });
 
                 if (newUrl) {
-                  newImages.push(newUrl);
+                  mod.value.srcLegacy = src;
+                  mod.value.src = newUrl;
                   migratedCount++;
                   anyMigrated = true;
-                } else {
-                  newImages.push(url); // keep original on failure
                 }
               }
 
-              if (legacyImages.length > 0) {
-                mod.value.imagesLegacy = legacyImages;
+              // --- Image slider module ---
+              if (
+                mod.type === 'image-slider' &&
+                Array.isArray(mod.value?.images)
+              ) {
+                const legacyImages = [];
+                const newImages = [];
+                for (const img of mod.value.images) {
+                  const url = typeof img === 'string' ? img : img?.src;
+                  if (!url) {
+                    newImages.push(img);
+                    continue;
+                  }
+
+                  if (isAlreadyImageId(url)) {
+                    const existing = await Images.findOneAsync(url);
+                    newImages.push(existing?.variants?.full || url);
+                    if (existing?.variants?.full) anyMigrated = true;
+                    continue;
+                  }
+
+                  if (
+                    /\/images\/.*\/(thumb|small|medium|full)\.(webp|jpg)/.test(
+                      url
+                    )
+                  ) {
+                    newImages.push(url);
+                    continue;
+                  }
+
+                  legacyImages.push(url);
+                  const newUrl = await migrateOneUrl(url, urlCache, {
+                    host,
+                    uploadedBy: doc.authorId || 'system',
+                    uploadedByUsername: doc.authorUsername || 'migration',
+                    context: 'entry',
+                  });
+
+                  if (newUrl) {
+                    newImages.push(newUrl);
+                    migratedCount++;
+                    anyMigrated = true;
+                  } else {
+                    newImages.push(url); // keep original on failure
+                  }
+                }
+
+                if (legacyImages.length > 0) {
+                  mod.value.imagesLegacy = legacyImages;
+                }
+                mod.value.images = newImages;
               }
-              mod.value.images = newImages;
             }
           }
         }
-      }
 
-      if (anyMigrated) {
-        try {
-          await ComposablePages.updateAsync(doc._id, {
-            $set: { contentRows: rows },
-          });
-        } catch (updErr) {
-          console.error(
-            `[ImageMigration] Error updating composablepages/${doc._id}:`,
-            updErr.message
-          );
-          errorCount++;
+        if (anyMigrated) {
+          try {
+            await ComposablePages.updateAsync(doc._id, {
+              $set: { contentRows: rows },
+            });
+          } catch (updErr) {
+            console.error(
+              `[ImageMigration] Error updating composablepages/${doc._id}:`,
+              updErr.message
+            );
+            errorCount++;
+          }
         }
+      } catch (err) {
+        console.error(
+          `[ImageMigration] Error processing composablepages/${doc._id}:`,
+          err.message
+        );
+        errorCount++;
       }
-    } catch (err) {
-      console.error(
-        `[ImageMigration] Error processing composablepages/${doc._id}:`,
-        err.message
-      );
-      errorCount++;
     }
-  }
+
+    skip += BATCH;
+    console.log(
+      `[ImageMigration] Composablepages progress: ${skip} scanned, ${migratedCount} images migrated so far`
+    );
+  } while (batch.length === BATCH);
 
   console.log(
     `[ImageMigration] Completed composablepages: ${migratedCount} images migrated, ${errorCount} errors`
@@ -713,7 +796,7 @@ Meteor.startup(async () => {
     // Shared deduplication cache: URL → imageId
     const urlCache = new Map();
 
-    // 1. Users – avatars
+    // 1. Users – avatars (also propagates to embedded copies in groups & works)
     await migrateUsers(urlCache);
 
     // 2. Works – images array
