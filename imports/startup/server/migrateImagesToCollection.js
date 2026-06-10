@@ -358,13 +358,15 @@ async function migrateUsers(urlCache) {
 
         // --- Propagate to embedded avatar copies ---
         const [grpAuthor, wrkAuthor] = await Promise.all([
-          Groups.updateMany(
+          Groups.update(
             { authorAvatar: avatarUrl },
-            { $set: { authorAvatar: newUrl } }
+            { $set: { authorAvatar: newUrl } },
+            { multi: true }
           ),
-          Works.updateMany(
+          Works.update(
             { authorAvatar: avatarUrl },
-            { $set: { authorAvatar: newUrl } }
+            { $set: { authorAvatar: newUrl } },
+            { multi: true }
           ),
         ]);
 
