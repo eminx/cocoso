@@ -20,7 +20,7 @@ import {
 import NiceSlider from '../generic/NiceSlider';
 import Tabs from '../core/Tabs';
 import BackLink, { BackLinkData } from './BackLink';
-import { getImageUrlBest } from '../utils/imageHelper';
+import { getImageUrl, getImageUrlBest } from '../utils/imageHelper';
 
 interface Author {
   username: string;
@@ -62,7 +62,11 @@ const AvatarHolder: React.FC<AvatarHolderProps> = ({ author }) => {
     <Box mt="2">
       <Link to={`/@${author.username}/`}>
         <Flex align="center" direction="column" justify="center" gap="0">
-          <Avatar name={author.username} size="lg" src={author.src} />
+          <Avatar
+            name={author.username}
+            size="lg"
+            src={getImageUrl(author.src, 'thumb')}
+          />
           <CLink color="theme.500">{author.username}</CLink>
         </Flex>
       </Link>

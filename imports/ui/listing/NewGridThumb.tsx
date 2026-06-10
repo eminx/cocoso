@@ -13,9 +13,10 @@ import {
   Tag as CTag,
   Text,
 } from '/imports/ui/core';
+import { allHostsAtom } from '/imports/state';
 
-import { allHostsAtom } from '../../state';
 import Tag from '../generic/Tag';
+import { getImageUrl } from '../utils/imageHelper';
 
 const isClient = Meteor.isClient;
 
@@ -198,7 +199,11 @@ function NewGridThumb({
 
           {avatar && (
             <Box pt="2">
-              <Avatar name={avatar.name} size="md" src={avatar.url} />
+              <Avatar
+                name={avatar.name}
+                size="md"
+                src={getImageUrl(avatar.url, 'thumb')}
+              />
             </Box>
           )}
         </Flex>
