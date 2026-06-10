@@ -84,7 +84,7 @@ const SIZE_CONFIGS = {
 };
 
 const FETCH_TIMEOUT_MS = 15_000;
-const MAX_IMAGE_BYTES = 50 * 1024 * 1024; // skip images larger than 50 MB
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024; // skip images larger than 10 MB (Heroku 512MB limit)
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -101,6 +101,10 @@ function isUrl(value) {
  */
 function isAlreadyImageId(value) {
   return typeof value === 'string' && /^[a-zA-Z0-9]{17,}$/.test(value);
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // ---------------------------------------------------------------------------
@@ -126,7 +130,7 @@ async function generateWebpVariants(buffer, context) {
       })
       .webp({
         quality: size.quality,
-        effort: 4,
+        effort: 2,
         nearLossless: false,
         smartSubsample: true,
       })
@@ -293,7 +297,7 @@ async function migrateOneUrl(
 async function migrateUsers(urlCache) {
   console.log('[ImageMigration] Starting migration for users...');
 
-  const BATCH = 50;
+  const BATCH = 25;
   let migratedCount = 0;
   let errorCount = 0;
   let skip = 0;
@@ -402,6 +406,8 @@ async function migrateUsers(urlCache) {
     console.log(
       `[ImageMigration] Users progress: ${skip} scanned, ${migratedCount} avatars migrated so far`
     );
+    // Let GC breathe between batches (Heroku 512 MB dyno)
+    await sleep(250);
   } while (batch.length === BATCH);
 
   console.log(
@@ -437,7 +443,7 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
     return;
   }
 
-  const BATCH = 50;
+  const BATCH = 25;
   let migratedCount = 0;
   let errorCount = 0;
   let skip = 0;
@@ -631,6 +637,7 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
     console.log(
       `[ImageMigration] ${collectionName} progress: ${skip} scanned, ${migratedCount} images migrated so far`
     );
+    await sleep(250);
   } while (batch.length === BATCH);
 
   console.log(
@@ -644,7 +651,7 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
 async function migrateComposablePages(urlCache) {
   console.log('[ImageMigration] Starting migration for composablepages...');
 
-  const BATCH = 25;
+  const BATCH = 10;
   let migratedCount = 0;
   let errorCount = 0;
   let skip = 0;
@@ -799,6 +806,7 @@ async function migrateComposablePages(urlCache) {
     console.log(
       `[ImageMigration] Composablepages progress: ${skip} scanned, ${migratedCount} images migrated so far`
     );
+    await sleep(250);
   } while (batch.length === BATCH);
 
   console.log(
