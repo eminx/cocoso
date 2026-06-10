@@ -43,7 +43,7 @@ export default function MemberAvatarEtc({
   if (!user) return null;
 
   const avatarSrc = user.avatar
-    ? getImageUrl(user.avatar.src, isThumb ? 'thumb' : 'full')
+    ? getImageUrl(user.avatar.src, isThumb ? 'small' : 'full')
     : undefined;
 
   return (

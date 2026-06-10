@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
+
 const maxShownAvatars = 6;
 
 import {
@@ -56,7 +58,7 @@ export default function GroupMembers({ group }) {
                 <Avatar
                   borderRadius="2rem"
                   name={member.username}
-                  src={member.avatar}
+                  src={getImageUrl(member.avatar, 'thumb')}
                 />
               ) : index === maxShownAvatars ? (
                 <Box
@@ -91,12 +93,11 @@ export default function GroupMembers({ group }) {
             <Link to={`/@${member.username}`}>
               <Flex align="center">
                 <Avatar
-                  mr="2"
                   name={member.username}
                   size="md"
-                  src={member.avatar}
+                  src={getImageUrl(member.avatar, 'thumb')}
                 />
-                <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
+                <CLink fontWeight={member.isAdmin ? '700' : '400'}>
                   {member.username}
                 </CLink>
                 <Text ml="1">{member.isAdmin && '(admin)'}</Text>
