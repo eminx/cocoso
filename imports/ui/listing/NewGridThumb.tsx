@@ -98,7 +98,12 @@ function NewGridThumb({
         >
           {imageUrl ? (
             index < 8 ? (
-              <Image alt={title} src={imageUrl} style={imageStyle} />
+              <Image
+                alt={title}
+                loading="lazy"
+                src={imageUrl}
+                style={imageStyle}
+              />
             ) : (
               <LazyLoadImage
                 alt={title}

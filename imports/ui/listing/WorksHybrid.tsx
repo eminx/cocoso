@@ -106,7 +106,7 @@ export default function WorksHybrid({ Host, works }: WorksHybridProps) {
                     ?.color
                 }
                 host={currentHost?.isPortalHost ? work.host : null}
-                imageUrl={getImageUrl(work?.images?.[0], 'small')}
+                imageUrl={getImageUrl(work?.images?.[0], 'medium')}
                 index={index}
                 tag={work.category?.label}
                 title={work.title}
