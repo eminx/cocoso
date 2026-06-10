@@ -84,6 +84,7 @@ const SIZE_CONFIGS = {
 };
 
 const FETCH_TIMEOUT_MS = 15_000;
+const MAX_IMAGE_BYTES = 50 * 1024 * 1024; // skip images larger than 50 MB
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -105,39 +106,42 @@ function isAlreadyImageId(value) {
 // ---------------------------------------------------------------------------
 // Image processing – mirrors processImage() but works on a remote URL
 // ---------------------------------------------------------------------------
+/**
+ * Generate WebP variants sequentially to keep peak memory low.
+ * Parallel sharp() on the same buffer can OOM with large images.
+ */
 async function generateWebpVariants(buffer, context) {
   const sizes = SIZE_CONFIGS[context] || SIZE_CONFIGS.entry;
   const metadata = await sharp(buffer).metadata();
   const originalWidth = metadata.width || 1200;
   const originalHeight = metadata.height || 1200;
 
-  const results = await Promise.all(
-    sizes.map(async (size) => {
-      const resizeWidth = Math.min(size.width, originalWidth);
-      const resized = await sharp(buffer)
-        .resize(resizeWidth, null, {
-          fit: 'inside',
-          withoutEnlargement: true,
-        })
-        .webp({
-          quality: size.quality,
-          effort: 4,
-          nearLossless: false,
-          smartSubsample: true,
-        })
-        .toBuffer();
+  const results = [];
+  for (const size of sizes) {
+    const resizeWidth = Math.min(size.width, originalWidth);
+    const resized = await sharp(buffer)
+      .resize(resizeWidth, null, {
+        fit: 'inside',
+        withoutEnlargement: true,
+      })
+      .webp({
+        quality: size.quality,
+        effort: 4,
+        nearLossless: false,
+        smartSubsample: true,
+      })
+      .toBuffer();
 
-      const meta = await sharp(resized).metadata();
-      return {
-        suffix: size.suffix,
-        buffer: resized,
-        width: meta.width || resizeWidth,
-        height:
-          meta.height ||
-          Math.round(resizeWidth * (originalHeight / originalWidth)),
-      };
-    })
-  );
+    const meta = await sharp(resized).metadata();
+    results.push({
+      suffix: size.suffix,
+      buffer: resized,
+      width: meta.width || resizeWidth,
+      height:
+        meta.height ||
+        Math.round(resizeWidth * (originalHeight / originalWidth)),
+    });
+  }
 
   return {
     variants: results,
@@ -188,6 +192,20 @@ async function migrateOneUrl(
     const response = await fetch(url, { signal: controller.signal });
     clearTimeout(timeoutId);
 
+    // Check Content-Length before downloading (best-effort, headers may be absent)
+    const contentLength = parseInt(response.headers.get('content-length'), 10);
+    if (contentLength && contentLength > MAX_IMAGE_BYTES) {
+      console.warn(
+        `[ImageMigration] Skipping ${url}: too large (${(
+          contentLength /
+          1024 /
+          1024
+        ).toFixed(1)} MB)`
+      );
+      urlCache.set(url, null);
+      return null;
+    }
+
     if (!response.ok) {
       console.warn(
         `[ImageMigration] Failed to fetch ${url}: ${response.status} ${response.statusText}`
@@ -204,22 +222,31 @@ async function migrateOneUrl(
       return null;
     }
 
+    if (buffer.length > MAX_IMAGE_BYTES) {
+      console.warn(
+        `[ImageMigration] Skipping ${url}: too large after download (${(
+          buffer.length /
+          1024 /
+          1024
+        ).toFixed(1)} MB)`
+      );
+      urlCache.set(url, null);
+      return null;
+    }
+
     // Generate WebP variants at correct sizes
     const { variants, metadata } = await generateWebpVariants(buffer, context);
     const imageId = Random.id();
     const folderKey = `images/migration/${imageId}`;
 
-    // Upload all variants to S3 in parallel
+    // Upload variants one at a time to keep memory low
     const uploadedVariants = {};
-    const uploadResults = await Promise.all(
-      variants.map(async (v) => {
-        const key = `${folderKey}/${v.suffix}.webp`;
-        const s3Url = await uploadToS3(v.buffer, key, 'image/webp');
-        return { suffix: v.suffix, url: s3Url };
-      })
-    );
-    for (const { suffix, url: s3Url } of uploadResults) {
-      uploadedVariants[suffix] = s3Url;
+    for (const v of variants) {
+      const key = `${folderKey}/${v.suffix}.webp`;
+      const s3Url = await uploadToS3(v.buffer, key, 'image/webp');
+      uploadedVariants[v.suffix] = s3Url;
+      // Allow GC to collect this variant's buffer once uploaded
+      v.buffer = null;
     }
 
     const originalName = url.split('?')[0].split('/').pop() || 'legacy-image';
