@@ -91,7 +91,7 @@ function PopupContent({
         {action}
       </Center>
       <Center mb="4">
-        <NiceSlider alt={title} images={images} isFade={false} />
+        <NiceSlider alt={title} images={images} isPopup />
       </Center>
 
       <Box bg="white" className="text-content" p="4">
@@ -133,7 +133,12 @@ export interface PopupHandlerProps {
   onClose: () => void;
 }
 
-export default function PopupHandler({ item, kind, showPast, onClose }: PopupHandlerProps) {
+export default function PopupHandler({
+  item,
+  kind,
+  showPast,
+  onClose,
+}: PopupHandlerProps) {
   const allHosts = useAtomValue(allHostsAtom);
   const currentHost = useAtomValue(currentHostAtom);
   const [copied, setCopied] = useState(false);
@@ -158,7 +163,9 @@ export default function PopupHandler({ item, kind, showPast, onClose }: PopupHan
   const isPortalHost = currentHost?.isPortalHost;
 
   const getButtonLabel = () => {
-    const hostName = allHosts?.find((h) => h?.host === displayedItem?.host)?.name;
+    const hostName = allHosts?.find(
+      (h) => h?.host === displayedItem?.host
+    )?.name;
     if (isPortalHost) {
       return tc('actions.toThePage', {
         hostName,
@@ -176,7 +183,11 @@ export default function PopupHandler({ item, kind, showPast, onClose }: PopupHan
 
   const handleActionButtonClick = () => {
     if (!displayedItem) return;
-    const link = getLinkPath(displayedItem, kind, displayedItem.host === currentHost?.host);
+    const link = getLinkPath(
+      displayedItem,
+      kind,
+      displayedItem.host === currentHost?.host
+    );
     if (link.isHref) {
       window.open(link.path, '_self');
       return;
@@ -207,9 +218,16 @@ export default function PopupHandler({ item, kind, showPast, onClose }: PopupHan
     >
       {displayedItem && (
         <PopupContent
-          action={<ActionDates activity={displayedItem} showPast={showPast} showTime />}
+          action={
+            <ActionDates
+              activity={displayedItem}
+              showPast={showPast}
+              showTime
+            />
+          }
           content={
-            (displayedItem.longDescription && parseHtml(displayedItem.longDescription)) ||
+            (displayedItem.longDescription &&
+              parseHtml(displayedItem.longDescription)) ||
             (displayedItem.description && parseHtml(displayedItem.description))
           }
           images={displayedItem.images || [displayedItem.imageUrl]}

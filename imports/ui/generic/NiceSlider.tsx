@@ -6,6 +6,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { Box, Center, Flex, Image } from '/imports/ui/core';
 import type { DotsProps } from '/imports/ui/types';
+
 import { getImageUrl } from '../utils/imageHelper';
 
 if (Meteor.isClient) {
@@ -130,6 +131,7 @@ function ImageHandler({ height, width, images, children }: ImageHandlerProps) {
 export interface NiceSliderProps {
   alt?: string;
   images?: string[];
+  isPopup?: boolean;
   height?: string | number;
   width?: string | number;
 }
@@ -139,6 +141,7 @@ export default function NiceSlider({
   images,
   height = 'auto',
   width = '100%',
+  isPopup = false,
 }: NiceSliderProps) {
   const [toggler, setToggler] = useState(false);
 
@@ -156,7 +159,7 @@ export default function NiceSlider({
           <Center>
             <Image
               loading="lazy"
-              src={resolvedImages[0]}
+              src={getImageUrl(resolvedImages[0], isPopup ? 'medium' : 'full')}
               style={imageStyle}
               onClick={() => setToggler(!toggler)}
             />
@@ -167,7 +170,12 @@ export default function NiceSlider({
           <FsLightbox
             toggler={toggler}
             sources={resolvedImages.map((img) => (
-              <img key={img} alt={img} loading="lazy" src={img} />
+              <img
+                key={img}
+                alt={img}
+                loading="lazy"
+                src={getImageUrl(img, isPopup ? 'medium' : 'full') || img}
+              />
             ))}
           />
         )}
@@ -183,7 +191,7 @@ export default function NiceSlider({
             <Flex direction="column" justify="center">
               <LazyLoadImage
                 alt={`${alt} ${image}`}
-                src={image}
+                src={getImageUrl(image, isPopup ? 'medium' : 'full') || image}
                 style={{ ...imageStyle, height }}
                 onClick={() => setToggler(!toggler)}
               />
@@ -196,7 +204,12 @@ export default function NiceSlider({
         <FsLightbox
           toggler={toggler}
           sources={resolvedImages.map((img) => (
-            <img key={img} alt={img} loading="lazy" src={img} />
+            <img
+              key={img}
+              alt={img}
+              loading="lazy"
+              src={getImageUrl(img, 'full') || img}
+            />
           ))}
         />
       )}
