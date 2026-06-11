@@ -21,7 +21,7 @@ sharp.concurrency(1);
 // ---------------------------------------------------------------------------
 let migrationAborted = false;
 
-// Memory ceiling: stop before Heroku's R14 kills us (512 MB dyno)
+// Memory ceiling: stop before Heroku's R14 kills us
 const RSS_ABORT_BYTES = 420 * 1024 * 1024; // 420 MB → abort
 const RSS_PAUSE_BYTES = 350 * 1024 * 1024; // 350 MB → pause 10 s
 
@@ -33,7 +33,7 @@ async function checkMemory(label) {
   const mem = rss();
   if (mem >= RSS_ABORT_BYTES) {
     console.error(
-      `[ImageMigration] RSS ${Math.round(mem / 1024 / 1024)} MB ≥ abort threshold at ${label} — stopping migration to avoid R14 kill`
+      `[ImageMigration] RSS ${Math.round(mem / 1024 / 1024)} MB ≥ abort threshold at ${label} — stopping migration`
     );
     migrationAborted = true;
     return;
@@ -44,6 +44,13 @@ async function checkMemory(label) {
     );
     await sleep(10_000);
   }
+}
+
+// Yield the Node.js event loop so HTTP health-checks can be served between
+// image operations. Without this, sharp's CPU work can starve the event loop
+// and make Heroku's router think the dyno is dead (triggering a restart).
+function yieldEventLoop() {
+  return new Promise((resolve) => setImmediate(resolve));
 }
 
 /**
@@ -334,7 +341,7 @@ async function migrateOneUrl(
 async function migrateUsers(urlCache) {
   console.log('[ImageMigration] Starting migration for users...');
 
-  const BATCH = 25;
+  const BATCH = 10;
   let migratedCount = 0;
   let errorCount = 0;
   let lastId = null;
@@ -384,6 +391,8 @@ async function migrateUsers(urlCache) {
           uploadedByUsername: doc.username || 'unknown',
           context: 'avatar',
         });
+
+        await yieldEventLoop();
 
         if (!newUrl) continue;
 
@@ -449,7 +458,7 @@ async function migrateUsers(urlCache) {
     );
     logMemory(`users ${migratedCount}`);
     await checkMemory('users');
-    await sleep(250);
+    await sleep(1_000);
   } while (!migrationAborted && batch.length === BATCH);
 
   console.log(
@@ -485,7 +494,7 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
     return;
   }
 
-  const BATCH = 25;
+  const BATCH = 10;
   let migratedCount = 0;
   let errorCount = 0;
   let lastId = null;
@@ -595,6 +604,9 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
                 context: 'entry',
               });
 
+              await yieldEventLoop();
+              await sleep(500);
+
               if (newUrl) {
                 newImageIds.push(newUrl);
                 migratedCount++;
@@ -641,6 +653,9 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
                 doc.authorName || doc.authorUsername || 'migration',
               context: 'entry',
             });
+
+            await yieldEventLoop();
+            await sleep(500);
 
             if (newUrl) {
               updateData[field] = newUrl;
@@ -765,6 +780,9 @@ async function migrateComposablePages(urlCache) {
                   context: 'entry',
                 });
 
+                await yieldEventLoop();
+                await sleep(500);
+
                 if (newUrl) {
                   mod.value.srcLegacy = src;
                   mod.value.src = newUrl;
@@ -813,6 +831,9 @@ async function migrateComposablePages(urlCache) {
                     context: 'entry',
                   });
 
+                  await yieldEventLoop();
+                  await sleep(500);
+
                   if (newUrl) {
                     newImages.push(newUrl);
                     migratedCount++;
@@ -858,7 +879,7 @@ async function migrateComposablePages(urlCache) {
     );
     logMemory(`composablepages ${migratedCount}`);
     await checkMemory('composablepages');
-    await sleep(250);
+    await sleep(1_000);
   } while (!migrationAborted && batch.length === BATCH);
 
   console.log(
@@ -888,10 +909,15 @@ Meteor.startup(async () => {
     return;
   }
 
-  // Stop between batches when Heroku sends SIGTERM (R14 / deploy / restart)
+  // Heroku sends SIGTERM then waits 30 s before sending SIGKILL (status 137).
+  // We force-exit within 20 s so we always beat the SIGKILL window cleanly.
   process.once('SIGTERM', () => {
     migrationAborted = true;
-    console.log('[ImageMigration] SIGTERM received — will stop after current item');
+    console.log('[ImageMigration] SIGTERM received — forcing exit in 20 s');
+    setTimeout(() => {
+      console.log('[ImageMigration] Force-exiting after SIGTERM grace period');
+      process.exit(0);
+    }, 20_000).unref(); // .unref() so this timer doesn't delay a clean exit
   });
 
   // Give the HTTP server a few seconds to pass Heroku's health check before
