@@ -127,7 +127,7 @@ const SIZE_CONFIGS = {
 };
 
 const FETCH_TIMEOUT_MS = 15_000;
-const MAX_IMAGE_BYTES = 10 * 1024 * 1024; // skip images larger than 10 MB (Heroku 512MB limit)
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // skip images larger than 5 MB to keep sharp fast
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -176,7 +176,7 @@ async function generateWebpVariants(buffer, context) {
       })
       .webp({
         quality: size.quality,
-        effort: 2,
+        effort: 1,
         nearLossless: false,
         smartSubsample: true,
       })
@@ -909,20 +909,17 @@ Meteor.startup(async () => {
     return;
   }
 
-  // Heroku sends SIGTERM then waits 30 s before sending SIGKILL (status 137).
-  // We force-exit within 20 s so we always beat the SIGKILL window cleanly.
+  // Set the abort flag on SIGTERM so the migration stops between operations.
+  // Do NOT call process.exit() here — Meteor has its own shutdown handler and
+  // calling exit from migration code would kill the web server on any dyno
+  // restart (deploy, daily cycle, etc.) even when migration isn't the cause.
   process.once('SIGTERM', () => {
     migrationAborted = true;
-    console.log('[ImageMigration] SIGTERM received — forcing exit in 20 s');
-    setTimeout(() => {
-      console.log('[ImageMigration] Force-exiting after SIGTERM grace period');
-      process.exit(0);
-    }, 20_000).unref(); // .unref() so this timer doesn't delay a clean exit
+    console.log('[ImageMigration] SIGTERM received — migration will stop after current item');
   });
 
-  // Give the HTTP server a few seconds to pass Heroku's health check before
-  // we start consuming CPU and memory with sharp/S3 work.
-  await sleep(5_000);
+  // Give the HTTP server a moment to bind before heavy work starts.
+  await sleep(2_000);
 
   if (migrationAborted) return;
 
