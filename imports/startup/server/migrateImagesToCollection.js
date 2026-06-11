@@ -33,14 +33,18 @@ async function checkMemory(label) {
   const mem = rss();
   if (mem >= RSS_ABORT_BYTES) {
     console.error(
-      `[ImageMigration] RSS ${Math.round(mem / 1024 / 1024)} MB ≥ abort threshold at ${label} — stopping migration`
+      `[ImageMigration] RSS ${Math.round(
+        mem / 1024 / 1024
+      )} MB ≥ abort threshold at ${label} — stopping migration`
     );
     migrationAborted = true;
     return;
   }
   if (mem >= RSS_PAUSE_BYTES) {
     console.warn(
-      `[ImageMigration] RSS ${Math.round(mem / 1024 / 1024)} MB ≥ pause threshold at ${label} — sleeping 10 s`
+      `[ImageMigration] RSS ${Math.round(
+        mem / 1024 / 1024
+      )} MB ≥ pause threshold at ${label} — sleeping 10 s`
     );
     await sleep(10_000);
   }
@@ -341,6 +345,16 @@ async function migrateOneUrl(
 async function migrateUsers(urlCache) {
   console.log('[ImageMigration] Starting migration for users...');
 
+  // Only fetch users that haven't been migrated yet (no avatarLegacy)
+  // AND still have a raw URL avatar. Skips already-done and avatar-less users.
+  const NEEDS_MIGRATION = {
+    avatarLegacy: { $exists: false },
+    $or: [
+      { avatar: { $regex: '^https?://' } },
+      { 'avatar.src': { $regex: '^https?://' } },
+    ],
+  };
+
   const BATCH = 10;
   let migratedCount = 0;
   let errorCount = 0;
@@ -348,7 +362,9 @@ async function migrateUsers(urlCache) {
   let batch;
 
   do {
-    const query = lastId ? { _id: { $gt: lastId } } : {};
+    const query = lastId
+      ? { $and: [NEEDS_MIGRATION, { _id: { $gt: lastId } }] }
+      : NEEDS_MIGRATION;
     batch = await Meteor.users
       .find(query, { limit: BATCH, sort: { _id: 1 } })
       .fetchAsync();
@@ -421,9 +437,9 @@ async function migrateUsers(urlCache) {
         ]);
 
         // Update members[].avatar in groups where it matches the old URL
-        const groupsWithMember = await Groups.find(
-          { 'members.avatar': avatarUrl }
-        ).fetchAsync();
+        const groupsWithMember = await Groups.find({
+          'members.avatar': avatarUrl,
+        }).fetchAsync();
         let memberUpdates = 0;
         for (const g of groupsWithMember) {
           let changed = false;
@@ -494,6 +510,30 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
     return;
   }
 
+  // The legacy field name tells us a doc is already done:
+  //   - groups sets imageUrlLegacy (single imageUrl field)
+  //   - all others set imagesLegacy (images array field)
+  const hasArrayField = imageFields.some((f) => f.isArray);
+  const legacyField = hasArrayField ? 'imagesLegacy' : 'imageUrlLegacy';
+
+  // Build URL-presence conditions so we only fetch docs that still have
+  // raw http(s) URLs in the relevant fields.
+  const urlPattern = { $regex: '^https?://' };
+  const fieldConditions = [];
+  for (const { field, isArray, fallbackField } of imageFields) {
+    fieldConditions.push({ [field]: urlPattern });
+    if (!isArray) fieldConditions.push({ [`${field}.src`]: urlPattern });
+    if (fallbackField) {
+      fieldConditions.push({ [fallbackField]: urlPattern });
+      fieldConditions.push({ [`${fallbackField}.src`]: urlPattern });
+    }
+  }
+  const hasUrlImages =
+    fieldConditions.length === 1 ? fieldConditions[0] : { $or: fieldConditions };
+
+  // Combine: not already migrated AND has URL images
+  const NEEDS_MIGRATION = { [legacyField]: { $exists: false }, ...hasUrlImages };
+
   const BATCH = 10;
   let migratedCount = 0;
   let errorCount = 0;
@@ -501,7 +541,9 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
   let batch;
 
   do {
-    const query = lastId ? { _id: { $gt: lastId } } : {};
+    const query = lastId
+      ? { $and: [NEEDS_MIGRATION, { _id: { $gt: lastId } }] }
+      : NEEDS_MIGRATION;
     batch = await collection
       .find(query, { limit: BATCH, sort: { _id: 1 } })
       .fetchAsync();
@@ -713,6 +755,12 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
 async function migrateComposablePages(urlCache) {
   console.log('[ImageMigration] Starting migration for composablepages...');
 
+  // Only scan pages that have non-empty content rows.
+  // Deep-nested URL filtering isn't practical in MongoDB, but individual
+  // already-migrated modules are skipped in JS via isAlreadyImageId /
+  // the variant-URL regex check inside the loop.
+  const NEEDS_MIGRATION = { contentRows: { $exists: true, $ne: [] } };
+
   const BATCH = 10;
   let migratedCount = 0;
   let errorCount = 0;
@@ -720,11 +768,13 @@ async function migrateComposablePages(urlCache) {
   let batch;
 
   do {
-    const query = lastId ? { _id: { $gt: lastId } } : {};
-    batch = await ComposablePages.find(
-      query,
-      { limit: BATCH, sort: { _id: 1 } }
-    ).fetchAsync();
+    const query = lastId
+      ? { $and: [NEEDS_MIGRATION, { _id: { $gt: lastId } }] }
+      : NEEDS_MIGRATION;
+    batch = await ComposablePages.find(query, {
+      limit: BATCH,
+      sort: { _id: 1 },
+    }).fetchAsync();
     if (batch.length > 0) lastId = batch[batch.length - 1]._id;
 
     for (const doc of batch) {
@@ -915,12 +965,13 @@ Meteor.startup(async () => {
   // restart (deploy, daily cycle, etc.) even when migration isn't the cause.
   process.once('SIGTERM', () => {
     migrationAborted = true;
-    console.log('[ImageMigration] SIGTERM received — migration will stop after current item');
+    console.log(
+      '[ImageMigration] SIGTERM received — migration will stop after current item'
+    );
   });
 
   // Give the HTTP server a moment to bind before heavy work starts.
   await sleep(2_000);
-
   if (migrationAborted) return;
 
   console.log('[ImageMigration] Starting image migration...');
@@ -931,27 +982,65 @@ Meteor.startup(async () => {
 
     // 1. Users – avatars (also propagates to embedded copies in groups & works)
     await migrateUsers(urlCache);
-    if (migrationAborted) { console.warn('[ImageMigration] Aborted after users'); return; }
+    if (migrationAborted) {
+      console.warn('[ImageMigration] Aborted after users');
+      return;
+    }
 
     // 2. Works – images array
-    await migrateCollection('works', [{ field: 'images', isArray: true }], urlCache);
-    if (migrationAborted) { console.warn('[ImageMigration] Aborted after works'); return; }
+    await migrateCollection(
+      'works',
+      [{ field: 'images', isArray: true }],
+      urlCache
+    );
+    if (migrationAborted) {
+      console.warn('[ImageMigration] Aborted after works');
+      return;
+    }
 
     // 3. Resources – images array
-    await migrateCollection('resources', [{ field: 'images', isArray: true }], urlCache);
-    if (migrationAborted) { console.warn('[ImageMigration] Aborted after resources'); return; }
+    await migrateCollection(
+      'resources',
+      [{ field: 'images', isArray: true }],
+      urlCache
+    );
+    if (migrationAborted) {
+      console.warn('[ImageMigration] Aborted after resources');
+      return;
+    }
 
     // 4. Groups – single imageUrl → imageUrlLegacy
-    await migrateCollection('groups', [{ field: 'imageUrl', isArray: false }], urlCache);
-    if (migrationAborted) { console.warn('[ImageMigration] Aborted after groups'); return; }
+    await migrateCollection(
+      'groups',
+      [{ field: 'imageUrl', isArray: false }],
+      urlCache
+    );
+    if (migrationAborted) {
+      console.warn('[ImageMigration] Aborted after groups');
+      return;
+    }
 
     // 5. Activities – images array (fallback to imageUrl if images is empty)
-    await migrateCollection('activities', [{ field: 'images', isArray: true, fallbackField: 'imageUrl' }], urlCache);
-    if (migrationAborted) { console.warn('[ImageMigration] Aborted after activities'); return; }
+    await migrateCollection(
+      'activities',
+      [{ field: 'images', isArray: true, fallbackField: 'imageUrl' }],
+      urlCache
+    );
+    if (migrationAborted) {
+      console.warn('[ImageMigration] Aborted after activities');
+      return;
+    }
 
     // 6. Pages – images array
-    await migrateCollection('pages', [{ field: 'images', isArray: true }], urlCache);
-    if (migrationAborted) { console.warn('[ImageMigration] Aborted after pages'); return; }
+    await migrateCollection(
+      'pages',
+      [{ field: 'images', isArray: true }],
+      urlCache
+    );
+    if (migrationAborted) {
+      console.warn('[ImageMigration] Aborted after pages');
+      return;
+    }
 
     // 7. Composable pages – deep-nested image & image-slider modules
     await migrateComposablePages(urlCache);
