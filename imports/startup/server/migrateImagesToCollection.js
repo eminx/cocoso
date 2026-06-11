@@ -10,6 +10,12 @@ import Pages from '/imports/api/pages/page';
 import ComposablePages from '/imports/api/composablepages/composablepage';
 import Images from '/imports/api/images/image.collection';
 
+// Prevent libvips from retaining large caches during migration
+sharp.cache(false);
+
+// Prevent many concurrent image operations
+sharp.concurrency(1);
+
 /**
  * Image Migration Startup Script
  *
@@ -116,13 +122,16 @@ function sleep(ms) {
  */
 async function generateWebpVariants(buffer, context) {
   const sizes = SIZE_CONFIGS[context] || SIZE_CONFIGS.entry;
+
   const metadata = await sharp(buffer).metadata();
   const originalWidth = metadata.width || 1200;
   const originalHeight = metadata.height || 1200;
 
   const results = [];
+
   for (const size of sizes) {
     const resizeWidth = Math.min(size.width, originalWidth);
+
     const resized = await sharp(buffer)
       .resize(resizeWidth, null, {
         fit: 'inside',
@@ -136,14 +145,11 @@ async function generateWebpVariants(buffer, context) {
       })
       .toBuffer();
 
-    const meta = await sharp(resized).metadata();
     results.push({
       suffix: size.suffix,
       buffer: resized,
-      width: meta.width || resizeWidth,
-      height:
-        meta.height ||
-        Math.round(resizeWidth * (originalHeight / originalWidth)),
+      width: resizeWidth,
+      height: Math.round(resizeWidth * (originalHeight / originalWidth)),
     });
   }
 
@@ -218,8 +224,7 @@ async function migrateOneUrl(
       return null;
     }
 
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const buffer = Buffer.from(await response.arrayBuffer());
     if (!buffer || buffer.length === 0) {
       console.warn(`[ImageMigration] Empty buffer for ${url}`);
       urlCache.set(url, null);
@@ -247,11 +252,15 @@ async function migrateOneUrl(
     const uploadedVariants = {};
     for (const v of variants) {
       const key = `${folderKey}/${v.suffix}.webp`;
+
       const s3Url = await uploadToS3(v.buffer, key, 'image/webp');
+
       uploadedVariants[v.suffix] = s3Url;
-      // Allow GC to collect this variant's buffer once uploaded
-      v.buffer = null;
+
+      delete v.buffer;
     }
+
+    variants.length = 0;
 
     const originalName = url.split('?')[0].split('/').pop() || 'legacy-image';
 
@@ -278,6 +287,7 @@ async function migrateOneUrl(
     // the ImageUploader flow does.
     const fullUrl = uploadedVariants.full;
     urlCache.set(url, fullUrl);
+    buffer.fill(0);
     return fullUrl;
   } catch (err) {
     if (err.name === 'AbortError') {
@@ -639,6 +649,7 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
     console.log(
       `[ImageMigration] ${collectionName} progress: ${skip} scanned, ${migratedCount} images migrated so far`
     );
+    logMemory(`${collectionName} ${migratedCount}`);
     await sleep(250);
   } while (batch.length === BATCH);
 
@@ -813,6 +824,17 @@ async function migrateComposablePages(urlCache) {
 
   console.log(
     `[ImageMigration] Completed composablepages: ${migratedCount} images migrated, ${errorCount} errors`
+  );
+}
+
+function logMemory(prefix) {
+  const m = process.memoryUsage();
+
+  console.log(
+    `[MEM] ${prefix}`,
+    `rss=${Math.round(m.rss / 1024 / 1024)}MB`,
+    `heap=${Math.round(m.heapUsed / 1024 / 1024)}MB`,
+    `external=${Math.round(m.external / 1024 / 1024)}MB`
   );
 }
 
