@@ -16,6 +16,36 @@ sharp.cache(false);
 // Prevent many concurrent image operations
 sharp.concurrency(1);
 
+// ---------------------------------------------------------------------------
+// Graceful-shutdown support
+// ---------------------------------------------------------------------------
+let migrationAborted = false;
+
+// Memory ceiling: stop before Heroku's R14 kills us (512 MB dyno)
+const RSS_ABORT_BYTES = 420 * 1024 * 1024; // 420 MB → abort
+const RSS_PAUSE_BYTES = 350 * 1024 * 1024; // 350 MB → pause 10 s
+
+function rss() {
+  return process.memoryUsage().rss;
+}
+
+async function checkMemory(label) {
+  const mem = rss();
+  if (mem >= RSS_ABORT_BYTES) {
+    console.error(
+      `[ImageMigration] RSS ${Math.round(mem / 1024 / 1024)} MB ≥ abort threshold at ${label} — stopping migration to avoid R14 kill`
+    );
+    migrationAborted = true;
+    return;
+  }
+  if (mem >= RSS_PAUSE_BYTES) {
+    console.warn(
+      `[ImageMigration] RSS ${Math.round(mem / 1024 / 1024)} MB ≥ pause threshold at ${label} — sleeping 10 s`
+    );
+    await sleep(10_000);
+  }
+}
+
 /**
  * Image Migration Startup Script
  *
@@ -202,6 +232,14 @@ async function migrateOneUrl(
     const response = await fetch(url, { signal: controller.signal });
     clearTimeout(timeoutId);
 
+    if (!response.ok) {
+      console.warn(
+        `[ImageMigration] Failed to fetch ${url}: ${response.status} ${response.statusText}`
+      );
+      urlCache.set(url, null);
+      return null;
+    }
+
     // Check Content-Length before downloading (best-effort, headers may be absent)
     const contentLength = parseInt(response.headers.get('content-length'), 10);
     if (contentLength && contentLength > MAX_IMAGE_BYTES) {
@@ -211,14 +249,6 @@ async function migrateOneUrl(
           1024 /
           1024
         ).toFixed(1)} MB)`
-      );
-      urlCache.set(url, null);
-      return null;
-    }
-
-    if (!response.ok) {
-      console.warn(
-        `[ImageMigration] Failed to fetch ${url}: ${response.status} ${response.statusText}`
       );
       urlCache.set(url, null);
       return null;
@@ -260,8 +290,6 @@ async function migrateOneUrl(
       delete v.buffer;
     }
 
-    variants.length = 0;
-
     const originalName = url.split('?')[0].split('/').pop() || 'legacy-image';
 
     const imageDoc = {
@@ -287,7 +315,6 @@ async function migrateOneUrl(
     // the ImageUploader flow does.
     const fullUrl = uploadedVariants.full;
     urlCache.set(url, fullUrl);
-    buffer.fill(0);
     return fullUrl;
   } catch (err) {
     if (err.name === 'AbortError') {
@@ -310,13 +337,15 @@ async function migrateUsers(urlCache) {
   const BATCH = 25;
   let migratedCount = 0;
   let errorCount = 0;
-  let skip = 0;
+  let lastId = null;
   let batch;
 
   do {
+    const query = lastId ? { _id: { $gt: lastId } } : {};
     batch = await Meteor.users
-      .find({}, { skip, limit: BATCH, sort: { _id: 1 } })
+      .find(query, { limit: BATCH, sort: { _id: 1 } })
       .fetchAsync();
+    if (batch.length > 0) lastId = batch[batch.length - 1]._id;
 
     for (const doc of batch) {
       try {
@@ -358,6 +387,8 @@ async function migrateUsers(urlCache) {
 
         if (!newUrl) continue;
 
+        if (migrationAborted) break;
+
         await Meteor.users.updateAsync(doc._id, {
           $set: {
             avatar: { src: newUrl, date: originalDate || new Date() },
@@ -382,8 +413,7 @@ async function migrateUsers(urlCache) {
 
         // Update members[].avatar in groups where it matches the old URL
         const groupsWithMember = await Groups.find(
-          { 'members.avatar': avatarUrl },
-          { limit: 500 }
+          { 'members.avatar': avatarUrl }
         ).fetchAsync();
         let memberUpdates = 0;
         for (const g of groupsWithMember) {
@@ -414,13 +444,13 @@ async function migrateUsers(urlCache) {
       }
     }
 
-    skip += BATCH;
     console.log(
-      `[ImageMigration] Users progress: ${skip} scanned, ${migratedCount} avatars migrated so far`
+      `[ImageMigration] Users progress: batch done, ${migratedCount} avatars migrated so far`
     );
-    // Let GC breathe between batches (Heroku 512 MB dyno)
+    logMemory(`users ${migratedCount}`);
+    await checkMemory('users');
     await sleep(250);
-  } while (batch.length === BATCH);
+  } while (!migrationAborted && batch.length === BATCH);
 
   console.log(
     `[ImageMigration] Completed users: ${migratedCount} avatars migrated, ${errorCount} errors`
@@ -458,13 +488,15 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
   const BATCH = 25;
   let migratedCount = 0;
   let errorCount = 0;
-  let skip = 0;
+  let lastId = null;
   let batch;
 
   do {
+    const query = lastId ? { _id: { $gt: lastId } } : {};
     batch = await collection
-      .find({}, { skip, limit: BATCH, sort: { _id: 1 } })
+      .find(query, { limit: BATCH, sort: { _id: 1 } })
       .fetchAsync();
+    if (batch.length > 0) lastId = batch[batch.length - 1]._id;
 
     for (const doc of batch) {
       try {
@@ -544,13 +576,15 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
                 const existingDoc = await Images.findOneAsync(url);
                 if (existingDoc?.variants?.full) {
                   newImageIds.push(existingDoc.variants.full);
-                  // Don't add to imagesLegacy — it was already migrated
+                  anyMigrated = true;
                 } else {
                   // Can't resolve, keep as-is (already broken)
                   newImageIds.push(url);
                 }
                 continue;
               }
+
+              if (migrationAborted) break;
 
               imagesLegacy.push(url);
               const newUrl = await migrateOneUrl(url, urlCache, {
@@ -645,13 +679,13 @@ async function migrateCollection(collectionName, imageFields, urlCache) {
       }
     }
 
-    skip += BATCH;
     console.log(
-      `[ImageMigration] ${collectionName} progress: ${skip} scanned, ${migratedCount} images migrated so far`
+      `[ImageMigration] ${collectionName} progress: batch done, ${migratedCount} images migrated so far`
     );
     logMemory(`${collectionName} ${migratedCount}`);
+    await checkMemory(collectionName);
     await sleep(250);
-  } while (batch.length === BATCH);
+  } while (!migrationAborted && batch.length === BATCH);
 
   console.log(
     `[ImageMigration] Completed ${collectionName}: ${migratedCount} images migrated, ${errorCount} errors`
@@ -667,14 +701,16 @@ async function migrateComposablePages(urlCache) {
   const BATCH = 10;
   let migratedCount = 0;
   let errorCount = 0;
-  let skip = 0;
+  let lastId = null;
   let batch;
 
   do {
+    const query = lastId ? { _id: { $gt: lastId } } : {};
     batch = await ComposablePages.find(
-      {},
-      { skip, limit: BATCH, sort: { _id: 1 } }
+      query,
+      { limit: BATCH, sort: { _id: 1 } }
     ).fetchAsync();
+    if (batch.length > 0) lastId = batch[batch.length - 1]._id;
 
     for (const doc of batch) {
       try {
@@ -767,6 +803,8 @@ async function migrateComposablePages(urlCache) {
                     continue;
                   }
 
+                  if (migrationAborted) break;
+
                   legacyImages.push(url);
                   const newUrl = await migrateOneUrl(url, urlCache, {
                     host,
@@ -815,12 +853,13 @@ async function migrateComposablePages(urlCache) {
       }
     }
 
-    skip += BATCH;
     console.log(
-      `[ImageMigration] Composablepages progress: ${skip} scanned, ${migratedCount} images migrated so far`
+      `[ImageMigration] Composablepages progress: batch done, ${migratedCount} images migrated so far`
     );
+    logMemory(`composablepages ${migratedCount}`);
+    await checkMemory('composablepages');
     await sleep(250);
-  } while (batch.length === BATCH);
+  } while (!migrationAborted && batch.length === BATCH);
 
   console.log(
     `[ImageMigration] Completed composablepages: ${migratedCount} images migrated, ${errorCount} errors`
@@ -849,6 +888,18 @@ Meteor.startup(async () => {
     return;
   }
 
+  // Stop between batches when Heroku sends SIGTERM (R14 / deploy / restart)
+  process.once('SIGTERM', () => {
+    migrationAborted = true;
+    console.log('[ImageMigration] SIGTERM received — will stop after current item');
+  });
+
+  // Give the HTTP server a few seconds to pass Heroku's health check before
+  // we start consuming CPU and memory with sharp/S3 work.
+  await sleep(5_000);
+
+  if (migrationAborted) return;
+
   console.log('[ImageMigration] Starting image migration...');
 
   try {
@@ -857,46 +908,34 @@ Meteor.startup(async () => {
 
     // 1. Users – avatars (also propagates to embedded copies in groups & works)
     await migrateUsers(urlCache);
+    if (migrationAborted) { console.warn('[ImageMigration] Aborted after users'); return; }
 
     // 2. Works – images array
-    await migrateCollection(
-      'works',
-      [{ field: 'images', isArray: true }],
-      urlCache
-    );
+    await migrateCollection('works', [{ field: 'images', isArray: true }], urlCache);
+    if (migrationAborted) { console.warn('[ImageMigration] Aborted after works'); return; }
 
     // 3. Resources – images array
-    await migrateCollection(
-      'resources',
-      [{ field: 'images', isArray: true }],
-      urlCache
-    );
+    await migrateCollection('resources', [{ field: 'images', isArray: true }], urlCache);
+    if (migrationAborted) { console.warn('[ImageMigration] Aborted after resources'); return; }
 
     // 4. Groups – single imageUrl → imageUrlLegacy
-    await migrateCollection(
-      'groups',
-      [{ field: 'imageUrl', isArray: false }],
-      urlCache
-    );
+    await migrateCollection('groups', [{ field: 'imageUrl', isArray: false }], urlCache);
+    if (migrationAborted) { console.warn('[ImageMigration] Aborted after groups'); return; }
 
     // 5. Activities – images array (fallback to imageUrl if images is empty)
-    await migrateCollection(
-      'activities',
-      [{ field: 'images', isArray: true, fallbackField: 'imageUrl' }],
-      urlCache
-    );
+    await migrateCollection('activities', [{ field: 'images', isArray: true, fallbackField: 'imageUrl' }], urlCache);
+    if (migrationAborted) { console.warn('[ImageMigration] Aborted after activities'); return; }
 
     // 6. Pages – images array
-    await migrateCollection(
-      'pages',
-      [{ field: 'images', isArray: true }],
-      urlCache
-    );
+    await migrateCollection('pages', [{ field: 'images', isArray: true }], urlCache);
+    if (migrationAborted) { console.warn('[ImageMigration] Aborted after pages'); return; }
 
     // 7. Composable pages – deep-nested image & image-slider modules
     await migrateComposablePages(urlCache);
 
-    console.log('[ImageMigration] Migration completed successfully!');
+    if (!migrationAborted) {
+      console.log('[ImageMigration] Migration completed successfully!');
+    }
   } catch (err) {
     console.error('[ImageMigration] Fatal error:', err.message);
   }
