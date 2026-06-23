@@ -139,7 +139,7 @@ Forms are managed with **[React Hook Form](https://react-hook-form.com/)** combi
 
 ### Image Storage
 
-Images are stored in Amazon S3 buckets. Using the [Slingshot](https://github.com/CulturalMe/meteor-slingshot) Meteor package, clients get authorized and can directly upload to S3 buckets without going through the server.
+Images are stored in Amazon S3 buckets.
 
 ## Project Structure
 

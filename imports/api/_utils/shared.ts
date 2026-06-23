@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
-import { Slingshot } from 'meteor/edgee:slingshot';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
@@ -226,19 +225,6 @@ const resizeImage = (
   });
 };
 
-const slingshotUpload = (directory: string) => new Slingshot.Upload(directory);
-
-const uploadImage = (image: File, directory: string): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const upload = slingshotUpload(directory);
-    upload.send(image, (error: Error | null, downloadUrl: string) => {
-      if (error) {
-        reject(error);
-      }
-      resolve(downloadUrl);
-    });
-  });
-
 function helper_parseAllBookingsWithResources(
   activity: Activity,
   recurrence: DateTimeOccurrence | undefined
@@ -289,7 +275,10 @@ function parseAllBookingsWithResources(
         (res) => res?._id === effectiveResourceId
       );
       if (!resourceSelected) {
-        const parsed = helper_parseAllBookingsWithResources(activity, recurrence);
+        const parsed = helper_parseAllBookingsWithResources(
+          activity,
+          recurrence
+        );
         if (parsed) {
           allBookings.push({
             ...parsed,
@@ -310,7 +299,10 @@ function parseAllBookingsWithResources(
           if (!resourceForComboReal?.isBookable) {
             return;
           }
-          const parsed = helper_parseAllBookingsWithResources(activity, recurrence);
+          const parsed = helper_parseAllBookingsWithResources(
+            activity,
+            recurrence
+          );
           if (parsed) {
             allBookings.push({
               ...parsed,
@@ -327,7 +319,10 @@ function parseAllBookingsWithResources(
         if (!resourceSelected.isBookable) {
           return;
         }
-        const parsed = helper_parseAllBookingsWithResources(activity, recurrence);
+        const parsed = helper_parseAllBookingsWithResources(
+          activity,
+          recurrence
+        );
         if (parsed) {
           allBookings.push({
             ...parsed,

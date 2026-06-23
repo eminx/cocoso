@@ -126,7 +126,7 @@ export interface Message {
 
 /**
  * MeteorUser for server-side user references
- * Used in mail.methods.ts and aws.slingshot.ts
+ * Used in mail.methods.ts
  */
 export interface MeteorUser {
   _id: string;

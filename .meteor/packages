@@ -23,7 +23,6 @@ email@3.1.2                   # Send email messages
 tracker@1.3.4                 # Dependency tracker to allow reactive callbacks
 service-configuration@1.3.5   # Manage the configuration for third-party services
 dev-error-overlay@0.1.3       # Show build errors in client when using HMR
-edgee:slingshot               # Directly post files to cloud storage services, such as AWS-S3.
 aldeed:collection2            # Automatic validation of Meteor Mongo insert and update operations on the client and server
 force-ssl-custom              # Require this application to use HTTPS
 percolate:migrations
