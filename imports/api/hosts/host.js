@@ -33,6 +33,7 @@ Hosts.schema = new SimpleSchema({
   host: Schemas.Hostname,
 
   logo: { type: String, optional: true },
+  logoLegacy: { type: String, optional: true },
 
   settings: { type: Object },
   'settings.name': { type: String },
