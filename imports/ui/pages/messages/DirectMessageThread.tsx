@@ -6,7 +6,7 @@ import { useParams } from 'react-router';
 import { useAtom, useAtomValue } from 'jotai';
 
 import { Box, Button, Center, Input, Loader, Text } from '/imports/ui/core';
-import DirectMessages from '../../../api/directMessages/directMessage';
+import DirectMessages from '/imports/api/directMessages/directMessage';
 import { currentUserAtom, privateKeyAtom } from '/imports/state';
 import { setupEncryption } from '/imports/utils/setupEncryption';
 import { encryptMessage, decryptMessage } from '/imports/utils/crypto';

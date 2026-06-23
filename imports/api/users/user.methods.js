@@ -7,6 +7,7 @@ import Hosts from '../hosts/host';
 import Platform from '../platform/platform';
 import Works from '../works/work';
 import Groups from '../groups/group';
+import DirectMessages from '../directMessages/directMessage';
 
 const userModel = (user) => ({
   _id: user._id,
@@ -286,6 +287,24 @@ Meteor.methods({
         {
           $set: {
             authorAvatar: avatar,
+          },
+        },
+        {
+          multi: true,
+        }
+      );
+
+      await DirectMessages.updateAsync(
+        {
+          participantIds: {
+            $elemMatch: {
+              $eq: userId,
+            },
+          },
+        },
+        {
+          $set: {
+            'participantAvatars.$': avatar.replace('full', 'thumb'),
           },
         },
         {
