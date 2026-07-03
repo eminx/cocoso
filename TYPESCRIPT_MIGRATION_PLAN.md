@@ -360,29 +360,6 @@ export function generateMail(template: string, context: MailContext): MailTempla
 }
 ```
 
-#### Step 2.3: AWS/Slingshot Service (1 file)
-**Risk: Medium | Dependencies: File uploads**
-
-Files to migrate:
-- `imports/api/_utils/services/aws.slingshot.js` → `.ts`
-
-**Typing Pattern**:
-```typescript
-// aws.slingshot.ts
-import { Slingshot } from 'meteor/edgee:slingshot';
-
-interface SlingshotDirective {
-  bucket: string;
-  acl: string;
-  authorize(): boolean;
-  key(file: File): string;
-}
-
-export function configureUpload(name: string, config: SlingshotDirective): void {
-  Slingshot.createDirective(name, Slingshot.S3Storage, config);
-}
-```
-
 ### Testing Strategy
 - Unit test each utility function after migration
 - Verify imports in dependent files

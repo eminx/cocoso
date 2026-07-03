@@ -3,7 +3,6 @@ import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { Box, Code, Flex, Link as CLink, Loader, Text } from '/imports/ui/core';
 import ExternalLinkIcon from 'lucide-react/dist/esm/icons/external-link';
-import { Slingshot } from 'meteor/edgee:slingshot';
 import { useAtomValue } from 'jotai';
 
 import { call } from '../../../../api/_utils/shared';
@@ -41,25 +40,7 @@ export default function DocumentsField({
     getDocuments();
   }, [documents.length]);
 
-  const createDocument = async (uploadableFile, downloadUrl) => {
-    try {
-      await call(
-        'createDocument',
-        uploadableFile.name,
-        downloadUrl,
-        contextType,
-        contextId
-      );
-      getDocuments();
-      message.success(`${uploadableFile.name} ${tc('documents.fileDropper')}`);
-    } catch (error) {
-      message.error(error.reason);
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const removeDocument = async (documentId) => {
+  const removeDocument = async (documentId: string) => {
     if (!isAllowed) {
       message.error(tc('message.access.deny'));
       return;
@@ -74,28 +55,30 @@ export default function DocumentsField({
     }
   };
 
-  const handleFileDrop = (files) => {
+  const handleFileDrop = async (files: File[]) => {
     if (files.length !== 1) {
       message.error(tc('plugins.fileDropper.single'));
       return;
     }
+    const file = files[0];
     setIsUploading(true);
-    const upload = new Slingshot.Upload('groupDocumentUpload');
-    files.forEach((file) => {
-      const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
-      const uploadableFile = new File([file], parsedName, {
-        type: file.type,
+    try {
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.addEventListener('load', () => {
+          resolve((reader.result as string).split(',')[1]);
+        });
+        reader.addEventListener('error', () => reject(reader.error));
       });
-      upload.send(uploadableFile, (error, downloadUrl) => {
-        if (error) {
-          console.error('Error uploading:', error);
-          message.error(error.reason);
-          setIsUploading(false);
-        } else {
-          createDocument(uploadableFile, downloadUrl);
-        }
-      });
-    });
+      await call('createDocument', base64, file.name, file.type, contextType, contextId);
+      getDocuments();
+      message.success(`${file.name} ${tc('documents.fileDropper')}`);
+    } catch (error) {
+      message.error(error.reason);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   if (isLoading) {
@@ -170,12 +153,7 @@ export default function DocumentsField({
                   {...getRootProps()}
                 >
                   {isUploading ? (
-                    <Skeleton
-                      w="100%"
-                      h="100%"
-                      startColor="theme.100"
-                      endColor="theme.200"
-                    />
+                    <Loader relative />
                   ) : (
                     <Text textAlign="center" fontSize="sm">
                       {tc('documents.drop')}

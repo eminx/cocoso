@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 import { getHost } from '../_utils/shared';
 import Documents from './document';
 import Hosts from '../hosts/host';
 import { isAdmin } from '../users/user.roles';
+import { uploadDocumentToS3 } from '../_utils/services/aws.upload';
 
 Meteor.methods({
   async getDocumentsByAttachments(attachedTo) {
@@ -11,18 +13,23 @@ Meteor.methods({
     return await Documents.find({ attachedTo }, { sort, fields }).fetchAsync();
   },
 
-  async createDocument(documentLabel, documentUrl, contextType, attachedTo) {
+  async createDocument(fileBase64, fileName, contentType, contextType, attachedTo) {
     const user = await Meteor.userAsync();
     if (!user) {
-      return;
+      throw new Meteor.Error('not-authorized', 'You must be logged in to upload documents');
     }
 
     const host = getHost(this);
 
+    const buffer = Buffer.from(fileBase64, 'base64');
+    const safeFileName = fileName.replace(/\s+/g, '-').toLowerCase();
+    const key = `documents/${user.username}/${Random.id()}/${safeFileName}`;
+    const documentUrl = await uploadDocumentToS3(buffer, key, contentType);
+
     try {
       return await Documents.insertAsync({
         host,
-        documentLabel,
+        documentLabel: fileName,
         documentUrl,
         contextType,
         attachedTo,

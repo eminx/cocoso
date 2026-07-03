@@ -2,7 +2,6 @@ import '../../api/_utils/shared';
 import '../../api/_utils/schemas';
 
 import '../../api/_utils/services/mails/mail.methods';
-import '../../api/_utils/services/aws.slingshot';
 
 import '../../api/images/image.collection';
 import '../../api/images/image.methods';
