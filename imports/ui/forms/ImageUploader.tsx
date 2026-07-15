@@ -22,9 +22,7 @@ export interface ImageUploaderProps {
   preExistingImages?: string[];
   isMultiple?: boolean;
   ping?: boolean;
-  /** Upload context: 'entry', 'avatar', or 'logo' */
   uploadParam?: 'entry' | 'avatar' | 'logo';
-  /** Called with the image URLs after successful upload */
   onUploadedImages: (images: string[]) => void;
 }
 

@@ -1011,7 +1011,6 @@ These types are re-exported from `types.ts` for convenience:
 
 **API/Server Files:**
 - `imports/api/_utils/services/mails/mail.methods.ts` - `MeteorUser`
-- `imports/api/_utils/services/aws.slingshot.ts` - `MeteorUser`
 
 ---
 
