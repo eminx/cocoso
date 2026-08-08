@@ -34,6 +34,7 @@ import {
 } from '/imports/state';
 import PageHeading from '/imports/ui/listing/PageHeading';
 import Tag from '/imports/ui/generic/Tag';
+import { cocosoReactSelectAdapter } from '/imports/ui/utils/globalStylesManager';
 
 const CalendarView = loadable(() => import('./CalendarView'), {
   fallback: <Skeleton isEntry />,
@@ -358,17 +359,7 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
                     options={allResourcesForSelect}
                     style={{ width: '100%', marginTop: '1rem' }}
                     styles={{
-                      control: (base: any) => ({
-                        ...base,
-                        borderRadius: 'var(--cocoso-border-radius)',
-                        borderColor: 'var(--cocoso-colors-theme-200)',
-                        ':hover': {
-                          borderColor: 'var(--cocoso-colors-theme-300)',
-                        },
-                        ':focus': {
-                          borderColor: 'var(--cocoso-colors-theme-500)',
-                        },
-                      }),
+                      control: cocosoReactSelectAdapter,
                       option: (styles, { data }) => ({
                         ...styles,
                         borderLeft: `8px solid ${data.color}`,

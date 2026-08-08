@@ -8,7 +8,7 @@ import { useAtomValue } from 'jotai';
 
 import { Box, Center, Divider, Heading, Text } from '/imports/ui/core';
 import type { Host } from '/imports/ui/types';
-import { canCreateContentAtom, currentHostAtom } from '../../state';
+import { canCreateContentAtom, currentHostAtom } from '/imports/state';
 
 import NewButton, { type NewButtonAnimState } from './NewButton';
 
@@ -77,7 +77,10 @@ export default function PageHeading({
   useEffect(() => {
     if (introShown) {
       setButtonAnimState('subtle');
-      const t = setTimeout(() => setButtonAnimState('idle'), SUBTLE_DURATION_MS);
+      const t = setTimeout(
+        () => setButtonAnimState('idle'),
+        SUBTLE_DURATION_MS
+      );
       return () => clearTimeout(t);
     }
     setButtonVisible(true);
@@ -157,7 +160,12 @@ export default function PageHeading({
   // We do NOT include buttonVisible in deps — we only want to fire on data
   // change, not on every visibility toggle (which would loop on /members etc.).
   useEffect(() => {
-    if (!introShown && needsRetryRef.current && canCreateContent && currentHostFromAtom) {
+    if (
+      !introShown &&
+      needsRetryRef.current &&
+      canCreateContent &&
+      currentHostFromAtom
+    ) {
       needsRetryRef.current = false;
       setButtonVisible(true);
     }

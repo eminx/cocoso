@@ -76,8 +76,8 @@ works:
     helper: Valfritt, lägg till en kort beskrivning
   category:
     label: Kategori
-    holder: Välj alternativ
-    helper: Välj en kategori från listan. Om du inte hittar något som passar, kontakta en community-admin för att skapa en åt dig
+    holder: Välj alternativ eller skriv för att skapa en ny
+    helper: Välj en kategori från listan. Om du inte hittar något som passar, skriv och skapa en ny kategori.
   longDescription:
     label: Beskrivning
     holder: Plats för en längre beskrivande text…

@@ -80,3 +80,15 @@ export const applyGlobalStyles = (theme: any) => {
   // Always overwrite completely for deterministic reactivity
   tag.innerHTML = css;
 };
+
+export const cocosoReactSelectAdapter = (base: any) => ({
+  ...base,
+  borderRadius: 'var(--cocoso-border-radius)',
+  borderColor: 'var(--cocoso-colors-theme-200)',
+  ':hover': {
+    borderColor: 'var(--cocoso-colors-theme-300)',
+  },
+  ':focus': {
+    borderColor: 'var(--cocoso-colors-theme-500)',
+  },
+});

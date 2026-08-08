@@ -4,9 +4,9 @@ import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
 
 import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
-
-import { message } from '../../generic/message';
-import { call } from '../../../api/_utils/shared';
+import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
+import { cocosoReactSelectAdapter } from '/imports/ui/utils/globalStylesManager';
 
 const animatedComponents = makeAnimated();
 
@@ -95,6 +95,9 @@ function KeywordsManager({ currentUser }) {
         options={allKeywords}
         placeholder="Type something and press enter..."
         style={{ width: '100%', marginTop: '1rem' }}
+        styles={{
+          control: cocosoReactSelectAdapter,
+        }}
         value={selectedKeywords}
         getOptionValue={(option) => option._id}
         onChange={(newValue) => handleChange(newValue)}

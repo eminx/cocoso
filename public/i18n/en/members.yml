@@ -75,8 +75,8 @@ works:
     helper: Optionally, please enter a very short description for the entry you're creating
   category:
     label: Category
-    holder: Choose option
-    helper: Please choose a category from the list. If you don't find anything that fits, please contact a community admin to create one for you.
+    holder: Choose option or type to create a new one
+    helper: Please choose a category from the list. If you don't find anything that fits, you can type and create a new category now.
   longDescription:
     label: Description
     holder: My Mango juice is handpicked from the trees and...

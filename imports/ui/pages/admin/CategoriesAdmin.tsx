@@ -33,7 +33,9 @@ export default function CategoriesAdmin() {
   const getCategories = async () => {
     try {
       const latestCategories = await call('getCategories');
-      setCategories(latestCategories.reverse());
+      setCategories(
+        latestCategories.sort((a, b) => a.label.localeCompare(b.label))
+      );
     } catch (error: any) {
       message.error(error.reason);
     } finally {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import AutoCompleteSelect from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
 import { useAtom } from 'jotai';
 
@@ -11,6 +11,7 @@ import FormField from '/imports/ui/forms/FormField';
 import { loaderAtom } from '/imports/ui/utils/loaderHandler';
 import { message } from '/imports/ui/generic/message';
 import type { CategoryItem } from '/imports/ui/types';
+import { cocosoReactSelectAdapter } from '/imports/ui/utils/globalStylesManager';
 
 import workFormFields from './workFormFields';
 
@@ -46,9 +47,10 @@ export const emptyFormValues: WorkFormValues = {
 
 const animatedComponents = makeAnimated();
 
-export default function WorkForm({ work, onFinalize }) {
+export default function WorkForm({ work, onFinalize }: WorkFormProps) {
   const [state, setState] = useState({
     categories: [],
+    creating: false,
     formValues: work || emptyFormValues,
     selectedCategory: work
       ? {
@@ -64,9 +66,10 @@ export default function WorkForm({ work, onFinalize }) {
   const getCategories = async () => {
     try {
       const categories = await call('getCategories');
+      if (!categories || !Array.isArray(categories)) return;
       setState((prevState) => ({
         ...prevState,
-        categories,
+        categories: categories?.sort((a, b) => a.label.localeCompare(b.label)),
       }));
     } catch (error: any) {
       message.error(error.reason || error.error);
@@ -108,7 +111,6 @@ export default function WorkForm({ work, onFinalize }) {
     const newWork: WorkData = {
       ...state.formValues,
       category: {
-        categoryId: selectedCategory._id,
         label: selectedCategory.label,
         _id: selectedCategory._id,
       },
@@ -131,6 +133,25 @@ export default function WorkForm({ work, onFinalize }) {
       ...prevState,
       selectedCategory: newValue,
     }));
+  };
+
+  const createCategory = async (category: string) => {
+    const categoryLabel = category.toLowerCase();
+    try {
+      const newCategoryId = await call('addNewCategory', categoryLabel, 'work');
+      message.success(tc('message.success.create'));
+      await getCategories();
+      setState((prevState) => ({
+        ...prevState,
+        selectedCategory: {
+          categoryId: newCategoryId,
+          label: categoryLabel,
+          _id: newCategoryId,
+        },
+      }));
+    } catch (error) {
+      message.error(error?.error || error?.reason);
+    }
   };
 
   return (
@@ -159,14 +180,22 @@ export default function WorkForm({ work, onFinalize }) {
         mb="12"
         required
       >
-        <AutoCompleteSelect
+        <CreatableSelect
           components={animatedComponents}
-          defaultValue={state.selectedCategory}
-          options={state.categories}
+          isClearable
           placeholder={t('works.category.holder')}
-          style={{ width: '100%', marginTop: '1rem' }}
+          options={state.categories}
+          value={state.selectedCategory}
+          style={{
+            width: '100%',
+            marginTop: '1rem',
+          }}
+          styles={{
+            control: cocosoReactSelectAdapter,
+          }}
           getOptionValue={(option) => option._id}
           onChange={handleAutoCompleteSelectChange}
+          onCreateOption={(newCategory) => createCategory(newCategory)}
         />
       </FormField>
     </GenericEntryForm>

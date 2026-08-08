@@ -13,7 +13,7 @@ export default function WorkAdminFunctions() {
   const work = useAtomValue(workAtom);
   const [, setSearchParams] = useSearchParams();
 
-  const handleSelect = (item) => {
+  const handleSelect = (item: { kind: string }) => {
     if (item.kind === 'edit') {
       setSearchParams({ edit: 'true' });
     } else if (item.kind === 'delete') {

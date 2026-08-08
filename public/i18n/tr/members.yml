@@ -76,8 +76,8 @@ works:
     helper: İsteğe bağlı olarak, lütfen oluşturduğun içerik için çok kısa bir açıklama gir
   category:
     label: Kategori
-    holder: Bir seçenek seç
-    helper: Lütfen listeden bir kategori seç. Uygun bir şey bulamazsan, senin için bir tane oluşturması için lütfen bir topluluk admini ile iletişime geç
+    holder: Bir seçenek seç veya yeni bir tane oluştur
+    helper: Listeden bir kategori seç. Eğer uygun bir kategori bulamazsan hemen oluşturabilirsin.
   longDescription:
     label: Açıklama
     holder: Nar sularımız çiftliğimizden ellerimizle toplanıp sevgiyle sıkılıp şişelenirler...
