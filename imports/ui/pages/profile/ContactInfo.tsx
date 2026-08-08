@@ -23,9 +23,11 @@ import { message } from '../../generic/message';
 export default function ContactInfo({
   username,
   userId,
+  value,
 }: {
   username: string;
   userId?: string;
+  value?: string;
 }) {
   const isDesktop = useAtomValue(isDesktopAtom);
   const currentUser = useAtomValue(currentUserAtom);
@@ -48,7 +50,11 @@ export default function ContactInfo({
   };
 
   useEffect(() => {
-    getContactInfo();
+    if (!value) {
+      getContactInfo();
+    } else {
+      setContactInfo(value);
+    }
   }, []);
 
   const handleSendMessage = async () => {

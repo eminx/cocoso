@@ -29,7 +29,11 @@ export default function WorkInteractionHandler() {
         <Box w="40px">
           <WorkAdminFunctions />
         </Box>
-        <ContactInfo username={work.authorUsername} userId={work.authorId} />
+        <ContactInfo
+          username={work.authorUsername}
+          userId={work.authorId}
+          value={work.contactInfo}
+        />
         <Box w="40px" />
       </SlideWidget>
     );
