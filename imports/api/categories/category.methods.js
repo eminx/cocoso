@@ -3,7 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
 import Categories from './category';
-import { catColors, isUserAdmin } from './category.helpers';
+import { catColors } from './category.helpers';
+import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 
 Meteor.methods({
   async getCategories() {
@@ -31,10 +32,9 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost?.members, user?._id);
 
-    if (!user?.isSuperAdmin && !isAdmin) {
-      throw new Meteor.Error('You are not allowed');
+    if (!user || !isContributorOrAdmin(user, currentHost)) {
+      throw new Meteor.Error('Not allowed!');
     }
 
     const existingCat = await Categories.findOneAsync({
@@ -64,7 +64,7 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdmin = isAdmin(user, currentHost);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');

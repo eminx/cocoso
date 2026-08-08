@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Works from './work';
 import Platform from '../platform/platform';
+import { isContributorOrAdmin } from '../users/user.roles';
 
 Meteor.methods({
   async getAllWorksFromAllHosts() {
@@ -83,11 +84,13 @@ Meteor.methods({
 
   async createWork(values) {
     const user = await Meteor.userAsync();
-    if (!user) {
-      throw new Meteor.Error('You are not a member anyways!');
+    const host = getHost(this);
+    const currentHost = await Hosts.findOneAsync({ host });
+
+    if (!user || !isContributorOrAdmin(user, currentHost)) {
+      throw new Meteor.Error('Not allowed!');
     }
 
-    const host = getHost(this);
     const userAvatar = user.avatar ? user.avatar.src : null;
 
     try {
