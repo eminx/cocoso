@@ -81,7 +81,7 @@ export default function UsersHybrid({
       <Center mb="4">
         <Box w="100%" maxW="600px" p="4">
           <Select
-            closeMenuOnSelect={false}
+            closeMenuOnSelect
             isMulti
             options={keywordsUsed}
             placeholder={
