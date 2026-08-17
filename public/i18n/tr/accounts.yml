@@ -34,6 +34,7 @@ signup:
     username:
       label: Kullanıcı adı
       helper: Minimum 4 karakter, sadece küçük harfler ve rakamlardan oluşan
+      errorNotUnique: Girdiğiniz kullanıcı adı alınmış. Lütfen başka bir kullanıcı adı deneyin
     email:
       label: Eposta adresi
     password:

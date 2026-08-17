@@ -71,11 +71,27 @@ Meteor.methods({
     check(values.username, String);
     check(values.password, String);
 
+    const userExists = await Accounts.findUserByUsername(values.username);
+
+    if (userExists) {
+      throw new Meteor.Error({ reason: 'Username is taken' });
+      return;
+    }
+
     try {
       return await Accounts.createUserAsync(values);
     } catch (error) {
       throw new Meteor.Error(error);
     }
+  },
+
+  async isUsernameUnique(username) {
+    check(username, String);
+    if (username.length < 4) {
+      return;
+    }
+    const usernameExists = await Accounts.findUserByUsername(username);
+    return Boolean(usernameExists);
   },
 
   async setSelfAsParticipant(hostToJoin) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ import {
 } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import Terms from '/imports/ui/entry/Terms';
+import { call } from '/imports/api/_utils/shared';
 
 import {
   loginModel,
@@ -72,6 +73,7 @@ interface SignupProps {
 const Signup = ({ hideTermsCheck = false, onSubmit }: SignupProps) => {
   const [termsChecked, setTermsChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [usernameUnique, setUsernameUnique] = useState(false);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -85,7 +87,7 @@ const Signup = ({ hideTermsCheck = false, onSubmit }: SignupProps) => {
 
   const passwordHelperText = t('signup.form.password.helper');
 
-  const { formState, handleSubmit, register } = useForm({
+  const { formState, handleSubmit, register, watch } = useForm({
     defaultValues: signupModel,
     resolver: zodResolver(schema),
   });
@@ -96,15 +98,29 @@ const Signup = ({ hideTermsCheck = false, onSubmit }: SignupProps) => {
     setModalOpen(false);
   };
 
+  const checkIfUsernameUnique = async (usernameTyped: string) => {
+    if (!usernameTyped || usernameTyped.length < 4) {
+      return;
+    }
+    const usernameTaken = await call('isUsernameUnique', usernameTyped);
+    setUsernameUnique(!usernameTaken);
+  };
+
+  useEffect(() => {
+    checkIfUsernameUnique(watch('username'));
+  }, [watch('username')]);
+
   return (
     <>
       <Center>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <Flex direction="column" maxW="420px">
             <FormField
-              errorMessage={errors.username?.message}
+              errorMessage={
+                errors.username?.message ||
+                (!usernameUnique && t('signup.form.username.errorNotUnique'))
+              }
               helper={t('signup.form.username.helper')}
-              // isInvalid={errors.username}
               label={t('signup.form.username.label')}
               required
             >
@@ -163,7 +179,11 @@ const Signup = ({ hideTermsCheck = false, onSubmit }: SignupProps) => {
 
             <Flex justify="flex-end" py="4" w="100%">
               <Button
-                disabled={!isDirty || (!termsChecked && !hideTermsCheck)}
+                disabled={
+                  !isDirty ||
+                  (!termsChecked && !hideTermsCheck) ||
+                  !usernameUnique
+                }
                 loading={isSubmitting}
                 type="submit"
               >

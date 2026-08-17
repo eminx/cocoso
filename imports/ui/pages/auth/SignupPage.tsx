@@ -54,16 +54,17 @@ export default function SignupPage() {
                       <Image w="240px" src={platform?.logo} />
                     </Center>
                   )}
-                  <Heading mb="4" size="md" textAlign="center">
+                  <Heading
+                    size="md"
+                    css={{ marginBottom: '1em', textAlign: 'center' }}
+                  >
                     {t('signup.labels.title')}
                   </Heading>
-                  {/* {platform?.isFederationLayout && ( */}
                   <Text textAlign="center">
                     {t('signup.labels.platform', {
                       platform: platform?.name,
                     })}
                   </Text>
-                  {/* )} */}
                 </Box>
               </Center>
             )}

@@ -34,6 +34,7 @@ signup:
     username:
       label: Användarnamn
       helper: Minst 4 tecken, endast små bokstäver och siffror
+      errorNotUnique: Det angivna användarnamnet är redan upptaget. Försök med ett annat
     email:
       label: E-postadress
     password:

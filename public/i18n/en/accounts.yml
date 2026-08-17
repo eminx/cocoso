@@ -34,6 +34,7 @@ signup:
     username:
       label: Username
       helper: Minimum 4 characters, only lowercase letters and numbers
+      errorNotUnique: The username typed is already taken. Please try another
     email:
       label: Email address
     password:
