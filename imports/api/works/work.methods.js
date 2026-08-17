@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { getHost } from '../_utils/shared';
 import Works from './work';
+import Hosts from '../hosts/host';
 import Platform from '../platform/platform';
 import { isContributorOrAdmin } from '../users/user.roles';
 
