@@ -6,7 +6,11 @@ import FileDropper from '/imports/ui/forms/FileDropper';
 import { currentHostAtom } from '/imports/state';
 import { Box, Button, Center, Heading } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
-import { call, resizeImage, uploadImage } from '../../../api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
+import {
+  resizeBeforeUpload,
+  uploadImage,
+} from '/imports/api/_utils/services/clientUpload';
 
 import Boxling from './Boxling';
 
@@ -41,7 +45,7 @@ export default function AdminSettingsLogo() {
     setUploading(true);
     try {
       const resizedImage = await resizeBeforeUpload(
-        localImage.uploadableImage,
+        localImage?.uploadableImage,
         800
       );
       const result = await uploadImage(resizedImage!, 'logo');

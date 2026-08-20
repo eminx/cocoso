@@ -620,7 +620,6 @@ export {
   includesSpecialCharacters,
   call,
   resizeImage,
-  uploadImage,
   dataURLtoFile,
   parseAllBookingsWithResources,
   getAllBookingsWithSelectedResource,

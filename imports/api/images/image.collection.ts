@@ -14,15 +14,15 @@ Images.schema = new SimpleSchema({
 
   // The processed variants — all WebP URLs on S3
   variants: { type: Object },
-  'variants.thumb': { type: String },  // 150px
-  'variants.small': { type: String },  // 400px
+  'variants.thumb': { type: String }, // 150px
+  'variants.small': { type: String }, // 400px
   'variants.medium': { type: String }, // 800px
-  'variants.full': { type: String },   // 1200px
+  'variants.full': { type: String }, // 1200px
 
   // Context (what type of upload this was)
   context: {
     type: String,
-    allowedValues: ['entry', 'avatar', 'hostLogo', 'platformLogo'],
+    allowedValues: ['entry', 'avatar', 'logo'],
   },
 
   // Original metadata (pre-processing)
