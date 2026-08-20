@@ -53,8 +53,9 @@ export default function CategoriesAdmin() {
       await call('addNewCategory', categoryInput.toLowerCase(), 'work');
       getCategories();
       setCategoryInput('');
+      message.success(t('categories.message.addSuccess'));
     } catch (error: any) {
-      message.error(error.reason);
+      message.error(error.reason || t('categories.message.addError'));
     }
   };
 
@@ -62,8 +63,9 @@ export default function CategoriesAdmin() {
     try {
       await call('removeCategory', categoryId);
       getCategories();
+      message.success(t('categories.message.removeSuccess'));
     } catch (error: any) {
-      message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 

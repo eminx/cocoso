@@ -98,6 +98,10 @@ categories:
   title: Kategoriler
   info: 'İşler için kategorileri burdan girebilirsin'
   message:
+    success: Kategoriler başarıyla güncellendi
+    removeSuccess: Kategori başarıyla silindi
+    addError: Kategori zaten mevcut
+    addSuccess: Kategori başarıyla eklendi
     denySpecialChars: Kısa çizgi (-) dışındaki özel karakterlere izin verilmez
 
 # ADMIN EMAILS PAGE

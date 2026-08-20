@@ -98,6 +98,10 @@ categories:
   title: Categories
   info: You can set categories for work entries here
   message:
+    success: Your categories are successfully updated
+    removeSuccess: Category removed successfully
+    addError: Category already exists
+    addSuccess: Category added successfully
     denySpecialChars: Special characters, except dash (-), are not allowed
 
 # ADMIN EMAILS PAGE

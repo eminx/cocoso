@@ -98,6 +98,10 @@ categories:
   title: Kategorier
   info: Du kan ställa in kategorier för arbetsinlägg här
   message:
+    success: Dina kategorier har uppdaterats
+    removeSuccess: Kategorin har tagits bort
+    addError: Kategorin finns redan
+    addSuccess: Kategorin har lagts till
     denySpecialChars: Specialtecken, förutom bindestreck (-), är inte tillåtna
 
 # ADMIN EMAILS PAGE

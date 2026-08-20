@@ -43,7 +43,7 @@ Meteor.methods({
     });
 
     if (existingCat) {
-      throw new Meteor.Error('Category already exists!');
+      throw new Meteor.Error({ reason: 'Category already exists!' });
     }
 
     try {
@@ -64,9 +64,8 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = isAdmin(user, currentHost);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed');
     }
 
