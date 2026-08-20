@@ -16,15 +16,15 @@ const EditGroup = loadable(() => import('./EditGroup'));
 
 export const groupAtom = atom(null);
 
-export default function GroupItemHandler({ Host, pageTitles }) {
+export default function GroupItemHandler({ Host }) {
   const { group, documents } = useLoaderData();
   const [groupItem, setGroup] = useAtom(groupAtom);
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
 
   useEffect(() => {
-    setGroup(group);
-  }, [group]);
+    setGroup({ ...group, documents });
+  }, [group, documents]);
 
   return (
     <>

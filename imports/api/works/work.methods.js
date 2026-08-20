@@ -78,11 +78,11 @@ Meteor.methods({
       if (work && work.authorUsername !== username) {
         throw new Meteor.Error('Not allowed!');
       }
-      const documents = await Documents.find({
-        attachedTo: workId,
-        contextType: 'work',
-      }).fetchAsync();
-      return { ...work, documents: documents || [] };
+      const documents = await Meteor.callAsync(
+        'getDocumentsByAttachments',
+        workId
+      );
+      return { ...work, documents };
     } catch (error) {
       throw new Meteor.Error(error);
     }

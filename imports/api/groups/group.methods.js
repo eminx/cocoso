@@ -31,30 +31,36 @@ const isUserGroupAdmin = (group, userId) => {
 Meteor.methods({
   async getGroup(groupId) {
     check(groupId, String);
-    const group = await Groups.findOneAsync({
-      _id: groupId,
-    });
-    if (!group) {
-      throw new Meteor.Error('Group not found');
-    }
 
-    if (group.isPrivate) {
-      const currentUser = await Meteor.userAsync();
-      const currentUserId = currentUser._id;
-      if (!currentUser) {
-        return null;
+    try {
+      const group = await Groups.findOneAsync({
+        _id: groupId,
+      });
+      if (!group) {
+        throw new Meteor.Error('Group not found');
       }
-      if (
-        group.adminId !== currentUserId &&
-        !group.members.some((member) => member.memberId === currentUserId) &&
-        !group.peopleInvited.some(
-          (person) => person.email === currentUser.emails[0]?.address
-        )
-      ) {
-        return null;
+
+      if (group.isPrivate) {
+        const currentUser = await Meteor.userAsync();
+        const currentUserId = currentUser._id;
+        if (!currentUser) {
+          return null;
+        }
+        if (
+          group.adminId !== currentUserId &&
+          !group.members.some((member) => member.memberId === currentUserId) &&
+          !group.peopleInvited.some(
+            (person) => person.email === currentUser.emails[0]?.address
+          )
+        ) {
+          return null;
+        }
       }
+
+      return group;
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch group");
     }
-    return group;
   },
 
   async getGroupWithMeetings(groupId) {

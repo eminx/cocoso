@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
 import AdminFunctions from '/imports/ui/entry/AdminFunctions';
 import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
+import DocumentUploader from '/imports/ui/forms/DocumentUploader';
 
-import AddDocument from './admin/AddDocument';
 import AddMeeting from './admin/AddMeeting';
 import ManageMembers from './admin/ManageMembers';
 import { groupAtom } from '../GroupItemHandler';
 import InviteManager from '../InviteManager';
 
 export default function GroupAdminFunctions() {
-  const [popup, setPopup] = useState('none');
   const group = useAtomValue(groupAtom);
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
 
@@ -26,30 +25,39 @@ export default function GroupAdminFunctions() {
   }, []);
 
   const handleSelect = (item: any) => {
-    if (item.kind === 'edit') {
-      setSearchParams({ edit: 'true' });
-      return;
-    } else if (item.kind === 'delete') {
-      setSearchParams({ delete: 'true' });
-      return;
-    } else if (item.kind === 'invite') {
-      setSearchParams({ invite: 'true' });
-      return;
+    switch (item.kind) {
+      case 'add_document':
+        setSearchParams({ addDocument: 'true' });
+        return;
+      case 'meeting':
+        setSearchParams({ addMeeting: 'true' });
+        return;
+      case 'members':
+        setSearchParams({ members: 'true' });
+        return;
+      case 'invite':
+        setSearchParams({ invite: 'true' });
+        return;
+      case 'edit':
+        setSearchParams({ edit: 'true' });
+        return;
+      case 'delete':
+        setSearchParams({ delete: 'true' });
+        return;
     }
-    setPopup(item.kind);
   };
 
   const handleClose = () => {
-    setPopup('none');
+    setSearchParams({});
   };
 
   const menuItems = [
     {
-      kind: 'document',
+      kind: 'add_document',
       label: t('admin.add_document'),
     },
     {
-      kind: 'meeting',
+      kind: 'add_meeting',
       label: t('admin.add_meeting'),
     },
     {
@@ -75,15 +83,27 @@ export default function GroupAdminFunctions() {
     label: tc('actions.remove'),
   });
 
+  const addDocument = searchParams.get('addDocument') === 'true';
+  const addMeeting = searchParams.get('addMeeting') === 'true';
+  const members = searchParams.get('members') === 'true';
+
   return (
     <>
       <AdminFunctions menuItems={menuItems} onSelect={handleSelect} />
 
-      {popup === 'document' ? <AddDocument onClose={handleClose} /> : null}
-      {popup === 'meeting' ? <AddMeeting onClose={handleClose} /> : null}
-      {popup === 'members' ? <ManageMembers onClose={handleClose} /> : null}
+      {addDocument ? (
+        <DocumentUploader
+          documents={group.documents}
+          itemId={group._id}
+          context="group"
+          onClose={handleClose}
+        />
+      ) : null}
 
+      {addMeeting ? <AddMeeting onClose={handleClose} /> : null}
+      {members ? <ManageMembers onClose={handleClose} /> : null}
       {group?.isPrivate ? <InviteManager /> : null}
+
       <DeleteEntryHandler item={group} context="groups" />
     </>
   );
