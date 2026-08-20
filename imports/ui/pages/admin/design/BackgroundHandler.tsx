@@ -10,7 +10,6 @@ import {
   resizeBeforeUpload,
   uploadImage,
 } from '/imports/api/_utils/services/clientUpload';
-import { getImageUrl } from '/imports/ui/utils/imageHelper';
 import { message } from '/imports/ui/generic/message';
 import GenericColorPicker from '/imports/ui/generic/GenericColorPicker';
 
@@ -18,6 +17,7 @@ export default function BackgroundHandler({
   uploadPing,
   onStyleChange,
   onUploadFinish,
+  onUploadError,
 }) {
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [state, setState] = useState({
@@ -97,13 +97,18 @@ export default function BackgroundHandler({
 
     if (state.uploadableBgImage.size > 400000) {
       message.error(<Trans i18nKey="admin:messages.upload.imageTooLarge" />);
+      onUploadError();
+      setState((prevState) => ({
+        ...prevState,
+        uploadingBgImage: false,
+      }));
       return;
     }
 
     try {
       const resizedImage = await resizeBeforeUpload(
         state.uploadableBgImage,
-        1200
+        800
       );
       const result = await uploadImage(resizedImage!, 'entry');
       onStyleChange('backgroundImage', result.variants.full);
@@ -112,27 +117,6 @@ export default function BackgroundHandler({
       console.error('Error uploading:', error);
       message.error(error.reason);
     }
-  };
-
-  const handleUploadedBackgroundImage = (images) => {
-    if (!images?.[0]) {
-      return;
-    }
-
-    setCurrentHost((prevState) => ({
-      ...prevState,
-      theme: {
-        ...prevState.theme,
-        body: {
-          ...prevState.theme.body,
-          backgroundImage: getImageUrl(images[0], 'full') || images[0],
-        },
-      },
-    }));
-    setState((prevState) => ({
-      ...prevState,
-      uploadedBackgroundImage: true,
-    }));
   };
 
   return (

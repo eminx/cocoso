@@ -2,8 +2,6 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import { Trans } from 'react-i18next';
 
-import { Box } from '/imports/ui/core';
-
 import AdminTabs from '../AdminTabs';
 
 export default function AdminDesign() {

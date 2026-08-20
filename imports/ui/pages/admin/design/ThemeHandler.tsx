@@ -9,7 +9,6 @@ import {
   Flex,
   Loader,
   RadioGroup,
-  Radio,
   Text,
 } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
@@ -23,7 +22,6 @@ import {
   getCustomTheme,
   getGrayTheme,
 } from '/imports/ui/pages/admin/design/styleOptions';
-import { updateHostSettings } from '/imports/actions';
 
 import HuePicker from './HuePicker';
 import BackgroundHandler from './BackgroundHandler';
@@ -209,6 +207,13 @@ export default function ThemeHandler() {
       <BackgroundHandler
         uploadPing={state.uploadingBackgroundImage}
         onStyleChange={handleStyleChange}
+        onUploadError={() => {
+          setState((prevState) => ({
+            ...prevState,
+            updating: false,
+            uploadingBackgroundImage: false,
+          }));
+        }}
         onUploadFinish={updateHostTheme}
       />
       {/* )} */}
