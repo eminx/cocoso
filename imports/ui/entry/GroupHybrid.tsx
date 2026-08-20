@@ -3,7 +3,7 @@ import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
 import { Box } from '/imports/ui/core';
-import GroupDocuments from '/imports/ui/pages/groups/components/GroupDocuments';
+import GroupDocuments from '../generic/Documents';
 import GroupMembers from '/imports/ui/pages/groups/components/GroupMembers';
 import type { Document, Host } from '/imports/ui/types';
 

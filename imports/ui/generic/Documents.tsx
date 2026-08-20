@@ -4,7 +4,7 @@ import ExternalLink from 'lucide-react/dist/esm/icons/external-link';
 import { Box, Code, Flex, Link } from '/imports/ui/core';
 import NiceList from '/imports/ui/generic/NiceList';
 
-export default function GroupDocuments({ documents }) {
+export default function Documents({ documents }) {
   if (!documents || documents.length < 1) {
     return null;
   }

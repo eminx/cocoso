@@ -13,6 +13,7 @@ Documents.schema = new SimpleSchema({
   uploadedByName: { type: String },
 
   contextType: { type: String },
+  contentType: { type: String, optional: true },
   attachedTo: Schemas.Id,
 
   documentLabel: { type: String },

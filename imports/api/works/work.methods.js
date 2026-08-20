@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Works from './work';
 import Hosts from '../hosts/host';
+import Documents from '../documents/document';
 import Platform from '../platform/platform';
 import { isContributorOrAdmin } from '../users/user.roles';
 
@@ -77,7 +78,11 @@ Meteor.methods({
       if (work && work.authorUsername !== username) {
         throw new Meteor.Error('Not allowed!');
       }
-      return work;
+      const documents = await Documents.find({
+        attachedTo: workId,
+        contextType: 'work',
+      }).fetchAsync();
+      return { ...work, documents: documents || [] };
     } catch (error) {
       throw new Meteor.Error(error);
     }

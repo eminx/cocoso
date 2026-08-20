@@ -258,8 +258,8 @@ documents:
   empty: Här finns inget dokument uppladdat
   drop: Släpp dokument eller klicka för filuppladdning
   up: laddar upp
-  remove: Manualen har tagits bort
-  fileDropper: har laddats upp och tilldelats!
+  remove: Dokumentet har tagits bort
+  uploaded: Dokumentet har laddats upp
   acceptedFormats: Godkända format
   maxSize: Maximal storlek
 

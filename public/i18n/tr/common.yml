@@ -258,7 +258,7 @@ documents:
   drop: Doküman eklemek için sürükle ya da tıklayıp seç
   up: yükleniyor
   remove: Belge başarıyla kaldırıldı
-  fileDropper: başarıyla yüklendi ve atandı
+  uploaded: Belge başarıyla yüklendi
   acceptedFormats: Kabul edilen formatlar
   maxSize: Maksimum boyut
 

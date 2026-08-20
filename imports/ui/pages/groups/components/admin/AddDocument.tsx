@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useRevalidator } from 'react-router';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { useAtom } from 'jotai';
 
 import {
   Box,
@@ -15,18 +14,16 @@ import {
 } from '/imports/ui/core';
 import DocumentUploadHelper from '/imports/ui/forms/UploadHelpers';
 import { message } from '/imports/ui/generic/message';
-import { call, uploadImage } from '/imports/api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 
-import GroupDocuments from '../GroupDocuments';
-import { groupAtom } from '../../GroupItemHandler';
+import Documents from '/imports/ui/generic/Documents';
 
-export default function AddDocument({ onClose }) {
-  const [isUploading, setIsUploading] = useState(false);
+export default function AddDocument({ itemId, documents, onClose }) {
+  const [uploading, setUploading] = useState(false);
   const [tc] = useTranslation('common');
-  const [group, setGroup] = useAtom(groupAtom);
-  const revalidator = useRevalidator();
+  const { revalidate } = useRevalidator();
 
-  if (!group) {
+  if (!itemId) {
     return null;
   }
 
@@ -36,38 +33,26 @@ export default function AddDocument({ onClose }) {
       return;
     }
 
-    setIsUploading(true);
+    setUploading(true);
     const file = files[0];
     const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
     const uploadableFile = new File([file], parsedName, {
       type: file.type,
     });
-    const groupId = group?._id;
 
     try {
-      const uploadedDocument = await uploadImage(
-        uploadableFile,
-        'groupDocumentUpload'
-      );
-      console.log('uploadedDocument:', uploadedDocument);
-      await call(
-        'createDocument',
-        parsedName,
-        uploadedDocument,
-        'group',
-        groupId
-      );
+      await call('createDocument', parsedName, uploadableFile, groupId);
       await call(
         'addGroupDocument',
         { name: parsedName, downloadUrl: uploadedDocument },
         groupId
       );
-      revalidator.revalidate();
+      revalidate();
       message.success(tc('message.success.create'));
     } catch (error: any) {
       message.error(error?.reason || error?.error);
     } finally {
-      setIsUploading(false);
+      setUploading(false);
       setGroup(await call('getGroupWithMeetings', groupId));
     }
   };
@@ -96,7 +81,7 @@ export default function AddDocument({ onClose }) {
             }}
             {...getRootProps()}
           >
-            {isUploading ? (
+            {uploading ? (
               <Center>
                 <Flex align="center" direction="column">
                   <Spinner />
@@ -115,12 +100,12 @@ export default function AddDocument({ onClose }) {
 
       <DocumentUploadHelper isImage={false} />
 
-      {group.documents?.length > 0 ? (
+      {documents?.length > 0 ? (
         <Box py="8">
           <Heading mb="2" size="sm">
             {tc('documents.label')}
           </Heading>
-          <GroupDocuments documents={group.documents} />
+          <Documents documents={documents} />
         </Box>
       ) : null}
     </Modal>
