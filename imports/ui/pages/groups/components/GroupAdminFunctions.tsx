@@ -27,7 +27,7 @@ export default function GroupAdminFunctions() {
       case 'add_document':
         setSearchParams({ addDocument: 'true' });
         return;
-      case 'meeting':
+      case 'add_meeting':
         setSearchParams({ addMeeting: 'true' });
         return;
       case 'members':
