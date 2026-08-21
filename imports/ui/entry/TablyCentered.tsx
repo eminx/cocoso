@@ -252,7 +252,9 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
                 </Box>
               )}
 
-              <Box mb={isMobile ? '0' : '2'}>{selectedTab?.content}</Box>
+              <Box mb={isMobile ? '0' : '2'} css={{ wordBreak: 'break-all' }}>
+                {selectedTab?.content}
+              </Box>
             </Box>
           </Center>
         </Box>
