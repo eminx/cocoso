@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { useSearchParams } from 'react-router';
+import { useLoaderData, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
 
 import AdminFunctions from '/imports/ui/entry/AdminFunctions';
 import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
@@ -9,11 +8,10 @@ import DocumentUploader from '/imports/ui/forms/DocumentUploader';
 
 import AddMeeting from './admin/AddMeeting';
 import ManageMembers from './admin/ManageMembers';
-import { groupAtom } from '../GroupItemHandler';
 import InviteManager from '../InviteManager';
 
 export default function GroupAdminFunctions() {
-  const group = useAtomValue(groupAtom);
+  const { group, documents } = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
@@ -93,7 +91,7 @@ export default function GroupAdminFunctions() {
 
       {addDocument ? (
         <DocumentUploader
-          documents={group.documents}
+          documents={documents}
           itemId={group._id}
           context="group"
           onClose={handleClose}

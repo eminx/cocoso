@@ -1,18 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router';
-import { useAtomValue } from 'jotai';
+import { useLoaderData, useSearchParams } from 'react-router';
 
 import AdminFunctions from '/imports/ui/entry/AdminFunctions';
 import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
 import DocumentUploader from '/imports/ui/forms/DocumentUploader';
 
-import { workAtom } from '../WorkItemHandler';
-
 export default function WorkAdminFunctions() {
-  const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
-  const work = useAtomValue(workAtom);
+  const { work, documents } = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSelect = (item: { kind: string }) => {
@@ -35,7 +31,7 @@ export default function WorkAdminFunctions() {
   const menuItems = [
     {
       kind: 'add_document',
-      label: t('admin.add_document'),
+      label: tc('documents.add'),
     },
     {
       kind: 'edit',
@@ -55,7 +51,7 @@ export default function WorkAdminFunctions() {
 
       {addDocument ? (
         <DocumentUploader
-          documents={work.documents}
+          documents={documents}
           itemId={work._id}
           context="work"
           onClose={handleClose}

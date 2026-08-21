@@ -99,7 +99,7 @@ works:
   documents:
     label: Dokümanlar
     helper: Bu içerik için yüklenmiş dokümanlar
-    newNotice: Lütfen önce içeriği oluştur ve ardından belgeleri yüklemek için düzenleme sayfasına git
+    newNotice: Lütfen önce içeriği oluştur ve ardından dokümanları yüklemek için düzenleme sayfasına git
 
 report:
   title: '{{username}} için Kullanım Raporu'

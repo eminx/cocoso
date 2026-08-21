@@ -254,6 +254,7 @@ domains:
     title: title
 
 documents:
+  add: Add Document
   label: Documents
   helper: Documents uploaded for this item
   newNotice: For document upload, please first create the entry, and then go to edit page to upload documents

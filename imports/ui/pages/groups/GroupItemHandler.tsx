@@ -23,7 +23,7 @@ export default function GroupItemHandler({ Host }) {
   const canCreateContent = useAtomValue(canCreateContentAtom);
 
   useEffect(() => {
-    setGroup({ ...group, documents });
+    setGroup(group);
   }, [group, documents]);
 
   return (

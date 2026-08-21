@@ -252,6 +252,7 @@ domains:
     title: titel
 
 documents:
+  add: Lägg till dokument
   label: Dokument
   helper: Dokument uppladdade för detta inlägg
   newNotice: För dokumentuppladdning, skapa först posten och gå sedan till redigeringssidan för att ladda upp dokument
