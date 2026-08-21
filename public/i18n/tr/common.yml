@@ -253,6 +253,7 @@ domains:
 documents:
   add: Doküman ekle
   label: Dokümanlar
+  labelExisting: Mevcut dokümanlar
   helper: Bu içerik için yüklenmiş dokümanlar
   newNotice: Lütfen önce içeriği oluştur ve ardından dokümanları yüklemek için düzenleme sayfasına git
   empty: Doküman eklenmedi

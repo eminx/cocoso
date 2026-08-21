@@ -256,6 +256,7 @@ domains:
 documents:
   add: Add Document
   label: Documents
+  labelExisting: Existing Documents
   helper: Documents uploaded for this item
   newNotice: For document upload, please first create the entry, and then go to edit page to upload documents
   empty: No document assigned

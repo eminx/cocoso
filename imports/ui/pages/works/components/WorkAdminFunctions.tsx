@@ -49,14 +49,13 @@ export default function WorkAdminFunctions() {
     <>
       <AdminFunctions menuItems={menuItems} onSelect={handleSelect} />
 
-      {addDocument ? (
-        <DocumentUploader
-          documents={documents}
-          itemId={work._id}
-          context="work"
-          onClose={handleClose}
-        />
-      ) : null}
+      <DocumentUploader
+        active={addDocument}
+        documents={documents}
+        itemId={work._id}
+        context="works"
+        onClose={handleClose}
+      />
 
       <DeleteEntryHandler item={work} context="works" />
     </>

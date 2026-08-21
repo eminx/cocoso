@@ -254,6 +254,7 @@ domains:
 documents:
   add: Lägg till dokument
   label: Dokument
+  labelExisting: Befintliga dokument
   helper: Dokument uppladdade för detta inlägg
   newNotice: För dokumentuppladdning, skapa först posten och gå sedan till redigeringssidan för att ladda upp dokument
   empty: Här finns inget dokument uppladdat

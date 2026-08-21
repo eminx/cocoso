@@ -49,14 +49,13 @@ export default function ResourceAdminFunctions() {
     <>
       <AdminFunctions menuItems={menuItems} onSelect={handleSelect} />
 
-      {addDocument ? (
-        <DocumentUploader
-          documents={documents}
-          itemId={resource?._id}
-          context="resource"
-          onClose={handleClose}
-        />
-      ) : null}
+      <DocumentUploader
+        active={addDocument}
+        documents={documents}
+        itemId={resource?._id}
+        context="resources"
+        onClose={handleClose}
+      />
 
       <DeleteEntryHandler item={resource} context="resources" />
     </>

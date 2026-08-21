@@ -28,7 +28,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
-    if (contextType === 'group') {
+    if (contextType === 'groups') {
       const group = await Groups.findOneAsync({ _id: itemId });
       if (!group) {
         throw new Meteor.Error('not-found', 'Group not found');
@@ -42,7 +42,7 @@ Meteor.methods({
           'You must be an admin of the group to upload documents'
         );
       }
-    } else if (contextType === 'work') {
+    } else if (contextType === 'works') {
       const work = await Works.findOneAsync({ _id: itemId });
       if (!work || work.authorId !== user._id) {
         throw new Meteor.Error(
@@ -50,7 +50,7 @@ Meteor.methods({
           'You must be author of the work to upload documents'
         );
       }
-    } else if (contextType === 'resource') {
+    } else if (contextType === 'resources') {
       if (!isAdmin(user, currentHost)) {
         throw new Meteor.Error(
           'not-authorized',

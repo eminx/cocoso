@@ -18,6 +18,7 @@ import { call } from '/imports/api/_utils/shared';
 import Documents from '/imports/ui/generic/Documents';
 
 export default function DocumentUploader({
+  active,
   documents,
   itemId,
   context,
@@ -73,9 +74,9 @@ export default function DocumentUploader({
     <Modal
       hideFooter
       id="group-add-document"
-      open
+      open={active}
       size="lg"
-      title={tc('documents.label')}
+      title={tc('documents.add')}
       onClose={onClose}
     >
       <ReactDropzone onDrop={handleFileDrop} multiple={false}>
@@ -114,8 +115,8 @@ export default function DocumentUploader({
 
       {documents && documents?.length > 0 ? (
         <Box py="8">
-          <Heading mb="2" size="sm">
-            {tc('documents.label')}
+          <Heading size="xs" css={{ marginBottom: '1rem' }}>
+            {tc('documents.labelExisting')}
           </Heading>
           <Documents documents={documents} />
         </Box>

@@ -91,9 +91,10 @@ export default function GroupAdminFunctions() {
 
       {addDocument ? (
         <DocumentUploader
+          active
           documents={documents}
           itemId={group._id}
-          context="group"
+          context="groups"
           onClose={handleClose}
         />
       ) : null}
