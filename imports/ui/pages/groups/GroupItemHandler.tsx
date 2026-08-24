@@ -5,9 +5,7 @@ import { atom, useAtomValue, useAtom } from 'jotai';
 
 import GroupHybrid from '/imports/ui/entry/GroupHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
-const EditEntryHandler = loadable(
-  () => import('/imports/ui/forms/EditEntryHandler')
-);
+import EditEntryHandler from '/imports/ui/forms/EditEntryHandler.loadable';
 
 const GroupInteractionHandler = loadable(
   () => import('./components/GroupInteractionHandler')

@@ -5,10 +5,7 @@ import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
-
-const EditEntryHandler = loadable(() =>
-  import('/imports/ui/forms/EditEntryHandler')
-);
+import EditEntryHandler from '/imports/ui/forms/EditEntryHandler.loadable';
 
 const ActivityInteractionHandler = loadable(() =>
   import('./components/ActivityInteractionHandler')

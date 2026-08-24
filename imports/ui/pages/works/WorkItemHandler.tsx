@@ -5,9 +5,7 @@ import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import WorkHybrid from '/imports/ui/entry/WorkHybrid';
-const EditEntryHandler = loadable(
-  () => import('/imports/ui/forms/EditEntryHandler')
-);
+import EditEntryHandler from '/imports/ui/forms/EditEntryHandler.loadable';
 
 const WorkInteractionHandler = loadable(
   () => import('./components/WorkInteractionHandler')

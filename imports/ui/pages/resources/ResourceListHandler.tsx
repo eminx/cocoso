@@ -5,9 +5,7 @@ import { useAtomValue } from 'jotai';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
-const NewEntryHandler = loadable(() =>
-  import('/imports/ui/forms/NewEntryHandler')
-);
+import NewEntryHandler from '/imports/ui/forms/NewEntryHandler.loadable';
 
 const NewResource = loadable(() => import('./NewResource'));
 

@@ -5,9 +5,7 @@ import { useAtomValue } from 'jotai';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
-const NewEntryHandler = loadable(() =>
-  import('/imports/ui/forms/NewEntryHandler')
-);
+import NewEntryHandler from '/imports/ui/forms/NewEntryHandler.loadable';
 
 const NewWork = loadable(() => import('./NewWork'));
 

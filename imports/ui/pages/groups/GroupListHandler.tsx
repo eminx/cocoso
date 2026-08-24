@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
-const NewEntryHandler = loadable(() => import('../../forms/NewEntryHandler'));
+import NewEntryHandler from '/imports/ui/forms/NewEntryHandler.loadable';
 const NewGroup = loadable(() => import('./NewGroup'));
 
 export default function GroupListHandler({ Host }) {

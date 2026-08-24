@@ -5,9 +5,7 @@ import { useAtomValue } from 'jotai';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
-const NewEntryHandler = loadable(() =>
-  import('/imports/ui/forms/NewEntryHandler')
-);
+import NewEntryHandler from '/imports/ui/forms/NewEntryHandler.loadable';
 
 const NewPublicActivity = loadable(() => import('./NewPublicActivity'));
 

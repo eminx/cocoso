@@ -5,9 +5,7 @@ import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import ResourceHybrid from '/imports/ui/entry/ResourceHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
-const EditEntryHandler = loadable(
-  () => import('/imports/ui/forms/EditEntryHandler')
-);
+import EditEntryHandler from '/imports/ui/forms/EditEntryHandler.loadable';
 
 const ResourceInteractionHandler = loadable(
   () => import('./components/ResourceInteractionHandler')

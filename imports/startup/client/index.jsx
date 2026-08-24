@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { onPageLoad } from 'meteor/server-render';
+import { Autoupdate } from 'meteor/autoupdate';
+import { Tracker } from 'meteor/tracker';
 import React from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import {
@@ -10,6 +12,36 @@ import {
 
 import appRoutes from '/imports/appRoutes';
 import '/imports/startup/i18n';
+
+// Meteor's `autoupdate` package tracks whether the server has a newer client
+// bundle than the one this tab is running (e.g. after a deploy). Lazily
+// loaded routes (loadable()/import()) fetch their chunk from the server keyed
+// to the currently loaded bundle version, so once the server has moved on,
+// those fetches start failing with "Cannot find module" until the page
+// reloads. Rather than reacting to that crash, reload proactively the next
+// time navigation goes idle after a new bundle is detected — i.e. right
+// after the user finishes a route transition, not while they're mid-edit on
+// the current page.
+function reloadOnNextIdleAfterUpdate(router) {
+  let staleClientDetected = false;
+  let wasNavigating = false;
+
+  Tracker.autorun(() => {
+    if (Autoupdate.newClientAvailable()) {
+      staleClientDetected = true;
+    }
+  });
+
+  router.subscribe((state) => {
+    const isNavigating = state.navigation.state !== 'idle';
+
+    if (staleClientDetected && wasNavigating && !isNavigating) {
+      window.location.reload();
+    }
+
+    wasNavigating = isNavigating;
+  });
+}
 
 onPageLoad(async () => {
   const container = document.getElementById('root');
@@ -33,6 +65,7 @@ onPageLoad(async () => {
   };
 
   const router = createBrowserRouter(appRoutes(props));
+  reloadOnNextIdleAfterUpdate(router);
 
   hydrateRoot(container, <RouterProvider router={router} />);
 });
