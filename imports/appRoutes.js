@@ -26,6 +26,23 @@ import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
 
 import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
+// Route loaders re-run on every URL change by default, including search-param-only
+// changes like `?new=true` / `?edit=true` used to toggle the New/Edit modals. Most of
+// these loaders don't read the URL at all, so that's a wasted refetch on every modal
+// open/close. `revalidateOn` skips revalidation when only the search params change,
+// unless one of the given `relevantParams` (params the loader actually reads) changed.
+function revalidateOn(relevantParams = []) {
+  return function shouldRevalidate({ currentUrl, nextUrl, defaultShouldRevalidate }) {
+    if (currentUrl.pathname !== nextUrl.pathname) {
+      return defaultShouldRevalidate;
+    }
+
+    return relevantParams.some(
+      (key) => currentUrl.searchParams.get(key) !== nextUrl.searchParams.get(key)
+    );
+  };
+}
+
 const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
 const SignupPage = loadable(() => import('/imports/ui/pages/auth/SignupPage'));
 const ForgotPasswordPage = loadable(() =>
@@ -447,11 +464,13 @@ export default function appRoutes(props) {
               element: createRouteElement(ActivityListHandler, props),
               loader: async ({ request }) =>
                 await getActivities({ request, host, isPortalHost }),
+              shouldRevalidate: revalidateOn(['showPast']),
             },
             {
               path: ':activityId',
               element: createRouteElement(ActivityItemHandler, props),
               loader: async ({ params }) => await getActivity({ params }),
+              shouldRevalidate: revalidateOn(),
             },
           ],
         },
@@ -462,12 +481,14 @@ export default function appRoutes(props) {
               index: true,
               element: createRouteElement(GroupListHandler, props),
               loader: async () => await getGroups({ host, isPortalHost }),
+              shouldRevalidate: revalidateOn(),
             },
             {
               path: ':groupId/*',
               index: true,
               element: createRouteElement(GroupItemHandler, props),
               loader: async ({ params }) => await getGroup({ params }),
+              shouldRevalidate: revalidateOn(),
             },
           ],
         },
@@ -479,11 +500,13 @@ export default function appRoutes(props) {
               element: createRouteElement(CalendarHandler, props),
               loader: async ({ request }) =>
                 await getCalendarEntries({ host, isPortalHost }),
+              shouldRevalidate: revalidateOn(),
             },
             {
               path: ':activityId/*',
               element: createRouteElement(ActivityItemHandler, props),
               loader: async ({ params }) => await getActivity({ params }),
+              shouldRevalidate: revalidateOn(),
             },
           ],
         },
@@ -494,6 +517,7 @@ export default function appRoutes(props) {
               path: ':pageTitle',
               element: createRouteElement(PageItemHandler, props),
               loader: async () => await getPages({ host }),
+              shouldRevalidate: revalidateOn(),
             },
           ],
         },
@@ -501,6 +525,7 @@ export default function appRoutes(props) {
           path: 'people',
           element: createRouteElement(UserListHandler, props),
           loader: async () => await getPeople({ host, isPortalHost }),
+          shouldRevalidate: revalidateOn(),
         },
         {
           path: 'resources',
@@ -509,12 +534,14 @@ export default function appRoutes(props) {
               index: true,
               element: createRouteElement(ResourceListHandler, props),
               loader: async () => await getResources({ host, isPortalHost }),
+              shouldRevalidate: revalidateOn(),
             },
             {
               path: ':resourceId/*',
               index: true,
               element: createRouteElement(ResourceItemHandler, props),
               loader: async ({ params }) => await getResource({ params }),
+              shouldRevalidate: revalidateOn(),
             },
           ],
         },
@@ -525,6 +552,7 @@ export default function appRoutes(props) {
               index: true,
               element: createRouteElement(WorkListHandler, props),
               loader: async () => await getWorks({ host, isPortalHost }),
+              shouldRevalidate: revalidateOn(),
             },
           ],
         },
@@ -557,6 +585,7 @@ export default function appRoutes(props) {
           path: ':usernameSlug/works/:workId/*',
           element: createRouteElement(WorkItemHandler, props),
           loader: async ({ params }) => await getWork({ params }),
+          shouldRevalidate: revalidateOn(),
         },
         {
           path: 'cp/:composablePageId',
