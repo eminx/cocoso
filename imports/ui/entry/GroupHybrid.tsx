@@ -46,8 +46,7 @@ export default function GroupHybrid({
             HTMLReactParser(DOMPurify.sanitize(group?.description))}
         </Box>
       ),
-      path: `/groups/${group._id}/info`,
-      id: 'info',
+      path: 'info',
     },
   ];
 
@@ -55,8 +54,7 @@ export default function GroupHybrid({
     tabs.push({
       title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: <GroupDocuments documents={documents} />,
-      path: `/groups/${group._id}/documents`,
-      id: 'documents',
+      path: 'documents',
     });
   }
 
