@@ -56,9 +56,7 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
 
-    const currentHost = await Hosts.findOneAsync({ host });
-
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -83,9 +81,8 @@ Meteor.methods({
   async updatePage(pageId, formValues, hostPredefined) {
     const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -113,9 +110,8 @@ Meteor.methods({
   async savePageOrder(pages) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -144,9 +140,8 @@ Meteor.methods({
   async deletePage(pageId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 

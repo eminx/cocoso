@@ -10,6 +10,13 @@ export interface User extends Meteor.User {
   emails?: Array<{ address: string; verified: boolean }>;
   isSuperAdmin?: boolean;
   publicKey?: string;
+  memberships?: Array<{
+    userId?: string;
+    host: string;
+    role: string;
+    date?: Date;
+    isPublic?: boolean;
+  }>;
   profile?: {
     firstName?: string;
     lastName?: string;

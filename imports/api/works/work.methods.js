@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 
 import { getHost } from '../_utils/shared';
 import Works from './work';
-import Hosts from '../hosts/host';
 import Documents from '../documents/document';
 import Platform from '../platform/platform';
 import { isContributorOrAdmin } from '../users/user.roles';
@@ -87,9 +86,8 @@ Meteor.methods({
   async createWork(values) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 

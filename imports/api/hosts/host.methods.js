@@ -10,6 +10,8 @@ import {
   defaultTheme,
 } from '../../startup/constants';
 import { isAdmin } from '../users/user.roles';
+import Memberships from '../memberships/membership';
+import { attachMembershipsToUsers } from '../memberships/membership.helpers';
 
 function getUsersRandomlyWithAvatarsFirst(users) {
   if (!users || !users.length === 0) {
@@ -33,7 +35,6 @@ const publicUserFields = {
   isPublic: 1,
   keywords: 1,
   lastName: 1,
-  memberships: 1,
   username: 1,
 };
 
@@ -52,17 +53,6 @@ Meteor.methods({
       await Hosts.insertAsync({
         emails: defaultEmails,
         host: values.host,
-        members: [
-          {
-            avatar: currentUser.avatar?.src,
-            date: new Date(),
-            email: currentUser.emails[0].address,
-            id: currentUser._id,
-            role: 'admin',
-            username: currentUser.username,
-            isPublic: false,
-          },
-        ],
         settings: {
           name: values.name,
           email: values.email,
@@ -88,16 +78,12 @@ Meteor.methods({
         creationDate: new Date(),
       });
 
-      await Meteor.users.updateAsync(currentUser._id, {
-        $push: {
-          memberships: {
-            date: new Date(),
-            host: values.host,
-            hostname: values.name,
-            isPublic: true,
-            role: 'admin',
-          },
-        },
+      await Memberships.insertAsync({
+        userId: currentUser._id,
+        host: values.host,
+        role: 'admin',
+        date: new Date(),
+        isPublic: true,
       });
     } catch (error) {
       throw new Meteor.Error(error);
@@ -152,6 +138,15 @@ Meteor.methods({
   async getAllHosts() {
     try {
       const hosts = await Hosts.find().fetchAsync();
+
+      const counts = await Memberships.rawCollection()
+        .aggregate([{ $group: { _id: '$host', count: { $sum: 1 } } }])
+        .toArray();
+      const membersCountByHost = {};
+      counts.forEach((c) => {
+        membersCountByHost[c._id] = c.count;
+      });
+
       return (
         hosts
           // .filter((h) => !h.isPortalHost)
@@ -162,7 +157,7 @@ Meteor.methods({
             city: host.settings.city,
             country: host.settings.country,
             createdAt: host.createdAt,
-            membersCount: host.members.length,
+            membersCount: membersCountByHost[host.host] || 0,
           }))
       );
     } catch (error) {
@@ -172,33 +167,57 @@ Meteor.methods({
 
   async getHostMembersForAdmin() {
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
     const currentUser = await Meteor.userAsync();
 
-    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+    if (!currentUser || !(await isAdmin(currentUser._id, host))) {
       throw new Meteor.Error('You are not allowed!');
     }
 
-    return currentHost.members;
+    const memberships = await Memberships.find({ host }).fetchAsync();
+    const userIds = memberships.map((m) => m.userId);
+    const users = await Meteor.users
+      .find(
+        { _id: { $in: userIds } },
+        { fields: { username: 1, emails: 1, avatar: 1 } }
+      )
+      .fetchAsync();
+    const userById = Object.fromEntries(users.map((u) => [u._id, u]));
+
+    return memberships.map((m) => {
+      const user = userById[m.userId];
+      return {
+        id: m.userId,
+        username: user?.username,
+        email: user?.emails?.[0]?.address,
+        avatar: user?.avatar?.src,
+        role: m.role,
+        date: m.date,
+        isPublic: m.isPublic,
+      };
+    });
   },
 
   async getHostMembers(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
+    const memberships = await Memberships.find(
+      { host, isPublic: true },
+      { fields: { userId: 1 } }
+    ).fetchAsync();
+    const userIds = memberships.map((m) => m.userId);
+
     const users = await Meteor.users
       .find(
-        { 'memberships.host': host },
+        { _id: { $in: userIds } },
         {
           fields: publicUserFields,
         }
       )
       .fetchAsync();
 
-    const usersFiltered = users.filter(
-      (u) => u.memberships.find((m) => m.host === host)?.isPublic
-    );
+    const usersWithMemberships = await attachMembershipsToUsers(users);
 
-    return getUsersRandomlyWithAvatarsFirst(usersFiltered);
+    return getUsersRandomlyWithAvatarsFirst(usersWithMemberships);
   },
 
   async getAllMembersFromAllHosts() {
@@ -211,7 +230,9 @@ Meteor.methods({
       )
       .fetchAsync();
 
-    return getUsersRandomlyWithAvatarsFirst(users);
+    const usersWithMemberships = await attachMembershipsToUsers(users);
+
+    return getUsersRandomlyWithAvatarsFirst(usersWithMemberships);
   },
 
   async getHostInfoPage(host) {
@@ -254,7 +275,7 @@ Meteor.methods({
     const currentHost = Hosts.findOneAsync({ host });
     const currentUser = await Meteor.userAsync();
 
-    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+    if (!currentUser || !(await isAdmin(currentUser._id, host))) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -274,7 +295,7 @@ Meteor.methods({
     const currentHost = await Hosts.findOneAsync({ host });
     const currentUser = await Meteor.userAsync();
 
-    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+    if (!currentUser || !(await isAdmin(currentUser._id, host))) {
       throw new Meteor.Error('You are not allowed!');
     }
 

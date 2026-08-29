@@ -8,8 +8,10 @@ import Platform from '../platform/platform';
 import Works from '../works/work';
 import Groups from '../groups/group';
 import DirectMessages from '../directMessages/directMessage';
+import Memberships from '../memberships/membership';
+import { getUserMemberships } from '../memberships/membership.helpers';
 
-const userModel = (user) => ({
+const userModel = async (user) => ({
   _id: user._id,
   avatar: user.avatar,
   bio: user.bio,
@@ -18,7 +20,7 @@ const userModel = (user) => ({
   keywords: user.keywords,
   lastName: user.lastName,
   username: user.username,
-  memberships: user.memberships,
+  memberships: await getUserMemberships(user._id),
 });
 
 Meteor.methods({
@@ -47,7 +49,7 @@ Meteor.methods({
 
     if (currentHost.isPortalHost) {
       if (user.isPublic) {
-        return userModel(user);
+        return await userModel(user);
       } else {
         return null;
       }
@@ -56,14 +58,18 @@ Meteor.methods({
     const currentUser = await Meteor.userAsync();
 
     if (user._id === currentUser?._id) {
-      return userModel(user);
+      return await userModel(user);
     }
 
-    if (!user.memberships.find((m) => m.host === host)?.isPublic) {
+    const membership = await Memberships.findOneAsync({
+      userId: user._id,
+      host,
+    });
+    if (!membership?.isPublic) {
       return null;
     }
 
-    return userModel(user);
+    return await userModel(user);
   },
 
   async createAccount(values) {
@@ -101,47 +107,25 @@ Meteor.methods({
     }
     const host = hostToJoin || getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    if (
-      currentHost.members &&
-      currentHost.members.some((member) => member.id === user._id)
-    ) {
-      throw new Meteor.Error('Host already does have you as a participant');
+    if (!currentHost) {
+      throw new Meteor.Error('Host not found');
     }
-    if (
-      user.memberships &&
-      user.memberships.some((membership) => membership.host === host)
-    ) {
+
+    const existingMembership = await Memberships.findOneAsync({
+      userId: user._id,
+      host,
+    });
+    if (existingMembership) {
       throw new Meteor.Error('You are already a participant');
     }
 
     try {
-      await Hosts.updateAsync(
-        { host },
-        {
-          $addToSet: {
-            members: {
-              username: user.username,
-              id: user._id,
-              email: user.emails[0].address,
-              role: 'participant',
-              date: new Date(),
-              isPublic: true,
-              avatar: user.avatar?.src,
-            },
-          },
-        }
-      );
-
-      await Meteor.users.updateAsync(user._id, {
-        $addToSet: {
-          memberships: {
-            host,
-            role: 'participant',
-            date: new Date(),
-            isPublic: true,
-            hostname: currentHost.settings?.name,
-          },
-        },
+      await Memberships.insertAsync({
+        userId: user._id,
+        host,
+        role: 'participant',
+        date: new Date(),
+        isPublic: true,
       });
 
       await Meteor.callAsync('sendWelcomeEmail', user._id, host);
@@ -154,34 +138,17 @@ Meteor.methods({
     const host = getHost(this);
     const user = await Meteor.userAsync();
 
-    const currentHost = await Hosts.findOneAsync({ host });
+    const membership = await Memberships.findOneAsync({
+      userId: user._id,
+      host,
+    });
 
-    if (!currentHost.members.some((member) => member.id === user._id)) {
-      throw new Meteor.Error(
-        'Host already does not have you as a participant '
-      );
-    }
-
-    if (!user.memberships.some((membership) => membership.host === host)) {
+    if (!membership) {
       throw new Meteor.Error('You are already not a participant');
     }
 
     try {
-      await Hosts.updateAsync(currentHost._id, {
-        $pull: {
-          members: {
-            id: user._id,
-          },
-        },
-      });
-
-      await Meteor.users.updateAsync(user._id, {
-        $pull: {
-          memberships: {
-            host,
-          },
-        },
-      });
+      await Memberships.removeAsync({ userId: user._id, host });
     } catch (error) {
       throw new Meteor.Error(error);
     }
@@ -245,24 +212,6 @@ Meteor.methods({
           avatar: newAvatar,
         },
       });
-
-      await Hosts.updateAsync(
-        {
-          members: {
-            $elemMatch: {
-              id: userId,
-            },
-          },
-        },
-        {
-          $set: {
-            'members.$.avatar': avatar,
-          },
-        },
-        {
-          multi: true,
-        }
-      );
 
       await Works.updateAsync(
         {
@@ -376,63 +325,13 @@ Meteor.methods({
     const host = getHost(this);
 
     try {
-      await Meteor.users.updateAsync(
-        {
-          _id: userId,
-          memberships: {
-            $elemMatch: {
-              host,
-            },
-          },
-        },
-        {
-          $set: {
-            'memberships.$.isPublic': isPublic,
-          },
-        }
-      );
-      await Hosts.updateAsync(
-        {
-          host,
-          members: {
-            $elemMatch: {
-              id: userId,
-            },
-          },
-        },
-        {
-          $set: {
-            'members.$.isPublic': isPublic,
-          },
-        }
+      await Memberships.updateAsync(
+        { userId, host },
+        { $set: { isPublic } }
       );
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't update");
     }
-
-    // below turns off all the hosts
-    // try {
-    //   Meteor.users.update({ _id: userId }, { $set: { isPublic: isPublic } });
-    //   Hosts.update(
-    //     {
-    //       members: {
-    //         $elemMatch: {
-    //           id: userId,
-    //         },
-    //       },
-    //     },
-    //     {
-    //       $set: {
-    //         'members.$.isPublic': isPublic,
-    //       },
-    //     },
-    //     {
-    //       multi: true,
-    //     }
-    //   );
-    // } catch (error) {
-    //   throw new Meteor.Error(error, "Couldn't update");
-    // }
   },
 
   removeAvatar: () => {},
@@ -447,24 +346,7 @@ Meteor.methods({
     }
 
     try {
-      await Meteor.users.updateAsync(userId, {
-        $pull: {
-          memberships: {
-            host,
-          },
-        },
-      });
-
-      await Hosts.updateAsync(
-        { host },
-        {
-          $pull: {
-            members: {
-              id: userId,
-            },
-          },
-        }
-      );
+      await Memberships.removeAsync({ userId, host });
     } catch (error) {
       throw new Meteor.Error(error);
     }
@@ -494,13 +376,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not a member anyways!');
     }
     try {
-      await Hosts.updateAsync(
-        { 'members.id': userId },
-        {
-          $pull: { members: { id: userId } },
-        },
-        { multi: true }
-      );
+      await Memberships.removeAsync({ userId });
 
       Meteor.defer(async () => {
         Meteor.setTimeout(async () => {
@@ -577,9 +453,20 @@ Meteor.methods({
     const isFederation = Boolean(platform?.isFederationLayout);
     const q = query.trim().toLowerCase();
 
+    let candidateIds;
+    if (!isFederation) {
+      const membershipsAtHost = await Memberships.find(
+        { host },
+        { fields: { userId: 1 } }
+      ).fetchAsync();
+      candidateIds = membershipsAtHost
+        .map((m) => m.userId)
+        .filter((id) => id !== caller._id);
+    }
+
     const filter = isFederation
       ? { _id: { $ne: caller._id } }
-      : { _id: { $ne: caller._id }, 'memberships.host': host };
+      : { _id: { $in: candidateIds } };
 
     const users = await Meteor.users
       .find(filter, {
@@ -589,26 +476,38 @@ Meteor.methods({
           avatar: 1,
           firstName: 1,
           lastName: 1,
-          memberships: 1,
         },
       })
       .fetchAsync();
 
-    const matched = users
-      .filter((u) => {
-        const full = `${u.firstName ?? ''} ${u.lastName ?? ''} ${
-          u.username ?? ''
-        }`.toLowerCase();
-        return full.includes(q);
-      })
-      .map((u) => ({
-        _id: u._id,
-        username: u.username,
-        avatar: u.avatar,
-        firstName: u.firstName,
-        lastName: u.lastName,
-        memberHosts: (u.memberships ?? []).map((m) => m.host),
-      }));
+    const filtered = users.filter((u) => {
+      const full = `${u.firstName ?? ''} ${u.lastName ?? ''} ${
+        u.username ?? ''
+      }`.toLowerCase();
+      return full.includes(q);
+    });
+
+    const filteredIds = filtered.map((u) => u._id);
+    const filteredMemberships = await Memberships.find(
+      { userId: { $in: filteredIds } },
+      { fields: { userId: 1, host: 1 } }
+    ).fetchAsync();
+    const hostsByUserId = {};
+    filteredMemberships.forEach((m) => {
+      if (!hostsByUserId[m.userId]) {
+        hostsByUserId[m.userId] = [];
+      }
+      hostsByUserId[m.userId].push(m.host);
+    });
+
+    const matched = filtered.map((u) => ({
+      _id: u._id,
+      username: u.username,
+      avatar: u.avatar,
+      firstName: u.firstName,
+      lastName: u.lastName,
+      memberHosts: hostsByUserId[u._id] ?? [],
+    }));
 
     if (!isFederation) {
       return matched.slice(0, 8);

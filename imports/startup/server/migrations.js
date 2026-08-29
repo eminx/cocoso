@@ -7,6 +7,8 @@ import Activities from '../../api/activities/activity';
 import Groups from '../../api/groups/group';
 import Pages from '../../api/pages/page';
 import Works from '../../api/works/work';
+import Memberships from '../../api/memberships/membership';
+import MembershipConflictReports from '../../api/memberships/membershipConflictReport';
 
 // Drop && Set back - authorAvatar && authorFirstName && authorLastName
 Migrations.add({
@@ -617,6 +619,119 @@ Migrations.add({
   },
 });
 
+// Extract Meteor.users.memberships[] / Hosts.members[] into a standalone
+// Memberships collection (single source of truth for host membership/role).
+// up() refuses to run while there are unresolved conflicts flagged by the
+// membershipMigration_dryRun method (see membershipMigration.methods.js) —
+// resolve those by hand against the live arrays first, then re-run the
+// dry-run until conflictCount is 0 before uncommenting migrateTo(18) below.
+Migrations.add({
+  version: 18,
+  async up() {
+    console.log('up to', this.version);
+
+    const unresolvedConflicts = await MembershipConflictReports.find(
+      {}
+    ).countAsync();
+    if (unresolvedConflicts > 0) {
+      throw new Meteor.Error(
+        'unresolved-membership-conflicts',
+        `Cannot migrate: ${unresolvedConflicts} unresolved membership conflict(s). Run membershipMigration_dryRun, resolve, and re-run until conflictCount is 0.`
+      );
+    }
+
+    await Hosts.find({}).forEachAsync(async (host) => {
+      const members = host.members || [];
+      await Promise.all(
+        members.map(async (member) => {
+          await Memberships.updateAsync(
+            { userId: member.id, host: host.host },
+            {
+              $set: {
+                userId: member.id,
+                host: host.host,
+                role: member.role,
+                isPublic: member.isPublic !== false,
+                date: member.date || new Date(),
+              },
+            },
+            { upsert: true }
+          );
+        })
+      );
+    });
+
+    await Meteor.users.updateAsync(
+      {},
+      { $unset: { memberships: true } },
+      { multi: true }
+    );
+
+    await Hosts.updateAsync(
+      {},
+      { $unset: { members: true } },
+      { multi: true }
+    );
+  },
+  async down() {
+    console.log('down to', this.version - 1);
+
+    const memberships = await Memberships.find({}).fetchAsync();
+
+    const membershipsByHost = {};
+    const membershipsByUser = {};
+    memberships.forEach((m) => {
+      if (!membershipsByHost[m.host]) {
+        membershipsByHost[m.host] = [];
+      }
+      membershipsByHost[m.host].push(m);
+      if (!membershipsByUser[m.userId]) {
+        membershipsByUser[m.userId] = [];
+      }
+      membershipsByUser[m.userId].push(m);
+    });
+
+    await Hosts.find({}).forEachAsync(async (host) => {
+      const hostMemberships = membershipsByHost[host.host] || [];
+      const members = await Promise.all(
+        hostMemberships.map(async (m) => {
+          const user = await Meteor.users.findOneAsync(m.userId);
+          return {
+            id: m.userId,
+            username: user?.username,
+            email: user?.emails?.[0]?.address,
+            avatar: user?.avatar?.src,
+            role: m.role,
+            date: m.date,
+            isPublic: m.isPublic,
+          };
+        })
+      );
+      await Hosts.updateAsync({ _id: host._id }, { $set: { members } });
+    });
+
+    await Meteor.users.find({}).forEachAsync(async (user) => {
+      const userMemberships = membershipsByUser[user._id] || [];
+      const membershipsField = await Promise.all(
+        userMemberships.map(async (m) => {
+          const host = await Hosts.findOneAsync({ host: m.host });
+          return {
+            host: m.host,
+            hostname: host?.settings?.name,
+            role: m.role,
+            date: m.date,
+            isPublic: m.isPublic,
+          };
+        })
+      );
+      await Meteor.users.updateAsync(
+        { _id: user._id },
+        { $set: { memberships: membershipsField } }
+      );
+    });
+  },
+});
+
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
@@ -637,5 +752,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(15);
   // Migrations.migrateTo(16);
   // Migrations.migrateTo(17);
+  // Migrations.migrateTo(18);
   // Migrations.migrateTo('latest');
 });

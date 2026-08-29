@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
-import Hosts from '../hosts/host';
 import Resources from './resource';
 import Activities from '../activities/activity';
 
@@ -70,11 +69,7 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
 
-    const currentHost = await Hosts.findOneAsync(
-      { host },
-      { fields: { members: 1 } }
-    );
-    if (!isContributorOrAdmin(user, currentHost)) {
+    if (!(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not valid user!');
     }
 
@@ -112,12 +107,8 @@ Meteor.methods({
   async createResource(values) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync(
-      { host },
-      { fields: { members: 1 } }
-    );
     if (
-      !isAdmin(user, currentHost) ||
+      !(await isAdmin(user._id, host)) ||
       (await !validateLabel(values.label, host))
     ) {
       return 'Not valid user or label!';
@@ -145,12 +136,8 @@ Meteor.methods({
   async updateResource(resourceId, values) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync(
-      { host },
-      { fields: { members: 1 } }
-    );
     if (
-      !isAdmin(user, currentHost) ||
+      !(await isAdmin(user._id, host)) ||
       !validateLabel(values.label, host, resourceId)
     ) {
       throw new Meteor.Error('Not allowed');
@@ -193,12 +180,8 @@ Meteor.methods({
   async deleteResource(resourceId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync(
-      { host },
-      { fields: { members: 1 } }
-    );
 
-    if (!isAdmin(user, currentHost)) {
+    if (!(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed');
     }
 

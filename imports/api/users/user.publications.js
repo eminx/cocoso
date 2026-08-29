@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
+import Memberships from '../memberships/membership';
 
 Meteor.publish('attendingEvents', function () {
   return Meteor.users.find(this.userId, {
@@ -31,7 +32,6 @@ Meteor.publish('currentUser', function () {
         keywords: 1,
         lang: 1,
         lastName: 1,
-        memberships: 1,
         notifications: 1,
         unreadMessageCount: 1,
         publicKey: 1,
@@ -43,11 +43,26 @@ Meteor.publish('currentUser', function () {
   return user;
 });
 
-Meteor.publish('membersForPublic', function () {
+// Every membership doc for the logged-in user — the client reattaches this
+// as `currentUser.memberships` (see WrapperHybrid.tsx) since it no longer
+// lives on the user doc itself.
+Meteor.publish('myMemberships', function () {
+  if (!this.userId) {
+    return this.ready();
+  }
+  return Memberships.find({ userId: this.userId });
+});
+
+Meteor.publish('membersForPublic', async function () {
   const host = getHost(this);
-  // Meteor.users._ensureIndex({ 'memberships.host': host });
+  const memberships = await Memberships.find(
+    { host },
+    { fields: { userId: 1 } }
+  ).fetchAsync();
+  const userIds = memberships.map((m) => m.userId);
+
   return Meteor.users.find(
-    { 'memberships.host': host },
+    { _id: { $in: userIds } },
     {
       fields: {
         _id: true,
@@ -61,10 +76,21 @@ Meteor.publish('membersForPublic', function () {
   );
 });
 
-Meteor.publish('memberAtHost', function (username) {
+Meteor.publish('memberAtHost', async function (username) {
   const host = getHost(this);
-  return Meteor.users.find({
-    username,
-    'memberships.host': host,
+  const user = await Meteor.users.findOneAsync(
+    { username },
+    { fields: { _id: 1 } }
+  );
+  if (!user) {
+    return this.ready();
+  }
+  const membership = await Memberships.findOneAsync({
+    userId: user._id,
+    host,
   });
+  if (!membership) {
+    return this.ready();
+  }
+  return Meteor.users.find({ username });
 });

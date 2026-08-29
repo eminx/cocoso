@@ -2,58 +2,50 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 
 import Hosts from '../hosts/host';
-import { isContributorOrAdmin, isContributor } from './user.roles';
+import { isAdmin, isContributorOrAdmin, isContributor } from './user.roles';
 import Activities from '../activities/activity';
-
-const isUserAdmin = (members, userId) =>
-  members.some((member) => member.id === userId && member.role === 'admin');
+import Memberships from '../memberships/membership';
 
 Meteor.methods({
   async setAsAdmin(memberId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdminUser = await isAdmin(user._id, host);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isAdminUser) {
       throw new Meteor.Error('You are not allowed');
     }
 
-    const member = await Meteor.users.findOneAsync(memberId);
+    const memberMembership = await Memberships.findOneAsync({
+      userId: memberId,
+      host,
+    });
 
     if (
-      !member.memberships ||
-      !member.memberships.some(
-        (membership) =>
-          membership.host === host &&
-          ['contributor', 'participant'].includes(membership.role)
-      )
+      !memberMembership ||
+      !['contributor', 'participant'].includes(memberMembership.role)
     ) {
       throw new Meteor.Error('User is does not have a role');
     }
 
     try {
-      await Meteor.users.updateAsync(
-        {
-          _id: memberId,
-          'memberships.host': host,
-        },
-        {
-          $set: {
-            'memberships.$.role': 'admin',
-            verifiedBy: {
-              username: user.username,
-              userId: user._id,
-              date: new Date(),
-            },
-          },
-        }
+      await Memberships.updateAsync(
+        { userId: memberId, host },
+        { $set: { role: 'admin' } }
       );
+      await Meteor.users.updateAsync(memberId, {
+        $set: {
+          verifiedBy: {
+            username: user.username,
+            userId: user._id,
+            date: new Date(),
+          },
+        },
+      });
       await Hosts.updateAsync(
-        { _id: currentHost._id, 'members.id': memberId },
+        { host },
         {
           $set: {
-            'members.$.role': 'admin',
             verifiedBy: {
               username: user.username,
               userId: user._id,
@@ -71,21 +63,16 @@ Meteor.methods({
   async setAsContributor(memberId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user.isSuperAdmin && !isContributorOrAdmin(user, currentHost)) {
+    if (!user.isSuperAdmin && !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('You are not allowed');
     }
 
-    const member = await Meteor.users.findOneAsync(memberId);
-    if (
-      !member ||
-      !member.memberships ||
-      !member.memberships.some(
-        (membership) =>
-          membership.host === host && membership.role === 'participant'
-      )
-    ) {
+    const memberMembership = await Memberships.findOneAsync({
+      userId: memberId,
+      host,
+    });
+    if (!memberMembership || memberMembership.role !== 'participant') {
       throw new Meteor.Error(
         error,
         'Some error occured... Sorry, your inquiry could not be done'
@@ -93,27 +80,23 @@ Meteor.methods({
     }
 
     try {
-      await Meteor.users.updateAsync(
-        {
-          _id: memberId,
-          'memberships.host': host,
-        },
-        {
-          $set: {
-            'memberships.$.role': 'contributor',
-            verifiedBy: {
-              username: user.username,
-              userId: user._id,
-              date: new Date(),
-            },
-          },
-        }
+      await Memberships.updateAsync(
+        { userId: memberId, host },
+        { $set: { role: 'contributor' } }
       );
+      await Meteor.users.updateAsync(memberId, {
+        $set: {
+          verifiedBy: {
+            username: user.username,
+            userId: user._id,
+            date: new Date(),
+          },
+        },
+      });
       await Hosts.updateAsync(
-        { _id: currentHost._id, 'members.id': memberId },
+        { host },
         {
           $set: {
-            'members.$.role': 'contributor',
             verifiedBy: {
               username: user.username,
               userId: user._id,
@@ -132,38 +115,34 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = getHost(this);
 
-    const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdminUser = await isAdmin(user._id, host);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isAdminUser) {
       throw new Meteor.Error('You are not allowed');
     }
 
-    const member = await Meteor.users.findOneAsync(memberId);
-
-    if (!isContributor(member, currentHost)) {
+    if (!(await isContributor(memberId, host))) {
       throw new Meteor.Error('User is not verified');
     }
 
     try {
-      await Meteor.users.updateAsync(
-        { _id: memberId, 'memberships.host': host },
-        {
-          $set: {
-            'memberships.$.role': 'participant',
-            unVerifiedBy: {
-              username: user.username,
-              userId: user._id,
-              date: new Date(),
-            },
-          },
-        }
+      await Memberships.updateAsync(
+        { userId: memberId, host },
+        { $set: { role: 'participant' } }
       );
+      await Meteor.users.updateAsync(memberId, {
+        $set: {
+          unVerifiedBy: {
+            username: user.username,
+            userId: user._id,
+            date: new Date(),
+          },
+        },
+      });
       await Hosts.updateAsync(
-        { _id: currentHost._id, 'members.id': memberId },
+        { host },
         {
           $set: {
-            'members.$.role': 'participant',
             unVerifiedBy: {
               username: user.username,
               userId: user._id,
@@ -190,9 +169,9 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdminUser = await isAdmin(user._id, host);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isAdminUser) {
       throw new Meteor.Error('You are not allowed');
     }
 
@@ -213,10 +192,9 @@ Meteor.methods({
   async assignHostLogo(image) {
     const host = getHost(this);
     const user = await Meteor.userAsync();
-    const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdminUser = await isAdmin(user._id, host);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isAdminUser) {
       throw new Meteor.Error('You are not allowed');
     }
 
@@ -238,9 +216,9 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdminUser = await isAdmin(user._id, host);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isAdminUser) {
       throw new Meteor.Error('You are not allowed');
     }
 
@@ -268,9 +246,9 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdminUser = await isAdmin(user._id, host);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isAdminUser) {
       throw new Meteor.Error('You are not allowed');
     }
 
@@ -285,9 +263,9 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+    const isAdminUser = await isAdmin(user._id, host);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isAdminUser) {
       throw new Meteor.Error('You are not allowed');
     }
 
@@ -312,19 +290,19 @@ Meteor.methods({
   async getActivitiesbyUserId(userId) {
     const currentUser = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin =
-      currentHost && isUserAdmin(currentHost.members, currentUser._id);
 
     if (!currentUser) {
       throw new Meteor.Error('You are not allowed');
     }
-    if (!isContributorOrAdmin(currentUser, currentHost)) {
+
+    const isAdminUser = await isAdmin(currentUser._id, host);
+
+    if (!(await isContributorOrAdmin(currentUser._id, host))) {
       throw new Meteor.Error(
         'You can not create activities without being verified'
       );
     }
-    if (userId !== currentUser._id && !isAdmin) {
+    if (userId !== currentUser._id && !isAdminUser) {
       throw new Meteor.Error('You are not allowed');
     }
 

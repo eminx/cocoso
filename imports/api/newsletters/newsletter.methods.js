@@ -6,6 +6,7 @@ import Hosts from '/imports/api/hosts/host';
 import Newsletters from './newsletter';
 import { getHost } from '../_utils/shared';
 import { isAdmin } from '../users/user.roles';
+import Memberships from '../memberships/membership';
 
 Meteor.methods({
   async getNewsletters(hostPredefined) {
@@ -45,7 +46,7 @@ Meteor.methods({
     const currentHost = await Hosts.findOneAsync({ host });
     const currentUser = await Meteor.userAsync();
 
-    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+    if (!currentUser || !(await isAdmin(currentUser._id, host))) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -67,17 +68,35 @@ Meteor.methods({
       );
 
       // Safer member fetching with limits
-      const members = isPortalHost
-        ? await Meteor.users
-            .find(
-              { 'emails.0': { $exists: true } },
-              {
-                fields: { username: 1, emails: 1 },
-                limit: 10000,
-              }
-            )
-            .fetchAsync()
-        : currentHost.members || [];
+      let members;
+      if (isPortalHost) {
+        members = await Meteor.users
+          .find(
+            { 'emails.0': { $exists: true } },
+            {
+              fields: { username: 1, emails: 1 },
+              limit: 10000,
+            }
+          )
+          .fetchAsync();
+      } else {
+        const memberships = await Memberships.find(
+          { host },
+          { fields: { userId: 1 }, limit: 10000 }
+        ).fetchAsync();
+        const userIds = memberships.map((m) => m.userId);
+        const memberUsers = await Meteor.users
+          .find(
+            { _id: { $in: userIds } },
+            { fields: { username: 1, emails: 1 } }
+          )
+          .fetchAsync();
+        members = memberUsers.map((u) => ({
+          _id: u._id,
+          username: u.username,
+          email: u.emails?.[0]?.address,
+        }));
+      }
 
       if (members.length === 0) {
         throw new Meteor.Error('No members found to send newsletter to');

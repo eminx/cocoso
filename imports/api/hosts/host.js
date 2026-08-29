@@ -78,16 +78,6 @@ Hosts.schema = new SimpleSchema({
   'theme.menu.textTransform': { type: String, optional: true },
   'theme.variant': { type: String, optional: true },
 
-  members: { type: Array },
-  'members.$': { type: Object, optional: true },
-  'members.$.avatar': { type: String, optional: true },
-  'members.$.date': { type: Date },
-  'members.$.email': Schemas.Email,
-  'members.$.id': Schemas.Id,
-  'members.$.role': { type: String },
-  'members.$.username': { type: String },
-  'members.$.isPublic': { type: Boolean, optional: true },
-
   emails: { type: Array },
   'emails.$': new SimpleSchema(SchemasHost.emailTemplate),
 

@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
 import ComposablePages from './composablepage';
-import Hosts from '../hosts/host';
 import { getHost } from '../_utils/shared';
 import { isAdmin } from '../users/user.roles';
 
@@ -80,9 +79,7 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
 
-    const currentHost = await Hosts.findOneAsync({ host });
-
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -110,9 +107,8 @@ Meteor.methods({
   async updateComposablePage(formValues, hostPredefined) {
     const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -142,9 +138,8 @@ Meteor.methods({
   async publishComposablePage(composablePageId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -163,9 +158,8 @@ Meteor.methods({
   async unpublishComposablePage(composablePageId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -183,9 +177,8 @@ Meteor.methods({
   async deleteComposablePage(composablePageId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 

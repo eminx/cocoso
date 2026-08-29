@@ -290,9 +290,8 @@ Meteor.methods({
 
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -330,7 +329,6 @@ Meteor.methods({
   async updateActivity(activityId, values) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -342,7 +340,10 @@ Meteor.methods({
       throw new Meteor.Error('Activity not found!');
     }
 
-    if (user._id !== theActivity.authorId && !isAdmin(user, currentHost)) {
+    if (
+      user._id !== theActivity.authorId &&
+      !(await isAdmin(user._id, host))
+    ) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -361,7 +362,6 @@ Meteor.methods({
   async deleteActivity(activityId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -369,7 +369,10 @@ Meteor.methods({
 
     const theActivity = await Activities.findOneAsync(activityId);
 
-    if (user._id !== theActivity.authorId && !isAdmin(user, currentHost)) {
+    if (
+      user._id !== theActivity.authorId &&
+      !(await isAdmin(user._id, host))
+    ) {
       throw new Meteor.Error('Not allowed!');
     }
 

@@ -1,34 +1,45 @@
-const isAdmin = (user, Host) => {
-  if (!user || !Host) {
-    return false;
-  }
-  return Host.members.some((member) => member.id === user._id && member.role === 'admin');
-};
-const isContributorOrAdmin = (user, Host) => {
-  if (!user || !Host) {
-    return false;
-  }
+import Memberships from '../memberships/membership';
 
-  return Host.members.some(
-    (member) => member.id === user._id && ['admin', 'contributor'].includes(member.role)
+const isAdmin = async (userId, host) => {
+  if (!userId || !host) {
+    return false;
+  }
+  return Boolean(
+    await Memberships.findOneAsync({ userId, host, role: 'admin' })
   );
 };
-const isContributor = (user, Host) => {
-  if (!user || !Host) {
+const isContributorOrAdmin = async (userId, host) => {
+  if (!userId || !host) {
     return false;
   }
-  return Host.members.some((member) => member.id === user._id && member.role === 'contributor');
+  return Boolean(
+    await Memberships.findOneAsync({
+      userId,
+      host,
+      role: { $in: ['admin', 'contributor'] },
+    })
+  );
 };
-const isParticipant = (user, Host) => {
-  if (!user || !Host) {
+const isContributor = async (userId, host) => {
+  if (!userId || !host) {
     return false;
   }
-  return Host.members.some((member) => member.id === user._id && member.role === 'participant');
+  return Boolean(
+    await Memberships.findOneAsync({ userId, host, role: 'contributor' })
+  );
 };
-const isMember = (user, Host) => {
-  if (!user || !Host) {
+const isParticipant = async (userId, host) => {
+  if (!userId || !host) {
     return false;
   }
-  return Host.members.some((member) => member.id === user._id);
+  return Boolean(
+    await Memberships.findOneAsync({ userId, host, role: 'participant' })
+  );
+};
+const isMember = async (userId, host) => {
+  if (!userId || !host) {
+    return false;
+  }
+  return Boolean(await Memberships.findOneAsync({ userId, host }));
 };
 export { isAdmin, isContributorOrAdmin, isContributor, isParticipant, isMember };

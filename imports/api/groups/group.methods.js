@@ -232,9 +232,8 @@ Meteor.methods({
   async createGroup(formValues) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -287,9 +286,8 @@ Meteor.methods({
   async updateGroup(groupId, values) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -330,9 +328,8 @@ Meteor.methods({
   async deleteGroup(groupId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -355,7 +352,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isMember(user, currentHost)) {
+    if (!user || !(await isMember(user._id, host))) {
       throw new Meteor.Error('Please join the community first!');
     }
 
@@ -452,9 +449,8 @@ Meteor.methods({
   async addGroupDocument(document, groupId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -477,9 +473,8 @@ Meteor.methods({
   async removeGroupDocument(documentName, groupId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -509,9 +504,8 @@ Meteor.methods({
   async setAsAGroupAdmin(groupId, newAdminUsername) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -524,7 +518,7 @@ Meteor.methods({
       username: newAdminUsername,
     });
 
-    if (!isContributorOrAdmin(newAdmin, currentHost)) {
+    if (!(await isContributorOrAdmin(newAdmin?._id, host))) {
       throw new Meteor.Error(
         'Admins must either have a cocreator or admin role in the space'
       );
@@ -556,9 +550,8 @@ Meteor.methods({
   async archiveGroup(groupId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -581,9 +574,8 @@ Meteor.methods({
   async unarchiveGroup(groupId) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isAdmin(user, currentHost)) {
+    if (!user || !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -608,7 +600,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -659,9 +651,8 @@ Meteor.methods({
   async removePersonFromInvitedList(groupId, person) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 

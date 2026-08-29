@@ -6,6 +6,7 @@ import { useAtomValue } from 'jotai';
 import { Button, Divider, Flex, Image, Modal } from '/imports/ui/core';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
 import {
+  allHostsAtom,
   currentHostAtom,
   currentUserAtom,
   isDesktopAtom,
@@ -14,6 +15,7 @@ import {
 import RegistrationIntro from '/imports/ui/pages/auth/RegistrationIntro';
 
 export default function FederationIconMenu() {
+  const allHosts = useAtomValue(allHostsAtom);
   const currentHost = useAtomValue(currentHostAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
@@ -70,7 +72,7 @@ export default function FederationIconMenu() {
                 key={m.host}
                 onClick={() => (location.href = `https://${m.host}`)}
               >
-                {m.hostname}
+                {allHosts.find((h) => h.host === m.host)?.name}
               </MenuItem>
             ))}
             <Divider />

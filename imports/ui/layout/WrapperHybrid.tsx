@@ -13,6 +13,7 @@ import 'dayjs/locale/tr';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
 import useMediaQuery from '/imports/api/_utils/useMediaQuery';
+import Memberships from '/imports/api/memberships/membership';
 import i18n from '/imports/startup/i18n';
 import {
   allHostsAtom,
@@ -66,9 +67,17 @@ export default function WrapperHybrid({
   const location = useLocation();
 
   useSubscribe('currentUser');
+  useSubscribe('myMemberships');
   const currentUser = useTracker(() => {
     if (Meteor.isClient) {
-      return Meteor.users.findOne(Meteor.userId());
+      const user = Meteor.users.findOne(Meteor.userId());
+      if (!user) {
+        return null;
+      }
+      // memberships no longer live on the user doc; reattach from the
+      // client-side Memberships minimongo collection (see myMemberships pub)
+      const memberships = Memberships.find({ userId: user._id }).fetch();
+      return { ...user, memberships };
     }
     return null;
   }, []);

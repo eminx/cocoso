@@ -2,11 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 
 import { getHost } from '../_utils/shared';
-import Hosts from '../hosts/host';
 import Reports from './report';
-
-const isUserAdmin = (members, userId) =>
-  members.some((m) => m.id === userId && m.role === 'admin');
+import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
   async reports_create({ reportedUserId, contentType, contentId, description }) {
@@ -35,9 +32,8 @@ Meteor.methods({
     if (!user) throw new Meteor.Error('not-authorized');
 
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
-    if (!user.isSuperAdmin && !isAdmin) throw new Meteor.Error('not-authorized');
+    const isAdminUser = await isAdmin(user._id, host);
+    if (!user.isSuperAdmin && !isAdminUser) throw new Meteor.Error('not-authorized');
 
     const reports = await Reports.find({}, { sort: { createdAt: -1 } }).fetchAsync();
 
@@ -61,9 +57,8 @@ Meteor.methods({
     if (!user) throw new Meteor.Error('not-authorized');
 
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
-    if (!user.isSuperAdmin && !isAdmin) throw new Meteor.Error('not-authorized');
+    const isAdminUser = await isAdmin(user._id, host);
+    if (!user.isSuperAdmin && !isAdminUser) throw new Meteor.Error('not-authorized');
 
     return Reports.updateAsync(reportId, {
       $set: {

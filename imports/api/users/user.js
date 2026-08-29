@@ -27,18 +27,6 @@ Users.schema.UserProfile = {
   isPublic: { type: Boolean, defaultValue: true, optional: true },
   isSuperAdmin: { type: Boolean, defaultValue: false, optional: true },
 
-  memberships: { type: Array, defaultValue: [] },
-  'memberships.$': {
-    type: new SimpleSchema({
-      host: Schemas.Hostname,
-      hostname: { type: String },
-      role: { type: String },
-      date: { type: Date },
-      isPublic: { type: Boolean, optional: true, defaultValue: true },
-    }),
-    optional: true,
-  },
-
   groups: { type: Array, defaultValue: [] },
   'groups.$': {
     type: new SimpleSchema({

@@ -11,6 +11,7 @@ import {
 import { uploadToS3 } from '../_utils/services/aws.upload';
 import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
+import { isAdmin } from '../users/user.roles';
 
 /**
  * Upload an image: receive a buffer from the client,
@@ -104,11 +105,8 @@ async function deleteImageMethod(imageId: string) {
   // Only the uploader or a super admin can delete
   if (image.uploadedBy !== user._id && !user.isSuperAdmin) {
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
-    const isAdmin = currentHost?.members?.some(
-      (m: any) => m.id === user._id && m.role === 'admin'
-    );
-    if (!isAdmin) {
+    const isAdminUser = await isAdmin(user._id, host);
+    if (!isAdminUser) {
       throw new Meteor.Error('not-authorized', 'You cannot delete this image');
     }
   }

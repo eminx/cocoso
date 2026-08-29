@@ -4,7 +4,6 @@ import mailtranslations from '/imports/api/activities/mailtranslations';
 
 import { getHost } from '../_utils/shared';
 import { isContributorOrAdmin } from '../users/user.roles';
-import Hosts from '../hosts/host';
 import Groups from '../groups/group';
 import Chats from './chat';
 
@@ -17,9 +16,8 @@ Meteor.methods({
   async createChat(contextName, contextId, contextType) {
     const user = await Meteor.userAsync();
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user || !(await isContributorOrAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 

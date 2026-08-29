@@ -61,10 +61,14 @@ export default function CommunitiesHybrid({ Host, hosts }) {
     }
 
     const myHosts = currentUser?.memberships;
-    const myHostsSorted = myHosts?.sort((a, b) => {
+    const myHostsWithNames = myHosts?.map((mh) => ({
+      ...mh,
+      name: hostsSorted.find((h) => h.host === mh.host)?.name,
+    }));
+    const myHostsSorted = myHostsWithNames?.sort((a, b) => {
       if (sortValue === 'name') {
-        const nameA = a?.hostname;
-        const nameB = b?.hostname;
+        const nameA = a?.name;
+        const nameB = b?.name;
         return nameA?.localeCompare(nameB);
       }
       return new Date(b?.createdAt) - new Date(a?.createdAt);
@@ -188,7 +192,7 @@ export default function CommunitiesHybrid({ Host, hosts }) {
             }
             id="communities-hybrid"
             size="lg"
-            title={modalItem.hostname}
+            title={modalItem.name || modalItem.hostname}
             open={Boolean(modalItem)}
             onConfirm={
               modalItem.isMember ? handleActionButtonClick : joinCommunity

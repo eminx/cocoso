@@ -7,6 +7,7 @@ import Platform from '../platform/platform';
 import DirectMessages from './directMessage';
 import { getDirectMessageEmailBody } from './directMessages.mails';
 import mailtranslations from '../groups/mailtranslations';
+import Memberships from '../memberships/membership';
 
 Meteor.methods({
   async directMessages_findOrCreate(otherUserId) {
@@ -124,7 +125,7 @@ Meteor.methods({
             Platform.findOneAsync(),
           ]);
           const recipient = await Meteor.users.findOneAsync(otherUserId, {
-            fields: { emails: 1, firstName: 1, username: 1, lang: 1, memberships: 1 },
+            fields: { emails: 1, firstName: 1, username: 1, lang: 1 },
           });
           if (!recipient) return;
 
@@ -133,11 +134,15 @@ Meteor.methods({
           // Federation: link to a host the recipient is actually a member of
           let linkHost = currentHost;
           if (isFederation) {
-            const isMemberOfSenderHost = (recipient.memberships ?? []).some(
+            const recipientMemberships = await Memberships.find(
+              { userId: otherUserId },
+              { sort: { date: 1 } }
+            ).fetchAsync();
+            const isMemberOfSenderHost = recipientMemberships.some(
               (m) => m.host === host
             );
             if (!isMemberOfSenderHost) {
-              const firstMembership = (recipient.memberships ?? [])[0];
+              const firstMembership = recipientMemberships[0];
               if (firstMembership) {
                 const recipientHost = await Hosts.findOneAsync(
                   { host: firstMembership.host },
