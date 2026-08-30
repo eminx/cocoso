@@ -629,7 +629,6 @@ Migrations.add({
   version: 18,
   async up() {
     console.log('up to', this.version);
-
     const unresolvedConflicts = await MembershipConflictReports.find(
       {}
     ).countAsync();
@@ -661,23 +660,17 @@ Migrations.add({
       );
     });
 
-    await Meteor.users.updateAsync(
-      {},
-      { $unset: { memberships: true } },
-      { multi: true }
-    );
+    // await Meteor.users.updateAsync(
+    //   {},
+    //   { $unset: { memberships: true } },
+    //   { multi: true }
+    // );
 
-    await Hosts.updateAsync(
-      {},
-      { $unset: { members: true } },
-      { multi: true }
-    );
+    // await Hosts.updateAsync({}, { $unset: { members: true } }, { multi: true });
   },
   async down() {
     console.log('down to', this.version - 1);
-
     const memberships = await Memberships.find({}).fetchAsync();
-
     const membershipsByHost = {};
     const membershipsByUser = {};
     memberships.forEach((m) => {

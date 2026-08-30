@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { onPageLoad } from 'meteor/server-render';
 import React from 'react';
+import Hosts from '/imports/api/hosts/host';
+import Memberships from '/imports/api/memberships/membership';
 
 import { call } from '/imports/api/_utils/shared';
 
@@ -31,6 +33,27 @@ Meteor.startup(async () => {
   if (cdn_server) {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
   }
+
+  // await Hosts.find({}).forEachAsync(async (host) => {
+  //   const members = host.members || [];
+  //   await Promise.all(
+  //     members.map(async (member) => {
+  //       await Memberships.updateAsync(
+  //         { userId: member.id, host: host.host },
+  //         {
+  //           $set: {
+  //             userId: member.id,
+  //             host: host.host,
+  //             role: member.role,
+  //             isPublic: member.isPublic !== false,
+  //             date: member.date || new Date(),
+  //           },
+  //         },
+  //         { upsert: true }
+  //       );
+  //     })
+  //   );
+  // });
 
   onPageLoad(async (sink) => {
     try {
