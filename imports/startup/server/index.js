@@ -10,6 +10,7 @@ import { call } from '/imports/api/_utils/shared';
 import serverRenderer from './serverRenderer';
 import './api';
 import './migrations';
+import './oauth';
 
 const { cdn_server } = Meteor.settings;
 
@@ -34,26 +35,26 @@ Meteor.startup(async () => {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
   }
 
-  // await Hosts.find({}).forEachAsync(async (host) => {
-  //   const members = host.members || [];
-  //   await Promise.all(
-  //     members.map(async (member) => {
-  //       await Memberships.updateAsync(
-  //         { userId: member.id, host: host.host },
-  //         {
-  //           $set: {
-  //             userId: member.id,
-  //             host: host.host,
-  //             role: member.role,
-  //             isPublic: member.isPublic !== false,
-  //             date: member.date || new Date(),
-  //           },
-  //         },
-  //         { upsert: true }
-  //       );
-  //     })
-  //   );
-  // });
+  await Hosts.find({}).forEachAsync(async (host) => {
+    const members = host.members || [];
+    await Promise.all(
+      members.map(async (member) => {
+        await Memberships.updateAsync(
+          { userId: member.id, host: host.host },
+          {
+            $set: {
+              userId: member.id,
+              host: host.host,
+              role: member.role,
+              isPublic: member.isPublic !== false,
+              joinDate: member.date || new Date(),
+            },
+          },
+          { upsert: true }
+        );
+      })
+    );
+  });
 
   onPageLoad(async (sink) => {
     try {
