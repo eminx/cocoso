@@ -27,8 +27,8 @@ import UsageReport from './UsageReport';
 import Boxling from './Boxling';
 
 const compareUsersByDate = (a, b) => {
-  const rawA = a.date || a.createdAt;
-  const rawB = b.date || b.createdAt;
+  const rawA = a.joinDate || a.createdAt;
+  const rawB = b.joinDate || b.createdAt;
   const dateA = rawA ? new Date(rawA) : new Date(0);
   const dateB = rawB ? new Date(rawB) : new Date(0);
   return dateA - dateB;
@@ -50,7 +50,7 @@ function MemberItem({ member }) {
       <br />
       <Text size="xs" color="gray.500" fontStyle="italic">
         {t('joinedAt', {
-          date: dayjs(member.date).format('D MMM YYYY'),
+          date: dayjs(member.joinDate).format('D MMM YYYY'),
         })}
       </Text>
     </Box>
