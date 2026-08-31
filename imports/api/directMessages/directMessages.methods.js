@@ -136,7 +136,7 @@ Meteor.methods({
           if (isFederation) {
             const recipientMemberships = await Memberships.find(
               { userId: otherUserId },
-              { sort: { date: 1 } }
+              { sort: { joinDate: 1 } }
             ).fetchAsync();
             const isMemberOfSenderHost = recipientMemberships.some(
               (m) => m.host === host

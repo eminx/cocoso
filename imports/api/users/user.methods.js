@@ -124,7 +124,7 @@ Meteor.methods({
         userId: user._id,
         host,
         role: 'participant',
-        date: new Date(),
+        joinDate: new Date(),
         isPublic: true,
       });
 

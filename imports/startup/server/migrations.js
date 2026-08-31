@@ -651,7 +651,7 @@ Migrations.add({
                 host: host.host,
                 role: member.role,
                 isPublic: member.isPublic !== false,
-                date: member.date || new Date(),
+                joinDate: member.date || new Date(),
               },
             },
             { upsert: true }
@@ -695,7 +695,7 @@ Migrations.add({
             email: user?.emails?.[0]?.address,
             avatar: user?.avatar?.src,
             role: m.role,
-            date: m.date,
+            date: m.joinDate,
             isPublic: m.isPublic,
           };
         })
@@ -712,7 +712,7 @@ Migrations.add({
             host: m.host,
             hostname: host?.settings?.name,
             role: m.role,
-            date: m.date,
+            date: m.joinDate,
             isPublic: m.isPublic,
           };
         })

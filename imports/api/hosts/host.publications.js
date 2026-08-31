@@ -31,6 +31,6 @@ Meteor.publish('members', async function () {
 
   return Memberships.find(
     { host },
-    { fields: { userId: 1, host: 1, role: 1, isPublic: 1, date: 1 } }
+    { fields: { userId: 1, host: 1, role: 1, isPublic: 1, joinDate: 1 } }
   );
 });

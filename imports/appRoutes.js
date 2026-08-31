@@ -45,6 +45,9 @@ function revalidateOn(relevantParams = []) {
 
 const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
 const SignupPage = loadable(() => import('/imports/ui/pages/auth/SignupPage'));
+const SsoCallbackPage = loadable(() =>
+  import('/imports/ui/pages/auth/SsoCallbackPage')
+);
 const ForgotPasswordPage = loadable(() =>
   import('/imports/ui/pages/auth/ForgotPasswordPage')
 );
@@ -609,6 +612,10 @@ export default function appRoutes(props) {
         {
           path: 'register',
           element: createRouteElement(SignupPage, props),
+        },
+        {
+          path: 'sso-callback',
+          element: createRouteElement(SsoCallbackPage, props),
         },
         {
           path: 'forgot-password',

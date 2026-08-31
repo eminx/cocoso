@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
-import { Trans } from 'react-i18next';
 
 import { Alert, Box, Button, Center } from '/imports/ui/core';
 import NewHostForm from '/imports/ui/forms/NewHostForm';
@@ -114,7 +113,9 @@ export default function SetupHome() {
         user,
       }));
     } catch (error: any) {
-      message.error(error.error?.reason || error.reason || 'Error creating user');
+      message.error(
+        error.error?.reason || error.reason || 'Error creating user'
+      );
     }
   };
 

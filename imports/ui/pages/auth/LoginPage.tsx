@@ -24,6 +24,7 @@ import {
 
 import { loginWithPassword } from './functions';
 import { Login } from './index';
+import SsoButton from './SsoButton';
 import { clearEncryptionKey } from '/imports/utils/setupEncryption';
 
 export default function LoginPage() {
@@ -128,6 +129,7 @@ export default function LoginPage() {
               }}
             >
               <Login isSubmitted={submitted} onSubmit={handleSubmit} />
+              <SsoButton />
             </Box>
             <Center>
               <Text textAlign="center">

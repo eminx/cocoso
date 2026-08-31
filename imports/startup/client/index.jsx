@@ -11,6 +11,7 @@ import {
 } from 'react-router';
 
 import appRoutes from '/imports/appRoutes';
+import SetupHome from '/imports/ui/pages/setup';
 import '/imports/startup/i18n';
 
 // Meteor's `autoupdate` package tracks whether the server has a newer client

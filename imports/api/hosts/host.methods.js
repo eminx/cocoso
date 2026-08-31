@@ -82,7 +82,7 @@ Meteor.methods({
         userId: currentUser._id,
         host: values.host,
         role: 'admin',
-        date: new Date(),
+        joinDate: new Date(),
         isPublic: true,
       });
     } catch (error) {
@@ -191,7 +191,7 @@ Meteor.methods({
         email: user?.emails?.[0]?.address,
         avatar: user?.avatar?.src,
         role: m.role,
-        date: m.date,
+        joinDate: m.joinDate,
         isPublic: m.isPublic,
       };
     });
