@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { useAtomValue } from 'jotai';
 
-import { Box, Center, Image, Link as CLink, Text } from '/imports/ui/core';
+import { Box, Center, Image, Text } from '/imports/ui/core';
+import { message } from '/imports/ui/generic/message';
+import { call } from '../../../api/_utils/shared';
 import { platformAtom } from '/imports/state';
-import { Login, Signup } from './index';
+import { AuthContainer } from './index';
 
 interface OAuthParams {
   client_id: string;
@@ -24,39 +26,52 @@ function readOAuthParams(): OAuthParams {
   };
 }
 
-const ERROR_MESSAGES: Record<string, string> = {
-  invalid_credentials: 'Incorrect username/email or password.',
-  missing_fields: 'Please fill in all fields.',
-  username_taken: 'That username is already taken.',
-  registration_failed: 'Could not create your account. Please try again.',
-};
-
-function readErrorMessage(): string | null {
-  const code = new URLSearchParams(window.location.search).get('error');
-  if (!code) {
-    return null;
+// The broker has no real router — just a handful of known paths, matched
+// by hand. /reset-password/:token mirrors the shape resetUserPassword
+// (imports/api/users/user.methods.js) generates its email links with.
+function resolveModeAndToken() {
+  const { pathname } = window.location;
+  if (pathname.startsWith('/register')) {
+    return { mode: 'signup' as const, token: undefined };
   }
-  return ERROR_MESSAGES[code] || 'Something went wrong. Please try again.';
+  if (pathname.startsWith('/forgot-password')) {
+    return { mode: 'recover' as const, token: undefined };
+  }
+  if (pathname.startsWith('/reset-password/')) {
+    return {
+      mode: 'reset' as const,
+      token: pathname.split('/reset-password/')[1],
+    };
+  }
+  return { mode: 'login' as const, token: undefined };
 }
 
 export default function BrokerAuthPage() {
   const platform = useAtomValue(platformAtom);
   const [submitting, setSubmitting] = useState(false);
+  const [resetDone, setResetDone] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [oauthParams] = useState(readOAuthParams);
-  const [errorMessage] = useState(readErrorMessage);
+  const [{ mode: initialMode, token }] = useState(resolveModeAndToken);
 
-  const isRegister = window.location.pathname.startsWith('/register');
+  // A reset-password link arrives standalone, potentially hours later on
+  // any device — there's no active OAuth round-trip to return to, so the
+  // terms link (tied to the originating tenant) only makes sense when one
+  // is actually in flight.
+  const termsHref = oauthParams.client_id
+    ? `https://${oauthParams.client_id}/terms-&-privacy-policy`
+    : undefined;
 
   // Submits via a real native browser form POST (not fetch) so the
   // resulting 302 from /oauth/authorize|register is followed by the
-  // browser itself — same as the plain-HTML broker form before it, just
-  // rendered through the real Login/Signup components now.
-  const submitNative = (fields: Record<string, string>) => {
+  // browser itself — no CORS needed, and the server can set the broker
+  // session cookie normally.
+  const submitNative = (action: string, fields: Record<string, string>) => {
     const form = formRef.current;
     if (!form) {
       return;
     }
+    form.action = action;
     Object.entries(fields).forEach(([name, value]) => {
       const input = form.elements.namedItem(name) as HTMLInputElement | null;
       if (input) {
@@ -68,15 +83,15 @@ export default function BrokerAuthPage() {
   };
 
   const handleLogin = (data: any) => {
-    submitNative({
+    submitNative('/oauth/authorize', {
       username: data.username,
       password: data.password,
       ...oauthParams,
     });
   };
 
-  const handleRegister = (data: any) => {
-    submitNative({
+  const handleSignup = (data: any) => {
+    submitNative('/oauth/register', {
       username: data.username,
       email: data.email,
       password: data.password,
@@ -84,8 +99,26 @@ export default function BrokerAuthPage() {
     });
   };
 
-  const toggleParams = new URLSearchParams(oauthParams as any).toString();
-  const toggleHref = `${isRegister ? '/login' : '/register'}?${toggleParams}`;
+  const handleForgotPassword = async (data: any) => {
+    try {
+      await call('resetUserPassword', data.email);
+      message.success('Check your email for a link to reset your password.');
+    } catch (error: any) {
+      message.error(
+        error?.error?.reason || error?.reason || 'Something went wrong.'
+      );
+    }
+  };
+
+  const handleResetPassword = async (data: any) => {
+    try {
+      await call('resetPassword', token, data.password);
+      message.success('Your password has been reset.');
+      setResetDone(true);
+    } catch (error: any) {
+      message.error(error?.reason || 'Something went wrong.');
+    }
+  };
 
   return (
     <Center mt="16" mb="8">
@@ -96,58 +129,39 @@ export default function BrokerAuthPage() {
           </Center>
         )}
 
-        <Text mb="4" textAlign="center" fontWeight="bold">
-          {isRegister ? 'Create your account' : 'Sign in'}
-        </Text>
-
-        {errorMessage && (
-          <Center mb="4">
-            <Text color="red.500" fontSize="sm">
-              {errorMessage}
+        {resetDone ? (
+          <Center>
+            <Text textAlign="center">
+              Your password has been reset. You can return to the site you
+              were signing in from and sign in again.
             </Text>
           </Center>
+        ) : (
+          <Box
+            bg="gray.50"
+            p="6"
+            css={{
+              border: '1px solid',
+              borderColor: 'var(--cocoso-colors-gray-300)',
+            }}
+          >
+            <AuthContainer
+              initialMode={initialMode}
+              isSubmitted={submitting}
+              termsHref={termsHref}
+              onLogin={handleLogin}
+              onSignup={handleSignup}
+              onForgotPassword={handleForgotPassword}
+              onResetPassword={handleResetPassword}
+            />
+          </Box>
         )}
 
-        <Box
-          bg="gray.50"
-          mb="4"
-          p="6"
-          css={{
-            border: '1px solid',
-            borderColor: 'var(--cocoso-colors-gray-300)',
-          }}
-        >
-          {isRegister ? (
-            <Signup hideTermsCheck onSubmit={handleRegister} />
-          ) : (
-            <Login isSubmitted={submitting} onSubmit={handleLogin} />
-          )}
-        </Box>
-
-        <Center>
-          <Text textAlign="center">
-            <CLink as="a" href={toggleHref} color="blue.500">
-              <b>
-                {isRegister
-                  ? 'Already have an account? Sign in'
-                  : "Don't have an account? Register"}
-              </b>
-            </CLink>
-          </Text>
-        </Center>
-
-        {/* Hidden native form: the real submission target. React only
-            fills its fields and calls .submit() — this is a genuine
-            browser navigation, not an XHR/fetch, so no CORS is needed
-            and the server can set the broker session cookie normally. */}
-        <form
-          ref={formRef}
-          method="POST"
-          action={isRegister ? '/oauth/register' : '/oauth/authorize'}
-          style={{ display: 'none' }}
-        >
+        {/* Hidden native form: the real submission target for login and
+            register. React only fills its fields and calls .submit(). */}
+        <form ref={formRef} method="POST" style={{ display: 'none' }}>
           <input name="username" type="text" readOnly />
-          {isRegister && <input name="email" type="email" readOnly />}
+          <input name="email" type="email" readOnly />
           <input name="password" type="password" readOnly />
           <input name="client_id" type="hidden" readOnly />
           <input name="redirect_uri" type="hidden" readOnly />

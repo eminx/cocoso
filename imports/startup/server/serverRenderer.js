@@ -19,13 +19,23 @@ export default async function serverRenderer(sink) {
   const host = sink?.request?.headers?.['host'];
 
   // The SSO broker domain has no Hosts doc and isn't a tenant site — skip
-  // the normal Hosts-driven render entirely and let the client bundle
-  // mount BrokerAuthPage (see imports/startup/client/index.jsx). Leaving
-  // #root empty here is fine: this is a low-traffic, JS-required page.
+  // the normal Hosts-driven route render entirely and let the client
+  // bundle mount BrokerAuthPage (see imports/startup/client/index.jsx).
+  // Styling still needs injecting by hand here though — getGlobalStyles()
+  // works fine with no theme (sensible defaults), it just never normally
+  // gets called without a Host driving it.
   if (
     Meteor.settings.public?.authDomain &&
     host === Meteor.settings.public.authDomain
   ) {
+    if (!stitchesConfig) {
+      stitchesConfig = await import('/stitches.config');
+    }
+    const globalCssString = getGlobalStyles();
+    sink.appendToHead(`
+      <style id="global-theme">${globalCssString}</style>
+      <style id="stitches">${stitchesConfig.getCssText()}</style>
+    `);
     return;
   }
 

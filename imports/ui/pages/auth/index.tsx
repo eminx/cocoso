@@ -67,10 +67,14 @@ const Login = ({ isSubmitted, onSubmit }: LoginProps) => {
 
 interface SignupProps {
   hideTermsCheck?: boolean;
+  // When set, the terms link opens this URL in a new tab instead of the
+  // in-page Terms modal — used where there's no single host's terms to show
+  // inline (e.g. the SSO broker, which isn't scoped to one community).
+  termsHref?: string;
   onSubmit: (data: any) => void;
 }
 
-const Signup = ({ hideTermsCheck = false, onSubmit }: SignupProps) => {
+const Signup = ({ hideTermsCheck = false, termsHref, onSubmit }: SignupProps) => {
   const [termsChecked, setTermsChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [usernameUnique, setUsernameUnique] = useState(false);
@@ -162,12 +166,16 @@ const Signup = ({ hideTermsCheck = false, onSubmit }: SignupProps) => {
                   onChange={() => setTermsChecked(!termsChecked)}
                 >
                   <Link
+                    as={termsHref ? 'a' : undefined}
+                    href={termsHref}
+                    target={termsHref ? '_blank' : undefined}
+                    rel={termsHref ? 'noopener noreferrer' : undefined}
                     css={{
                       color: 'var(--cocoso-colors-blue-500)',
                       fontSize: '0.875rem',
                       textDecoration: 'underline',
                     }}
-                    onClick={() => setModalOpen(true)}
+                    onClick={termsHref ? undefined : () => setModalOpen(true)}
                   >
                     {t('signup.form.terms.label', {
                       terms: t('signup.form.terms.terms'),
@@ -294,14 +302,40 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
   );
 };
 
-const AuthContainer = () => {
-  const [mode, setMode] = useState('signup');
+type AuthMode = 'login' | 'signup' | 'recover' | 'reset';
+
+interface AuthContainerProps {
+  initialMode?: AuthMode;
+  isSubmitted?: boolean;
+  termsHref?: string;
+  onLogin?: (data: any) => void;
+  onSignup?: (data: any) => void;
+  onForgotPassword?: (data: any) => void;
+  onResetPassword?: (data: any) => void;
+}
+
+const noop = () => {};
+
+// Presentational shell around Login/Signup/ForgotPassword/ResetPassword —
+// none of the four form components touch global state themselves, so this
+// (and they) can be reused anywhere a full tenant app shell isn't wanted,
+// e.g. the SSO broker's lightweight auth page.
+const AuthContainer = ({
+  initialMode = 'login',
+  isSubmitted = false,
+  termsHref,
+  onLogin = noop,
+  onSignup = noop,
+  onForgotPassword = noop,
+  onResetPassword = noop,
+}: AuthContainerProps) => {
+  const [mode, setMode] = useState<AuthMode>(initialMode);
   const [t] = useTranslation('accounts');
 
   if (mode === 'signup') {
     return (
       <Box>
-        <Signup onSubmit={() => {}} />
+        <Signup termsHref={termsHref} onSubmit={onSignup} />
         <Center>
           <Text>{t('signup.labels.subtitle')}</Text>
           <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
@@ -313,7 +347,19 @@ const AuthContainer = () => {
   if (mode === 'recover') {
     return (
       <Box>
-        <ForgotPassword onForgotPassword={() => {}} />
+        <ForgotPassword onForgotPassword={onForgotPassword} />
+        <Flex justify="space-around">
+          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
+          <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
+        </Flex>
+      </Box>
+    );
+  }
+
+  if (mode === 'reset') {
+    return (
+      <Box>
+        <ResetPassword onResetPassword={onResetPassword} />
         <Flex justify="space-around">
           <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
           <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
@@ -324,7 +370,7 @@ const AuthContainer = () => {
 
   return (
     <Box>
-      <Login onSubmit={() => {}} />
+      <Login isSubmitted={isSubmitted} onSubmit={onLogin} />
       <Center mb="8">
         <Heading>{t('login.labels.subtitle')}</Heading>
         <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
