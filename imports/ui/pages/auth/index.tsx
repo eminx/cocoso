@@ -61,7 +61,7 @@ const Login = ({ isSubmitted, onSubmit }: LoginProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Flex direction="column" gap="4">
+      <Flex direction="column" gap="2">
         <FormField
           errorMessage={errors.username?.message}
           label={t('login.form.username.label')}
@@ -169,7 +169,7 @@ const Signup = ({
     <>
       <Center>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-          <Flex direction="column" gap="4" maxW="420px">
+          <Flex direction="column" gap="2" maxW="420px">
             <FormField
               errorMessage={
                 errors.username?.message ||
@@ -300,7 +300,7 @@ const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onForgotPassword(data))}>
-      <Flex direction="column" gap="4">
+      <Flex direction="column" gap="2">
         <FormField
           errorMessage={errors.email?.message}
           // isInvalid={errors.email}
@@ -342,7 +342,7 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
-      <Flex direction="column" gap="4">
+      <Flex direction="column" gap="2">
         <FormField
           errorMessage={errors.password?.message}
           helper={passwordHelperText}
@@ -352,7 +352,7 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
           <Input {...register('password')} type="password" />
         </FormField>
 
-        <Flex justify="flex-end" py="4" w="100%">
+        <Flex justify="flex-end" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
