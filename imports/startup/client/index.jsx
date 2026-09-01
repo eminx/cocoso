@@ -58,8 +58,9 @@ onPageLoad(async () => {
     publicSettings?.authDomain &&
     window.location.host === publicSettings.authDomain
   ) {
+    const platform = await Meteor.callAsync('getPlatform');
     const root = createRoot(container);
-    root.render(<BrokerAuthPage />);
+    root.render(<BrokerAuthPage platform={platform} />);
     return;
   }
 

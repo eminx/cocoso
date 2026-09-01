@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { useAtomValue } from 'jotai';
 
 import { Box, Center, Image, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { call } from '../../../api/_utils/shared';
-import { platformAtom } from '/imports/state';
 import { AuthContainer } from './index';
 
 interface OAuthParams {
@@ -66,8 +64,11 @@ function readErrorMessage(): string | null {
   return ERROR_MESSAGES[code] || 'Something went wrong. Please try again.';
 }
 
-export default function BrokerAuthPage() {
-  const platform = useAtomValue(platformAtom);
+interface BrokerAuthPageProps {
+  platform?: { logo?: string } | null;
+}
+
+export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   const [submitting, setSubmitting] = useState(false);
   const [resetDone, setResetDone] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
