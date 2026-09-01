@@ -74,7 +74,11 @@ interface SignupProps {
   onSubmit: (data: any) => void;
 }
 
-const Signup = ({ hideTermsCheck = false, termsHref, onSubmit }: SignupProps) => {
+const Signup = ({
+  hideTermsCheck = false,
+  termsHref,
+  onSubmit,
+}: SignupProps) => {
   const [termsChecked, setTermsChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [usernameUnique, setUsernameUnique] = useState(false);
@@ -338,7 +342,9 @@ const AuthContainer = ({
         <Signup termsHref={termsHref} onSubmit={onSignup} />
         <Center>
           <Text>{t('signup.labels.subtitle')}</Text>
-          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
+          <Button variant="outline" onClick={() => setMode('login')}>
+            {t('actions.login')}
+          </Button>
         </Center>
       </Box>
     );
@@ -349,8 +355,12 @@ const AuthContainer = ({
       <Box>
         <ForgotPassword onForgotPassword={onForgotPassword} />
         <Flex justify="space-around">
-          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
-          <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
+          <Button variant="ghost" onClick={() => setMode('login')}>
+            {t('actions.login')}
+          </Button>
+          <Button variant="ghost" onClick={() => setMode('signup')}>
+            {t('actions.signup')}
+          </Button>
         </Flex>
       </Box>
     );
@@ -361,8 +371,12 @@ const AuthContainer = ({
       <Box>
         <ResetPassword onResetPassword={onResetPassword} />
         <Flex justify="space-around">
-          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
-          <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
+          <Button variant="ghost" onClick={() => setMode('login')}>
+            {t('actions.login')}
+          </Button>
+          <Button variant="ghost" onClick={() => setMode('signup')}>
+            {t('actions.signup')}
+          </Button>
         </Flex>
       </Box>
     );
@@ -372,12 +386,16 @@ const AuthContainer = ({
     <Box>
       <Login isSubmitted={isSubmitted} onSubmit={onLogin} />
       <Center mb="8">
-        <Heading>{t('login.labels.subtitle')}</Heading>
-        <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
+        <Text>{t('login.labels.subtitle')}</Text>
+        <Button variant="outline" onClick={() => setMode('signup')}>
+          {t('actions.signup')}
+        </Button>
       </Center>
       <Center>
-        <Heading>{t('actions.forgot')}</Heading>
-        <Link onClick={() => setMode('recover')}>{t('actions.reset')}</Link>
+        <Text>{t('actions.forgot')}</Text>
+        <Button variant="ghost" onClick={() => setMode('recover')}>
+          {t('actions.reset')}
+        </Button>
       </Center>
     </Box>
   );
