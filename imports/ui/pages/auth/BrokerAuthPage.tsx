@@ -46,6 +46,26 @@ function resolveModeAndToken() {
   return { mode: 'login' as const, token: undefined };
 }
 
+// Populated by oauth.js's redirectToBrokerForm() when a native form POST
+// to /oauth/authorize or /oauth/register fails — see handleAuthorizePost/
+// handleRegisterPost. Read once on load, same as oauthParams/mode below,
+// since a failure always arrives via a fresh page load (full navigation).
+const ERROR_MESSAGES: Record<string, string> = {
+  invalid_credentials: 'Incorrect username/email or password.',
+  missing_fields: 'Please fill in all fields.',
+  username_taken: 'That username is already taken.',
+  registration_failed:
+    'Could not create your account — that email or username may already be in use.',
+};
+
+function readErrorMessage(): string | null {
+  const code = new URLSearchParams(window.location.search).get('error');
+  if (!code) {
+    return null;
+  }
+  return ERROR_MESSAGES[code] || 'Something went wrong. Please try again.';
+}
+
 export default function BrokerAuthPage() {
   const platform = useAtomValue(platformAtom);
   const [submitting, setSubmitting] = useState(false);
@@ -53,6 +73,7 @@ export default function BrokerAuthPage() {
   const formRef = useRef<HTMLFormElement>(null);
   const [oauthParams] = useState(readOAuthParams);
   const [{ mode: initialMode, token }] = useState(resolveModeAndToken);
+  const [errorMessage] = useState(readErrorMessage);
 
   // A reset-password link arrives standalone, potentially hours later on
   // any device — there's no active OAuth round-trip to return to, so the
@@ -145,6 +166,13 @@ export default function BrokerAuthPage() {
               borderColor: 'var(--cocoso-colors-gray-300)',
             }}
           >
+            {errorMessage && (
+              <Center mb="4">
+                <Text color="red.500" fontSize="sm" textAlign="center">
+                  {errorMessage}
+                </Text>
+              </Center>
+            )}
             <AuthContainer
               initialMode={initialMode}
               isSubmitted={submitting}
