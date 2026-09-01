@@ -100,6 +100,12 @@ Meteor.methods({
     return Boolean(usernameExists);
   },
 
+  async isEmailUnique(email) {
+    check(email, String);
+    const emailExists = await Accounts.findUserByEmail(email);
+    return Boolean(emailExists);
+  },
+
   async setSelfAsParticipant(hostToJoin) {
     const user = await Meteor.userAsync();
     if (!user) {

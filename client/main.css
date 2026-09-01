@@ -24,6 +24,7 @@ html {
 body {
   margin: 0;
   line-height: 1.5;
+  min-height: 101vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -80,15 +81,6 @@ img {
   max-width: 100%;
   height: auto;
   border-style: none;
-}
-
-html {
-  background-color: rgb(68, 60, 52);
-}
-
-body {
-  min-height: 101vh;
-  margin: 0;
 }
 
 #main-viewport {

@@ -57,6 +57,26 @@ const passwordSchema = (t) => ({
     .regex(regexPassword, t('common:auth.errors.passwordRegex')),
 });
 
+// Login's single combined field accepts either a username or an email —
+// deliberately just format-checked, not the full usernameSchema/emailSchema
+// pair (those are for the two-field signup case).
+const loginIdentifierSchema = (t) => ({
+  username: z
+    .string()
+    .min(1, t('common:auth.errors.usernameOrEmail'))
+    .refine(
+      (value) => regexUsername.test(value) || z.string().email().safeParse(value).success,
+      t('common:auth.errors.usernameOrEmail')
+    ),
+});
+
+// Deliberately lenient — existing accounts may have passwords that predate
+// the current strength rules (passwordSchema), so login only requires that
+// something was typed, not that it meets today's creation-time rules.
+const loginPasswordSchema = (t) => ({
+  password: z.string().min(1, t('common:auth.errors.passwordRequired')),
+});
+
 export {
   regexPassword,
   loginModel,
@@ -67,4 +87,6 @@ export {
   emailSchema,
   usernameOrEmailSchema,
   passwordSchema,
+  loginIdentifierSchema,
+  loginPasswordSchema,
 };

@@ -10,8 +10,8 @@ import {
   Button,
   Center,
   Checkbox,
+  Divider,
   Flex,
-  Heading,
   Input,
   Link,
   Modal,
@@ -29,6 +29,8 @@ import {
   usernameSchema,
   emailSchema,
   passwordSchema,
+  loginIdentifierSchema,
+  loginPasswordSchema,
 } from './account.helpers';
 
 interface LoginProps {
@@ -40,23 +42,48 @@ const Login = ({ isSubmitted, onSubmit }: LoginProps) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
-  const { handleSubmit, register } = useForm({
-    defaultValues: loginModel,
+  const tr = i18next.t;
+
+  // Password is deliberately just "non-empty" here, not the full
+  // passwordSchema strength check — existing accounts may have passwords
+  // that predate today's rules, and login shouldn't lock them out.
+  const schema = z.object({
+    ...loginIdentifierSchema(tr),
+    ...loginPasswordSchema(tr),
   });
+
+  const { formState, handleSubmit, register } = useForm({
+    defaultValues: loginModel,
+    mode: 'onChange',
+    resolver: zodResolver(schema),
+  });
+  const { errors, isDirty, isValid } = formState;
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Flex direction="column">
-        <FormField label={t('login.form.username.label')} required>
+        <FormField
+          errorMessage={errors.username?.message}
+          label={t('login.form.username.label')}
+          required
+        >
           <Input {...register('username')} />
         </FormField>
 
-        <FormField label={t('login.form.password.label')} required>
+        <FormField
+          errorMessage={errors.password?.message}
+          label={t('login.form.password.label')}
+          required
+        >
           <Input {...register('password')} type="password" />
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button loading={isSubmitted} type="submit">
+          <Button
+            disabled={!isDirty || !isValid}
+            loading={isSubmitted}
+            type="submit"
+          >
             {tc('actions.submit')}
           </Button>
         </Flex>
@@ -82,6 +109,7 @@ const Signup = ({
   const [termsChecked, setTermsChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [usernameUnique, setUsernameUnique] = useState(false);
+  const [emailUnique, setEmailUnique] = useState(false);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -97,9 +125,10 @@ const Signup = ({
 
   const { formState, handleSubmit, register, watch } = useForm({
     defaultValues: signupModel,
+    mode: 'onChange',
     resolver: zodResolver(schema),
   });
-  const { errors, isDirty, isSubmitting } = formState;
+  const { errors, isDirty, isSubmitting, isValid } = formState;
 
   const confirmModal = () => {
     setTermsChecked(true);
@@ -114,9 +143,27 @@ const Signup = ({
     setUsernameUnique(!usernameTaken);
   };
 
+  // Only pings the server once the field already looks like a real email —
+  // same guard pattern as username's length check above, just avoiding
+  // garbage-input round trips instead of a fixed length.
+  const checkIfEmailUnique = async (emailTyped: string) => {
+    if (!emailTyped || !z.string().email().safeParse(emailTyped).success) {
+      return;
+    }
+    const emailTaken = await call('isEmailUnique', emailTyped);
+    setEmailUnique(!emailTaken);
+  };
+
+  const usernameTyped = watch('username');
+  const emailTyped = watch('email');
+
   useEffect(() => {
-    checkIfUsernameUnique(watch('username'));
-  }, [watch('username')]);
+    checkIfUsernameUnique(usernameTyped);
+  }, [usernameTyped]);
+
+  useEffect(() => {
+    checkIfEmailUnique(emailTyped);
+  }, [emailTyped]);
 
   return (
     <>
@@ -126,7 +173,9 @@ const Signup = ({
             <FormField
               errorMessage={
                 errors.username?.message ||
-                (!usernameUnique && t('signup.form.username.errorNotUnique'))
+                (usernameTyped?.length > 3 &&
+                  !usernameUnique &&
+                  t('signup.form.username.errorNotUnique'))
               }
               helper={t('signup.form.username.helper')}
               label={t('signup.form.username.label')}
@@ -136,8 +185,13 @@ const Signup = ({
             </FormField>
 
             <FormField
-              errorMessage={errors.email?.message}
-              // isInvalid={errors.email}
+              errorMessage={
+                errors.email?.message ||
+                (emailTyped &&
+                  z.string().email().safeParse(emailTyped).success &&
+                  !emailUnique &&
+                  t('signup.form.email.errorNotUnique'))
+              }
               label={t('signup.form.email.label')}
               required
             >
@@ -193,8 +247,10 @@ const Signup = ({
               <Button
                 disabled={
                   !isDirty ||
+                  !isValid ||
                   (!termsChecked && !hideTermsCheck) ||
-                  !usernameUnique
+                  !usernameUnique ||
+                  !emailUnique
                 }
                 loading={isSubmitting}
                 type="submit"
@@ -244,7 +300,7 @@ const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onForgotPassword(data))}>
-      <Flex direction="column" gap="6">
+      <Flex direction="column" gap="4">
         <FormField
           errorMessage={errors.email?.message}
           // isInvalid={errors.email}
@@ -253,7 +309,7 @@ const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
           <Input {...register('email')} type="email" />
         </FormField>
 
-        <Flex justify="flex-end" py="4" w="100%">
+        <Flex justify="flex-end" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
@@ -338,11 +394,16 @@ const AuthContainer = ({
 
   if (mode === 'signup') {
     return (
-      <Box>
+      <Box my="6">
         <Signup termsHref={termsHref} onSubmit={onSignup} />
-        <Center>
+        <Divider my="6" />
+        <Center mb="4">
           <Text>{t('signup.labels.subtitle')}</Text>
-          <Button variant="outline" onClick={() => setMode('login')}>
+          <Button
+            variant="ghost"
+            css={{ ml: '4' }}
+            onClick={() => setMode('login')}
+          >
             {t('actions.login')}
           </Button>
         </Center>
@@ -352,8 +413,9 @@ const AuthContainer = ({
 
   if (mode === 'recover') {
     return (
-      <Box>
+      <Box my="6">
         <ForgotPassword onForgotPassword={onForgotPassword} />
+        <Divider my="6" />
         <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>
             {t('actions.login')}
@@ -368,8 +430,9 @@ const AuthContainer = ({
 
   if (mode === 'reset') {
     return (
-      <Box>
+      <Box my="6">
         <ResetPassword onResetPassword={onResetPassword} />
+        <Divider my="6" />
         <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>
             {t('actions.login')}
@@ -383,11 +446,12 @@ const AuthContainer = ({
   }
 
   return (
-    <Box>
+    <Box my="6">
       <Login isSubmitted={isSubmitted} onSubmit={onLogin} />
-      <Center mb="8">
+      <Divider my="6" />
+      <Center mb="4">
         <Text>{t('login.labels.subtitle')}</Text>
-        <Button variant="outline" onClick={() => setMode('signup')}>
+        <Button variant="ghost" ml="4" onClick={() => setMode('signup')}>
           {t('actions.signup')}
         </Button>
       </Center>

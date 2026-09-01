@@ -37,6 +37,7 @@ signup:
       errorNotUnique: The username typed is already taken. Please try another
     email:
       label: Email address
+      errorNotUnique: An account with this email address already exists
     password:
       label: Password
       helper: Minimum 8 characters, including at least one lowercase letter, one uppercase letter, and one number

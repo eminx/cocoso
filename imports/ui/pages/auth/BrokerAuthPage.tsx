@@ -143,7 +143,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   };
 
   return (
-    <Center mt="16" mb="8">
+    <Center my="8">
       <Box w="xs">
         {platform?.logo && (
           <Center p="4">
@@ -154,8 +154,8 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
         {resetDone ? (
           <Center>
             <Text textAlign="center">
-              Your password has been reset. You can return to the site you
-              were signing in from and sign in again.
+              Your password has been reset. You can return to the site you were
+              signing in from and sign in again.
             </Text>
           </Center>
         ) : (

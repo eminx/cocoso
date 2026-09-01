@@ -298,6 +298,7 @@ auth:
     email: Please enter a valid email address
     passwordMin: Password must be at least 8 characters long
     passwordRegex: Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters
+    passwordRequired: Please enter your password
     usernameOrEmail: Please enter your username or email address
 
 public:
