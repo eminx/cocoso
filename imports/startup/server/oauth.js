@@ -10,7 +10,7 @@ import AuthorizationCodes from '../../api/sso/authorizationCode';
 const CODE_TTL_MS = 60 * 1000;
 const BROKER_COOKIE_NAME = 'cocoso_broker_session';
 const BROKER_COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days, in seconds
-const MAX_BODY_BYTES = 1024 * 100; // 100kb, generous for a login form / token exchange
+const MAX_BODY_BYTES = 1024 * 100; // 100kb, generous for a login/register form
 
 function base64url(buffer) {
   return buffer.toString('base64url');
@@ -34,41 +34,26 @@ function readBody(req) {
   });
 }
 
-function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>"']/g, (c) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
-  );
+function oauthQueryString({ host, redirectUri, state, codeChallenge, codeChallengeMethod }) {
+  const params = new URLSearchParams({
+    client_id: host || '',
+    redirect_uri: redirectUri || '',
+    state: state || '',
+    code_challenge: codeChallenge || '',
+    code_challenge_method: codeChallengeMethod || 'S256',
+  });
+  return params.toString();
 }
 
-function renderLoginForm({ host, redirectUri, state, codeChallenge, codeChallengeMethod, error }) {
-  return `<!doctype html>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sign in</title>
-<style>
-  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 360px; margin: 80px auto; padding: 0 16px; color: #222; }
-  input { width: 100%; padding: 10px; margin-bottom: 12px; box-sizing: border-box; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
-  button { width: 100%; padding: 12px; font-size: 16px; border: none; border-radius: 4px; background: #222; color: #fff; cursor: pointer; }
-  .error { color: #c00; margin-bottom: 12px; font-size: 14px; }
-</style>
-</head>
-<body>
-  <h2>Sign in</h2>
-  ${error ? `<div class="error">${escapeHtml(error)}</div>` : ''}
-  <form method="POST" action="/oauth/authorize">
-    <input type="text" name="username" placeholder="Username or email" autofocus required autocomplete="username" />
-    <input type="password" name="password" placeholder="Password" required autocomplete="current-password" />
-    <input type="hidden" name="client_id" value="${escapeHtml(host)}" />
-    <input type="hidden" name="redirect_uri" value="${escapeHtml(redirectUri)}" />
-    <input type="hidden" name="state" value="${escapeHtml(state)}" />
-    <input type="hidden" name="code_challenge" value="${escapeHtml(codeChallenge)}" />
-    <input type="hidden" name="code_challenge_method" value="${escapeHtml(codeChallengeMethod)}" />
-    <button type="submit">Sign in</button>
-  </form>
-</body>
-</html>`;
+// Failures past this point in the flow (bad credentials, taken username)
+// bounce back to the real React login/register page with a short error
+// code — never back to an unvalidated redirect_uri, and never with a
+// hand-rolled HTML response.
+function redirectToBrokerForm(res, pathname, oauthFields, errorCode) {
+  const qs = oauthQueryString(oauthFields);
+  const errorPart = errorCode ? `&error=${encodeURIComponent(errorCode)}` : '';
+  res.writeHead(302, { Location: `${pathname}?${qs}${errorPart}` });
+  res.end();
 }
 
 async function findBrokerSessionUserId(req) {
@@ -137,6 +122,17 @@ async function mintCodeAndRedirect(res, { userId, host, redirectUri, state, code
   res.end();
 }
 
+// Shared tail for both login and registration success: mint the broker's
+// own "already signed in" cookie, then mint the one-time authorization
+// code and redirect back to the tenant.
+async function completeBrokerAuth(res, userId, oauthFields) {
+  const stampedToken = Accounts._generateStampedLoginToken();
+  await Accounts._insertLoginToken(userId, stampedToken);
+  setBrokerCookie(res, stampedToken.token);
+
+  await mintCodeAndRedirect(res, { userId, ...oauthFields });
+}
+
 async function handleAuthorizeGet(req, res, params) {
   const {
     // Wire format is OAuth2's "client_id" — but in this design it's always
@@ -169,21 +165,17 @@ async function handleAuthorizeGet(req, res, params) {
     return;
   }
 
+  const oauthFields = { host, redirectUri, state, codeChallenge, codeChallengeMethod };
+
   const userId = await findBrokerSessionUserId(req);
   if (userId) {
-    await mintCodeAndRedirect(res, {
-      userId,
-      host,
-      redirectUri,
-      state,
-      codeChallenge,
-      codeChallengeMethod,
-    });
+    await mintCodeAndRedirect(res, { userId, ...oauthFields });
     return;
   }
 
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.end(renderLoginForm({ host, redirectUri, state, codeChallenge, codeChallengeMethod }));
+  // No broker session yet — hand off to the real React login page
+  // (imports/ui/pages/auth/BrokerAuthPage.tsx), which posts back here.
+  redirectToBrokerForm(res, '/login', oauthFields);
 }
 
 async function handleAuthorizePost(req, res) {
@@ -198,6 +190,7 @@ async function handleAuthorizePost(req, res) {
     code_challenge: codeChallenge,
     code_challenge_method: codeChallengeMethod,
   } = params;
+  const oauthFields = { host, redirectUri, state, codeChallenge, codeChallengeMethod };
 
   const redirectHost = validateRedirect(host, redirectUri);
   const hostDoc = redirectHost ? await Hosts.findOneAsync({ host: redirectHost }) : null;
@@ -215,32 +208,57 @@ async function handleAuthorizePost(req, res) {
     : null;
 
   if (!user || checkResult?.error) {
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.end(
-      renderLoginForm({
-        host,
-        redirectUri,
-        state,
-        codeChallenge,
-        codeChallengeMethod,
-        error: 'Invalid username or password',
-      })
-    );
+    redirectToBrokerForm(res, '/login', oauthFields, 'invalid_credentials');
     return;
   }
 
-  const stampedToken = Accounts._generateStampedLoginToken();
-  await Accounts._insertLoginToken(user._id, stampedToken);
-  setBrokerCookie(res, stampedToken.token);
+  await completeBrokerAuth(res, user._id, oauthFields);
+}
 
-  await mintCodeAndRedirect(res, {
-    userId: user._id,
-    host,
-    redirectUri,
+async function handleRegisterPost(req, res) {
+  const rawBody = await readBody(req);
+  const params = Object.fromEntries(new URLSearchParams(rawBody));
+  const {
+    username,
+    email,
+    password,
+    client_id: host,
+    redirect_uri: redirectUri,
     state,
-    codeChallenge,
-    codeChallengeMethod,
-  });
+    code_challenge: codeChallenge,
+    code_challenge_method: codeChallengeMethod,
+  } = params;
+  const oauthFields = { host, redirectUri, state, codeChallenge, codeChallengeMethod };
+
+  const redirectHost = validateRedirect(host, redirectUri);
+  const hostDoc = redirectHost ? await Hosts.findOneAsync({ host: redirectHost }) : null;
+  if (!hostDoc) {
+    res.statusCode = 400;
+    res.end('Unknown client');
+    return;
+  }
+
+  if (!username || !email || !password) {
+    redirectToBrokerForm(res, '/register', oauthFields, 'missing_fields');
+    return;
+  }
+
+  const usernameTaken = await Accounts.findUserByUsername(username);
+  if (usernameTaken) {
+    redirectToBrokerForm(res, '/register', oauthFields, 'username_taken');
+    return;
+  }
+
+  let userId;
+  try {
+    userId = await Accounts.createUserAsync({ username, email, password });
+  } catch (error) {
+    console.error('[oauth] registration failed', error);
+    redirectToBrokerForm(res, '/register', oauthFields, 'registration_failed');
+    return;
+  }
+
+  await completeBrokerAuth(res, userId, oauthFields);
 }
 
 async function handleToken(req, res) {
@@ -325,11 +343,18 @@ Meteor.startup(() => {
         await handleAuthorizeGet(req, res, params);
       } else if (pathname === '/oauth/authorize' && req.method === 'POST') {
         await handleAuthorizePost(req, res);
+      } else if (pathname === '/oauth/register' && req.method === 'POST') {
+        await handleRegisterPost(req, res);
       } else if (pathname === '/oauth/token' && req.method === 'POST') {
         await handleToken(req, res);
       } else {
-        res.statusCode = 404;
-        res.end('Not found');
+        // Not an OAuth protocol endpoint — let it fall through to normal
+        // Meteor page/asset serving, so /login, /register, the client
+        // bundle, and DDP/sockjs all work on this domain too. The
+        // client boot sequence (imports/startup/client/index.jsx) and SSR
+        // (imports/startup/server/serverRenderer.js) are what keep this
+        // domain from ever rendering the full tenant app or SetupHome.
+        next();
       }
     } catch (error) {
       console.error('[oauth]', error);

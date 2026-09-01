@@ -17,6 +17,18 @@ let stitchesConfig = null;
 
 export default async function serverRenderer(sink) {
   const host = sink?.request?.headers?.['host'];
+
+  // The SSO broker domain has no Hosts doc and isn't a tenant site — skip
+  // the normal Hosts-driven render entirely and let the client bundle
+  // mount BrokerAuthPage (see imports/startup/client/index.jsx). Leaving
+  // #root empty here is fine: this is a low-traffic, JS-required page.
+  if (
+    Meteor.settings.public?.authDomain &&
+    host === Meteor.settings.public.authDomain
+  ) {
+    return;
+  }
+
   const Host = await Hosts.findOneAsync({ host });
   const allHosts = await Meteor.callAsync('getAllHosts');
   const platform = await Platform.findOneAsync();

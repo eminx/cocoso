@@ -12,7 +12,10 @@ import {
 
 import appRoutes from '/imports/appRoutes';
 import SetupHome from '/imports/ui/pages/setup';
+import BrokerAuthPage from '/imports/ui/pages/auth/BrokerAuthPage';
 import '/imports/startup/i18n';
+
+const publicSettings = Meteor.settings.public;
 
 // Meteor's `autoupdate` package tracks whether the server has a newer client
 // bundle than the one this tab is running (e.g. after a deploy). Lazily
@@ -46,6 +49,19 @@ function reloadOnNextIdleAfterUpdate(router) {
 
 onPageLoad(async () => {
   const container = document.getElementById('root');
+
+  // The SSO broker domain never has a Hosts doc (deliberately — it isn't a
+  // tenant site), so it's special-cased here rather than falling through to
+  // getCurrentHost/SetupHome below: it always renders the auth-only page,
+  // regardless of path, and never queries for a Host at all.
+  if (
+    publicSettings?.authDomain &&
+    window.location.host === publicSettings.authDomain
+  ) {
+    const root = createRoot(container);
+    root.render(<BrokerAuthPage />);
+    return;
+  }
 
   const currentHost = await Meteor.callAsync('getCurrentHost');
   const allHosts = await Meteor.callAsync('getAllHosts');

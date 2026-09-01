@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Link, useNavigate } from 'react-router';
+import { useAtomValue } from 'jotai';
 
-import { Box, Center, Link as CLink, Text } from '/imports/ui/core';
+import { Box, Center, Image, Link as CLink, Loader, Text } from '/imports/ui/core';
 import { call } from '../../../api/_utils/shared';
+import { platformAtom } from '/imports/state';
 
 const PENDING_KEY = 'cocoso_sso_pending';
 
 export default function SsoCallbackPage() {
   const navigate = useNavigate();
+  const platform = useAtomValue(platformAtom);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -53,7 +56,17 @@ export default function SsoCallbackPage() {
   if (!error) {
     return (
       <Center p="8">
-        <Text>Signing you in…</Text>
+        <Box w="xs" textAlign="center">
+          {platform?.logo && (
+            <Center p="4">
+              <Image w="120px" src={platform.logo} />
+            </Center>
+          )}
+          <Loader relative speed={1} />
+          <Text mt="4" color="gray.600">
+            Verifying your sign-in…
+          </Text>
+        </Box>
       </Center>
     );
   }
