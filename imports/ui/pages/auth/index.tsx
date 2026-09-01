@@ -294,9 +294,10 @@ const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
 
   const { formState, handleSubmit, register } = useForm({
     defaultValues: forgotPasswordModel,
+    mode: 'onChange',
     resolver: zodResolver(schema),
   });
-  const { errors, isDirty, isSubmitting } = formState;
+  const { errors, isDirty, isSubmitting, isValid } = formState;
 
   return (
     <form onSubmit={handleSubmit((data) => onForgotPassword(data))}>
@@ -310,7 +311,11 @@ const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
         </FormField>
 
         <Flex justify="flex-end" w="100%">
-          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+          <Button
+            isDisabled={!isDirty || !isValid}
+            isLoading={isSubmitting}
+            type="submit"
+          >
             {tc('actions.submit')}
           </Button>
         </Flex>
@@ -334,9 +339,10 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
 
   const { formState, handleSubmit, register } = useForm({
     defaultValues: resetPasswordModel,
+    mode: 'onChange',
     resolver: zodResolver(schema),
   });
-  const { errors, isDirty, isSubmitting } = formState;
+  const { errors, isDirty, isSubmitting, isValid } = formState;
 
   const passwordHelperText = t('signup.form.password.helper');
 
@@ -353,7 +359,11 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
         </FormField>
 
         <Flex justify="flex-end" w="100%">
-          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+          <Button
+            isDisabled={!isDirty || !isValid}
+            isLoading={isSubmitting}
+            type="submit"
+          >
             {tc('actions.submit')}
           </Button>
         </Flex>
