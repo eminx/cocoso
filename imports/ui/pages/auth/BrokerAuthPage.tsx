@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 
-import { Box, Center, Image, Text } from '/imports/ui/core';
+import { Box, Center, Image, Link as CLink, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { call } from '../../../api/_utils/shared';
 import { AuthContainer } from './index';
@@ -123,7 +124,11 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
 
   const handleForgotPassword = async (data: any) => {
     try {
-      await call('resetUserPassword', data.email);
+      // resetUserPassword's parameter is misleadingly named `email` but
+      // actually forwards straight into accounts-password's built-in
+      // 'forgotPassword' method, which requires { email } — not a bare
+      // string. Pass the whole form object through, not data.email.
+      await call('resetUserPassword', data);
       message.success('Check your email for a link to reset your password.');
     } catch (error: any) {
       message.error(
@@ -144,6 +149,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
 
   return (
     <Center my="8">
+      <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />
       <Box w="xs">
         {platform?.logo && (
           <Center p="4">
@@ -184,6 +190,19 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
               onResetPassword={handleResetPassword}
             />
           </Box>
+        )}
+
+        {oauthParams.client_id && (
+          <Center mt="6">
+            <CLink
+              as="a"
+              href={`https://${oauthParams.client_id}/`}
+              color="gray.500"
+              fontSize="sm"
+            >
+              ← Back to {oauthParams.client_id}
+            </CLink>
+          </Center>
         )}
 
         {/* Hidden native form: the real submission target for login and
