@@ -23,7 +23,7 @@ import {
 } from '/imports/state';
 
 import { loginWithPassword } from './functions';
-import { Login } from './index';
+// import { Login } from './index';
 import SsoButton from './SsoButton';
 import { clearEncryptionKey } from '/imports/utils/setupEncryption';
 
@@ -104,7 +104,11 @@ export default function LoginPage() {
               </Center>
             )}
 
-            <Heading mb="4" size="md" textAlign="center">
+            <Center py="6">
+              <SsoButton />
+            </Center>
+
+            {/* <Heading mb="4" size="md" textAlign="center">
               {t('login.labels.title')}
             </Heading>
 
@@ -119,11 +123,7 @@ export default function LoginPage() {
               </Text>
             </Center>
 
-            <Center py="6">
-              <SsoButton />
-            </Center>
-
-            {/* <Box
+            <Box
               bg="gray.50"
               mb="4"
               p="4"
