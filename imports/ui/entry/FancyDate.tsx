@@ -8,6 +8,7 @@ const fancyDateStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   fontFamily: `'Raleway', sans-serif`,
+  flexGrow: '1',
   fontWeight: 'bold',
   justifyContent: 'space-between',
   lineHeight: 0.9,
@@ -58,14 +59,18 @@ export interface FancyDateProps extends React.ComponentProps<typeof Flex> {
   resources?: Resource[];
 }
 
-export default function FancyDate({ occurrence, resources, ...otherProps }: FancyDateProps) {
+export default function FancyDate({
+  occurrence,
+  resources,
+  ...otherProps
+}: FancyDateProps) {
   if (!occurrence) {
     return null;
   }
   return (
     <>
       <Flex justify="space-between" mb="1" p="1" w="100%" {...otherProps}>
-        <div style={{ flexGrow: 1 }}>
+        <div>
           {occurrence.startDate === occurrence.endDate ? (
             <DateJust>{occurrence.startDate}</DateJust>
           ) : (
