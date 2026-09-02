@@ -406,7 +406,7 @@ const AuthContainer = ({
     return (
       <Box>
         <Signup termsHref={termsHref} onSubmit={onSignup} />
-        <Divider margin="2rem" />
+        <Divider my="6" />
         <Center>
           <Text>{t('signup.labels.subtitle')}</Text>
           <Button ml="2" variant="ghost" onClick={() => setMode('login')}>
@@ -421,7 +421,7 @@ const AuthContainer = ({
     return (
       <Box>
         <ForgotPassword onForgotPassword={onForgotPassword} />
-        <Divider margin="2rem" />
+        <Divider my="6" />
         <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>
             {t('actions.login')}
@@ -438,7 +438,7 @@ const AuthContainer = ({
     return (
       <Box>
         <ResetPassword onResetPassword={onResetPassword} />
-        <Divider margin="6" />
+        <Divider my="6" />
         <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>
             {t('actions.login')}
@@ -454,7 +454,7 @@ const AuthContainer = ({
   return (
     <Box>
       <Login isSubmitted={isSubmitted} onSubmit={onLogin} />
-      <Divider margin="6" />
+      <Divider my="6" />
       <Center>
         <Text>{t('login.labels.subtitle')}</Text>
         <Button ml="2" variant="ghost" onClick={() => setMode('signup')}>
