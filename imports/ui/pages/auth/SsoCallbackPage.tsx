@@ -2,8 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Link, useNavigate } from 'react-router';
 import { useAtomValue } from 'jotai';
+import { useTranslation } from 'react-i18next';
 
-import { Box, Center, Image, Link as CLink, Loader, Text } from '/imports/ui/core';
+import {
+  Box,
+  Center,
+  Image,
+  Link as CLink,
+  Loader,
+  Text,
+} from '/imports/ui/core';
 import { call } from '../../../api/_utils/shared';
 import { platformAtom } from '/imports/state';
 
@@ -12,6 +20,7 @@ const PENDING_KEY = 'cocoso_sso_pending';
 export default function SsoCallbackPage() {
   const navigate = useNavigate();
   const platform = useAtomValue(platformAtom);
+  const [t] = useTranslation('accounts');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,13 +33,13 @@ export default function SsoCallbackPage() {
       sessionStorage.removeItem(PENDING_KEY);
 
       if (!code || !state || !pendingRaw) {
-        setError('Missing sign-in information. Please try again.');
+        setError(t('sso.callback.errors.missing'));
         return;
       }
 
       const pending = JSON.parse(pendingRaw);
       if (pending.state !== state) {
-        setError('Sign-in could not be verified. Please try again.');
+        setError(t('sso.callback.errors.stateMismatch'));
         return;
       }
 
@@ -42,13 +51,13 @@ export default function SsoCallbackPage() {
 
         Meteor.loginWithToken(token, (loginError?: Error) => {
           if (loginError) {
-            setError(loginError.message || 'Sign-in failed. Please try again.');
+            setError(loginError.message || t('sso.callback.errors.failed'));
             return;
           }
           navigate('/login');
         });
       } catch (exchangeError: any) {
-        setError(exchangeError.reason || 'Sign-in failed. Please try again.');
+        setError(exchangeError.reason || t('sso.callback.errors.failed'));
       }
     })();
   }, []);
@@ -56,16 +65,14 @@ export default function SsoCallbackPage() {
   if (!error) {
     return (
       <Center p="8">
+        <Loader speed={1} />
         <Box w="xs" textAlign="center">
           {platform?.logo && (
-            <Center p="4">
+            <Center p="4" mb="4">
               <Image w="120px" src={platform.logo} />
             </Center>
           )}
-          <Loader relative speed={1} />
-          <Text mt="4" color="gray.600">
-            Verifying your sign-in…
-          </Text>
+          <Text color="gray.600">{t('sso.callback.verifying')}</Text>
         </Box>
       </Center>
     );
@@ -77,7 +84,7 @@ export default function SsoCallbackPage() {
         <Text mb="4">{error}</Text>
         <Link to="/login">
           <CLink as="span" color="blue.500">
-            Back to sign in
+            {t('sso.callback.backToSignIn')}
           </CLink>
         </Link>
       </Box>

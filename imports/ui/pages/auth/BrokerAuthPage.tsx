@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Center, Image, Link as CLink, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
@@ -49,20 +50,16 @@ function resolveModeAndToken() {
 // to /oauth/authorize or /oauth/register fails — see handleAuthorizePost/
 // handleRegisterPost. Read once on load, same as oauthParams/mode below,
 // since a failure always arrives via a fresh page load (full navigation).
-const ERROR_MESSAGES: Record<string, string> = {
-  invalid_credentials: 'Incorrect username/email or password.',
-  missing_fields: 'Please fill in all fields.',
-  username_taken: 'That username is already taken.',
-  registration_failed:
-    'Could not create your account — that email or username may already be in use.',
+// Maps the wire error code to its translation key under sso.broker.errors.
+const ERROR_CODE_KEYS: Record<string, string> = {
+  invalid_credentials: 'invalidCredentials',
+  missing_fields: 'missingFields',
+  username_taken: 'usernameTaken',
+  registration_failed: 'registrationFailed',
 };
 
-function readErrorMessage(): string | null {
-  const code = new URLSearchParams(window.location.search).get('error');
-  if (!code) {
-    return null;
-  }
-  return ERROR_MESSAGES[code] || 'Something went wrong. Please try again.';
+function readErrorCode(): string | null {
+  return new URLSearchParams(window.location.search).get('error');
 }
 
 interface BrokerAuthPageProps {
@@ -70,12 +67,16 @@ interface BrokerAuthPageProps {
 }
 
 export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
+  const [t] = useTranslation('accounts');
   const [submitting, setSubmitting] = useState(false);
   const [resetDone, setResetDone] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [oauthParams] = useState(readOAuthParams);
   const [{ mode: initialMode, token }] = useState(resolveModeAndToken);
-  const [errorMessage] = useState(readErrorMessage);
+  const [errorCode] = useState(readErrorCode);
+  const errorMessage = errorCode
+    ? t(`sso.broker.errors.${ERROR_CODE_KEYS[errorCode] || 'generic'}`)
+    : null;
 
   // A reset-password link arrives standalone, potentially hours later on
   // any device — there's no active OAuth round-trip to return to, so the
@@ -129,10 +130,10 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
       // 'forgotPassword' method, which requires { email } — not a bare
       // string. Pass the whole form object through, not data.email.
       await call('resetUserPassword', data);
-      message.success('Check your email for a link to reset your password.');
+      message.success(t('sso.broker.forgotSuccess'));
     } catch (error: any) {
       message.error(
-        error?.error?.reason || error?.reason || 'Something went wrong.'
+        error?.error?.reason || error?.reason || t('sso.broker.errors.generic')
       );
     }
   };
@@ -140,10 +141,10 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   const handleResetPassword = async (data: any) => {
     try {
       await call('resetPassword', token, data.password);
-      message.success('Your password has been reset.');
+      message.success(t('sso.broker.resetSuccess'));
       setResetDone(true);
     } catch (error: any) {
-      message.error(error?.reason || 'Something went wrong.');
+      message.error(error?.reason || t('sso.broker.errors.generic'));
     }
   };
 
@@ -159,10 +160,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
 
         {resetDone ? (
           <Center>
-            <Text textAlign="center">
-              Your password has been reset. You can return to the site you were
-              signing in from and sign in again.
-            </Text>
+            <Text textAlign="center">{t('sso.broker.resetDone')}</Text>
           </Center>
         ) : (
           <Box
@@ -200,7 +198,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
               color="gray.500"
               fontSize="sm"
             >
-              ← Back to {oauthParams.client_id}
+              ← {t('sso.backToSite', { host: oauthParams.client_id })}
             </CLink>
           </Center>
         )}

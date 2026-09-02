@@ -159,3 +159,24 @@ delete:
   successTitle: Account Deletion Scheduled
   successBody: Your account is scheduled to be deleted in a minute. Thank you for being with us. We're sorry to see you go.
   successRedirect: Redirecting to homepage...
+
+sso:
+  button: Sign in with {{ platform }}
+  backToSite: Back to {{ host }}
+  callback:
+    verifying: Verifying your sign-in…
+    backToSignIn: Back to sign in
+    errors:
+      missing: Missing sign-in information. Please try again.
+      stateMismatch: Sign-in could not be verified. Please try again.
+      failed: Sign-in failed. Please try again.
+  broker:
+    resetDone: Your password has been reset. You can return to the site you were signing in from and sign in again.
+    forgotSuccess: Check your email for a link to reset your password.
+    resetSuccess: Your password has been reset.
+    errors:
+      invalidCredentials: Incorrect username/email or password.
+      missingFields: Please fill in all fields.
+      usernameTaken: That username is already taken.
+      registrationFailed: Could not create your account — that email or username may already be in use.
+      generic: Something went wrong. Please try again.

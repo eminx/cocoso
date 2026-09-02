@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useAtomValue } from 'jotai';
+import { useTranslation } from 'react-i18next';
 
 import { Button, Divider } from '/imports/ui/core';
 import { platformAtom } from '/imports/state';
@@ -14,11 +15,16 @@ function base64UrlEncode(bytes: Uint8Array): string {
   bytes.forEach((byte) => {
     binary += String.fromCharCode(byte);
   });
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return btoa(binary)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
 }
 
 async function startSso(authDomain: string) {
-  const codeVerifier = base64UrlEncode(crypto.getRandomValues(new Uint8Array(32)));
+  const codeVerifier = base64UrlEncode(
+    crypto.getRandomValues(new Uint8Array(32))
+  );
   const challengeDigest = await crypto.subtle.digest(
     'SHA-256',
     new TextEncoder().encode(codeVerifier)
@@ -42,6 +48,7 @@ async function startSso(authDomain: string) {
 
 export default function SsoButton() {
   const platform = useAtomValue(platformAtom);
+  const [t] = useTranslation('accounts');
   const authDomain = publicSettings?.authDomain;
 
   if (!authDomain) {
@@ -51,8 +58,13 @@ export default function SsoButton() {
   return (
     <>
       <Divider my="4" />
-      <Button variant="outline" w="100%" onClick={() => startSso(authDomain)}>
-        Sign in with {platform?.name || publicSettings?.name}
+      <Button
+        size="lg"
+        variant="solid"
+        css={{ width: '100%' }}
+        onClick={() => startSso(authDomain)}
+      >
+        {t('sso.button', { platform: platform?.name || publicSettings?.name })}
       </Button>
     </>
   );
