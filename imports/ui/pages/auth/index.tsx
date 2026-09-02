@@ -348,7 +348,7 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
-      <Flex direction="column" gap="2">
+      <Flex direction="column" gap="2" maxW="420px">
         <FormField
           errorMessage={errors.password?.message}
           helper={passwordHelperText}
