@@ -201,15 +201,23 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
       <Box w="xs">
         {platform?.logo && (
           <Center p="4" mb="8">
-            <Image h="120px" src={platform.logo} />
+            <Image h="120px" w="auto" src={platform.logo} />
           </Center>
         )}
 
         {isConfirm ? (
           <Box textAlign="center">
-            <Center mb="12">
+            <Center
+              mb="12"
+              css={{
+                backgroundColor: '#f8fafc',
+                padding: '1rem',
+                borderRadius: '1rem',
+              }}
+            >
               <Flex align="center" gap="4">
                 <Avatar
+                  borderRadius="50%"
                   name={confirmIdentity.username}
                   size="xl"
                   src={confirmIdentity.avatar || undefined}

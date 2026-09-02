@@ -70,7 +70,7 @@ export default function SsoCallbackPage({
       <Box w="xs" textAlign="center">
         {platform?.logo && (
           <Center p="4" mb="4">
-            <Image w="120px" src={platform.logo} />
+            <Image h="120px" w="auto" fit="contain" src={platform.logo} />
           </Center>
         )}
         <Text color="gray.600">{t('sso.callback.verifying')}</Text>
