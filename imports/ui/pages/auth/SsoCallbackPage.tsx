@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Meteor } from 'meteor/meteor';
+import React from 'react';
+// import { Meteor } from 'meteor/meteor';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
@@ -22,7 +22,7 @@ export default function SsoCallbackPage({
 }) {
   const navigate = useNavigate();
   const [t] = useTranslation('accounts');
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
 
   // useEffect(() => {
   //   (async () => {
