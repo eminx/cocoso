@@ -12,8 +12,8 @@ import {
   Loader,
   Text,
 } from '/imports/ui/core';
-import { call } from '../../../api/_utils/shared';
 import { platformAtom } from '/imports/state';
+import { call } from '/imports/api/_utils/shared';
 
 const PENDING_KEY = 'cocoso_sso_pending';
 
@@ -81,11 +81,9 @@ export default function SsoCallbackPage() {
   return (
     <Center p="8">
       <Box textAlign="center">
-        <Text mb="4">{error}</Text>
+        <Text css={{ marginBottom: '1rem' }}>{error}</Text>
         <Link to="/login">
-          <CLink as="span" color="blue.500">
-            {t('sso.callback.backToSignIn')}
-          </CLink>
+          <CLink color="blue.500">{t('sso.callback.backToSignIn')}</CLink>
         </Link>
       </Box>
     </Center>

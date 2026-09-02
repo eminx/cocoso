@@ -319,25 +319,17 @@ async function handleConfirmPost(req, res) {
     return;
   }
 
+  // Sliding expiration: every confirmed use re-extends the broker session
+  // by another BROKER_COOKIE_MAX_AGE, same as the password-login and
+  // registration paths already do via completeBrokerAuth. Without this,
+  // the "remember me" cookie only ever counted down from its very first
+  // login and was never refreshed by later confirmations.
+  const existingToken = cookie.parse(req.headers.cookie || '')[BROKER_COOKIE_NAME];
+  if (existingToken) {
+    setBrokerCookie(res, existingToken);
+  }
+
   await mintCodeAndRedirect(res, { userId, ...oauthFields });
-}
-
-// "Use a different account": forgets this browser's broker session only.
-// Any other site's already-active tenant login is untouched — those are
-// separate sessions by design.
-async function handleSwitchAccountPost(req, res) {
-  const rawBody = await readBody(req);
-  const params = Object.fromEntries(new URLSearchParams(rawBody));
-  const oauthFields = {
-    host: params.client_id,
-    redirectUri: params.redirect_uri,
-    state: params.state,
-    codeChallenge: params.code_challenge,
-    codeChallengeMethod: params.code_challenge_method,
-  };
-
-  clearBrokerCookie(res);
-  redirectToBrokerForm(res, '/login', oauthFields);
 }
 
 // "Log out of all sessions": invalidates every login token this account
@@ -452,8 +444,6 @@ Meteor.startup(() => {
         await handleRegisterPost(req, res);
       } else if (pathname === '/oauth/confirm' && req.method === 'POST') {
         await handleConfirmPost(req, res);
-      } else if (pathname === '/oauth/switch-account' && req.method === 'POST') {
-        await handleSwitchAccountPost(req, res);
       } else if (pathname === '/oauth/logout-everywhere' && req.method === 'POST') {
         await handleLogoutEverywherePost(req, res);
       } else if (pathname === '/oauth/token' && req.method === 'POST') {

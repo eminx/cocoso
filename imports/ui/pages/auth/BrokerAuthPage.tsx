@@ -15,6 +15,7 @@ import {
 import { message } from '/imports/ui/generic/message';
 import { call } from '../../../api/_utils/shared';
 import { AuthContainer } from './index';
+import { C } from 'react-router/dist/development/index-react-server-client-BSxMvS7Z';
 
 interface OAuthParams {
   client_id: string;
@@ -139,8 +140,13 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
     submitNative('/oauth/confirm', { ...oauthParams });
   };
 
+  // Purely a navigation — doesn't touch the broker cookie at all. If the
+  // person actually completes a login as someone else, that new login
+  // naturally replaces the cookie (see completeBrokerAuth in oauth.js).
+  // If they abandon it, the original recognized account is untouched.
   const handleUseDifferentAccount = () => {
-    submitNative('/oauth/switch-account', { ...oauthParams });
+    const qs = new URLSearchParams(oauthParams as any).toString();
+    window.location.href = `/login?${qs}`;
   };
 
   const handleLogoutEverywhere = () => {
@@ -195,32 +201,47 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
       <Box w="xs">
         {platform?.logo && (
           <Center p="4" mb="8">
-            <Image w="240px" src={platform.logo} />
+            <Image w="240px" maxH="120px" src={platform.logo} />
           </Center>
         )}
 
         {isConfirm ? (
           <Box textAlign="center">
             <Center mb="4">
-              <Avatar
-                name={confirmIdentity.username}
-                src={confirmIdentity.avatar || undefined}
-                size="xl"
-              />
+              <Flex>
+                <Avatar
+                  name={confirmIdentity.username}
+                  size="xl"
+                  src={confirmIdentity.avatar || undefined}
+                />
+                <Box>
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    css={{ marginBottom: '1rem' }}
+                  >
+                    {t('sso.confirm.continueAs', {
+                      username: confirmIdentity.username,
+                    })}
+                  </Text>
+                  <br />
+                  <Button loading={submitting} onClick={handleConfirmContinue}>
+                    {t('sso.confirm.continue')}
+                  </Button>
+                </Box>
+              </Flex>
             </Center>
-            <Text mb="6" fontSize="lg" fontWeight="bold">
-              {t('sso.confirm.continueAs', {
-                username: confirmIdentity.username,
-              })}
-            </Text>
-            <Flex direction="column" gap="2">
-              <Button loading={submitting} onClick={handleConfirmContinue}>
-                {t('sso.confirm.continue')}
-              </Button>
-              <Button variant="outline" onClick={handleUseDifferentAccount}>
+
+            <Flex align="center" justify="center" direction="column" gap="2">
+              <Button
+                my="2"
+                variant="outline"
+                onClick={handleUseDifferentAccount}
+              >
                 {t('sso.confirm.differentAccount')}
               </Button>
               <Button
+                my="2"
                 variant="ghost"
                 css={{ width: '100%' }}
                 onClick={() => {
@@ -234,6 +255,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
             <Center mt="8">
               <Box textAlign="center">
                 <Button
+                  my="2"
                   variant="ghost"
                   colorScheme="red"
                   size="sm"
@@ -241,7 +263,8 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
                 >
                   {t('sso.confirm.logoutEverywhere')}
                 </Button>
-                <Text fontSize="xs" color="gray.500" mt="1">
+                <br />
+                <Text color="gray.600" fontSize="xs">
                   {t('sso.confirm.logoutEverywhereHelper')}
                 </Text>
               </Box>
