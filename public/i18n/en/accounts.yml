@@ -180,3 +180,10 @@ sso:
       usernameTaken: That username is already taken.
       registrationFailed: Could not create your account — that email or username may already be in use.
       generic: Something went wrong. Please try again.
+  confirm:
+    continueAs: Continue as {{ username }}?
+    continue: Continue
+    differentAccount: Use a different account
+    createAccount: Create a new account
+    logoutEverywhere: Log out of all sessions
+    logoutEverywhereHelper: This signs you out of every site and device using this account, not just this one.

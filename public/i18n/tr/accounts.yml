@@ -179,3 +179,10 @@ sso:
       usernameTaken: Bu kullanıcı adı zaten alınmış.
       registrationFailed: Hesabın oluşturulamadı — bu e-posta veya kullanıcı adı zaten kullanılıyor olabilir.
       generic: Bir şeyler ters gitti. Lütfen tekrar deneyin.
+  confirm:
+    continueAs: "{{ username }} olarak devam et?"
+    continue: Devam et
+    differentAccount: Farklı bir hesap kullan
+    createAccount: Yeni bir hesap oluştur
+    logoutEverywhere: Tüm oturumlardan çıkış yap
+    logoutEverywhereHelper: Bu, sadece bu siteyi değil, bu hesabı kullanan tüm siteleri ve cihazları oturumdan çıkarır.

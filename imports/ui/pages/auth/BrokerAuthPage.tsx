@@ -2,7 +2,16 @@ import React, { useRef, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Center, Image, Link as CLink, Text } from '/imports/ui/core';
+import {
+  Avatar,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Image,
+  Link as CLink,
+  Text,
+} from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
 import { call } from '../../../api/_utils/shared';
 import { AuthContainer } from './index';
@@ -46,6 +55,21 @@ function resolveModeAndToken() {
   return { mode: 'login' as const, token: undefined };
 }
 
+function isConfirmPath() {
+  return window.location.pathname.startsWith('/confirm');
+}
+
+// username/avatar here are set by oauth.js's handleAuthorizeGet purely for
+// display on the "Continue as X?" screen — /oauth/confirm re-derives the
+// actual identity from the broker cookie itself, never trusts these.
+function readConfirmIdentity() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    username: params.get('username') || '',
+    avatar: params.get('avatar') || '',
+  };
+}
+
 // Populated by oauth.js's redirectToBrokerForm() when a native form POST
 // to /oauth/authorize or /oauth/register fails — see handleAuthorizePost/
 // handleRegisterPost. Read once on load, same as oauthParams/mode below,
@@ -73,6 +97,8 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const [oauthParams] = useState(readOAuthParams);
   const [{ mode: initialMode, token }] = useState(resolveModeAndToken);
+  const [isConfirm] = useState(isConfirmPath);
+  const [confirmIdentity] = useState(readConfirmIdentity);
   const [errorCode] = useState(readErrorCode);
   const errorMessage = errorCode
     ? t(`sso.broker.errors.${ERROR_CODE_KEYS[errorCode] || 'generic'}`)
@@ -104,6 +130,21 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
     });
     setSubmitting(true);
     form.submit();
+  };
+
+  // These three don't need username/email/password — the hidden form's
+  // extra empty fields are harmless, the server handlers only read the
+  // oauth.* fields for these three actions.
+  const handleConfirmContinue = () => {
+    submitNative('/oauth/confirm', { ...oauthParams });
+  };
+
+  const handleUseDifferentAccount = () => {
+    submitNative('/oauth/switch-account', { ...oauthParams });
+  };
+
+  const handleLogoutEverywhere = () => {
+    submitNative('/oauth/logout-everywhere', { ...oauthParams });
   };
 
   const handleLogin = (data: any) => {
@@ -158,7 +199,55 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
           </Center>
         )}
 
-        {resetDone ? (
+        {isConfirm ? (
+          <Box textAlign="center">
+            <Center mb="4">
+              <Avatar
+                name={confirmIdentity.username}
+                src={confirmIdentity.avatar || undefined}
+                size="xl"
+              />
+            </Center>
+            <Text mb="6" fontSize="lg" fontWeight="bold">
+              {t('sso.confirm.continueAs', {
+                username: confirmIdentity.username,
+              })}
+            </Text>
+            <Flex direction="column" gap="2">
+              <Button loading={submitting} onClick={handleConfirmContinue}>
+                {t('sso.confirm.continue')}
+              </Button>
+              <Button variant="outline" onClick={handleUseDifferentAccount}>
+                {t('sso.confirm.differentAccount')}
+              </Button>
+              <Button
+                variant="ghost"
+                css={{ width: '100%' }}
+                onClick={() => {
+                  const qs = new URLSearchParams(oauthParams as any).toString();
+                  window.location.href = `/register?${qs}`;
+                }}
+              >
+                {t('sso.confirm.createAccount')}
+              </Button>
+            </Flex>
+            <Center mt="8">
+              <Box textAlign="center">
+                <Button
+                  variant="ghost"
+                  colorScheme="red"
+                  size="sm"
+                  onClick={handleLogoutEverywhere}
+                >
+                  {t('sso.confirm.logoutEverywhere')}
+                </Button>
+                <Text fontSize="xs" color="gray.500" mt="1">
+                  {t('sso.confirm.logoutEverywhereHelper')}
+                </Text>
+              </Box>
+            </Center>
+          </Box>
+        ) : resetDone ? (
           <Center>
             <Text textAlign="center">{t('sso.broker.resetDone')}</Text>
           </Center>

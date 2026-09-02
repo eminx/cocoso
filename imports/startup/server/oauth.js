@@ -83,6 +83,18 @@ function setBrokerCookie(res, token) {
   res.setHeader('Set-Cookie', existing ? [].concat(existing, serialized) : serialized);
 }
 
+function clearBrokerCookie(res) {
+  const existing = res.getHeader('Set-Cookie');
+  const serialized = cookie.serialize(BROKER_COOKIE_NAME, '', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
+    maxAge: 0,
+    path: '/',
+  });
+  res.setHeader('Set-Cookie', existing ? [].concat(existing, serialized) : serialized);
+}
+
 // client_id has no separate registry in this design — it's always just the
 // tenant's own host string, validated below against a real Hosts doc.
 function validateRedirect(host, redirectUri) {
@@ -169,7 +181,21 @@ async function handleAuthorizeGet(req, res, params) {
 
   const userId = await findBrokerSessionUserId(req);
   if (userId) {
-    await mintCodeAndRedirect(res, { userId, ...oauthFields });
+    // Recognized, but never auto-sign-in silently — send to the account
+    // chooser so the person actually confirms it's them (or picks
+    // something else) before a code is ever minted. username/avatar here
+    // are for display only; /oauth/confirm re-derives identity from the
+    // cookie itself rather than trusting anything from this URL.
+    const user = await Meteor.users.findOneAsync(userId, {
+      fields: { username: 1, 'avatar.src': 1 },
+    });
+    const qs = oauthQueryString(oauthFields);
+    const identityQs = new URLSearchParams({
+      username: user?.username || '',
+      avatar: user?.avatar?.src || '',
+    }).toString();
+    res.writeHead(302, { Location: `/confirm?${qs}&${identityQs}` });
+    res.end();
     return;
   }
 
@@ -261,6 +287,85 @@ async function handleRegisterPost(req, res) {
   await completeBrokerAuth(res, userId, oauthFields);
 }
 
+// The "Continue as X?" confirmation step. Deliberately re-derives the
+// user from the broker cookie rather than trusting anything the client
+// sent — the account-chooser screen's displayed username is cosmetic
+// only, this is where identity is actually established.
+async function handleConfirmPost(req, res) {
+  const rawBody = await readBody(req);
+  const params = Object.fromEntries(new URLSearchParams(rawBody));
+  const {
+    client_id: host,
+    redirect_uri: redirectUri,
+    state,
+    code_challenge: codeChallenge,
+    code_challenge_method: codeChallengeMethod,
+  } = params;
+  const oauthFields = { host, redirectUri, state, codeChallenge, codeChallengeMethod };
+
+  const redirectHost = validateRedirect(host, redirectUri);
+  const hostDoc = redirectHost ? await Hosts.findOneAsync({ host: redirectHost }) : null;
+  if (!hostDoc) {
+    res.statusCode = 400;
+    res.end('Unknown client');
+    return;
+  }
+
+  const userId = await findBrokerSessionUserId(req);
+  if (!userId) {
+    // Cookie expired/was cleared between the confirm page loading and this
+    // click — fall back to a normal login instead of erroring.
+    redirectToBrokerForm(res, '/login', oauthFields);
+    return;
+  }
+
+  await mintCodeAndRedirect(res, { userId, ...oauthFields });
+}
+
+// "Use a different account": forgets this browser's broker session only.
+// Any other site's already-active tenant login is untouched — those are
+// separate sessions by design.
+async function handleSwitchAccountPost(req, res) {
+  const rawBody = await readBody(req);
+  const params = Object.fromEntries(new URLSearchParams(rawBody));
+  const oauthFields = {
+    host: params.client_id,
+    redirectUri: params.redirect_uri,
+    state: params.state,
+    codeChallenge: params.code_challenge,
+    codeChallengeMethod: params.code_challenge_method,
+  };
+
+  clearBrokerCookie(res);
+  redirectToBrokerForm(res, '/login', oauthFields);
+}
+
+// "Log out of all sessions": invalidates every login token this account
+// has anywhere — every tenant site, every device — not just the broker's
+// own cookie. A real "sign out everywhere," so it's an explicit, separate
+// action from "use a different account" above.
+async function handleLogoutEverywherePost(req, res) {
+  const rawBody = await readBody(req);
+  const params = Object.fromEntries(new URLSearchParams(rawBody));
+  const oauthFields = {
+    host: params.client_id,
+    redirectUri: params.redirect_uri,
+    state: params.state,
+    codeChallenge: params.code_challenge,
+    codeChallengeMethod: params.code_challenge_method,
+  };
+
+  const userId = await findBrokerSessionUserId(req);
+  if (userId) {
+    await Meteor.users.updateAsync(userId, {
+      $set: { 'services.resume.loginTokens': [] },
+    });
+  }
+
+  clearBrokerCookie(res);
+  redirectToBrokerForm(res, '/login', oauthFields);
+}
+
 async function handleToken(req, res) {
   const rawBody = await readBody(req);
   let payload;
@@ -345,6 +450,12 @@ Meteor.startup(() => {
         await handleAuthorizePost(req, res);
       } else if (pathname === '/oauth/register' && req.method === 'POST') {
         await handleRegisterPost(req, res);
+      } else if (pathname === '/oauth/confirm' && req.method === 'POST') {
+        await handleConfirmPost(req, res);
+      } else if (pathname === '/oauth/switch-account' && req.method === 'POST') {
+        await handleSwitchAccountPost(req, res);
+      } else if (pathname === '/oauth/logout-everywhere' && req.method === 'POST') {
+        await handleLogoutEverywherePost(req, res);
       } else if (pathname === '/oauth/token' && req.method === 'POST') {
         await handleToken(req, res);
       } else {

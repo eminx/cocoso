@@ -179,3 +179,10 @@ sso:
       usernameTaken: Det användarnamnet är redan upptaget.
       registrationFailed: Kunde inte skapa ditt konto — den e-postadressen eller användarnamnet kan redan vara i bruk.
       generic: Något gick fel. Försök igen.
+  confirm:
+    continueAs: Fortsätt som {{ username }}?
+    continue: Fortsätt
+    differentAccount: Använd ett annat konto
+    createAccount: Skapa ett nytt konto
+    logoutEverywhere: Logga ut från alla sessioner
+    logoutEverywhereHelper: Detta loggar ut dig från alla webbplatser och enheter som använder detta konto, inte bara den här.
