@@ -119,17 +119,20 @@ export default function LoginPage() {
               </Text>
             </Center>
 
-            <Box
+            <Center py="6">
+              <SsoButton />
+            </Center>
+
+            {/* <Box
               bg="gray.50"
               mb="4"
-              p="6"
+              p="4"
               css={{
                 border: '1px solid',
                 borderColor: 'var(--cocoso-colors-gray-300)',
               }}
             >
               <Login isSubmitted={submitted} onSubmit={handleSubmit} />
-              <SsoButton />
             </Box>
             <Center>
               <Text textAlign="center">
@@ -145,7 +148,7 @@ export default function LoginPage() {
                   </CLink>
                 </Link>
               </Text>
-            </Center>
+            </Center> */}
           </Box>
         </Center>
       </Modal>
