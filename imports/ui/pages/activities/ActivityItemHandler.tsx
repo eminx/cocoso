@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import loadable from '@loadable/component';
-import { useLoaderData, useNavigate, useSearchParams } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import EditEntryHandler from '/imports/ui/forms/EditEntryHandler.loadable';
 
-const ActivityInteractionHandler = loadable(() =>
-  import('./components/ActivityInteractionHandler')
+const ActivityInteractionHandler = loadable(
+  () => import('./components/ActivityInteractionHandler')
 );
-const EditCalendarActivity = loadable(() =>
-  import('../calendar/EditCalendarActivity')
+const EditCalendarActivity = loadable(
+  () => import('../calendar/EditCalendarActivity')
 );
 const EditPublicActivity = loadable(() => import('./EditPublicActivity'));
 
@@ -23,7 +23,6 @@ export default function ActivityItemHandler({ Host }) {
   const setActivity = useSetAtom(activityAtom);
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
-  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (activity?.isGroupMeeting) {
