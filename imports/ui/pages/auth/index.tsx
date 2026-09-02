@@ -61,7 +61,7 @@ const Login = ({ isSubmitted, onSubmit }: LoginProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Flex direction="column" gap="2">
+      <Flex direction="column" gap="0">
         <FormField
           errorMessage={errors.username?.message}
           label={t('login.form.username.label')}
@@ -169,7 +169,7 @@ const Signup = ({
     <>
       <Center>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-          <Flex direction="column" gap="2" maxW="420px">
+          <Flex direction="column" gap="0" maxW="420px">
             <FormField
               errorMessage={
                 errors.username?.message ||
@@ -301,7 +301,7 @@ const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onForgotPassword(data))}>
-      <Flex direction="column" gap="2">
+      <Flex direction="column" gap="0">
         <FormField
           errorMessage={errors.email?.message}
           // isInvalid={errors.email}
@@ -348,7 +348,7 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
-      <Flex direction="column" gap="2" maxW="420px">
+      <Flex direction="column" gap="0" maxW="420px">
         <FormField
           errorMessage={errors.password?.message}
           helper={passwordHelperText}
@@ -404,10 +404,10 @@ const AuthContainer = ({
 
   if (mode === 'signup') {
     return (
-      <Box my="6">
+      <Box>
         <Signup termsHref={termsHref} onSubmit={onSignup} />
-        <Divider />
-        <Center mt="6">
+        <Divider margin="2rem" />
+        <Center>
           <Text>{t('signup.labels.subtitle')}</Text>
           <Button ml="2" variant="ghost" onClick={() => setMode('login')}>
             {t('actions.login')}
@@ -419,10 +419,10 @@ const AuthContainer = ({
 
   if (mode === 'recover') {
     return (
-      <Box my="6">
+      <Box>
         <ForgotPassword onForgotPassword={onForgotPassword} />
-        <Divider />
-        <Flex justify="space-around" mt="6">
+        <Divider margin="2rem" />
+        <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>
             {t('actions.login')}
           </Button>
@@ -436,10 +436,10 @@ const AuthContainer = ({
 
   if (mode === 'reset') {
     return (
-      <Box my="6">
+      <Box>
         <ResetPassword onResetPassword={onResetPassword} />
-        <Divider />
-        <Flex justify="space-around" mt="6">
+        <Divider margin="6" />
+        <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>
             {t('actions.login')}
           </Button>
@@ -452,10 +452,10 @@ const AuthContainer = ({
   }
 
   return (
-    <Box my="6">
+    <Box>
       <Login isSubmitted={isSubmitted} onSubmit={onLogin} />
-      <Divider />
-      <Center mt="6">
+      <Divider margin="6" />
+      <Center>
         <Text>{t('login.labels.subtitle')}</Text>
         <Button ml="2" variant="ghost" onClick={() => setMode('signup')}>
           {t('actions.signup')}

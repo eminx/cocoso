@@ -153,7 +153,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
       <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />
       <Box w="xs">
         {platform?.logo && (
-          <Center p="4">
+          <Center p="4" mb="8">
             <Image w="240px" src={platform.logo} />
           </Center>
         )}
@@ -193,10 +193,9 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
         {oauthParams.client_id && (
           <Center mt="6">
             <CLink
-              as="a"
-              href={`https://${oauthParams.client_id}/`}
-              color="gray.500"
+              color="gray.700"
               fontSize="sm"
+              href={`https://${oauthParams.client_id}/`}
             >
               ← {t('sso.backToSite', { host: oauthParams.client_id })}
             </CLink>
