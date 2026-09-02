@@ -24,60 +24,60 @@ export default function SsoCallbackPage({
   const [t] = useTranslation('accounts');
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get('code');
-      const state = params.get('state');
+  // useEffect(() => {
+  //   (async () => {
+  //     const params = new URLSearchParams(window.location.search);
+  //     const code = params.get('code');
+  //     const state = params.get('state');
 
-      const pendingRaw = sessionStorage.getItem(PENDING_KEY);
-      sessionStorage.removeItem(PENDING_KEY);
+  //     const pendingRaw = sessionStorage.getItem(PENDING_KEY);
+  //     sessionStorage.removeItem(PENDING_KEY);
 
-      if (!code || !state || !pendingRaw) {
-        setError(t('sso.callback.errors.missing'));
-        return;
-      }
+  //     if (!code || !state || !pendingRaw) {
+  //       setError(t('sso.callback.errors.missing'));
+  //       return;
+  //     }
 
-      const pending = JSON.parse(pendingRaw);
-      if (pending.state !== state) {
-        setError(t('sso.callback.errors.stateMismatch'));
-        return;
-      }
+  //     const pending = JSON.parse(pendingRaw);
+  //     if (pending.state !== state) {
+  //       setError(t('sso.callback.errors.stateMismatch'));
+  //       return;
+  //     }
 
-      try {
-        const { token } = await call<{ token: string }>('exchangeSsoCode', {
-          code,
-          codeVerifier: pending.codeVerifier,
-        });
+  //     try {
+  //       const { token } = await call<{ token: string }>('exchangeSsoCode', {
+  //         code,
+  //         codeVerifier: pending.codeVerifier,
+  //       });
 
-        Meteor.loginWithToken(token, (loginError?: Error) => {
-          if (loginError) {
-            setError(loginError.message || t('sso.callback.errors.failed'));
-            return;
-          }
-          navigate('/login');
-        });
-      } catch (exchangeError: any) {
-        setError(exchangeError.reason || t('sso.callback.errors.failed'));
-      }
-    })();
-  }, []);
+  //       Meteor.loginWithToken(token, (loginError?: Error) => {
+  //         if (loginError) {
+  //           setError(loginError.message || t('sso.callback.errors.failed'));
+  //           return;
+  //         }
+  //         navigate('/login');
+  //       });
+  //     } catch (exchangeError: any) {
+  //       setError(exchangeError.reason || t('sso.callback.errors.failed'));
+  //     }
+  //   })();
+  // }, []);
 
-  if (!error) {
-    return (
-      <Center p="8">
-        <Loader speed={1} />
-        <Box w="xs" textAlign="center">
-          {platform?.logo && (
-            <Center p="4" mb="4">
-              <Image w="120px" src={platform.logo} />
-            </Center>
-          )}
-          <Text color="gray.600">{t('sso.callback.verifying')}</Text>
-        </Box>
-      </Center>
-    );
-  }
+  // if (!error) {
+  return (
+    <Center p="8">
+      <Loader speed={1} />
+      <Box w="xs" textAlign="center">
+        {platform?.logo && (
+          <Center p="4" mb="4">
+            <Image w="120px" src={platform.logo} />
+          </Center>
+        )}
+        <Text color="gray.600">{t('sso.callback.verifying')}</Text>
+      </Box>
+    </Center>
+  );
+  // }
 
   return (
     <Center p="8">
