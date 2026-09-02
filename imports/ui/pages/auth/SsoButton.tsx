@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Divider } from '/imports/ui/core';
+import { Box, Button, Divider } from '/imports/ui/core';
 import { platformAtom } from '/imports/state';
 
 const publicSettings = Meteor.settings.public;
@@ -56,7 +56,7 @@ export default function SsoButton() {
   }
 
   return (
-    <>
+    <Box>
       <Divider my="4" />
       <Button
         size="lg"
@@ -66,6 +66,6 @@ export default function SsoButton() {
       >
         {t('sso.button', { platform: platform?.name || publicSettings?.name })}
       </Button>
-    </>
+    </Box>
   );
 }
