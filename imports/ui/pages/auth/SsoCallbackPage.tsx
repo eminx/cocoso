@@ -64,6 +64,9 @@ export default function SsoCallbackPage({
   // }, []);
 
   // if (!error) {
+
+  console.log('platform:', platform);
+
   return (
     <Center p="8">
       <Loader speed={1} />
