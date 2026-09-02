@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate, useRevalidator, useSearchParams } from 'react-router';
 
 import { initialLoader, loaderAtom } from '/imports/ui/utils/loaderHandler';
 
@@ -17,8 +17,9 @@ export default function SuccessRedirector({
   ping,
   children,
 }: SuccessRedirectorProps) {
-  const [loaders, setLoaders] = useAtom(loaderAtom);
+  const [, setLoaders] = useAtom(loaderAtom);
   const navigate = useNavigate();
+  const { revalidate } = useRevalidator();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSuccess = () => {
@@ -28,6 +29,7 @@ export default function SuccessRedirector({
       }, 1200);
 
     if (forEdit) {
+      revalidate();
       resetLoaders();
       setTimeout(() => {
         setSearchParams({ edit: 'false' });
