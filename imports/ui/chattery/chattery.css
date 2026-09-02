@@ -62,6 +62,8 @@
 
 .talk-bubble {
   border-radius: var(--cocoso-border-radius);
+  border-style: solid;
+  border-width: 1px;
   display: inline-block;
   height: auto;
   margin: 10px 20px;
@@ -71,16 +73,15 @@
   width: 80%;
 }
 .talk-bubble.right-in {
-  background-color: var(--cocoso-colors-theme-500);
+  background-color: var(--cocoso-colors-bluegray-100);
+  border-color: var(--cocoso-colors-bluegray-50);
   border-top-right-radius: 0;
-  color: #fff;
+  color: var(--cocoso-colors-theme-900);
   float: right;
 }
 .talk-bubble.left-in {
   background-color: #fff;
-  border-color: var(--cocoso-colors-theme-500);
-  border-width: 1px;
-  border-style: solid;
+  border-color: var(--cocoso-colors-gray-50);
   border-top-left-radius: 0;
   color: #222;
 }
