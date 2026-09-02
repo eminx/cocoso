@@ -158,3 +158,24 @@ delete:
   successTitle: Hesap Silme Planlandı
   successBody: Hesabın bir dakika içinde silinmek üzere planlandı. Bizim için burada olduğun için teşekkürler. Gitmeni görmek bizi üzüyor.
   successRedirect: Ana sayfaya yönlendiriliyorsun...
+
+sso:
+  button: "{{ platform }} ile giriş yap"
+  backToSite: "{{ host }} adresine dön"
+  callback:
+    verifying: Girişin doğrulanıyor…
+    backToSignIn: Girişe dön
+    errors:
+      missing: Giriş bilgileri eksik. Lütfen tekrar deneyin.
+      stateMismatch: Giriş doğrulanamadı. Lütfen tekrar deneyin.
+      failed: Giriş başarısız oldu. Lütfen tekrar deneyin.
+  broker:
+    resetDone: Şifren yenilendi. Giriş yapmaya çalıştığın siteye dönüp tekrar giriş yapabilirsin.
+    forgotSuccess: Şifreni yenilemek için e-postana gönderilen bağlantıyı kontrol et.
+    resetSuccess: Şifren yenilendi.
+    errors:
+      invalidCredentials: Kullanıcı adı/e-posta veya şifre hatalı.
+      missingFields: Lütfen tüm alanları doldurun.
+      usernameTaken: Bu kullanıcı adı zaten alınmış.
+      registrationFailed: Hesabın oluşturulamadı — bu e-posta veya kullanıcı adı zaten kullanılıyor olabilir.
+      generic: Bir şeyler ters gitti. Lütfen tekrar deneyin.

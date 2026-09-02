@@ -158,3 +158,24 @@ delete:
   successTitle: Konto radering schemalagd
   successBody: Ditt konto är schemalagt att raderas om en minut. Tack för att du varit med oss. Vi är ledsna att se dig gå.
   successRedirect: Omdirigerar till startsidan...
+
+sso:
+  button: Logga in med {{ platform }}
+  backToSite: Tillbaka till {{ host }}
+  callback:
+    verifying: Verifierar din inloggning…
+    backToSignIn: Tillbaka till inloggning
+    errors:
+      missing: Inloggningsinformation saknas. Försök igen.
+      stateMismatch: Inloggningen kunde inte verifieras. Försök igen.
+      failed: Inloggningen misslyckades. Försök igen.
+  broker:
+    resetDone: Ditt lösenord har återställts. Du kan gå tillbaka till webbplatsen du loggade in från och logga in igen.
+    forgotSuccess: Kolla din e-post för en länk för att återställa ditt lösenord.
+    resetSuccess: Ditt lösenord har återställts.
+    errors:
+      invalidCredentials: Fel användarnamn/e-post eller lösenord.
+      missingFields: Vänligen fyll i alla fält.
+      usernameTaken: Det användarnamnet är redan upptaget.
+      registrationFailed: Kunde inte skapa ditt konto — den e-postadressen eller användarnamnet kan redan vara i bruk.
+      generic: Något gick fel. Försök igen.
