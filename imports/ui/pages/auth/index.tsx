@@ -243,7 +243,7 @@ const Signup = ({
               </FormField>
             )}
 
-            <Flex justify="flex-end" py="4" w="100%">
+            <Flex justify="flex-end" pt="4" w="100%">
               <Button
                 disabled={
                   !isDirty ||
