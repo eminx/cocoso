@@ -201,47 +201,37 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
       <Box w="xs">
         {platform?.logo && (
           <Center p="4" mb="8">
-            <Image w="240px" maxH="120px" src={platform.logo} />
+            <Image h="120px" src={platform.logo} />
           </Center>
         )}
 
         {isConfirm ? (
           <Box textAlign="center">
-            <Center mb="4">
-              <Flex>
+            <Center mb="12">
+              <Flex align="center" gap="4">
                 <Avatar
                   name={confirmIdentity.username}
                   size="xl"
                   src={confirmIdentity.avatar || undefined}
                 />
-                <Box>
-                  <Text
-                    fontSize="lg"
-                    fontWeight="bold"
-                    css={{ marginBottom: '1rem' }}
-                  >
+                <Flex direction="column" align="center" gap="2">
+                  <Text fontSize="lg" fontWeight="bold">
                     {t('sso.confirm.continueAs', {
                       username: confirmIdentity.username,
                     })}
                   </Text>
-                  <br />
                   <Button loading={submitting} onClick={handleConfirmContinue}>
                     {t('sso.confirm.continue')}
                   </Button>
-                </Box>
+                </Flex>
               </Flex>
             </Center>
 
-            <Flex align="center" justify="center" direction="column" gap="2">
-              <Button
-                my="2"
-                variant="outline"
-                onClick={handleUseDifferentAccount}
-              >
+            <Flex align="center" direction="column" gap="4" justify="center">
+              <Button variant="outline" onClick={handleUseDifferentAccount}>
                 {t('sso.confirm.differentAccount')}
               </Button>
               <Button
-                my="2"
                 variant="ghost"
                 css={{ width: '100%' }}
                 onClick={() => {
@@ -253,7 +243,12 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
               </Button>
             </Flex>
             <Center mt="8">
-              <Box textAlign="center">
+              <Flex
+                align="center"
+                direction="column"
+                justify="center"
+                textAlign="center"
+              >
                 <Button
                   my="2"
                   variant="ghost"
@@ -263,11 +258,10 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
                 >
                   {t('sso.confirm.logoutEverywhere')}
                 </Button>
-                <br />
                 <Text color="gray.600" fontSize="xs">
                   {t('sso.confirm.logoutEverywhereHelper')}
                 </Text>
-              </Box>
+              </Flex>
             </Center>
           </Box>
         ) : resetDone ? (
