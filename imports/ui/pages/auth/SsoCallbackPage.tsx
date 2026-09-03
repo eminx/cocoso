@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Link, useNavigate } from 'react-router';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import {
   Box,
   Center,
+  Flex,
   Image,
   Link as CLink,
   Loader,
@@ -73,7 +74,11 @@ export default function SsoCallbackPage({
               <Image h="120px" w="auto" fit="contain" src={platform.logo} />
             </Center>
           )}
-          <Text color="gray.600">{t('sso.callback.verifying')}</Text>
+          <Text color="gray.600">
+            <Trans i18nKey="accounts.sso.callback.verifying">
+              Verifying your sign-in…
+            </Trans>
+          </Text>
         </Box>
       </Center>
     );
@@ -81,12 +86,16 @@ export default function SsoCallbackPage({
 
   return (
     <Center p="8">
-      <Box textAlign="center">
+      <Flex direction="column" align="center" textAlign="center">
         <Text css={{ marginBottom: '1rem' }}>{error}</Text>
         <Link to="/login">
-          <CLink color="blue.500">{t('sso.callback.backToSignIn')}</CLink>
+          <CLink color="blue.500">
+            <Trans i18nKey="accounts.sso.callback.backToSignIn">
+              Back to sign in
+            </Trans>
+          </CLink>
         </Link>
-      </Box>
+      </Flex>
     </Center>
   );
 }
