@@ -23,7 +23,7 @@ import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
 import UserProfileHandler from '/imports/ui/pages/profile/UserProfileHandler';
 import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
 import CommunityListHandler from '/imports/ui/pages/hosts/CommunityListHandler';
-
+import SsoCallbackPage from '/imports/ui/pages/auth/SsoCallbackPage';
 import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
 // Route loaders re-run on every URL change by default, including search-param-only
@@ -50,9 +50,7 @@ function revalidateOn(relevantParams = []) {
 
 const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
 const SignupPage = loadable(() => import('/imports/ui/pages/auth/SignupPage'));
-const SsoCallbackPage = loadable(() =>
-  import('/imports/ui/pages/auth/SsoCallbackPage')
-);
+
 const ForgotPasswordPage = loadable(() =>
   import('/imports/ui/pages/auth/ForgotPasswordPage')
 );
