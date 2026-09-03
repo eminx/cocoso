@@ -32,13 +32,18 @@ import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 // open/close. `revalidateOn` skips revalidation when only the search params change,
 // unless one of the given `relevantParams` (params the loader actually reads) changed.
 function revalidateOn(relevantParams = []) {
-  return function shouldRevalidate({ currentUrl, nextUrl, defaultShouldRevalidate }) {
+  return function shouldRevalidate({
+    currentUrl,
+    nextUrl,
+    defaultShouldRevalidate,
+  }) {
     if (currentUrl.pathname !== nextUrl.pathname) {
       return defaultShouldRevalidate;
     }
 
     return relevantParams.some(
-      (key) => currentUrl.searchParams.get(key) !== nextUrl.searchParams.get(key)
+      (key) =>
+        currentUrl.searchParams.get(key) !== nextUrl.searchParams.get(key)
     );
   };
 }
@@ -127,9 +132,7 @@ const DirectMessagesInbox = loadable(() =>
 const DirectMessageThread = loadable(() =>
   import('/imports/ui/pages/messages/DirectMessageThread')
 );
-const Reports = loadable(() =>
-  import('/imports/ui/pages/admin/Reports')
-);
+const Reports = loadable(() => import('/imports/ui/pages/admin/Reports'));
 
 const EditProfile = loadable(() =>
   import('/imports/ui/pages/profile/EditProfile')
@@ -614,10 +617,6 @@ export default function appRoutes(props) {
           element: createRouteElement(SignupPage, props),
         },
         {
-          path: 'sso-callback',
-          element: createRouteElement(SsoCallbackPage, props),
-        },
-        {
           path: 'forgot-password',
           element: createRouteElement(ForgotPasswordPage, props),
         },
@@ -651,6 +650,10 @@ export default function appRoutes(props) {
           path: 'superadmin',
           element: createRouteElement(AdminContainer, props),
           children: Meteor.isServer ? null : [...getSuperAdminRoutes(props)],
+        },
+        {
+          path: 'sso-callback',
+          element: createRouteElement(SsoCallbackPage, props),
         },
         {
           path: 'not-found',
