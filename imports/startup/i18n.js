@@ -37,10 +37,21 @@ const defaultLang = 'en';
 //   'resources',
 // ];
 
-const path = '/i18n/{{lng}}/{{ns}}.yml';
-const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
-
 const isServer = Meteor.isServer;
+
+const path = '/i18n/{{lng}}/{{ns}}.yml';
+const cdnLoadPath = cdnserver ? cdnserver + path : null;
+// Node's fetch() requires an absolute URL — a bare relative loadPath (fine
+// client-side, where it resolves against the page's own origin) throws
+// "Failed to parse URL" server-side, and i18next silently swallows that,
+// leaving every resource bundle empty in every language. ROOT_URL is always
+// set for a running Meteor server, so use it as the base there instead.
+const loadPath =
+  Meteor.isProduction && cdnLoadPath
+    ? cdnLoadPath
+    : isServer
+      ? `${(process.env.ROOT_URL || '').replace(/\/$/, '')}${path}`
+      : path;
 
 const options = {
   backend: {
@@ -65,7 +76,12 @@ const options = {
   ns: ['common', 'accounts'],
   preload: ['en'],
   react: {
-    useSuspense: true,
+    // renderToString (imports/startup/server/serverRenderer.js) can't
+    // support real Suspense — a boundary that hasn't resolved synchronously
+    // just errors out server-side. Keep Suspense only on the client (where
+    // it fixes the raw-key flash); server keeps the old synchronous
+    // fallback-to-key behavior instead of ever suspending.
+    useSuspense: !isServer,
   },
   supportedLngs: allLangs.map((l) => l.value),
 };
