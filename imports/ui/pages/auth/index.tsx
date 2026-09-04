@@ -455,19 +455,19 @@ const AuthContainer = ({
     <Box>
       <Login isSubmitted={isSubmitted} onSubmit={onLogin} />
       <Divider my="6" />
-      <Center>
+      <Center mb="6">
         <Text>{t('login.labels.subtitle')}</Text>
         <Button ml="2" variant="ghost" onClick={() => setMode('signup')}>
           {t('actions.signup')}
         </Button>
       </Center>
-      <Center mt="2">
-        <Box>
+      <Center>
+        <Flex align="center" direction="column">
           <Text>{t('actions.forgot')}</Text>
           <Button ml="2" variant="ghost" onClick={() => setMode('recover')}>
             {t('actions.reset')}
           </Button>
-        </Box>
+        </Flex>
       </Center>
     </Box>
   );
