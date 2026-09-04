@@ -173,11 +173,18 @@ sso:
     resetDone: Şifren yenilendi. Giriş yapmaya çalıştığın siteye dönüp tekrar giriş yapabilirsin.
     forgotSuccess: Şifreni yenilemek için e-postana gönderilen bağlantıyı kontrol et.
     resetSuccess: Şifren yenilendi.
+    magicLinkPrompt: Bunun yerine bana bir giriş bağlantısı gönder
+    magicLinkEmailLabel: E-posta adresi
+    magicLinkSend: Bağlantı gönder
+    magicLinkBack: Şifreyle girişe dön
+    magicLinkSent: Giriş yapmak için e-postana gönderilen bağlantıyı kontrol et.
     errors:
       invalidCredentials: Kullanıcı adı/e-posta veya şifre hatalı.
       missingFields: Lütfen tüm alanları doldurun.
       usernameTaken: Bu kullanıcı adı zaten alınmış.
       registrationFailed: Hesabın oluşturulamadı — bu e-posta veya kullanıcı adı zaten kullanılıyor olabilir.
+      magicLinkInvalid: Bu bağlantının süresi doldu ya da zaten kullanıldı. Lütfen yeni bir bağlantı iste.
+      invalidUsername: Lütfen en az 4 karakterli, yalnızca küçük harf ve rakamlardan oluşan bir kullanıcı adı seç.
       generic: Bir şeyler ters gitti. Lütfen tekrar deneyin.
   confirm:
     continueAs: "{{ username }} olarak devam et?"
@@ -186,3 +193,5 @@ sso:
     createAccount: Yeni bir hesap oluştur
     logoutEverywhere: Tüm oturumlardan çıkış yap
     logoutEverywhereHelper: Bu, sadece bu siteyi değil, bu hesabı kullanan tüm siteleri ve cihazları oturumdan çıkarır.
+    magicLinkNewAccount: Hoş geldin! Girişi tamamlamak için kullanıcı adını seç.
+    magicLinkUsernameLabel: Kullanıcı adı

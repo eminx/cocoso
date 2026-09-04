@@ -9,13 +9,14 @@ import {
   Center,
   Flex,
   Image,
+  Input,
   Link as CLink,
   Text,
 } from '/imports/ui/core';
+import FormField from '/imports/ui/forms/FormField';
 import { message } from '/imports/ui/generic/message';
 import { call } from '../../../api/_utils/shared';
 import { AuthContainer } from './index';
-import { C } from 'react-router/dist/development/index-react-server-client-BSxMvS7Z';
 
 interface OAuthParams {
   client_id: string;
@@ -71,6 +72,22 @@ function readConfirmIdentity() {
   };
 }
 
+function isMagicLinkConfirmPath() {
+  return window.location.pathname.startsWith('/magic-link-confirm');
+}
+
+// Set by oauth.js's handleMagicLinkGet (and, on a rejected submission,
+// redirectToMagicLinkConfirm) — token is re-validated server-side on
+// submit, username here is just a display/edit seed, never trusted as-is.
+function readMagicLinkIdentity() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    token: params.get('token') || '',
+    username: params.get('username') || '',
+    isNew: params.get('isNew') === 'true',
+  };
+}
+
 // Populated by oauth.js's redirectToBrokerForm() when a native form POST
 // to /oauth/authorize or /oauth/register fails — see handleAuthorizePost/
 // handleRegisterPost. Read once on load, same as oauthParams/mode below,
@@ -81,6 +98,8 @@ const ERROR_CODE_KEYS: Record<string, string> = {
   missing_fields: 'missingFields',
   username_taken: 'usernameTaken',
   registration_failed: 'registrationFailed',
+  magic_link_invalid: 'magicLinkInvalid',
+  invalid_username: 'invalidUsername',
 };
 
 function readErrorCode(): string | null {
@@ -100,6 +119,14 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   const [{ mode: initialMode, token }] = useState(resolveModeAndToken);
   const [isConfirm] = useState(isConfirmPath);
   const [confirmIdentity] = useState(readConfirmIdentity);
+  const [isMagicLinkConfirm] = useState(isMagicLinkConfirmPath);
+  const [magicLinkIdentity] = useState(readMagicLinkIdentity);
+  const [magicLinkUsername, setMagicLinkUsername] = useState(
+    magicLinkIdentity.username
+  );
+  const [showMagicLinkRequest, setShowMagicLinkRequest] = useState(false);
+  const [magicLinkEmail, setMagicLinkEmail] = useState('');
+  const [magicLinkRequesting, setMagicLinkRequesting] = useState(false);
   const [errorCode] = useState(readErrorCode);
   const errorMessage = errorCode
     ? t(`sso.broker.errors.${ERROR_CODE_KEYS[errorCode] || 'generic'}`)
@@ -151,6 +178,36 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
 
   const handleLogoutEverywhere = () => {
     submitNative('/oauth/logout-everywhere', { ...oauthParams });
+  };
+
+  // Just a DDP call, not submitNative — no cookie/redirect handoff happens
+  // until the emailed link is actually clicked, so there's nothing here
+  // that needs a native form POST (mirrors handleForgotPassword below).
+  const handleRequestMagicLink = async () => {
+    if (!magicLinkEmail) {
+      return;
+    }
+    setMagicLinkRequesting(true);
+    try {
+      await call('requestMagicLink', { email: magicLinkEmail, ...oauthParams });
+      message.success(t('sso.broker.magicLinkSent'));
+      setShowMagicLinkRequest(false);
+      setMagicLinkEmail('');
+    } catch (error: any) {
+      message.error(error?.reason || t('sso.broker.errors.generic'));
+    } finally {
+      setMagicLinkRequesting(false);
+    }
+  };
+
+  // This one does need submitNative — completing it sets the broker cookie
+  // and redirects back to the tenant, same as any other successful login.
+  const handleMagicLinkConfirmContinue = () => {
+    submitNative('/oauth/magic-link/confirm', {
+      token: magicLinkIdentity.token,
+      username: magicLinkUsername,
+      ...oauthParams,
+    });
   };
 
   const handleLogin = (data: any) => {
@@ -272,6 +329,56 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
               </Flex>
             </Center>
           </Box>
+        ) : isMagicLinkConfirm ? (
+          <Box textAlign="center">
+            <Center
+              mb="6"
+              css={{
+                backgroundColor: '#f8fafc',
+                padding: '1rem',
+                borderRadius: '1rem',
+              }}
+            >
+              <Flex align="center" direction="column" gap="4">
+                <Avatar
+                  borderRadius="50%"
+                  name={magicLinkUsername || magicLinkIdentity.username}
+                  size="xl"
+                />
+                {magicLinkIdentity.isNew ? (
+                  <>
+                    <Text fontSize="lg" fontWeight="bold">
+                      {t('sso.confirm.magicLinkNewAccount')}
+                    </Text>
+                    <FormField label={t('sso.confirm.magicLinkUsernameLabel')}>
+                      <Input
+                        value={magicLinkUsername}
+                        onChange={(e) => setMagicLinkUsername(e.target.value)}
+                      />
+                    </FormField>
+                  </>
+                ) : (
+                  <Text fontSize="lg" fontWeight="bold">
+                    {t('sso.confirm.continueAs', {
+                      username: magicLinkIdentity.username,
+                    })}
+                  </Text>
+                )}
+                {errorMessage && (
+                  <Text color="red.500" fontSize="sm">
+                    {errorMessage}
+                  </Text>
+                )}
+                <Button
+                  loading={submitting}
+                  disabled={magicLinkIdentity.isNew && magicLinkUsername.length < 4}
+                  onClick={handleMagicLinkConfirmContinue}
+                >
+                  {t('sso.confirm.continue')}
+                </Button>
+              </Flex>
+            </Center>
+          </Box>
         ) : resetDone ? (
           <Center>
             <Text textAlign="center">{t('sso.broker.resetDone')}</Text>
@@ -292,15 +399,56 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
                 </Text>
               </Center>
             )}
-            <AuthContainer
-              initialMode={initialMode}
-              isSubmitted={submitting}
-              termsHref={termsHref}
-              onLogin={handleLogin}
-              onSignup={handleSignup}
-              onForgotPassword={handleForgotPassword}
-              onResetPassword={handleResetPassword}
-            />
+            {showMagicLinkRequest ? (
+              <Flex direction="column" gap="2">
+                <FormField label={t('sso.broker.magicLinkEmailLabel')}>
+                  <Input
+                    type="email"
+                    value={magicLinkEmail}
+                    onChange={(e) => setMagicLinkEmail(e.target.value)}
+                  />
+                </FormField>
+                <Flex justify="flex-end" py="4" w="100%">
+                  <Button
+                    loading={magicLinkRequesting}
+                    disabled={!magicLinkEmail}
+                    onClick={handleRequestMagicLink}
+                  >
+                    {t('sso.broker.magicLinkSend')}
+                  </Button>
+                </Flex>
+                <Center>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowMagicLinkRequest(false)}
+                  >
+                    {t('sso.broker.magicLinkBack')}
+                  </Button>
+                </Center>
+              </Flex>
+            ) : (
+              <>
+                <AuthContainer
+                  initialMode={initialMode}
+                  isSubmitted={submitting}
+                  termsHref={termsHref}
+                  onLogin={handleLogin}
+                  onSignup={handleSignup}
+                  onForgotPassword={handleForgotPassword}
+                  onResetPassword={handleResetPassword}
+                />
+                <Center mt="4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowMagicLinkRequest(true)}
+                  >
+                    {t('sso.broker.magicLinkPrompt')}
+                  </Button>
+                </Center>
+              </>
+            )}
           </Box>
         )}
 
@@ -322,6 +470,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
           <input name="username" type="text" readOnly />
           <input name="email" type="email" readOnly />
           <input name="password" type="password" readOnly />
+          <input name="token" type="hidden" readOnly />
           <input name="client_id" type="hidden" readOnly />
           <input name="redirect_uri" type="hidden" readOnly />
           <input name="state" type="hidden" readOnly />

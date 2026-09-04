@@ -370,5 +370,43 @@ const getWelcomeEmailBody = (
     `;
 };
 
-export { getWelcomeEmailBody };
+// Deliberately simple — unlike getWelcomeEmailBody this isn't sent on behalf
+// of a specific host (it comes from the broker, which isn't host-branded),
+// so there's no logo/address/theming to pull in.
+const getMagicLinkEmailBody = (link: string): string => {
+  return `<!doctype html>
+  <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,sans-serif;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:32px 16px;">
+        <tr>
+          <td align="center">
+            <table role="presentation" width="100%" style="max-width:420px;background:#ffffff;border-radius:8px;padding:32px;">
+              <tr>
+                <td style="text-align:center;">
+                  <h2 style="margin:0 0 16px;color:#222;">Sign in</h2>
+                  <p style="margin:0 0 24px;color:#555;font-size:15px;line-height:1.5;">
+                    Click the button below to sign in. This link expires in 15 minutes and can only be used once.
+                  </p>
+                  <a href="${link}" style="display:inline-block;padding:12px 28px;background:#222;color:#ffffff;text-decoration:none;border-radius:4px;font-weight:bold;">
+                    Sign in
+                  </a>
+                  <p style="margin:24px 0 0;color:#999;font-size:12px;">
+                    If you didn't request this, you can safely ignore this email.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+  </html>
+    `;
+};
+
+export { getWelcomeEmailBody, getMagicLinkEmailBody };
 export type { CurrentHost, HostSettings };

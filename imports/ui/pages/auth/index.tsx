@@ -462,7 +462,7 @@ const AuthContainer = ({
         </Button>
       </Center>
       <Center>
-        <Flex align="center" direction="column">
+        <Flex align="center" direction="column" gap="1">
           <Text>{t('actions.forgot')}</Text>
           <Button ml="2" variant="ghost" onClick={() => setMode('recover')}>
             {t('actions.reset')}

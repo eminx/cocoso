@@ -173,11 +173,18 @@ sso:
     resetDone: Ditt lösenord har återställts. Du kan gå tillbaka till webbplatsen du loggade in från och logga in igen.
     forgotSuccess: Kolla din e-post för en länk för att återställa ditt lösenord.
     resetSuccess: Ditt lösenord har återställts.
+    magicLinkPrompt: Skicka mig en inloggningslänk istället
+    magicLinkEmailLabel: E-postadress
+    magicLinkSend: Skicka länk
+    magicLinkBack: Tillbaka till lösenordsinloggning
+    magicLinkSent: Kolla din e-post för en länk för att logga in.
     errors:
       invalidCredentials: Fel användarnamn/e-post eller lösenord.
       missingFields: Vänligen fyll i alla fält.
       usernameTaken: Det användarnamnet är redan upptaget.
       registrationFailed: Kunde inte skapa ditt konto — den e-postadressen eller användarnamnet kan redan vara i bruk.
+      magicLinkInvalid: Länken har gått ut eller redan använts. Begär en ny länk.
+      invalidUsername: Välj ett användarnamn med minst 4 tecken, endast gemener och siffror.
       generic: Något gick fel. Försök igen.
   confirm:
     continueAs: Fortsätt som {{ username }}?
@@ -186,3 +193,5 @@ sso:
     createAccount: Skapa ett nytt konto
     logoutEverywhere: Logga ut från alla sessioner
     logoutEverywhereHelper: Detta loggar ut dig från alla webbplatser och enheter som använder detta konto, inte bara den här.
+    magicLinkNewAccount: Välkommen! Välj ditt användarnamn för att slutföra inloggningen.
+    magicLinkUsernameLabel: Användarnamn

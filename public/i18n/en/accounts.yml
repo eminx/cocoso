@@ -174,11 +174,18 @@ sso:
     resetDone: Your password has been reset. You can return to the site you were signing in from and sign in again.
     forgotSuccess: Check your email for a link to reset your password.
     resetSuccess: Your password has been reset.
+    magicLinkPrompt: Email me a sign-in link instead
+    magicLinkEmailLabel: Email address
+    magicLinkSend: Send link
+    magicLinkBack: Back to password sign-in
+    magicLinkSent: Check your email for a link to sign in.
     errors:
       invalidCredentials: Incorrect username/email or password.
       missingFields: Please fill in all fields.
       usernameTaken: That username is already taken.
       registrationFailed: Could not create your account — that email or username may already be in use.
+      magicLinkInvalid: This link has expired or was already used. Please request a new one.
+      invalidUsername: Please choose a username of at least 4 characters, lowercase letters and numbers only.
       generic: Something went wrong. Please try again.
   confirm:
     continueAs: Continue as {{ username }}?
@@ -187,3 +194,5 @@ sso:
     createAccount: Create a new account
     logoutEverywhere: Log out of all sessions
     logoutEverywhereHelper: This signs you out of every site and device using this account, not just this one.
+    magicLinkNewAccount: Welcome! Choose your username to finish signing in.
+    magicLinkUsernameLabel: Username

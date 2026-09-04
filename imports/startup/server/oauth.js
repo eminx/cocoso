@@ -6,15 +6,15 @@ import cookie from 'cookie';
 
 import Hosts from '../../api/hosts/host';
 import AuthorizationCodes from '../../api/sso/authorizationCode';
+import MagicLinkTokens from '../../api/sso/magicLinkToken';
+import { base64url, validateRedirect } from '../../api/sso/oauthHelpers';
+import { generateUsernameFromEmail } from '../../api/users/username.helpers';
+import '../../api/sso/magicLink.methods';
 
 const CODE_TTL_MS = 60 * 1000;
 const BROKER_COOKIE_NAME = 'cocoso_broker_session';
 const BROKER_COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days, in seconds
 const MAX_BODY_BYTES = 1024 * 100; // 100kb, generous for a login/register form
-
-function base64url(buffer) {
-  return buffer.toString('base64url');
-}
 
 function readBody(req) {
   return new Promise((resolve, reject) => {
@@ -93,21 +93,6 @@ function clearBrokerCookie(res) {
     path: '/',
   });
   res.setHeader('Set-Cookie', existing ? [].concat(existing, serialized) : serialized);
-}
-
-// client_id has no separate registry in this design — it's always just the
-// tenant's own host string, validated below against a real Hosts doc.
-function validateRedirect(host, redirectUri) {
-  let redirectHost;
-  try {
-    redirectHost = new URL(redirectUri).hostname;
-  } catch {
-    return null;
-  }
-  if (redirectHost !== host) {
-    return null;
-  }
-  return redirectHost;
 }
 
 async function mintCodeAndRedirect(res, { userId, host, redirectUri, state, codeChallenge, codeChallengeMethod }) {
@@ -358,6 +343,136 @@ async function handleLogoutEverywherePost(req, res) {
   redirectToBrokerForm(res, '/login', oauthFields);
 }
 
+function magicLinkOauthFields(record) {
+  return {
+    host: record.host,
+    redirectUri: record.redirectUri,
+    state: record.state,
+    codeChallenge: record.codeChallenge,
+    codeChallengeMethod: record.codeChallengeMethod,
+  };
+}
+
+// Bounces back to the username-review/confirm screen (with an optional
+// error) rather than /login — the token is still valid at this point, no
+// need to make the person start the whole request-a-link flow over.
+function redirectToMagicLinkConfirm(res, token, oauthFields, extra) {
+  const qs = oauthQueryString(oauthFields);
+  const extraQs = new URLSearchParams({ token, isNew: 'true', ...extra }).toString();
+  res.writeHead(302, { Location: `/magic-link-confirm?${qs}&${extraQs}` });
+  res.end();
+}
+
+// GET — reached by clicking the emailed link. Deliberately does NOT
+// complete sign-in on this request: email-security scanners routinely
+// "pre-click" links to check for malware, which would silently burn a
+// one-time-use token before the real person ever sees it. This only looks
+// up what's needed to show a landing page; /oauth/magic-link/confirm below
+// is what actually completes anything, and only ever via an explicit POST.
+async function handleMagicLinkGet(req, res, token) {
+  const record = await MagicLinkTokens.findOneAsync({ token, used: false });
+  if (!record || record.expiresAt.getTime() < Date.now()) {
+    res.statusCode = 400;
+    res.end('This link has expired or was already used.');
+    return;
+  }
+
+  const oauthFields = magicLinkOauthFields(record);
+  const qs = oauthQueryString(oauthFields);
+  const existingUser = await Accounts.findUserByEmail(record.email);
+
+  const identityQs = new URLSearchParams({
+    token,
+    username: existingUser ? existingUser.username || '' : await generateUsernameFromEmail(record.email),
+    isNew: existingUser ? 'false' : 'true',
+  }).toString();
+
+  res.writeHead(302, { Location: `/magic-link-confirm?${qs}&${identityQs}` });
+  res.end();
+}
+
+// POST — the actual completion, only ever reached by an explicit click on
+// the landing page above.
+async function handleMagicLinkConfirmPost(req, res) {
+  const rawBody = await readBody(req);
+  const params = Object.fromEntries(new URLSearchParams(rawBody));
+  const { token } = params;
+  const postedUsername = (params.username || '').trim().toLowerCase();
+
+  const record = await MagicLinkTokens.findOneAsync({ token, used: false });
+  if (!record || record.expiresAt.getTime() < Date.now()) {
+    res.statusCode = 400;
+    res.end('This link has expired or was already used.');
+    return;
+  }
+
+  const oauthFields = magicLinkOauthFields(record);
+  const redirectHost = validateRedirect(oauthFields.host, oauthFields.redirectUri);
+  const hostDoc = redirectHost ? await Hosts.findOneAsync({ host: redirectHost }) : null;
+  if (!hostDoc) {
+    res.statusCode = 400;
+    res.end('Unknown client');
+    return;
+  }
+
+  const existingUser = await Accounts.findUserByEmail(record.email);
+
+  // For a new account, validate the (possibly person-edited) username
+  // *before* consuming the token, so a collision can bounce back to the
+  // same landing page for another try rather than dead-ending them.
+  if (!existingUser) {
+    if (
+      !postedUsername ||
+      postedUsername.length < 4 ||
+      !/^[a-z0-9]+$/.test(postedUsername)
+    ) {
+      redirectToMagicLinkConfirm(res, token, oauthFields, {
+        username: postedUsername,
+        error: 'invalid_username',
+      });
+      return;
+    }
+    const taken = await Accounts.findUserByUsername(postedUsername);
+    if (taken) {
+      redirectToMagicLinkConfirm(res, token, oauthFields, {
+        username: postedUsername,
+        error: 'username_taken',
+      });
+      return;
+    }
+  }
+
+  // Atomic single-use guard — only one concurrent submission proceeds past
+  // this point, same pattern as handleToken's authorization-code redemption.
+  const updatedCount = await MagicLinkTokens.updateAsync(
+    { token, used: false },
+    { $set: { used: true } }
+  );
+  if (updatedCount === 0) {
+    res.statusCode = 400;
+    res.end('This link has expired or was already used.');
+    return;
+  }
+
+  let userId;
+  if (existingUser) {
+    userId = existingUser._id;
+  } else {
+    try {
+      userId = await Accounts.createUserAsync({
+        username: postedUsername,
+        email: record.email,
+      });
+    } catch (error) {
+      console.error('[oauth] magic-link registration failed', error);
+      redirectToBrokerForm(res, '/login', oauthFields, 'registration_failed');
+      return;
+    }
+  }
+
+  await completeBrokerAuth(res, userId, oauthFields);
+}
+
 async function handleToken(req, res) {
   const rawBody = await readBody(req);
   let payload;
@@ -446,6 +561,13 @@ Meteor.startup(() => {
         await handleConfirmPost(req, res);
       } else if (pathname === '/oauth/logout-everywhere' && req.method === 'POST') {
         await handleLogoutEverywherePost(req, res);
+      } else if (pathname === '/oauth/magic-link/confirm' && req.method === 'POST') {
+        await handleMagicLinkConfirmPost(req, res);
+      } else if (pathname.startsWith('/oauth/magic-link/') && req.method === 'GET') {
+        const token = decodeURIComponent(
+          pathname.slice('/oauth/magic-link/'.length)
+        );
+        await handleMagicLinkGet(req, res, token);
       } else if (pathname === '/oauth/token' && req.method === 'POST') {
         await handleToken(req, res);
       } else {
