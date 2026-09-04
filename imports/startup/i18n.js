@@ -40,18 +40,15 @@ const defaultLang = 'en';
 const isServer = Meteor.isServer;
 
 const path = '/i18n/{{lng}}/{{ns}}.yml';
-const cdnLoadPath = cdnserver ? cdnserver + path : null;
-// Node's fetch() requires an absolute URL — a bare relative loadPath (fine
-// client-side, where it resolves against the page's own origin) throws
-// "Failed to parse URL" server-side, and i18next silently swallows that,
-// leaving every resource bundle empty in every language. ROOT_URL is always
-// set for a running Meteor server, so use it as the base there instead.
-const loadPath =
-  Meteor.isProduction && cdnLoadPath
-    ? cdnLoadPath
-    : isServer
-      ? `${(process.env.ROOT_URL || '').replace(/\/$/, '')}${path}`
-      : path;
+// NOTE: an absolute, ROOT_URL-based loadPath was tried here for the server
+// so Node's fetch() (which needs a full URL, unlike the browser) could
+// actually load these files — but that makes the server fetch its own
+// translation files from itself over HTTP, which deadlocks: the request
+// handling the fetch is the same single process needed to answer it. Back
+// to the relative path (still broken server-side — see serverI18n plan
+// notes — but not hanging) until that's replaced with a filesystem-based
+// backend for the server instance instead.
+const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
 
 const options = {
   backend: {
