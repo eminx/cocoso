@@ -196,7 +196,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   };
 
   return (
-    <Center my="8">
+    <Center my="8" p="4">
       <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />
       <Box w="xs">
         {platform?.logo && (

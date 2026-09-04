@@ -462,10 +462,12 @@ const AuthContainer = ({
         </Button>
       </Center>
       <Center mt="2">
-        <Text>{t('actions.forgot')}</Text>
-        <Button ml="2" variant="ghost" onClick={() => setMode('recover')}>
-          {t('actions.reset')}
-        </Button>
+        <Box>
+          <Text>{t('actions.forgot')}</Text>
+          <Button ml="2" variant="ghost" onClick={() => setMode('recover')}>
+            {t('actions.reset')}
+          </Button>
+        </Box>
       </Center>
     </Box>
   );
