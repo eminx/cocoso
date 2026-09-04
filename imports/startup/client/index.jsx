@@ -13,7 +13,7 @@ import {
 import appRoutes from '/imports/appRoutes';
 import SetupHome from '/imports/ui/pages/setup';
 import BrokerAuthPage from '/imports/ui/pages/auth/BrokerAuthPage';
-import '/imports/startup/i18n';
+import i18n from '/imports/startup/i18n';
 
 const publicSettings = Meteor.settings.public;
 
@@ -50,6 +50,15 @@ function reloadOnNextIdleAfterUpdate(router) {
 onPageLoad(async () => {
   const container = document.getElementById('root');
 
+  // i18next's own init (which runs the LanguageDetector plugin, resolving
+  // the same querystring/cookie signals serverRenderer.js used) needs to
+  // finish before anything mounts — otherwise the client's first render
+  // could pick a different language than the server sent, causing exactly
+  // the flash-of-English-then-real-language this was meant to fix.
+  if (!i18n.isInitialized) {
+    await new Promise((resolve) => i18n.on('initialized', resolve));
+  }
+
   // The SSO broker domain never has a Hosts doc (deliberately — it isn't a
   // tenant site), so it's special-cased here rather than falling through to
   // getCurrentHost/SetupHome below: it always renders the auth-only page,
@@ -59,6 +68,11 @@ onPageLoad(async () => {
     window.location.host === publicSettings.authDomain
   ) {
     const platform = await Meteor.callAsync('getPlatform');
+    // 'accounts' is already in the default ns set (imports/startup/i18n.js)
+    // and covered by the isInitialized wait above in normal cases, but this
+    // is the one page that skips SSR/hydration entirely — a cheap, explicit
+    // no-op-if-already-loaded call rather than relying on that indirectly.
+    await i18n.loadNamespaces(['accounts']);
     const root = createRoot(container);
     root.render(<BrokerAuthPage platform={platform} />);
     return;

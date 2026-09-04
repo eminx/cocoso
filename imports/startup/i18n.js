@@ -62,19 +62,63 @@ const options = {
   },
   lng: isServer ? defaultLang : undefined,
   load: 'languageOnly',
-  ns: ['common'],
+  ns: ['common', 'accounts'],
   preload: ['en'],
   react: {
-    useSuspense: false,
+    useSuspense: true,
   },
   supportedLngs: allLangs.map((l) => l.value),
 };
 
-i18n
+const initPromise = i18n
   .use(initReactI18next)
   .use(I18NextHttpBackend)
   .use(LanguageDetector)
   .init(options);
+
+// Server-only: block Meteor.startup (i.e. run before real traffic is
+// served) until common+accounts are actually loaded for all three
+// languages, not just the 'en' preload above. Without this,
+// serverRenderer.js's renderToString would race an in-flight HTTP-backend
+// fetch on every cold request. loadLanguages/loadNamespaces (rather than
+// re-calling .init()) is used for the retries, since re-running .init()
+// on an already-initialized instance would re-register the .use() plugins.
+if (isServer) {
+  const ALL_LANGS = allLangs.map((l) => l.value);
+  const REQUIRED_NS = ['common', 'accounts'];
+  const MAX_ATTEMPTS = 3;
+  const RETRY_DELAY_MS = 500;
+
+  const isFullyLoaded = () =>
+    ALL_LANGS.every((lng) =>
+      REQUIRED_NS.every((ns) => i18n.hasResourceBundle(lng, ns))
+    );
+
+  Meteor.startup(async () => {
+    await initPromise;
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS && !isFullyLoaded(); attempt += 1) {
+      if (attempt > 1) {
+        console.warn(`[i18n] retrying server-side namespace load (attempt ${attempt})`);
+        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+      }
+      try {
+        await i18n.loadLanguages(ALL_LANGS);
+        await i18n.loadNamespaces(REQUIRED_NS);
+      } catch (error) {
+        console.error('[i18n] server-side namespace load attempt failed', error);
+      }
+    }
+
+    if (!isFullyLoaded()) {
+      // Non-fatal: worst case, early requests render in English/raw keys
+      // until this recovers on its own via i18next's normal lazy loading.
+      console.error(
+        '[i18n] server-side translations did not fully load after retries — SSR may serve English/raw keys until this recovers.'
+      );
+    }
+  });
+}
 
 export default i18n;
 export { allLangs, defaultLang };

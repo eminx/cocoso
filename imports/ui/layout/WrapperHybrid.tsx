@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { I18nextProvider } from 'react-i18next';
 import { useHydrateAtoms } from 'jotai/utils';
@@ -29,7 +29,7 @@ import {
 import { applyGlobalStyles } from '/imports/ui/utils/globalStylesManager';
 import { restoreKeyFromSession } from '/imports/utils/setupEncryption';
 import { call } from '/imports/api/_utils/shared';
-import { Box } from '/imports/ui/core';
+import { Box, Loader } from '/imports/ui/core';
 
 import HelmetHybrid from './HelmetHybrid';
 import DummyWrapper from './DummyWrapper';
@@ -44,6 +44,11 @@ export interface WrapperHybridProps {
   allHosts: any[];
   pageTitles: any[];
   platform: any;
+  // Set only by serverRenderer.js — a per-request i18next clone
+  // (i18n.cloneInstance) already resolved to the visitor's actual
+  // language, so SSR output matches what the client will hydrate with.
+  // Never set client-side; falls back to the shared singleton below.
+  i18nInstance?: any;
 }
 
 export default function WrapperHybrid({
@@ -51,6 +56,7 @@ export default function WrapperHybrid({
   allHosts,
   pageTitles,
   platform,
+  i18nInstance,
 }: WrapperHybridProps) {
   useHydrateAtoms([[platformAtom, platform]]);
   useHydrateAtoms([[allHostsAtom, allHosts]]);
@@ -162,30 +168,32 @@ export default function WrapperHybrid({
     <>
       <HelmetHybrid Host={currentHost || Host} />
 
-      <I18nextProvider i18n={i18n}>
-        <DummyWrapper
-          animate={rendered && !isDesktopValue}
-          theme={currentHost?.theme || Host?.theme}
-        >
-          {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
-          {!adminPage && (
-            <Header
-              currentHost={currentHost || Host}
-              pageTitles={pTitles || pageTitles}
-            />
-          )}
+      <I18nextProvider i18n={i18nInstance || i18n}>
+        <Suspense fallback={<Loader />}>
+          <DummyWrapper
+            animate={rendered && !isDesktopValue}
+            theme={currentHost?.theme || Host?.theme}
+          >
+            {rendered && !adminPage && <TopBarHandler slideStart={rendered} />}
+            {!adminPage && (
+              <Header
+                currentHost={currentHost || Host}
+                pageTitles={pTitles || pageTitles}
+              />
+            )}
 
-          <Box id="main-content-container">
-            <Outlet />
-          </Box>
+            <Box id="main-content-container">
+              <Outlet />
+            </Box>
 
-          {!adminPage && (
-            <>
-              <Footer currentHost={currentHost || Host} />
-              <PlatformFooter />
-            </>
-          )}
-        </DummyWrapper>
+            {!adminPage && (
+              <>
+                <Footer currentHost={currentHost || Host} />
+                <PlatformFooter />
+              </>
+            )}
+          </DummyWrapper>
+        </Suspense>
 
         {rendered && (
           <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />

@@ -12,6 +12,8 @@ import Hosts from '/imports/api/hosts/host';
 import Platform from '/imports/api/platform/platform';
 import appRoutes from '/imports/appRoutes';
 import { getGlobalStyles } from '/imports/ui/utils/globalStylesManager';
+import i18n from '/imports/startup/i18n';
+import { resolveLangFromRequest } from '/imports/api/_utils/i18n/serverI18n';
 
 let stitchesConfig = null;
 
@@ -57,11 +59,24 @@ export default async function serverRenderer(sink) {
   const pathname = sink?.request?.url?.pathname;
   const search = sink?.request?.url?.search;
 
+  // Resolve the visitor's actual language (querystring -> i18next cookie ->
+  // Accept-Language -> default), mirroring the client LanguageDetector's own
+  // priority order, and render with a per-request clone rather than
+  // mutating the shared i18n singleton — that would race under concurrent
+  // requests in different languages. The clone shares already-loaded
+  // resource data (see the Meteor.startup block in imports/startup/i18n.js
+  // that preloads common+accounts for all languages), so this is cheap and
+  // synchronous, not a fresh fetch.
+  const lngParam = new URLSearchParams(search || '').get('lng');
+  const resolvedLang = resolveLangFromRequest(sink.request, lngParam);
+  const requestI18n = i18n.cloneInstance({ lng: resolvedLang });
+
   const props = {
     Host,
     allHosts,
     pageTitles,
     platform,
+    i18nInstance: requestI18n,
   };
 
   const routes = appRoutes(props);
