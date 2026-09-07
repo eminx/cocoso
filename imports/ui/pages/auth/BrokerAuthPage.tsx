@@ -267,201 +267,217 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
           <Heading textAlign="center">{platform?.name}</Heading>
         </Center>
 
-        {isConfirm ? (
-          <Box textAlign="center">
-            <Center
-              mb="12"
-              css={{
-                backgroundColor: '#f8fafc',
-                padding: '1rem',
-                borderRadius: '1rem',
-              }}
-              maxW="420px"
-              minW="320px"
-            >
-              <Flex align="center" gap="4">
-                <Avatar
-                  borderRadius="50%"
-                  name={confirmIdentity.username}
-                  size="xl"
-                  src={confirmIdentity.avatar || undefined}
-                />
-                <Flex direction="column" align="center" gap="2">
-                  <Text fontSize="lg" fontWeight="bold">
-                    {t('sso.confirm.continueAs', {
-                      username: confirmIdentity.username,
-                    })}
-                  </Text>
-                  <Button loading={submitting} onClick={handleConfirmContinue}>
-                    {t('sso.confirm.continue')}
-                  </Button>
-                </Flex>
-              </Flex>
-            </Center>
+        <Center>
+          <Box maxW="420px" minW="320px">
+            {isConfirm ? (
+              <Box textAlign="center">
+                <Center
+                  mb="12"
+                  css={{
+                    backgroundColor: '#f8fafc',
+                    padding: '1rem',
+                    borderRadius: '1rem',
+                  }}
+                >
+                  <Flex align="center" gap="4">
+                    <Avatar
+                      borderRadius="50%"
+                      name={confirmIdentity.username}
+                      size="xl"
+                      src={confirmIdentity.avatar || undefined}
+                    />
+                    <Flex direction="column" align="center" gap="2">
+                      <Text fontSize="lg" fontWeight="bold">
+                        {t('sso.confirm.continueAs', {
+                          username: confirmIdentity.username,
+                        })}
+                      </Text>
+                      <Button
+                        loading={submitting}
+                        onClick={handleConfirmContinue}
+                      >
+                        {t('sso.confirm.continue')}
+                      </Button>
+                    </Flex>
+                  </Flex>
+                </Center>
 
-            <Flex align="center" direction="column" gap="4" justify="center">
-              <Button variant="outline" onClick={handleUseDifferentAccount}>
-                {t('sso.confirm.differentAccount')}
-              </Button>
-              <Button
-                variant="ghost"
-                css={{ width: '100%' }}
-                onClick={() => {
-                  const qs = new URLSearchParams(oauthParams as any).toString();
-                  window.location.href = `/register?${qs}`;
-                }}
-              >
-                {t('sso.confirm.createAccount')}
-              </Button>
-            </Flex>
-            <Center mt="8">
-              <Flex
-                align="center"
-                direction="column"
-                justify="center"
-                textAlign="center"
-              >
-                <Button
-                  mt="2"
-                  variant="ghost"
-                  colorScheme="red"
-                  size="sm"
-                  onClick={handleLogoutEverywhere}
+                <Flex
+                  align="center"
+                  direction="column"
+                  gap="4"
+                  justify="center"
                 >
-                  {t('sso.confirm.logoutEverywhere')}
-                </Button>
-                <Text color="gray.600" fontSize="xs" textAlign="center">
-                  {t('sso.confirm.logoutEverywhereHelper')}
-                </Text>
-              </Flex>
-            </Center>
-          </Box>
-        ) : isMagicLinkConfirm ? (
-          <Box textAlign="center">
-            <Center
-              mb="6"
-              css={{
-                backgroundColor: '#f8fafc',
-                padding: '1rem',
-                borderRadius: '1rem',
-              }}
-            >
-              <Flex align="center" direction="column" gap="4">
-                <Avatar
-                  borderRadius="50%"
-                  name={magicLinkUsername || magicLinkIdentity.username}
-                  size="xl"
-                />
-                {magicLinkIdentity.isNew ? (
-                  <>
-                    <Text fontSize="lg" fontWeight="bold">
-                      {t('sso.confirm.magicLinkNewAccount')}
-                    </Text>
-                    <FormField label={t('sso.confirm.magicLinkUsernameLabel')}>
-                      <Input
-                        value={magicLinkUsername}
-                        onChange={(e) => setMagicLinkUsername(e.target.value)}
-                      />
-                    </FormField>
-                  </>
-                ) : (
-                  <Text fontSize="lg" fontWeight="bold">
-                    {t('sso.confirm.continueAs', {
-                      username: magicLinkIdentity.username,
-                    })}
-                  </Text>
-                )}
-                {errorMessage && (
-                  <Text color="red.500" fontSize="sm">
-                    {errorMessage}
-                  </Text>
-                )}
-                <Button
-                  loading={submitting}
-                  disabled={
-                    magicLinkIdentity.isNew && magicLinkUsername.length < 4
-                  }
-                  onClick={handleMagicLinkConfirmContinue}
-                >
-                  {t('sso.confirm.continue')}
-                </Button>
-              </Flex>
-            </Center>
-          </Box>
-        ) : resetDone ? (
-          <Center>
-            <Text textAlign="center">{t('sso.broker.resetDone')}</Text>
-          </Center>
-        ) : (
-          <Box
-            bg="gray.50"
-            p="6"
-            css={{
-              border: '1px solid',
-              borderColor: 'var(--cocoso-colors-gray-300)',
-            }}
-          >
-            {errorMessage && (
-              <Center mb="4">
-                <Text color="red.500" fontSize="sm" textAlign="center">
-                  {errorMessage}
-                </Text>
-              </Center>
-            )}
-            {showMagicLinkRequest ? (
-              <Flex direction="column" gap="2">
-                <FormField label={t('sso.broker.magicLinkEmailLabel')}>
-                  <Input
-                    type="email"
-                    value={magicLinkEmail}
-                    onChange={(e) => setMagicLinkEmail(e.target.value)}
-                  />
-                </FormField>
-                <Flex justify="flex-end" py="4" w="100%">
-                  <Button
-                    loading={magicLinkRequesting}
-                    disabled={!magicLinkEmail}
-                    onClick={handleRequestMagicLink}
-                  >
-                    {t('sso.broker.magicLinkSend')}
+                  <Button variant="outline" onClick={handleUseDifferentAccount}>
+                    {t('sso.confirm.differentAccount')}
                   </Button>
-                </Flex>
-                <Center>
                   <Button
                     variant="ghost"
-                    size="sm"
-                    onClick={() => setShowMagicLinkRequest(false)}
+                    css={{ width: '100%' }}
+                    onClick={() => {
+                      const qs = new URLSearchParams(
+                        oauthParams as any
+                      ).toString();
+                      window.location.href = `/register?${qs}`;
+                    }}
                   >
-                    {t('sso.broker.magicLinkBack')}
+                    {t('sso.confirm.createAccount')}
                   </Button>
+                </Flex>
+                <Center mt="8">
+                  <Flex
+                    align="center"
+                    direction="column"
+                    justify="center"
+                    textAlign="center"
+                  >
+                    <Button
+                      mt="2"
+                      variant="ghost"
+                      colorScheme="red"
+                      size="sm"
+                      onClick={handleLogoutEverywhere}
+                    >
+                      {t('sso.confirm.logoutEverywhere')}
+                    </Button>
+                    <Text color="gray.600" fontSize="xs" textAlign="center">
+                      {t('sso.confirm.logoutEverywhereHelper')}
+                    </Text>
+                  </Flex>
                 </Center>
-              </Flex>
+              </Box>
+            ) : isMagicLinkConfirm ? (
+              <Box textAlign="center">
+                <Center
+                  mb="6"
+                  css={{
+                    backgroundColor: '#f8fafc',
+                    padding: '1rem',
+                    borderRadius: '1rem',
+                  }}
+                >
+                  <Flex align="center" direction="column" gap="4">
+                    <Avatar
+                      borderRadius="50%"
+                      name={magicLinkUsername || magicLinkIdentity.username}
+                      size="xl"
+                    />
+                    {magicLinkIdentity.isNew ? (
+                      <>
+                        <Text fontSize="lg" fontWeight="bold">
+                          {t('sso.confirm.magicLinkNewAccount')}
+                        </Text>
+                        <FormField
+                          label={t('sso.confirm.magicLinkUsernameLabel')}
+                        >
+                          <Input
+                            value={magicLinkUsername}
+                            onChange={(e) =>
+                              setMagicLinkUsername(e.target.value)
+                            }
+                          />
+                        </FormField>
+                      </>
+                    ) : (
+                      <Text fontSize="lg" fontWeight="bold">
+                        {t('sso.confirm.continueAs', {
+                          username: magicLinkIdentity.username,
+                        })}
+                      </Text>
+                    )}
+                    {errorMessage && (
+                      <Text color="red.500" fontSize="sm">
+                        {errorMessage}
+                      </Text>
+                    )}
+                    <Button
+                      loading={submitting}
+                      disabled={
+                        magicLinkIdentity.isNew && magicLinkUsername.length < 4
+                      }
+                      onClick={handleMagicLinkConfirmContinue}
+                    >
+                      {t('sso.confirm.continue')}
+                    </Button>
+                  </Flex>
+                </Center>
+              </Box>
+            ) : resetDone ? (
+              <Center>
+                <Text textAlign="center">{t('sso.broker.resetDone')}</Text>
+              </Center>
             ) : (
-              <>
-                <Center>
-                  <AuthContainer
-                    initialMode={initialMode}
-                    isSubmitted={submitting}
-                    platformName={platform?.name}
-                    termsHref={termsHref}
-                    onLogin={handleLogin}
-                    onSignup={handleSignup}
-                    onForgotPassword={handleForgotPassword}
-                    onResetPassword={handleResetPassword}
-                  />
-                </Center>
-                <Center mt="4">
-                  <Button
-                    variant="outline"
-                    onClick={() => setShowMagicLinkRequest(true)}
-                  >
-                    {t('sso.broker.magicLinkPrompt')}
-                  </Button>
-                </Center>
-              </>
+              <Box
+                bg="gray.50"
+                p="6"
+                css={{
+                  border: '1px solid',
+                  borderColor: 'var(--cocoso-colors-gray-300)',
+                }}
+              >
+                {errorMessage && (
+                  <Center mb="4">
+                    <Text color="red.500" fontSize="sm" textAlign="center">
+                      {errorMessage}
+                    </Text>
+                  </Center>
+                )}
+                {showMagicLinkRequest ? (
+                  <Flex direction="column" gap="2">
+                    <FormField label={t('sso.broker.magicLinkEmailLabel')}>
+                      <Input
+                        type="email"
+                        value={magicLinkEmail}
+                        onChange={(e) => setMagicLinkEmail(e.target.value)}
+                      />
+                    </FormField>
+                    <Flex justify="flex-end" py="4" w="100%">
+                      <Button
+                        loading={magicLinkRequesting}
+                        disabled={!magicLinkEmail}
+                        onClick={handleRequestMagicLink}
+                      >
+                        {t('sso.broker.magicLinkSend')}
+                      </Button>
+                    </Flex>
+                    <Center>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowMagicLinkRequest(false)}
+                      >
+                        {t('sso.broker.magicLinkBack')}
+                      </Button>
+                    </Center>
+                  </Flex>
+                ) : (
+                  <>
+                    <Center>
+                      <AuthContainer
+                        initialMode={initialMode}
+                        isSubmitted={submitting}
+                        platformName={platform?.name}
+                        termsHref={termsHref}
+                        onLogin={handleLogin}
+                        onSignup={handleSignup}
+                        onForgotPassword={handleForgotPassword}
+                        onResetPassword={handleResetPassword}
+                      />
+                    </Center>
+                    <Center mt="4">
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowMagicLinkRequest(true)}
+                      >
+                        {t('sso.broker.magicLinkPrompt')}
+                      </Button>
+                    </Center>
+                  </>
+                )}
+              </Box>
             )}
           </Box>
-        )}
+        </Center>
 
         {oauthParams.client_id && (
           <Center mt="6">
