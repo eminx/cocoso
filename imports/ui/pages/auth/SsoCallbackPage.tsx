@@ -31,8 +31,8 @@ export default function SsoCallbackPage({
       const code = params.get('code');
       const state = params.get('state');
 
-      const pendingRaw = sessionStorage.getItem(PENDING_KEY);
-      sessionStorage.removeItem(PENDING_KEY);
+      const pendingRaw = localStorage.getItem(PENDING_KEY);
+      localStorage.removeItem(PENDING_KEY);
 
       if (!code || !state || !pendingRaw) {
         setError(t('sso.callback.errors.missing'));

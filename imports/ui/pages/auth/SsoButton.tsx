@@ -32,7 +32,7 @@ async function startSso(authDomain: string) {
   const codeChallenge = base64UrlEncode(new Uint8Array(challengeDigest));
   const state = base64UrlEncode(crypto.getRandomValues(new Uint8Array(16)));
 
-  sessionStorage.setItem(PENDING_KEY, JSON.stringify({ codeVerifier, state }));
+  localStorage.setItem(PENDING_KEY, JSON.stringify({ codeVerifier, state }));
 
   const params = new URLSearchParams({
     client_id: window.location.host,
