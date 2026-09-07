@@ -208,12 +208,6 @@ const Signup = ({
               >
                 <Input {...register('password')} type="password" />
               </FormField>
-
-              <Center mt="2">
-                <Text fontSize="xs" textAlign="center">
-                  {t('signup.form.password.info')}
-                </Text>
-              </Center>
             </Box>
 
             {!hideTermsCheck && (
@@ -408,14 +402,16 @@ const AuthContainer = ({
   if (mode === 'signup') {
     return (
       <Box>
-        <Heading size="md" css={{ marginBottom: '1em', textAlign: 'center' }}>
-          {t('signup.labels.title')}
-        </Heading>
-        <Text textAlign="center">
-          {t('signup.labels.platform', {
-            platform: platformName,
-          })}
-        </Text>
+        <Box mb="6">
+          <Heading size="md" css={{ textAlign: 'center' }}>
+            {t('signup.labels.title')}
+          </Heading>
+          <Text color="gray.600" fontSize="sm" textAlign="center">
+            {t('signup.labels.platform', {
+              platform: platformName,
+            })}
+          </Text>
+        </Box>
         <Signup termsHref={termsHref} onSubmit={onSignup} />
         <Divider my="6" />
         <Center>

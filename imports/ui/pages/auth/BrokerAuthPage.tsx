@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Center,
+  Heading,
   Flex,
   Image,
   Input,
@@ -262,6 +263,16 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
           </Center>
         )}
 
+        <Center py="2">
+          <Heading textAlign="center">{platform?.name}</Heading>
+        </Center>
+
+        <Center mt="2">
+          <Text fontSize="sm" textAlign="center">
+            {t('signup.form.password.info')}
+          </Text>
+        </Center>
+
         {isConfirm ? (
           <Box textAlign="center">
             <Center
@@ -431,21 +442,20 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
               </Flex>
             ) : (
               <>
-                <Center mb="4">
-                  <Text color="gray.600" fontSize="sm" textAlign="center">
-                    {t('sso.info')}
-                  </Text>
+                <Center>
+                  <Box maxW="480px">
+                    <AuthContainer
+                      initialMode={initialMode}
+                      isSubmitted={submitting}
+                      platformName={platform?.name}
+                      termsHref={termsHref}
+                      onLogin={handleLogin}
+                      onSignup={handleSignup}
+                      onForgotPassword={handleForgotPassword}
+                      onResetPassword={handleResetPassword}
+                    />
+                  </Box>
                 </Center>
-                <AuthContainer
-                  initialMode={initialMode}
-                  isSubmitted={submitting}
-                  platformName={platform?.name}
-                  termsHref={termsHref}
-                  onLogin={handleLogin}
-                  onSignup={handleSignup}
-                  onForgotPassword={handleForgotPassword}
-                  onResetPassword={handleResetPassword}
-                />
                 <Center mt="4">
                   <Button
                     variant="outline"

@@ -161,6 +161,7 @@ delete:
   successRedirect: Redirecting to homepage...
 
 sso:
+  info: You are safe to sign in with your {{ platform }} account. We will store your password in encrypted form, and you can revoke access at any time from your {{ platform }} account settings.
   button: Sign in with {{ platform }}
   backToSite: Back to {{ host }}
   callback:
