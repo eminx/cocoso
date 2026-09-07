@@ -160,6 +160,7 @@ delete:
   successRedirect: Omdirigerar till startsidan...
 
 sso:
+  info: Du är säker på att logga in med ditt {{ platform }}-konto. Vi kommer att lagra ditt lösenord i krypterad form, och du kan återkalla åtkomst när som helst från dina {{ platform }}-kontoinställningar.
   button: Logga in med {{ platform }}
   backToSite: Tillbaka till {{ host }}
   callback:

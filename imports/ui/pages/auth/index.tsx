@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import i18next from 'i18next';
-import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -380,6 +379,7 @@ interface AuthContainerProps {
   initialMode?: AuthMode;
   isSubmitted?: boolean;
   termsHref?: string;
+  platformName?: string;
   onLogin?: (data: any) => void;
   onSignup?: (data: any) => void;
   onForgotPassword?: (data: any) => void;
@@ -396,6 +396,7 @@ const AuthContainer = ({
   initialMode = 'login',
   isSubmitted = false,
   termsHref,
+  platformName,
   onLogin = noop,
   onSignup = noop,
   onForgotPassword = noop,
@@ -403,7 +404,6 @@ const AuthContainer = ({
 }: AuthContainerProps) => {
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [t] = useTranslation('accounts');
-  const platform = useAtomValue(PlatformContext);
 
   if (mode === 'signup') {
     return (
@@ -413,7 +413,7 @@ const AuthContainer = ({
         </Heading>
         <Text textAlign="center">
           {t('signup.labels.platform', {
-            platform: platform?.name,
+            platform: platformName,
           })}
         </Text>
         <Signup termsHref={termsHref} onSubmit={onSignup} />
@@ -465,7 +465,7 @@ const AuthContainer = ({
   return (
     <Box>
       <Heading size="md" textAlign="center" css={{ marginBottom: '1em' }}>
-        {t('login.labels.title', { platform: platform?.name })}
+        {t('login.labels.title', { platform: platformName })}
       </Heading>
 
       <Login isSubmitted={isSubmitted} onSubmit={onLogin} />

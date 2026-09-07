@@ -107,7 +107,7 @@ function readErrorCode(): string | null {
 }
 
 interface BrokerAuthPageProps {
-  platform?: { logo?: string } | null;
+  platform?: { logo?: string; name?: string } | null;
 }
 
 export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
@@ -315,7 +315,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
                 textAlign="center"
               >
                 <Button
-                  my="2"
+                  mt="2"
                   variant="ghost"
                   colorScheme="red"
                   size="sm"
@@ -323,7 +323,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
                 >
                   {t('sso.confirm.logoutEverywhere')}
                 </Button>
-                <Text color="gray.600" fontSize="xs">
+                <Text color="gray.600" fontSize="xs" textAlign="center">
                   {t('sso.confirm.logoutEverywhereHelper')}
                 </Text>
               </Flex>
@@ -371,7 +371,9 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
                 )}
                 <Button
                   loading={submitting}
-                  disabled={magicLinkIdentity.isNew && magicLinkUsername.length < 4}
+                  disabled={
+                    magicLinkIdentity.isNew && magicLinkUsername.length < 4
+                  }
                   onClick={handleMagicLinkConfirmContinue}
                 >
                   {t('sso.confirm.continue')}
@@ -429,9 +431,15 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
               </Flex>
             ) : (
               <>
+                <Center mb="4">
+                  <Text color="gray.600" fontSize="sm" textAlign="center">
+                    {t('sso.info')}
+                  </Text>
+                </Center>
                 <AuthContainer
                   initialMode={initialMode}
                   isSubmitted={submitting}
+                  platformName={platform?.name}
                   termsHref={termsHref}
                   onLogin={handleLogin}
                   onSignup={handleSignup}
@@ -440,8 +448,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
                 />
                 <Center mt="4">
                   <Button
-                    variant="ghost"
-                    size="sm"
+                    variant="outline"
                     onClick={() => setShowMagicLinkRequest(true)}
                   >
                     {t('sso.broker.magicLinkPrompt')}

@@ -160,8 +160,9 @@ delete:
   successRedirect: Ana sayfaya yönlendiriliyorsun...
 
 sso:
-  button: "{{ platform }} ile giriş yap"
-  backToSite: "{{ host }} adresine dön"
+  info: '{{ platform }} hesabınla güvenle giriş yapabilirsin. Parolanı şifrelenmiş biçimde saklayacağız ve {{ platform }} hesap ayarlarından istediğin zaman erişimi iptal edebilirsin.'
+  button: '{{ platform }} ile giriş yap'
+  backToSite: '{{ host }} adresine dön'
   callback:
     verifying: Girişin doğrulanıyor…
     backToSignIn: Girişe dön
@@ -187,7 +188,7 @@ sso:
       invalidUsername: Lütfen en az 4 karakterli, yalnızca küçük harf ve rakamlardan oluşan bir kullanıcı adı seç.
       generic: Bir şeyler ters gitti. Lütfen tekrar deneyin.
   confirm:
-    continueAs: "{{ username }} olarak devam et?"
+    continueAs: '{{ username }} olarak devam et?'
     continue: Devam et
     differentAccount: Farklı bir hesap kullan
     createAccount: Yeni bir hesap oluştur
