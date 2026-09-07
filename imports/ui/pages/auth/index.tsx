@@ -402,7 +402,7 @@ const AuthContainer = ({
   if (mode === 'signup') {
     return (
       <Box>
-        <Box mb="6">
+        <Box mb="4">
           <Heading size="md" css={{ textAlign: 'center' }}>
             {t('signup.labels.title')}
           </Heading>
@@ -460,7 +460,7 @@ const AuthContainer = ({
 
   return (
     <Box>
-      <Heading size="md" textAlign="center" css={{ marginBottom: '1em' }}>
+      <Heading size="md" textAlign="center" css={{ marginBottom: '1rem' }}>
         {t('login.labels.title', { platform: platformName })}
       </Heading>
 

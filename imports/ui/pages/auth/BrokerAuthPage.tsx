@@ -254,22 +254,22 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   };
 
   return (
-    <Center my="8" p="4">
+    <Center p="4">
       <Toaster containerStyle={{ minWidth: '120px', zIndex: 999999 }} />
       <Box w="xs">
         {platform?.logo && (
-          <Center p="4" mb="8">
+          <Center p="4">
             <Image h="120px" w="auto" src={platform.logo} />
           </Center>
         )}
 
-        <Center py="2">
+        <Center>
           <Heading textAlign="center">{platform?.name}</Heading>
         </Center>
 
-        <Center mt="2">
+        <Center mb="2">
           <Text fontSize="sm" textAlign="center">
-            {t('signup.form.password.info')}
+            {t('sso.info', { platform: platform?.name })}
           </Text>
         </Center>
 
@@ -413,7 +413,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
               </Center>
             )}
             {showMagicLinkRequest ? (
-              <Flex direction="column" gap="2">
+              <Flex direction="column" gap="2" css={{ minWidth: '320px' }}>
                 <FormField label={t('sso.broker.magicLinkEmailLabel')}>
                   <Input
                     type="email"

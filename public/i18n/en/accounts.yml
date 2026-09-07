@@ -8,7 +8,7 @@ actions:
 
 login:
   labels:
-    title: Login to Your Account {{ platform}}
+    title: Login to Your Account
     subtitle: Don't have an account?
   form:
     username:
