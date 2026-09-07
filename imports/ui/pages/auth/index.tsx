@@ -343,7 +343,7 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
-      <Flex direction="column" gap="0" maxW="420px">
+      <Flex direction="column" gap="2" maxW="420px" minW="320px">
         <FormField
           errorMessage={errors.password?.message}
           helper={passwordHelperText}
@@ -403,7 +403,10 @@ const AuthContainer = ({
     return (
       <Box>
         <Box mb="4">
-          <Heading size="md" css={{ textAlign: 'center' }}>
+          <Heading
+            size="md"
+            css={{ marginBottom: '0.5rem', textAlign: 'center' }}
+          >
             {t('signup.labels.title')}
           </Heading>
           <Text color="gray.600" fontSize="sm" textAlign="center">
