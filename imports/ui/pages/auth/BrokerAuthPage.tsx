@@ -263,14 +263,8 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
           </Center>
         )}
 
-        <Center>
+        <Center mb="4">
           <Heading textAlign="center">{platform?.name}</Heading>
-        </Center>
-
-        <Center mb="2">
-          <Text fontSize="sm" textAlign="center">
-            {t('sso.info', { platform: platform?.name })}
-          </Text>
         </Center>
 
         {isConfirm ? (
