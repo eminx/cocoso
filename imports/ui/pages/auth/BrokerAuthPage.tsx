@@ -276,6 +276,8 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
                 padding: '1rem',
                 borderRadius: '1rem',
               }}
+              maxW="420px"
+              minW="320px"
             >
               <Flex align="center" gap="4">
                 <Avatar
@@ -407,7 +409,7 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
               </Center>
             )}
             {showMagicLinkRequest ? (
-              <Flex direction="column" gap="2" css={{ minWidth: '320px' }}>
+              <Flex direction="column" gap="2">
                 <FormField label={t('sso.broker.magicLinkEmailLabel')}>
                   <Input
                     type="email"
@@ -437,18 +439,16 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
             ) : (
               <>
                 <Center>
-                  <Box maxW="480px">
-                    <AuthContainer
-                      initialMode={initialMode}
-                      isSubmitted={submitting}
-                      platformName={platform?.name}
-                      termsHref={termsHref}
-                      onLogin={handleLogin}
-                      onSignup={handleSignup}
-                      onForgotPassword={handleForgotPassword}
-                      onResetPassword={handleResetPassword}
-                    />
-                  </Box>
+                  <AuthContainer
+                    initialMode={initialMode}
+                    isSubmitted={submitting}
+                    platformName={platform?.name}
+                    termsHref={termsHref}
+                    onLogin={handleLogin}
+                    onSignup={handleSignup}
+                    onForgotPassword={handleForgotPassword}
+                    onResetPassword={handleResetPassword}
+                  />
                 </Center>
                 <Center mt="4">
                   <Button

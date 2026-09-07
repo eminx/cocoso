@@ -170,7 +170,7 @@ const Signup = ({
     <>
       <Center>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-          <Flex direction="column" gap="0" maxW="420px">
+          <Flex direction="column" gap="0">
             <FormField
               errorMessage={
                 errors.username?.message ||
@@ -343,7 +343,7 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
 
   return (
     <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
-      <Flex direction="column" gap="2" maxW="420px" minW="320px">
+      <Flex direction="column" gap="2">
         <FormField
           errorMessage={errors.password?.message}
           helper={passwordHelperText}
