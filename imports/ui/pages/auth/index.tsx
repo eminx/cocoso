@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import i18next from 'i18next';
+import { useAtomValue } from 'jotai';
 
 import {
   Box,
@@ -12,6 +13,7 @@ import {
   Checkbox,
   Divider,
   Flex,
+  Heading,
   Input,
   Link,
   Modal,
@@ -401,10 +403,19 @@ const AuthContainer = ({
 }: AuthContainerProps) => {
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [t] = useTranslation('accounts');
+  const platform = useAtomValue(PlatformContext);
 
   if (mode === 'signup') {
     return (
       <Box>
+        <Heading size="md" css={{ marginBottom: '1em', textAlign: 'center' }}>
+          {t('signup.labels.title')}
+        </Heading>
+        <Text textAlign="center">
+          {t('signup.labels.platform', {
+            platform: platform?.name,
+          })}
+        </Text>
         <Signup termsHref={termsHref} onSubmit={onSignup} />
         <Divider my="6" />
         <Center>
@@ -453,6 +464,10 @@ const AuthContainer = ({
 
   return (
     <Box>
+      <Heading size="md" textAlign="center" css={{ marginBottom: '1em' }}>
+        {t('login.labels.title', { platform: platform?.name })}
+      </Heading>
+
       <Login isSubmitted={isSubmitted} onSubmit={onLogin} />
       <Divider my="6" />
       <Center mb="6">
