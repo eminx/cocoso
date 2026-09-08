@@ -9,6 +9,7 @@ import {
   ImageContext,
 } from '../_utils/services/imageProcessor';
 import { uploadToS3 } from '../_utils/services/aws.upload';
+import { uploadLogoPng } from '../_utils/services/logoPng';
 import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
 import { isAdmin } from '../users/user.roles';
@@ -25,6 +26,7 @@ async function uploadImageMethod(
 ): Promise<{
   _id: string;
   variants: ImageVariantUrls;
+  pngUrl?: string;
 }> {
   const user = await Meteor.userAsync();
   if (!user) {
@@ -66,12 +68,18 @@ async function uploadImageMethod(
     variantUrls[result.suffix as keyof ImageVariantUrls] = result.url;
   }
 
+  // Logos only: a PNG rendition alongside the WebP variants, for email
+  // clients that don't render a transparent WebP background well.
+  const pngUrl =
+    context === 'logo' ? await uploadLogoPng(fileBuffer, folderKey) : undefined;
+
   // Save to DB
   const imageId = await Images.insertAsync({
     host,
     uploadedBy: user._id,
     uploadedByUsername: user.username || 'unknown',
     variants: variantUrls,
+    ...(pngUrl ? { pngUrl } : {}),
     context,
     originalName,
     originalSize: fileBuffer.length,
@@ -84,6 +92,7 @@ async function uploadImageMethod(
   return {
     _id: imageId,
     variants: variantUrls,
+    ...(pngUrl ? { pngUrl } : {}),
   };
 }
 
@@ -111,8 +120,11 @@ async function deleteImageMethod(imageId: string) {
     }
   }
 
-  // Delete all variants from S3
+  // Delete all variants (plus the PNG logo variant, if any) from S3
   const variantUrls = Object.values(image.variants) as string[];
+  if (image.pngUrl) {
+    variantUrls.push(image.pngUrl);
+  }
   const { deleteMultipleFromS3 } = await import(
     '../_utils/services/aws.upload'
   );

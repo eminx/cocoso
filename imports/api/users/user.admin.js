@@ -189,7 +189,7 @@ Meteor.methods({
     }
   },
 
-  async assignHostLogo(image) {
+  async assignHostLogo(image, imagePng) {
     const host = getHost(this);
     const user = await Meteor.userAsync();
     const isAdminUser = await isAdmin(user._id, host);
@@ -204,6 +204,7 @@ Meteor.methods({
         {
           $set: {
             logo: image,
+            ...(imagePng ? { logoPng: imagePng } : {}),
           },
         }
       );

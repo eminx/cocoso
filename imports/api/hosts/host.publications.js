@@ -6,11 +6,17 @@ import Memberships from '../memberships/membership';
 
 Meteor.publish('currentHost', function () {
   const host = getHost(this);
-  return Hosts.find({ host }, { fields: { host: 1, settings: 1, logo: 1, isPortalHost: 1 } });
+  return Hosts.find(
+    { host },
+    { fields: { host: 1, settings: 1, logo: 1, logoLegacy: 1, logoPng: 1, isPortalHost: 1 } }
+  );
 });
 
 Meteor.publish('host', function (host) {
-  return Hosts.find({ host }, { fields: { host: 1, settings: 1, logo: 1, isPortalHost: 1 } });
+  return Hosts.find(
+    { host },
+    { fields: { host: 1, settings: 1, logo: 1, logoLegacy: 1, logoPng: 1, isPortalHost: 1 } }
+  );
 });
 
 Meteor.publish('hosts', function (hos) {

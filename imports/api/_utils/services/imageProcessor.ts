@@ -112,4 +112,26 @@ export async function processImage(
   };
 }
 
+/**
+ * Logos only: a single PNG rendition alongside the usual WebP variants.
+ * Some email clients (notably Gmail) don't render a transparent WebP
+ * background correctly, so logos in emails need a real PNG fallback —
+ * sized to match the 'full' WebP variant so either can be dropped into
+ * the same <img> spot.
+ */
+export async function createLogoPngBuffer(fileBuffer: Buffer): Promise<Buffer> {
+  const metadata = await sharp(fileBuffer).metadata();
+  const originalWidth = metadata.width || 800;
+  const fullSize = CONTEXT_SIZES.logo.find((size) => size.suffix === 'full')!;
+  const resizeWidth = Math.min(fullSize.width, originalWidth);
+
+  return sharp(fileBuffer)
+    .resize(resizeWidth, null, {
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+    .png({ compressionLevel: 8 })
+    .toBuffer();
+}
+
 export { CONTEXT_SIZES };

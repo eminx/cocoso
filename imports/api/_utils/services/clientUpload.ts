@@ -9,6 +9,9 @@ export type { ImageContext, ImageVariantUrls };
 export interface UploadResult {
   _id: string;
   variants: ImageVariantUrls;
+  // Logo uploads only — a PNG rendition of the 'full' variant, for email
+  // clients that don't render a transparent WebP background well.
+  pngUrl?: string;
 }
 
 /**

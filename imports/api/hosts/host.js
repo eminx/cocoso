@@ -34,6 +34,10 @@ Hosts.schema = new SimpleSchema({
 
   logo: { type: String, optional: true },
   logoLegacy: { type: String, optional: true },
+  // PNG rendition of `logo`, for email clients (Gmail) that don't render
+  // a transparent WebP background well. Set at upload time for new logos
+  // (see assignHostLogo); backfilled for older ones by migration 19.
+  logoPng: { type: String, optional: true },
 
   settings: { type: Object },
   'settings.name': { type: String },

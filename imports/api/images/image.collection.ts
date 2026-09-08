@@ -19,6 +19,10 @@ Images.schema = new SimpleSchema({
   'variants.medium': { type: String }, // 800px
   'variants.full': { type: String }, // 1200px
 
+  // Logo uploads only — a PNG rendition of the 'full' variant, for email
+  // clients (Gmail) that don't render a transparent WebP background well.
+  pngUrl: { type: String, optional: true },
+
   // Context (what type of upload this was)
   context: {
     type: String,

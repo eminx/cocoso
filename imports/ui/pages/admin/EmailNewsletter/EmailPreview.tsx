@@ -169,7 +169,14 @@ export default function EmailPreview({ allHosts, currentHost, email }) {
   const activities = items?.activities;
   const works = items?.works;
 
-  const { host, logo, settings, theme } = currentHost;
+  const { host, logo, logoLegacy, logoPng, settings, theme } = currentHost;
+  // Gmail (and some other clients) don't render a transparent WebP
+  // background well — prefer an actual PNG rendition for the logo:
+  // logoPng for hosts uploaded/backfilled since this existed, logoLegacy
+  // for older hosts that still have their pre-WebP-migration logo around,
+  // and only fall back to the WebP `logo` itself if neither exists.
+  const emailLogoSrc =
+    logoPng || logoLegacy || getImageUrl(logo, 'full') || undefined;
 
   const buttonStyle = getButtonStyle(theme);
   const subTitleStyle = getSubTitleStyle(theme);
@@ -255,7 +262,7 @@ export default function EmailPreview({ allHosts, currentHost, email }) {
             <Img
               alt={settings?.name}
               height="150px"
-              src={getImageUrl(logo, 'full') || undefined}
+              src={emailLogoSrc}
               style={{
                 height: 'auto',
                 margin: '24px auto',

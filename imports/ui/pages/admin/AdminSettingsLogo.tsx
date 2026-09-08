@@ -49,7 +49,7 @@ export default function AdminSettingsLogo() {
         800
       );
       const result = await uploadImage(resizedImage!, 'logo');
-      await call('assignHostLogo', result.variants.full);
+      await call('assignHostLogo', result.variants.full, result.pngUrl);
       setCurrentHost(await call('getCurrentHost'));
       message.success(t('logo.message.success'));
     } catch (error: any) {
