@@ -41,7 +41,16 @@ interface HostDocument {
 }
 
 Meteor.methods({
-  async sendEmail(id: string, subjectEmail: string, textEmail: string): Promise<void> {
+  // fromName is an override for callers with no tenant host to derive one
+  // from (currently just sendMagicLinkEmail, sent from the platform-level
+  // broker). Everyone else leaves it out and gets the original behavior:
+  // host resolved here from the live connection, on every send.
+  async sendEmail(
+    id: string,
+    subjectEmail: string,
+    textEmail: string,
+    fromName?: string
+  ): Promise<void> {
     check([id, subjectEmail, textEmail], [String]);
     const fromEmail = (Meteor.settings as MeteorSettings).mailCredentials.smtp.fromEmail;
 
@@ -62,18 +71,12 @@ Meteor.methods({
       return;
     }
 
-    const host = getHost(this);
-    const currentHost = host
-      ? (await Hosts.findOneAsync({ host }) as HostDocument | undefined)
-      : undefined;
-
-    // host is only ever set for a direct client->server call — a call
-    // nested inside another method (sendWelcomeEmail, sendMagicLinkEmail,
-    // etc.) has no connection to read it from, so those fall back to the
-    // platform's own name instead of a specific tenant's.
-    const displayName =
-      currentHost?.settings?.name ||
-      (!host ? (await Platform.findOneAsync())?.name : undefined);
+    let displayName = fromName;
+    if (!displayName) {
+      const host = getHost(this);
+      const currentHost = await Hosts.findOneAsync({ host }) as HostDocument | undefined;
+      displayName = currentHost?.settings?.name;
+    }
 
     let fromEmailWithHostName = fromEmail;
     if (displayName) {
@@ -168,16 +171,20 @@ Meteor.methods({
   // Unlike the other email methods here, this isn't tied to a user or a
   // host — it's sent from the SSO broker (imports/startup/server/oauth.js /
   // imports/api/sso/magicLink.methods.js) to an email address that may not
-  // even have an account yet.
+  // even have an account yet. There's no tenant Host to name it after, so
+  // it's signed with the platform's own name instead.
   async sendMagicLinkEmail(email: string, link: string): Promise<void> {
     check([email, link], [String]);
+
+    const platform = await Platform.findOneAsync();
 
     try {
       await Meteor.callAsync(
         'sendEmail',
         email,
         'Sign in',
-        getMagicLinkEmailBody(link)
+        getMagicLinkEmailBody(link),
+        platform?.name
       );
     } catch (error) {
       console.log('email error', error);
