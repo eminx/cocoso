@@ -30,7 +30,12 @@ export default function RegistrationIntro({ isModal = false }) {
   return (
     <Box>
       <Center mb="4">
-        <Image className="logo" fit="contain" src={platform.logo} />
+        <Image
+          alt={`${platform?.name} logo`}
+          className="logo"
+          fit="contain"
+          src={platform.logo}
+        />
       </Center>
       <Box pb={isModal ? '0' : '20'}>
         {/* <Center mb="4">

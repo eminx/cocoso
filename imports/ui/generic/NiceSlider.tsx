@@ -158,6 +158,7 @@ export default function NiceSlider({
         <Flex h={height} justify="center">
           <Center>
             <Image
+              alt={`${alt} ${resolvedImages[0]}`}
               loading="lazy"
               src={getImageUrl(resolvedImages[0], isPopup ? 'medium' : 'full')}
               style={imageStyle}
@@ -172,7 +173,7 @@ export default function NiceSlider({
             sources={resolvedImages.map((img) => (
               <img
                 key={img}
-                alt={img}
+                alt={`${alt} ${img}`}
                 loading="lazy"
                 src={getImageUrl(img, isPopup ? 'medium' : 'full') || img}
               />

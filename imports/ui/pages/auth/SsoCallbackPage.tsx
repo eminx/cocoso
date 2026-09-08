@@ -101,9 +101,7 @@ export default function SsoCallbackPage({
     }
     if (returnTo === AVATAR_BASED_RETURN) {
       navigate(
-        (currentUser as any)?.avatar?.src
-          ? '/'
-          : '/admin/my-profile/general'
+        (currentUser as any)?.avatar?.src ? '/' : '/admin/my-profile/general'
       );
     } else {
       navigate(returnTo);
@@ -117,7 +115,13 @@ export default function SsoCallbackPage({
         <Box w="xs" textAlign="center">
           {platform?.logo && (
             <Center p="4" mb="4">
-              <Image h="120px" w="auto" fit="contain" src={platform.logo} />
+              <Image
+                alt="logo"
+                h="120px"
+                fit="contain"
+                src={platform.logo}
+                w="auto"
+              />
             </Center>
           )}
           <Text color="gray.600">

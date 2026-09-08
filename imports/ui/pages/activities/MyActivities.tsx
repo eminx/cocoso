@@ -27,13 +27,14 @@ function ActivityItem({ act }) {
       {act.isPublicActivity && (
         <Box p="2">
           <Image
+            alt={act.title}
             fit="cover"
-            w="xs"
             fill
             src={getImageUrl(
               act.imageUrl || (act.images && act.images[0]),
               'small'
             )}
+            w="xs"
           />
         </Box>
       )}

@@ -248,6 +248,7 @@ export default function Header({
           <Box css={{ maxHeight: isLogoSmall ? '48px' : '96px' }}>
             {currentHost.logo ? (
               <Image
+                alt={`${currentHost?.settings?.name} logo`}
                 src={currentHost.logo}
                 css={{
                   height: isLogoSmall ? '48px' : '96px',

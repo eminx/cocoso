@@ -291,7 +291,12 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
       <Box w="xs">
         {platform?.logo && (
           <Center p="4">
-            <Image h="120px" w="auto" src={platform.logo} />
+            <Image
+              alt={`${platform?.name} logo`}
+              h="120px"
+              w="auto"
+              src={platform.logo}
+            />
           </Center>
         )}
 

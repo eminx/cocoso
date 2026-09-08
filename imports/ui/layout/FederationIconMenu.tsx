@@ -50,6 +50,7 @@ export default function FederationIconMenu() {
         }}
       >
         <Image
+          alt="Federation Icon"
           src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
           css={{
             cursor: 'pointer',

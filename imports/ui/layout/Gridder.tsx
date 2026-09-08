@@ -40,6 +40,7 @@ export default function Gridder({ items }: GridderProps) {
               css={{ width: '360px' }}
             >
               <Image
+                alt={item.title || item.label || item.settings?.name}
                 w={360}
                 h={240}
                 src={getImageUrl(

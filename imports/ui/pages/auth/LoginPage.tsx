@@ -118,7 +118,11 @@ export default function LoginPage() {
           <Box w="xs">
             {platform && (
               <Center p="4">
-                <Image w="240px" src={platform?.logo} />
+                <Image
+                  alt={`${platform?.name} logo`}
+                  src={platform?.logo}
+                  w="240px"
+                />
               </Center>
             )}
 
@@ -182,7 +186,12 @@ export default function LoginPage() {
         confirmText={t('profile.join')}
       >
         <Center>
-          <Image src={currentHost?.logo} m="4" width="4xs" />
+          <Image
+            alt={`${currentHost?.settings?.name} logo`}
+            src={currentHost?.logo}
+            m="4"
+            width="4xs"
+          />
         </Center>
         <Text fontSize="lg">{t('profile.joinAsParticipantQuestion')}</Text>
       </Modal>
