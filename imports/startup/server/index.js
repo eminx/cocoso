@@ -17,6 +17,13 @@ const { cdn_server } = Meteor.settings;
 function setupSMTP() {
   const smtp = Meteor.settings?.mailCredentials?.smtp;
 
+  if (!smtp) {
+    console.warn(
+      'SMTP settings not found in Meteor.settings.mailCredentials.smtp'
+    );
+    return;
+  }
+
   process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${
     smtp.password
   }@${smtp.host}:${smtp.port}`;

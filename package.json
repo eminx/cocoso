@@ -79,7 +79,7 @@
     "jotai": "^2.15.0",
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.473.0",
-    "meteor-node-stubs": "^1.2.1",
+    "meteor-node-stubs": "^1.2.30",
     "patch-package": "^8.0.1",
     "postcss-easy-import": "^4.0.0",
     "query-string": "^7.1.1",
