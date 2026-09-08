@@ -4,6 +4,7 @@ import { check } from 'meteor/check';
 
 import { getHost } from '../../shared';
 import Hosts from '../../../hosts/host';
+import Platform from '../../../platform/platform';
 import {
   isValidEmail,
   getEmailBody,
@@ -62,12 +63,22 @@ Meteor.methods({
     }
 
     const host = getHost(this);
-    const currentHost = await Hosts.findOneAsync({ host }) as HostDocument | undefined;
+    const currentHost = host
+      ? (await Hosts.findOneAsync({ host }) as HostDocument | undefined)
+      : undefined;
+
+    // host is only ever set for a direct client->server call — a call
+    // nested inside another method (sendWelcomeEmail, sendMagicLinkEmail,
+    // etc.) has no connection to read it from, so those fall back to the
+    // platform's own name instead of a specific tenant's.
+    const displayName =
+      currentHost?.settings?.name ||
+      (!host ? (await Platform.findOneAsync())?.name : undefined);
 
     let fromEmailWithHostName = fromEmail;
-    if (currentHost && currentHost.settings && currentHost.settings.name) {
+    if (displayName) {
       const extractedEmail = extractEmailAddress(fromEmail);
-      fromEmailWithHostName = `${currentHost.settings.name} <${extractedEmail}>`;
+      fromEmailWithHostName = `${displayName} <${extractedEmail}>`;
     }
 
     const data = {
