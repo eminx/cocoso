@@ -280,12 +280,14 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
                   }}
                 >
                   <Flex align="center" gap="4">
-                    <Avatar
-                      borderRadius="50%"
-                      name={confirmIdentity.username}
-                      size="xl"
-                      src={confirmIdentity.avatar || undefined}
-                    />
+                    <Box css={{ flexShrink: 0 }}>
+                      <Avatar
+                        borderRadius="50%"
+                        name={confirmIdentity.username}
+                        size="xl"
+                        src={confirmIdentity.avatar || undefined}
+                      />
+                    </Box>
                     <Flex direction="column" align="center" gap="2">
                       <Text fontSize="lg" fontWeight="bold">
                         {t('sso.confirm.continueAs', {
