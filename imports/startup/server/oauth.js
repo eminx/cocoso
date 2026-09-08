@@ -7,11 +7,10 @@ import cookie from 'cookie';
 import Hosts from '../../api/hosts/host';
 import AuthorizationCodes from '../../api/sso/authorizationCode';
 import MagicLinkTokens from '../../api/sso/magicLinkToken';
-import { base64url, validateRedirect } from '../../api/sso/oauthHelpers';
+import { base64url, validateRedirect, mintAuthorizationCode } from '../../api/sso/oauthHelpers';
 import { generateUsernameFromEmail } from '../../api/users/username.helpers';
 import '../../api/sso/magicLink.methods';
 
-const CODE_TTL_MS = 60 * 1000;
 const BROKER_COOKIE_NAME = 'cocoso_broker_session';
 const BROKER_COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days, in seconds
 const MAX_BODY_BYTES = 1024 * 100; // 100kb, generous for a login/register form
@@ -96,17 +95,12 @@ function clearBrokerCookie(res) {
 }
 
 async function mintCodeAndRedirect(res, { userId, host, redirectUri, state, codeChallenge, codeChallengeMethod }) {
-  const code = base64url(crypto.randomBytes(32));
-  await AuthorizationCodes.insertAsync({
-    code,
+  const code = await mintAuthorizationCode({
     userId,
     host,
     redirectUri,
     codeChallenge,
-    codeChallengeMethod: codeChallengeMethod || 'S256',
-    expiresAt: new Date(Date.now() + CODE_TTL_MS),
-    used: false,
-    createdAt: new Date(),
+    codeChallengeMethod,
   });
 
   const url = new URL(redirectUri);
@@ -140,6 +134,7 @@ async function handleAuthorizeGet(req, res, params) {
     state,
     code_challenge: codeChallenge,
     code_challenge_method: codeChallengeMethod,
+    screen_hint: screenHint,
   } = params;
 
   if (!host || !redirectUri || !codeChallenge) {
@@ -184,9 +179,16 @@ async function handleAuthorizeGet(req, res, params) {
     return;
   }
 
-  // No broker session yet — hand off to the real React login page
+  // No broker session yet — hand off to the real React login/register page
   // (imports/ui/pages/auth/BrokerAuthPage.tsx), which posts back here.
-  redirectToBrokerForm(res, '/login', oauthFields);
+  // screen_hint only steers this first hop (e.g. the tenant's old /register
+  // route wants the signup form, not login) — it isn't persisted past this
+  // redirect since nothing downstream needs to remember it.
+  redirectToBrokerForm(
+    res,
+    screenHint === 'register' ? '/register' : '/login',
+    oauthFields
+  );
 }
 
 async function handleAuthorizePost(req, res) {

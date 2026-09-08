@@ -10,6 +10,7 @@ import {
   Heading,
   Image,
   Link as CLink,
+  Loader,
   Modal,
   Text,
 } from '/imports/ui/core';
@@ -24,7 +25,7 @@ import {
 
 import { loginWithPassword } from './functions';
 // import { Login } from './index';
-import SsoButton from './SsoButton';
+import SsoButton, { startSso } from './SsoButton';
 import { clearEncryptionKey } from '/imports/utils/setupEncryption';
 
 export default function LoginPage() {
@@ -36,9 +37,16 @@ export default function LoginPage() {
   const [submitted, setSubmitted] = useState(false);
   const [joinModal, setJoinModal] = useState(false);
   const navigate = useNavigate();
+  const authDomain = Meteor.settings.public?.authDomain;
 
   useEffect(() => {
     if (!currentUser) {
+      // No password form left to click through — go straight to the auth
+      // domain's sign-in panel. If this tenant has no broker configured,
+      // fall through to the (rare, SSO-less) modal below instead.
+      if (authDomain) {
+        startSso(authDomain);
+      }
       return;
     }
     const hostWithinUser = currentUser?.memberships?.find(
@@ -84,6 +92,16 @@ export default function LoginPage() {
       message.error(error.reason || error.error);
     }
   };
+
+  if (!currentUser && authDomain) {
+    // Redirect to the auth domain kicks off in the effect above — nothing
+    // to show here beyond a brief loading state before the tab navigates.
+    return (
+      <Center p="8">
+        <Loader speed={1} />
+      </Center>
+    );
+  }
 
   return (
     <Box pb="8">

@@ -16,7 +16,7 @@ import {
 } from '/imports/ui/core';
 import FormField from '/imports/ui/forms/FormField';
 import { message } from '/imports/ui/generic/message';
-import { call } from '../../../api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import { AuthContainer } from './index';
 
 interface OAuthParams {
@@ -133,10 +133,11 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
     ? t(`sso.broker.errors.${ERROR_CODE_KEYS[errorCode] || 'generic'}`)
     : null;
 
-  // A reset-password link arrives standalone, potentially hours later on
-  // any device — there's no active OAuth round-trip to return to, so the
-  // terms link (tied to the originating tenant) only makes sense when one
-  // is actually in flight.
+  // A reset-password link can arrive standalone (a bare/legacy emailed
+  // link with no OAuth handshake attached) — the terms link (tied to the
+  // originating tenant) only makes sense when oauthParams actually carry
+  // one, same condition handleResetPassword below checks before minting a
+  // code back to that tenant.
   const termsHref = oauthParams.client_id
     ? `https://${oauthParams.client_id}/terms-&-privacy-policy`
     : undefined;
@@ -246,6 +247,37 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   const handleResetPassword = async (data: any) => {
     try {
       await call('resetPassword', token, data.password);
+
+      // accounts-password's resetPassword just authenticated this very
+      // connection — if there's a full OAuth handshake in the URL (i.e.
+      // this came from the tenant's own /reset-password/:token redirect,
+      // not a bare/legacy emailed link), mint the same kind of one-time
+      // code the native login/register posts produce and send them
+      // straight back, same as any other completed sign-in. Otherwise
+      // there's no redirect_uri to send them to — just report success.
+      if (
+        oauthParams.client_id &&
+        oauthParams.redirect_uri &&
+        oauthParams.code_challenge
+      ) {
+        const { code } = await call<{ code: string }>(
+          'mintOAuthCodeForCurrentUser',
+          {
+            host: oauthParams.client_id,
+            redirectUri: oauthParams.redirect_uri,
+            codeChallenge: oauthParams.code_challenge,
+            codeChallengeMethod: oauthParams.code_challenge_method,
+          }
+        );
+        const url = new URL(oauthParams.redirect_uri);
+        url.searchParams.set('code', code);
+        if (oauthParams.state) {
+          url.searchParams.set('state', oauthParams.state);
+        }
+        window.location.href = url.toString();
+        return;
+      }
+
       message.success(t('sso.broker.resetSuccess'));
       setResetDone(true);
     } catch (error: any) {

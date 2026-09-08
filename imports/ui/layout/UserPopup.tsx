@@ -9,6 +9,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
 import { clearEncryptionKey } from '/imports/utils/setupEncryption';
+import { startSso } from '/imports/ui/pages/auth/SsoButton';
 
 import {
   Avatar,
@@ -66,7 +67,7 @@ const linkButtonProps = {
   mt: '1',
   variant: 'ghost',
   size: 'sm',
-};
+} as const;
 
 export interface UserThumbProps {
   notificationsCounter?: number;
@@ -164,6 +165,23 @@ export default function UserPopup({ isOpen }: UserPopupProps) {
   }
 
   if (!currentUser) {
+    const authDomain = Meteor.settings.public?.authDomain;
+
+    // Straight to the auth domain, no /login stopover — the button case
+    // remembers where to come back to; /login itself (no button, direct
+    // visit) still does its own redirect from LoginPage.tsx.
+    if (authDomain) {
+      return (
+        <Button
+          {...linkButtonProps}
+          style={{ marginRight: '12px' }}
+          onClick={() => startSso(authDomain)}
+        >
+          <Trans i18nKey="common:menu.guest.login">Login</Trans>
+        </Button>
+      );
+    }
+
     return (
       <Link to="/login" style={{ marginRight: '12px' }}>
         <Button {...linkButtonProps}>

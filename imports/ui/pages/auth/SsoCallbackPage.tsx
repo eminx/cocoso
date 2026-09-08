@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Link, useNavigate } from 'react-router';
 import { Trans, useTranslation } from 'react-i18next';
+import { useAtomValue, useSetAtom } from 'jotai';
 
 import {
   Box,
@@ -13,6 +14,8 @@ import {
   Text,
 } from '/imports/ui/core';
 import { call } from '/imports/api/_utils/shared';
+import { currentUserAtom, roleAtom } from '/imports/state';
+import { AVATAR_BASED_RETURN } from './SsoButton';
 
 const PENDING_KEY = 'cocoso_sso_pending';
 
@@ -24,6 +27,9 @@ export default function SsoCallbackPage({
   const navigate = useNavigate();
   const [t] = useTranslation('accounts');
   const [error, setError] = useState<string | null>(null);
+  const [returnTo, setReturnTo] = useState<string | null>(null);
+  const currentUser = useAtomValue(currentUserAtom);
+  const setRole = useSetAtom(roleAtom);
 
   useEffect(() => {
     (async () => {
@@ -56,13 +62,53 @@ export default function SsoCallbackPage({
             setError(loginError.message || t('sso.callback.errors.failed'));
             return;
           }
-          navigate('/login');
+          // Where this lands is decided below, once currentUser reloads —
+          // /login's own "join this host?" check still applies for a
+          // brand-new member, same as before this button skipped /login.
+          setReturnTo(pending.returnTo || '/login');
         });
       } catch (exchangeError: any) {
         setError(exchangeError.reason || t('sso.callback.errors.failed'));
       }
     })();
   }, []);
+
+  // Mirrors LoginPage's own post-login membership check: only send the
+  // person on to a real destination once we know they already belong here,
+  // otherwise fall back to /login so its join-as-participant prompt still
+  // gets a chance to run — same gate for a returning member (real page) and
+  // a brand-new one (avatar-based destination) alike.
+  useEffect(() => {
+    if (!returnTo) {
+      return;
+    }
+    if (returnTo === '/login') {
+      navigate('/login');
+      return;
+    }
+    if (!currentUser) {
+      return;
+    }
+    const hostWithinUser = (currentUser as any)?.memberships?.find(
+      (membership: any) => membership?.host === window.location.host
+    );
+    setRole(hostWithinUser?.role || null);
+    if (
+      !['participant', 'contributor', 'admin'].includes(hostWithinUser?.role)
+    ) {
+      navigate('/login');
+      return;
+    }
+    if (returnTo === AVATAR_BASED_RETURN) {
+      navigate(
+        (currentUser as any)?.avatar?.src
+          ? '/'
+          : '/admin/my-profile/general'
+      );
+    } else {
+      navigate(returnTo);
+    }
+  }, [returnTo, currentUser]);
 
   if (!error) {
     return (

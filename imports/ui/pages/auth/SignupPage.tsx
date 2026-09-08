@@ -1,99 +1,36 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router';
-import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import {
-  Box,
-  Center,
-  Heading,
-  Image,
-  Link as CLink,
-  Modal,
-  Text,
-} from '/imports/ui/core';
+import { Center, Loader } from '/imports/ui/core';
 import { currentUserAtom, platformAtom } from '/imports/state';
-
-import { Signup } from './index';
-import { createAccount } from './functions';
+import { AVATAR_BASED_RETURN, startSso } from './SsoButton';
 
 export default function SignupPage() {
   const currentUser = useAtomValue(currentUserAtom);
   const platform = useAtomValue(platformAtom);
-  const [t] = useTranslation('accounts');
   const navigate = useNavigate();
+  const authDomain = Meteor.settings.public?.authDomain;
 
   useEffect(() => {
-    if (!currentUser) {
+    if (currentUser) {
+      // Already signed in — nothing to register, same fallback as before.
+      if (platform?.isFederationLayout) {
+        navigate('/intro');
+      } else {
+        navigate(`/@${currentUser.username}`);
+      }
       return;
     }
-    if (platform?.isFederationLayout) {
-      navigate('/intro');
-    } else {
-      navigate(`/@${currentUser.username}`);
+    if (authDomain) {
+      startSso(authDomain, AVATAR_BASED_RETURN, 'register');
     }
   }, [currentUser]);
 
   return (
-    <Box pb="8">
-      <Modal
-        hideHeader
-        hideFooter
-        id="signup-page"
-        open
-        size="2xl"
-        onClose={() => navigate('/')}
-      >
-        <Center>
-          <Box w="sm">
-            {platform && (
-              <Center>
-                <Box>
-                  {platform?.logo && (
-                    <Center p="4">
-                      <Image w="240px" src={platform?.logo} />
-                    </Center>
-                  )}
-                  <Heading
-                    size="md"
-                    css={{ marginBottom: '1em', textAlign: 'center' }}
-                  >
-                    {t('signup.labels.title')}
-                  </Heading>
-                  <Text textAlign="center">
-                    {t('signup.labels.platform', {
-                      platform: platform?.name,
-                    })}
-                  </Text>
-                </Box>
-              </Center>
-            )}
-
-            <Center py="4">
-              <Text>
-                {t('signup.labels.subtitle')}{' '}
-                <Link to="/login">
-                  <CLink as="span" color="blue.500">
-                    <b>{t('actions.login')}</b>
-                  </CLink>
-                </Link>
-              </Text>
-            </Center>
-
-            <Box
-              bg="gray.50"
-              mb="4"
-              p="6"
-              css={{
-                border: '1px solid',
-                borderColor: 'var(--cocoso-colors-gray-300)',
-              }}
-            >
-              <Signup onSubmit={(values) => createAccount(values)} />
-            </Box>
-          </Box>
-        </Center>
-      </Modal>
-    </Box>
+    <Center p="8">
+      <Loader speed={1} />
+    </Center>
   );
 }
