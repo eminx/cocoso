@@ -9,7 +9,6 @@ import { useAtom, useAtomValue } from 'jotai';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
 import { clearEncryptionKey } from '/imports/utils/setupEncryption';
-import { startSso } from '/imports/ui/pages/auth/SsoButton';
 
 import {
   Avatar,
@@ -169,13 +168,22 @@ export default function UserPopup({ isOpen }: UserPopupProps) {
 
     // Straight to the auth domain, no /login stopover — the button case
     // remembers where to come back to; /login itself (no button, direct
-    // visit) still does its own redirect from LoginPage.tsx.
+    // visit) still does its own redirect from LoginPage.tsx. Dynamically
+    // imported so UserPopup (part of the always-rendered layout shell)
+    // doesn't drag the auth/SSO chunk into the eager bundle every page
+    // pays for — that chunk was previously only reachable through
+    // loadable()-wrapped routes in appRoutes.js.
     if (authDomain) {
       return (
         <Button
           {...linkButtonProps}
           style={{ marginRight: '12px' }}
-          onClick={() => startSso(authDomain)}
+          onClick={async () => {
+            const { startSso } = await import(
+              '/imports/ui/pages/auth/SsoButton'
+            );
+            startSso(authDomain);
+          }}
         >
           <Trans i18nKey="common:menu.guest.login">Login</Trans>
         </Button>
