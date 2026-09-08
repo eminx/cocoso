@@ -58,8 +58,9 @@ function resolveLang({ lngParam, cookieHeader, acceptLanguageHeader }) {
 }
 
 // For a plain HTTP request (oauth.js's connect-middleware handlers,
-// serverRenderer.js). Callers extract their own lngParam since req shapes
-// differ (a raw URL string vs. an already-parsed sink.request.url).
+// serverRenderer.js). Only reads headers, so it doesn't care that req.url
+// is always a raw string (never a parsed URL object) — callers extract
+// their own lngParam from wherever their query string actually lives.
 function resolveLangFromRequest(req, lngParam) {
   return resolveLang({
     lngParam,

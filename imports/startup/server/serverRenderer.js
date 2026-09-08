@@ -56,8 +56,16 @@ export default async function serverRenderer(sink) {
 
   const pageTitles = pages.map((p) => p.title);
 
-  const pathname = sink?.request?.url?.pathname;
-  const search = sink?.request?.url?.search;
+  // sink.request here isn't the raw Node req — it's WebApp.categorizeRequest(req)
+  // (meteor/webapp's webapp_server.js), which reshapes it to
+  // { path, url: { query: {...} }, headers, cookies, ... }. The pathname
+  // lives in `path`; `url.query` is the parsed query as a plain object,
+  // not a search string, so it's rebuilt here for the fullUrl below.
+  const pathname = sink?.request?.path || '';
+  const queryString = new URLSearchParams(
+    sink?.request?.url?.query || {}
+  ).toString();
+  const search = queryString ? `?${queryString}` : '';
 
   // Resolve the visitor's actual language (querystring -> i18next cookie ->
   // Accept-Language -> default), mirroring the client LanguageDetector's own

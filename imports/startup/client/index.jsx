@@ -83,9 +83,6 @@ onPageLoad(async () => {
   const platform = await Meteor.callAsync('getPlatform');
   const pageTitles = await Meteor.callAsync('getPageTitles');
 
-  console.log('Initializing...');
-  console.log('Current Host:', currentHost);
-
   if (!platform || !currentHost) {
     console.log(
       'Platform or current host not found. Rendering SetupHome component.'
