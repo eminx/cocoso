@@ -147,10 +147,6 @@ export default function EmblaSlider({
       return;
     }
     emblaApi.scrollPrev();
-    setState((prevState) => ({
-      ...prevState,
-      currentSlideIndex: emblaApi.selectedScrollSnap(),
-    }));
   }, [emblaApi]);
 
   const scrollNext = useCallback(() => {
@@ -158,10 +154,6 @@ export default function EmblaSlider({
       return;
     }
     emblaApi.scrollNext();
-    setState((prevState) => ({
-      ...prevState,
-      currentSlideIndex: emblaApi.selectedScrollSnap(),
-    }));
   }, [emblaApi]);
 
   useEffect(() => {
@@ -188,6 +180,7 @@ export default function EmblaSlider({
     }
     const onSelect = () => {
       const idx = emblaApi.selectedScrollSnap();
+      setState((prevState) => ({ ...prevState, currentSlideIndex: idx }));
       setLoadedIndices((prev) => {
         const next = new Set(prev);
         next.add(idx);
@@ -218,7 +211,6 @@ export default function EmblaSlider({
     )),
     sourceIndex: state.currentSlideIndex,
   };
-
 
   if (resolvedImages.length === 1) {
     return (
@@ -271,7 +263,10 @@ export default function EmblaSlider({
           </svg>
         </button>
 
-        <Dots currentSlideIndex={state.currentSlideIndex} images={resolvedImages} />
+        <Dots
+          currentSlideIndex={state.currentSlideIndex}
+          images={resolvedImages}
+        />
 
         <button className="embla__next embla__button" onClick={scrollNext}>
           <svg className="embla__button__svg" viewBox="0 0 532 532">
