@@ -124,11 +124,13 @@ export default function SsoCallbackPage({
               />
             </Center>
           )}
-          <Text color="gray.600">
-            <Trans i18nKey="accounts.sso.callback.verifying">
-              Verifying your sign-in…
-            </Trans>
-          </Text>
+          <Center>
+            <Text color="gray.600" textAlign="center">
+              <Trans i18nKey="accounts.sso.callback.verifying">
+                Verifying your sign-in…
+              </Trans>
+            </Text>
+          </Center>
         </Box>
       </Center>
     );
