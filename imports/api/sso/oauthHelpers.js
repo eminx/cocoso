@@ -20,7 +20,13 @@ function base64url(buffer) {
 function validateRedirect(host, redirectUri) {
   let redirectHost;
   try {
-    redirectHost = new URL(redirectUri).hostname;
+    // .host (not .hostname) so the port is included — client_id is
+    // window.location.host (SsoButton.tsx), which keeps the port too, and
+    // Hosts docs are keyed the same port-inclusive way everywhere else in
+    // this app (e.g. serverRenderer.js's Hosts.findOneAsync({ host })).
+    // Using .hostname here broke every non-default-port deployment,
+    // i.e. always on localhost dev.
+    redirectHost = new URL(redirectUri).host;
   } catch {
     return null;
   }

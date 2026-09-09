@@ -24,7 +24,7 @@ import {
 } from '/imports/state';
 
 import { loginWithPassword } from './functions';
-// import { Login } from './index';
+import { Login } from './index';
 import SsoButton, { startSso } from './SsoButton';
 import { clearEncryptionKey } from '/imports/utils/setupEncryption';
 
@@ -38,13 +38,18 @@ export default function LoginPage() {
   const [joinModal, setJoinModal] = useState(false);
   const navigate = useNavigate();
   const authDomain = Meteor.settings.public?.authDomain;
+  // The broker (auth.fanus.app) is a real, separately-deployed server —
+  // running locally doesn't change what it does. Skip the auto-redirect on
+  // localhost specifically so the plain password form below stays usable
+  // for local dev/testing regardless of whether authDomain is configured.
+  const isLocalDev = window.location.hostname === 'localhost';
 
   useEffect(() => {
     if (!currentUser) {
       // No password form left to click through — go straight to the auth
       // domain's sign-in panel. If this tenant has no broker configured,
       // fall through to the (rare, SSO-less) modal below instead.
-      if (authDomain) {
+      if (authDomain && !isLocalDev) {
         startSso(authDomain);
       }
       return;
@@ -93,7 +98,7 @@ export default function LoginPage() {
     }
   };
 
-  if (!currentUser && authDomain) {
+  if (!currentUser && authDomain && !isLocalDev) {
     // Redirect to the auth domain kicks off in the effect above — nothing
     // to show here beyond a brief loading state before the tab navigates.
     return (
@@ -130,47 +135,51 @@ export default function LoginPage() {
               <SsoButton />
             </Center>
 
-            {/* <Heading mb="4" size="md" textAlign="center">
-              {t('login.labels.title')}
-            </Heading>
+            {isLocalDev && (
+              <>
+                <Heading mb="4" size="md" textAlign="center">
+                  {t('login.labels.title')}
+                </Heading>
 
-            <Center mb="6">
-              <Text>
-                {t('login.labels.subtitle')}{' '}
-                <Link to="/register">
-                  <CLink as="span" color="blue.500">
-                    <b>{t('actions.signup')}</b>
-                  </CLink>
-                </Link>
-              </Text>
-            </Center>
+                <Center mb="6">
+                  <Text>
+                    {t('login.labels.subtitle')}{' '}
+                    <Link to="/register">
+                      <CLink as="span" color="blue.500">
+                        <b>{t('actions.signup')}</b>
+                      </CLink>
+                    </Link>
+                  </Text>
+                </Center>
 
-            <Box
-              bg="gray.50"
-              mb="4"
-              p="4"
-              css={{
-                border: '1px solid',
-                borderColor: 'var(--cocoso-colors-gray-300)',
-              }}
-            >
-              <Login isSubmitted={submitted} onSubmit={handleSubmit} />
-            </Box>
-            <Center>
-              <Text textAlign="center">
-                {t('actions.forgot')}
-                <br />
-                <Link to="/forgot-password">
-                  <CLink
-                    as="span"
-                    color="blue.500"
-                    css={{ marginTop: '0.5rem' }}
-                  >
-                    <b>{t('actions.reset')}</b>
-                  </CLink>
-                </Link>
-              </Text>
-            </Center> */}
+                <Box
+                  bg="gray.50"
+                  mb="4"
+                  p="4"
+                  css={{
+                    border: '1px solid',
+                    borderColor: 'var(--cocoso-colors-gray-300)',
+                  }}
+                >
+                  <Login isSubmitted={submitted} onSubmit={handleSubmit} />
+                </Box>
+                <Center>
+                  <Text textAlign="center">
+                    {t('actions.forgot')}
+                    <br />
+                    <Link to="/forgot-password">
+                      <CLink
+                        as="span"
+                        color="blue.500"
+                        css={{ marginTop: '0.5rem' }}
+                      >
+                        <b>{t('actions.reset')}</b>
+                      </CLink>
+                    </Link>
+                  </Text>
+                </Center>
+              </>
+            )}
           </Box>
         </Center>
       </Modal>
