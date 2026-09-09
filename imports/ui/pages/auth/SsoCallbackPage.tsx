@@ -12,6 +12,7 @@ import {
   Link as CLink,
   Loader,
   Text,
+  Modal,
 } from '/imports/ui/core';
 import { call } from '/imports/api/_utils/shared';
 import { currentUserAtom, roleAtom } from '/imports/state';
@@ -110,29 +111,31 @@ export default function SsoCallbackPage({
 
   if (!error) {
     return (
-      <Center p="8">
+      <Modal id="sso-callback-verifying" hideFooter hideHeader open size="xl">
         <Loader speed={1} />
-        <Box w="xs" textAlign="center">
-          {platform?.logo && (
-            <Center p="4" mb="4">
-              <Image
-                alt="logo"
-                h="120px"
-                fit="contain"
-                src={platform.logo}
-                w="auto"
-              />
+        <Center p="8">
+          <Box w="xs" textAlign="center">
+            {platform?.logo && (
+              <Center p="4" mb="4">
+                <Image
+                  alt="platform logo"
+                  fit="contain"
+                  src={platform.logo}
+                  w="auto"
+                  css={{ maxHeight: '120px' }}
+                />
+              </Center>
+            )}
+            <Center>
+              <Text color="gray.600" textAlign="center">
+                <Trans i18nKey="accounts.sso.callback.verifying">
+                  Verifying your sign-in…
+                </Trans>
+              </Text>
             </Center>
-          )}
-          <Center>
-            <Text color="gray.600" textAlign="center">
-              <Trans i18nKey="accounts.sso.callback.verifying">
-                Verifying your sign-in…
-              </Trans>
-            </Text>
-          </Center>
-        </Box>
-      </Center>
+          </Box>
+        </Center>
+      </Modal>
     );
   }
 

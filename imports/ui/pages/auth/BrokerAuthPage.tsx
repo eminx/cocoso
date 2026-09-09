@@ -293,9 +293,12 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
           <Center p="4">
             <Image
               alt={`${platform?.name} logo`}
-              h="120px"
-              w="auto"
+              fit="contain"
               src={platform.logo}
+              w="auto"
+              css={{
+                maxHeight: '120px',
+              }}
             />
           </Center>
         )}

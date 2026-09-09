@@ -91,11 +91,6 @@ export default function BackgroundHandler({
         ...prevState,
         uploadingBgImage: false,
       }));
-      // No new file pending (already-uploaded URL, or explicitly 'none') —
-      // pass the current value through so updateHostTheme's `uploadedImage
-      // = null` default doesn't wipe an existing, unchanged background
-      // image just because Submit was clicked for an unrelated change
-      // (e.g. the font).
       onUploadFinish(backgroundImage);
       return;
     }
