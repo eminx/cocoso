@@ -73,6 +73,10 @@ export const fontOptions = [
     label: 'Ubuntu Sans Mono', // mono
     value: 'Ubuntu+Sans+Mono',
   },
+  {
+    label: 'Work Sans',
+    value: 'Work+Sans',
+  },
 ];
 
 export const fontStyleOptions = [
