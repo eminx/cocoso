@@ -9,6 +9,7 @@ import { Box, Button, Center, Flex, Grid } from '/imports/ui/core';
 import { Divider, Heading } from '/imports/ui/core';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 import type { Host } from '/imports/ui/types';
+import { Helmet } from 'react-helmet';
 
 export interface ModuleValue {
   alt?: string;
@@ -158,6 +159,7 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
 interface ComposablePage {
   _id?: string;
   title?: string;
+  description?: string;
   modules?: Module[];
   settings?: {
     hideMenu?: boolean;
@@ -180,45 +182,67 @@ export default function ComposablePageHybrid({
 
   const hideMenu = composablePage.settings?.hideMenu;
   const hideTitle = composablePage.settings?.hideTitle;
+  const titleWithHost = `${Host.settings?.name} | ${composablePage.title}`;
 
   return (
-    <Box mt="4">
-      {hideMenu ? (
-        <style>
-          {`
+    <>
+      <Helmet>
+        <title>{titleWithHost}</title>
+        <link rel="canonical" href={`https://${Host.host}`} />
+        <meta charSet="utf-8" />
+        <meta name="title" content={titleWithHost} />
+        <meta name="description" content={composablePage.description || ''} />
+        <meta
+          property="og:title"
+          content={String(titleWithHost)?.substring(0, 40)}
+        />
+        <meta property="og:url" content={`https://${Host.host}`} />
+        <meta property="og:image" content={Host.logo} />
+        <meta
+          property="og:description"
+          content={String(composablePage.description || '')?.substring(0, 150)}
+        />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
+      <Box mt="4">
+        {hideMenu ? (
+          <style>
+            {`
             #main-menu {
               display: none;
             }
           `}
-        </style>
-      ) : null}
-      {hideTitle ? null : (
-        <Heading
-          css={{ textAlign: 'center', margin: '1.5rem 0 0.5rem' }}
-          size="xl"
-        >
-          {composablePage.title}
-        </Heading>
-      )}
-      <Flex direction="column">
-        {composablePage.contentRows.map((row, rowIndex) => (
-          <Grid
-            key={row.id || row.gridType + rowIndex}
-            p="4"
-            templateColumns="repeat(auto-fit, minmax(250px, 1fr))"
+          </style>
+        ) : null}
+        {hideTitle ? null : (
+          <Heading
+            css={{ textAlign: 'center', margin: '1.5rem 0 0.5rem' }}
+            size="xl"
           >
-            {row.columns.map((column, columnIndex) => (
-              <Box key={columnIndex}>
-                {column.map((module, moduleIndex) => (
-                  <Box key={module.id || module.type + moduleIndex}>
-                    <ContentViewModule module={module} Host={Host} />
-                  </Box>
-                ))}
-              </Box>
-            ))}
-          </Grid>
-        ))}
-      </Flex>
-    </Box>
+            {composablePage.title}
+          </Heading>
+        )}
+        <Flex direction="column">
+          {composablePage.contentRows.map((row, rowIndex) => (
+            <Grid
+              key={row.id || row.gridType + rowIndex}
+              p="4"
+              templateColumns="repeat(auto-fit, minmax(250px, 1fr))"
+            >
+              {row.columns.map((column, columnIndex) => (
+                <Box key={columnIndex}>
+                  {column.map((module, moduleIndex) => (
+                    <Box key={module.id || module.type + moduleIndex}>
+                      <ContentViewModule module={module} Host={Host} />
+                    </Box>
+                  ))}
+                </Box>
+              ))}
+            </Grid>
+          ))}
+        </Flex>
+      </Box>
+    </>
   );
 }

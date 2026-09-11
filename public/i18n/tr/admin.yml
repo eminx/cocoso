@@ -12,10 +12,10 @@ settings:
   tabs:
     design: Tasarım
     general: Genel
-    logo: Logo
-    logoHelper: Web sitesi için logo yükle
     info: Bilgi
     infoHelper: Topluluğun hakkında bilgi gir
+    logo: Logo
+    logoHelper: Web sitesi için logo yükle
     categories: Kategoriler
     menu: Menü
     menuHelper: Menüyü oluştur ve ayarla
@@ -211,22 +211,24 @@ composable:
     addContent: 'İçerik ekle'
     addToMenu: 'Özelleştirilebilir sayfa ekle'
     addRow: Satır ekle
-    space: Boşluk
-    spaceHelper: Lütfen boşluk için piksel bazlı bir yükseklik gir
+    description: Açıklama
+    descriptionHelper: Arama motorları ve sosyal medya paylaşım özetleri için yararlıdır
+    imageAsLink: 'İmaj link mi?'
     label: Etiket
     labelHelper: Lütfen buton için etiketi gir. Bu etiket buton üzerinde görünecek
     line: 'Çizgi'
     link: Bağlantı adresi
     linkHelper: Lütfen bağlantı adresini gir. Bu bağlantı, butona tıklandığında açılır
-    variant: Varyant
-    variantHelper: Lütfen varyant seç
+    removeRow: Satırı kaldır
     size: Büyüklük
     sizeHelper: Lütfen büyüklük seç
-    imageAsLink: 'İmaj link mi?'
+    space: Boşluk
+    spaceHelper: Lütfen boşluk için piksel bazlı bir yükseklik gir
+    title: Başlık
     video: Video-URL
     videoHelper: Lütfen bir video URL'si gir, genellikle bir YouTube veya Vimeo video sayfasının bağlantı adresi olur..
-    removeRow: Satırı kaldır
-    title: Başlık
+    variant: Varyant
+    variantHelper: Lütfen varyant seç
     types:
       button: 'Buton'
       divider: 'Ayraç'

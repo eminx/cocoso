@@ -3,7 +3,7 @@ import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { Trans } from 'react-i18next';
 import { useSetAtom } from 'jotai';
 
-import { Box, Button, Checkbox, Input } from '/imports/ui/core';
+import { Box, Button, Checkbox, Input, Textarea } from '/imports/ui/core';
 import Modal from '/imports/ui/core/Modal';
 import FormField from '/imports/ui/forms/FormField';
 import { call } from '../../../../api/_utils/shared';
@@ -19,6 +19,7 @@ export default function ComposablePageSettings() {
   );
 
   const initialState = {
+    description: currentPage?.description || '',
     hideTitle: currentPage?.settings?.hideTitle,
     hideMenu: currentPage?.settings?.hideMenu,
     modalOpen: false,
@@ -54,6 +55,7 @@ export default function ComposablePageSettings() {
     const newPage = {
       ...currentPage,
       title: state.title,
+      description: state.description,
       settings: {
         ...currentPage.settings,
         hideTitle: state.hideTitle,
@@ -107,7 +109,7 @@ export default function ComposablePageSettings() {
         onClose={handleCloseModal}
       >
         <Box borderRadius="md">
-          <Box pb="2">
+          <Box>
             <FormField
               label={<Trans i18nKey="admin:composable.form.title" />}
               required
@@ -116,6 +118,19 @@ export default function ComposablePageSettings() {
                 type="text"
                 value={state.title}
                 onChange={(e) => updateSettings({ title: e.target.value })}
+              />
+            </FormField>
+          </Box>
+
+          <Box pb="2">
+            <FormField
+              label={<Trans i18nKey="admin:composable.form.description" />}
+            >
+              <Textarea
+                value={state.description}
+                onChange={(e) =>
+                  updateSettings({ description: e.target.value })
+                }
               />
             </FormField>
           </Box>

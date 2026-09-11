@@ -211,22 +211,24 @@ composable:
     addContent: Add Content
     addToMenu: Add a composable page
     addRow: Add a row
-    space: Empty Space
-    spaceHelper: Please enter the height of the empty space in pixels
+    description: Description
+    descriptionHelper: Useful for SEO and social sharing snippets
+    imageAsLink: Image as link?
     label: Label
     labelHelper: Please enter the label for the button. This label will be displayed on the button
     line: Line
     link: Link address
     linkHelper: Please enter the link address. This link will be opened when the button is clicked
-    variant: Variant
-    variantHelper: Please select the variant of the element
+    removeRow: Remove row
     size: Size
     sizeHelper: Please select the size of the element
-    imageAsLink: Image as link?
+    space: Empty Space
+    spaceHelper: Please enter the height of the empty space in pixels
+    title: Title
     video: Video URL
     videoHelper: Please enter a video URL, typically the link address for a YouTube or Vimeo video page..
-    removeRow: Remove row
-    title: Title
+    variant: Variant
+    variantHelper: Please select the variant of the element
     types:
       button: Button
       divider: Divider

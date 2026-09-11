@@ -10,6 +10,7 @@ const ComposablePages = new Mongo.Collection('composablepages');
 ComposablePages.schema = new SimpleSchema({
   _id: Schemas.Id,
   title: { type: String },
+  description: { type: String, optional: true },
   host: Schemas.Hostname,
 
   authorId: Schemas.Id,

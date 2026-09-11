@@ -211,22 +211,24 @@ composable:
     addContent: Lägg till innehåll
     addToMenu: Lägg till en komponerbara sida
     addRow: Lägg till en rad
-    space: Tomt utrymme
-    spaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
+    description: Beskrivning
+    descriptionHelper: Användbart för SEO och utdrag för delning i sociala medier
+    imageAsLink: Bild som länk?
     label: Etikett
     labelHelper: Ange etiketten för knappen. Denna etikett kommer att visas på knappen
     line: Linje
     link: Länkadressen
     linkHelper: Ange länkadressen. Denna länk öppnas när knappen klickas
-    variant: Variant
-    variantHelper: Välj önskade alternativ
+    removeRow: Ta bort raden
     size: Storlek
     sizeHelper: Välj önskade alternativ
-    imageAsLink: Bild som länk?
+    space: Tomt utrymme
+    spaceHelper: Lägg till ett tomt utrymme i piksel mellan innehållsobjekten
+    title: Titel
     video: Video-URL
     videoHelper: Ange en video-URL, vanligtvis länkadressen till en YouTube- eller Vimeo-videosida..
-    removeRow: Ta bort raden
-    title: Titel
+    variant: Variant
+    variantHelper: Välj önskade alternativ
     types:
       button: Knapp
       divider: Avdelare

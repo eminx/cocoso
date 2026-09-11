@@ -21,6 +21,7 @@ Meteor.methods({
             authorUsername: 1,
             authorName: 1,
             contentRows: 1,
+            description: 1,
             host: 1,
             isPublished: 1,
             settings: 1,

@@ -175,9 +175,13 @@ export default function PageHeading({
     <>
       <Helmet>
         <title>{String(heading || 'Page')}</title>
+        <link rel="canonical" href={`https://${currentHost.host}`} />
         <meta charSet="utf-8" />
         <meta name="title" content={String(heading || 'Page')} />
-        <meta name="description" content={String(description || '')} />
+        <meta
+          name="description"
+          content={String(description || 'Description')}
+        />
         <meta
           property="og:title"
           content={String(heading || 'Page')?.substring(0, 40)}
