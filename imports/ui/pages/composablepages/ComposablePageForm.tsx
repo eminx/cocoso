@@ -112,7 +112,11 @@ export default function ComposablePageForm() {
       return;
     }
     updateComposablePage();
-  }, [currentPage?.contentRows]);
+    // Depends on pingSave rather than contentRows so that
+    // settings-only changes (title/description/hideTitle/hideMenu, which
+    // don't touch contentRows) also route through this single guarded
+    // save path instead of a separate, unguarded call site.
+  }, [currentPage?.pingSave]);
 
   const handleAddRow = (selectedRow) => {
     const newRow = getNewRow(selectedRow.value);
@@ -241,6 +245,7 @@ export default function ComposablePageForm() {
     const newPage = {
       _id: pageToSave._id,
       title: pageToSave.title,
+      description: pageToSave.description,
       contentRows: pageToSave.contentRows,
       settings: pageToSave.settings,
     };
@@ -250,6 +255,10 @@ export default function ComposablePageForm() {
       setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
       setContentModal(defaultEmptyContentModal);
     } catch (error: any) {
+      // Reset pingSave even on failure — otherwise a rejected save leaves
+      // it stuck true, and any caller waiting on the pingSave->false
+      // transition (e.g. ComposablePageSettings) would hang indefinitely.
+      setCurrentPage((prevPage) => ({ ...prevPage, pingSave: false }));
       message.error(error.reason || error.error);
     } finally {
       savingRef.current = false;

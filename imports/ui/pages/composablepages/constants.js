@@ -1,5 +1,6 @@
-export const generateId = () =>
-  `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+import { Random } from 'meteor/random';
+
+export const generateId = () => Random.id();
 
 export const contentTypes = [
   {

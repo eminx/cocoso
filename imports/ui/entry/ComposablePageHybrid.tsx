@@ -226,7 +226,7 @@ export default function ComposablePageHybrid({
         <Flex direction="column">
           {composablePage.contentRows.map((row, rowIndex) => (
             <Grid
-              key={row.id || row.gridType + rowIndex}
+              key={`${row.id || row.gridType}-${rowIndex}`}
               p="4"
               templateColumns="repeat(auto-fit, minmax(250px, 1fr))"
             >

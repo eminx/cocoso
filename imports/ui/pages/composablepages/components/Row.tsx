@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Trans } from 'react-i18next';
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort';
 import AddIcon from 'lucide-react/dist/esm/icons/plus';
@@ -9,14 +9,13 @@ import { useAtomValue } from 'jotai';
 import { styled } from '/stitches.config';
 import { isDesktopAtom } from '/imports/state';
 import Menu from '/imports/ui/generic/Menu';
-import { Box, Center, Flex, IconButton } from '/imports/ui/core';
+import { Box, Center, Flex } from '/imports/ui/core';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 
 import { contentTypes, generateId, getGridTemplateColumns } from '../constants';
 import { ComposablePageContext } from '../ComposablePageForm';
 import ContentEditModule from './ContentEditModule';
 import DropTarget from './DropTarget';
-import ContentHandler from './ContentHandler';
 
 export function Column({ column, columnIndex, rowIndex }) {
   const { setCurrentPage, setContentModal } = useContext(ComposablePageContext);

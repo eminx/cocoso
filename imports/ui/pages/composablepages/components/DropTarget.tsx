@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 
 import { Center } from '/imports/ui/core';
@@ -8,6 +8,17 @@ import { ComposablePageContext } from '../ComposablePageForm';
 export default function DropTarget({ columnIndex, rowIndex, children }) {
   const { setCurrentPage } = useContext(ComposablePageContext);
   const [justDropped, setJustDropped] = useState(false);
+  const justDroppedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+
+  useEffect(() => {
+    return () => {
+      if (justDroppedTimeoutRef.current) {
+        clearTimeout(justDroppedTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleMoveContent = ({ item }) => {
     const oldContentIndex = item.contentIndex,
@@ -86,7 +97,13 @@ export default function DropTarget({ columnIndex, rowIndex, children }) {
         // hidden a little longer so that click can't land on it and
         // spuriously inject an unrelated content item into this column.
         setJustDropped(true);
-        setTimeout(() => setJustDropped(false), 300);
+        if (justDroppedTimeoutRef.current) {
+          clearTimeout(justDroppedTimeoutRef.current);
+        }
+        justDroppedTimeoutRef.current = setTimeout(
+          () => setJustDropped(false),
+          300
+        );
       },
       collect: (monitor, props) => {
         return {
