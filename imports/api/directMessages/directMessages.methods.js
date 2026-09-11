@@ -153,10 +153,20 @@ Meteor.methods({
             }
           }
 
+          // Show the community the message links to, rather than the
+          // sender's raw account username, as the "sender" in the email —
+          // falling back to the platform name if that community has none.
+          const resolvedLinkHost = linkHost ?? currentHost;
+          const senderDisplayName =
+            resolvedLinkHost?.settings?.name ||
+            platform?.name ||
+            resolvedLinkHost?.host ||
+            currentHost?.host;
+
           const lang = recipient.lang || currentHost?.settings?.lang || 'en';
           const dmTr = (mailtranslations[lang] ?? mailtranslations.en).directMessage ?? mailtranslations.en.directMessage;
-          const subject = `${user.username} ${dmTr.subjectVerb ?? dmTr.subject}`;
-          const emailBody = getDirectMessageEmailBody(user.username, currentHost, recipient, linkHost, isFederation);
+          const subject = `${senderDisplayName} ${dmTr.subjectVerb ?? dmTr.subject}`;
+          const emailBody = getDirectMessageEmailBody(senderDisplayName, currentHost, recipient, linkHost, isFederation);
           await Meteor.callAsync('sendEmail', otherUserId, subject, emailBody);
         } catch (e) {
           console.error('[DM email]', e);
