@@ -233,7 +233,7 @@ export default function ComposablePageHybrid({
               {row.columns.map((column, columnIndex) => (
                 <Box key={columnIndex}>
                   {column.map((module, moduleIndex) => (
-                    <Box key={module.id || module.type + moduleIndex}>
+                    <Box key={`${module.id || module.type}-${moduleIndex}`}>
                       <ContentViewModule module={module} Host={Host} />
                     </Box>
                   ))}

@@ -1,4 +1,10 @@
-import React, { createContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router';
 import { Trans } from 'react-i18next';
 import ArrowUpDownIcon from 'lucide-react/dist/esm/icons/arrow-up-down';
@@ -23,7 +29,7 @@ import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/api/_utils/shared';
 
 import TopToolBar from './components/TopToolbar';
-import { rowTypes } from './constants';
+import { generateId, rowTypes } from './constants';
 import ContentHandler from './components/ContentHandler';
 import Row from './components/Row';
 import BottomToolbar from './components/BottomToolbar';
@@ -67,6 +73,16 @@ export default function ComposablePageForm() {
   const { composablePageId } = useParams();
   const navigate = useNavigate();
 
+  // Every edit (drag, delete, add, sort) pings a save. Without this pair,
+  // rapid successive edits fire overlapping updateComposablePage() calls;
+  // if an earlier one's response lands after a later one's, its stale
+  // contentRows snapshot silently overwrites the newer edit server-side.
+  // savingRef enforces one in-flight save at a time; currentPageRef lets a
+  // queued retry read the truly-latest state instead of a stale closure.
+  const savingRef = useRef(false);
+  const pendingSaveRef = useRef(false);
+  const currentPageRef = useRef(currentPage);
+
   const getComposablePageById = async () => {
     if (!composablePageId || composablePageId === '*') {
       return;
@@ -88,6 +104,10 @@ export default function ComposablePageForm() {
   }, [composablePageId]);
 
   useEffect(() => {
+    currentPageRef.current = currentPage;
+  }, [currentPage]);
+
+  useEffect(() => {
     if (!currentPage || !currentPage.pingSave) {
       return;
     }
@@ -100,7 +120,7 @@ export default function ComposablePageForm() {
       ...prevPage,
       contentRows: [
         ...currentPage.contentRows,
-        { ...newRow, id: Date.now().toString() },
+        { ...newRow, id: generateId() },
       ],
       pingSave: true,
     }));
@@ -211,11 +231,18 @@ export default function ComposablePageForm() {
   };
 
   const updateComposablePage = async () => {
+    if (savingRef.current) {
+      pendingSaveRef.current = true;
+      return;
+    }
+    savingRef.current = true;
+
+    const pageToSave = currentPageRef.current;
     const newPage = {
-      _id: currentPage._id,
-      title: currentPage.title,
-      contentRows: currentPage.contentRows,
-      settings: currentPage.settings,
+      _id: pageToSave._id,
+      title: pageToSave.title,
+      contentRows: pageToSave.contentRows,
+      settings: pageToSave.settings,
     };
 
     try {
@@ -224,6 +251,12 @@ export default function ComposablePageForm() {
       setContentModal(defaultEmptyContentModal);
     } catch (error: any) {
       message.error(error.reason || error.error);
+    } finally {
+      savingRef.current = false;
+      if (pendingSaveRef.current) {
+        pendingSaveRef.current = false;
+        updateComposablePage();
+      }
     }
   };
 
@@ -273,7 +306,7 @@ export default function ComposablePageForm() {
 
           <SortableList onSortEnd={handleSortRows}>
             {currentPage.contentRows?.map((row, rowIndex) => (
-              <SortableItem key={row.id || row.gridType + rowIndex}>
+              <SortableItem key={`${row.id || row.gridType}-${rowIndex}`}>
                 <div>
                   <Flex gap="0">
                     <Box>

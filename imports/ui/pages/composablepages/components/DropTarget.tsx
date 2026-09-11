@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDrop } from 'react-dnd';
 
 import { Center } from '/imports/ui/core';
@@ -7,6 +7,7 @@ import { ComposablePageContext } from '../ComposablePageForm';
 
 export default function DropTarget({ columnIndex, rowIndex, children }) {
   const { setCurrentPage } = useContext(ComposablePageContext);
+  const [justDropped, setJustDropped] = useState(false);
 
   const handleMoveContent = ({ item }) => {
     const oldContentIndex = item.contentIndex,
@@ -20,7 +21,11 @@ export default function DropTarget({ columnIndex, rowIndex, children }) {
     setCurrentPage((prevPage) => {
       const { contentRows } = prevPage;
       const itemContent =
-        contentRows[oldRowIndex].columns[oldColumnIndex][oldContentIndex];
+        contentRows[oldRowIndex]?.columns[oldColumnIndex]?.[oldContentIndex];
+
+      if (!itemContent || !itemContent.type) {
+        return prevPage;
+      }
 
       const newRowsContentRemoved = [
         ...contentRows.map((row, rIndex) => {
@@ -73,6 +78,15 @@ export default function DropTarget({ columnIndex, rowIndex, children }) {
         handleMoveContent({
           item,
         });
+        // The "Add content" button below occupies this same drop zone and
+        // is only hidden while canDrop is true. canDrop flips back to
+        // false the instant the drop resolves, re-exposing a clickable
+        // button right under the pointer before the browser's own
+        // click-after-drop event (if any) has been dispatched — keep it
+        // hidden a little longer so that click can't land on it and
+        // spuriously inject an unrelated content item into this column.
+        setJustDropped(true);
+        setTimeout(() => setJustDropped(false), 300);
       },
       collect: (monitor, props) => {
         return {
@@ -111,7 +125,7 @@ export default function DropTarget({ columnIndex, rowIndex, children }) {
           width: '100%',
         }}
       >
-        {canDrop ? null : children}
+        {canDrop || justDropped ? null : children}
       </Center>
     </div>
   );
