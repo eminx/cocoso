@@ -11,6 +11,7 @@ import { currentHostAtom } from '/imports/state';
 import { updateHostSettings } from '/imports/actions';
 import { Box, Button, Flex, Heading, IconButton, Text } from '/imports/ui/core';
 import { call } from '/imports/api/_utils/shared';
+import { MenuItem } from '/imports/ui/types';
 
 import Boxling from './Boxling';
 
@@ -54,8 +55,32 @@ export default function MenuSettingsOrder() {
     ]);
   };
 
-  const removeComposablePage = (selectedItemName) => {
+  const addListingPage = (option: MenuItem) => {
+    setLocalMenu((prevMenu) =>
+      prevMenu?.map((item) =>
+        item.name === option.name ? { ...item, isVisible: true } : item
+      )
+    );
+  };
+
+  const removeMenuItem = (selectedMenuItem: MenuItem) => {
+    if (selectedMenuItem.isComposablePage) {
+      removeComposablePage(selectedMenuItem.name);
+    } else {
+      removeListingPage(selectedMenuItem.name);
+    }
+  };
+
+  const removeComposablePage = (selectedItemName: string) => {
     setLocalMenu(localMenu?.filter((item) => item.name !== selectedItemName));
+  };
+
+  const removeListingPage = (selectedItemName: string) => {
+    setLocalMenu((prevMenu) =>
+      prevMenu?.map((item) =>
+        item.name === selectedItemName ? { ...item, isVisible: false } : item
+      )
+    );
   };
 
   const getComposablePageOptions = () => {
@@ -79,6 +104,10 @@ export default function MenuSettingsOrder() {
     window.location.reload();
   };
 
+  const listingPageOptions = localMenu?.filter(
+    (item) => !item.isComposablePage && !item.isVisible
+  );
+
   return (
     <Box py="6">
       <Heading as="h4" size="sm">
@@ -96,27 +125,42 @@ export default function MenuSettingsOrder() {
           backgroundColor: 'var(--cocoso-colors-bluegray-50)',
         }}
       >
-        <Box mb="8">
-          <Box mb="2">
-            <Text>
-              <Trans i18nKey="admin:composable.form.addToMenu" />
-            </Text>
+        <Flex gap="4" mb="8">
+          <Box flex="1">
+            <Box mb="2">
+              <Text>
+                <Trans i18nKey="admin:composable.form.addToMenu" />
+              </Text>
+            </Box>
+            <ReactSelect
+              options={getComposablePageOptions()}
+              value={null}
+              onChange={addComposablePage}
+              getOptionValue={(option) => option._id}
+              getOptionLabel={(option) => option.title}
+            />
           </Box>
 
-          <ReactSelect
-            options={getComposablePageOptions()}
-            value={null}
-            onChange={addComposablePage}
-            getOptionValue={(option) => option._id}
-            getOptionLabel={(option) => option.title}
-          />
-        </Box>
+          <Box flex="1">
+            <Box mb="2">
+              <Text>
+                <Trans i18nKey="admin:composable.form.addToMenuListing" />
+              </Text>
+            </Box>
+            <ReactSelect
+              options={listingPageOptions}
+              value={null}
+              onChange={addListingPage}
+              getOptionValue={(option: MenuItem) => option.name}
+            />
+          </Box>
+        </Flex>
 
         {localMenu && (
           <SortableList onSortEnd={onSortMenuEnd}>
             {localMenu
               ?.filter((item) => item.isVisible)
-              ?.map((value, index) => (
+              ?.map((value) => (
                 <SortableItem key={value.name}>
                   <div>
                     <Flex
@@ -135,19 +179,18 @@ export default function MenuSettingsOrder() {
                       <Flex align="center">
                         <DragHandleIcon /> <Text ml="2">{value.label}</Text>
                       </Flex>
-                      {value.isComposablePage ? (
-                        <IconButton
-                          colorScheme="bluegray"
-                          icon={
-                            <XIcon
-                              size="18px"
-                              onClick={() => removeComposablePage(value.name)}
-                            />
-                          }
-                          size="xs"
-                          variant="ghost"
-                        />
-                      ) : null}
+                      <IconButton
+                        aria-label="Remove"
+                        colorScheme="bluegray"
+                        icon={
+                          <XIcon
+                            size="18px"
+                            onClick={() => removeMenuItem(value)}
+                          />
+                        }
+                        size="xs"
+                        variant="ghost"
+                      />
                     </Flex>
                   </div>
                 </SortableItem>

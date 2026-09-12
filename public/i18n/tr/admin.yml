@@ -210,6 +210,7 @@ composable:
   form:
     addContent: 'İçerik ekle'
     addToMenu: 'Özelleştirilebilir sayfa ekle'
+    addToMenuListing: Listeleme sayfası ekle
     addRow: Satır ekle
     description: Açıklama
     descriptionHelper: Arama motorları ve sosyal medya paylaşım özetleri için yararlıdır

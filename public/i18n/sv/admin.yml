@@ -210,6 +210,7 @@ composable:
   form:
     addContent: Lägg till innehåll
     addToMenu: Lägg till en komponerbara sida
+    addToMenuListing: Lägg till en listningssida
     addRow: Lägg till en rad
     description: Beskrivning
     descriptionHelper: Användbart för SEO och utdrag för delning i sociala medier
