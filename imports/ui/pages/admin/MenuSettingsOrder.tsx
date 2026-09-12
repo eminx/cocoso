@@ -20,6 +20,15 @@ export default function MenuSettingsOrder() {
   const [localMenu, setLocalMenu] = useState(currentHost?.settings?.menu);
   const [composablePageTitles, setComposablePageTitles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [justAddedName, setJustAddedName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!justAddedName) {
+      return;
+    }
+    const timer = setTimeout(() => setJustAddedName(null), 1500);
+    return () => clearTimeout(timer);
+  }, [justAddedName]);
 
   const getComposablePageTitles = async () => {
     const response = await call('getComposablePageTitles');
@@ -53,6 +62,7 @@ export default function MenuSettingsOrder() {
       },
       ...prevMenu,
     ]);
+    setJustAddedName(option._id);
   };
 
   const addListingPage = (option: MenuItem) => {
@@ -61,6 +71,7 @@ export default function MenuSettingsOrder() {
         item.name === option.name ? { ...item, isVisible: true } : item
       )
     );
+    setJustAddedName(option.name);
   };
 
   const removeMenuItem = (selectedMenuItem: MenuItem) => {
@@ -169,11 +180,15 @@ export default function MenuSettingsOrder() {
                       mb="4"
                       p="2"
                       css={{
-                        backgroundColor: 'white',
+                        backgroundColor:
+                          value.name === justAddedName
+                            ? 'var(--cocoso-colors-green-100)'
+                            : 'white',
                         boxShadow: 'var(--cocoso-box-shadow)',
                         borderRadius: 'var(--cocoso-border-radius)',
                         cursor: 'move',
                         fontFamily: 'sans-serif',
+                        transition: 'background-color 1.2s ease',
                       }}
                     >
                       <Flex align="center">
