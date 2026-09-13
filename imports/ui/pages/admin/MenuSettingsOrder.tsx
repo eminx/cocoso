@@ -15,6 +15,11 @@ import { MenuItem } from '/imports/ui/types';
 
 import Boxling from './Boxling';
 
+const serializeMenu = (menu?: MenuItem[]) =>
+  JSON.stringify(
+    menu?.map((item) => ({ name: item.name, isVisible: item.isVisible }))
+  );
+
 export default function MenuSettingsOrder() {
   const [currentHost, setCurrentHost] = useAtom(currentHostAtom);
   const [localMenu, setLocalMenu] = useState(currentHost?.settings?.menu);
@@ -119,6 +124,9 @@ export default function MenuSettingsOrder() {
     (item) => !item.isComposablePage && !item.isVisible
   );
 
+  const isButtonDisabled =
+    serializeMenu(localMenu) === serializeMenu(currentHost?.settings?.menu);
+
   return (
     <Box py="6">
       <Heading as="h4" size="sm">
@@ -214,7 +222,11 @@ export default function MenuSettingsOrder() {
         )}
 
         <Flex justify="flex-end" mt="8">
-          <Button loading={submitting} onClick={handleSubmit}>
+          <Button
+            disabled={isButtonDisabled}
+            loading={submitting}
+            onClick={handleSubmit}
+          >
             <Trans i18nKey="common:actions.submit" />
           </Button>
         </Flex>
