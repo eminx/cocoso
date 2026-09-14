@@ -8,14 +8,11 @@ const escapeHtml = (str) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
-export const getDirectMessageEmailBody = (senderDisplayName, currentHost, recipient, linkHost, isFederation) => {
-  const resolvedLinkHost = linkHost ?? currentHost;
-  const linkHostDomain = resolvedLinkHost?.host ?? currentHost?.host;
-  const linkHostName = escapeHtml(resolvedLinkHost?.settings?.name ?? linkHostDomain);
+export const getDirectMessageEmailBody = (hostDisplayName, linkHost, recipient, isFederation, lang) => {
+  const linkHostDomain = linkHost?.host;
   const firstName = escapeHtml(recipient?.firstName || recipient?.username || '');
-  const safeSenderDisplayName = escapeHtml(senderDisplayName);
+  const safeHostDisplayName = escapeHtml(hostDisplayName);
 
-  const lang = recipient?.lang || currentHost?.settings?.lang || 'en';
   const tr = mailtranslations[lang] ?? mailtranslations.en;
   const { visitPage: generalVisitPage } = tr.general;
   const dm = tr.directMessage ?? mailtranslations.en.directMessage;
@@ -24,7 +21,7 @@ export const getDirectMessageEmailBody = (senderDisplayName, currentHost, recipi
   const { body, bodyLong, bodyLongFederation, visitPage } = dm;
 
   const bodyLongHtml = isFederation && bodyLongFederation
-    ? `${bodyLongFederation} <strong>${linkHostName}</strong>`
+    ? `${bodyLongFederation} <strong>${safeHostDisplayName}</strong>`
     : bodyLong;
 
   return `<!doctype html>
@@ -41,7 +38,7 @@ export const getDirectMessageEmailBody = (senderDisplayName, currentHost, recipi
 
       <div style="font-size:16px; color:#323232; margin-bottom:8px;">${dear} ${firstName},</div>
 
-      <div style="font-size:16px; color:#323232; margin-bottom:8px;">${body} <strong>${safeSenderDisplayName}</strong>.</div>
+      <div style="font-size:16px; color:#323232; margin-bottom:8px;">${body} <strong>${safeHostDisplayName}</strong>.</div>
 
       <div style="font-size:15px; color:#555555; margin-bottom:28px;">${bodyLongHtml}</div>
 

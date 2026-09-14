@@ -18,7 +18,8 @@ Meteor.methods({
 
     // Block check — either party may have blocked the other
     const blockedByMe = (user.blockedUserIds ?? []).includes(otherUserId);
-    if (blockedByMe) throw new Meteor.Error('user-blocked', 'You have blocked this user.');
+    if (blockedByMe)
+      throw new Meteor.Error('user-blocked', 'You have blocked this user.');
 
     const otherUser = await Meteor.users.findOneAsync(otherUserId, {
       fields: { username: 1, avatar: 1, blockedUserIds: 1 },
@@ -26,7 +27,8 @@ Meteor.methods({
     if (!otherUser) throw new Meteor.Error('user-not-found');
 
     const blockedByThem = (otherUser.blockedUserIds ?? []).includes(user._id);
-    if (blockedByThem) throw new Meteor.Error('user-blocked', 'This user is not available.');
+    if (blockedByThem)
+      throw new Meteor.Error('user-blocked', 'This user is not available.');
 
     // Canonical participant order — always sorted so the pair maps to one doc
     const participantIds = [user._id, otherUserId].sort();
@@ -68,12 +70,16 @@ Meteor.methods({
     }
 
     // Block check — prevent sending if either party has blocked the other
-    const otherUserId = conversation.participantIds.find((id) => id !== user._id);
+    const otherUserId = conversation.participantIds.find(
+      (id) => id !== user._id
+    );
     const blockedByMe = (user.blockedUserIds ?? []).includes(otherUserId);
     if (blockedByMe) throw new Meteor.Error('user-blocked');
 
     const otherUser = otherUserId
-      ? await Meteor.users.findOneAsync(otherUserId, { fields: { blockedUserIds: 1 } })
+      ? await Meteor.users.findOneAsync(otherUserId, {
+          fields: { blockedUserIds: 1 },
+        })
       : null;
     const blockedByThem = (otherUser?.blockedUserIds ?? []).includes(user._id);
     if (blockedByThem) throw new Meteor.Error('user-blocked');
@@ -111,10 +117,9 @@ Meteor.methods({
       { $inc: { [`unreadCounts.${otherUserId}`]: 1 } }
     );
 
-    await Meteor.users.rawCollection().updateOne(
-      { _id: otherUserId },
-      { $inc: { unreadMessageCount: 1 } }
-    );
+    await Meteor.users
+      .rawCollection()
+      .updateOne({ _id: otherUserId }, { $inc: { unreadMessageCount: 1 } });
 
     if (prevUnread === 0) {
       const host = getHost(this);
@@ -133,41 +138,39 @@ Meteor.methods({
 
           // Federation: link to a host the recipient is actually a member of
           let linkHost = currentHost;
-          if (isFederation) {
-            const recipientMemberships = await Memberships.find(
-              { userId: otherUserId },
-              { sort: { joinDate: 1 } }
-            ).fetchAsync();
-            const isMemberOfSenderHost = recipientMemberships.some(
-              (m) => m.host === host
-            );
-            if (!isMemberOfSenderHost) {
-              const firstMembership = recipientMemberships[0];
-              if (firstMembership) {
-                const recipientHost = await Hosts.findOneAsync(
-                  { host: firstMembership.host },
-                  { fields: { host: 1, settings: 1 } }
-                );
-                if (recipientHost) linkHost = recipientHost;
-              }
-            }
+          const isMemberOfSenderHost = await Memberships.findOneAsync({
+            userId: otherUserId,
+            host: currentHost.host,
+          });
+          if (!isMemberOfSenderHost) {
+            linkHost = await Hosts.findOneAsync({ isPortalHost: true });
           }
 
-          // Show the community the message links to, rather than the
-          // sender's raw account username, as the "sender" in the email —
-          // falling back to the platform name if that community has none.
-          const resolvedLinkHost = linkHost ?? currentHost;
-          const senderDisplayName =
-            resolvedLinkHost?.settings?.name ||
-            platform?.name ||
-            resolvedLinkHost?.host ||
-            currentHost?.host;
+          // The "sender" name in the email is always the name of the host
+          // the email actually links to, so the two never disagree.
+          const hostDisplayName = linkHost?.settings?.name || linkHost?.host;
 
           const lang = recipient.lang || currentHost?.settings?.lang || 'en';
-          const dmTr = (mailtranslations[lang] ?? mailtranslations.en).directMessage ?? mailtranslations.en.directMessage;
-          const subject = `${senderDisplayName} ${dmTr.subjectVerb ?? dmTr.subject}`;
-          const emailBody = getDirectMessageEmailBody(senderDisplayName, currentHost, recipient, linkHost, isFederation);
-          await Meteor.callAsync('sendEmail', otherUserId, subject, emailBody);
+          const dmTr =
+            (mailtranslations[lang] ?? mailtranslations.en).directMessage ??
+            mailtranslations.en.directMessage;
+          const subject = `${hostDisplayName} ${
+            dmTr.subjectVerb ?? dmTr.subject
+          }`;
+          const emailBody = getDirectMessageEmailBody(
+            hostDisplayName,
+            linkHost,
+            recipient,
+            isFederation,
+            lang
+          );
+          await Meteor.callAsync(
+            'sendEmail',
+            otherUserId,
+            subject,
+            emailBody,
+            hostDisplayName
+          );
         } catch (e) {
           console.error('[DM email]', e);
         }
@@ -195,9 +198,22 @@ Meteor.methods({
       { $set: { [`unreadCounts.${user._id}`]: 0 } }
     );
 
-    await Meteor.users.rawCollection().updateOne(
-      { _id: user._id },
-      [{ $set: { unreadMessageCount: { $max: [0, { $subtract: [{ $ifNull: ['$unreadMessageCount', 0] }, unreadCount] }] } } }]
-    );
+    await Meteor.users.rawCollection().updateOne({ _id: user._id }, [
+      {
+        $set: {
+          unreadMessageCount: {
+            $max: [
+              0,
+              {
+                $subtract: [
+                  { $ifNull: ['$unreadMessageCount', 0] },
+                  unreadCount,
+                ],
+              },
+            ],
+          },
+        },
+      },
+    ]);
   },
 });
