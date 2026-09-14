@@ -43,7 +43,7 @@ export const getDirectMessageEmailBody = (
       body { margin:0; padding:0; -webkit-text-size-adjust:100%; }
     </style>
   </head>
-  <body style="background:#f4f4f4;">
+  <body style="background:#f4f4f4; padding: 24px;">
     <div style="max-width:520px; margin:40px auto; background:white; padding:32px 28px; font-family:Arial, sans-serif; border-radius:6px; margin-top:48px;">
 
       <div style="font-size:16px; color:#323232; margin-bottom:8px;">${dear} ${firstName},</div>
