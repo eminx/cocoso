@@ -93,13 +93,18 @@ export default function WrapperHybrid({
     setPageTitles(await call('getPageTitles'));
   };
 
-  const changeLang = () => {
+  const changeLang = async () => {
     if (!i18n) return;
     const userLang = currentUser?.lang;
     const hostLang = currentHost?.settings?.lang;
     const lang = userLang || hostLang || i18n.language;
 
     if (lang !== i18n.language) {
+      // Load this language's namespaces before switching, so nothing is
+      // still missing when changeLanguage triggers a re-render — an
+      // un-cached namespace here would suspend the top-level <Suspense>
+      // above and blank the whole page well after it was already visible.
+      await i18n.loadLanguages(lang);
       i18n.changeLanguage(lang);
     }
   };

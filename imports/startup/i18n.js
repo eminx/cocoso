@@ -25,17 +25,17 @@ const allLangs = [
 
 const defaultLang = 'en';
 
-// const namespaces = [
-//   'common',
-//   'accounts',
-//   'members',
-//   'hosts',
-//   'admin',
-//   'activities',
-//   'groups',
-//   'calendar',
-//   'resources',
-// ];
+const namespaces = [
+  'common',
+  'accounts',
+  'members',
+  'hosts',
+  'admin',
+  'activities',
+  'groups',
+  'calendar',
+  'resources',
+];
 
 const isServer = Meteor.isServer;
 
@@ -70,7 +70,12 @@ const options = {
   },
   lng: isServer ? defaultLang : undefined,
   load: 'languageOnly',
-  ns: ['common', 'accounts'],
+  // All namespaces are preloaded (not just 'common'/'accounts') so that no
+  // component ever needs to lazily fetch one on the client. With
+  // react.useSuspense on (below), a lazy fetch mid-hydration suspends the
+  // single top-level <Suspense> in WrapperHybrid, which unmounts the whole
+  // page (Header + content + Footer) behind the loader until it resolves.
+  ns: namespaces,
   preload: ['en'],
   react: {
     // renderToString (imports/startup/server/serverRenderer.js) can't
@@ -90,7 +95,7 @@ const initPromise = i18n
   .init(options);
 
 // Server-only: block Meteor.startup (i.e. run before real traffic is
-// served) until common+accounts are actually loaded for all three
+// served) until every namespace is actually loaded for all three
 // languages, not just the 'en' preload above. Without this,
 // serverRenderer.js's renderToString would race an in-flight HTTP-backend
 // fetch on every cold request. loadLanguages/loadNamespaces (rather than
@@ -98,7 +103,7 @@ const initPromise = i18n
 // on an already-initialized instance would re-register the .use() plugins.
 if (isServer) {
   const ALL_LANGS = allLangs.map((l) => l.value);
-  const REQUIRED_NS = ['common', 'accounts'];
+  const REQUIRED_NS = namespaces;
   const MAX_ATTEMPTS = 3;
   const RETRY_DELAY_MS = 500;
 
