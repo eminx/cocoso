@@ -8,10 +8,20 @@ const escapeHtml = (str) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
-export const getDirectMessageEmailBody = (hostDisplayName, linkHost, recipient, isFederation, lang) => {
+export const getDirectMessageEmailBody = (
+  senderUsername,
+  linkHost,
+  recipient,
+  isFederation,
+  lang
+) => {
+  const firstName = escapeHtml(
+    recipient?.firstName || recipient?.username || ''
+  );
   const linkHostDomain = linkHost?.host;
-  const firstName = escapeHtml(recipient?.firstName || recipient?.username || '');
-  const safeHostDisplayName = escapeHtml(hostDisplayName);
+  const safeHostDisplayName = escapeHtml(
+    linkHost?.settings?.name || linkHost?.host || ''
+  );
 
   const tr = mailtranslations[lang] ?? mailtranslations.en;
   const { visitPage: generalVisitPage } = tr.general;
@@ -20,9 +30,10 @@ export const getDirectMessageEmailBody = (hostDisplayName, linkHost, recipient, 
 
   const { body, bodyLong, bodyLongFederation, visitPage } = dm;
 
-  const bodyLongHtml = isFederation && bodyLongFederation
-    ? `${bodyLongFederation} <strong>${safeHostDisplayName}</strong>`
-    : bodyLong;
+  const bodyLongHtml =
+    isFederation && bodyLongFederation
+      ? `${bodyLongFederation} <strong>${safeHostDisplayName}</strong>`
+      : bodyLong;
 
   return `<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">

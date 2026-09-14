@@ -136,7 +136,6 @@ Meteor.methods({
 
           const isFederation = Boolean(platform?.isFederationLayout);
 
-          // Federation: link to a host the recipient is actually a member of
           let linkHost = currentHost;
           const isMemberOfSenderHost = await Memberships.findOneAsync({
             userId: otherUserId,
@@ -146,19 +145,20 @@ Meteor.methods({
             linkHost = await Hosts.findOneAsync({ isPortalHost: true });
           }
 
-          // The "sender" name in the email is always the name of the host
-          // the email actually links to, so the two never disagree.
-          const hostDisplayName = linkHost?.settings?.name || linkHost?.host;
+          const senderUsername = user?.username;
+          const hostDisplayName = escapeHtml(
+            currentHost?.settings?.name || currentHost?.host || ''
+          );
 
           const lang = recipient.lang || currentHost?.settings?.lang || 'en';
           const dmTr =
             (mailtranslations[lang] ?? mailtranslations.en).directMessage ??
             mailtranslations.en.directMessage;
-          const subject = `${hostDisplayName} ${
+          const subject = `${senderUsername} ${
             dmTr.subjectVerb ?? dmTr.subject
           }`;
           const emailBody = getDirectMessageEmailBody(
-            hostDisplayName,
+            senderUsername,
             linkHost,
             recipient,
             isFederation,
