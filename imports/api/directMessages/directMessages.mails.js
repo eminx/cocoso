@@ -19,9 +19,6 @@ export const getDirectMessageEmailBody = (
     recipient?.firstName || recipient?.username || ''
   );
   const linkHostDomain = linkHost?.host;
-  const safeHostDisplayName = escapeHtml(
-    linkHost?.settings?.name || linkHost?.host || ''
-  );
 
   const tr = mailtranslations[lang] ?? mailtranslations.en;
   const { visitPage: generalVisitPage } = tr.general;
@@ -32,7 +29,9 @@ export const getDirectMessageEmailBody = (
 
   const bodyLongHtml =
     isFederation && bodyLongFederation
-      ? `${bodyLongFederation} <strong>${safeHostDisplayName}</strong>`
+      ? `${bodyLongFederation} <strong>${
+          linkHost?.settings?.name || linkHost?.host || ''
+        }</strong>`
       : bodyLong;
 
   return `<!doctype html>
@@ -49,7 +48,7 @@ export const getDirectMessageEmailBody = (
 
       <div style="font-size:16px; color:#323232; margin-bottom:8px;">${dear} ${firstName},</div>
 
-      <div style="font-size:16px; color:#323232; margin-bottom:8px;">${body} <strong>${safeHostDisplayName}</strong>.</div>
+      <div style="font-size:16px; color:#323232; margin-bottom:8px;">${body} <strong>${senderUsername}</strong>.</div>
 
       <div style="font-size:15px; color:#555555; margin-bottom:28px;">${bodyLongHtml}</div>
 
