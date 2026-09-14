@@ -146,9 +146,8 @@ Meteor.methods({
           }
 
           const senderUsername = user?.username;
-          const hostDisplayName = escapeHtml(
-            currentHost?.settings?.name || currentHost?.host || ''
-          );
+          const hostDisplayName =
+            currentHost?.settings?.name || currentHost?.host || '';
 
           const lang = recipient.lang || currentHost?.settings?.lang || 'en';
           const dmTr =
