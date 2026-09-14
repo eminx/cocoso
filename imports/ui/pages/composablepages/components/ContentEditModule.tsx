@@ -40,7 +40,9 @@ function ModulePreview({ content }: ModuleType) {
       case 'image-slider':
         return (
           <img
-            src={getImageUrl(value?.images?.[0], 'medium') || value?.images?.[0]}
+            src={
+              getImageUrl(value?.images?.[0], 'medium') || value?.images?.[0]
+            }
             style={{ borderRadius: '6px' }}
           />
         );
@@ -145,6 +147,7 @@ export default function ContentEditModule(props) {
               variant="ghost"
               css={{
                 flexGrow: '0',
+                flexShrink: '0',
               }}
               onClick={() =>
                 setDeleteModuleModal({
