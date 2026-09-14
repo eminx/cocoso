@@ -137,17 +137,17 @@ Meteor.methods({
           const isFederation = Boolean(platform?.isFederationLayout);
 
           let linkHost = currentHost;
+          let hostDisplayName = currentHost?.settings?.name;
           const isMemberOfSenderHost = await Memberships.findOneAsync({
             userId: otherUserId,
             host: currentHost.host,
           });
           if (!isMemberOfSenderHost) {
             linkHost = await Hosts.findOneAsync({ isPortalHost: true });
+            hostDisplayName = linkHost?.settings?.name;
           }
 
           const senderUsername = user?.username;
-          const hostDisplayName =
-            currentHost?.settings?.name || currentHost?.host || '';
 
           const lang = recipient.lang || currentHost?.settings?.lang || 'en';
           const dmTr =
