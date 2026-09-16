@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import { call } from './api/_utils/shared';
 
 export async function getHomeLoader({ Host, params, request }) {
@@ -10,7 +12,7 @@ export async function getHomeLoader({ Host, params, request }) {
     case 'activities':
       return await getActivities({ host, isPortalHost, request });
     case 'calendar':
-      return await getCalendarEntries({ host, isPortalHost });
+      return await getCalendarEntries({ request, host, isPortalHost });
     case 'groups':
       return await getGroups({ host, isPortalHost });
     case 'info':
@@ -54,10 +56,26 @@ export async function getActivity({ params }) {
   };
 }
 
-export async function getCalendarEntries({ host, isPortalHost }) {
-  const activities = isPortalHost
-    ? await call('getAllActivitiesFromAllHosts')
-    : await call('getAllActivities', host);
+export async function getCalendarEntries({ request, host, isPortalHost }) {
+  const url = new URL(request?.url);
+  // Default window: enough either side of "today" that the initial paint
+  // (month view, plus a couple of prev/next clicks) doesn't need a refetch.
+  // CalendarHandler updates rangeStart/rangeEnd via the calendar's
+  // onRangeChange as the visible window moves, which re-runs this loader.
+  const rangeStart =
+    url?.searchParams?.get('rangeStart') ||
+    dayjs().subtract(1, 'month').startOf('month').toISOString();
+  const rangeEnd =
+    url?.searchParams?.get('rangeEnd') ||
+    dayjs().add(2, 'month').endOf('month').toISOString();
+
+  const activities = await call(
+    'getOccurrencesInRange',
+    rangeStart,
+    rangeEnd,
+    isPortalHost,
+    host
+  );
 
   const resources = isPortalHost
     ? await call('getResourcesFromAllHosts')

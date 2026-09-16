@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Schemas } from '../_utils/schemas';
@@ -28,25 +29,13 @@ Activities.schema = new SimpleSchema({
   capacity: { type: SimpleSchema.Integer, defaultValue: 40 },
   place: { type: String, optional: true },
 
-  datesAndTimes: { type: Array },
-  'datesAndTimes.$': new SimpleSchema({
-    startDate: { type: String },
-    startTime: { type: String },
-    endDate: { type: String },
-    endTime: { type: String },
-    attendees: { type: Array, defaultValue: [] },
-    'attendees.$': {
-      type: new SimpleSchema({
-        email: Schemas.Email,
-        username: { type: String, optional: true },
-        firstName: { type: String, optional: true },
-        lastName: { type: String, optional: true },
-        numberOfPeople: { type: SimpleSchema.Integer, optional: true },
-        registerDate: { type: Date },
-      }),
-      optional: true,
-    },
-  }),
+  // Occurrence dates/times and their attendees live in the Occurrences and
+  // Registrations collections (imports/api/occurrences, imports/api/registrations),
+  // keyed by activityId — not embedded here. A frozen copy of the old
+  // embedded shape is kept as _datesAndTimesLegacy on migrated documents
+  // (imports/startup/server/index.js) — deliberately NOT declared here, so
+  // it stays outside schema validation entirely rather than looking like a
+  // lightly-checked live field.
 
   // practicalInfo: { type: String, optional: true }, // null
   // internalInfo: { type: String, optional: true }, // null
@@ -67,5 +56,28 @@ Activities.schema = new SimpleSchema({
 });
 
 Activities.attachSchema(Activities.schema);
+
+if (Meteor.isServer) {
+  Meteor.startup(async () => {
+    const raw = Activities.rawCollection();
+    // Now that datesAndTimes/attendees are gone, Activities is small enough
+    // per host that these cover getAllActivities/getMyActivities/
+    // getActivitiesByUser and the first hop of checkDatesForConflict and the
+    // group-meeting lookups.
+    await raw.createIndex({ host: 1 }, { name: 'host' });
+    await raw.createIndex(
+      { host: 1, resourceId: 1 },
+      { name: 'host_resourceId' }
+    );
+    await raw.createIndex(
+      { host: 1, authorId: 1 },
+      { name: 'host_authorId' }
+    );
+    await raw.createIndex(
+      { host: 1, isGroupMeeting: 1, groupId: 1 },
+      { name: 'host_isGroupMeeting_groupId' }
+    );
+  });
+}
 
 export default Activities;

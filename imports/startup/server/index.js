@@ -5,6 +5,10 @@ import React from 'react';
 
 import Hosts from '/imports/api/hosts/host';
 import Memberships from '/imports/api/memberships/membership';
+import Activities from '/imports/api/activities/activity';
+import Occurrences from '/imports/api/occurrences/occurrence';
+import Registrations from '/imports/api/registrations/registration';
+import { buildOccurrenceFields } from '/imports/api/occurrences/occurrence.helpers';
 import { call } from '/imports/api/_utils/shared';
 
 import serverRenderer from './serverRenderer';
@@ -35,33 +39,84 @@ function setupSMTP() {
   };
 }
 
+// One-off: splits Activities.datesAndTimes[].attendees[] out into the
+// Occurrences/Registrations collections, then renames the embedded field
+// (not deletes it) to _datesAndTimesLegacy — kept as a frozen audit/rollback
+// copy so a bug in this transform isn't unrecoverable, but named so nothing
+// going forward can mistake it for live data. Drop it for good in a later
+// cleanup once the new collections have run clean for a while.
+// Run once during a deploy window (back up the activities collection first)
+// by uncommenting the call below, then re-comment it afterward — running it
+// twice would duplicate every occurrence/registration, since there's no
+// "already migrated" guard.
+async function migrateActivitiesToOccurrences() {
+  await Activities.find({ datesAndTimes: { $exists: true } }).forEachAsync(
+    async (activity) => {
+      for (const occurrence of activity.datesAndTimes || []) {
+        if (
+          !occurrence?.startDate ||
+          !occurrence?.startTime ||
+          !occurrence?.endDate ||
+          !occurrence?.endTime
+        ) {
+          // A malformed legacy record shouldn't be able to crash server
+          // boot. It's not lost — the original stays intact under
+          // _datesAndTimesLegacy after the rename below — just skipped here
+          // so it can be looked at and fixed by hand.
+          console.warn(
+            `migrateActivitiesToOccurrences: skipping malformed occurrence on activity ${activity._id}`,
+            occurrence
+          );
+          continue;
+        }
+
+        const occurrenceId = await Occurrences.insertAsync({
+          host: activity.host,
+          activityId: activity._id,
+          ...buildOccurrenceFields(occurrence),
+          creationDate: activity.creationDate || new Date(),
+        });
+
+        for (const attendee of occurrence.attendees || []) {
+          await Registrations.insertAsync({
+            host: activity.host,
+            occurrenceId,
+            activityId: activity._id,
+            email: attendee.email,
+            username: attendee.username,
+            firstName: attendee.firstName,
+            lastName: attendee.lastName,
+            numberOfPeople: attendee.numberOfPeople,
+            registerDate: attendee.registerDate || new Date(),
+          });
+        }
+      }
+
+      // Not Activities.updateAsync: collection2 filters a modifier's keys
+      // against the CURRENT schema before validating, and datesAndTimes was
+      // deliberately removed from it — so a $rename keyed on that field gets
+      // stripped as "not in the schema," leaving an empty modifier (this is
+      // not hypothetical, it's the exact error collection2 throws if you
+      // try). Renaming a field away from a name the schema no longer
+      // recognizes is one of the few things the validated path genuinely
+      // cannot do — same category as index creation, not a shortcut around
+      // validation for its own sake.
+      await Activities.rawCollection().updateOne(
+        { _id: activity._id },
+        { $rename: { datesAndTimes: '_datesAndTimesLegacy' } }
+      );
+    }
+  );
+}
+
 Meteor.startup(async () => {
   setupSMTP();
+
+  await migrateActivitiesToOccurrences();
 
   if (cdn_server) {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
   }
-
-  // await Hosts.find({}).forEachAsync(async (host) => {
-  //   const members = host.members || [];
-  //   await Promise.all(
-  //     members.map(async (member) => {
-  //       await Memberships.updateAsync(
-  //         { userId: member.id, host: host.host },
-  //         {
-  //           $set: {
-  //             userId: member.id,
-  //             host: host.host,
-  //             role: member.role,
-  //             isPublic: member.isPublic !== false,
-  //             joinDate: member.date || new Date(),
-  //           },
-  //         },
-  //         { upsert: true }
-  //       );
-  //     })
-  //   );
-  // });
 
   onPageLoad(async (sink) => {
     try {

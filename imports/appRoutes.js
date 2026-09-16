@@ -503,8 +503,8 @@ export default function appRoutes(props) {
               index: true,
               element: createRouteElement(CalendarHandler, props),
               loader: async ({ request }) =>
-                await getCalendarEntries({ host, isPortalHost }),
-              shouldRevalidate: revalidateOn(['edit']),
+                await getCalendarEntries({ request, host, isPortalHost }),
+              shouldRevalidate: revalidateOn(['edit', 'rangeStart', 'rangeEnd']),
             },
             {
               path: ':activityId/*',

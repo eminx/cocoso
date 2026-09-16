@@ -147,6 +147,13 @@ export interface MeteorUser {
  * Used in DatesAndTimes, CalendarActivityForm, PublicActivityForm
  */
 export interface DateAndTime {
+  // Occurrence _id, present when loaded from an existing activity. Absent
+  // means "new occurrence" — the server creates it rather than matching it
+  // against an existing one. Threading this through the edit forms lets the
+  // server reconcile occurrences by id instead of replacing the whole set
+  // on every save, which would otherwise orphan any registrations made
+  // between loading and submitting the form.
+  _id?: string;
   startDate: string;
   endDate: string;
   startTime: string;

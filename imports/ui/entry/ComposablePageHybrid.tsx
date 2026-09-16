@@ -121,7 +121,7 @@ function ContentViewModule({ module, Host }: ContentViewModuleProps) {
     case 'image-slider':
       return (
         <Center py="4">
-          <EmblaSlider images={value.images} />
+          <EmblaSlider borderRounded images={value.images} />
         </Center>
       );
     case 'text':

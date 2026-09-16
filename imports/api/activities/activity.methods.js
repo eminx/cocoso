@@ -5,9 +5,19 @@ import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Activities from './activity';
-import Groups from '../groups/group';
 import Resources from '../resources/resource';
 import Platform from '../platform/platform';
+import Occurrences from '../occurrences/occurrence';
+import Registrations from '../registrations/registration';
+import {
+  MAX_OCCURRENCE_DURATION_DAYS,
+  toDateTime,
+  insertOccurrence,
+  reconcileOccurrences,
+  removeOccurrencesForActivity,
+  hydrateActivities,
+  hydrateActivity,
+} from '../occurrences/occurrence.helpers';
 import {
   getRegistrationEmailBody,
   getUnregistrationEmailBody,
@@ -16,58 +26,96 @@ import {
   compareDatesForSortActivities,
   compareDatesForSortActivitiesReverse,
   parseGroupActivities,
+  filterPrivateGroups,
 } from './activity.helpers';
 
-const filterPrivateGroups = async (activities, user) => {
-  if (!activities) {
+// Every occurrence belonging to `activityId`, sorted the same way the old
+// embedded datesAndTimes array always was (by start date/time). Positional
+// occurrenceIndex/attendeeIndex arguments below are resolved against this
+// order, so they keep meaning what they meant before the extraction.
+async function getSortedOccurrences(activityId) {
+  const occurrences = await Occurrences.find({ activityId }).fetchAsync();
+  return occurrences.sort((a, b) => a.startDateTime - b.startDateTime);
+}
+
+async function getSortedRegistrations(occurrenceId) {
+  const registrations = await Registrations.find({ occurrenceId }).fetchAsync();
+  return registrations.sort((a, b) => a.registerDate - b.registerDate);
+}
+
+// Activities whose resourceId (direct or via a combo resource) matches one
+// of resourceId's group, for the given host — the first hop of the conflict
+// check. Second hop (below) narrows by actual occurrence overlap.
+async function findActivityIdsForResource(host, resourceId, excludeActivityId) {
+  const resourcesInQuestion = await Resources.find(
+    {
+      host,
+      $or: [{ _id: resourceId }, { 'resourcesForCombo._id': resourceId }],
+    },
+    { fields: { _id: 1 } }
+  ).fetchAsync();
+  const resourceIds = resourcesInQuestion.map((resource) => resource._id);
+
+  if (resourceIds.length === 0) {
     return [];
   }
-  const filterResults = await Promise.all(
-    activities.map(async (act) => {
-      if (!act.isGroupPrivate) {
-        return true;
+
+  return await Activities.find(
+    {
+      host,
+      _id: { $ne: excludeActivityId },
+      resourceId: { $in: resourceIds },
+    },
+    { fields: { _id: 1, isExclusiveActivity: 1, title: 1 } }
+  ).fetchAsync();
+}
+
+// activityId set with at least one occurrence that hasn't fully ended yet
+// (afterNow) or has fully ended (afterNow === false), for the given host
+// filter (or none, for portal-wide "all hosts" listings).
+async function findActivityIdsByOccurrenceWindow({ host, isPortalHost, afterNow }) {
+  const now = new Date();
+  const query = afterNow
+    ? {
+        startDateTime: {
+          $gte: dayjs(now).subtract(MAX_OCCURRENCE_DURATION_DAYS, 'day').toDate(),
+        },
+        endDateTime: { $gte: now },
       }
-      if (!user) {
-        return false;
-      }
-      const group = await Groups.findOneAsync({ _id: act.groupId });
-      const userId = user?._id;
-      return (
-        group.adminId === userId ||
-        group.members.some((member) => member.memberId === userId) ||
-        group.peopleInvited.some(
-          (person) => person.email === user.emails[0].address
-        )
-      );
-    })
-  );
-  return activities.filter((_, index) => filterResults[index]);
-};
+    : {
+        startDateTime: { $lte: now },
+        endDateTime: { $lte: now },
+      };
+
+  if (!isPortalHost) {
+    query.host = host;
+  }
+
+  const occurrences = await Occurrences.find(query, {
+    fields: { activityId: 1 },
+  }).fetchAsync();
+
+  return [...new Set(occurrences.map((occ) => occ.activityId))];
+}
 
 Meteor.methods({
   async getAllPublicActivitiesFromAllHosts(showPast = false) {
     const user = await Meteor.userAsync();
-    const today = dayjs().format('YYYY-MM-DD');
 
     try {
-      if (showPast) {
-        const pastActs = await Activities.find({
-          $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-          'datesAndTimes.endDate': { $lte: today },
-        }).fetchAsync();
-        const pastActsSorted = parseGroupActivities(pastActs)?.sort(
-          compareDatesForSortActivitiesReverse
-        );
-        return await filterPrivateGroups(pastActsSorted, user);
-      }
-      const futureActs = await Activities.find({
+      const activityIds = await findActivityIdsByOccurrenceWindow({
+        isPortalHost: true,
+        afterNow: !showPast,
+      });
+      const acts = await Activities.find({
+        _id: { $in: activityIds },
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-        'datesAndTimes.endDate': { $gte: today },
       }).fetchAsync();
-      const futureActsSorted = parseGroupActivities(futureActs)?.sort(
-        compareDatesForSortActivities
+      const hydrated = await hydrateActivities(acts);
+      const sorted = parseGroupActivities(hydrated)?.sort(
+        showPast ? compareDatesForSortActivitiesReverse : compareDatesForSortActivities
       );
-      return await filterPrivateGroups(futureActsSorted, user);
+      return await filterPrivateGroups(sorted, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -76,30 +124,22 @@ Meteor.methods({
   async getAllPublicActivities(showPast = false, hostPredefined) {
     const host = hostPredefined || getHost(this);
     const user = await Meteor.userAsync();
-    const today = dayjs().format('YYYY-MM-DD');
 
     try {
-      if (showPast) {
-        const pastActs = await Activities.find({
-          host,
-          $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-          'datesAndTimes.endDate': { $lte: today },
-        }).fetchAsync();
-        const pastActsSorted = parseGroupActivities(pastActs)?.sort(
-          compareDatesForSortActivitiesReverse
-        );
-        return await filterPrivateGroups(pastActsSorted, user);
-      }
-      const futureActs = await Activities.find({
+      const activityIds = await findActivityIdsByOccurrenceWindow({
+        host,
+        afterNow: !showPast,
+      });
+      const acts = await Activities.find({
+        _id: { $in: activityIds },
         host,
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-        'datesAndTimes.endDate': { $gte: today },
       }).fetchAsync();
-
-      const futureActsSorted = parseGroupActivities(futureActs)?.sort(
-        compareDatesForSortActivities
+      const hydrated = await hydrateActivities(acts);
+      const sorted = parseGroupActivities(hydrated)?.sort(
+        showPast ? compareDatesForSortActivitiesReverse : compareDatesForSortActivities
       );
-      return await filterPrivateGroups(futureActsSorted, user);
+      return await filterPrivateGroups(sorted, user);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
@@ -110,7 +150,8 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     try {
       const allActs = await Activities.find().fetchAsync();
-      const allActsParsed = parseGroupActivities(allActs);
+      const hydrated = await hydrateActivities(allActs);
+      const allActsParsed = parseGroupActivities(hydrated);
       return await filterPrivateGroups(allActsParsed, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
@@ -122,10 +163,9 @@ Meteor.methods({
 
     const user = await Meteor.userAsync();
     try {
-      const allActs = await Activities.find({
-        host,
-      }).fetchAsync();
-      const allActsParsed = parseGroupActivities(allActs);
+      const allActs = await Activities.find({ host }).fetchAsync();
+      const hydrated = await hydrateActivities(allActs);
+      const allActsParsed = parseGroupActivities(hydrated);
       return await filterPrivateGroups(allActsParsed, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
@@ -136,10 +176,11 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
     try {
-      if (!host || currentHost.isPortal) {
-        return await Activities.findOneAsync(activityId);
-      }
-      return await Activities.findOneAsync({ _id: activityId, host });
+      const activity =
+        !host || currentHost.isPortal
+          ? await Activities.findOneAsync(activityId)
+          : await Activities.findOneAsync({ _id: activityId, host });
+      return await hydrateActivity(activity);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -158,7 +199,7 @@ Meteor.methods({
         host,
         authorId: user._id,
       }).fetchAsync();
-      return activities;
+      return await hydrateActivities(activities);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -172,20 +213,19 @@ Meteor.methods({
     const platform = await Platform.findOneAsync();
 
     try {
-      if (platform?.isFederationLayout) {
-        return await Activities.find({
-          authorName: username,
-        }).fetchAsync();
-      }
-      return await Activities.find({
-        host,
-        authorName: username,
-      }).fetchAsync();
+      const activities = platform?.isFederationLayout
+        ? await Activities.find({ authorName: username }).fetchAsync()
+        : await Activities.find({ host, authorName: username }).fetchAsync();
+      return await hydrateActivities(activities);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch activities");
     }
   },
 
+  // Advisory only — see imports/api/occurrences/occurrence.helpers.js note
+  // and project memory: this does not (yet) guarantee against a concurrent
+  // double-booking. It's a pre-save check called from the client, same as
+  // before the extraction; closing the race is a separate, tracked follow-up.
   async checkDatesForConflict(
     { startDate, endDate, startTime, endTime, resourceId },
     currentActivityId = null
@@ -195,92 +235,56 @@ Meteor.methods({
       return null;
     }
 
-    const resourcesInQuestion = await Resources.find(
-      {
-        host,
-        $or: [
-          {
-            _id: resourceId,
-          },
-          {
-            'resourcesForCombo._id': resourceId,
-          },
-        ],
-      },
-      {
-        fields: {
-          _id: 1,
-        },
-      }
-    ).fetchAsync();
-
-    const resourcesIds = resourcesInQuestion.map((resource) => resource._id);
-
-    const activityWithConflict = await Activities.findOneAsync(
-      {
-        _id: { $ne: currentActivityId },
-        host,
-        $and: [
-          {
-            $or: [
-              {
-                resourceId: {
-                  $in: resourcesIds,
-                },
-              },
-            ],
-          },
-          {
-            $or: [
-              {
-                datesAndTimes: {
-                  $elemMatch: {
-                    startDate: {
-                      $lt: endDate,
-                    },
-                    endDate: {
-                      $gt: startDate,
-                    },
-                  },
-                },
-              },
-              {
-                datesAndTimes: {
-                  $elemMatch: {
-                    startDate: endDate,
-                    startTime: { $lt: endTime },
-                    endTime: { $gt: startTime },
-                  },
-                },
-              },
-              {
-                datesAndTimes: {
-                  $elemMatch: {
-                    endDate: startDate,
-                    startTime: { $lt: endTime },
-                    endTime: { $gt: startTime },
-                  },
-                },
-              },
-            ],
-          },
-        ],
-      },
-      {
-        fields: {
-          _id: 1,
-          datesAndTimes: 1,
-          isExclusiveActivity: 1,
-          title: 1,
-        },
-      }
+    const candidateActivities = await findActivityIdsForResource(
+      host,
+      resourceId,
+      currentActivityId
     );
 
-    if (!activityWithConflict) {
+    if (candidateActivities.length === 0) {
       return null;
     }
 
-    return activityWithConflict;
+    const candidateActivitiesById = new Map(
+      candidateActivities.map((act) => [act._id, act])
+    );
+
+    const targetStart = toDateTime(startDate, startTime);
+    const targetEnd = toDateTime(endDate, endTime);
+    const windowFloor = dayjs(targetStart)
+      .subtract(MAX_OCCURRENCE_DURATION_DAYS, 'day')
+      .toDate();
+
+    // A single, correct interval-overlap test on real datetimes, replacing
+    // the three ad-hoc date/time-string clauses the old $elemMatch query
+    // needed (it had no combined datetime to compare against).
+    const conflictingOccurrence = await Occurrences.findOneAsync({
+      activityId: { $in: [...candidateActivitiesById.keys()] },
+      startDateTime: { $gte: windowFloor, $lt: targetEnd },
+      endDateTime: { $gt: targetStart },
+    });
+
+    if (!conflictingOccurrence) {
+      return null;
+    }
+
+    const conflictingActivity = candidateActivitiesById.get(
+      conflictingOccurrence.activityId
+    );
+
+    return {
+      _id: conflictingActivity._id,
+      title: conflictingActivity.title,
+      isExclusiveActivity: conflictingActivity.isExclusiveActivity,
+      datesAndTimes: [
+        {
+          startDate: conflictingOccurrence.startDate,
+          startTime: conflictingOccurrence.startTime,
+          endDate: conflictingOccurrence.endDate,
+          endTime: conflictingOccurrence.endTime,
+        },
+      ],
+    };
   },
 
   async createActivity(values) {
@@ -301,9 +305,11 @@ Meteor.methods({
       throw new Meteor.Error('Image is required for public activities');
     }
 
+    const { datesAndTimes, ...activityValues } = values;
+
     try {
       const activityId = await Activities.insertAsync({
-        ...values,
+        ...activityValues,
         host,
         authorId: user._id,
         authorName: user.username,
@@ -311,6 +317,11 @@ Meteor.methods({
         isPublished: true,
         creationDate: new Date(),
       });
+
+      for (const occurrence of datesAndTimes || []) {
+        await insertOccurrence(host, activityId, occurrence);
+      }
+
       if (values.isPublicActivity) {
         await Meteor.callAsync(
           'createChat',
@@ -347,12 +358,18 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
 
+    const { datesAndTimes, ...activityValues } = values;
+
     try {
-      return await Activities.updateAsync(activityId, {
+      const result = await Activities.updateAsync(activityId, {
         $set: {
-          ...values,
+          ...activityValues,
         },
       });
+      if (datesAndTimes) {
+        await reconcileOccurrences(theActivity.host, activityId, datesAndTimes);
+      }
+      return result;
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't add to Collection");
@@ -377,6 +394,7 @@ Meteor.methods({
     }
 
     try {
+      await removeOccurrencesForActivity(activityId);
       await Activities.removeAsync(activityId);
       return true;
     } catch (error) {
@@ -386,6 +404,13 @@ Meteor.methods({
 
   async registerAttendance(activityId, values, occurenceIndex = 0) {
     const theActivity = await Activities.findOneAsync(activityId);
+    const occurrences = await getSortedOccurrences(activityId);
+    const occurrence = occurrences[occurenceIndex];
+
+    if (!occurrence) {
+      throw new Meteor.Error('Occurrence not found');
+    }
+
     const rsvpValues = {
       ...values,
       registerDate: new Date(),
@@ -394,23 +419,21 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
     const hostName = currentHost?.settings?.name;
-
-    const field = `datesAndTimes.${occurenceIndex}.attendees`;
-    const occurence = theActivity.datesAndTimes[occurenceIndex];
     const currentUser = await Meteor.userAsync();
     const emailBody = getRegistrationEmailBody(
       theActivity,
       values,
-      occurence,
+      occurrence,
       currentHost,
       currentUser
     );
 
     try {
-      await Activities.updateAsync(activityId, {
-        $push: {
-          [field]: rsvpValues,
-        },
+      await Registrations.insertAsync({
+        host,
+        occurrenceId: occurrence._id,
+        activityId,
+        ...rsvpValues,
       });
       await Meteor.callAsync(
         'sendEmail',
@@ -426,12 +449,24 @@ Meteor.methods({
 
   async updateAttendance(activityId, values, occurenceIndex, attendeeIndex) {
     const theActivity = await Activities.findOneAsync(activityId);
+    const occurrences = await getSortedOccurrences(activityId);
+    const occurrence = occurrences[occurenceIndex];
+
+    if (!occurrence) {
+      throw new Meteor.Error('Occurrence not found');
+    }
+
+    const registrations = await getSortedRegistrations(occurrence._id);
+    const registration = registrations[attendeeIndex];
+
+    if (!registration) {
+      throw new Meteor.Error('Registration not found');
+    }
+
     const rsvpValues = {
       ...values,
       registerDate: new Date(),
     };
-    const newDatesAndTimes = [...theActivity.datesAndTimes];
-    const theOccurence = newDatesAndTimes[occurenceIndex];
 
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
@@ -439,19 +474,15 @@ Meteor.methods({
     const emailBody = getRegistrationEmailBody(
       theActivity,
       rsvpValues,
-      theOccurence,
+      occurrence,
       currentHost,
       currentUser,
       true
     );
 
-    const field = `datesAndTimes.${occurenceIndex}.attendees.${attendeeIndex}`;
-
     try {
-      await Activities.updateAsync(activityId, {
-        $set: {
-          [field]: rsvpValues,
-        },
+      await Registrations.updateAsync(registration._id, {
+        $set: rsvpValues,
       });
       await Meteor.callAsync(
         'sendEmail',
@@ -468,31 +499,36 @@ Meteor.methods({
   async removeAttendance(activityId, occurenceIndex, email, lastName) {
     const currentUser = await Meteor.userAsync();
     const theActivity = await Activities.findOneAsync(activityId);
-    const newOccurences = [...theActivity.datesAndTimes];
-    const theOccurence = newOccurences[occurenceIndex];
-    const theNonAttendee = theOccurence.attendees.find(
-      (a) => a.email === email
-    );
+    const occurrences = await getSortedOccurrences(activityId);
+    const occurrence = occurrences[occurenceIndex];
 
-    newOccurences[occurenceIndex].attendees = theOccurence.attendees.filter(
-      (a) => {
+    if (!occurrence) {
+      throw new Meteor.Error('Occurrence not found');
+    }
+
+    const registrations = await Registrations.find({
+      occurrenceId: occurrence._id,
+    }).fetchAsync();
+
+    const theNonAttendee = registrations.find((a) => a.email === email);
+
+    const idsToRemove = registrations
+      .filter((a) => {
         if (theActivity.isGroupMeeting) {
-          return email !== a.email;
+          return a.email === email;
         }
-        return a.email !== email || a.lastName !== lastName;
-      }
-    );
+        return a.email === email && a.lastName === lastName;
+      })
+      .map((a) => a._id);
 
     const host = getHost(this);
     const currentHost = await Hosts.findOneAsync({ host });
     const hostName = currentHost.settings.name;
 
     try {
-      await Activities.updateAsync(activityId, {
-        $set: {
-          datesAndTimes: newOccurences,
-        },
-      });
+      if (idsToRemove.length > 0) {
+        await Registrations.removeAsync({ _id: { $in: idsToRemove } });
+      }
       await Meteor.callAsync(
         'sendEmail',
         email,

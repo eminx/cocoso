@@ -4,6 +4,7 @@ import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 import Resources from './resource';
 import Activities from '../activities/activity';
+import Occurrences from '../occurrences/occurrence';
 
 async function validateLabel(label, host, resourceId) {
   // set resource query
@@ -75,30 +76,45 @@ Meteor.methods({
 
     try {
       const bookings = await Activities.find(
-        {
-          resourceId,
-          authorId: user._id,
-        },
-        {
-          fields: {
-            title: 1,
-            longDescription: 1,
-            datesAndTimes: 1,
-          },
-        }
+        { resourceId, authorId: user._id },
+        { fields: { title: 1, longDescription: 1 } }
       ).fetchAsync();
 
-      const userBookings = bookings.map((booking) => ({
-        _id: booking._id,
-        startDate: booking.datesAndTimes[0].startDate,
-        startTime: booking.datesAndTimes[0].startTime,
-        endDate: booking.datesAndTimes[0].endDate,
-        endTime: booking.datesAndTimes[0].endTime,
-        title: booking.title,
-        description: booking.longDescription,
-      }));
+      const activityIds = bookings.map((booking) => booking._id);
+      const occurrences = activityIds.length
+        ? await Occurrences.find({
+            activityId: { $in: activityIds },
+          }).fetchAsync()
+        : [];
 
-      return userBookings;
+      // One row per booking, using its earliest occurrence — matches the
+      // original behavior, which always read datesAndTimes[0] off an array
+      // both admin forms already save in ascending date order.
+      const earliestOccurrenceByActivity = new Map();
+      occurrences.forEach((occ) => {
+        const current = earliestOccurrenceByActivity.get(occ.activityId);
+        if (!current || occ.startDateTime < current.startDateTime) {
+          earliestOccurrenceByActivity.set(occ.activityId, occ);
+        }
+      });
+
+      return bookings
+        .map((booking) => {
+          const occurrence = earliestOccurrenceByActivity.get(booking._id);
+          if (!occurrence) {
+            return null;
+          }
+          return {
+            _id: booking._id,
+            startDate: occurrence.startDate,
+            startTime: occurrence.startTime,
+            endDate: occurrence.endDate,
+            endTime: occurrence.endTime,
+            title: booking.title,
+            description: booking.longDescription,
+          };
+        })
+        .filter(Boolean);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch bookings");
     }

@@ -21,6 +21,7 @@ import NiceSlider from '../generic/NiceSlider';
 import Tabs from '../core/Tabs';
 import BackLink, { BackLinkData } from './BackLink';
 import { getImageUrl, getImageUrlBest } from '../utils/imageHelper';
+import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 interface Author {
   username: string;
@@ -232,7 +233,8 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
 
             {images && (
               <Center>
-                <NiceSlider alt={title} images={images} />
+                <EmblaSlider images={images} />
+                {/* <NiceSlider alt={title} images={images} /> */}
               </Center>
             )}
 

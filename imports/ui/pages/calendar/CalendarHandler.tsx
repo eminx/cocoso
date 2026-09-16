@@ -129,6 +129,23 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
     setSelectedActivity(activity);
   };
 
+  const handleRangeChange = (range: Date[] | { start: Date; end: Date }) => {
+    const [rangeStart, rangeEnd] = Array.isArray(range)
+      ? [range[0], range[range.length - 1]]
+      : [range.start, range.end];
+
+    if (!rangeStart || !rangeEnd) {
+      return;
+    }
+
+    setSearchParams((params) => {
+      const next = new URLSearchParams(params);
+      next.set('rangeStart', dayjs(rangeStart).startOf('day').toISOString());
+      next.set('rangeEnd', dayjs(rangeEnd).endOf('day').toISOString());
+      return next;
+    });
+  };
+
   const handleSelectSlot = (slotInfo: SlotInfo) => {
     if (!canCreateContent || !slotInfo) {
       return;
@@ -386,6 +403,7 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
             resources={resources}
             onSelect={handleSelectActivity}
             onSelectSlot={handleSelectSlot}
+            onRangeChange={handleRangeChange}
           />
         </Box>
       </Box>

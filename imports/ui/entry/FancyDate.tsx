@@ -12,7 +12,6 @@ const fancyDateStyle: React.CSSProperties = {
   fontWeight: 'bold',
   justifyContent: 'space-between',
   lineHeight: 0.9,
-  width: '100%',
 };
 
 const fancyTimeStyle: React.CSSProperties = {

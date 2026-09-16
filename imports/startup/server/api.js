@@ -50,6 +50,10 @@ import '../../api/resources/resource';
 import '../../api/resources/resource.methods';
 import '../../api/resources/resource.publications';
 
+import '../../api/occurrences/occurrence';
+import '../../api/occurrences/occurrence.methods';
+import '../../api/registrations/registration';
+
 import '../../api/activities/activity';
 import '../../api/activities/activity.methods';
 import '../../api/activities/activity.publications';

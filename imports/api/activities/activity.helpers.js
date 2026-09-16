@@ -1,9 +1,41 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
+import Groups from '../groups/group';
+
 dayjs.extend(isBetween);
 
 const now = dayjs();
+
+// Hides activities tied to a private group from anyone who isn't a member
+// (or invitee, or the group's admin). Shared by activity.methods.js and
+// occurrence.methods.js — anywhere a list of activity-like objects
+// (carrying isGroupPrivate/groupId) is about to be returned to a client.
+export async function filterPrivateGroups(activities, user) {
+  if (!activities) {
+    return [];
+  }
+  const filterResults = await Promise.all(
+    activities.map(async (act) => {
+      if (!act.isGroupPrivate) {
+        return true;
+      }
+      if (!user) {
+        return false;
+      }
+      const group = await Groups.findOneAsync({ _id: act.groupId });
+      const userId = user?._id;
+      return (
+        group.adminId === userId ||
+        group.members.some((member) => member.memberId === userId) ||
+        group.peopleInvited.some(
+          (person) => person.email === user.emails[0].address
+        )
+      );
+    })
+  );
+  return activities.filter((_, index) => filterResults[index]);
+}
 
 function createDateTime(dateStr, timeStr) {
   return dayjs(`${dateStr} ${timeStr}`, 'YYYY-MM-DD HH:mm');

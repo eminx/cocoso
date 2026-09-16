@@ -39,6 +39,7 @@ interface CalendarViewProps {
   resources: Resource[];
   onSelect: (activity: CalendarActivity, e: React.SyntheticEvent) => void;
   onSelectSlot: (slotInfo: any) => void;
+  onRangeChange: (range: Date[] | { start: Date; end: Date }) => void;
 }
 
 export default function CalendarView({
@@ -46,6 +47,7 @@ export default function CalendarView({
   resources,
   onSelect,
   onSelectSlot,
+  onRangeChange,
 }: CalendarViewProps) {
   const [t] = useTranslation('calendar');
   const canCreateContent = useAtomValue(canCreateContentAtom);
@@ -95,6 +97,7 @@ export default function CalendarView({
         })}
         onSelectEvent={onSelect}
         onSelectSlot={onSelectSlot}
+        onRangeChange={onRangeChange}
       />
 
       {rendered && canCreateContent ? (

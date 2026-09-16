@@ -11,6 +11,8 @@ import { isAdmin, isContributorOrAdmin, isMember } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Groups from './group';
 import Activities from '../activities/activity';
+import Occurrences from '../occurrences/occurrence';
+import { hydrateActivities } from '../occurrences/occurrence.helpers';
 import Platform from '../platform/platform';
 import {
   getGroupRegistrationEmailBody,
@@ -18,6 +20,40 @@ import {
 } from './group.mails';
 
 const publicSettings = Meteor.settings.public;
+
+// Every group meeting is an Activity with isGroupMeeting:true and exactly
+// one Occurrence (AddMeeting.tsx always creates a single dateAndTime entry).
+// "Future" here matches the original semantics exactly: the meeting's
+// startDate string is today or later — not "hasn't ended yet" the way the
+// general activities listing works, since a meeting is a point in time.
+async function findFutureGroupMeetingActivities({ host, isPortalHost, groupId }) {
+  const activityQuery = { isGroupMeeting: true };
+  if (groupId) {
+    activityQuery.groupId = groupId;
+  }
+  if (!isPortalHost && host) {
+    activityQuery.host = host;
+  }
+
+  const activities = await Activities.find(activityQuery).fetchAsync();
+  if (activities.length === 0) {
+    return [];
+  }
+
+  const todayDateString = new Date().toISOString().substring(0, 10);
+  const activityIds = activities.map((a) => a._id);
+  const futureOccurrences = await Occurrences.find({
+    activityId: { $in: activityIds },
+    startDate: { $gte: todayDateString },
+  }).fetchAsync();
+
+  const futureActivityIds = new Set(
+    futureOccurrences.map((occ) => occ.activityId)
+  );
+  const futureActivities = activities.filter((a) => futureActivityIds.has(a._id));
+
+  return await hydrateActivities(futureActivities);
+}
 
 const isUserGroupAdmin = (group, userId) => {
   if (!group || !userId) {
@@ -172,20 +208,8 @@ Meteor.methods({
   async getAllGroupMeetingsFuture(isPortalHost = false, hostPredefined) {
     const host = hostPredefined || getHost(this);
 
-    const dateNow = new Date().toISOString().substring(0, 10);
-
     try {
-      if (isPortalHost) {
-        return await Activities.find({
-          isGroupMeeting: true,
-          'datesAndTimes.startDate': { $gte: dateNow },
-        }).fetchAsync();
-      }
-      return await Activities.find({
-        host,
-        isGroupMeeting: true,
-        'datesAndTimes.startDate': { $gte: dateNow },
-      }).fetchAsync();
+      return await findFutureGroupMeetingActivities({ host, isPortalHost });
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -194,13 +218,7 @@ Meteor.methods({
   async getGroupMeetingsFuture(groupId) {
     check(groupId, String);
 
-    const dateNow = new Date().toISOString().substring(0, 10);
-    return await Activities.find({
-      groupId,
-      isGroupMeeting: true,
-      'datesAndTimes.startDate': { $gte: dateNow },
-      datesAndTimes: { $exists: true, $ne: [] },
-    }).fetchAsync();
+    return await findFutureGroupMeetingActivities({ groupId });
   },
 
   async getGroupsByUser(username, hostPredefined) {

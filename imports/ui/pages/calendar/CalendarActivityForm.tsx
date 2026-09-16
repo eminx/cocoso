@@ -133,7 +133,8 @@ export default function CalendarActivityForm({
     });
 
     const cleanDatesAndTimes = sortedDatesAndTimes.map(
-      ({ startTime, endTime, startDate, endDate }) => ({
+      ({ _id, startTime, endTime, startDate, endDate }) => ({
+        _id,
         startDate,
         endDate,
         startTime,

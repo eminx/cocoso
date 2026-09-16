@@ -9,7 +9,6 @@ import type { DotsProps } from '/imports/ui/types';
 import { getImageUrl } from '../utils/imageHelper';
 
 const imageStyle: React.CSSProperties = {
-  borderRadius: 'var(--cocoso-border-radius)',
   cursor: 'pointer',
   maxHeight: '480px',
   objectFit: 'contain',
@@ -101,14 +100,17 @@ const checkTouchDevice = (): boolean => {
 };
 
 export interface EmblaSliderProps {
-  images?: string[];
+  alt?: string;
+  borderRounded?: boolean;
   height?: string | number;
-  width?: string | number;
+  images: string[] | undefined;
 }
 
 export default function EmblaSlider({
+  alt = 'Image',
   images,
   height = 'auto',
+  borderRounded = false,
 }: EmblaSliderProps) {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -198,15 +200,20 @@ export default function EmblaSlider({
   const toggleLightbox = () =>
     setState((prev) => ({ ...prev, lightboxToggle: !prev.lightboxToggle }));
 
+  const imageStyleParsed = {
+    ...imageStyle,
+    height,
+  };
+
   const lightBoxProps = {
     toggler: state.lightboxToggle,
     sources: resolvedImages.map((img) => (
       <img
         key={img}
-        alt={img}
+        alt={`${alt} ${img}`}
         loading="lazy"
         src={img}
-        style={{ ...imageStyle, height }}
+        style={imageStyleParsed}
       />
     )),
     sourceIndex: state.currentSlideIndex,
@@ -218,10 +225,10 @@ export default function EmblaSlider({
         <Flex h={height} justify="center">
           <Center>
             <img
-              alt={resolvedImages[0]}
+              alt={`${alt} ${resolvedImages[0]}`}
               loading="lazy"
               src={resolvedImages[0]}
-              style={{ ...imageStyle, height }}
+              style={imageStyleParsed}
               onClick={toggleLightbox}
             />
           </Center>
@@ -239,9 +246,14 @@ export default function EmblaSlider({
           {resolvedImages.map((img, index) => (
             <div className="embla__slide" key={img}>
               <img
-                alt={img}
+                alt={`${alt} ${img}`}
                 src={loadedIndices.has(index) ? img : undefined}
-                style={{ ...imageStyle, height }}
+                style={{
+                  ...imageStyleParsed,
+                  borderRadius: borderRounded
+                    ? 'var(--cocoso-border-radius)'
+                    : 0,
+                }}
                 onClick={toggleLightbox}
               />
             </div>

@@ -175,12 +175,12 @@ export default function PublicActivityForm({
     });
 
     const cleanDatesAndTimes = sortedDatesAndTimes.map(
-      ({ startTime, endTime, startDate, endDate, attendees }) => ({
+      ({ _id, startTime, endTime, startDate, endDate }) => ({
+        _id,
         startDate,
         endDate,
         startTime,
         endTime,
-        attendees: attendees || [],
       })
     );
 
