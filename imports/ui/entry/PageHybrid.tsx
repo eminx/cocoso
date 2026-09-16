@@ -4,10 +4,9 @@ import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Center, Heading } from '/imports/ui/core';
-
-import NiceSlider from '../generic/NiceSlider';
 import { parseTitle } from '/imports/api/_utils/shared';
 import { getImageUrlBest } from '/imports/ui/utils/imageHelper';
+import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 interface SimplePageProps {
   description?: string;
@@ -56,7 +55,7 @@ function SimplePage({
 
       {images && (
         <Center pt="4" pb="2" mb="0">
-          <NiceSlider alt={title} images={images} />
+          <EmblaSlider alt={title} images={images} />
         </Center>
       )}
 

@@ -104,13 +104,15 @@ export interface EmblaSliderProps {
   borderRounded?: boolean;
   height?: string | number;
   images: string[] | undefined;
+  isPopup?: boolean;
 }
 
 export default function EmblaSlider({
   alt = 'Image',
-  images,
-  height = 'auto',
   borderRounded = false,
+  height = 'auto',
+  images,
+  isPopup = false,
 }: EmblaSliderProps) {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -142,7 +144,9 @@ export default function EmblaSlider({
   }
 
   // Resolve image references to URLs (handles both legacy strings and image _ids)
-  const resolvedImages = images.map((img) => getImageUrl(img, 'medium') || img);
+  const resolvedImages = images.map(
+    (img) => getImageUrl(img, isPopup ? 'medium' : 'full') || img
+  );
 
   const scrollPrev = useCallback(() => {
     if (!emblaApi) {

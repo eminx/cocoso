@@ -4,12 +4,10 @@ import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
+import { allHostsAtom, currentHostAtom } from '/imports/state';
 import { Box, Center, Flex, Heading, Modal, Tag } from '/imports/ui/core';
-import { allHostsAtom } from '../../state';
-import { currentHostAtom } from '/imports/state';
-
-import ActionDates from '../entry/ActionDates';
-import NiceSlider from '../generic/NiceSlider';
+import EmblaSlider from '/imports/ui/generic/EmblaSlider';
+import ActionDates from '/imports/ui/entry/ActionDates';
 
 interface PopupHeaderProps {
   subTitle?: string;
@@ -73,7 +71,7 @@ interface PopupContentProps {
   images?: string[];
   subTitle?: string;
   title: string;
-  tags?: string[];
+  tags?: string[] | undefined;
 }
 
 function PopupContent({
@@ -91,7 +89,7 @@ function PopupContent({
         {action}
       </Center>
       <Center mb="4">
-        <NiceSlider alt={title} images={images} isPopup />
+        <EmblaSlider alt={title} images={images} isPopup />
       </Center>
 
       <Box bg="white" className="text-content" p="4">

@@ -78,10 +78,11 @@ export interface MenuItem {
  * Used across entry pages and listing components
  */
 export interface Host {
-  host?: string;
-  name?: string;
-  logo?: string;
   color?: string;
+  host?: string;
+  isPortalHost?: boolean;
+  logo?: string;
+  name?: string;
   settings?: {
     name?: string;
     menu?: MenuItem[];

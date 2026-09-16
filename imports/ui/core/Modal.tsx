@@ -98,8 +98,7 @@ const Header = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
   minHeight: '1rem',
-  padding: '1.5rem',
-  paddingBottom: '1rem',
+  padding: '1rem 1.5rem',
 });
 
 const Title = styled('h2', {
