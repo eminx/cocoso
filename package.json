@@ -67,6 +67,7 @@
     "bcrypt": "^5.0.1",
     "cookie": "^1.0.2",
     "dayjs": "^1.11.13",
+    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-fade": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "fslightbox-react": "^1.6.2-2",

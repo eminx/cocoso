@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 import Fade from 'embla-carousel-fade';
 import FsLightbox from 'fslightbox-react';
 
@@ -116,25 +117,33 @@ export default function EmblaSlider({
   isPopup = false,
 }: EmblaSliderProps) {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [loadedIndices, setLoadedIndices] = useState<Set<number>>(
     () => new Set(images && images.length > 1 ? [0, 1] : [0])
   );
+  const [state, setState] = useState({
+    currentSlideIndex: 0,
+    lightboxToggle: false,
+  });
 
   useEffect(() => {
     setIsTouchDevice(checkTouchDevice());
   }, []);
 
-  const emblaPluginOptions = isTouchDevice ? [] : [Fade()];
+  const autoplayPlugin = useMemo(
+    () =>
+      Autoplay({
+        delay: 5000,
+        stopOnInteraction: false,
+      }),
+    []
+  );
+  const emblaPluginOptions = isTouchDevice
+    ? [autoplayPlugin]
+    : [Fade(), autoplayPlugin];
   const emblaOptions = {
     loop: true,
     containScroll: isTouchDevice ? ('trimSnaps' as const) : (false as const),
   };
-
-  const [state, setState] = useState({
-    currentSlideIndex: 0,
-    lightboxToggle: false,
-  });
   const [emblaRef, emblaApi] = useEmblaCarousel(
     emblaOptions,
     emblaPluginOptions
@@ -150,41 +159,19 @@ export default function EmblaSlider({
   );
 
   const scrollPrev = useCallback(() => {
-    if (!emblaApi) {
-      return;
-    }
+    if (!emblaApi) return;
     emblaApi.scrollPrev();
+    emblaApi.plugins().autoplay?.reset();
   }, [emblaApi]);
 
   const scrollNext = useCallback(() => {
-    if (!emblaApi) {
-      return;
-    }
+    if (!emblaApi) return;
     emblaApi.scrollNext();
+    emblaApi.plugins().autoplay?.reset();
   }, [emblaApi]);
 
   useEffect(() => {
-    if (!emblaApi) {
-      return;
-    }
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    intervalRef.current = setInterval(() => {
-      scrollNext();
-    }, 4000);
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-  }, [emblaApi, scrollNext]);
-
-  useEffect(() => {
-    if (!emblaApi) {
-      return;
-    }
+    if (!emblaApi) return;
     const onSelect = () => {
       const idx = emblaApi.selectedScrollSnap();
       setState((prevState) => ({ ...prevState, currentSlideIndex: idx }));
@@ -197,9 +184,7 @@ export default function EmblaSlider({
       });
     };
     emblaApi.on('select', onSelect);
-    return () => {
-      emblaApi.off('select', onSelect);
-    };
+    return () => emblaApi.off('select', onSelect);
   }, [emblaApi, resolvedImages.length]);
 
   const toggleLightbox = () =>
@@ -266,11 +251,7 @@ export default function EmblaSlider({
         </div>
       </div>
 
-      <Flex
-        align="center"
-        justify="center"
-        css={{ alignItems: 'center', padding: '8px' }}
-      >
+      <Flex align="center" justify="center" p="4">
         <button className="embla__prev embla__button" onClick={scrollPrev}>
           <svg className="embla__button__svg" viewBox="0 0 532 532">
             <path
