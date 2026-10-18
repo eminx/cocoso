@@ -112,7 +112,7 @@ async function migrateActivitiesToOccurrences() {
 Meteor.startup(async () => {
   setupSMTP();
 
-  // await migrateActivitiesToOccurrences();
+  await migrateActivitiesToOccurrences();
 
   if (cdn_server) {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
