@@ -123,7 +123,6 @@ Meteor.startup(async () => {
       await serverRenderer(sink);
     } catch (error) {
       console.error('SSR Error:', error);
-      // Fallback to client-side rendering or error page
       sink.renderIntoElementById('root', '<div>Server rendering failed</div>');
     }
   });
