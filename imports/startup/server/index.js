@@ -49,6 +49,10 @@ function setupSMTP() {
 // by uncommenting the call below, then re-comment it afterward — running it
 // twice would duplicate every occurrence/registration, since there's no
 // "already migrated" guard.
+function isValidDate(d) {
+  return d instanceof Date && !Number.isNaN(d.getTime());
+}
+
 async function migrateActivitiesToOccurrences() {
   await Activities.find({ datesAndTimes: { $exists: true } }).forEachAsync(
     async (activity) => {
@@ -59,10 +63,6 @@ async function migrateActivitiesToOccurrences() {
           !occurrence?.endDate ||
           !occurrence?.endTime
         ) {
-          // A malformed legacy record shouldn't be able to crash server
-          // boot. It's not lost — the original stays intact under
-          // _datesAndTimesLegacy after the rename below — just skipped here
-          // so it can be looked at and fixed by hand.
           console.warn(
             `migrateActivitiesToOccurrences: skipping malformed occurrence on activity ${activity._id}`,
             occurrence
@@ -70,37 +70,78 @@ async function migrateActivitiesToOccurrences() {
           continue;
         }
 
-        const occurrenceId = await Occurrences.insertAsync({
-          host: activity.host,
+        const fields = buildOccurrenceFields(occurrence);
+
+        // The presence check above isn't enough — the composed Dates can still
+        // be Invalid Date (bad strings, Date+string concatenation, etc.).
+        if (
+          !isValidDate(fields.startDateTime) ||
+          !isValidDate(fields.endDateTime)
+        ) {
+          console.warn(
+            `migrateActivitiesToOccurrences: invalid composed date on activity ${activity._id}`,
+            {
+              occurrence,
+              startDateTime: fields.startDateTime,
+              endDateTime: fields.endDateTime,
+            }
+          );
+          continue;
+        }
+
+        // Idempotency: don't re-insert if a crash mid-activity left us retrying.
+        const already = await Occurrences.findOneAsync({
           activityId: activity._id,
-          ...buildOccurrenceFields(occurrence),
-          creationDate: activity.creationDate || new Date(),
+          startDateTime: fields.startDateTime,
+          endDateTime: fields.endDateTime,
         });
+        if (already) {
+          continue;
+        }
+
+        let occurrenceId;
+        try {
+          occurrenceId = await Occurrences.insertAsync({
+            host: activity.host,
+            activityId: activity._id,
+            ...fields,
+            creationDate: activity.creationDate || new Date(),
+          });
+        } catch (err) {
+          // Any other validation failure (bad host, unexpected field, etc.)
+          // must not abort the activity — otherwise the rename below never
+          // runs and we boot-loop on the same document forever.
+          console.warn(
+            `migrateActivitiesToOccurrences: failed to insert occurrence on activity ${activity._id}`,
+            err?.details || err?.message || err,
+            occurrence
+          );
+          continue;
+        }
 
         for (const attendee of occurrence.attendees || []) {
-          await Registrations.insertAsync({
-            host: activity.host,
-            occurrenceId,
-            activityId: activity._id,
-            email: attendee.email,
-            username: attendee.username,
-            firstName: attendee.firstName,
-            lastName: attendee.lastName,
-            numberOfPeople: attendee.numberOfPeople,
-            registerDate: attendee.registerDate || new Date(),
-          });
+          try {
+            await Registrations.insertAsync({
+              host: activity.host,
+              occurrenceId,
+              activityId: activity._id,
+              email: attendee.email,
+              username: attendee.username,
+              firstName: attendee.firstName,
+              lastName: attendee.lastName,
+              numberOfPeople: attendee.numberOfPeople,
+              registerDate: attendee.registerDate || new Date(),
+            });
+          } catch (err) {
+            console.warn(
+              `migrateActivitiesToOccurrences: failed to insert registration for occurrence ${occurrenceId}`,
+              err?.details || err?.message || err,
+              attendee
+            );
+          }
         }
       }
 
-      // Not Activities.updateAsync: collection2 filters a modifier's keys
-      // against the CURRENT schema before validating, and datesAndTimes was
-      // deliberately removed from it — so a $rename keyed on that field gets
-      // stripped as "not in the schema," leaving an empty modifier (this is
-      // not hypothetical, it's the exact error collection2 throws if you
-      // try). Renaming a field away from a name the schema no longer
-      // recognizes is one of the few things the validated path genuinely
-      // cannot do — same category as index creation, not a shortcut around
-      // validation for its own sake.
       await Activities.rawCollection().updateOne(
         { _id: activity._id },
         { $rename: { datesAndTimes: '_datesAndTimesLegacy' } }
