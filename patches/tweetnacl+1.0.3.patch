@@ -1,0 +1,28 @@
+diff --git a/node_modules/tweetnacl/nacl-fast.js b/node_modules/tweetnacl/nacl-fast.js
+index 7ea5fb5..44cdc02 100644
+--- a/node_modules/tweetnacl/nacl-fast.js
++++ b/node_modules/tweetnacl/nacl-fast.js
+@@ -2375,17 +2375,13 @@ nacl.setPRNG = function(fn) {
+       for (i = 0; i < n; i++) x[i] = v[i];
+       cleanup(v);
+     });
+-  } else if (typeof require !== 'undefined') {
+-    // Node.js.
+-    crypto = require('crypto');
+-    if (crypto && crypto.randomBytes) {
+-      nacl.setPRNG(function(x, n) {
+-        var i, v = crypto.randomBytes(n);
+-        for (i = 0; i < n; i++) x[i] = v[i];
+-        cleanup(v);
+-      });
+-    }
+   }
++  // Node.js fallback removed: this app only uses tweetnacl in the browser,
++  // and Meteor's client bundler doesn't honor tweetnacl's own
++  // `"browser": {"crypto": false}` package.json hint, so a literal
++  // `require('crypto')` here drags the entire crypto-browserify polyfill
++  // (~680KB minified) into the client bundle even though this branch never
++  // runs in a real browser. Patched via patch-package.
+ })();
+ 
+ })(typeof module !== 'undefined' && module.exports ? module.exports : (self.nacl = self.nacl || {}));

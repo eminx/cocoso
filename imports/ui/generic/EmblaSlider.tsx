@@ -6,6 +6,7 @@ import FsLightbox from 'fslightbox-react';
 
 import { Center, Flex } from '/imports/ui/core';
 import type { DotsProps } from '/imports/ui/types';
+
 import { getImageUrl } from '../utils/imageHelper';
 
 const imageStyle: React.CSSProperties = {
