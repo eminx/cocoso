@@ -205,14 +205,10 @@ export default function MenuSettingsOrder() {
                       <IconButton
                         aria-label="Remove"
                         colorScheme="bluegray"
-                        icon={
-                          <XIcon
-                            size="18px"
-                            onClick={() => removeMenuItem(value)}
-                          />
-                        }
+                        icon={<XIcon size="18px" />}
                         size="xs"
                         variant="ghost"
+                        onClick={() => removeMenuItem(value)}
                       />
                     </Flex>
                   </div>

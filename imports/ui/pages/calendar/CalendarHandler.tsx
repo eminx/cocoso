@@ -40,7 +40,7 @@ const CalendarView = loadable(() => import('./CalendarView'), {
   fallback: <Skeleton isEntry />,
 });
 
-const maxResourceLabelsToShow = 13;
+const maxResourceLabelsToShow = 18;
 
 interface SlotInfo {
   start: Date;

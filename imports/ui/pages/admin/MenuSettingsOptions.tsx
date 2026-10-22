@@ -8,7 +8,7 @@ import { currentHostAtom } from '/imports/state';
 
 import Boxling from './Boxling';
 
-export default function MenuSettingsOptions({ Host }) {
+export default function MenuSettingsOptions({}) {
   const currentHost = useAtomValue(currentHostAtom);
   const [localSettings, setLocalSettings] = useState({
     isBurgerMenuOnMobile: Boolean(currentHost?.settings?.isBurgerMenuOnMobile),

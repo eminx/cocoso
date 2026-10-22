@@ -8,11 +8,8 @@ import {
   Center,
   Checkbox,
   Flex,
-  FormControl,
-  FormLabel,
   IconButton,
   Text,
-  Wrap,
 } from '/imports/ui/core';
 import type { DateAndTime } from '/imports/ui/types';
 
@@ -235,7 +232,7 @@ export default function DatesAndTimes({
                   occurrence?.isRange ||
                   occurrence.startDate !== occurrence.endDate
                 }
-                id={id}
+                id={id || 'multiple-days'}
                 onChange={(event) => handleRangeSwitch(event, index)}
                 py="2"
               >

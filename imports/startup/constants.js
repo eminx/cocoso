@@ -1,3 +1,11 @@
+const defaultCalendar = [
+  { value: 'month', isVisible: true },
+  { value: 'week', isVisible: true },
+  { value: 'day', isVisible: true },
+  { value: 'agenda', isVisible: true },
+  { value: 'custom', isVisible: false },
+];
+
 const defaultMenu = [
   {
     label: 'Activities',
@@ -94,4 +102,10 @@ const defaultTheme = {
   variant: 'custom',
 };
 
-export { defaultEmails, defaultMainColor, defaultMenu, defaultTheme };
+export {
+  defaultCalendar,
+  defaultEmails,
+  defaultMainColor,
+  defaultMenu,
+  defaultTheme,
+};

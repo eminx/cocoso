@@ -176,6 +176,16 @@ listings:
   title: Listing pages
   shortcutHelper: For each different listing page feature, you can set a title, and a description
 
+calendar:
+  display:
+    title: Display Options
+    helper: Select the display options you would like to be active in calendar view
+    month: Month
+    week: Week
+    day: Day
+    agenda: Agenda
+    today: Today
+
 # ADMIN STATIC PAGES
 pages:
   actions:

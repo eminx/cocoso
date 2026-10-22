@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import PlusIcon from 'lucide-react/dist/esm/icons/plus';
 import { Trans } from 'react-i18next';
 import dayjs from 'dayjs';
 import { useAtomValue } from 'jotai';
@@ -9,10 +8,6 @@ import { Box, Flex, Heading, Link as CLink, Tag, Text } from '/imports/ui/core';
 import Boxling from '/imports/ui/pages/admin/Boxling';
 
 import { composablePageTitlesAtom } from '../index';
-
-function formatDate(date) {
-  return dayjs(date).format('MMM D, YYYY');
-}
 
 function getItemFootnote(composablePage) {
   return (
@@ -35,7 +30,7 @@ function getItemFootnote(composablePage) {
   );
 }
 
-export default function ComposablePagesListing() {
+export default function ComposablePagesList() {
   const composablePageTitles = useAtomValue(composablePageTitlesAtom);
 
   return (
