@@ -10,6 +10,7 @@ import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import {
   Button,
+  Box,
   Center,
   Flex,
   Heading,
@@ -167,30 +168,38 @@ export default function CalendarView({
 
   return (
     <>
-      <Calendar
-        allDayAccessor="isMultipleDay"
-        components={{
-          toolbar: Toolbar,
-        }}
-        culture={culture}
-        defaultDate={dayjs().toDate()}
-        defaultView="month"
-        events={activities}
-        localizer={localizer}
-        messages={messages}
-        popup
-        popupOffset={30}
-        selectable
-        showMultiDayTimes
-        step={60}
-        views={['month', 'week', 'day', 'agenda']}
-        eventPropGetter={(event) => ({
-          style: { backgroundColor: event.resourceColor },
-        })}
-        onSelectEvent={onSelect}
-        onSelectSlot={onSelectSlot}
-        onRangeChange={onRangeChange}
-      />
+      {/* Same markup on server & client (clean hydration). Only this data
+          attribute flips once the client mounts (rendered === true), which
+          lets main.css paint a loading skeleton until then. */}
+      <div
+        data-calendar-loading={rendered ? 'false' : 'true'}
+        style={{ position: 'relative' }}
+      >
+        <Calendar
+          allDayAccessor="isMultipleDay"
+          components={{
+            toolbar: Toolbar,
+          }}
+          culture={culture}
+          defaultDate={dayjs().toDate()}
+          defaultView="month"
+          events={activities}
+          localizer={localizer}
+          messages={messages}
+          popup
+          popupOffset={30}
+          selectable
+          showMultiDayTimes
+          step={60}
+          views={['month', 'week', 'day', 'agenda']}
+          eventPropGetter={(event) => ({
+            style: { backgroundColor: event.resourceColor },
+          })}
+          onSelectEvent={onSelect}
+          onSelectSlot={onSelectSlot}
+          onRangeChange={onRangeChange}
+        />
+      </div>
 
       {rendered && canCreateContent ? (
         <NewEntryHandler context="calendar">

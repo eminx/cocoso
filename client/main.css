@@ -1035,15 +1035,11 @@ body {
   background-color: transparent;
 }
 
-.rbc-day-bg.rbc-off-range-bg {
-  background-color: transparent;
-}
-
-.rbc-day-bg:not(rbc-off-range-bg) {
+.rbc-day-bg {
   background-color: white;
 }
 
-.rbc-day-bg.rbc-selected-cell:not(rbc-off-range-bg) {
+.rbc-day-bg.rbc-selected-cell:not(.rbc-off-range-bg) {
   cursor: move;
   background-color: var(--cocoso-colors-green-200);
 }
@@ -1588,7 +1584,7 @@ body {
 }
 
 .rbc-time-content {
-  background-color: var(--cocoso-colors-theme-50)
+  background-color: var(--cocoso-colors-theme-50);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
