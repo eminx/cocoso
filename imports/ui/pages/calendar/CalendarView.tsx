@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 import { useAtomValue } from 'jotai';
 import ChevronLeft from 'lucide-react/dist/esm/icons/chevron-left';
 import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
-import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
 import {
@@ -50,7 +49,6 @@ interface CalendarViewProps {
 }
 
 function Toolbar({ label, view, views, onNavigate, onView }) {
-  const isMobile = useMediaQuery('(max-width: 959px)');
   const [t] = useTranslation('calendar');
 
   return (
@@ -77,14 +75,14 @@ function Toolbar({ label, view, views, onNavigate, onView }) {
         }}
       >
         <IconButton
-          aria-label={t('bigCal.previous')}
+          aria-label={t('bigCal.previous', { defaultValue: 'Back' })}
           icon={<ChevronLeft />}
           size="sm"
           variant="ghost"
           onClick={() => onNavigate('PREV')}
         />
         <Button
-          aria-label={t('bigCal.today')}
+          aria-label={t('bigCal.today', { defaultValue: 'Today' })}
           size="sm"
           variant="ghost"
           onClick={() => onNavigate('TODAY')}
@@ -92,14 +90,19 @@ function Toolbar({ label, view, views, onNavigate, onView }) {
           {t('bigCal.today', { defaultValue: 'Today' })}
         </Button>
         <IconButton
-          aria-label={t('bigCal.next')}
+          aria-label={t('bigCal.next', { defaultValue: 'Next' })}
           icon={<ChevronRight />}
           size="sm"
           variant="ghost"
           onClick={() => onNavigate('NEXT')}
         />
       </Flex>
-      <Center css={{ order: 2, '@media (min-width: 768px)': { order: 0 } }}>
+      <Center
+        css={{
+          order: 2,
+          '@media (min-width: 768px)': { order: 0 },
+        }}
+      >
         <Heading size="md" textAlign="center">
           {label}
         </Heading>
