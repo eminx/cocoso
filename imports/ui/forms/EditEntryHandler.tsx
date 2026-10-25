@@ -17,7 +17,10 @@ export interface EditEntryHandlerProps {
   children?: React.ReactNode;
 }
 
-export default function EditEntryHandler({ context, children }: EditEntryHandlerProps) {
+export default function EditEntryHandler({
+  context,
+  children,
+}: EditEntryHandlerProps) {
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const [searchParams, setSearchParams] = useSearchParams();
   const [loaders, setLoaders] = useAtom(loaderAtom);
@@ -32,7 +35,11 @@ export default function EditEntryHandler({ context, children }: EditEntryHandler
 
   const handleClose = () => {
     setLoaders({ ...initialLoader });
-    setSearchParams((params) => ({ ...params, edit: 'false' }));
+    setSearchParams((params) => {
+      const next = new URLSearchParams(params);
+      next.set('edit', 'false');
+      return next;
+    });
   };
 
   const title = tc(`common:labels.update.${context}`);

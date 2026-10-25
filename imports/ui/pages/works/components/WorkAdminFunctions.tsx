@@ -22,10 +22,11 @@ export default function WorkAdminFunctions() {
   };
 
   const handleClose = () => {
-    setSearchParams((params) => ({
-      ...params,
-      addDocument: 'false',
-    }));
+    setSearchParams((params) => {
+      const next = new URLSearchParams(params);
+      next.set('addDocument', 'false');
+      return next;
+    });
   };
 
   const menuItems = [

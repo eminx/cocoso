@@ -110,7 +110,11 @@ export default function Emails() {
           key,
           title: t(`emails.${key}.title`),
           onClick: () =>
-            setSearchParams((params) => ({ ...params, show: key })),
+            setSearchParams((params) => {
+              const next = new URLSearchParams(params);
+              next.set('show', key);
+              return next;
+            }),
         };
       }),
     [emails]

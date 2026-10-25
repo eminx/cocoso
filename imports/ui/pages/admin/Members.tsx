@@ -71,7 +71,6 @@ function MemberList({ members }) {
   );
 }
 
-
 export default function Members() {
   const currentUser = useAtomValue(currentUserAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
@@ -213,7 +212,11 @@ export default function Members() {
       filterOptions.map((item) => ({
         title: item.label,
         onClick: () =>
-          setSearchParams((params) => ({ ...params, show: item.value })),
+          setSearchParams((params) => {
+            const next = new URLSearchParams(params);
+            next.set('show', item.value);
+            return next;
+          }),
       })),
     [filterOptions, membersRendered, t]
   );
