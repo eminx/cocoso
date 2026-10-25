@@ -61,15 +61,15 @@ function CalendarOptions() {
 }
 
 export default function CalendarAdmin() {
-  const [t] = useTranslation('admin');
+  // const [t] = useTranslation('admin');
 
-  const tabs = [
-    {
-      title: t('settings.tabs.options'),
-      path: 'options',
-      content: <CalendarOptions />,
-    },
-  ];
+  // const tabs = [
+  //   {
+  //     title: t('settings.tabs.options'),
+  //     path: 'options',
+  //     content: <CalendarOptions />,
+  //   },
+  // ];
 
-  return <FeatureAdminWrapper listing={listing} furtherTabs={tabs} />;
+  return <FeatureAdminWrapper listing={listing} />;
 }

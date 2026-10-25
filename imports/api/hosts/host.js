@@ -45,18 +45,6 @@ Hosts.schema = new SimpleSchema({
   'settings.name': { type: String },
   'settings.email': Schemas.Email,
   'settings.address': { type: String },
-  'settings.calendar': { type: Object, optional: true },
-  'settings.calendar.views': { type: Array, defaultValue: defaultCalendar },
-  'settings.calendar.views.$': {
-    type: Object,
-  },
-  'settings.calendar.views.$.value': {
-    type: String,
-  },
-  'settings.calendar.views.$.isVisible': {
-    type: Boolean,
-    defaultValue: true,
-  },
   'settings.city': { type: String },
   'settings.country': { type: String },
   'settings.lang': { type: String, optional: true },

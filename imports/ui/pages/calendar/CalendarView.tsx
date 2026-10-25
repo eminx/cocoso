@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import React, { useMemo } from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import { useTranslation } from 'react-i18next';
@@ -7,12 +6,17 @@ import dayjs from 'dayjs';
 import { useAtomValue } from 'jotai';
 import ChevronLeft from 'lucide-react/dist/esm/icons/chevron-left';
 import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
+import useMediaQuery from '/imports/api/_utils/useMediaQuery';
 
-if (Meteor.isClient) {
-  import('react-big-calendar/lib/css/react-big-calendar.css');
-}
 import { canCreateContentAtom, renderedAtom } from '/imports/state';
-import { Box, Button, Flex, Heading, IconButton, Text } from '/imports/ui/core';
+import {
+  Button,
+  Center,
+  Flex,
+  Heading,
+  IconButton,
+  Grid,
+} from '/imports/ui/core';
 import NewEntryHandler from '/imports/ui/forms/NewEntryHandler';
 
 import NewCalendarActivity from './NewCalendarActivity';
@@ -45,53 +49,82 @@ interface CalendarViewProps {
   onRangeChange: (range: Date[] | { start: Date; end: Date }) => void;
 }
 
-function Toolbar({ date, label, localizer, views, onNavigate, onView }) {
-  const { messages } = localizer;
+function Toolbar({ label, view, views, onNavigate, onView }) {
+  const isMobile = useMediaQuery('(max-width: 959px)');
+  const [t] = useTranslation('calendar');
 
   return (
-    <Flex align="center" justify="space-between" p="4" w="100%" wrap="wrap">
-      <Flex align="center" w="250px">
+    <Grid
+      gap="2"
+      p="4"
+      w="100%"
+      css={{
+        gridTemplateColumns: '1fr',
+        alignItems: 'center',
+        justifyItems: 'center',
+        '@media (min-width: 768px)': {
+          gridTemplateColumns: '1fr auto 1fr',
+          justifyItems: 'initial',
+        },
+      }}
+    >
+      <Flex
+        align="center"
+        css={{
+          justifySelf: 'center',
+          order: 3,
+          '@media (min-width: 768px)': { justifySelf: 'start', order: 0 },
+        }}
+      >
         <IconButton
-          aria-label={messages?.previous}
+          aria-label={t('bigCal.previous')}
           icon={<ChevronLeft />}
           size="sm"
           variant="ghost"
           onClick={() => onNavigate('PREV')}
         />
         <Button
-          aria-label={messages?.today}
+          aria-label={t('bigCal.today')}
           size="sm"
           variant="ghost"
           onClick={() => onNavigate('TODAY')}
         >
-          {messages?.today}
+          {t('bigCal.today', { defaultValue: 'Today' })}
         </Button>
         <IconButton
-          aria-label={messages?.next}
+          aria-label={t('bigCal.next')}
           icon={<ChevronRight />}
           size="sm"
           variant="ghost"
           onClick={() => onNavigate('NEXT')}
         />
       </Flex>
-      <Box>
-        <Heading size="md">{label}</Heading>
-      </Box>
-      <Flex w="250px">
-        <Button size="xs" variant="ghost" onClick={() => onView('month')}>
-          Month
-        </Button>
-        <Button size="xs" variant="ghost" onClick={() => onView('week')}>
-          Week
-        </Button>
-        <Button size="xs" variant="ghost" onClick={() => onView('day')}>
-          Day
-        </Button>
-        <Button size="xs" variant="ghost" onClick={() => onView('agenda')}>
-          Agenda
-        </Button>
+      <Center css={{ order: 2, '@media (min-width: 768px)': { order: 0 } }}>
+        <Heading size="md" textAlign="center">
+          {label}
+        </Heading>
+      </Center>
+      <Flex
+        align="center"
+        css={{
+          justifySelf: 'center',
+          order: 1,
+          '@media (min-width: 768px)': { justifySelf: 'end', order: 0 },
+        }}
+      >
+        {views.map((v: string) => (
+          <Button
+            key={v}
+            size="xs"
+            variant={v === view ? 'solid' : 'ghost'}
+            css={{ textTransform: 'capitalize' }}
+            onClick={() => onView(v)}
+          >
+            {t(`bigCal.${v}`, { defaultValue: v })}
+          </Button>
+        ))}
       </Flex>
-    </Flex>
+    </Grid>
   );
 }
 

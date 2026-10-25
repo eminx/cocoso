@@ -3,7 +3,7 @@ const defaultCalendar = [
   { value: 'week', isVisible: true },
   { value: 'day', isVisible: true },
   { value: 'agenda', isVisible: true },
-  { value: 'custom', isVisible: false },
+  // { value: 'custom', isVisible: false },
 ];
 
 const defaultMenu = [

@@ -7,10 +7,16 @@ import {
 } from 'react-router';
 import dayjs from 'dayjs';
 import parseHtml from 'html-react-parser';
-import loadable from '@loadable/component';
+// import loadable from '@loadable/component';
 import { Trans } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
+import {
+  canCreateContentAtom,
+  currentUserAtom,
+  renderedAtom,
+  roleAtom,
+} from '/imports/state';
 import {
   Box,
   Button,
@@ -27,18 +33,14 @@ import {
   getComboResourcesWithColor,
   parseAllBookingsWithResources,
 } from '/imports/api/_utils/shared';
-import {
-  canCreateContentAtom,
-  currentUserAtom,
-  roleAtom,
-} from '/imports/state';
 import PageHeading from '/imports/ui/listing/PageHeading';
 import Tag from '/imports/ui/generic/Tag';
 import { cocosoReactSelectAdapter } from '/imports/ui/utils/globalStylesManager';
 
-const CalendarView = loadable(() => import('./CalendarView'), {
-  fallback: <Skeleton isEntry />,
-});
+// const CalendarView = loadable(() => import('./CalendarView'), {
+//   fallback: <Skeleton isEntry />,
+// });
+import CalendarView from '/imports/ui/pages/calendar/CalendarView';
 
 const maxResourceLabelsToShow = 18;
 
@@ -103,29 +105,28 @@ const parseNewEntryParams = (
 };
 
 export default function CalendarHandler({ Host }: CalendarHandlerProps) {
-  const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentHost = Host;
+  const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const role = useAtomValue(roleAtom);
+  const rendered = useAtomValue(renderedAtom);
   const { activities, resources } = useLoaderData() as {
     activities: Activity[];
     resources: Resource[];
   };
-
+  const [modal, setModal] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null
   );
   const [calendarFilter, setCalendarFilter] = useState<Resource | null>(null);
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
-
-  const activitiesParsed = useMemo(
-    () => parseAllBookingsWithResources(activities, resources),
-    [activities, resources]
-  );
+  const [SelectComponent, setSelectComponent] = useState<any>(null);
+  const [AnimatedComponents, setAnimatedComponents] = useState<any>(null);
 
   const handleSelectActivity = (activity: Activity, e: React.MouseEvent) => {
     e.preventDefault();
+    setModal(true);
     setSelectedActivity(activity);
   };
 
@@ -228,7 +229,7 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
 
   const handleSecondaryButtonClick = () => {
     if (!isCreatorOrAdmin()) {
-      setSelectedActivity(null);
+      closeModal();
       return;
     }
 
@@ -241,47 +242,68 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
     }
   };
 
-  const filteredActivities = activitiesParsed.filter(
-    (activity: any) =>
-      !calendarFilter ||
-      calendarFilter._id === activity.resourceId ||
-      calendarFilter._id === activity.comboResourceId
+  const closeModal = () => {
+    setModal(false);
+    setTimeout(() => {
+      setSelectedActivity(null);
+    }, 500);
+  };
+
+  const activitiesParsed = useMemo(
+    () => parseAllBookingsWithResources(activities, resources),
+    [activities, resources]
   );
 
-  const nonComboResources = resources.filter((resource) => !resource.isCombo);
-  const nonComboResourcesWithColor =
-    getNonComboResourcesWithColor(nonComboResources);
+  const { nonComboResourcesWithColor, comboResourcesWithColor } =
+    useMemo(() => {
+      const nonCombo = resources.filter((r) => !r.isCombo);
+      const nonComboWithColor = getNonComboResourcesWithColor(nonCombo);
+      const combo = resources.filter((r) => r.isCombo);
+      const comboWithColor = getComboResourcesWithColor(
+        combo,
+        nonComboWithColor
+      );
+      return {
+        nonComboResourcesWithColor: nonComboWithColor,
+        comboResourcesWithColor: comboWithColor,
+      };
+    }, [resources]);
 
-  const comboResources = resources.filter((resource) => resource.isCombo);
-  const comboResourcesWithColor = getComboResourcesWithColor(
-    comboResources,
-    nonComboResourcesWithColor
+  const filteredActivities = useMemo(
+    () =>
+      activitiesParsed.filter(
+        (a: any) =>
+          !calendarFilter ||
+          calendarFilter._id === a.resourceId ||
+          calendarFilter._id === a.comboResourceId
+      ),
+    [activitiesParsed, calendarFilter]
   );
 
-  const allFilteredActsWithColors = filteredActivities.map((act: any) => {
-    const resource = nonComboResourcesWithColor.find(
-      (res: any) => res._id === act.resourceId
+  const allFilteredActsWithColors = useMemo(() => {
+    const colorById = new Map(
+      nonComboResourcesWithColor.map((r: any) => [r._id, r.color])
     );
-    const resourceColor = (resource && resource.color) || '#484848';
-
-    return {
+    return filteredActivities.map((act: any) => ({
       ...act,
-      resourceColor,
-    };
-  });
+      resourceColor: colorById.get(act.resourceId) || '#484848',
+    }));
+  }, [filteredActivities, nonComboResourcesWithColor]);
 
-  const selectFilterView =
-    nonComboResourcesWithColor.filter((r: any) => r.isBookable)?.length >=
-    maxResourceLabelsToShow;
+  const selectFilterView = useMemo(
+    () =>
+      nonComboResourcesWithColor.filter((r: any) => r.isBookable).length >=
+      maxResourceLabelsToShow,
+    [nonComboResourcesWithColor, maxResourceLabelsToShow]
+  );
 
-  const allResourcesForSelect = [
-    ...comboResourcesWithColor,
-    ...nonComboResourcesWithColor,
-  ]?.filter((r: any) => r.isBookable);
-
-  // Lazy load react-select components when selectFilterView is true
-  const [SelectComponent, setSelectComponent] = useState<any>(null);
-  const [AnimatedComponents, setAnimatedComponents] = useState<any>(null);
+  const allResourcesForSelect = useMemo(
+    () =>
+      [...comboResourcesWithColor, ...nonComboResourcesWithColor].filter(
+        (r: any) => r.isBookable
+      ),
+    [comboResourcesWithColor, nonComboResourcesWithColor]
+  );
 
   useEffect(() => {
     if (selectFilterView && !SelectComponent) {
@@ -299,13 +321,8 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
     return <Loader />;
   }
 
-  const loading =
-    !activities || activities.length < 1 || !resources || resources.length < 1;
-
   return (
     <>
-      {loading && <Loader />}
-
       <PageHeading currentHost={currentHost || Host} listing="calendar" />
 
       <Box>
@@ -408,62 +425,64 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
         </Box>
       </Box>
 
-      <Modal
-        id="calendar-item"
-        open={Boolean(selectedActivity)}
-        title={selectedActivity && selectedActivity.title}
-        confirmText={
-          currentHost?.isPortalHost ? (
-            <Trans
-              i18nKey="common:actions.toThePage"
-              values={{ hostName: currentHost?.settings?.name }}
-            />
-          ) : (
-            <Trans i18nKey="common:actions.entryPage" />
-          )
-        }
-        cancelText={
-          isCreatorOrAdmin() ? (
-            <Trans i18nKey="common:actions.update">Edit</Trans>
-          ) : (
-            <Trans i18nKey="common:actions.close">Close</Trans>
-          )
-        }
-        onClose={() => setSelectedActivity(null)}
-        onConfirm={() => handlePrimaryButtonClick()}
-        onCancel={() => handleSecondaryButtonClick()}
-      >
-        <Box
-          bg="theme.50"
-          style={{ fontFamily: 'Courier, monospace' }}
-          p="2"
-          my="1"
+      {rendered && canCreateContent ? (
+        <Modal
+          id="calendar-item"
+          open={modal && Boolean(selectedActivity)}
+          title={selectedActivity && selectedActivity.title}
+          confirmText={
+            currentHost?.isPortalHost ? (
+              <Trans
+                i18nKey="common:actions.toThePage"
+                values={{ hostName: currentHost?.settings?.name }}
+              />
+            ) : (
+              <Trans i18nKey="common:actions.entryPage" />
+            )
+          }
+          cancelText={
+            isCreatorOrAdmin() ? (
+              <Trans i18nKey="common:actions.update">Edit</Trans>
+            ) : (
+              <Trans i18nKey="common:actions.close">Close</Trans>
+            )
+          }
+          onClose={() => closeModal()}
+          onConfirm={() => handlePrimaryButtonClick()}
+          onCancel={() => handleSecondaryButtonClick()}
         >
-          <div>
-            <Link to={`/@${selectedActivity?.authorName}`}>
-              <CLink as="span" fontWeight="bold">
-                {selectedActivity && selectedActivity.authorName}
-              </CLink>{' '}
-            </Link>
-            <Text as="span">
-              {<Trans i18nKey="common:labels.booked">booked</Trans>}
-            </Text>{' '}
-            <Link to={`/resources/${selectedActivity?.resourceId}`}>
-              <CLink as="span" fontWeight="bold">
-                {selectedActivity && selectedActivity.resource}
-              </CLink>
-            </Link>
-          </div>
-          <Text>{getActivityTimes(selectedActivity)}</Text>
-        </Box>
+          <Box
+            bg="theme.50"
+            style={{ fontFamily: 'Courier, monospace' }}
+            p="2"
+            my="1"
+          >
+            <div>
+              <Link to={`/@${selectedActivity?.authorName}`}>
+                <CLink as="span" fontWeight="bold">
+                  {selectedActivity && selectedActivity.authorName}
+                </CLink>{' '}
+              </Link>
+              <Text as="span">
+                {<Trans i18nKey="common:labels.booked">booked</Trans>}
+              </Text>{' '}
+              <Link to={`/resources/${selectedActivity?.resourceId}`}>
+                <CLink as="span" fontWeight="bold">
+                  {selectedActivity && selectedActivity.resource}
+                </CLink>
+              </Link>
+            </div>
+            <Text>{getActivityTimes(selectedActivity)}</Text>
+          </Box>
 
-        <Text fontSize="sm" mt="2" p="1">
-          {selectedActivity?.longDescription &&
-            (selectedActivity?.isGroupPrivate
-              ? ''
-              : parseHtml(selectedActivity?.longDescription))}
-        </Text>
-      </Modal>
+          <Text fontSize="sm" mt="2" p="1">
+            {selectedActivity?.longDescription &&
+              (selectedActivity?.isGroupPrivate
+                ? ''
+                : parseHtml(selectedActivity?.longDescription))}
+          </Text>
+        </Modal>
+      ) : null}
     </>
   );
 }
