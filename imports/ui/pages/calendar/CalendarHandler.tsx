@@ -114,7 +114,7 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
   );
   const [calendarFilter, setCalendarFilter] = useState<Resource | null>(null);
   const navigate = useNavigate();
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [SelectComponent, setSelectComponent] = useState<any>(null);
   const [AnimatedComponents, setAnimatedComponents] = useState<any>(null);
 
@@ -133,13 +133,44 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
       return;
     }
 
+    const nextStart = dayjs(rangeStart).startOf('day').toISOString();
+    const nextEnd = dayjs(rangeEnd).endOf('day').toISOString();
+
     setSearchParams((params) => {
+      const prevStart = params.get('rangeStart');
+      const prevEnd = params.get('rangeEnd');
+      // Skip when the range hasn't actually moved (e.g. the onRangeChange
+      // fired on initial mount) so we don't trigger a redundant loader run.
+      if (prevStart === nextStart && prevEnd === nextEnd) {
+        return params;
+      }
       const next = new URLSearchParams(params);
-      next.set('rangeStart', dayjs(rangeStart).startOf('day').toISOString());
-      next.set('rangeEnd', dayjs(rangeEnd).endOf('day').toISOString());
+      next.set('rangeStart', nextStart);
+      next.set('rangeEnd', nextEnd);
       return next;
     });
   };
+
+  // Anchor the calendar's first mount on the month the URL range points at,
+  // so a refresh / shared link opens the same month the loader fetched data
+  // for (instead of "today", which may be empty).
+  //
+  // rangeStart is the first *visible grid* day; for a month view that can be
+  // a leading pad day from the previous month, so we nudge forward by a week
+  // to land inside the actually-viewed month.
+  //
+  // Empty deps on purpose: RBC's defaultDate is uncontrolled and only read on
+  // the first mount, so we derive this once and never recompute. Later
+  // searchParams changes (month navigation) must NOT move the calendar — RBC
+  // owns that state from then on.
+  const initialDate = useMemo(() => {
+    const rangeStart = searchParams.get('rangeStart');
+    if (!rangeStart) return undefined;
+    const parsed = dayjs(rangeStart);
+    if (!parsed.isValid()) return undefined;
+    return parsed.add(7, 'day').toDate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSelectSlot = (slotInfo: SlotInfo) => {
     if (!canCreateContent || !slotInfo) {
@@ -417,6 +448,7 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
             onSelect={handleSelectActivity}
             onSelectSlot={handleSelectSlot}
             onRangeChange={handleRangeChange}
+            initialDate={initialDate}
           />
         </Box>
       </Box>

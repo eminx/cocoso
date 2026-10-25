@@ -47,6 +47,10 @@ interface CalendarViewProps {
   onSelect: (activity: CalendarActivity, e: React.SyntheticEvent) => void;
   onSelectSlot: (slotInfo: any) => void;
   onRangeChange: (range: Date[] | { start: Date; end: Date }) => void;
+  // Month the calendar should open on first mount, derived from the URL
+  // range so a refresh / shared link shows the same month the loader
+  // fetched data for. Falls back to today when absent.
+  initialDate?: Date;
 }
 
 function Toolbar({ label, view, views, onNavigate, onView }) {
@@ -138,6 +142,7 @@ export default function CalendarView({
   onSelect,
   onSelectSlot,
   onRangeChange,
+  initialDate,
 }: CalendarViewProps) {
   const [t] = useTranslation('calendar');
   const canCreateContent = useAtomValue(canCreateContentAtom);
@@ -181,7 +186,7 @@ export default function CalendarView({
             toolbar: Toolbar,
           }}
           culture={culture}
-          defaultDate={dayjs().toDate()}
+          defaultDate={initialDate ?? dayjs().toDate()}
           defaultView="month"
           events={activities}
           localizer={localizer}
