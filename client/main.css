@@ -1632,6 +1632,145 @@ body {
   z-index: 0;
 }
 
+/* === Calendar loading skeleton ======================================
+ * Shown only while [data-calendar-loading="true"] — i.e. during the SSR
+ * / pre-hydration phase, before react-big-calendar has mounted on the
+ * client and emitted its .rbc-day-bg cells and real events.
+ *
+ * The server render already contains the toolbar, weekday header, date
+ * numbers and one empty .rbc-event per week row — everything except the
+ * cell backgrounds and the events themselves. So we paint those missing
+ * pieces as a subtle shimmer on top of the real shell, then fade the
+ * whole thing out once hydration completes (attribute flips to "false").
+ * ================================================================== */
+
+[data-calendar-loading='true'] .rbc-month-view {
+  position: relative;
+  animation: rbc-skeleton-pulse 1.8s ease-in-out infinite;
+}
+
+/* Paint the missing day-cell column dividers. The date cells exist on the
+   server (7 per week row) but the .rbc-day-bg backgrounds do not, so we
+   lay a faint 7-column grid behind the content. */
+[data-calendar-loading='true'] .rbc-month-view .rbc-month-row {
+  position: relative;
+}
+
+[data-calendar-loading='true'] .rbc-month-view .rbc-month-row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    to right,
+    transparent calc(100% - 1px),
+    var(--cocoso-colors-theme-400) calc(100% - 1px)
+  );
+  background-size: calc(100% / 7) 100%;
+}
+
+/* The empty placeholder events RBC emits — turn them into shimmer bars. */
+[data-calendar-loading='true'] .rbc-event {
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none;
+  cursor: default;
+  height: 100%;
+}
+
+[data-calendar-loading='true'] .rbc-event-content {
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--cocoso-colors-theme-400) 25%,
+    var(--cocoso-colors-theme-600) 37%,
+    var(--cocoso-colors-theme-400) 63%
+  );
+  background-size: 400% 100%;
+  animation: rbc-skeleton-shimmer 1.4s ease-in-out infinite;
+  min-height: 14px;
+  height: 100%;
+}
+
+/* Non-interactive until hydrated — avoids dead clicks on the shell. */
+[data-calendar-loading='true'] {
+  pointer-events: none;
+}
+
+/* Stagger the shimmer slightly per week row for a livelier feel. */
+[data-calendar-loading='true'] .rbc-month-row:nth-child(2) .rbc-event-content {
+  animation-delay: 0.1s;
+}
+[data-calendar-loading='true'] .rbc-month-row:nth-child(3) .rbc-event-content {
+  animation-delay: 0.2s;
+}
+[data-calendar-loading='true'] .rbc-month-row:nth-child(4) .rbc-event-content {
+  animation-delay: 0.3s;
+}
+[data-calendar-loading='true'] .rbc-month-row:nth-child(5) .rbc-event-content {
+  animation-delay: 0.4s;
+}
+[data-calendar-loading='true'] .rbc-month-row:nth-child(6) .rbc-event-content {
+  animation-delay: 0.5s;
+}
+
+[data-calendar-loading='true'] .rbc-calendar .rbc-row-content {
+  flex-grow: 1;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+[data-calendar-loading='true'] .rbc-row:nth-child(2) {
+  flex-grow: 1;
+}
+
+[data-calendar-loading='true'] .rbc-row-segment {
+  flex-grow: 1;
+}
+
+@keyframes rbc-skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@keyframes rbc-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* Respect reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  [data-calendar-loading='true'] .rbc-month-view,
+  [data-calendar-loading='true'] .rbc-event-content {
+    animation: none;
+  }
+}
+
+/* Smooth hand-off: once hydrated the skeleton styles no longer match, so
+   the real calendar simply appears; give it a tiny fade-in. */
+[data-calendar-loading='false'] .rbc-month-view {
+  animation: rbc-calendar-fade-in 0.35s ease-out both;
+}
+
+@keyframes rbc-calendar-fade-in {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Quill Editor */
 
 .ql-container .ql-editor {
