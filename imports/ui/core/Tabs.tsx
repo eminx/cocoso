@@ -155,10 +155,11 @@ const Tabs: React.FC<TabsProps> = ({
   const handleClick = (tab: TabType) => {
     if (tab.path) {
       if (withSearchParams) {
-        setSearchParams((params) => ({
-          ...params,
-          tab: tab.path,
-        }));
+        setSearchParams((params) => {
+          const next = new URLSearchParams(params);
+          next.set('tab', tab.path);
+          return next;
+        });
       } else {
         navigate(tab.path);
       }

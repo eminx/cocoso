@@ -17,7 +17,10 @@ export interface NewEntryHandlerProps {
   children?: React.ReactNode;
 }
 
-export default function NewEntryHandler({ context, children }: NewEntryHandlerProps) {
+export default function NewEntryHandler({
+  context,
+  children,
+}: NewEntryHandlerProps) {
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const [searchParams, setSearchParams] = useSearchParams();
   const [loaders, setLoaders] = useAtom(loaderAtom);
@@ -32,7 +35,11 @@ export default function NewEntryHandler({ context, children }: NewEntryHandlerPr
 
   const handleClose = () => {
     setLoaders({ ...initialLoader });
-    setSearchParams((params) => ({ ...params, new: 'false' }));
+    setSearchParams((params) => {
+      const next = new URLSearchParams(params);
+      next.delete('new');
+      return next;
+    });
   };
 
   if (!canCreateContent) {

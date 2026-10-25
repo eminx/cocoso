@@ -201,11 +201,18 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
       type
     );
 
-    setSearchParams((params) => ({
-      ...params,
-      ...dateParams,
-      new: true,
-    }));
+    setSearchParams((params) => {
+      // NOTE: `params` is a URLSearchParams, not a plain object — spreading it
+      // (...params) would DROP all existing entries (incl. rangeStart/
+      // rangeEnd), because its data isn't exposed as enumerable own props.
+      // Clone it properly and set the new-entry params on top.
+      const next = new URLSearchParams(params);
+      Object.entries(dateParams).forEach(([key, value]) => {
+        next.set(key, String(value));
+      });
+      next.set('new', 'true');
+      return next;
+    });
   };
 
   const getActivityTimes = (activity: Activity | null) => {
