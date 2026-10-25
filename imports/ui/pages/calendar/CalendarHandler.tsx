@@ -120,8 +120,8 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
 
   const handleSelectActivity = (activity: Activity, e: React.MouseEvent) => {
     e.preventDefault();
-    setModal(true);
     setSelectedActivity(activity);
+    setModal(true);
   };
 
   const handleRangeChange = (range: Date[] | { start: Date; end: Date }) => {
@@ -421,7 +421,7 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
         </Box>
       </Box>
 
-      {rendered && canCreateContent ? (
+      {rendered ? (
         <Modal
           id="calendar-item"
           open={modal && Boolean(selectedActivity)}
