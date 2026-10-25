@@ -44,10 +44,6 @@ export interface WrapperHybridProps {
   allHosts: any[];
   pageTitles: any[];
   platform: any;
-  // Set only by serverRenderer.js — a per-request i18next clone
-  // (i18n.cloneInstance) already resolved to the visitor's actual
-  // language, so SSR output matches what the client will hydrate with.
-  // Never set client-side; falls back to the shared singleton below.
   i18nInstance?: any;
 }
 
@@ -80,8 +76,6 @@ export default function WrapperHybrid({
       if (!user) {
         return null;
       }
-      // memberships no longer live on the user doc; reattach from the
-      // client-side Memberships minimongo collection (see myMemberships pub)
       const memberships = Memberships.find({ userId: user._id }).fetch();
       return { ...user, memberships };
     }
@@ -100,10 +94,6 @@ export default function WrapperHybrid({
     const lang = userLang || hostLang || i18n.language;
 
     if (lang !== i18n.language) {
-      // Load this language's namespaces before switching, so nothing is
-      // still missing when changeLanguage triggers a re-render — an
-      // un-cached namespace here would suspend the top-level <Suspense>
-      // above and blank the whole page well after it was already visible.
       await i18n.loadLanguages(lang);
       i18n.changeLanguage(lang);
     }
@@ -125,8 +115,6 @@ export default function WrapperHybrid({
   useEffect(() => {
     if (!currentHost) return;
     applyGlobalStyles(currentHost.theme);
-    // Only apply host language if no user preference has been detected/stored yet.
-    // User language is applied in the currentUser effect with higher priority.
     if (!currentUser) {
       const hostLang = currentHost?.settings?.lang;
       if (hostLang && hostLang !== i18n.language) {
@@ -163,11 +151,11 @@ export default function WrapperHybrid({
   const adminPage = ['admin', 'superadmin'].includes(pathnameSplitted[1]);
 
   useEffect(() => {
-    if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
-      return;
-    }
+    // if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
+    //   return;
+    // }
     window.scrollTo(0, 0);
-  }, [pathnameSplitted[2]]);
+  }, [pathname]);
 
   return (
     <>

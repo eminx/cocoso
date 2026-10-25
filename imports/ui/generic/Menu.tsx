@@ -18,6 +18,7 @@ interface GenericMenuProps {
   button?: React.ReactNode;
   buttonLabel?: React.ReactNode;
   direction?: 'top' | 'bottom' | 'left' | 'right';
+  id?: string;
   leftIcon?: React.ReactNode;
   open?: boolean;
   options?: MenuOption[];
@@ -60,8 +61,9 @@ export default function GenericMenu({
       <Menu
         align={align}
         direction={direction}
-        transition
         menuButton={<MenuButton>{finalButton}</MenuButton>}
+        suppressHydrationWarning
+        transition
       >
         {options
           ? options.map((item) => (
