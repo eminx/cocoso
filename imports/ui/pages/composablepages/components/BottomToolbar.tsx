@@ -106,7 +106,7 @@ export default function BottomToolbar({
         align="center"
         bg="gray.900"
         justify="space-between"
-        p="4"
+        p="3"
         css={{
           borderRadius: 'var(--cocoso-border-radius)',
           bottom: '12px',
@@ -120,7 +120,7 @@ export default function BottomToolbar({
         {!isPublicView && (
           <Flex
             align="center"
-            px="4"
+            pl="2"
             css={{
               color: 'var(--cocoso-colors-green-200)',
             }}
@@ -182,23 +182,25 @@ export default function BottomToolbar({
           </Tag>
         )}
 
-        <Button
-          mx="4"
-          size="sm"
-          variant="outline"
-          onClick={() =>
-            setState((prevState) => ({
-              ...prevState,
-              publishModalVisible: true,
-            }))
-          }
-        >
-          <Trans
-            i18nKey={`admin:composable.toolbar.${
-              isPublished ? 'unpublish' : 'publish'
-            }`}
-          />
-        </Button>
+        {!isPublicView && (
+          <Button
+            mx="2"
+            size="sm"
+            variant="outline"
+            onClick={() =>
+              setState((prevState) => ({
+                ...prevState,
+                publishModalVisible: true,
+              }))
+            }
+          >
+            <Trans
+              i18nKey={`admin:composable.toolbar.${
+                isPublished ? 'unpublish' : 'publish'
+              }`}
+            />
+          </Button>
+        )}
       </Flex>
 
       <Modal
