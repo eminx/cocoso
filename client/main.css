@@ -1721,10 +1721,6 @@ body {
   flex-direction: column;
 }
 
-[data-calendar-loading='true'] .rbc-row:nth-child(2) {
-  flex-grow: 1;
-}
-
 [data-calendar-loading='true'] .rbc-row-segment {
   flex-grow: 1;
 }
