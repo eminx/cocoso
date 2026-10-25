@@ -3,8 +3,6 @@ import loadable from '@loadable/component';
 import { useAtomValue } from 'jotai';
 
 import { currentHostAtom } from '/imports/state';
-import { Skeleton } from '/imports/ui/core';
-
 // Keep main public listing pages eager for SSR
 import ActivityListHandler from '/imports/ui/pages/activities/ActivityListHandler';
 import GroupListHandler from '/imports/ui/pages/groups/GroupListHandler';
@@ -13,14 +11,7 @@ import WorkListHandler from '/imports/ui/pages/works/WorkListHandler';
 import PageItemHandler from '/imports/ui/pages/pages/PageItemHandler';
 import UserListHandler from '/imports/ui/pages/profile/UserListHandler';
 import ComposablePageHandler from '/imports/ui/pages/composablepages/ComposablePageHandler';
-
-// Lazy load only heavy/less-common handlers
-const CalendarHandler = loadable(
-  () => import('/imports/ui/pages/calendar/CalendarHandler'),
-  {
-    fallback: <Skeleton isEntry />,
-  }
-);
+import CalendarHandler from '/imports/ui/pages/calendar/CalendarHandler';
 
 export default function HomeHandler(props) {
   const Host = props?.Host;
@@ -42,11 +33,7 @@ export default function HomeHandler(props) {
     case 'info':
       return <PageItemHandler {...props} />;
     case 'calendar':
-      return (
-        <Suspense fallback={<Skeleton isEntry />}>
-          <CalendarHandler {...props} />
-        </Suspense>
-      );
+      return <CalendarHandler {...props} />;
     case 'people':
       return <UserListHandler {...props} />;
     default:
