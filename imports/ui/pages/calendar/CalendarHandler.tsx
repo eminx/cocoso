@@ -7,7 +7,6 @@ import {
 } from 'react-router';
 import dayjs from 'dayjs';
 import parseHtml from 'html-react-parser';
-// import loadable from '@loadable/component';
 import { Trans } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
@@ -25,7 +24,6 @@ import {
   Link as CLink,
   Loader,
   Text,
-  Skeleton,
 } from '/imports/ui/core';
 import Modal from '/imports/ui/core/Modal';
 import {
@@ -36,10 +34,6 @@ import {
 import PageHeading from '/imports/ui/listing/PageHeading';
 import Tag from '/imports/ui/generic/Tag';
 import { cocosoReactSelectAdapter } from '/imports/ui/utils/globalStylesManager';
-
-// const CalendarView = loadable(() => import('./CalendarView'), {
-//   fallback: <Skeleton isEntry />,
-// });
 import CalendarView from '/imports/ui/pages/calendar/CalendarView';
 
 const maxResourceLabelsToShow = 18;
