@@ -317,6 +317,8 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
 
   return (
     <>
+      {!rendered ? <Loader /> : null}
+
       <PageHeading currentHost={currentHost || Host} listing="calendar" />
 
       <Box>
