@@ -18,12 +18,9 @@ export interface NewEntryHelperProps {
 }
 
 function NewEntryHelper({
-  buttonLabel,
   buttonLink,
-  children,
   isEmptyListing = false,
   small = false,
-  title,
 }: NewEntryHelperProps) {
   const currentHost = useAtomValue(currentHostAtom);
   const location = useLocation();
@@ -42,8 +39,6 @@ function NewEntryHelper({
   const descriptionGeneric = isEmptyListing
     ? tc('message.newentryhelper.emptylisting.description')
     : tc('message.newentryhelper.description');
-
-  const buttonLabelGeneric = tc('message.newentryhelper.button');
 
   const w = '100%';
   const h = small ? '240px' : '315px';
