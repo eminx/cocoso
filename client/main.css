@@ -132,6 +132,18 @@ img {
   }
 }
 
+@media (max-width: 960px) {
+  #main-menu[data-burger-mobile='true'] {
+    display: none;
+  }
+}
+
+@media (min-width: 961px) {
+  #main-menu[data-desktop-mobile='true'] {
+    display: none;
+  }
+}
+
 .is-terms-page h1,
 .is-terms-page h2,
 .is-terms-page h3 {
