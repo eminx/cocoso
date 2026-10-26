@@ -137,41 +137,40 @@ export default function EmblaSlider({
       }),
     []
   );
+
   const emblaPluginOptions = isTouchDevice
     ? [autoplayPlugin]
     : [Fade(), autoplayPlugin];
+
   const emblaOptions = {
     loop: true,
     containScroll: isTouchDevice ? ('trimSnaps' as const) : (false as const),
   };
+
   const [emblaRef, emblaApi] = useEmblaCarousel(
     emblaOptions,
     emblaPluginOptions
   );
 
-  if (!images || images.length === 0) {
-    return null;
-  }
-
   // Resolve image references to URLs (handles both legacy strings and image _ids)
-  const resolvedImages = images.map(
+  const resolvedImages = images?.map(
     (img) => getImageUrl(img, isPopup ? 'medium' : 'full') || img
   );
 
   const scrollPrev = useCallback(() => {
-    if (!emblaApi) return;
+    if (!emblaApi || !resolvedImages || resolvedImages.length === 0) return;
     emblaApi.scrollPrev();
     emblaApi.plugins().autoplay?.reset();
   }, [emblaApi]);
 
   const scrollNext = useCallback(() => {
-    if (!emblaApi) return;
+    if (!emblaApi || !resolvedImages || resolvedImages.length === 0) return;
     emblaApi.scrollNext();
     emblaApi.plugins().autoplay?.reset();
   }, [emblaApi]);
 
   useEffect(() => {
-    if (!emblaApi) return;
+    if (!emblaApi || !resolvedImages || resolvedImages.length === 0) return;
     const onSelect = () => {
       const idx = emblaApi.selectedScrollSnap();
       setState((prevState) => ({ ...prevState, currentSlideIndex: idx }));
@@ -185,10 +184,11 @@ export default function EmblaSlider({
     };
     emblaApi.on('select', onSelect);
     return () => emblaApi.off('select', onSelect);
-  }, [emblaApi, resolvedImages.length]);
+  }, [emblaApi, resolvedImages?.length]);
 
-  const toggleLightbox = () =>
+  const toggleLightbox = () => {
     setState((prev) => ({ ...prev, lightboxToggle: !prev.lightboxToggle }));
+  };
 
   const imageStyleParsed = {
     ...imageStyle,
@@ -197,7 +197,7 @@ export default function EmblaSlider({
 
   const lightBoxProps = {
     toggler: state.lightboxToggle,
-    sources: resolvedImages.map((img) => (
+    sources: resolvedImages?.map((img) => (
       <img
         key={img}
         alt={`${alt} ${img}`}
@@ -208,6 +208,10 @@ export default function EmblaSlider({
     )),
     sourceIndex: state.currentSlideIndex,
   };
+
+  if (!resolvedImages || resolvedImages.length === 0) {
+    return null;
+  }
 
   if (resolvedImages.length === 1) {
     return (

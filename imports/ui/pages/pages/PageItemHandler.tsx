@@ -18,7 +18,7 @@ const EditPage = loadable(() => import('./EditPage'));
 export const pagesAtom = atom(null);
 export const currentPageAtom = atom(null);
 
-export default function PageItemHandler({ Host, pageTitles }) {
+export default function PageItemHandler() {
   const { pages } = useLoaderData();
   const setPages = useSetAtom(pagesAtom);
   const setCurrentPage = useSetAtom(currentPageAtom);
@@ -33,17 +33,19 @@ export default function PageItemHandler({ Host, pageTitles }) {
     setCurrentPage(
       pages.find((page) => parseTitle(page.title) === pageTitle) || pages[0]
     );
-  }, pages);
+  }, [pages]);
 
   const isEdit = role === 'admin' && searchParams.get('edit') === 'true';
 
-  if (!pages) {
-    return;
-  }
+  let currentPage =
+    pages && pages.find((page) => parseTitle(page.title) === pageTitle);
 
-  let currentPage = pages.find((page) => parseTitle(page.title) === pageTitle);
   if (!currentPage) {
     currentPage = pages[0];
+  }
+
+  if (!pages) {
+    return null;
   }
 
   return (

@@ -5,13 +5,13 @@ import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Center, Heading } from '/imports/ui/core';
 import { parseTitle } from '/imports/api/_utils/shared';
-import { getImageUrlBest } from '/imports/ui/utils/imageHelper';
+import { getImageUrl } from '/imports/ui/utils/imageHelper';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 interface SimplePageProps {
   description?: string;
   images?: string[];
-  imageUrl?: string;
+  imageUrl?: string | null;
   title?: string;
   url?: string;
 }
@@ -31,19 +31,12 @@ function SimplePage({
         <meta name="title" content={title} />
         <meta name="description" content={description} />
         <meta property="og:title" content={title?.substring(0, 40)} />
-        <meta
-          property="og:image"
-          content={getImageUrlBest(images && images[0]) || undefined}
-        />
         <meta property="og:url" content={url} />
-        <meta
-          property="og:image"
-          content={getImageUrlBest(imageUrl) || undefined}
-        />
         <meta
           property="og:description"
           content={description?.substring(0, 150)}
         />
+        <meta property="og:image" content={imageUrl || undefined} />
         <meta property="og:type" content="article" />
       </Helmet>
 
@@ -100,12 +93,10 @@ export default function PageHybrid({ currentPage }: PageHybridProps) {
   return (
     <SimplePage
       description={currentPage.longDescription}
-      images={currentPage.images}
+      images={currentPage.images || []}
       title={currentPage.title}
       url={url}
-      imageUrl={
-        getImageUrlBest(currentPage.images?.[0]) || currentPage.images?.[0]
-      }
+      imageUrl={getImageUrl(currentPage.images?.[0])}
     />
   );
 }
