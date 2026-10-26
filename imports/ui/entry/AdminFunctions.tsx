@@ -15,7 +15,10 @@ export interface AdminFunctionsProps {
   onSelect: (value: string) => void;
 }
 
-export default function AdminFunctions({ menuItems, onSelect }: AdminFunctionsProps) {
+export default function AdminFunctions({
+  menuItems,
+  onSelect,
+}: AdminFunctionsProps) {
   const [t] = useTranslation('admin');
 
   return (
@@ -24,7 +27,12 @@ export default function AdminFunctions({ menuItems, onSelect }: AdminFunctionsPr
       button={
         <Flex direction="column" align="center" gap="0">
           <Box mb="1">
-            <IconButton icon={<SettingsIcon />} variant="outline" />
+            <IconButton
+              as="span"
+              aria-label="settings"
+              icon={<SettingsIcon />}
+              variant="outline"
+            />
           </Box>
           <Text
             css={{

@@ -178,7 +178,7 @@ export const Button = ({
 interface IconButtonProps
   extends Omit<ButtonProps, 'leftIcon' | 'rightIcon' | 'children'> {
   icon: ReactNode;
-  'aria-label': string;
+  'aria-label'?: string;
   colorScheme?: string;
   style?: React.CSSProperties;
 }
