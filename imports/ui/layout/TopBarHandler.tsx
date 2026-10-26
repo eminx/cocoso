@@ -12,7 +12,9 @@ export interface TopBarHandlerProps {
   slideStart?: boolean;
 }
 
-export default function TopBarHandler({ slideStart = true }: TopBarHandlerProps) {
+export default function TopBarHandler({
+  slideStart = true,
+}: TopBarHandlerProps) {
   const [scrollTop, setScrollTop] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -29,7 +31,7 @@ export default function TopBarHandler({ slideStart = true }: TopBarHandlerProps)
   }, []);
 
   return (
-    <Slide direction="top" ping={slideStart}>
+    <Slide direction="top" ping={slideStart && scrollTop < 120}>
       <Fade ping={scrollTop < 120}>
         <Flex justify="space-between" w="100%">
           <Box p="1" pointerEvents="all">

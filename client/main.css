@@ -770,7 +770,7 @@ body {
   will-change: opacity;
 }
 
-.cocoso-fade-ping {
+.cocoso-fade.cocoso-fade-ping {
   opacity: 1;
 }
 
