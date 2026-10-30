@@ -67,6 +67,7 @@ users:
   show:
     title: Kullanıcıların Herkese Açık Gösterimi
     description: Herkese açık listeleme sayfasında hangi kullanıcıların gösterilmesini istediğini seç
+    admin: Gizlilik ayarlarında profillerini gizlemeyi tercih eden kullanıcılar, hiçbir durumda gösterilmeyecektir.
     all: Tüm Kullanıcılar
     verifiedAdmin: Yalnızca Onaylanmış Kullanıcılar ve Adminler
     admin: Sadece Adminler

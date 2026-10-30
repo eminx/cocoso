@@ -4,6 +4,7 @@ import { useAtomValue } from 'jotai';
 
 import { currentHostAtom } from '/imports/state';
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -32,7 +33,7 @@ function PeopleOptionsAdmin() {
   const currentHost = useAtomValue(currentHostAtom);
   const [tc] = useTranslation('common');
   const [state, setState] = useState({
-    show: 'all',
+    listingPeopleShow: currentHost?.settings?.listingPeopleShow ?? 'all',
   });
 
   const handleShowChange = (value) => {
@@ -40,15 +41,6 @@ function PeopleOptionsAdmin() {
       ...prevState,
       listingPeopleShow: value,
     }));
-  };
-
-  const handleSubmit = async () => {
-    try {
-      await updateHostSettings({ values: state });
-      message.success(tc('message.success.update'));
-    } catch (error) {
-      message.error(error.reason || error.error);
-    }
   };
 
   if (!currentHost || !currentHost.settings) {
@@ -60,11 +52,19 @@ function PeopleOptionsAdmin() {
       <Heading as="h3" size="sm" mt="6" mb="2">
         <Trans i18nKey="admin:users.show.title" />
       </Heading>
-      <Box pb="4">
+      <Box mb="4">
         <Text size="sm">
           <Trans i18nKey="admin:users.show.description" />
         </Text>
       </Box>
+
+      <Box mb="4">
+        <Alert
+          message={<Trans i18nKey="admin:users.show.message" />}
+          type="info"
+        />
+      </Box>
+
       <Boxling>
         <RadioGroup
           options={showOptions}
@@ -74,6 +74,7 @@ function PeopleOptionsAdmin() {
 
         <Flex justify="flex-end" mt="4" w="100%">
           <Button
+            onClick={() => updateHostSettings({ values: state })}
             disabled={
               state.listingPeopleShow === currentHost.settings.listingPeopleShow
             }

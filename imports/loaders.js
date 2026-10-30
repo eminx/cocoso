@@ -119,9 +119,7 @@ export async function getPages({ host }) {
 
 export async function getPeople({ host, isPortalHost }) {
   const keywords = await call('getKeywords');
-  const users = isPortalHost
-    ? await call('getAllMembersFromAllHosts')
-    : await call('getHostMembers', host);
+  const users = await call('getHostMembers', host);
 
   return {
     keywords,

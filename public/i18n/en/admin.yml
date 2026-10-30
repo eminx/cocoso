@@ -67,6 +67,7 @@ users:
   show:
     title: Public Display of Users
     description: Please choose which users you would like to display on the public listing page.
+    message: Users who choose to hide their profile in their privacy settings won't be shown in any case.
     all: All Users
     verifiedAdmin: Only Verified & Admin Users
     admin: Only Admin Users

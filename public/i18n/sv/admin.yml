@@ -67,6 +67,7 @@ users:
   show:
     title: Offentlig visning av användare
     description: Välj vilka användare du vill visa på sidan med den publika listan.
+    message: Användare som väljer att dölja sin profil i sina integritetsinställningar kommer under inga omständigheter att visas.
     all: Alla användare
     verifiedAdmin: Endast verifierade användare och administratörer
     admin: Endast administratörer
