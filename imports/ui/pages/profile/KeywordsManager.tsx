@@ -20,14 +20,13 @@ function KeywordsManager({ currentUser }) {
 
   const getKeywords = async () => {
     try {
-      const respond = await call('getKeywords');
+      const respond = await call('getKeywordsForAdmin');
       setAllKeywords(respond);
       const selfKeywords = respond.filter((k) =>
         currentUser?.keywords?.map((kw) => kw.keywordId).includes(k._id)
       );
       setSelectedKeywords(selfKeywords);
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -42,7 +41,6 @@ function KeywordsManager({ currentUser }) {
       setIsChanged(false);
       message.success(tc('message.success.update'));
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -69,7 +67,6 @@ function KeywordsManager({ currentUser }) {
       setIsChanged(true);
       setCreating(false);
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };

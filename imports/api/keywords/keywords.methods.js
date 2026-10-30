@@ -8,6 +8,29 @@ Meteor.methods({
     return await Keywords.find({}, { sort: { label: 1 } }).fetchAsync();
   },
 
+  async getKeywordsForAdmin() {
+    const host = getHost(this);
+    const currentHost = await Hosts.findOneAsync({ host });
+    const allKeywords = await Keywords.find(
+      {},
+      { sort: { label: 1 } }
+    ).fetchAsync();
+
+    if (currentHost.isPortalHost) {
+      return allKeywords;
+    }
+    const currentUser = await Meteor.userAsync();
+    if (!currentUser) {
+      return allKeywords.filter((k) => k.host === host);
+    }
+    return allKeywords.filter(
+      (k) =>
+        k.host === host ||
+        k.creatorId === currentUser._id ||
+        currentUser.keywords.find((key) => key.keywordId === k._id)
+    );
+  },
+
   async saveKeywords(keywords) {
     const user = await Meteor.userAsync();
     if (!user) {
@@ -28,13 +51,25 @@ Meteor.methods({
   },
 
   async createKeyword(keyword) {
-    const user = await Meteor.userAsync();
-    if (!user) {
+    const currentUser = await Meteor.userAsync();
+    if (!currentUser) {
       return;
     }
 
-    if (await Keywords.findOneAsync({ label: keyword.toLowerCase() })) {
-      throw new Meteor.Error('Keyword already exists');
+    const existingKeyword = await Keywords.findOneAsync({
+      label: keyword.toLowerCase(),
+    });
+
+    if (existingKeyword) {
+      await Meteor.users.updateAsync(currentUser._id, {
+        $push: {
+          keywords: {
+            keywordId: existingKeyword._id,
+            keywordLabel: existingKeyword.label,
+          },
+        },
+      });
+      return;
     }
 
     const host = getHost(this);
@@ -42,8 +77,8 @@ Meteor.methods({
 
     try {
       const keywordId = await Keywords.insertAsync({
-        creatorId: user._id,
-        creatorUsername: user.username,
+        creatorId: currentUser._id,
+        creatorUsername: currentUser.username,
         creationDate: new Date(),
         host,
         hostname: currentHost?.settings?.name,
