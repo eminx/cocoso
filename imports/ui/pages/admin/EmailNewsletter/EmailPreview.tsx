@@ -117,7 +117,7 @@ const getTitleStyle = (theme: any) => ({
 
 const getSubTitleStyle = (theme) => ({
   color: `hsl(${theme?.hue || 288}deg, 60%, 28%)`,
-  fontSize: 20,
+  fontSize: 24,
   marginTop: 0,
   marginBottom: 32,
   textAlign: 'center',
@@ -125,8 +125,7 @@ const getSubTitleStyle = (theme) => ({
 });
 
 const hostNameStyle = {
-  color: '#1a52e6',
-  fontSize: 16,
+  fontSize: 24,
   fontStyle: 'italic',
   textAlign: 'center',
   textDecoration: 'underline',
