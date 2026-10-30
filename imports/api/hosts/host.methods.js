@@ -11,32 +11,11 @@ import {
 } from '../../startup/constants';
 import { isAdmin } from '../users/user.roles';
 import Memberships from '../memberships/membership';
-import { attachMembershipsToUsers } from '../memberships/membership.helpers';
-
-function getUsersRandomlyWithAvatarsFirst(users) {
-  if (!users || !users.length === 0) {
-    return null;
-  }
-  const usersWithImage = users.filter((u) => u.avatar && u.avatar.src);
-  const usersWithoutImage = users.filter((u) => !u.avatar || !u.avatar.src);
-
-  return [
-    ...usersWithImage.sort(() => Math.random() - 0.5),
-    ...usersWithoutImage.sort(() => Math.random() - 0.5),
-  ];
-}
-
-const publicUserFields = {
-  _id: 1,
-  avatar: 1,
-  bio: 1,
-  contactInfo: 1,
-  firstName: 1,
-  isPublic: 1,
-  keywords: 1,
-  lastName: 1,
-  username: 1,
-};
+import {
+  attachMemberships,
+  getUsersRandomlyWithAvatarsFirst,
+  publicUserFields,
+} from '../memberships/membership.helpers';
 
 Meteor.methods({
   async createNewHost(values) {
@@ -203,38 +182,29 @@ Meteor.methods({
 
   async getHostMembers(hostPredefined) {
     const host = hostPredefined || getHost(this);
+    const currentHost = await Hosts.findOneAsync({ host });
 
-    const memberships = await Memberships.find(
-      { host, isPublic: true },
-      { fields: { userId: 1 } }
-    ).fetchAsync();
+    const listingPeopleShow = currentHost?.settings?.listingPeopleShow || 'all';
+
+    let rolesShown = ['admin', 'contributor', 'participant'];
+    if (listingPeopleShow === 'verifiedAdmin') {
+      rolesShown = ['admin', 'contributor'];
+    } else if (listingPeopleShow === 'admin') {
+      rolesShown = ['admin'];
+    }
+
+    const memberships = await Memberships.find({
+      host,
+      isPublic: true,
+      role: { $in: rolesShown },
+    }).fetchAsync();
+
     const userIds = memberships.map((m) => m.userId);
-
     const users = await Meteor.users
-      .find(
-        { _id: { $in: userIds } },
-        {
-          fields: publicUserFields,
-        }
-      )
+      .find({ _id: { $in: userIds } }, { fields: publicUserFields })
       .fetchAsync();
 
-    const usersWithMemberships = await attachMembershipsToUsers(users);
-
-    return getUsersRandomlyWithAvatarsFirst(usersWithMemberships);
-  },
-
-  async getAllMembersFromAllHosts() {
-    const users = await Meteor.users
-      .find(
-        {},
-        {
-          fields: publicUserFields,
-        }
-      )
-      .fetchAsync();
-
-    const usersWithMemberships = await attachMembershipsToUsers(users);
+    const usersWithMemberships = attachMemberships(users, memberships);
 
     return getUsersRandomlyWithAvatarsFirst(usersWithMemberships);
   },

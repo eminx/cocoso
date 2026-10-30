@@ -1,7 +1,27 @@
 import Memberships from './membership';
 
-// Returns the memberships array for a single user, used where a full user
-// document needs a `memberships` field reattached (frontend expects it).
+function attachMemberships(users, memberships) {
+  if (!users || users.length === 0) {
+    return [];
+  }
+
+  const byUser = new Map();
+  for (const m of memberships || []) {
+    const key = String(m.userId);
+    const list = byUser.get(key);
+    if (list) {
+      list.push(m);
+    } else {
+      byUser.set(key, [m]);
+    }
+  }
+
+  return users.map((u) => ({
+    ...u,
+    memberships: byUser.get(String(u._id)) ?? [],
+  }));
+}
+
 async function getUserMemberships(userId) {
   if (!userId) {
     return [];
@@ -9,23 +29,34 @@ async function getUserMemberships(userId) {
   return await Memberships.find({ userId }).fetchAsync();
 }
 
-// Reattaches a `memberships` field to each user object in `users`, sourced
-// live from the Memberships collection (no more embedded array on the user
-// doc). Leaves users without any memberships with an empty array.
-async function attachMembershipsToUsers(users) {
+function getUsersRandomlyWithAvatarsFirst(users) {
   if (!users || users.length === 0) {
-    return users || [];
+    return [];
   }
+  const usersWithImage = users.filter((u) => u.avatar && u.avatar.src);
+  const usersWithoutImage = users.filter((u) => !u.avatar || !u.avatar.src);
 
-  const userIds = users.map((user) => user._id);
-  const memberships = await Memberships.find({
-    userId: { $in: userIds },
-  }).fetchAsync();
-
-  return users.map((user) => ({
-    ...user,
-    memberships: memberships.filter((m) => m.userId === user._id),
-  }));
+  return [
+    ...usersWithImage.sort(() => Math.random() - 0.5),
+    ...usersWithoutImage.sort(() => Math.random() - 0.5),
+  ];
 }
 
-export { attachMembershipsToUsers, getUserMemberships };
+const publicUserFields = {
+  _id: 1,
+  avatar: 1,
+  bio: 1,
+  contactInfo: 1,
+  firstName: 1,
+  isPublic: 1,
+  keywords: 1,
+  lastName: 1,
+  username: 1,
+};
+
+export {
+  attachMemberships,
+  getUserMemberships,
+  getUsersRandomlyWithAvatarsFirst,
+  publicUserFields,
+};
