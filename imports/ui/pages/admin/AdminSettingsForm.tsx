@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useSubmit } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +8,6 @@ import FormField from '/imports/ui/forms/FormField';
 import ChangeLanguage from '/imports/ui/layout/ChangeLanguageMenu';
 import { currentHostAtom } from '/imports/state';
 import { updateHostSettings } from '/imports/actions';
-import { message } from '/imports/ui/generic/message';
 
 import Boxling from './Boxling';
 

@@ -30,9 +30,11 @@ export default function TopBarHandler({
     };
   }, []);
 
+  const scrollPing = scrollTop < 120;
+
   return (
-    <Slide direction="top" ping={slideStart && scrollTop < 120}>
-      <Fade ping={scrollTop < 120}>
+    <Slide direction="top" ping={slideStart && scrollPing}>
+      <Fade ping={scrollPing}>
         <Flex justify="space-between" w="100%">
           <Box p="1" pointerEvents="all">
             <FederationIconMenu />
