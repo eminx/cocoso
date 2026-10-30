@@ -32,6 +32,7 @@ const showOptions = [
 function PeopleOptionsAdmin() {
   const currentHost = useAtomValue(currentHostAtom);
   const [tc] = useTranslation('common');
+  const [t] = useTranslation('admin');
   const [state, setState] = useState({
     listingPeopleShow: currentHost?.settings?.listingPeopleShow ?? 'all',
   });
@@ -50,19 +51,12 @@ function PeopleOptionsAdmin() {
   return (
     <Box>
       <Heading as="h3" size="sm" mt="6" mb="2">
-        <Trans i18nKey="admin:users.show.title" />
+        {t('users.show.title')}
       </Heading>
-      <Box mb="4">
-        <Text size="sm">
-          <Trans i18nKey="admin:users.show.description" />
-        </Text>
-      </Box>
+      <Box mb="4">{t('users.show.description')}</Box>
 
       <Box mb="4">
-        <Alert
-          message={<Trans i18nKey="admin:users.show.message" />}
-          type="info"
-        />
+        <Alert message={t('users.show.message')} type="info" />
       </Box>
 
       <Boxling>
@@ -79,7 +73,7 @@ function PeopleOptionsAdmin() {
               state.listingPeopleShow === currentHost.settings.listingPeopleShow
             }
           >
-            <Trans i18nKey="common:actions.submit" />
+            {tc('common:actions.submit')}
           </Button>
         </Flex>
       </Boxling>
