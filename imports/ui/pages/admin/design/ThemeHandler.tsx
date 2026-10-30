@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useAtom } from 'jotai';
 
+import { currentHostAtom } from '/imports/state';
 import {
   Box,
   Button,
@@ -12,8 +13,7 @@ import {
   Text,
 } from '/imports/ui/core';
 import Menu from '/imports/ui/generic/Menu';
-import { currentHostAtom } from '../../../../state';
-import { call } from '../../../../api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
 import Boxling, { BoxlingColumn } from '/imports/ui/pages/admin/Boxling';
 import {
@@ -134,6 +134,7 @@ export default function ThemeHandler() {
 
       <Boxling mb="12">
         <RadioGroup
+          direction="row"
           options={themeOptions}
           value={currentTheme?.variant}
           onChange={handleThemeChange}
