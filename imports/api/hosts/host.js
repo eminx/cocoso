@@ -64,7 +64,12 @@ Hosts.schema = new SimpleSchema({
     optional: true,
     defaultValue: false,
   },
-
+  'settings.listingPeopleShow': {
+    type: String,
+    allowedValues: ['all', 'verifiedAdmin', 'admin'],
+    optional: true,
+    defaultValue: 'all',
+  },
   theme: { type: Object, optional: true },
   'theme.hue': { type: String, optional: true },
   'theme.body': { type: Object, optional: true },

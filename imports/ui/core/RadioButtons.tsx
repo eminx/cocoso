@@ -13,7 +13,8 @@ const RadioContainerStyled = styled('label', {
   userSelect: 'none',
 });
 
-interface RadioContainerProps extends React.ComponentProps<typeof RadioContainerStyled> {
+interface RadioContainerProps
+  extends React.ComponentProps<typeof RadioContainerStyled> {
   disabled?: boolean;
   children?: React.ReactNode;
 }
@@ -52,7 +53,8 @@ const RadioCircleStyled = styled('span', {
   },
 });
 
-interface RadioCircleProps extends React.ComponentProps<typeof RadioCircleStyled> {
+interface RadioCircleProps
+  extends React.ComponentProps<typeof RadioCircleStyled> {
   checked?: boolean;
   focused?: boolean;
   children?: React.ReactNode;
@@ -94,7 +96,8 @@ const RadioDot = ({ checked, ...rest }: RadioDotProps) => (
   />
 );
 
-export interface RadioProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+export interface RadioProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   checked?: boolean;
   label?: string;
   disabled?: boolean;
@@ -102,7 +105,14 @@ export interface RadioProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function Radio({ checked, label, disabled, value, onChange, ...props }: RadioProps) {
+export function Radio({
+  checked,
+  label,
+  disabled,
+  value,
+  onChange,
+  ...props
+}: RadioProps) {
   const [focused, setFocused] = React.useState(false);
 
   return (
@@ -128,12 +138,13 @@ export function Radio({ checked, label, disabled, value, onChange, ...props }: R
 }
 
 export interface RadioOption {
-  label: string;
+  label: string | React.ReactNode;
   value: string;
   disabled?: boolean;
 }
 
-export interface RadioGroupProps extends Omit<React.ComponentProps<typeof Flex>, 'onChange'> {
+export interface RadioGroupProps
+  extends Omit<React.ComponentProps<typeof Flex>, 'onChange'> {
   children?: React.ReactNode;
   direction?: 'row' | 'column';
   name?: string;
@@ -145,9 +156,9 @@ export interface RadioGroupProps extends Omit<React.ComponentProps<typeof Flex>,
 
 export function RadioGroup({
   children,
-  direction = 'row',
+  direction = 'column',
   name,
-  spacing = '1.5rem',
+  spacing = '4',
   value,
   options = [],
   onChange,

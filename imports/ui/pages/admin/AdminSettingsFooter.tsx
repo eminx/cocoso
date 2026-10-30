@@ -4,7 +4,7 @@ import { Trans } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 
 import Quill from '/imports/ui/forms/Quill';
-import { Box, Button, Center, Flex, Heading, Text } from '/imports/ui/core';
+import { Box, Button, Flex, Heading, Text } from '/imports/ui/core';
 import { currentHostAtom } from '/imports/state';
 import { updateHostSettings } from '/imports/actions';
 

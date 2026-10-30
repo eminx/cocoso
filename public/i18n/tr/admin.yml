@@ -64,6 +64,12 @@ users:
   shortcutHelper: Kullanıcılarınızı yönet, onları doğrula/onayla veya yönetici olarak tayin et
   usersListed: 'kullanıcı'
   userListed: 'kullanıcı'
+  show:
+    title: Kullanıcıların Herkese Açık Gösterimi
+    description: Herkese açık listeleme sayfasında hangi kullanıcıların gösterilmesini istediğini seç
+    all: Tüm Kullanıcılar
+    verifiedAdmin: Yalnızca Onaylanmış Kullanıcılar ve Adminler
+    admin: Sadece Adminler
 
 menu:
   title: 'Menü'

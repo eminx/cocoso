@@ -64,6 +64,12 @@ users:
   shortcutHelper: Manege your users. Verify or unverify them, or set them as admin
   usersListed: users
   userListed: user
+  show:
+    title: Public Display of Users
+    description: Please choose which users you would like to display on the public listing page.
+    all: All Users
+    verifiedAdmin: Only Verified & Admin Users
+    admin: Only Admin Users
 
 menu:
   title: Menu

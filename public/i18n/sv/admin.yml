@@ -64,6 +64,12 @@ users:
   shortcutHelper: Hantera dina användare. Verifiera eller verifiera dem, eller ställ in dem som administratörer.
   usersListed: användare
   userListed: användare
+  show:
+    title: Offentlig visning av användare
+    description: Välj vilka användare du vill visa på sidan med den publika listan.
+    all: Alla användare
+    verifiedAdmin: Endast verifierade användare och administratörer
+    admin: Endast administratörer
 
 menu:
   title: Meny
