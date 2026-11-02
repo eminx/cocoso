@@ -6,7 +6,6 @@ import { Center } from '/imports/ui/core';
 import { Host } from '/imports/ui/types';
 
 import ListingGenericHybrid from './ListingGenericHybrid';
-import { getRenderPass } from './helpers';
 import InfiniteScroller from './InfiniteScroller';
 import SexyThumb from './SexyThumb';
 import Tabs from '../core/Tabs';
@@ -46,11 +45,6 @@ export default function ActivitiesHybrid({
   );
 
   const groupsLabel = groupsInMenu?.label;
-
-  const renderPass: boolean = getRenderPass(Host, LISTING, role);
-  if (!renderPass) {
-    return null;
-  }
 
   return (
     <ListingGenericHybrid
