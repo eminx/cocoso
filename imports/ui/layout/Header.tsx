@@ -146,8 +146,7 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
     return null;
   }
 
-  const menuItems = settings?.menu?.filter((item: any) => item.isVisible);
-  const menuItemsVisible = getMenuItemsVisible(menuItems, role);
+  const menuItems = getMenuItemsVisible(settings?.menu, role);
 
   const isCurrentContext = (item: any, index: number) => {
     if (pathname === '/') {
@@ -172,7 +171,7 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
         wrap="wrap"
         style={menuStyles}
       >
-        {menuItemsVisible?.map((item, index) =>
+        {menuItems?.map((item, index) =>
           item.name === 'info' ? (
             <InfoPagesMenu
               key="info"

@@ -3,8 +3,7 @@ import { Host, MenuItem } from '/imports/ui/types';
 function itemVisibilityFilter(item: any | undefined, role: string | null) {
   const isPublic =
     item &&
-    (!item.hasOwnProperty('visibility') ||
-      item.visibility === 'everyone');
+    (!item.hasOwnProperty('visibility') || item.visibility === 'everyone');
 
   if (isPublic) {
     return true;
@@ -42,8 +41,8 @@ export function getMenuItemsVisible(
   menuItems: MenuItem[] | undefined,
   role: string | null
 ) {
-  if (!menuItems ) return [];
+  if (!menuItems) return [];
   return menuItems.filter((item) => {
-    return itemVisibilityFilter(item, role);
+    return item.isVisible && itemVisibilityFilter(item, role);
   });
 }

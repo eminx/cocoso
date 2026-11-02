@@ -5,6 +5,7 @@ import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
 import { useAtomValue } from 'jotai';
 
 import { Box, Drawer, Flex, IconButton, Text } from '/imports/ui/core';
+import { getMenuItemsVisible } from '/imports/ui/listing/helpers';
 
 import ChangeLanguageMenu from './ChangeLanguageMenu';
 import {
@@ -12,7 +13,8 @@ import {
   isDesktopAtom,
   pageTitlesAtom,
   platformAtom,
-} from '../../state';
+  roleAtom,
+} from '/imports/state';
 import { InfoPagesMenu } from './Header';
 
 interface MenuContentProps {
@@ -22,7 +24,12 @@ interface MenuContentProps {
   onToggle: () => void;
 }
 
-function MenuContent({ menuItems, pageTitles, styles, onToggle }: MenuContentProps) {
+function MenuContent({
+  menuItems,
+  pageTitles,
+  styles,
+  onToggle,
+}: MenuContentProps) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -111,6 +118,7 @@ export default function MenuDrawer() {
   const pageTitles = useAtomValue(pageTitlesAtom);
   const isDesktop = useAtomValue(isDesktopAtom);
   const platform = useAtomValue(platformAtom);
+  const role = useAtomValue(roleAtom);
 
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
@@ -126,17 +134,17 @@ export default function MenuDrawer() {
     return null;
   }
 
-  const menu = currentHost?.settings?.menu;
+  const menu = currentHost?.settings?.menu || [];
 
-  const menuItems = menu
-    ?.filter((item) => item.isVisible)
-    .map((item, index) => ({
-      ...item,
-      route: getRoute(item, index),
-    }));
+  const menuItems = menu.map((item, index) => ({
+    ...item,
+    route: getRoute(item, index),
+  }));
+
+  const menuItemsVisible = getMenuItemsVisible(menuItems, role);
 
   if (platform?.isFederationLayout && currentHost?.isPortalHost) {
-    menuItems.push({
+    menuItemsVisible.push({
       name: 'communities',
       label: tc('platform.communities'),
       route: '/communities',
@@ -157,12 +165,13 @@ export default function MenuDrawer() {
           onClick={onToggle}
         />
 
-        <Text style={{ fontSize: '12px' }} textAlign="center">
+        <Text css={{ fontSize: '12px' }} textAlign="center">
           {tc('menu.label')}
         </Text>
       </Flex>
 
       <Drawer
+        id="menu-drawer"
         open={isOpen}
         styles={{ backgroundColor: 'var(--cocoso-colors-theme-100)' }}
         title={tc('menu.label')}
@@ -175,7 +184,7 @@ export default function MenuDrawer() {
           justify="space-between"
         >
           <MenuContent
-            menuItems={menuItems}
+            menuItems={menuItemsVisible}
             styles={menuStyles}
             pageTitles={pageTitles}
             onToggle={onToggle}
