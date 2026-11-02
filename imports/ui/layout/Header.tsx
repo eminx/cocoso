@@ -5,9 +5,11 @@ import { Trans } from 'react-i18next';
 import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 import { useAtomValue } from 'jotai';
 
-import { isDesktopAtom } from '/imports/state';
+import { isDesktopAtom, roleAtom } from '/imports/state';
 import { Box, Center, Flex, Heading, Image, Text } from '/imports/ui/core';
+import { Host } from '/imports/ui/types';
 import Menu, { MenuItem } from '/imports/ui/generic/Menu';
+import { getMenuItemsVisible } from '/imports/ui/listing/helpers';
 import { parseTitle } from '/imports/api/_utils/shared';
 
 const isClient = Meteor?.isClient;
@@ -121,13 +123,14 @@ export function InfoPagesMenu({
 }
 
 interface HeaderMenuProps {
-  Host: any;
+  Host: Host;
   pageTitles: any[];
 }
 
 function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
   const location = useLocation();
   const isDesktop = useAtomValue(isDesktopAtom);
+  const role = useAtomValue(roleAtom);
 
   const settings = Host?.settings;
   const menuStyles = Host?.theme?.menu;
@@ -144,6 +147,7 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
   }
 
   const menuItems = settings?.menu?.filter((item: any) => item.isVisible);
+  const menuItemsVisible = getMenuItemsVisible(menuItems, role);
 
   const isCurrentContext = (item: any, index: number) => {
     if (pathname === '/') {
@@ -168,7 +172,7 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
         wrap="wrap"
         style={menuStyles}
       >
-        {menuItems?.map((item, index) =>
+        {menuItemsVisible?.map((item, index) =>
           item.name === 'info' ? (
             <InfoPagesMenu
               key="info"

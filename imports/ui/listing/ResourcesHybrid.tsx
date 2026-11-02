@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
-import { useAtomValue } from 'jotai';
 
-import { currentHostAtom } from '/imports/state';
 import { Box } from '/imports/ui/core';
+import { Host } from '/imports/ui/types';
 import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
-import PageHeading from './PageHeading';
-import PopupHandler from './PopupHandler';
+import ListingGenericHybrid from './ListingGenericHybrid';
 import InfiniteScroller from './InfiniteScroller';
 import NewGridThumb from './NewGridThumb';
-import ShowContentFromOtherHosts from '/imports/ui/listing/ShowContentFromOtherHosts';
 
 export interface ResourcesHybridProps {
-  Host: object;
+  Host: Host;
   resources: object[];
 }
+
+const LISTING = 'resources';
 
 export default function ResourcesHybrid({
   Host,
   resources,
 }: ResourcesHybridProps) {
-  const currentHost = useAtomValue(currentHostAtom);
+  const currentHost = { ...Host };
   const [modalItem, setModalItem] = useState(null);
 
   return (
-    <>
-      <PageHeading currentHost={currentHost || Host} listing="resources" />
-
+    <ListingGenericHybrid
+      Host={Host}
+      isPortalHost={Boolean(currentHost?.isPortalHost)}
+      listing={LISTING}
+      modalItem={modalItem}
+      onCloseModal={() => setModalItem(null)}
+    >
       <Box px="2" pb="8">
         <InfiniteScroller isMasonry items={resources} filtrerMarginTop={-82}>
           {(resource, index) => (
@@ -49,18 +52,7 @@ export default function ResourcesHybrid({
             </Box>
           )}
         </InfiniteScroller>
-
-        <ShowContentFromOtherHosts
-          isPortalHost={currentHost?.isPortalHost}
-          listing="resources"
-        />
-
-        <PopupHandler
-          item={modalItem}
-          kind="resources"
-          onClose={() => setModalItem(null)}
-        />
       </Box>
-    </>
+    </ListingGenericHybrid>
   );
 }

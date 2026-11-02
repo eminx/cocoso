@@ -32,9 +32,12 @@ import {
   parseAllBookingsWithResources,
 } from '/imports/api/_utils/shared';
 import PageHeading from '/imports/ui/listing/PageHeading';
+import { getRenderPass } from '/imports/ui/listing/helpers';
 import Tag from '/imports/ui/generic/Tag';
 import { cocosoReactSelectAdapter } from '/imports/ui/utils/globalStylesManager';
-import CalendarView from '/imports/ui/pages/calendar/CalendarView';
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
+
+import CalendarView from './CalendarView';
 
 const maxResourceLabelsToShow = 18;
 
@@ -98,8 +101,10 @@ const parseNewEntryParams = (
   return params;
 };
 
+const LISTING = 'calendar';
+
 export default function CalendarHandler({ Host }: CalendarHandlerProps) {
-  const currentHost = Host;
+  const currentHost = { ...Host };
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const role = useAtomValue(roleAtom);
@@ -334,11 +339,17 @@ export default function CalendarHandler({ Host }: CalendarHandlerProps) {
     return <Loader />;
   }
 
+  const renderPass: boolean = getRenderPass(Host, LISTING, role);
+
+  if (!renderPass) {
+    return <NotFoundPage />;
+  }
+
   return (
     <>
       {!rendered ? <Loader /> : null}
 
-      <PageHeading currentHost={currentHost || Host} listing="calendar" />
+      <PageHeading currentHost={Host} listing="calendar" />
 
       <Box>
         <Center mb="2">

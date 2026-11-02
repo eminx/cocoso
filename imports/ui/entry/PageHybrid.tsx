@@ -2,11 +2,16 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
+import { useAtomValue } from 'jotai';
 
+import { roleAtom } from '/imports/state';
 import { Box, Center, Heading } from '/imports/ui/core';
+import { Host } from '/imports/ui/types';
 import { parseTitle } from '/imports/api/_utils/shared';
 import { getImageUrl } from '/imports/ui/utils/imageHelper';
 import EmblaSlider from '/imports/ui/generic/EmblaSlider';
+import { getRenderPass } from '/imports/ui/listing/helpers';
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
 interface SimplePageProps {
   description?: string;
@@ -81,11 +86,22 @@ interface Page {
 
 export interface PageHybridProps {
   currentPage: Page;
+  Host: Host;
 }
 
-export default function PageHybrid({ currentPage }: PageHybridProps) {
+const LISTING = 'info';
+
+export default function PageHybrid({ currentPage, Host }: PageHybridProps) {
+  const role = useAtomValue(roleAtom);
+
   if (!currentPage) {
     return null;
+  }
+
+  const renderPass: boolean = getRenderPass(Host, LISTING, role);
+
+  if (!renderPass) {
+    return <NotFoundPage />;
   }
 
   const url = `${currentPage.host}/${parseTitle(currentPage.title)}`;

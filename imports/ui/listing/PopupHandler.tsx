@@ -99,41 +99,41 @@ function PopupContent({
   );
 }
 
-const getLinkPath = (item: any, kind: string, isAnotherHost = false) => {
+const getLinkPath = (item: any, listing: string, isAnotherHost = false) => {
   if (isAnotherHost) {
-    if (kind === 'works') {
+    if (listing === 'works') {
       return {
         isHref: false,
-        path: `/@${item.authorUsername}/${kind}/${item._id}`,
+        path: `/@${item.authorUsername}/${listing}/${item._id}`,
       };
     }
     return {
       isHref: false,
-      path: `/${kind}/${item._id}`,
+      path: `/${listing}/${item._id}`,
     };
   }
-  if (kind === 'works') {
+  if (listing === 'works') {
     return {
       isHref: true,
-      path: `https://${item.host}/@${item.authorUsername}/${kind}/${item._id}`,
+      path: `https://${item.host}/@${item.authorUsername}/${listing}/${item._id}`,
     };
   }
   return {
     isHref: true,
-    path: `https://${item.host}/${kind}/${item._id}`,
+    path: `https://${item.host}/${listing}/${item._id}`,
   };
 };
 
 export interface PopupHandlerProps {
   item: any;
-  kind: string;
+  listing: string;
   showPast?: boolean;
   onClose: () => void;
 }
 
 export default function PopupHandler({
   item,
-  kind,
+  listing,
   showPast,
   onClose,
 }: PopupHandlerProps) {
@@ -174,7 +174,7 @@ export default function PopupHandler({
 
   const handleCopyLink = async () => {
     if (!displayedItem) return;
-    const link = getLinkPath(displayedItem, kind);
+    const link = getLinkPath(displayedItem, listing);
     await navigator.clipboard.writeText(link.path);
     setCopied(true);
   };
@@ -183,7 +183,7 @@ export default function PopupHandler({
     if (!displayedItem) return;
     const link = getLinkPath(
       displayedItem,
-      kind,
+      listing,
       displayedItem.host === currentHost?.host
     );
     if (link.isHref) {

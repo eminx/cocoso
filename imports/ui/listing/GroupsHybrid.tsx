@@ -1,40 +1,33 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAtomValue } from 'jotai';
 
-import { currentHostAtom } from '/imports/state';
-import { Box, Center } from '/imports/ui/core';
+import { Center } from '/imports/ui/core';
+import { Host } from '/imports/ui/types';
 
+import ListingGenericHybrid from './ListingGenericHybrid';
 import InfiniteScroller from './InfiniteScroller';
-import PageHeading from './PageHeading';
-import PopupHandler from './PopupHandler';
 import SexyThumb from './SexyThumb';
-import ShowContentFromOtherHosts from '/imports/ui/listing/ShowContentFromOtherHosts';
-// import VirtualGridLister from './VirtualGridLister';
 
 export interface GroupsHybridProps {
-  Host: any;
+  Host: Host;
   groups: any[];
 }
 
+const LISTING = 'groups';
+
 export default function GroupsHybrid({ Host, groups }: GroupsHybridProps) {
-  const currentHost = useAtomValue(currentHostAtom);
+  const currentHost = { ...Host };
   const [modalItem, setModalItem] = useState(null);
   const [tc] = useTranslation('common');
 
-  // const getTags = (item) => (item.isPrivate ? [tc('labels.private')] : null);
-
   return (
-    <>
-      <PageHeading currentHost={currentHost || Host} listing="groups" />
-
-      {/* <Center>
-        <VirtualGridLister
-          cellProps={{ currentHost, getTags, setModalItem }}
-          items={groups}
-        />
-      </Center> */}
-
+    <ListingGenericHybrid
+      Host={Host}
+      isPortalHost={Boolean(currentHost?.isPortalHost)}
+      listing={LISTING}
+      modalItem={modalItem}
+      onCloseModal={() => setModalItem(null)}
+    >
       <InfiniteScroller items={groups} filtrerMarginTop={-76}>
         {(item, index) => (
           <Center
@@ -51,17 +44,6 @@ export default function GroupsHybrid({ Host, groups }: GroupsHybridProps) {
           </Center>
         )}
       </InfiniteScroller>
-
-      <ShowContentFromOtherHosts
-        isPortalHost={currentHost?.isPortalHost}
-        listing="groups"
-      />
-
-      <PopupHandler
-        item={modalItem}
-        kind="groups"
-        onClose={() => setModalItem(null)}
-      />
-    </>
+    </ListingGenericHybrid>
   );
 }

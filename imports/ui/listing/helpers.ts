@@ -1,31 +1,20 @@
 import { Host, MenuItem } from '/imports/ui/types';
 
-export const getRenderPass = (
-  Host: Host,
-  LISTING: string,
-  role: string | null
-) => {
-  const itemInMenu = Host?.settings?.menu?.find(
-    (item: MenuItem) => item.name === LISTING
-  );
-  console.log('role', role);
-  console.log('itemInMenu:', itemInMenu);
-
+function itemVisibilityFilter(item: any | undefined, role: string | null) {
   const isPublic =
-    itemInMenu &&
-    (!itemInMenu.hasOwnProperty('visibility') ||
-      itemInMenu.visibility === 'everyone');
-
-  console.log('isPublic:', isPublic);
-  console.log('hasOwnProperty', itemInMenu?.hasOwnProperty('visibility'));
+    item &&
+    (!item.hasOwnProperty('visibility') ||
+      item.visibility === 'everyone');
 
   if (isPublic) {
     return true;
   }
 
-  const visibility = itemInMenu?.visibility;
+  if (!role) {
+    return false;
+  }
 
-  switch (visibility) {
+  switch (item.visibility) {
     case 'onlyAdmin':
       return role === 'admin';
     case 'onlyVerified':
@@ -35,4 +24,26 @@ export const getRenderPass = (
     default:
       return false;
   }
-};
+}
+
+export function getRenderPass(
+  Host: Host,
+  LISTING: string,
+  role: string | null
+) {
+  const itemInMenu = Host?.settings?.menu?.find(
+    (item: MenuItem) => item.name === LISTING
+  );
+
+  return itemVisibilityFilter(itemInMenu, role);
+}
+
+export function getMenuItemsVisible(
+  menuItems: MenuItem[] | undefined,
+  role: string | null
+) {
+  if (!menuItems ) return [];
+  return menuItems.filter((item) => {
+    return itemVisibilityFilter(item, role);
+  });
+}

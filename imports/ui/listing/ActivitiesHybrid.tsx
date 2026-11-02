@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { Trans } from 'react-i18next';
-import { useAtomValue } from 'jotai';
 
-import { roleAtom } from '/imports/state';
 import { Center } from '/imports/ui/core';
+import { Host } from '/imports/ui/types';
 
+import ListingGenericHybrid from './ListingGenericHybrid';
 import { getRenderPass } from './helpers';
 import InfiniteScroller from './InfiniteScroller';
-import PageHeading from './PageHeading';
-import PopupHandler from './PopupHandler';
 import SexyThumb from './SexyThumb';
-import ShowContentFromOtherHosts from './ShowContentFromOtherHosts';
 import Tabs from '../core/Tabs';
 
 export interface ActivitiesHybridProps {
-  Host: any;
+  Host: Host;
   activities: any[];
   showPast?: boolean;
 }
@@ -28,7 +25,6 @@ export default function ActivitiesHybrid({
   showPast,
 }: ActivitiesHybridProps) {
   const currentHost = { ...Host };
-  const role = useAtomValue(roleAtom);
   const [modalItem, setModalItem] = useState(null);
   const [, setSearchParams] = useSearchParams();
 
@@ -57,9 +53,13 @@ export default function ActivitiesHybrid({
   }
 
   return (
-    <>
-      <PageHeading currentHost={currentHost} listing={LISTING} />
-
+    <ListingGenericHybrid
+      Host={Host}
+      isPortalHost={Boolean(currentHost?.isPortalHost)}
+      listing={LISTING}
+      modalItem={modalItem}
+      onCloseModal={() => setModalItem(null)}
+    >
       <Center>
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
       </Center>
@@ -81,18 +81,6 @@ export default function ActivitiesHybrid({
           </Center>
         )}
       </InfiniteScroller>
-
-      <ShowContentFromOtherHosts
-        isPortalHost={currentHost?.isPortalHost}
-        listing="activities"
-      />
-
-      <PopupHandler
-        item={modalItem}
-        kind="activities"
-        showPast={showPast}
-        onClose={() => setModalItem(null)}
-      />
-    </>
+    </ListingGenericHybrid>
   );
 }

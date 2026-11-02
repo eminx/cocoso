@@ -1,25 +1,19 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { Trans } from 'react-i18next';
-import { useAtomValue } from 'jotai';
 
-import { roleAtom } from '/imports/state';
 import { Box, Center, Flex } from '/imports/ui/core';
+import { Host } from '/imports/ui/types';
 import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
 import { getImageUrl } from '/imports/ui/utils/imageHelper';
-
 import { getCategoriesAssignedToWorks } from '/imports/api/_utils/shared';
-import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
+import ListingGenericHybrid from './ListingGenericHybrid';
 import NewGridThumb from './NewGridThumb';
-import ShowContentFromOtherHosts from './ShowContentFromOtherHosts';
-import PageHeading from './PageHeading';
-import PopupHandler from './PopupHandler';
-import { getRenderPass } from './helpers';
 import Tag from '../generic/Tag';
 
 export interface WorksHybridProps {
-  Host: any;
+  Host: Host;
   works: any[];
 }
 
@@ -27,7 +21,6 @@ const LISTING = 'works';
 
 export default function WorksHybrid({ Host, works }: WorksHybridProps) {
   const currentHost = { ...Host };
-  const role = useAtomValue(roleAtom);
   const [modalItem, setModalItem] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category');
@@ -61,17 +54,14 @@ export default function WorksHybrid({ Host, works }: WorksHybridProps) {
     };
   });
 
-  const renderPass: boolean = getRenderPass(Host, LISTING, role);
-  console.log('renderPass:', renderPass);
-
-  if (!renderPass) {
-    return <NotFoundPage />;
-  }
-
   return (
-    <>
-      <PageHeading currentHost={currentHost} listing={LISTING} />
-
+    <ListingGenericHybrid
+      Host={Host}
+      isPortalHost={Boolean(currentHost?.isPortalHost)}
+      listing={LISTING}
+      modalItem={modalItem}
+      onCloseModal={() => setModalItem(null)}
+    >
       <Center px="4">
         <Flex justify="center" wrap="wrap">
           <Tag
@@ -128,17 +118,6 @@ export default function WorksHybrid({ Host, works }: WorksHybridProps) {
           )}
         </InfiniteScroller>
       </Box>
-
-      <ShowContentFromOtherHosts
-        isPortalHost={Boolean(currentHost?.isPortalHost)}
-        listing="works"
-      />
-
-      <PopupHandler
-        item={modalItem}
-        kind="works"
-        onClose={() => setModalItem(null)}
-      />
-    </>
+    </ListingGenericHybrid>
   );
 }

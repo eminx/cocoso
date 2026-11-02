@@ -5,26 +5,32 @@ import { useAtomValue } from 'jotai';
 import Select from 'react-select';
 
 import { Box, Center, Modal, Text } from '/imports/ui/core';
-import { currentHostAtom, isDesktopAtom } from '/imports/state';
+import { isDesktopAtom, roleAtom } from '/imports/state';
+import { Host } from '/imports/ui/types';
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
+import { getRenderPass } from './helpers';
 import PageHeading from './PageHeading';
 import InfiniteScroller from './InfiniteScroller';
 import { Bio } from '../entry/UserHybrid';
 import MemberAvatarEtc from '../generic/MemberAvatarEtc';
 
 export interface UsersHybridProps {
-  Host: any;
+  Host: Host;
   users: any[];
   keywords?: any[];
 }
+
+const LISTING = 'people';
 
 export default function UsersHybrid({
   Host,
   users,
   keywords,
 }: UsersHybridProps) {
-  const currentHost = useAtomValue(currentHostAtom);
+  const currentHost = { ...Host };
   const isDesktop = useAtomValue(isDesktopAtom);
+  const role = useAtomValue(roleAtom);
   const [modalItem, setModalItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
@@ -74,9 +80,15 @@ export default function UsersHybrid({
     );
   }, [users, selectedKeywords]);
 
+  const renderPass: boolean = getRenderPass(Host, LISTING, role);
+
+  if (!renderPass) {
+    return <NotFoundPage />;
+  }
+
   return (
     <>
-      <PageHeading currentHost={currentHost || Host} listing="people" />
+      <PageHeading currentHost={currentHost || Host} listing={LISTING} />
 
       <Center mb="4">
         <Box w="100%" maxW="600px" p="4">
@@ -118,11 +130,7 @@ export default function UsersHybrid({
         </Center>
 
         <Box style={{ marginTop: isDesktop ? '-4rem' : 0 }}>
-          <InfiniteScroller
-            // hideFiltrerSorter
-            items={filteredUsers}
-            itemsPerPage={20}
-          >
+          <InfiniteScroller items={filteredUsers} itemsPerPage={20}>
             {(user) => (
               <Box
                 key={user.username}
