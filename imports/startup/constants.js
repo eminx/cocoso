@@ -11,43 +11,36 @@ const defaultMenu = [
     label: 'Activities',
     name: 'activities',
     isVisible: true,
-    isHomePage: true,
   },
   {
     label: 'Groups',
     name: 'groups',
     isVisible: true,
-    isHomePage: false,
   },
   {
     label: 'Calendar',
     name: 'calendar',
     isVisible: true,
-    isHomePage: false,
   },
   {
     label: 'Works',
     name: 'works',
     isVisible: true,
-    isHomePage: false,
   },
   {
     label: 'People',
     name: 'people',
     isVisible: true,
-    isHomePage: false,
   },
   {
     label: 'Resources',
     name: 'resources',
     isVisible: true,
-    isHomePage: false,
   },
   {
     label: 'Info',
     name: 'info',
     isVisible: true,
-    isHomePage: false,
   },
 ];
 

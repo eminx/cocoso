@@ -2,9 +2,8 @@ import React, { useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
 
-import { Box, Center, Flex, Loader } from '/imports/ui/core';
+import { Box, Flex, Loader } from '/imports/ui/core';
 
-import NewEntryHelper from '../generic/NewEntryHelper';
 import FiltrerSorter from './FiltrerSorter';
 
 const breakpointColumnsObj = (isLarger: boolean) => ({
@@ -100,14 +99,11 @@ const filterSortItems = (
 };
 
 export default function InfiniteScroller({
-  canCreateContent = false,
   hideFiltrerSorter = false,
   filtrerMarginTop = 0,
   isMasonry = false,
   items,
   itemsPerPage = defaultItemsPerPage,
-  newHelperLink,
-  smallThumb,
   children,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -160,23 +156,11 @@ export default function InfiniteScroller({
             >
               {currentItems?.map((item, index) => children(item, index))}
               {hasMore && <Loader relative />}
-              {!hasMore && canCreateContent && (
-                <NewEntryHelper
-                  buttonLink={newHelperLink}
-                  small={isMasonry || smallThumb}
-                />
-              )}
             </Masonry>
           ) : (
             <Flex align="center" justify="center" gap="2" wrap="wrap" w="100%">
               {currentItems?.map((item, index) => children(item, index))}
               {hasMore && <Loader relative />}
-              {!hasMore && canCreateContent && (
-                <NewEntryHelper
-                  buttonLink={newHelperLink}
-                  small={smallThumb || isMasonry}
-                />
-              )}
             </Flex>
           )}
         </InfiniteScroll>

@@ -43,7 +43,7 @@ export interface NewGridThumbProps {
   footer?: React.ReactNode;
   host?: string;
   index?: number;
-  imageUrl?: string;
+  imageUrl?: string | null;
   subTitle?: string;
   title?: string;
   tag?: string;

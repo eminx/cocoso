@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { Trans } from 'react-i18next';
+import { useAtomValue } from 'jotai';
 
+import { roleAtom } from '/imports/state';
 import { Center } from '/imports/ui/core';
 
+import { getRenderPass } from './helpers';
 import InfiniteScroller from './InfiniteScroller';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
 import SexyThumb from './SexyThumb';
+import ShowContentFromOtherHosts from './ShowContentFromOtherHosts';
 import Tabs from '../core/Tabs';
-import ShowContentFromOtherHosts from '/imports/ui/listing/ShowContentFromOtherHosts';
 
 export interface ActivitiesHybridProps {
   Host: any;
@@ -17,12 +20,15 @@ export interface ActivitiesHybridProps {
   showPast?: boolean;
 }
 
+const LISTING = 'activities';
+
 export default function ActivitiesHybrid({
   Host,
   activities,
   showPast,
 }: ActivitiesHybridProps) {
   const currentHost = { ...Host };
+  const role = useAtomValue(roleAtom);
   const [modalItem, setModalItem] = useState(null);
   const [, setSearchParams] = useSearchParams();
 
@@ -45,20 +51,18 @@ export default function ActivitiesHybrid({
 
   const groupsLabel = groupsInMenu?.label;
 
+  const renderPass: boolean = getRenderPass(Host, LISTING, role);
+  if (!renderPass) {
+    return null;
+  }
+
   return (
     <>
-      <PageHeading currentHost={currentHost || Host} listing="activities" />
+      <PageHeading currentHost={currentHost} listing={LISTING} />
 
       <Center>
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
       </Center>
-
-      {/* <Center>
-        <VirtualGridLister
-          cellProps={{ currentHost, showPast, getTags, setModalItem }}
-          items={activities}
-        />
-      </Center> */}
 
       <InfiniteScroller items={activities} filtrerMarginTop={-72}>
         {(item, index) => (

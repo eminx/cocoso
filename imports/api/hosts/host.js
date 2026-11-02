@@ -11,8 +11,13 @@ const Hosts = new Mongo.Collection('hosts');
 const SchemasHost = {
   menu: {
     description: { type: String, optional: true },
-    isHomePage: { type: Boolean, optional: true },
     isVisible: { type: Boolean },
+    visibility: {
+      type: String,
+      allowedValues: ['everyone', 'onlyUsers', 'onlyVerified', 'onlyAdmin'],
+      defaultValue: 'everyone',
+      optional: true,
+    },
     isComposablePage: {
       type: Boolean,
       defaultValue: false,
@@ -36,9 +41,6 @@ Hosts.schema = new SimpleSchema({
 
   logo: { type: String, optional: true },
   logoLegacy: { type: String, optional: true },
-  // PNG rendition of `logo`, for email clients (Gmail) that don't render
-  // a transparent WebP background well. Set at upload time for new logos
-  // (see assignHostLogo); backfilled for older ones by migration 19.
   logoPng: { type: String, optional: true },
 
   settings: { type: Object },

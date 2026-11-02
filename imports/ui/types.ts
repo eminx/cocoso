@@ -66,11 +66,12 @@ export interface Work extends BaseDocument {
  * MenuItem represents a navigation menu item in the host settings
  */
 export interface MenuItem {
-  isComposablePage?: any;
   name: string;
-  label?: string;
   description?: string;
+  isComposablePage?: any;
   isVisible?: boolean;
+  label?: string;
+  visibility?: string;
 }
 
 /**

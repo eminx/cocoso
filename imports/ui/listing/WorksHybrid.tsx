@@ -3,25 +3,31 @@ import { useSearchParams } from 'react-router';
 import { Trans } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
-import { currentHostAtom } from '/imports/state';
+import { roleAtom } from '/imports/state';
 import { Box, Center, Flex } from '/imports/ui/core';
 import InfiniteScroller from '/imports/ui/listing/InfiniteScroller';
 import { getImageUrl } from '/imports/ui/utils/imageHelper';
 
+import { getCategoriesAssignedToWorks } from '/imports/api/_utils/shared';
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
+
+import NewGridThumb from './NewGridThumb';
+import ShowContentFromOtherHosts from './ShowContentFromOtherHosts';
 import PageHeading from './PageHeading';
 import PopupHandler from './PopupHandler';
+import { getRenderPass } from './helpers';
 import Tag from '../generic/Tag';
-import { getCategoriesAssignedToWorks } from '../../api/_utils/shared';
-import NewGridThumb from '/imports/ui/listing/NewGridThumb';
-import ShowContentFromOtherHosts from '/imports/ui/listing/ShowContentFromOtherHosts';
 
 export interface WorksHybridProps {
   Host: any;
   works: any[];
 }
 
+const LISTING = 'works';
+
 export default function WorksHybrid({ Host, works }: WorksHybridProps) {
-  const currentHost = useAtomValue(currentHostAtom);
+  const currentHost = { ...Host };
+  const role = useAtomValue(roleAtom);
   const [modalItem, setModalItem] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category');
@@ -55,9 +61,16 @@ export default function WorksHybrid({ Host, works }: WorksHybridProps) {
     };
   });
 
+  const renderPass: boolean = getRenderPass(Host, LISTING, role);
+  console.log('renderPass:', renderPass);
+
+  if (!renderPass) {
+    return <NotFoundPage />;
+  }
+
   return (
     <>
-      <PageHeading currentHost={currentHost || Host} listing="works" />
+      <PageHeading currentHost={currentHost} listing={LISTING} />
 
       <Center px="4">
         <Flex justify="center" wrap="wrap">
@@ -117,7 +130,7 @@ export default function WorksHybrid({ Host, works }: WorksHybridProps) {
       </Box>
 
       <ShowContentFromOtherHosts
-        isPortalHost={currentHost?.isPortalHost}
+        isPortalHost={Boolean(currentHost?.isPortalHost)}
         listing="works"
       />
 

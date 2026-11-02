@@ -4,7 +4,7 @@ import SmallCloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { Box, Flex, IconButton } from '/imports/ui/core';
 
 export interface TagProps {
-  label?: string;
+  label?: string | React.ReactNode;
   gradientBackground?: string | null;
   filterColor?: string;
   checkable?: boolean;

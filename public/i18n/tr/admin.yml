@@ -100,6 +100,13 @@ menu:
     text: 'İsteğe bağlı olarak burger menüyü aktifleştir. Burger menü, ekranın sağ üst köşesindeki "burger" simgesine tıklandığında görünen menüdür.'
   options:
     label: Seçenekler
+  visibility:
+    label: Görünürlük
+    options:
+      everyone: Herkese Açık
+      onlyUsers: Yalnızca Giriş Yapmış Kullanıcılar
+      onlyVerified: Yalnızca Onaylanmış Kullanıcılar ve Yöneticiler
+      onlyAdmin: Yalnızca Yöneticiler
 
 categories:
   title: Kategoriler

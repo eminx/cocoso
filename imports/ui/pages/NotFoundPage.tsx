@@ -1,14 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 
 import { Box, Link as CLink, Text } from '/imports/ui/core';
 
 import Template from '../layout/Template';
 
 export default function NotFoundPage() {
-  const [t] = useTranslation('common');
-
   return (
     <Template>
       <Box m="4" p="2">
@@ -18,13 +16,19 @@ export default function NotFoundPage() {
       </Box>
       <Box m="4" p="2">
         <Text textAlign="center" fontWeight="bold">
-          {t('labels.notfound.info')}
+          <Trans i18nKey="common:labels.notfound.info">
+            What you look for could not be found
+          </Trans>
         </Text>
 
         <Box mt="6">
           <Text textAlign="center">
             <Link to="/">
-              <CLink>{t('labels.notfound.gohome')}</CLink>
+              <CLink>
+                <Trans i18nKey="common:labels.notfound.gohome">
+                  Back to home page
+                </Trans>
+              </CLink>
             </Link>
           </Text>
         </Box>

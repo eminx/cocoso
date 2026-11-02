@@ -10,13 +10,13 @@ import NewEntryHandler from '/imports/ui/forms/NewEntryHandler.loadable';
 const NewWork = loadable(() => import('./NewWork'));
 
 export default function WorkListHandler({ Host }) {
-  const { documents, works } = useLoaderData();
+  const { works } = useLoaderData();
   const rendered = useAtomValue(renderedAtom);
   const canCreateContent = useAtomValue(canCreateContentAtom);
 
   return (
     <>
-      <WorksHybrid Host={Host} documents={documents} works={works} />
+      <WorksHybrid Host={Host} works={works} />
 
       {rendered && canCreateContent ? (
         <NewEntryHandler context="works">

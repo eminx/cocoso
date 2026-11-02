@@ -78,7 +78,7 @@ menu:
   tabs:
     menuitems:
       label: Visibility, Labels & Description
-      info: Check/uncheck items for visibility, and label them as you prefer in order to compose the navigation menu. The description you provide will be displayed right under title when users open the listing page. Leave it empty if you prefer so.
+      info: Check/uncheck items for enabling/disabling them, and label as you prefer in order to compose the navigation menu. The description you provide will be displayed right under title when users open the listing page. Leave it empty if you prefer so.
     order:
       label: Order
       info: Reorder items by dragging up and down, if you want to change the display order
@@ -100,6 +100,13 @@ menu:
     text: Optionally activate the burger menu. Burger menu is a menu that appears when you click the "burger" menu icon in the top right corner of the screen.
   options:
     label: Options
+  visibility:
+    label: Visibility
+    options:
+      everyone: Publicly Everyone
+      onlyUsers: Only Logged-in Users
+      onlyVerified: Only Verified & Admin Users
+      onlyAdmin: Only Admins
 
 categories:
   title: Categories

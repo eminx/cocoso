@@ -100,6 +100,13 @@ menu:
     text: Aktivera eventuellt burgermenyn. Burgermeny är en meny som visas när man klickar på "burger"-ikonen i det övre högra hörnet av skärmen.
   options:
     label: Alternativ
+  visibility:
+    label: Synlighet
+    options:
+      everyone: Offentligt – alla
+      onlyUsers: Endast inloggade användare
+      onlyVerified: Endast verifierade användare och administratörer
+      onlyAdmin: Endast administratörer
 
 categories:
   title: Kategorier

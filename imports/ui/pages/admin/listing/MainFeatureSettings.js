@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAtom } from 'jotai';
 
+import { currentHostAtom } from '/imports/state';
+import { updateHostSettings } from '/imports/actions';
 import {
   Box,
   Button,
@@ -9,13 +11,12 @@ import {
   Flex,
   Heading,
   Input,
+  Select,
   Text,
   Textarea,
 } from '/imports/ui/core';
-import { currentHostAtom } from '/imports/state';
-import { updateHostSettings } from '/imports/actions';
-import { call } from '../../../../api/_utils/shared';
 import { message } from '/imports/ui/generic/message';
+import { call } from '/imports/api/_utils/shared';
 
 import Boxling from '../Boxling';
 
@@ -48,25 +49,36 @@ export default function MainFeatureSettings({ listing }) {
     setLocalItem(selectedMenuItem);
   }, [currentHost?.settings]);
 
-  const handleMenuItemCheck = (value) => {
-    setLocalItem((prevItem) => ({
-      ...prevItem,
-      isVisible: value,
-    }));
-  };
+  const visibilityOptions = useMemo(
+    () => [
+      {
+        label: t('menu.visibility.options.everyone'),
+        value: 'everyone',
+      },
+      {
+        label: t('menu.visibility.options.onlyUsers'),
+        value: 'onlyUsers',
+      },
+      {
+        label: t('menu.visibility.options.onlyVerified'),
+        value: 'onlyVerified',
+      },
+      {
+        label: t('menu.visibility.options.onlyAdmin'),
+        value: 'onlyAdmin',
+      },
+    ],
+    [t]
+  );
 
-  const handleMenuItemLabelChange = (value) => {
-    setLocalItem((prevItem) => ({
-      ...prevItem,
-      label: value,
-    }));
-  };
-
-  const handleMenuItemDescriptionChange = (value) => {
-    setLocalItem((prevItem) => ({
-      ...prevItem,
-      description: value,
-    }));
+  const handleChange = (key, value) => {
+    setLocalItem((prevItem) => {
+      const newItem = {
+        ...prevItem,
+      };
+      newItem[key] = value;
+      return newItem;
+    });
   };
 
   const handleSubmit = async () => {
@@ -106,8 +118,29 @@ export default function MainFeatureSettings({ listing }) {
           <Checkbox
             checked={localItem.isVisible}
             id="is-item-active"
-            onChange={(event) => handleMenuItemCheck(event.target.checked)}
+            size="lg"
+            onChange={(event) =>
+              handleChange('isVisible', event.target.checked)
+            }
           />
+        </Box>
+      ),
+    },
+    {
+      key: 'Visibility',
+      value: (
+        <Box>
+          <Select
+            disabled={!localItem.isVisible}
+            value={localItem.visibility}
+            onChange={(event) => handleChange('visibility', event.target.value)}
+          >
+            {visibilityOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </Select>
         </Box>
       ),
     },
@@ -117,7 +150,7 @@ export default function MainFeatureSettings({ listing }) {
         <Input
           disabled={!localItem.isVisible}
           value={localItem.label}
-          onChange={(event) => handleMenuItemLabelChange(event.target.value)}
+          onChange={(event) => handleChange('label', event.target.value)}
         />
       ),
     },
@@ -127,9 +160,7 @@ export default function MainFeatureSettings({ listing }) {
         <Textarea
           disabled={!localItem.isVisible}
           value={localItem.description}
-          onChange={(event) =>
-            handleMenuItemDescriptionChange(event.target.value)
-          }
+          onChange={(event) => handleChange('description', event.target.value)}
         />
       ),
     },
