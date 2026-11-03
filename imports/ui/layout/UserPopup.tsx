@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router';
 import { Trans, useTranslation } from 'react-i18next';
 import BoltIcon from 'lucide-react/dist/esm/icons/bolt';
 import CogIcon from 'lucide-react/dist/esm/icons/cog';
-import CheckCircleIcon from 'lucide-react/dist/esm/icons/check-circle';
+import CircleCheckBigIcon from 'lucide-react/dist/esm/icons/circle-check-big';
 import { useAtom, useAtomValue } from 'jotai';
 import MessagesSquare from 'lucide-react/dist/esm/icons/messages-square';
 
@@ -119,7 +119,7 @@ export function UserThumb({ notificationsCounter = 0 }: UserThumbProps) {
         ) : role === 'admin' ? (
           <BoltIcon color="#010101" size={16} />
         ) : role === 'contributor' ? (
-          <CheckCircleIcon color="#010101" size={16} />
+          <CircleCheckBigIcon color="#010101" size={16} />
         ) : null}
       </Avatar>
 
