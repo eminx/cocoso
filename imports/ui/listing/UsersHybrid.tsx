@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { Trans } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 import Select from 'react-select';
 
-import { Box, Center, Modal, Text } from '/imports/ui/core';
+import { Box, Center, Modal, Tabs, Text } from '/imports/ui/core';
 import { isDesktopAtom, roleAtom } from '/imports/state';
 import { Host } from '/imports/ui/types';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
@@ -23,6 +23,44 @@ export interface UsersHybridProps {
 
 const LISTING = 'people';
 
+const tabs = [
+  {
+    path: 'all',
+    title: <Trans i18nKey="members:all">All</Trans>,
+  },
+  {
+    title: <Trans i18nKey="members:roles.admin">Admin</Trans>,
+    path: 'admin',
+  },
+  {
+    title: <Trans i18nKey="members:roles.contributor">Verified</Trans>,
+    path: 'verified',
+  },
+  {
+    title: <Trans i18nKey="members:roles.participant">Non-verified</Trans>,
+    path: 'nonverified',
+  },
+];
+
+const getTabsBasedOnSettings = (Host: Host) => {
+  const listingPeopleShow = Host?.settings?.listingPeopleShow;
+
+  if (!listingPeopleShow) {
+    return tabs;
+  }
+
+  return tabs.filter((tab) => {
+    switch (listingPeopleShow) {
+      case 'admin':
+        return tab.path === 'admin';
+      case 'verifiedAdmin':
+        return tab.path !== 'nonverified';
+      default:
+        return true;
+    }
+  });
+};
+
 export default function UsersHybrid({
   Host,
   users,
@@ -35,6 +73,7 @@ export default function UsersHybrid({
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const handleNavigateUserPage = () => {
     if (
@@ -68,19 +107,37 @@ export default function UsersHybrid({
     [users?.length, keywords?.length]
   );
 
+  const currentTab = searchParams.get('tab') || 'all';
+
   const filteredUsers = useMemo(() => {
-    if (selectedKeywords.length === 0) {
-      return users;
-    }
     const selectedKeywordIds = selectedKeywords.map((kw) => kw._id);
-    return users.filter((user) =>
-      user.keywords?.some((userKw: any) =>
-        selectedKeywordIds.includes(userKw.keywordId)
-      )
-    );
-  }, [users, selectedKeywords]);
+    const usersKeywordFiltered =
+      selectedKeywords.length === 0
+        ? users
+        : users?.filter((user) =>
+            user.keywords?.some((userKw: any) =>
+              selectedKeywordIds.includes(userKw.keywordId)
+            )
+          );
+
+    return usersKeywordFiltered.filter((user) => {
+      switch (user.currentRole) {
+        case 'admin':
+          return currentTab === 'admin';
+        case 'contributor':
+          return currentTab === 'verified';
+        case 'participant':
+          return currentTab === 'nonverified';
+        default:
+          return true;
+      }
+    });
+  }, [users, selectedKeywords, currentTab]);
+
+  const tabs = getTabsBasedOnSettings(Host);
 
   const renderPass: boolean = getRenderPass(Host, LISTING, role);
+  const tabIndex = tabs.findIndex((tab) => tab.path === currentTab);
 
   if (!renderPass) {
     return <NotFoundPage />;
@@ -122,6 +179,9 @@ export default function UsersHybrid({
 
       <Box>
         <Center mb="4">
+          <Tabs index={tabIndex} tabs={tabs} withSearchParams />
+        </Center>
+        <Center>
           <Text fontSize="sm">
             <Trans i18nKey="members:message.sortedRandomly">
               Sorted randomly

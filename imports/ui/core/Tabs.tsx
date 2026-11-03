@@ -8,7 +8,7 @@ import { Badge, Flex, Text } from '/imports/ui/core';
 export interface TabType {
   key?: string;
   path?: string;
-  title: string;
+  title: string | ReactNode;
   badge?: ReactNode;
   onClick?: () => void;
 }
@@ -136,8 +136,8 @@ const CoTab: React.FC<CoTabProps> = ({ tab, selected }) => {
 };
 
 interface TabsProps extends TabsListProps {
-  index: number;
   tabs: TabType[];
+  index?: number;
   withSearchParams?: boolean;
   children?: ReactNode;
 }
@@ -157,7 +157,7 @@ const Tabs: React.FC<TabsProps> = ({
       if (withSearchParams) {
         setSearchParams((params) => {
           const next = new URLSearchParams(params);
-          next.set('tab', tab.path);
+          next.set('tab', tab.path || '');
           return next;
         });
       } else {

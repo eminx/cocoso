@@ -210,7 +210,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
         <meta name="tags" content={tags?.join(',')} />
         <meta property="og:title" content={title?.substring(0, 40)} />
         <meta property="og:url" content={url} />
-        <meta property="og:image" content={imageUrl} />
+        <meta property="og:image" content={imageUrl || undefined} />
         <meta
           property="og:description"
           content={description?.substring(0, 150)}
