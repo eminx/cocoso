@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
-import CircleCheck from 'lucide-react/dist/esm/icons/circle-check';
+import CircleCheckBig from 'lucide-react/dist/esm/icons/circle-check-big';
 import { Tooltip } from 'react-tooltip';
 
 import { Avatar, Box, Center, Flex, Tag, Text } from '/imports/ui/core';
@@ -72,7 +72,7 @@ export default function MemberAvatarEtc({
               >
                 {currentRole === 'admin' && <Bolt color="#010101" size={20} />}
                 {currentRole === 'contributor' && (
-                  <CircleCheck color="#010101" size={20} />
+                  <CircleCheckBig color="#010101" size={20} />
                 )}
               </a>
               <Tooltip

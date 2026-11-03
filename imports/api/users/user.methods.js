@@ -70,7 +70,11 @@ Meteor.methods({
       return null;
     }
 
-    return await userModel(user);
+    const userWithMemberships = await userModel(user);
+    return {
+      ...userWithMemberships,
+      currentRole: membership.role,
+    };
   },
 
   async createAccount(values) {
@@ -332,10 +336,7 @@ Meteor.methods({
     const host = getHost(this);
 
     try {
-      await Memberships.updateAsync(
-        { userId, host },
-        { $set: { isPublic } }
-      );
+      await Memberships.updateAsync({ userId, host }, { $set: { isPublic } });
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't update");
     }
