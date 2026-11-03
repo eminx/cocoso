@@ -1,6 +1,6 @@
 import Memberships from './membership';
 
-function attachMemberships(users, memberships) {
+function attachMemberships(users, memberships, host) {
   if (!users || users.length === 0) {
     return [];
   }
@@ -16,10 +16,14 @@ function attachMemberships(users, memberships) {
     }
   }
 
-  return users.map((u) => ({
-    ...u,
-    memberships: byUser.get(String(u._id)) ?? [],
-  }));
+  return users.map((u) => {
+    const userMemberships = byUser.get(String(u._id)) ?? [];
+    return {
+      ...u,
+      memberships: userMemberships,
+      currentRole: userMemberships?.find((m) => m.host === host)?.role,
+    };
+  });
 }
 
 async function getUserMemberships(userId) {

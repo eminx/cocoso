@@ -204,7 +204,7 @@ Meteor.methods({
       .find({ _id: { $in: userIds } }, { fields: publicUserFields })
       .fetchAsync();
 
-    const usersWithMemberships = attachMemberships(users, memberships);
+    const usersWithMemberships = attachMemberships(users, memberships, host);
 
     return getUsersRandomlyWithAvatarsFirst(usersWithMemberships);
   },

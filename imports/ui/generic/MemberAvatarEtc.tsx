@@ -1,9 +1,12 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
+import Bolt from 'lucide-react/dist/esm/icons/bolt';
+import CircleCheck from 'lucide-react/dist/esm/icons/circle-check';
+import { Tooltip } from 'react-tooltip';
 
 import { Avatar, Box, Center, Flex, Tag, Text } from '/imports/ui/core';
 import { getImageUrl } from '/imports/ui/utils/imageHelper';
-
-import { getFullName } from '../../api/_utils/shared';
+import { getFullName } from '/imports/api/_utils/shared';
 
 const tagProps = {
   bg: 'white',
@@ -28,12 +31,12 @@ interface User {
   keywords?: UserKeyword[];
   firstName?: string;
   lastName?: string;
+  currentRole?: 'admin' | 'contributor' | 'participant';
 }
 
 export interface MemberAvatarEtcProps {
   isThumb?: boolean;
   user?: User | null;
-  role?: string;
 }
 
 export default function MemberAvatarEtc({
@@ -46,6 +49,8 @@ export default function MemberAvatarEtc({
     ? getImageUrl(user.avatar.src, isThumb ? 'small' : 'full')
     : undefined;
 
+  const currentRole = user?.currentRole;
+
   return (
     <Box mb="6">
       <Center mb="2">
@@ -56,31 +61,30 @@ export default function MemberAvatarEtc({
         />
       </Center>
 
-      {/* {['contributor', 'admin'].includes(role) && (
-              <Box ml="1">
-                <Popover
-                  triggerComponent={
-                    role === 'contributor' ? (
-                      <CircleCheck color="#010101" size="20" />
-                    ) : (
-                      <Bolt color="#010101" size="20" />
-                    )
-                  }
-                >
-                  <Text fontWeight="bold">
-                    {role === 'contributor'
-                      ? t('roles.verified')
-                      : t('roles.admin')}
-                  </Text>
-                </Popover>
-              </Box>
-            )} */}
-
       <Box>
         <Center>
           <Flex spacing="0.5">
             <Text fontSize="xl" fontWeight="bold" textAlign="center">
               {user.username}
+              <a
+                data-tooltip-id={`role-tooltip-${user._id}`}
+                style={{ marginLeft: '0.3rem' }}
+              >
+                {currentRole === 'admin' && <Bolt color="#010101" size={20} />}
+                {currentRole === 'contributor' && (
+                  <CircleCheck color="#010101" size={20} />
+                )}
+              </a>
+              <Tooltip
+                content={
+                  <Trans i18nKey={`members:roles.${currentRole}`}>
+                    {currentRole}
+                  </Trans>
+                }
+                id={`role-tooltip-${user._id}`}
+                place="right"
+                style={{ fontSize: '0.8rem' }}
+              />
             </Text>
           </Flex>
         </Center>
