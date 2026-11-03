@@ -121,6 +121,9 @@ export default function UsersHybrid({
           );
 
     return usersKeywordFiltered.filter((user) => {
+      if (currentTab === 'all') {
+        return true;
+      }
       switch (user.currentRole) {
         case 'admin':
           return currentTab === 'admin';
