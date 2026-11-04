@@ -36,6 +36,7 @@ const TabsListStyled = styled('div', {
   flexShrink: '0',
   flexDirection: 'row',
   marginBottom: '1px',
+  flexWrap: 'wrap',
 });
 
 const TabsList = ({ alignItems, justify, ...rest }: TabsListProps) => (
