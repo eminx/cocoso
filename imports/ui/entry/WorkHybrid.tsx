@@ -4,7 +4,7 @@ import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Text } from '/imports/ui/core';
-import DocumentsField from '/imports/ui/pages/resources/components/DocumentsField';
+import Documents from '/imports/ui/generic/Documents';
 import type { Document, Host } from '/imports/ui/types';
 
 import TablyCentered from './TablyCentered';
@@ -68,7 +68,7 @@ export default function WorkHybrid({ documents, work, Host }: WorkHybridProps) {
       title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: (
         <Box p="6">
-          <DocumentsField contextType="works" contextId={work?._id} />
+          <Documents documents={documents} />
         </Box>
       ),
       path: 'documents',

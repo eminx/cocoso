@@ -9,6 +9,7 @@ import DocumentUploader from '/imports/ui/forms/DocumentUploader';
 import AddMeeting from './admin/AddMeeting';
 import ManageMembers from './admin/ManageMembers';
 import InviteManager from '../InviteManager';
+import { MenuOption } from '/imports/ui/generic/Menu';
 
 export default function GroupAdminFunctions() {
   const { group, documents } = useLoaderData();
@@ -22,27 +23,17 @@ export default function GroupAdminFunctions() {
     }
   }, []);
 
-  const handleSelect = (item: any) => {
-    switch (item.kind) {
-      case 'add_document':
-        setSearchParams({ addDocument: 'true' });
-        return;
-      case 'add_meeting':
-        setSearchParams({ addMeeting: 'true' });
-        return;
-      case 'members':
-        setSearchParams({ members: 'true' });
-        return;
-      case 'invite':
-        setSearchParams({ invite: 'true' });
-        return;
-      case 'edit':
-        setSearchParams({ edit: 'true' });
-        return;
-      case 'delete':
-        setSearchParams({ delete: 'true' });
-        return;
-    }
+  const handleSetSearchParams = (key: string | undefined, value: string) => {
+    if (!key) return;
+    setSearchParams((params) => {
+      const next = new URLSearchParams(params);
+      next.set(key, value);
+      return next;
+    });
+  };
+
+  const handleSelect = (item: MenuOption) => {
+    handleSetSearchParams(item.kind, 'true');
   };
 
   const handleClose = () => {
@@ -51,11 +42,11 @@ export default function GroupAdminFunctions() {
 
   const menuItems = [
     {
-      kind: 'add_document',
+      kind: 'addDocument',
       label: t('admin.add_document'),
     },
     {
-      kind: 'add_meeting',
+      kind: 'addMeeting',
       label: t('admin.add_meeting'),
     },
     {
@@ -81,7 +72,6 @@ export default function GroupAdminFunctions() {
     label: tc('actions.remove'),
   });
 
-  const addDocument = searchParams.get('addDocument') === 'true';
   const addMeeting = searchParams.get('addMeeting') === 'true';
   const members = searchParams.get('members') === 'true';
 
@@ -89,15 +79,11 @@ export default function GroupAdminFunctions() {
     <>
       <AdminFunctions menuItems={menuItems} onSelect={handleSelect} />
 
-      {addDocument ? (
-        <DocumentUploader
-          active
-          documents={documents}
-          itemId={group._id}
-          context="groups"
-          onClose={handleClose}
-        />
-      ) : null}
+      <DocumentUploader
+        context="groups"
+        documents={documents}
+        itemId={group._id}
+      />
 
       {addMeeting ? <AddMeeting onClose={handleClose} /> : null}
       {members ? <ManageMembers onClose={handleClose} /> : null}

@@ -6,7 +6,7 @@ import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 import { Button } from '/imports/ui/core';
 
-interface MenuOption {
+export interface MenuOption {
   key?: string;
   value?: string;
   label?: string;

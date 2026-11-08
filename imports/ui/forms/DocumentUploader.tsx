@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRevalidator } from 'react-router';
+import { useSearchParams } from 'react-router';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 
@@ -12,25 +12,25 @@ import {
   Spinner,
   Text,
 } from '/imports/ui/core';
+import { uploadDocument } from '/imports/actions';
 import DocumentUploadHelper from '/imports/ui/forms/UploadHelpers';
 import { message } from '/imports/ui/generic/message';
-import { call } from '/imports/api/_utils/shared';
 import Documents from '/imports/ui/generic/Documents';
 
+interface DocumentUploaderProps {
+  documents: any[];
+  itemId: string;
+  context: string;
+}
+
 export default function DocumentUploader({
-  active,
+  context,
   documents,
   itemId,
-  context,
-  onClose,
-}) {
+}: DocumentUploaderProps) {
   const [uploading, setUploading] = useState(false);
   const [tc] = useTranslation('common');
-  const { revalidate } = useRevalidator();
-
-  if (!itemId) {
-    return null;
-  }
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleFileDrop = async (files: File[]) => {
     if (files.length !== 1) {
@@ -43,41 +43,53 @@ export default function DocumentUploader({
     const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
 
     // Convert to base64 string
-    const base64 = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result as string;
-        resolve(result.split(',')[1]);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-
-    const uploadableFile = {
-      fileData: base64,
-      fileName: parsedName,
-      contentType: file.type,
-    };
-
     try {
-      await call('createDocument', uploadableFile, itemId, context);
-      revalidate();
-      message.success(tc('documents.uploaded'));
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          resolve(result.split(',')[1]);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const uploadableFile = {
+        fileData: base64,
+        fileName: parsedName,
+        contentType: file.type,
+      };
+      await uploadDocument({
+        uploadableFile,
+        itemId,
+        context,
+      });
+      handleClose();
     } catch (error: any) {
-      message.error(error?.reason || error?.error);
+      console.log(error?.reason || error?.error);
     } finally {
       setUploading(false);
     }
   };
 
+  const handleClose = () => {
+    setSearchParams((params) => {
+      const next = new URLSearchParams(params);
+      next.set('addDocument', 'false');
+      return next;
+    });
+  };
+
+  const active = searchParams.get('addDocument') === 'true';
+
   return (
     <Modal
       hideFooter
-      id="group-add-document"
+      id="add-document-modal"
       open={active}
       size="lg"
       title={tc('documents.add')}
-      onClose={onClose}
+      onClose={handleClose}
     >
       <ReactDropzone onDrop={handleFileDrop} multiple={false}>
         {({ getRootProps, getInputProps, isDragActive }) => (

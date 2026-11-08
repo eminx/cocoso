@@ -10,7 +10,9 @@ import { uploadDocumentToS3 } from '../_utils/services/aws.upload';
 
 Meteor.methods({
   async getDocumentsByAttachments(attachedTo) {
-    const sort = {};
+    const sort = {
+      creationDate: -1,
+    };
     const fields = Documents.publicFields;
     return await Documents.find({ attachedTo }, { sort, fields }).fetchAsync();
   },

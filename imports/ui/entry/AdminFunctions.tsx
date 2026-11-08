@@ -3,16 +3,17 @@ import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { useTranslation } from 'react-i18next';
 
 import { Box, Flex, IconButton, Text } from '/imports/ui/core';
-import Menu from '/imports/ui/generic/Menu';
+import Menu, { MenuOption } from '/imports/ui/generic/Menu';
 
 export interface AdminMenuItem {
   label: string;
-  value: string;
+  value?: string;
+  kind?: string;
 }
 
 export interface AdminFunctionsProps {
-  menuItems: AdminMenuItem[];
-  onSelect: (value: string) => void;
+  menuItems: MenuOption[];
+  onSelect: (value: MenuOption) => void;
 }
 
 export default function AdminFunctions({
@@ -51,7 +52,7 @@ export default function AdminFunctions({
       options={menuItems}
       onSelect={onSelect}
     >
-      {(item: AdminMenuItem) => item.label}
+      {(item: MenuOption) => item.label}
     </Menu>
   );
 }

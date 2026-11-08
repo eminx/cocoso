@@ -3,9 +3,9 @@ import { Trans } from 'react-i18next';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
 import { Box } from '/imports/ui/core';
-import GroupDocuments from '../generic/Documents';
 import GroupMembers from '/imports/ui/pages/groups/components/GroupMembers';
 import type { Document, Host } from '/imports/ui/types';
+import Documents from '/imports/ui/generic/Documents';
 
 import TablyCentered from './TablyCentered';
 import ActionDates from './ActionDates';
@@ -53,7 +53,7 @@ export default function GroupHybrid({
   if (documents && documents.length > 0) {
     tabs.push({
       title: <Trans i18nKey="common:documents.label">Documents</Trans>,
-      content: <GroupDocuments documents={documents} />,
+      content: <Documents documents={documents} />,
       path: 'documents',
     });
   }

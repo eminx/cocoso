@@ -5,7 +5,7 @@ import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Flex, Text } from '/imports/ui/core';
-import DocumentsField from '/imports/ui/pages/resources/components/DocumentsField';
+import Documents from '/imports/ui/generic/Documents';
 import type { Document, Host, ResourceForCombo } from '/imports/ui/types';
 
 import TablyCentered from './TablyCentered';
@@ -29,7 +29,11 @@ export interface ResourceHybridProps {
   Host: Host;
 }
 
-export default function ResourceHybrid({ documents, resource, Host }: ResourceHybridProps) {
+export default function ResourceHybrid({
+  documents,
+  resource,
+  Host,
+}: ResourceHybridProps) {
   if (!resource) {
     return null;
   }
@@ -78,7 +82,7 @@ export default function ResourceHybrid({ documents, resource, Host }: ResourceHy
       title: <Trans i18nKey="common:documents.label">Documents</Trans>,
       content: (
         <Box p="6">
-          <DocumentsField contextType="works" contextId={resource?._id} />
+          <Documents documents={documents} />
         </Box>
       ),
       path: 'documents',

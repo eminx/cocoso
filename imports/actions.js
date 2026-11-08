@@ -18,3 +18,12 @@ export async function updateHostSettings({ values }) {
     message.error(error.reason);
   }
 }
+
+export async function uploadDocument({ uploadableFile, itemId, context }) {
+  try {
+    await call('createDocument', uploadableFile, itemId, context);
+    message.success(<Trans i18nKey="common:documents.uploaded" />);
+  } catch (error) {
+    message.error(error?.reason || error?.error);
+  }
+}

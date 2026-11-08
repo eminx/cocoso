@@ -14,7 +14,7 @@ import { isDesktopAtom } from '../../../../state';
 export default function DocumentsField({
   contextType,
   contextId,
-  isAllowed = false,
+  isAllowed = true,
 }) {
   const isDesktop = useAtomValue(isDesktopAtom);
   const [documents, setDocuments] = useState([]);
@@ -71,7 +71,14 @@ export default function DocumentsField({
         });
         reader.addEventListener('error', () => reject(reader.error));
       });
-      await call('createDocument', base64, file.name, file.type, contextType, contextId);
+      await call(
+        'createDocument',
+        base64,
+        file.name,
+        file.type,
+        contextType,
+        contextId
+      );
       getDocuments();
       message.success(`${file.name} ${tc('documents.fileDropper')}`);
     } catch (error) {

@@ -5,60 +5,52 @@ import { useLoaderData, useSearchParams } from 'react-router';
 import AdminFunctions from '/imports/ui/entry/AdminFunctions';
 import DocumentUploader from '/imports/ui/forms/DocumentUploader';
 import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
+import { MenuOption } from '/imports/ui/generic/Menu';
 
 export default function ResourceAdminFunctions() {
   const [tc] = useTranslation('common');
   const { resource, documents } = useLoaderData();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
-  const handleSelect = (item) => {
-    if (item.kind === 'edit') {
-      setSearchParams({ edit: 'true' });
-    } else if (item.kind === 'delete') {
-      setSearchParams({ delete: 'true' });
-    } else if (item.kind === 'add_document') {
-      setSearchParams({ addDocument: 'true' });
-    }
-  };
-
-  const handleClose = () => {
+  const handleSetSearchParams = (key: string | undefined, value: string) => {
+    if (!key) return;
     setSearchParams((params) => {
       const next = new URLSearchParams(params);
-      next.set('addDocument', 'false');
+      next.set(key, value);
       return next;
     });
   };
 
+  const handleSelect = (item: MenuOption) => {
+    handleSetSearchParams(item.value, 'true');
+  };
+
   const menuItems = [
     {
-      kind: 'add_document',
+      value: 'addDocument',
       label: tc('documents.add'),
     },
     {
-      kind: 'edit',
+      value: 'edit',
       label: tc('actions.update'),
     },
     {
-      kind: 'delete',
+      value: 'delete',
       label: tc('actions.remove'),
     },
   ];
-
-  const addDocument = searchParams.get('addDocument') === 'true';
 
   return (
     <>
       <AdminFunctions menuItems={menuItems} onSelect={handleSelect} />
 
       <DocumentUploader
-        active={addDocument}
-        documents={documents}
-        itemId={resource?._id}
         context="resources"
-        onClose={handleClose}
+        documents={documents}
+        itemId={resource._id}
       />
 
-      <DeleteEntryHandler item={resource} context="resources" />
+      <DeleteEntryHandler context="resources" item={resource} />
     </>
   );
 }
