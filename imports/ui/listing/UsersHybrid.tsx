@@ -99,8 +99,8 @@ export default function UsersHybrid({
     () =>
       keywords
         ? keywords.filter((kw) =>
-            users.some((user) =>
-              user.keywords?.some((userKw: any) => userKw.keywordId === kw._id)
+            users?.some((user) =>
+              user?.keywords?.some((userKw: any) => userKw.keywordId === kw._id)
             )
           )
         : [],
@@ -110,17 +110,15 @@ export default function UsersHybrid({
   const currentTab = searchParams.get('tab') || 'all';
 
   const filteredUsers = useMemo(() => {
-    const selectedKeywordIds = selectedKeywords.map((kw) => kw._id);
-    const usersKeywordFiltered =
-      selectedKeywords.length === 0
-        ? users
-        : users?.filter((user) =>
-            user.keywords?.some((userKw: any) =>
-              selectedKeywordIds.includes(userKw.keywordId)
-            )
-          );
+    if (!selectedKeywords || selectedKeywords.length === 0) return users;
+    const selectedKeywordIds = selectedKeywords?.map((kw) => kw._id);
+    const usersKeywordFiltered = users?.filter((user) =>
+      user.keywords?.some((userKw: any) =>
+        selectedKeywordIds.includes(userKw.keywordId)
+      )
+    );
 
-    return usersKeywordFiltered.filter((user) => {
+    return usersKeywordFiltered?.filter((user) => {
       if (currentTab === 'all') {
         return true;
       }

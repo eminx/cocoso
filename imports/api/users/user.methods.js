@@ -402,7 +402,6 @@ Meteor.methods({
 
       return true;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },

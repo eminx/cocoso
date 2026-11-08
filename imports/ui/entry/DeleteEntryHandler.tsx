@@ -44,7 +44,10 @@ export interface DeleteEntryHandlerProps {
   context: Context;
 }
 
-export default function DeleteEntryHandler({ item, context }: DeleteEntryHandlerProps) {
+export default function DeleteEntryHandler({
+  item,
+  context,
+}: DeleteEntryHandlerProps) {
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom) as User | null;
   const role = useAtomValue(roleAtom);
@@ -66,6 +69,7 @@ export default function DeleteEntryHandler({ item, context }: DeleteEntryHandler
         window.location.reload();
       }
     } catch (error: any) {
+      console.log(error);
       message.error(error.reason || error.error);
     }
   };
@@ -74,7 +78,7 @@ export default function DeleteEntryHandler({ item, context }: DeleteEntryHandler
     return null;
   }
 
-  if (context === 'resources') {
+  if (['resources', 'info'].includes(context)) {
     if (currentUser?._id !== item?.userId && role !== 'admin') {
       return null;
     }

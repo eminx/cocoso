@@ -18,7 +18,7 @@ const EditPage = loadable(() => import('./EditPage'));
 export const pagesAtom = atom(null);
 export const currentPageAtom = atom(null);
 
-export default function PageItemHandler() {
+export default function PageItemHandler({ Host }) {
   const { pages } = useLoaderData();
   const setPages = useSetAtom(pagesAtom);
   const setCurrentPage = useSetAtom(currentPageAtom);
@@ -37,6 +37,10 @@ export default function PageItemHandler() {
 
   const isEdit = role === 'admin' && searchParams.get('edit') === 'true';
 
+  if (!pages) {
+    return null;
+  }
+
   let currentPage =
     pages && pages.find((page) => parseTitle(page.title) === pageTitle);
 
@@ -44,13 +48,9 @@ export default function PageItemHandler() {
     currentPage = pages[0];
   }
 
-  if (!pages) {
-    return null;
-  }
-
   return (
     <>
-      <PageHybrid currentPage={currentPage} />
+      <PageHybrid currentPage={currentPage} Host={Host} />
 
       {rendered && (
         <>

@@ -82,6 +82,7 @@ export interface Host {
   color?: string;
   host?: string;
   isPortalHost?: boolean;
+  listingPeopleShow?: string;
   logo?: string;
   name?: string;
   settings?: {

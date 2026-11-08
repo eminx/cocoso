@@ -21,7 +21,7 @@ export async function getHomeLoader({ Host, params, request }) {
       return await getResources({ host, isPortalHost });
     case 'works':
       return await getWorks({ host, isPortalHost });
-    case 'users':
+    case 'people':
       return await getPeople({ host, isPortalHost });
     default:
       return await getComposablePage({ params, Host });

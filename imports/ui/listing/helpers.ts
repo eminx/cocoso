@@ -1,17 +1,14 @@
 import { Host, MenuItem } from '/imports/ui/types';
 
-function itemVisibilityFilter(item: any | undefined, role: string | null) {
+function itemVisibilityFilter(item: any, role: string | null) {
+  if (!item) return false;
+
   const isPublic =
-    item &&
-    (!item.hasOwnProperty('visibility') || item.visibility === 'everyone');
+    !item.hasOwnProperty('visibility') || item.visibility === 'everyone';
 
-  if (isPublic) {
-    return true;
-  }
+  if (isPublic) return true;
 
-  if (!role) {
-    return false;
-  }
+  if (!role) return false;
 
   switch (item.visibility) {
     case 'onlyAdmin':
@@ -34,6 +31,7 @@ export function getRenderPass(
     (item: MenuItem) => item.name === LISTING
   );
 
+  if (!itemInMenu) return false;
   return itemVisibilityFilter(itemInMenu, role);
 }
 
@@ -43,6 +41,7 @@ export function getMenuItemsVisible(
 ) {
   if (!menuItems) return [];
   return menuItems.filter((item) => {
+    if (!item) return false;
     return item.isVisible && itemVisibilityFilter(item, role);
   });
 }
