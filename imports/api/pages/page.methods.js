@@ -44,14 +44,6 @@ Meteor.methods({
     }
   },
 
-  async getPortalHostPages() {
-    const portalHost = await Hosts.findOneAsync({ isPortalHost: true });
-    return await Pages.find(
-      { host: portalHost.host },
-      { sort: { creationDate: -1 } }
-    ).fetchAsync();
-  },
-
   async createPage(formValues, hostPredefined) {
     const user = await Meteor.userAsync();
     const host = hostPredefined || getHost(this);
@@ -152,17 +144,12 @@ Meteor.methods({
 
     try {
       await Pages.removeAsync(pageId);
-      let order = 1;
-      await Promise.all(
-        Pages.find({ host }, { sort: { order: 1 } })
-          .fetchAsync()
-          .map(async (page) => {
-            await Pages.updateAsync({ _id: page._id }, { $set: { order } });
-            order += 1;
-          })
+      await Pages.updateAsync(
+        { host, order: { $gt: thePage.order } },
+        { $inc: { order: -1 } },
+        { multi: true }
       );
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
   },

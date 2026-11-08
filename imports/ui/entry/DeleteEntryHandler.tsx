@@ -3,11 +3,16 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
-import Modal from '/imports/ui/core/Modal';
+import {
+  canCreateContentAtom,
+  currentUserAtom,
+  pageTitlesAtom,
+  roleAtom,
+} from '/imports/state';
 import { Box, Center, Text } from '/imports/ui/core';
+import Modal from '/imports/ui/core/Modal';
+import { call, parseTitle } from '/imports/api/_utils/shared';
 
-import { canCreateContentAtom, currentUserAtom, roleAtom } from '../../state';
-import { call } from '../../api/_utils/shared';
 import { message } from '../generic/message';
 
 type Context = 'activities' | 'groups' | 'resources' | 'works' | 'info';
@@ -36,6 +41,7 @@ function getDeleteMethod(context: Context): string | null {
 interface BaseItem {
   _id: string;
   authorId?: string;
+  title?: string;
   userId?: string;
 }
 
@@ -51,6 +57,7 @@ export default function DeleteEntryHandler({
   const canCreateContent = useAtomValue(canCreateContentAtom);
   const currentUser = useAtomValue(currentUserAtom) as User | null;
   const role = useAtomValue(roleAtom);
+  const pageTitles = useAtomValue(pageTitlesAtom);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -64,12 +71,12 @@ export default function DeleteEntryHandler({
     try {
       await call(deleteMethod, item._id);
       message.success(tc('message.success.remove'));
-      navigate(`/${context}`);
       if (context === 'info') {
-        window.location.reload();
+        navigate(`/info/${parseTitle(pageTitles?.[0]?.title || 'abc')}`);
+        return;
       }
+      navigate(`/${context}`);
     } catch (error: any) {
-      console.log(error);
       message.error(error.reason || error.error);
     }
   };
