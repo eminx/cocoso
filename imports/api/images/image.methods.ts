@@ -19,6 +19,9 @@ import { isAdmin } from '../users/user.roles';
  * process it with Sharp, upload all variants to S3,
  * save the record in the Images collection.
  */
+
+const MAX_BYTES = 10 * 1024 * 1024; // 10 MB decoded
+
 async function uploadImageMethod(
   fileBufferBase64: string,
   originalName: string,
@@ -28,6 +31,10 @@ async function uploadImageMethod(
   variants: ImageVariantUrls;
   pngUrl?: string;
 }> {
+  check(fileBufferBase64, String);
+  check(originalName, String);
+  check(context, Match.OneOf('entry', 'logo', 'avatar' /* etc. */));
+
   const user = await Meteor.userAsync();
   if (!user) {
     throw new Meteor.Error(
@@ -140,6 +147,18 @@ Meteor.methods({
     originalName: string,
     context: ImageContext
   ) {
+    if (typeof fileBufferBase64 !== 'string') {
+      throw new Meteor.Error('invalid-arg', 'Expected base64 string');
+    }
+
+    // base64 length ≈ 4/3 × decoded size
+    if (fileBufferBase64.length > Math.ceil((MAX_BYTES * 4) / 3) + 4) {
+      throw new Meteor.Error(
+        'file-too-large',
+        `Max ${MAX_BYTES / 1024 / 1024} MB`
+      );
+    }
+
     return uploadImageMethod.call(
       this,
       fileBufferBase64,
