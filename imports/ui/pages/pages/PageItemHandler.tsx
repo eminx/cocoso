@@ -16,7 +16,6 @@ const PageInteractionHandler = loadable(
 const NewPage = loadable(() => import('./NewPage'));
 const EditPage = loadable(() => import('./EditPage'));
 
-export const pagesAtom = atom(null);
 export const currentPageAtom = atom(null);
 
 export default function PageItemHandler({ Host }) {

@@ -104,8 +104,11 @@ function MenuFooter() {
 }
 
 const getRoute = (item: any) => {
+  if (!item) {
+    return '/';
+  }
   if (item.isComposablePage) {
-    return `/cp/${item.name}`;
+    return `/composed/--${item.name}`;
   }
   if (item.name === 'info') {
     return '/info/about';

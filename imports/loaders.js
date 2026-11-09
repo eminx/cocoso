@@ -121,6 +121,7 @@ export async function getPages({ host }) {
 
 export async function getPage({ params, host, isHomePage }) {
   const pageTitleWithId = params?.pageTitleWithId;
+  console.log('pageTitleWithId', pageTitleWithId);
   const page = await call('getPage', pageTitleWithId, host, isHomePage);
 
   return {
@@ -220,7 +221,7 @@ export async function getComposablePage({ params, Host, isHomePage }) {
   }
 
   const composablePage = await call(
-    'getComposablePageById',
+    'getComposablePage',
     composablePageTitleWithId,
     Host?.host
   );

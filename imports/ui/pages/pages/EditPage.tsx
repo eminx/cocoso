@@ -7,23 +7,21 @@ import { message } from '/imports/ui/generic/message';
 import { pageTitlesAtom, roleAtom } from '/imports/state';
 
 import PageForm from './PageForm';
-import { currentPageAtom, pagesAtom } from './PageItemHandler';
+import { currentPageAtom } from './PageItemHandler';
 
 export default function EditPage() {
   const [updated, setUpdated] = useState<string | null>(null);
   const setPageTitles = useSetAtom(pageTitlesAtom);
   const currentPage = useAtomValue(currentPageAtom);
   const role = useAtomValue(roleAtom);
-  const [pages, setPages] = useAtom(pagesAtom);
 
   const updatePage = async (newPage: any) => {
     const pageId = currentPage?._id;
 
     try {
       await call('updatePage', pageId, newPage);
-      setPages(await call('getPages'));
       setPageTitles(await call('getPageTitles'));
-      setUpdated(parseTitle(newPage.title));
+      setUpdated(`${parseTitle(newPage.title)}--${pageId}`);
       setTimeout(() => {
         setUpdated(null);
       }, 1000);

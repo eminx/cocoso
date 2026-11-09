@@ -7,20 +7,19 @@ import SuccessRedirector from '/imports/ui/forms/SuccessRedirector';
 import { message } from '/imports/ui/generic/message';
 
 import PageForm from './PageForm';
-import { pagesAtom } from './PageItemHandler';
 
 export default function NewPage() {
   const role = useAtomValue(roleAtom);
   const setPageTitles = useSetAtom(pageTitlesAtom);
-  const setPages = useSetAtom(pagesAtom);
-  const [newEntryTitle, setNewEntryTitle] = useState<string | null>(null);
+  const [newEntryTitleWithId, setNewEntryTitleWithId] = useState<string | null>(
+    null
+  );
 
   const createPage = async (newPage: any) => {
     try {
-      await call('createPage', newPage);
-      setPages(await call('getPages'));
+      const newPageId = await call('createPage', newPage);
       setPageTitles(await call('getPageTitles'));
-      setNewEntryTitle(parseTitle(newPage.title));
+      setNewEntryTitleWithId(`${parseTitle(newPage.title)}--${newPageId}`);
     } catch (error: any) {
       message.error(error.reason || error.error);
     }
@@ -31,7 +30,7 @@ export default function NewPage() {
   }
 
   return (
-    <SuccessRedirector context="info" ping={newEntryTitle}>
+    <SuccessRedirector context="info" ping={newEntryTitleWithId}>
       <PageForm onFinalize={createPage} />
     </SuccessRedirector>
   );

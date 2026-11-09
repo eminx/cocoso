@@ -2,10 +2,11 @@ import React from 'react';
 import { useLoaderData, useRevalidator } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import ComposablePageHybrid from '/imports/ui/entry/ComposablePageHybrid';
-import BottomToolbar from './components/BottomToolbar';
 import { roleAtom } from '/imports/state';
 import type { Host } from '/imports/ui/types';
+import ComposablePageHybrid from '/imports/ui/entry/ComposablePageHybrid';
+
+import BottomToolbar from './components/BottomToolbar';
 
 export default function ComposablePageHandler({ Host }: { Host: Host }) {
   const { composablePage } = useLoaderData();

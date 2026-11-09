@@ -39,6 +39,8 @@ Meteor.methods({
     const pageId =
       pageTitleWithIdSplitted?.[pageTitleWithIdSplitted.length - 1];
 
+    console.log('server:', pageTitleWithId, pageTitleWithIdSplitted, pageId);
+
     if (!pageId) {
       throw new Meteor.Error(error, 'Page not found');
     }
@@ -83,7 +85,7 @@ Meteor.methods({
     const pageCount = await Pages.find({ host }).countAsync();
 
     try {
-      await Pages.insertAsync({
+      return await Pages.insertAsync({
         ...formValues,
         host,
         authorId: user._id,
@@ -92,7 +94,6 @@ Meteor.methods({
         order: pageCount + 1,
         creationDate: new Date(),
       });
-      return formValues.title;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }

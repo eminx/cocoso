@@ -77,7 +77,7 @@ export function Footer({ currentHost }: FooterProps) {
                   item.name === 'info'
                     ? '/info/about'
                     : item.isComposablePage
-                    ? `/cp/${item.name}`
+                    ? `/composed/--${item.name}`
                     : `/${item.name}`
                 }
               >

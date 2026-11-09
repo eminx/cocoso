@@ -9,8 +9,7 @@ import { useAtomValue } from 'jotai';
 import { currentHostAtom } from '/imports/state';
 import { Button, Flex, Link, Modal, Tag, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
-
-import { call } from '/imports/api/_utils/shared';
+import { call, parseTitle } from '/imports/api/_utils/shared';
 
 export default function BottomToolbar({
   currentPage,
@@ -154,7 +153,9 @@ export default function BottomToolbar({
           ) : (
             <Link
               fontSize="sm"
-              href={`http://${currentPage.host}/cp/${currentPage._id}`}
+              href={`http://${currentPage.host}/composed/${parseTitle(
+                currentPage.title
+              )}--${currentPage._id}`}
               target="_blank"
               css={{
                 color: 'var(--cocoso-colors-blue-300)',

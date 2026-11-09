@@ -160,7 +160,13 @@ const compareDatesWithStartDateForSort = (
 };
 
 function parseTitle(title: string | undefined): string | undefined {
-  return title?.replace(/\s+/g, '-').toLowerCase();
+  return title
+    ?.normalize('NFD') // split accents from letters: é -> e + ́
+    .replace(/[\u0300-\u036f]/g, '') // drop the accent marks
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // anything non-alphanumeric -> '-'
+    .replace(/-{2,}/g, '-') // collapse runs, so '--' stays reserved
+    .replace(/^-+|-+$/g, ''); // trim leading/trailing hyphens
 }
 
 function emailIsValid(email: string): boolean {

@@ -6,7 +6,7 @@ import { getHost } from '../_utils/shared';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
-  async getComposablePageById(composablePageTitleWithId, hostPredefined) {
+  async getComposablePage(composablePageTitleWithId, hostPredefined) {
     const host = hostPredefined || getHost(this);
 
     const pageTitleWithIdSplitted = composablePageTitleWithId.split('--');
@@ -40,6 +40,14 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error);
     }
+  },
+
+  async getComposablePageById(composablePageId, hostPredefined) {
+    return await Meteor.callAsync(
+      'getComposablePage',
+      `--${composablePageId}`,
+      hostPredefined
+    );
   },
 
   async getComposablePages(hostPredefined) {
