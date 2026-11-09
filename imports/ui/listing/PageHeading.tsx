@@ -198,7 +198,12 @@ export default function PageHeading({
         <Box px="2">
           <Center position="relative">
             <div ref={headingWrapRef}>
-              <Heading as="h1" size="lg" textAlign="center">
+              <Heading
+                as="h1"
+                size="lg"
+                textAlign="center"
+                css={{ marginBottom: 0 }}
+              >
                 {heading}
               </Heading>
             </div>

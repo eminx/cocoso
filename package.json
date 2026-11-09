@@ -150,5 +150,8 @@
   "browserslist": [
     "last 2 versions"
   ],
-  "postinstall": "patch-package"
+  "postinstall": "patch-package",
+  "engines": {
+    "node": "20.x"
+  }
 }
