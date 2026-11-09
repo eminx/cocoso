@@ -110,7 +110,7 @@ export function InfoPagesMenu({
           >
             <Link
               style={{ padding: '0.5rem 1rem', width: '100%' }}
-              to={`/info/${parseTitle(item.title)}`}
+              to={`/info/${parseTitle(item.title)}--${item._id}`}
               onClick={onSelect}
             >
               <Text css={textStyles}>{item.title}</Text>
@@ -155,6 +155,15 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
     return pathname.includes(item?.name);
   };
 
+  const getMenuItemLink = (item) => {
+    if (!item) return null;
+
+    if (item.isComposablePage) {
+      return `/composed/${parseTitle(item.label)}--${item.name}`;
+    }
+    return `/${item.name}`;
+  };
+
   return (
     <Center
       data-burger-mobile={isBurgerMenuOnMobile ? 'true' : 'false'}
@@ -184,7 +193,7 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
             <Link
               key={item.name}
               className="main-menu-item"
-              to={item.isComposablePage ? `/cp/${item.name}` : `/${item.name}`}
+              to={getMenuItemLink(item)}
             >
               <Box as="span" px="2">
                 <Text
