@@ -110,29 +110,30 @@ export default function UsersHybrid({
   const currentTab = searchParams.get('tab') || 'all';
 
   const filteredUsers = useMemo(() => {
-    if (!selectedKeywords || selectedKeywords.length === 0) return users;
-    const selectedKeywordIds = selectedKeywords?.map((kw) => kw._id);
-    const usersKeywordFiltered = users?.filter((user) =>
-      user.keywords?.some((userKw: any) =>
-        selectedKeywordIds.includes(userKw.keywordId)
-      )
-    );
-
-    return usersKeywordFiltered?.filter((user) => {
-      if (currentTab === 'all') {
-        return true;
-      }
-      switch (user.currentRole) {
+    const usersRoleFiltered = users.filter((user) => {
+      switch (currentTab) {
         case 'admin':
-          return currentTab === 'admin';
-        case 'contributor':
-          return currentTab === 'verified';
-        case 'participant':
-          return currentTab === 'nonverified';
+          return user.currentRole === 'admin';
+        case 'verified':
+          return user.currentRole === 'contributor';
+        case 'nonverified':
+          return user.currentRole === 'participant';
         default:
           return true;
       }
     });
+
+    const selectedKeywordIds = selectedKeywords?.map((kw) => kw?._id);
+
+    if (!selectedKeywordIds || selectedKeywordIds.length === 0) {
+      return usersRoleFiltered;
+    }
+
+    return usersRoleFiltered?.filter((user) =>
+      user.keywords?.some((userKw: any) =>
+        selectedKeywordIds.includes(userKw.keywordId)
+      )
+    );
   }, [users, selectedKeywords, currentTab]);
 
   const tabs = getTabsBasedOnSettings(Host);
