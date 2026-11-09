@@ -17,10 +17,9 @@ import {
   Tabs,
   Text,
 } from '/imports/ui/core';
-
-import NiceList from '/imports/ui/generic/NiceList';
 import { currentUserAtom, isDesktopAtom, roleAtom } from '/imports/state';
-import { call } from '../../../api/_utils/shared';
+import { call } from '/imports/api/_utils/shared';
+import NiceList from '/imports/ui/generic/NiceList';
 import { message } from '/imports/ui/generic/message';
 
 import UsageReport from './UsageReport';
@@ -199,12 +198,11 @@ export default function Members() {
     }
   }, [membersFilteredWithType, sortBy]);
 
-  const show = searchParams.get('show');
+  const tab = searchParams.get('tab');
 
   const membersRendered = useMemo(
-    () =>
-      membersSorted.filter((m) => !show || show === 'all' || show === m.role),
-    [membersSorted, show]
+    () => membersSorted.filter((m) => !tab || tab === 'all' || tab === m.role),
+    [membersSorted, tab]
   );
 
   const tabs = useMemo(
@@ -214,15 +212,15 @@ export default function Members() {
         onClick: () =>
           setSearchParams((params) => {
             const next = new URLSearchParams(params);
-            next.set('show', item.value);
+            next.set('tab', item.value);
             return next;
           }),
       })),
     [filterOptions, membersRendered, t]
   );
 
-  const tabIndex = show
-    ? filterOptions.findIndex((opt) => opt.value === show)
+  const tabIndex = tab
+    ? filterOptions.findIndex((opt) => opt.value === tab)
     : 0;
 
   if (!currentUser || role !== 'admin') {

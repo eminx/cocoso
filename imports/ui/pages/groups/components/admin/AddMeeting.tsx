@@ -115,11 +115,11 @@ export default function AddMeeting({ onClose }) {
     try {
       const activitiesReceived = await call('getAllActivities');
       const resourcesReceived = await call('getResources');
-      setState({
-        ...state,
+      setState((prevState) => ({
+        ...prevState,
         activities: activitiesReceived,
         resources: resourcesReceived,
-      });
+      }));
     } catch (error: any) {
       message.error(error?.reason || error?.error);
     }

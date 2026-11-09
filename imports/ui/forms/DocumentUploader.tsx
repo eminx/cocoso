@@ -84,12 +84,12 @@ export default function DocumentUploader({
   const handleClose = () => {
     setSearchParams((params) => {
       const next = new URLSearchParams(params);
-      next.set('manageDocuments', 'false');
+      next.set('documents', 'false');
       return next;
     });
   };
 
-  const active = searchParams.get('manageDocuments') === 'true';
+  const active = searchParams.get('documents') === 'true';
 
   const documentList = documents.map((document) => ({
     ...document,

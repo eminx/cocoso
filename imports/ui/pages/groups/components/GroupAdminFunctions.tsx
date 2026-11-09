@@ -42,11 +42,11 @@ export default function GroupAdminFunctions() {
 
   const menuItems = [
     {
-      kind: 'manageDocuments',
+      kind: 'documents',
       label: tc('documents.manage'),
     },
     {
-      kind: 'addMeeting',
+      kind: 'meeting',
       label: t('admin.add_meeting'),
     },
     {
@@ -72,7 +72,7 @@ export default function GroupAdminFunctions() {
     label: tc('actions.remove'),
   });
 
-  const addMeeting = searchParams.get('addMeeting') === 'true';
+  const addMeeting = searchParams.get('meeting') === 'true';
   const members = searchParams.get('members') === 'true';
 
   return (

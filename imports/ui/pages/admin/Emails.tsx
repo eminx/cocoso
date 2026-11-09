@@ -4,9 +4,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 
+import { currentUserAtom, roleAtom } from '/imports/state';
 import { Button, Flex, Input, Tabs, Text } from '/imports/ui/core';
 import { message } from '/imports/ui/generic/message';
-import { currentUserAtom, roleAtom } from '/imports/state';
 import FormField from '/imports/ui/forms/FormField';
 import Quill from '/imports/ui/forms/Quill';
 import { call } from '/imports/api/_utils/shared';
@@ -112,7 +112,7 @@ export default function Emails() {
           onClick: () =>
             setSearchParams((params) => {
               const next = new URLSearchParams(params);
-              next.set('show', key);
+              next.set('tab', key);
               return next;
             }),
         };
@@ -120,11 +120,11 @@ export default function Emails() {
     [emails]
   );
 
-  const show = searchParams.get('show');
-  const key = ['new', 'verified', 'admin'].includes(show) ? show : 'new';
+  const tab = searchParams.get('tab');
+  const key = ['new', 'verified', 'admin'].includes(tab) ? tab : 'new';
 
-  const tabIndex = show
-    ? parsedEmails.findIndex((email: any) => email.key === show)
+  const tabIndex = tab
+    ? parsedEmails.findIndex((email: any) => email.key === tab)
     : 0;
 
   const selectedEmail =

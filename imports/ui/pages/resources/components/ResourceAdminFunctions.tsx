@@ -27,7 +27,7 @@ export default function ResourceAdminFunctions() {
 
   const menuItems = [
     {
-      value: 'manageDocuments',
+      value: 'documents',
       label: tc('documents.manage'),
     },
     {
