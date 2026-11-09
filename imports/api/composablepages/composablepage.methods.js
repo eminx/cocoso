@@ -6,8 +6,16 @@ import { getHost } from '../_utils/shared';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
-  async getComposablePageById(composablePageId, hostPredefined) {
+  async getComposablePageById(composablePageTitleWithId, hostPredefined) {
     const host = hostPredefined || getHost(this);
+
+    const pageTitleWithIdSplitted = composablePageTitleWithId.split('--');
+    const composablePageId =
+      pageTitleWithIdSplitted?.[pageTitleWithIdSplitted.length - 1];
+
+    if (!composablePageId) {
+      throw new Meteor.Error(error, 'Page not found');
+    }
 
     try {
       return await ComposablePages.findOneAsync(

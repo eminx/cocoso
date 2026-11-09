@@ -618,6 +618,12 @@ export default function appRoutes(props) {
             await getComposablePage({ params, Host }),
         },
         {
+          path: 'composed/:composablePageId',
+          element: createRouteElement(ComposablePageHandler, props),
+          loader: async ({ params }) =>
+            await getComposablePage({ params, Host }),
+        },
+        {
           path: 'communities',
           element: createRouteElement(CommunityListHandler, props),
           loader: async () => getCommunities(),
