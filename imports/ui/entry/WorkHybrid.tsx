@@ -13,11 +13,11 @@ interface Work {
   _id: string;
   title?: string;
   host?: string;
+  additionalInfo?: string;
   authorUsername?: string;
   authorAvatar?: string;
   shortDescription?: string;
   longDescription?: string;
-  additionalInfo?: string;
   contactInfo?: string;
   imageUrl?: string;
   images?: string[];
@@ -51,7 +51,7 @@ export default function WorkHybrid({ documents, work, Host }: WorkHybridProps) {
     },
   ];
 
-  if (work.additionalInfo?.length > 2) {
+  if (work.additionalInfo && work.additionalInfo?.length > 2) {
     tabs.push({
       title: <Trans i18nKey="common:labels.extra">Extra</Trans>,
       content: (
@@ -75,8 +75,8 @@ export default function WorkHybrid({ documents, work, Host }: WorkHybridProps) {
     });
   }
 
-  const tags = work && [work.category?.label];
-  const worksInMenu = Host?.settings?.menu.find(
+  const tags = work.category?.label ? [work.category?.label] : undefined;
+  const worksInMenu = Host?.settings?.menu?.find(
     (item) => item.name === 'works'
   );
 
@@ -85,17 +85,19 @@ export default function WorkHybrid({ documents, work, Host }: WorkHybridProps) {
   return (
     <TablyCentered
       author={
-        work.showAvatar && {
-          src: work.authorAvatar,
-          username: work.authorUsername,
-        }
+        work.showAvatar && work.authorAvatar
+          ? {
+              src: work.authorAvatar,
+              username: work.authorUsername,
+            }
+          : null
       }
-      backLink={{ value: '/works', label: worksInMenu.label }}
-      images={work?.images || [work.imageUrl]}
+      backLink={{ value: '/works', label: worksInMenu?.label }}
+      images={work.images || [work.imageUrl || '']}
       subTitle={work.shortDescription}
       tabs={tabs}
       tags={tags}
-      title={work.title}
+      title={work.title || ''}
       url={url}
     />
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import LinkIcon from 'lucide-react/dist/esm/icons/link';
 import { Trans } from 'react-i18next';
@@ -24,7 +24,7 @@ import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 interface Author {
   username: string;
-  src?: string;
+  src?: string | null;
 }
 
 interface AvatarHolderProps {
@@ -34,21 +34,21 @@ interface AvatarHolderProps {
 interface HeaderProps {
   author?: Author | null;
   backLink?: BackLinkData;
-  dates?: React.ReactNode;
+  dates?: ReactNode;
   subTitle?: string;
-  tags?: string[] | null;
+  tags?: string[] | undefined;
   title: string;
 }
 
 interface Tab {
   path: string;
-  title: string;
-  content: React.ReactNode;
+  title: string | ReactNode;
+  content: string | ReactNode;
 }
 
 interface TablyCenteredProps extends HeaderProps {
-  action?: React.ReactNode;
-  content?: React.ReactNode;
+  action?: ReactNode;
+  content?: ReactNode;
   images?: string[];
   tabs?: Tab[];
   url?: string;

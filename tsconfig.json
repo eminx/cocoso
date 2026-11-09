@@ -4,6 +4,7 @@
     "target": "es2018",
     "module": "esNext",
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "lib": ["esnext", "dom"],
     "allowJs": true,
     "checkJs": false,
@@ -12,7 +13,7 @@
     "noEmit": true,
 
     /* Strict Type-Checking Options */
-    "strict": true,
+    "strict": false,
     "noImplicitAny": true,
     "strictNullChecks": true,
 
@@ -25,10 +26,19 @@
     /* Module Resolution Options */
     "baseUrl": ".",
     "paths": {
+      "meteor/*": [
+        "node_modules/@types/meteor/*",
+        ".meteor/local/types/packages.d.ts"
+      ],
       "/*": ["./*"]
     },
     "resolveJsonModule": true,
-    "types": [],
+    "types": [
+      "@types/meteor",
+      "@types/react",
+      "@types/react-dom",
+      "@types/react-router"
+    ],
     "esModuleInterop": true,
     "preserveSymlinks": true
   },

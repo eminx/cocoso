@@ -42,8 +42,8 @@ export default function GroupAdminFunctions() {
 
   const menuItems = [
     {
-      kind: 'addDocument',
-      label: t('admin.add_document'),
+      kind: 'manageDocuments',
+      label: tc('documents.manage'),
     },
     {
       kind: 'addMeeting',

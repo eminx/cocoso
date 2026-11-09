@@ -131,6 +131,7 @@
     "modern": true
   },
   "devDependencies": {
+    "@types/meteor": "^2.9.11",
     "@types/node": "^26.6.5",
     "@types/react-big-calendar": "^1.16.3",
     "@types/react-color": "^3.0.13",

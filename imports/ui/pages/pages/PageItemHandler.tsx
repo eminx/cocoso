@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import loadable from '@loadable/component';
-import { useLoaderData, useParams, useSearchParams } from 'react-router';
+import { useLoaderData, useSearchParams } from 'react-router';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 
 import { renderedAtom, roleAtom } from '/imports/state';
 import PageHybrid from '/imports/ui/entry/PageHybrid';
-import { parseTitle } from '/imports/api/_utils/shared';
+
 import EditEntryHandler from '/imports/ui/forms/EditEntryHandler.loadable';
 import NewEntryHandler from '/imports/ui/forms/NewEntryHandler.loadable';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';

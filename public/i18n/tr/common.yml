@@ -252,6 +252,7 @@ domains:
 
 documents:
   add: Doküman ekle
+  manage: Dokümanları yönet
   label: Dokümanlar
   labelExisting: Mevcut dokümanlar
   helper: Bu içerik için yüklenmiş dokümanlar

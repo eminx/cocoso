@@ -3,11 +3,7 @@ import { useAtomValue } from 'jotai';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Box, Modal, Progress } from '/imports/ui/core';
-import {
-  getLoaderProgress,
-  loaderAtom,
-  renderToasts,
-} from '/imports/ui/utils/loaderHandler';
+import { getLoaderProgress, loaderAtom } from '/imports/ui/utils/loaderHandler';
 
 export interface EntryFormHandlerProps {
   open: boolean;
@@ -16,7 +12,12 @@ export interface EntryFormHandlerProps {
   children?: React.ReactNode;
 }
 
-export default function EntryFormHandler({ open, title, onClose, children }: EntryFormHandlerProps) {
+export default function EntryFormHandler({
+  open,
+  title,
+  onClose,
+  children,
+}: EntryFormHandlerProps) {
   const loaders = useAtomValue(loaderAtom);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [tc] = useTranslation('common');
@@ -44,7 +45,6 @@ export default function EntryFormHandler({ open, title, onClose, children }: Ent
 
       {loaderProgress > 0 && (
         <Progress
-          colorScheme="brand"
           className="progress"
           hasStripe
           size="md"

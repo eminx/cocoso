@@ -22,10 +22,22 @@ Meteor.methods({
     }
   },
 
-  async getPage(pageTitleWithId, hostPredefined) {
+  async getPage(pageTitleWithId, hostPredefined, isHomePage = false) {
     const host = hostPredefined || getHost(this);
+
+    if (isHomePage) {
+      const currentHost = await Hosts.findOneAsync({ host });
+      const firstPageInMenu = currentHost?.settings?.menu?.[0];
+      return await Pages.findOneAsync({ host, order: 1 });
+    }
+
+    if (!pageTitleWithId) {
+      throw new Meteor.Error(error, 'Page not found');
+    }
+
     const pageTitleWithIdSplitted = pageTitleWithId.split('--');
-    const pageId = pageTitleWithIdSplitted[pageTitleWithIdSplitted.length - 1];
+    const pageId =
+      pageTitleWithIdSplitted?.[pageTitleWithIdSplitted.length - 1];
 
     if (!pageId) {
       throw new Meteor.Error(error, 'Page not found');

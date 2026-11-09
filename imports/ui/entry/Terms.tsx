@@ -38,9 +38,7 @@ function TermsForHost({ currentHost }: TermsForHostProps) {
 
   return (
     <Box className="text-content" mb="24">
-      <Heading mb="4" fontSize="28px">
-        Terms of Service
-      </Heading>
+      <Heading fontSize="28px">Terms of Service</Heading>
       <p>
         With an account, you are a member and can join any one or all of our
         study group’s online forums free of charge. If you join a study group,

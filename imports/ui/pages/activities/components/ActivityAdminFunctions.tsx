@@ -1,33 +1,41 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router';
-import { useAtomValue } from 'jotai';
+import { useLoaderData, useSearchParams } from 'react-router';
 
 import AdminFunctions from '/imports/ui/entry/AdminFunctions';
 import DeleteEntryHandler from '/imports/ui/entry/DeleteEntryHandler';
-
-import { activityAtom } from '../ActivityItemHandler';
+import type { MenuOption } from '/imports/ui/generic/Menu';
+import DocumentUploader from '/imports/ui/forms/DocumentUploader';
 
 export default function ActivityAdminFunctions() {
   const [tc] = useTranslation('common');
-  const activity = useAtomValue(activityAtom);
+  const { activity, documents } = useLoaderData();
   const [, setSearchParams] = useSearchParams();
 
-  const handleSelect = (item) => {
-    if (item.kind === 'edit') {
-      setSearchParams({ edit: 'true' });
-    } else if (item.kind === 'delete') {
-      setSearchParams({ delete: 'true' });
-    }
+  const handleSetSearchParams = (key: string | undefined, value: string) => {
+    if (!key) return;
+    setSearchParams((params) => {
+      const next = new URLSearchParams(params);
+      next.set(key, value);
+      return next;
+    });
+  };
+
+  const handleSelect = (item: MenuOption) => {
+    handleSetSearchParams(item.value, 'true');
   };
 
   const menuItems = [
     {
-      kind: 'edit',
+      value: 'manageDocuments',
+      label: tc('documents.manage'),
+    },
+    {
+      value: 'edit',
       label: tc('actions.update'),
     },
     {
-      kind: 'delete',
+      value: 'delete',
       label: tc('actions.remove'),
     },
   ];
@@ -35,6 +43,11 @@ export default function ActivityAdminFunctions() {
   return (
     <>
       <AdminFunctions menuItems={menuItems} onSelect={handleSelect} />
+      <DocumentUploader
+        context="activities"
+        documents={documents}
+        itemId={activity._id}
+      />
       <DeleteEntryHandler item={activity} context="activities" />
     </>
   );

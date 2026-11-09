@@ -48,6 +48,30 @@ function revalidateOn(relevantParams = []) {
   };
 }
 
+function shouldRevalidateExcept(ignoredParams = ['tab']) {
+  return function shouldRevalidate({
+    currentUrl,
+    nextUrl,
+    defaultShouldRevalidate,
+  }) {
+    // 1. Imperative revalidation (useRevalidator, fetcher.load):
+    //    identical URLs — always let it through.
+    if (currentUrl.toString() === nextUrl.toString()) return true;
+
+    // 2. Real navigation to a different path: use defaults.
+    if (currentUrl.pathname !== nextUrl.pathname)
+      return defaultShouldRevalidate;
+
+    // 3. Same path: revalidate only if a non-ignored search param changed.
+    const strip = (url) => {
+      const p = new URLSearchParams(url.search);
+      for (const k of ignoredParams) p.delete(k);
+      return p.toString();
+    };
+    return strip(currentUrl) !== strip(nextUrl);
+  };
+}
+
 const LoginPage = loadable(() => import('/imports/ui/pages/auth/LoginPage'));
 const SignupPage = loadable(() => import('/imports/ui/pages/auth/SignupPage'));
 
@@ -190,6 +214,7 @@ import {
   getCommunities,
   getGroup,
   getGroups,
+  getPage,
   getPages,
   getPeople,
   getResources,
@@ -468,13 +493,13 @@ export default function appRoutes(props) {
               element: createRouteElement(ActivityListHandler, props),
               loader: async ({ request }) =>
                 await getActivities({ request, host, isPortalHost }),
-              shouldRevalidate: revalidateOn(['showPast']),
+              shouldRevalidate: shouldRevalidateExcept(['tab']),
             },
             {
               path: ':activityId',
               element: createRouteElement(ActivityItemHandler, props),
               loader: async ({ params }) => await getActivity({ params }),
-              shouldRevalidate: revalidateOn(['edit', 'addDocument']),
+              shouldRevalidate: shouldRevalidateExcept(['tab']),
             },
           ],
         },
@@ -485,14 +510,13 @@ export default function appRoutes(props) {
               index: true,
               element: createRouteElement(GroupListHandler, props),
               loader: async () => await getGroups({ host, isPortalHost }),
-              shouldRevalidate: revalidateOn(),
             },
             {
               path: ':groupId/*',
               index: true,
               element: createRouteElement(GroupItemHandler, props),
               loader: async ({ params }) => await getGroup({ params }),
-              shouldRevalidate: revalidateOn(['edit', 'addDocument']),
+              shouldRevalidate: shouldRevalidateExcept(['tab']),
             },
           ],
         },
@@ -504,17 +528,12 @@ export default function appRoutes(props) {
               element: createRouteElement(CalendarHandler, props),
               loader: async ({ request }) =>
                 await getCalendarEntries({ request, host, isPortalHost }),
-              shouldRevalidate: revalidateOn([
-                'edit',
-                'rangeStart',
-                'rangeEnd',
-              ]),
             },
             {
               path: ':activityId/*',
               element: createRouteElement(ActivityItemHandler, props),
               loader: async ({ params }) => await getActivity({ params }),
-              shouldRevalidate: revalidateOn(['edit']),
+              shouldRevalidate: shouldRevalidateExcept(['tab']),
             },
           ],
         },
@@ -522,10 +541,10 @@ export default function appRoutes(props) {
           path: 'info',
           children: [
             {
-              path: ':pageTitle',
+              path: ':pageTitleWithId',
               element: createRouteElement(PageItemHandler, props),
-              loader: async () => await getPages({ host }),
-              shouldRevalidate: revalidateOn(['edit']),
+              loader: async ({ params }) => await getPage({ params, host }),
+              shouldRevalidate: shouldRevalidateExcept(['tab']),
             },
           ],
         },
@@ -533,7 +552,6 @@ export default function appRoutes(props) {
           path: 'people',
           element: createRouteElement(UserListHandler, props),
           loader: async () => await getPeople({ host, isPortalHost }),
-          shouldRevalidate: revalidateOn(),
         },
         {
           path: 'resources',
@@ -542,14 +560,13 @@ export default function appRoutes(props) {
               index: true,
               element: createRouteElement(ResourceListHandler, props),
               loader: async () => await getResources({ host, isPortalHost }),
-              shouldRevalidate: revalidateOn(),
             },
             {
               path: ':resourceId/*',
               index: true,
               element: createRouteElement(ResourceItemHandler, props),
               loader: async ({ params }) => await getResource({ params }),
-              shouldRevalidate: revalidateOn(['edit', 'addDocument']),
+              shouldRevalidate: shouldRevalidateExcept(['tab']),
             },
           ],
         },
@@ -560,7 +577,6 @@ export default function appRoutes(props) {
               index: true,
               element: createRouteElement(WorkListHandler, props),
               loader: async () => await getWorks({ host, isPortalHost }),
-              shouldRevalidate: revalidateOn(),
             },
           ],
         },
@@ -593,7 +609,7 @@ export default function appRoutes(props) {
           path: ':usernameSlug/works/:workId/*',
           element: createRouteElement(WorkItemHandler, props),
           loader: async ({ params }) => await getWork({ params }),
-          shouldRevalidate: revalidateOn(['edit', 'addDocument']),
+          shouldRevalidate: shouldRevalidateExcept(['tab']),
         },
         {
           path: 'cp/:composablePageId',

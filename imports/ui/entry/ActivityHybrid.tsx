@@ -4,7 +4,8 @@ import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
 
 import { Box, Center, Tag, Text } from '/imports/ui/core';
-import type { Host } from '/imports/ui/types';
+import type { Host, Document } from '/imports/ui/types';
+import Documents from '/imports/ui/generic/Documents';
 
 import ActionDates from './ActionDates';
 import FancyDate from './FancyDate';
@@ -36,6 +37,7 @@ interface Activity {
 
 export interface ActivityHybridProps {
   activity: Activity;
+  documents?: Document[];
   Host: Host;
 }
 
@@ -48,14 +50,17 @@ const buttonStyle: React.CSSProperties = {
   width: '100%',
 };
 
-export default function ActivityHybrid({ activity, Host }: ActivityHybridProps) {
+export default function ActivityHybrid({
+  activity,
+  documents,
+  Host,
+}: ActivityHybridProps) {
   if (!activity) {
     return null;
   }
 
   const tabs = [
     {
-      key: 'info',
       title: <Trans i18nKey="common:labels.info">Info</Trans>,
       content: (
         <Box bg="white" className="text-content" p="6">
@@ -69,7 +74,6 @@ export default function ActivityHybrid({ activity, Host }: ActivityHybridProps) 
 
   if (activity?.isPublicActivity) {
     tabs.push({
-      key: 'location',
       title: (
         <Trans i18nKey="activities:public.labels.location">Location</Trans>
       ),
@@ -82,7 +86,6 @@ export default function ActivityHybrid({ activity, Host }: ActivityHybridProps) 
                   fontWeight: 'bold',
                   fontSize: 'lg',
                   textAlign: 'center',
-                  fontWeight: 'bold',
                 }}
               >
                 {activity?.place}
@@ -113,7 +116,6 @@ export default function ActivityHybrid({ activity, Host }: ActivityHybridProps) 
 
   if (!activity.isPublicActivity) {
     tabs.push({
-      key: 'dates',
       title: <Trans i18nKey="activities:public.labels.dates">See Dates</Trans>,
       content: (
         <Box>
@@ -133,10 +135,22 @@ export default function ActivityHybrid({ activity, Host }: ActivityHybridProps) 
     });
   }
 
-  const activitiesInMenu = Host?.settings?.menu.find(
+  if (documents && documents[0]) {
+    tabs.push({
+      title: <Trans i18nKey="common:documents.label">Documents</Trans>,
+      content: (
+        <Box p="6">
+          <Documents documents={documents} />
+        </Box>
+      ),
+      path: 'documents',
+    });
+  }
+
+  const activitiesInMenu = Host?.settings?.menu?.find(
     (item) => item.name === 'activities'
   );
-  const calendarInMenu = Host?.settings?.menu.find(
+  const calendarInMenu = Host?.settings?.menu?.find(
     (item) => item.name === 'calendar'
   );
   const { isPublicActivity } = activity;
@@ -159,14 +173,10 @@ export default function ActivityHybrid({ activity, Host }: ActivityHybridProps) 
       }
       dates={<ActionDates activity={activity} />}
       backLink={backLink}
-      images={
-        activity?.isPublicActivity
-          ? activity?.images || [activity?.imageUrl]
-          : null
-      }
+      images={activity.images || [activity.imageUrl || '']}
       subTitle={activity?.subTitle}
       tabs={tabs}
-      title={activity?.title}
+      title={activity?.title || ''}
       url={url}
     />
   );

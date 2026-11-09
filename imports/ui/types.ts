@@ -42,9 +42,12 @@ export interface Category {
 }
 
 export interface DocumentFile {
-  documentId: string;
-  downloadUrl: string;
-  label: string;
+  documentId?: string;
+  documentUrl?: string;
+  downloadUrl?: string;
+  documentLabel?: string;
+  label?: string;
+  name?: string;
 }
 
 export interface Work extends BaseDocument {
@@ -99,6 +102,8 @@ export interface Host {
 export interface Document {
   _id: string;
   name?: string;
+  documentLabel?: string;
+  documentUrl?: string;
 }
 
 /**

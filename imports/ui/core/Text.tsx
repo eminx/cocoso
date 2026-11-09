@@ -163,8 +163,9 @@ export const Heading = (props: HeadingProps) => {
         fontSize: size ? headingSizes[size] : headingSizes.lg,
         fontFamily: 'Raleway, sans-serif',
         fontWeight: fontWeight || 'bold',
-        overflow: truncated ? 'hidden' : 'visible',
         lineHeight: lineHeight || '1.2',
+        marginBottom: '1rem',
+        overflow: truncated ? 'hidden' : 'visible',
         textAlign: textAlign || 'left',
         textOverflow: truncated ? 'ellipsis' : 'clip',
         whiteSpace: truncated ? 'pre-wrap' : 'normal',
@@ -178,7 +179,7 @@ export const Heading = (props: HeadingProps) => {
   );
 };
 
-interface CodeProps {
+interface CodeProps extends TextProps {
   fontSize?: string;
   size?: string;
   color?: string;

@@ -255,6 +255,7 @@ domains:
 
 documents:
   add: Add Document
+  manage: Manage Documents
   label: Documents
   labelExisting: Existing Documents
   helper: Documents uploaded for this item

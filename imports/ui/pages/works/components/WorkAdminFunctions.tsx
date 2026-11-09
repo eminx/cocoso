@@ -27,8 +27,8 @@ export default function WorkAdminFunctions() {
 
   const menuItems = [
     {
-      value: 'addDocument',
-      label: tc('documents.add'),
+      value: 'manageDocuments',
+      label: tc('documents.manage'),
     },
     {
       value: 'edit',

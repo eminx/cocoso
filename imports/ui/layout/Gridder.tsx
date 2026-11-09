@@ -48,7 +48,7 @@ export default function Gridder({ items }: GridderProps) {
                   'small'
                 )}
               />
-              <Heading fontSize={18}>
+              <Heading fontSize="18px">
                 {item.title || item.label || item.settings?.name}
               </Heading>
               <Text>{item._id}</Text>

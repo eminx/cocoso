@@ -253,6 +253,7 @@ domains:
 
 documents:
   add: Lägg till dokument
+  manage: Hantera dokument
   label: Dokument
   labelExisting: Befintliga dokument
   helper: Dokument uppladdade för detta inlägg

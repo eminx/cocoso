@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useRevalidator, useSearchParams } from 'react-router';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 
@@ -12,10 +12,11 @@ import {
   Spinner,
   Text,
 } from '/imports/ui/core';
-import { uploadDocument } from '/imports/actions';
-import DocumentUploadHelper from '/imports/ui/forms/UploadHelpers';
-import { message } from '/imports/ui/generic/message';
-import Documents from '/imports/ui/generic/Documents';
+import { call } from '/imports/api/_utils/shared';
+
+import DocumentUploadHelper from './UploadHelpers';
+import Documents from '../generic/Documents';
+import { message } from '../generic/message';
 
 interface DocumentUploaderProps {
   documents: any[];
@@ -31,6 +32,7 @@ export default function DocumentUploader({
   const [uploading, setUploading] = useState(false);
   const [tc] = useTranslation('common');
   const [searchParams, setSearchParams] = useSearchParams();
+  const { revalidate } = useRevalidator();
 
   const handleFileDrop = async (files: File[]) => {
     if (files.length !== 1) {
@@ -59,28 +61,45 @@ export default function DocumentUploader({
         fileName: parsedName,
         contentType: file.type,
       };
-      await uploadDocument({
-        uploadableFile,
-        itemId,
-        context,
-      });
-      handleClose();
+      await call('createDocument', uploadableFile, itemId, context);
+      revalidate();
+      message.success(tc('documents.uploaded'));
     } catch (error: any) {
-      console.log(error?.reason || error?.error);
+      message.error(error?.reason || error?.error);
     } finally {
       setUploading(false);
+    }
+  };
+
+  const removeDocument = async (documentId: string) => {
+    try {
+      await call('removeDocument', documentId);
+      revalidate();
+      message.success(tc('documents.remove'));
+    } catch (error: any) {
+      message.error(error?.reason || error?.error);
     }
   };
 
   const handleClose = () => {
     setSearchParams((params) => {
       const next = new URLSearchParams(params);
-      next.set('addDocument', 'false');
+      next.set('manageDocuments', 'false');
       return next;
     });
   };
 
-  const active = searchParams.get('addDocument') === 'true';
+  const active = searchParams.get('manageDocuments') === 'true';
+
+  const documentList = documents.map((document) => ({
+    ...document,
+    actions: [
+      {
+        content: tc('labels.remove'),
+        handleClick: () => removeDocument(document._id),
+      },
+    ],
+  }));
 
   return (
     <Modal
@@ -88,38 +107,48 @@ export default function DocumentUploader({
       id="add-document-modal"
       open={active}
       size="lg"
-      title={tc('documents.add')}
+      title={tc('documents.manage')}
       onClose={handleClose}
     >
       <ReactDropzone onDrop={handleFileDrop} multiple={false}>
         {({ getRootProps, getInputProps, isDragActive }) => (
-          <Box
-            bg={isDragActive ? 'theme.300' : 'theme.50'}
-            h="180px"
-            p="4"
-            w="100%"
-            css={{
-              border: '1px dashed',
-              borderColor: 'var(--cocoso-colors-theme-300)',
-              borderRadius: 'var(--cocoso-border-radius)',
-              cursor: 'grab',
-            }}
-            {...getRootProps()}
-          >
-            {uploading ? (
-              <Center>
-                <Flex align="center" direction="column">
-                  <Spinner />
-                  <Text mt="2" textTransform="capitalize">
-                    {tc('documents.up')}
-                  </Text>
-                </Flex>
-              </Center>
-            ) : (
-              <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
-            )}
-            <input {...getInputProps()} />
-          </Box>
+          <>
+            <Heading size="xs">{tc('documents.add')}</Heading>
+            <Box
+              bg={isDragActive ? 'theme.300' : 'theme.50'}
+              h="180px"
+              p="4"
+              w="100%"
+              css={{
+                border: '1px dashed',
+                borderColor: 'var(--cocoso-colors-theme-300)',
+                borderRadius: 'var(--cocoso-border-radius)',
+                cursor: 'grab',
+              }}
+              {...getRootProps()}
+            >
+              {uploading ? (
+                <Center>
+                  <Flex align="center" direction="column">
+                    <Spinner />
+                    <Text
+                      css={{
+                        marginBottom: '0.5rem',
+                        textTransform: 'capitalize',
+                      }}
+                    >
+                      {tc('documents.up')}
+                    </Text>
+                  </Flex>
+                </Center>
+              ) : (
+                <div style={{ textAlign: 'center' }}>
+                  {tc('documents.drop')}
+                </div>
+              )}
+              <input {...getInputProps()} />
+            </Box>
+          </>
         )}
       </ReactDropzone>
 
@@ -127,10 +156,8 @@ export default function DocumentUploader({
 
       {documents && documents?.length > 0 ? (
         <Box py="8">
-          <Heading size="xs" css={{ marginBottom: '1rem' }}>
-            {tc('documents.labelExisting')}
-          </Heading>
-          <Documents documents={documents} />
+          <Heading size="xs">{tc('documents.labelExisting')}</Heading>
+          <Documents actionsDisabled={false} documents={documentList} />
         </Box>
       ) : null}
     </Modal>

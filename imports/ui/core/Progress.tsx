@@ -2,9 +2,10 @@ import React from 'react';
 import { styled } from '/stitches.config';
 
 interface ProgressProps {
-  value: number; // 0-100
   height?: string;
+  hasStripe?: boolean;
   style?: React.CSSProperties;
+  value: number; // 0-100
 }
 
 const Track = styled('div', {
@@ -34,11 +35,12 @@ const Bar = (props: { value: number }) => (
 );
 
 const Progress: React.FC<ProgressProps> = ({
-  value,
   height = '12px',
   style,
+  value,
+  ...props
 }) => (
-  <Track style={{ height, ...style }}>
+  <Track style={{ height, ...style }} {...props}>
     <Bar value={Math.max(0, Math.min(100, value))} />
   </Track>
 );
