@@ -8,6 +8,7 @@ import PageHybrid from '/imports/ui/entry/PageHybrid';
 import { parseTitle } from '/imports/api/_utils/shared';
 import EditEntryHandler from '/imports/ui/forms/EditEntryHandler.loadable';
 import NewEntryHandler from '/imports/ui/forms/NewEntryHandler.loadable';
+import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 
 const PageInteractionHandler = loadable(
   () => import('./components/PageInteractionHandler')
@@ -19,42 +20,32 @@ export const pagesAtom = atom(null);
 export const currentPageAtom = atom(null);
 
 export default function PageItemHandler({ Host }) {
-  const { pages } = useLoaderData();
-  const setPages = useSetAtom(pagesAtom);
-  const setCurrentPage = useSetAtom(currentPageAtom);
+  const { page } = useLoaderData();
   const rendered = useAtomValue(renderedAtom);
   const role = useAtomValue(roleAtom);
-  const { pageTitle } = useParams();
+  const setCurrentPage = useSetAtom(currentPageAtom);
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    setPages(pages);
-    if (!pages) return;
-    setCurrentPage(
-      pages.find((page) => parseTitle(page.title) === pageTitle) || pages[0]
-    );
-  }, [pages]);
+    if (!page) {
+      return;
+    }
+    setCurrentPage(page);
+  }, [page]);
 
   const isEdit = role === 'admin' && searchParams.get('edit') === 'true';
 
-  if (!pages) {
-    return null;
-  }
-
-  let currentPage =
-    pages && pages.find((page) => parseTitle(page.title) === pageTitle);
-
-  if (!currentPage) {
-    currentPage = pages[0];
+  if (!page) {
+    return <NotFoundPage />;
   }
 
   return (
     <>
-      <PageHybrid currentPage={currentPage} Host={Host} />
+      <PageHybrid currentPage={page} Host={Host} />
 
       {rendered && (
         <>
-          <PageInteractionHandler pages={pages} />
+          <PageInteractionHandler />
 
           {isEdit ? (
             <EditEntryHandler context="info">

@@ -50,9 +50,11 @@ export async function getActivity({ params }) {
   const { activityId } = params;
 
   const activity = await call('getActivityById', activityId);
+  const documents = await call('getDocumentsByAttachments', activityId);
 
   return {
     activity,
+    documents,
   };
 }
 
@@ -114,6 +116,18 @@ export async function getPages({ host }) {
 
   return {
     pages,
+  };
+}
+
+export async function getPage({ params, host }) {
+  if (!params) {
+    return null;
+  }
+  const { pageTitleWithId } = params;
+  const page = await call('getPage', pageTitleWithId, host);
+
+  return {
+    page,
   };
 }
 

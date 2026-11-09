@@ -22,6 +22,22 @@ Meteor.methods({
     }
   },
 
+  async getPage(pageTitleWithId, hostPredefined) {
+    const host = hostPredefined || getHost(this);
+    const pageTitleWithIdSplitted = pageTitleWithId.split('--');
+    const pageId = pageTitleWithIdSplitted[pageTitleWithIdSplitted.length - 1];
+
+    if (!pageId) {
+      throw new Meteor.Error(error, 'Page not found');
+    }
+
+    try {
+      return await Pages.findOneAsync({ _id: pageId, host });
+    } catch (error) {
+      throw new Meteor.Error(error, 'Page not found');
+    }
+  },
+
   async getPageTitles(hostPredefined) {
     const host = hostPredefined || getHost(this);
 
