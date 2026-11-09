@@ -81,6 +81,8 @@
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.473.0",
     "meteor-node-stubs": "^1.2.30",
+    "node-addon-api": "^8.9.2",
+    "node-gyp": "^13.1.0",
     "patch-package": "^8.0.1",
     "postcss-easy-import": "^4.0.0",
     "query-string": "^7.1.1",
@@ -150,8 +152,5 @@
   "browserslist": [
     "last 2 versions"
   ],
-  "postinstall": "patch-package",
-  "engines": {
-    "node": "20.x"
-  }
+  "postinstall": "patch-package"
 }
