@@ -39,8 +39,6 @@ Meteor.methods({
     const pageId =
       pageTitleWithIdSplitted?.[pageTitleWithIdSplitted.length - 1];
 
-    console.log('server:', pageTitleWithId, pageTitleWithIdSplitted, pageId);
-
     if (!pageId) {
       throw new Meteor.Error(error, 'Page not found');
     }
