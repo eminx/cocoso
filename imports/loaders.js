@@ -1,3 +1,4 @@
+import { redirect } from 'react-router';
 import dayjs from 'dayjs';
 
 import { call, parseTitle } from './api/_utils/shared';
@@ -16,7 +17,7 @@ export async function getHomeLoader({ Host, params, request }) {
     case 'groups':
       return await getGroups({ host, isPortalHost });
     case 'info':
-      return await getPage({ params, host, isHomePage: true });
+      return await getPage({ request, params, host, isHomePage: true });
     case 'resources':
       return await getResources({ host, isPortalHost });
     case 'works':
@@ -119,10 +120,21 @@ export async function getPages({ host }) {
   };
 }
 
-export async function getPage({ params, host, isHomePage }) {
+export async function getPage({ request, params, host, isHomePage }) {
   const pageTitleWithId = params?.pageTitleWithId;
-  console.log('pageTitleWithId', pageTitleWithId);
   const page = await call('getPage', pageTitleWithId, host, isHomePage);
+
+  if (page && !isHomePage) {
+    const expectedSlug = `${parseTitle(page.title)}--${page._id}`;
+
+    if (pageTitleWithId !== expectedSlug) {
+      const url = new URL(request.url);
+      const prefix = url.pathname.replace(/\/[^/]+$/, ''); // strip last segment
+      throw redirect(`${prefix}/${expectedSlug}${url.search}${url.hash}`, {
+        status: 301,
+      });
+    }
+  }
 
   return {
     page,
@@ -205,7 +217,7 @@ export async function getWork({ params }) {
   };
 }
 
-export async function getComposablePage({ params, Host, isHomePage }) {
+export async function getComposablePage({ request, params, Host, isHomePage }) {
   let composablePageTitleWithId = params?.composablePageId;
 
   if (!composablePageTitleWithId && isHomePage) {
@@ -225,6 +237,20 @@ export async function getComposablePage({ params, Host, isHomePage }) {
     composablePageTitleWithId,
     Host?.host
   );
+
+  if (composablePage && !isHomePage && request) {
+    const expectedSlug = `${parseTitle(composablePage.title)}--${
+      composablePage._id
+    }`;
+
+    if (composablePageTitleWithId !== expectedSlug) {
+      const url = new URL(request.url);
+      const prefix = url.pathname.replace(/\/[^/]+$/, ''); // '/cp' or '/composed'
+      throw redirect(`${prefix}/${expectedSlug}${url.search}${url.hash}`, {
+        status: 301,
+      });
+    }
+  }
 
   return {
     composablePage,

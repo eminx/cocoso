@@ -548,7 +548,8 @@ export default function appRoutes(props) {
             {
               path: ':pageTitleWithId',
               element: createRouteElement(PageItemHandler, props),
-              loader: async ({ params }) => await getPage({ params, host }),
+              loader: async ({ request, params }) =>
+                await getPage({ request, params, host }),
               shouldRevalidate: shouldRevalidateExcept(['tab']),
             },
           ],
@@ -625,8 +626,8 @@ export default function appRoutes(props) {
         {
           path: 'composed/:composablePageId',
           element: createRouteElement(ComposablePageHandler, props),
-          loader: async ({ params }) =>
-            await getComposablePage({ params, Host }),
+          loader: async ({ request, params }) =>
+            await getComposablePage({ request, params, Host }),
         },
         {
           path: 'communities',

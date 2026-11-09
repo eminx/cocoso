@@ -150,7 +150,7 @@ export default function UsersHybrid({
       <PageHeading currentHost={currentHost || Host} listing={LISTING} />
 
       <Center mb="4">
-        <Box w="100%" maxW="600px" p="4">
+        <Box p="4" w="100%" css={{ maxWidth: '600px' }}>
           <Select
             closeMenuOnSelect
             isMulti
