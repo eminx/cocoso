@@ -6,7 +6,7 @@ interface HostSettings {
 interface CurrentHost {
   settings: HostSettings;
   host: string;
-  logo: string;
+  logoPng: string;
 }
 
 const getWelcomeEmailBody = (
@@ -17,7 +17,7 @@ const getWelcomeEmailBody = (
 ): string => {
   const hostName = currentHost.settings.name,
     host = currentHost.host,
-    hostLogo = currentHost.logo,
+    hostLogo = currentHost.logoPng,
     hostAddress = currentHost.settings.address;
 
   return `<!doctype html>

@@ -17,7 +17,7 @@ const getRegistrationEmailBody = (
     numberOfPeople = values.numberOfPeople,
     hostName = currentHost.settings.name,
     host = currentHost.host,
-    hostLogo = currentHost.logo,
+    hostLogo = currentHost.logoPng,
     hostAddress = currentHost.settings.address,
     resource = activity.resource;
 
@@ -39,7 +39,9 @@ const getRegistrationEmailBody = (
     attending += ` + ${numberOfPeople - 1}`;
   }
 
-  const confirmedApprovalBrief = isUpdate ? confirmedApprovalTextUpdate : confirmedApprovalText;
+  const confirmedApprovalBrief = isUpdate
+    ? confirmedApprovalTextUpdate
+    : confirmedApprovalText;
 
   return `<!doctype html>
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -642,19 +644,25 @@ const getRegistrationEmailBody = (
     `;
 };
 
-const getUnregistrationEmailBody = (activity, values, currentHost, currentUser) => {
+const getUnregistrationEmailBody = (
+  activity,
+  values,
+  currentHost,
+  currentUser
+) => {
   const activityId = activity._id,
     firstName = values?.firstName || currentUser?.username || '',
     hostName = currentHost.settings.name,
     host = currentHost.host,
-    hostLogo = currentHost.logo,
+    hostLogo = currentHost.logoPng,
     hostAddress = currentHost.settings.address;
   const lang = currentUser?.lang || currentHost?.settings?.lang || 'en';
 
   const tr = mailtranslations[lang];
 
   const { dear } = tr.general;
-  const { confirmedApprovalText, confirmedApprovalTextLong, visitPage } = tr.activityUnregister;
+  const { confirmedApprovalText, confirmedApprovalTextLong, visitPage } =
+    tr.activityUnregister;
 
   return `<!doctype html>
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
