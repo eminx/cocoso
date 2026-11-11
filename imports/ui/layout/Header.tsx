@@ -75,6 +75,7 @@ export function InfoPagesMenu({
               ? `2px solid ${borderColor}`
               : '2px solid transparent',
             color: menuStyles?.color,
+            transform: 'translateY(0.15rem)',
             wrap: 'wrap',
             '&:hover': !isCurrentContext && {
               borderBottomColor: borderColor,
@@ -176,6 +177,7 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
         justify="center"
         mb="2"
         p="2"
+        pb="3"
         wrap="wrap"
         style={menuStyles}
       >
