@@ -28,7 +28,7 @@ export default function TopBarHandler({
     };
   }, []);
 
-  const scrollPing = scrollTop < 120;
+  const scrollPing = scrollTop < 100;
 
   return (
     <Slide direction="top" ping={slideStart && scrollPing}>
