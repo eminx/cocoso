@@ -55,7 +55,6 @@ export function InfoPagesMenu({
     ...baseTextStyles,
     color: menuStyles?.color || 'gray.600',
     fontStyle: menuStyles?.fontStyle || 'normal',
-    marginTop: '0.25rem',
     marginRight: '0.25rem',
     textTransform: menuStyles?.textTransform || 'none',
   };
