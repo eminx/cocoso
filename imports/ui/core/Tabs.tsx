@@ -79,15 +79,6 @@ const TabItem = ({ selected, ...rest }: TabItemProps) => (
   />
 );
 
-const TabLink = styled(Link, {
-  color: 'inherit',
-  marginBottom: 0,
-  textDecoration: 'none',
-  '&:hover': {
-    textDecoration: 'none',
-  },
-});
-
 const TabButton = styled('button', {
   background: 'none',
   border: 'none',
@@ -137,7 +128,7 @@ const CoTab: React.FC<CoTabProps> = ({ tab, selected }) => {
 };
 
 interface TabsProps extends TabsListProps {
-  tabs: TabType[];
+  tabs?: TabType[];
   index?: number;
   withSearchParams?: boolean;
   children?: ReactNode;
@@ -169,6 +160,11 @@ const Tabs: React.FC<TabsProps> = ({
       tab.onClick();
     }
   };
+
+  if (!tabs) {
+    return null;
+  }
+
   return (
     <TabsContainer>
       <TabsList {...otherProps}>
