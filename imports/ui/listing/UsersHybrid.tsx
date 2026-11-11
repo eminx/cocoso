@@ -42,25 +42,6 @@ const tabs = [
   },
 ];
 
-const getTabsBasedOnSettings = (Host: Host) => {
-  const listingPeopleShow = Host?.settings?.listingPeopleShow;
-
-  if (!listingPeopleShow) {
-    return tabs;
-  }
-
-  return tabs.filter((tab) => {
-    switch (listingPeopleShow) {
-      case 'admin':
-        return tab.path === 'admin';
-      case 'verifiedAdmin':
-        return tab.path !== 'nonverified';
-      default:
-        return true;
-    }
-  });
-};
-
 export default function UsersHybrid({
   Host,
   users,
@@ -136,10 +117,25 @@ export default function UsersHybrid({
     );
   }, [users, selectedKeywords, currentTab]);
 
-  const tabs = getTabsBasedOnSettings(Host);
+  const listingPeopleShow = Host?.settings?.listingPeopleShow;
+  const visibleTabs = useMemo(() => {
+    if (!listingPeopleShow) {
+      return tabs;
+    }
+
+    if (listingPeopleShow === 'admin') {
+      return null;
+    }
+
+    if (listingPeopleShow === 'verifiedAdmin') {
+      return tabs.filter((tab) => tab.path !== 'nonverified');
+    }
+
+    return tabs;
+  }, []);
 
   const renderPass: boolean = getRenderPass(Host, LISTING, role);
-  const tabIndex = tabs.findIndex((tab) => tab.path === currentTab);
+  const tabIndex = visibleTabs?.findIndex((tab) => tab.path === currentTab);
 
   if (!renderPass) {
     return <NotFoundPage />;
@@ -181,7 +177,7 @@ export default function UsersHybrid({
 
       <Box>
         <Center mb="4">
-          <Tabs index={tabIndex} tabs={tabs} withSearchParams />
+          <Tabs index={tabIndex} tabs={visibleTabs} withSearchParams />
         </Center>
         <Center>
           <Text fontSize="sm">

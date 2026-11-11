@@ -1,16 +1,16 @@
 import React from 'react';
-import { Outlet, useLocation, useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import HTMLReactParser from 'html-react-parser';
 import DOMPurify from 'isomorphic-dompurify';
 import { Helmet } from 'react-helmet';
 import { Trans } from 'react-i18next';
 
-import { Alert, Box, Center, Flex, Tabs } from '/imports/ui/core';
+import { Alert, Box, Center, Flex } from '/imports/ui/core';
+import type { Host } from '/imports/ui/types';
 import { stripHtml, getFullName } from '/imports/api/_utils/shared';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
 import MemberAvatarEtc from '/imports/ui/generic/MemberAvatarEtc';
 import { getImageUrlBest } from '/imports/ui/utils/imageHelper';
-import type { Host } from '/imports/ui/types';
 
 import BackLink from './BackLink';
 
@@ -130,38 +130,32 @@ export default function UserHybrid({ user, Host }: UserHybridProps) {
         <meta property="og:type" content="article" />
       </Helmet>
 
-      {workId ? (
-        <Outlet />
-      ) : (
-        <>
-          <Box p="2">
-            <BackLink backLink={{ label: members?.label, value: '/people' }} />
-          </Box>
+      <Box p="2">
+        <BackLink backLink={{ label: members?.label, value: '/people' }} />
+      </Box>
 
+      <Center>
+        <Box css={{ maxWidth: '600px' }}>
           <Center>
-            <Box css={{ maxWidth: '600px' }}>
-              <Center>
-                <MemberAvatarEtc isThumb={false} user={user} />
-              </Center>
-              <Center>
-                <Bio user={user} />
-              </Center>
-            </Box>
+            <MemberAvatarEtc isThumb={false} user={user} />
           </Center>
-
           <Center>
+            <Bio user={user} />
+          </Center>
+        </Box>
+      </Center>
+
+      {/* <Center>
             <Box>
               <Center>
-                <Tabs align="center" index={tabIndex} tabs={tabs} />
+                <Tabs tabs={tabs} />
               </Center>
 
               <Box css={{ maxWidth: '600px' }} pt="4" mb="24">
                 <Outlet />
               </Box>
             </Box>
-          </Center>
-        </>
-      )}
+          </Center> */}
     </>
   );
 }

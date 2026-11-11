@@ -11,7 +11,6 @@ import { getFullName } from '/imports/api/_utils/shared';
 const tagProps = {
   bg: 'white',
   border: '1px solid',
-  borderColor: 'theme.500',
 };
 
 interface UserKeyword {
