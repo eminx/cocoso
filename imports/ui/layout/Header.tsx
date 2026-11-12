@@ -29,7 +29,7 @@ const baseTextStyles = {
 };
 
 export interface InfoPagesMenuProps {
-  label: string;
+  label: string | undefined;
   menuStyles: any;
   pageTitles: any[];
   pathname: string;
@@ -75,7 +75,6 @@ export function InfoPagesMenu({
               ? `2px solid ${borderColor}`
               : '2px solid transparent',
             color: menuStyles?.color,
-            transform: 'translateY(0.15rem)',
             wrap: 'wrap',
             '&:hover': !isCurrentContext && {
               borderBottomColor: borderColor,
@@ -89,13 +88,14 @@ export function InfoPagesMenu({
       }
     >
       <Box
-        id="some-menu"
+        id="main-menu-info"
         key="menu-content-x"
         css={{
           backgroundColor: menuStyles?.backgroundColor,
           maxHeight: '480px',
           maxWidth: '320px',
           overflowY: 'scroll',
+          zIndex: 999,
           ':hover': {
             backgroundColor: `${menuStyles?.backgroundColor}80`,
           },
@@ -183,13 +183,17 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
       >
         {menuItems?.map((item, index) =>
           item.name === 'info' ? (
-            <InfoPagesMenu
+            <Box
               key="info"
-              label={item.label}
-              menuStyles={menuStyles}
-              pageTitles={pageTitles}
-              pathname={pathname}
-            />
+              css={{ transform: 'translateY(0.1rem)', zIndex: 999 }}
+            >
+              <InfoPagesMenu
+                label={item.label}
+                menuStyles={menuStyles}
+                pageTitles={pageTitles}
+                pathname={pathname}
+              />
+            </Box>
           ) : (
             <Link
               key={item.name}

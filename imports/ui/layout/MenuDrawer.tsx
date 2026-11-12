@@ -55,7 +55,7 @@ function MenuContent({
         const isCurrentPageLabel = isCurrentPage(item);
         if (item.name === 'info') {
           return (
-            <Box key="info" pt="2">
+            <Box key="info" mb="4" pl="0.5" pt="2">
               <InfoPagesMenu
                 label={item.label}
                 menuStyles={styles}
@@ -69,7 +69,12 @@ function MenuContent({
         return (
           <Link
             key={item.name}
-            style={{ textShadow: 'none' }}
+            style={{
+              color: styles?.color || 'gray.600',
+              fontStyle: styles?.fontStyle || 'normal',
+              textShadow: 'none',
+              textTransform: styles?.textTransform || 'none',
+            }}
             to={item.route}
             onClick={onToggle}
           >
