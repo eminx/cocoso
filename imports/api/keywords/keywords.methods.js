@@ -27,7 +27,7 @@ Meteor.methods({
       (k) =>
         k.host === host ||
         k.creatorId === currentUser._id ||
-        currentUser.keywords.find((key) => key.keywordId === k._id)
+        currentUser.keywords?.find((key) => key.keywordId === k._id)
     );
   },
 

@@ -93,7 +93,7 @@ Meteor.methods({
 
     try {
       const newUserId = await Accounts.createUserAsync(values);
-      if (platform.isFederationLayout) {
+      if (platform?.isFederationLayout) {
         await call('joinHost', platform.portalHost, 'participant'); // Here I'll change the participant to contributor
       }
       return newUserId;
