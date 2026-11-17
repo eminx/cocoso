@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
 
-import { getHost } from '../_utils/shared';
+import { call, getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
 import Platform from '../platform/platform';
 import { extractEmailAddress } from '../_utils/services/mails/mail.helpers';
@@ -89,8 +89,14 @@ Meteor.methods({
       return;
     }
 
+    const platform = await Platform.findOneAsync();
+
     try {
-      return await Accounts.createUserAsync(values);
+      const newUserId = await Accounts.createUserAsync(values);
+      if (platform.isFederationLayout) {
+        await call('joinHost', platform.portalHost, 'participant'); // Here I'll change the participant to contributor
+      }
+      return newUserId;
     } catch (error) {
       throw new Meteor.Error(error);
     }
@@ -111,7 +117,7 @@ Meteor.methods({
     return Boolean(emailExists);
   },
 
-  async setSelfAsParticipant(hostToJoin) {
+  async joinHost(hostToJoin, role = 'participant') {
     const user = await Meteor.userAsync();
     if (!user) {
       return;
@@ -122,19 +128,23 @@ Meteor.methods({
       throw new Meteor.Error('Host not found');
     }
 
+    if (!currentHost.isPortalHost && role === 'contributor') {
+      throw new Meteor.Error('Not allowed!');
+    }
+
     const existingMembership = await Memberships.findOneAsync({
       userId: user._id,
       host,
     });
     if (existingMembership) {
-      throw new Meteor.Error('You are already a participant');
+      throw new Meteor.Error('You are already part of the community');
     }
 
     try {
       await Memberships.insertAsync({
         userId: user._id,
         host,
-        role: 'participant',
+        role,
         joinDate: new Date(),
         isPublic: true,
       });

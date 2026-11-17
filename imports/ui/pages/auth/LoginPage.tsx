@@ -91,7 +91,7 @@ export default function LoginPage() {
 
   const confirmJoin = async () => {
     try {
-      await call('setSelfAsParticipant');
+      await call('joinHost');
       message.success(t('profile.message.participant'));
     } catch (error) {
       message.error(error.reason || error.error);

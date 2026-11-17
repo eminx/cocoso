@@ -97,7 +97,7 @@ export default function CommunitiesHybrid({ Host, hosts }) {
     const host = modalItem?.host;
 
     try {
-      await call('setSelfAsParticipant', host);
+      await call('joinHost', host);
       message.success(tc('communities.success', { community: modalItem.name }));
       setModalItem(null);
     } catch (error: any) {

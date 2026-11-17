@@ -18,16 +18,21 @@ export async function loginWithPassword(
   console.log('[login] loginWithPassword called for', username);
   try {
     await loginWithPasswordAsync(username, password);
-    console.log('[login] loginWithPasswordAsync succeeded, userId:', Meteor.userId());
+    console.log(
+      '[login] loginWithPasswordAsync succeeded, userId:',
+      Meteor.userId()
+    );
     if (isNewAccount) {
-      await call('setSelfAsParticipant');
+      await call('joinHost');
     }
     const userId = Meteor.userId();
     if (userId) {
       console.log('[login] calling setupEncryption...');
       setupEncryption(userId, password);
     } else {
-      console.warn('[login] userId is null after login — setupEncryption skipped');
+      console.warn(
+        '[login] userId is null after login — setupEncryption skipped'
+      );
     }
     const translation = i18next.t('accounts:login.messages.success');
     message.success(translation);
