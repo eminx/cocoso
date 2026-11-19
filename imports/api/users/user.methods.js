@@ -86,15 +86,18 @@ Meteor.methods({
 
     if (userExists) {
       throw new Meteor.Error({ reason: 'Username is taken' });
-      return;
     }
 
     const platform = await Platform.findOneAsync();
+    const host = getHost(this);
 
     try {
       const newUserId = await Accounts.createUserAsync(values);
-      if (platform?.isFederationLayout) {
-        await call('joinHost', platform.portalHost, 'participant'); // Here I'll change the participant to contributor
+      if (platform.isFederationLayout) {
+        await call('joinFederationPortal');
+      }
+      if (platform.portalHost !== host) {
+        await call('joinHost', host);
       }
       return newUserId;
     } catch (error) {
@@ -117,7 +120,7 @@ Meteor.methods({
     return Boolean(emailExists);
   },
 
-  async joinHost(hostToJoin, role = 'participant') {
+  async joinHost(hostToJoin) {
     const user = await Meteor.userAsync();
     if (!user) {
       return;
@@ -126,10 +129,6 @@ Meteor.methods({
     const currentHost = await Hosts.findOneAsync({ host });
     if (!currentHost) {
       throw new Meteor.Error('Host not found');
-    }
-
-    if (!currentHost.isPortalHost && role === 'contributor') {
-      throw new Meteor.Error('Not allowed!');
     }
 
     const existingMembership = await Memberships.findOneAsync({
@@ -144,12 +143,50 @@ Meteor.methods({
       await Memberships.insertAsync({
         userId: user._id,
         host,
-        role,
+        role: 'participant',
         joinDate: new Date(),
         isPublic: true,
       });
-
       await Meteor.callAsync('sendWelcomeEmail', user._id, host);
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  async joinFederationPortal() {
+    const user = await Meteor.userAsync();
+    if (!user) {
+      throw new Meteor.Error('No user');
+    }
+
+    const platform = await Platform.findOneAsync();
+    if (!platform.isFederationLayout) {
+      return;
+    }
+
+    const portalHost = platform.portalHost;
+    const portalHosthost = portalHost?.host;
+    if (!portalHost || !portalHosthost) {
+      throw new Meteor.Error('Host not found');
+    }
+
+    const existingMembership = await Memberships.findOneAsync({
+      userId: user._id,
+      host: portalHosthost,
+    });
+    if (existingMembership) {
+      throw new Meteor.Error('You are already part of the community');
+    }
+
+    try {
+      await Memberships.insertAsync({
+        userId: user._id,
+        host: portalHosthost,
+        role: 'participant', // will be contributor
+        joinDate: new Date(),
+        isPublic: true,
+      });
+      await Meteor.callAsync('sendWelcomeEmail', user._id, portalHosthost);
     } catch (error) {
       throw new Meteor.Error(error);
     }

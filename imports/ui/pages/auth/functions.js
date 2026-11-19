@@ -10,11 +10,7 @@ export const loginWithPasswordAsync = Meteor.promisify(
   Meteor.loginWithPassword
 );
 
-export async function loginWithPassword(
-  username,
-  password,
-  isNewAccount = false
-) {
+export async function loginWithPassword(username, password) {
   console.log('[login] loginWithPassword called for', username);
   try {
     await loginWithPasswordAsync(username, password);
@@ -22,9 +18,6 @@ export async function loginWithPassword(
       '[login] loginWithPasswordAsync succeeded, userId:',
       Meteor.userId()
     );
-    if (isNewAccount) {
-      await call('joinHost');
-    }
     const userId = Meteor.userId();
     if (userId) {
       console.log('[login] calling setupEncryption...');
@@ -48,7 +41,6 @@ export async function createAccount(values) {
   check(values.password, String);
   try {
     await call('createAccount', values);
-    await loginWithPassword(values.username, values.password, true);
   } catch (error) {
     message.error(error.error ? error.error.reason : error.reason);
   }
