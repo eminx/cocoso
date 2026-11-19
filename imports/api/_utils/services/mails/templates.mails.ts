@@ -7,6 +7,7 @@ interface CurrentHost {
   settings: HostSettings;
   host: string;
   logoPng: string;
+  logoLegacy?: string;
 }
 
 const getWelcomeEmailBody = (
@@ -17,7 +18,7 @@ const getWelcomeEmailBody = (
 ): string => {
   const hostName = currentHost.settings.name,
     host = currentHost.host,
-    hostLogo = currentHost.logoPng,
+    hostLogo = currentHost.logoPng || currentHost.logoLegacy,
     hostAddress = currentHost.settings.address;
 
   return `<!doctype html>

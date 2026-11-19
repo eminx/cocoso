@@ -14,7 +14,7 @@ const getGroupRegistrationEmailBody = (
     firstName = currentUser.firstName || currentUser.username,
     hostName = currentHost.settings.name,
     host = currentHost.host,
-    hostLogo = currentHost.logoPng,
+    hostLogo = currentHost.logoPng || currentHost.logoLegacy,
     hostAddress = currentHost.settings.address;
 
   const lang = currentUser?.lang || currentHost?.settings?.lang || 'en';
@@ -628,7 +628,7 @@ const getInviteToPrivateGroupEmailBody = (
     firstName = person?.firstName,
     hostName = currentHost.settings.name,
     host = currentHost.host,
-    hostLogo = currentHost.logoPng,
+    hostLogo = currentHost.logoPng || currentHost.logoLegacy,
     hostAddress = currentHost.settings.address;
 
   const lang = currentUser?.lang || currentHost?.settings?.lang || 'en';

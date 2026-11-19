@@ -17,7 +17,7 @@ const getRegistrationEmailBody = (
     numberOfPeople = values.numberOfPeople,
     hostName = currentHost.settings.name,
     host = currentHost.host,
-    hostLogo = currentHost.logoPng,
+    hostLogo = currentHost.logoPng || currentHost.logoLegacy,
     hostAddress = currentHost.settings.address,
     resource = activity.resource;
 
@@ -654,7 +654,7 @@ const getUnregistrationEmailBody = (
     firstName = values?.firstName || currentUser?.username || '',
     hostName = currentHost.settings.name,
     host = currentHost.host,
-    hostLogo = currentHost.logoPng,
+    hostLogo = currentHost.logoPng || currentHost.logoLegacy,
     hostAddress = currentHost.settings.address;
   const lang = currentUser?.lang || currentHost?.settings?.lang || 'en';
 
