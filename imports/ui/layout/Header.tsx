@@ -82,7 +82,7 @@ export function InfoPagesMenu({
             },
           }}
         >
-          <Text css={textStyles}>{label}</Text>
+          <Text css={{ ...textStyles, borderBottom: 'none' }}>{label}</Text>
           <ChevronDownIcon size="16px" />
         </Flex>
       }
@@ -185,7 +185,12 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
           item.name === 'info' ? (
             <Box
               key="info"
-              css={{ transform: 'translateY(0.1rem)', zIndex: 999 }}
+              css={{
+                display: 'flex',
+                alignItems: 'center',
+                transform: 'translateY(0.1rem)',
+                zIndex: 9999,
+              }}
             >
               <InfoPagesMenu
                 label={item.label}
