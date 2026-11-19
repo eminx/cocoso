@@ -1840,3 +1840,7 @@ body {
 .pageheading-container {
   transition: width 0.5s ease;
 }
+
+#main-menu-info .main-menu-info-item:hover .main-menu-info-item-text {
+  text-decoration: underline;
+}

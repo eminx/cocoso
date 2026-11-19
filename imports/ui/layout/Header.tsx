@@ -105,6 +105,7 @@ export function InfoPagesMenu({
           <MenuItem
             key={item._id}
             as="span"
+            className="main-menu-info-item"
             id={item._id}
             style={{ padding: '0', width: '100%' }}
           >
@@ -113,7 +114,9 @@ export function InfoPagesMenu({
               to={`/info/${parseTitle(item.title)}--${item._id}`}
               onClick={onSelect}
             >
-              <Text css={textStyles}>{item.title}</Text>
+              <Text className="main-menu-info-item-text" css={textStyles}>
+                {item.title}
+              </Text>
             </Link>
           </MenuItem>
         ))}
