@@ -71,11 +71,13 @@ const Body = (
 const CloseButton = styled('button', {
   background: 'transparent',
   border: 'none',
-  borderRadius: '9999px',
+  borderRadius: '50%',
   color: 'var(--cocoso-colors-gray-600)',
   cursor: 'pointer',
+  height: '36px',
   padding: '0.5rem',
   transition: 'all 0.3s',
+  width: '36px',
   '&:hover': {
     backgroundColor: '#f3f4f6',
     color: '#4b5563',
@@ -98,7 +100,7 @@ const Header = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
   minHeight: '1rem',
-  padding: '1rem 1.5rem',
+  padding: '1.5rem',
 });
 
 const Title = styled('h2', {
