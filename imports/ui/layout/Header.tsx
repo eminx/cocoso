@@ -192,7 +192,7 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
                 display: 'flex',
                 alignItems: 'center',
                 transform: 'translateY(0.1rem)',
-                zIndex: 9999,
+                zIndex: 999,
               }}
             >
               <InfoPagesMenu
