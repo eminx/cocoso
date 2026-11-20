@@ -30,9 +30,11 @@ export async function joinHost(userId, host) {
     );
 
     // if (isPortal || !isFederationLayout) return;
-    if (isPortal) return;
+    if (isPortal) {
+      return;
+    }
     await Memberships.upsertAsync(
-      { userId, portalHost },
+      { userId, host: portalHost },
       {
         $setOnInsert: {
           role: PORTAL_ROLE,
