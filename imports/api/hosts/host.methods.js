@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
+import Platform from '/imports/api/platform/platform';
 import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
@@ -16,7 +17,6 @@ import {
   getUsersRandomlyWithAvatarsFirst,
   publicUserFields,
 } from '../memberships/membership.helpers';
-import Platform from '/imports/api/platform/platform';
 
 Meteor.methods({
   async createNewHost(values) {
@@ -96,7 +96,7 @@ Meteor.methods({
         }
       );
       const platform = await Platform.findOneAsync();
-      const isPortalHost = platform.portalHost === host;
+      const isPortalHost = platform?.portalHost === host;
       return { ...currentHost, isPortalHost };
     } catch (error) {
       throw new Meteor.Error(error);
@@ -132,19 +132,15 @@ Meteor.methods({
         membersCountByHost[c._id] = c.count;
       });
 
-      return (
-        hosts
-          // .filter((h) => !h.isPortalHost)
-          .map((host) => ({
-            name: host.settings.name,
-            logo: host.logo,
-            host: host.host,
-            city: host.settings.city,
-            country: host.settings.country,
-            createdAt: host.createdAt,
-            membersCount: membersCountByHost[host.host] || 0,
-          }))
-      );
+      return hosts.map((host) => ({
+        name: host.settings.name,
+        logo: host.logo,
+        host: host.host,
+        city: host.settings.city,
+        country: host.settings.country,
+        createdAt: host.createdAt,
+        membersCount: membersCountByHost[host.host] || 0,
+      }));
     } catch (error) {
       throw new Meteor.Error(error);
     }

@@ -7,6 +7,7 @@ import Newsletters from './newsletter';
 import { getHost } from '../_utils/shared';
 import { isAdmin } from '../users/user.roles';
 import Memberships from '../memberships/membership';
+import Platform from '/imports/api/platform/platform';
 
 Meteor.methods({
   async getNewsletters(hostPredefined) {
@@ -49,8 +50,8 @@ Meteor.methods({
     if (!currentUser || !(await isAdmin(currentUser._id, host))) {
       throw new Meteor.Error('You are not allowed!');
     }
-
-    const isPortalHost = currentHost.isPortalHost;
+    const platform = await Platform.findOneAsync();
+    const isPortalHost = platform?.portalHost === host;
 
     try {
       const newEmailId = await Newsletters.insertAsync({
@@ -75,7 +76,7 @@ Meteor.methods({
             { 'emails.0': { $exists: true } },
             {
               fields: { username: 1, emails: 1 },
-              limit: 10000,
+              limit: 1000,
             }
           )
           .fetchAsync();
