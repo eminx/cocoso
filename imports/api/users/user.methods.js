@@ -92,14 +92,7 @@ Meteor.methods({
     const host = getHost(this);
 
     try {
-      const newUserId = await Accounts.createUserAsync(values);
-      // if (platform.isFederationLayout) {
-      await call('joinFederationPortal');
-      // }
-      if (platform.portalHost !== host) {
-        await call('joinHost', host);
-      }
-      return newUserId;
+      return await Accounts.createUserAsync(values);
     } catch (error) {
       throw new Meteor.Error(error);
     }
