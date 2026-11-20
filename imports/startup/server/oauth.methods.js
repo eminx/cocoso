@@ -87,7 +87,7 @@ export async function joinHost(userId, host) {
   const { isFederationLayout, portalHost } = platform;
   const isPortal = portalHost === host;
 
-  if (isPortal) {
+  if (isPortal || !isFederationLayout) {
     await joinOneHost(userId, host, isPortal ? PORTAL_ROLE : ROLE);
     return;
   }
