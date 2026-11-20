@@ -45,7 +45,7 @@ Meteor.methods({
     const user = await Meteor.users.findOneAsync({ username });
 
     if (!currentHost || !user) {
-      throw new Meteor.Error('No user');
+      return null;
     }
 
     if (!user.isPublic) {

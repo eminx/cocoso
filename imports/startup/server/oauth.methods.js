@@ -14,6 +14,9 @@ export async function joinHost(userId, host) {
   const portalHost = platform.portalHost;
   const isPortal = portalHost === host;
   const roleAssigned = isPortal ? PORTAL_ROLE : ROLE;
+  console.log('isFederationLayout:', isFederationLayout);
+  console.log('isPortal:', isPortal);
+  console.log('platform:', platform);
   try {
     await Memberships.upsertAsync(
       { userId, host },
