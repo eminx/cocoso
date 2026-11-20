@@ -16,6 +16,7 @@ import {
   getUsersRandomlyWithAvatarsFirst,
   publicUserFields,
 } from '../memberships/membership.helpers';
+import Platform from '/imports/api/platform/platform';
 
 Meteor.methods({
   async createNewHost(values) {
@@ -86,7 +87,6 @@ Meteor.methods({
         {
           fields: {
             host: 1,
-            isPortalHost: 1,
             logo: 1,
             logoLegacy: 1,
             logoPng: 1,
@@ -95,7 +95,9 @@ Meteor.methods({
           },
         }
       );
-      return currentHost;
+      const platform = await Platform.findOneAsync();
+      const isPortalHost = platform.portalHost === host;
+      return { ...currentHost, isPortalHost };
     } catch (error) {
       throw new Meteor.Error(error);
     }

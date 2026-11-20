@@ -44,29 +44,19 @@ Meteor.methods({
     const currentHost = await Hosts.findOneAsync({ host });
     const user = await Meteor.users.findOneAsync({ username });
 
-    if (!user) {
+    if (!currentHost || !user) {
+      throw new Meteor.Error('No user');
+    }
+
+    if (!user.isPublic) {
       return null;
-    }
-
-    if (currentHost.isPortalHost) {
-      if (user.isPublic) {
-        return await userModel(user);
-      } else {
-        return null;
-      }
-    }
-
-    const currentUser = await Meteor.userAsync();
-
-    if (user._id === currentUser?._id) {
-      return await userModel(user);
     }
 
     const membership = await Memberships.findOneAsync({
       userId: user._id,
       host,
     });
-    if (!membership?.isPublic) {
+    if (!membership || !membership.isPublic) {
       return null;
     }
 
