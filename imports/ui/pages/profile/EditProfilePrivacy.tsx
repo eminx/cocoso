@@ -144,7 +144,7 @@ export default function EditProfilePrivacy() {
           <Box py="4">
             <Checkbox
               checked={isUserPublic}
-              disabled={!isUserPublicGlobally || currentHost.isPortalHost}
+              disabled={!isUserPublicGlobally}
               id="is-user-public-locally"
               onChange={({ target: { checked } }) => setProfilePublic(checked)}
             >
