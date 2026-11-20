@@ -15,6 +15,8 @@ import {
 import { generateUsernameFromEmail } from '/imports/api/users/username.helpers';
 import '/imports/api/sso/magicLink.methods';
 
+import { joinHost } from './oauth.methods';
+
 const BROKER_COOKIE_NAME = 'cocoso_broker_session';
 const BROKER_COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days, in seconds
 const MAX_BODY_BYTES = 1024 * 100; // 100kb, generous for a login/register form
@@ -306,6 +308,7 @@ async function handleRegisterPost(req, res) {
   let userId;
   try {
     userId = await Accounts.createUserAsync({ username, email, password });
+    await joinHost(userId, redirectHost);
   } catch (error) {
     console.error('[oauth] registration failed', error);
     redirectToBrokerForm(res, '/register', oauthFields, 'registration_failed');
@@ -527,6 +530,7 @@ async function handleMagicLinkConfirmPost(req, res) {
         username: postedUsername,
         email: record.email,
       });
+      await joinHost(userId, redirectHost);
     } catch (error) {
       console.error('[oauth] magic-link registration failed', error);
       redirectToBrokerForm(res, '/login', oauthFields, 'registration_failed');
