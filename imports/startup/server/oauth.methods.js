@@ -12,50 +12,6 @@ const PORTAL_ROLE = 'participant';
 
 const fromEmail = Meteor.settings.mailCredentials.smtp.fromEmail;
 
-export async function joinHost(userId, host) {
-  const platform = await Platform.findOneAsync();
-  if (!platform) {
-    console.error('no platform!');
-    return;
-  }
-  const isFederationLayout = platform.isFederationLayout;
-  const portalHost = platform.portalHost;
-  const isPortal = portalHost === host;
-  const roleAssigned = isPortal ? PORTAL_ROLE : ROLE;
-  try {
-    await Memberships.upsertAsync(
-      { userId, host },
-      {
-        $setOnInsert: {
-          role: roleAssigned,
-          joinDate: new Date(),
-          isPublic: true,
-        },
-      }
-    );
-    await sendWelcomeEmail(userId, host);
-
-    if (isPortal || !isFederationLayout) {
-      return;
-    }
-    await Memberships.upsertAsync(
-      { userId, host: portalHost },
-      {
-        $setOnInsert: {
-          role: PORTAL_ROLE,
-          joinDate: new Date(),
-          isPublic: true,
-        },
-      }
-    );
-    await sendWelcomeEmail(userId, portalHost);
-  } catch (error) {
-    if (error.code !== 11000) {
-      console.error('[oauth] join host failed', { userId, host, error });
-    }
-  }
-}
-
 export async function sendWelcomeEmail(userId, host) {
   if (!userId || !host) {
     console.error('[oauth] sendWelcomeEmail: missing args', { userId, host });
@@ -95,4 +51,47 @@ export async function sendWelcomeEmail(userId, host) {
     console.error('[oauth] welcome email failed', { userId, host, error });
     throw error;
   }
+}
+
+async function joinOneHost(userId, host, role) {
+  let inserted = false;
+  try {
+    const result = await Memberships.upsertAsync(
+      { userId, host },
+      { $setOnInsert: { role, joinDate: new Date(), isPublic: true } }
+    );
+    inserted = Boolean(result?.insertedId);
+  } catch (error) {
+    if (error.code !== 11000) {
+      console.error('[oauth] join host failed', { userId, host, error });
+    }
+    return;
+  }
+
+  if (!inserted) return;
+
+  try {
+    await sendWelcomeEmail(userId, host);
+  } catch (error) {
+    console.error('[oauth] welcome email failed', { userId, host, error });
+  }
+}
+
+export async function joinHost(userId, host) {
+  const platform = await Platform.findOneAsync();
+  if (!platform) {
+    console.error('[oauth] joinHost: no platform doc', { userId, host });
+    return;
+  }
+
+  const { isFederationLayout, portalHost } = platform;
+  const isPortal = portalHost === host;
+
+  if (isPortal || !isFederationLayout) {
+    await joinOneHost(userId, host, isPortal ? PORTAL_ROLE : ROLE);
+    return;
+  }
+
+  await joinOneHost(userId, host, ROLE);
+  await joinOneHost(userId, portalHost, PORTAL_ROLE);
 }
