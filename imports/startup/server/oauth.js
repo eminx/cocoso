@@ -4,12 +4,16 @@ import { WebApp } from 'meteor/webapp';
 import { Accounts } from 'meteor/accounts-base';
 import cookie from 'cookie';
 
-import Hosts from '../../api/hosts/host';
-import AuthorizationCodes from '../../api/sso/authorizationCode';
-import MagicLinkTokens from '../../api/sso/magicLinkToken';
-import { base64url, validateRedirect, mintAuthorizationCode } from '../../api/sso/oauthHelpers';
-import { generateUsernameFromEmail } from '../../api/users/username.helpers';
-import '../../api/sso/magicLink.methods';
+import Hosts from '/imports/api/hosts/host';
+import AuthorizationCodes from '/imports/api/sso/authorizationCode';
+import MagicLinkTokens from '/imports/api/sso/magicLinkToken';
+import {
+  base64url,
+  validateRedirect,
+  mintAuthorizationCode,
+} from '/imports/api/sso/oauthHelpers';
+import { generateUsernameFromEmail } from '/imports/api/users/username.helpers';
+import '/imports/api/sso/magicLink.methods';
 
 const BROKER_COOKIE_NAME = 'cocoso_broker_session';
 const BROKER_COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days, in seconds
@@ -33,7 +37,13 @@ function readBody(req) {
   });
 }
 
-function oauthQueryString({ host, redirectUri, state, codeChallenge, codeChallengeMethod }) {
+function oauthQueryString({
+  host,
+  redirectUri,
+  state,
+  codeChallenge,
+  codeChallengeMethod,
+}) {
   const params = new URLSearchParams({
     client_id: host || '',
     redirect_uri: redirectUri || '',
@@ -79,7 +89,10 @@ function setBrokerCookie(res, token) {
     maxAge: BROKER_COOKIE_MAX_AGE,
     path: '/',
   });
-  res.setHeader('Set-Cookie', existing ? [].concat(existing, serialized) : serialized);
+  res.setHeader(
+    'Set-Cookie',
+    existing ? [].concat(existing, serialized) : serialized
+  );
 }
 
 function clearBrokerCookie(res) {
@@ -91,10 +104,16 @@ function clearBrokerCookie(res) {
     maxAge: 0,
     path: '/',
   });
-  res.setHeader('Set-Cookie', existing ? [].concat(existing, serialized) : serialized);
+  res.setHeader(
+    'Set-Cookie',
+    existing ? [].concat(existing, serialized) : serialized
+  );
 }
 
-async function mintCodeAndRedirect(res, { userId, host, redirectUri, state, codeChallenge, codeChallengeMethod }) {
+async function mintCodeAndRedirect(
+  res,
+  { userId, host, redirectUri, state, codeChallenge, codeChallengeMethod }
+) {
   const code = await mintAuthorizationCode({
     userId,
     host,
@@ -157,7 +176,13 @@ async function handleAuthorizeGet(req, res, params) {
     return;
   }
 
-  const oauthFields = { host, redirectUri, state, codeChallenge, codeChallengeMethod };
+  const oauthFields = {
+    host,
+    redirectUri,
+    state,
+    codeChallenge,
+    codeChallengeMethod,
+  };
 
   const userId = await findBrokerSessionUserId(req);
   if (userId) {
@@ -203,10 +228,18 @@ async function handleAuthorizePost(req, res) {
     code_challenge: codeChallenge,
     code_challenge_method: codeChallengeMethod,
   } = params;
-  const oauthFields = { host, redirectUri, state, codeChallenge, codeChallengeMethod };
+  const oauthFields = {
+    host,
+    redirectUri,
+    state,
+    codeChallenge,
+    codeChallengeMethod,
+  };
 
   const redirectHost = validateRedirect(host, redirectUri);
-  const hostDoc = redirectHost ? await Hosts.findOneAsync({ host: redirectHost }) : null;
+  const hostDoc = redirectHost
+    ? await Hosts.findOneAsync({ host: redirectHost })
+    : null;
   if (!hostDoc) {
     res.statusCode = 400;
     res.end('Unknown client');
@@ -241,10 +274,18 @@ async function handleRegisterPost(req, res) {
     code_challenge: codeChallenge,
     code_challenge_method: codeChallengeMethod,
   } = params;
-  const oauthFields = { host, redirectUri, state, codeChallenge, codeChallengeMethod };
+  const oauthFields = {
+    host,
+    redirectUri,
+    state,
+    codeChallenge,
+    codeChallengeMethod,
+  };
 
   const redirectHost = validateRedirect(host, redirectUri);
-  const hostDoc = redirectHost ? await Hosts.findOneAsync({ host: redirectHost }) : null;
+  const hostDoc = redirectHost
+    ? await Hosts.findOneAsync({ host: redirectHost })
+    : null;
   if (!hostDoc) {
     res.statusCode = 400;
     res.end('Unknown client');
@@ -288,10 +329,18 @@ async function handleConfirmPost(req, res) {
     code_challenge: codeChallenge,
     code_challenge_method: codeChallengeMethod,
   } = params;
-  const oauthFields = { host, redirectUri, state, codeChallenge, codeChallengeMethod };
+  const oauthFields = {
+    host,
+    redirectUri,
+    state,
+    codeChallenge,
+    codeChallengeMethod,
+  };
 
   const redirectHost = validateRedirect(host, redirectUri);
-  const hostDoc = redirectHost ? await Hosts.findOneAsync({ host: redirectHost }) : null;
+  const hostDoc = redirectHost
+    ? await Hosts.findOneAsync({ host: redirectHost })
+    : null;
   if (!hostDoc) {
     res.statusCode = 400;
     res.end('Unknown client');
@@ -311,7 +360,9 @@ async function handleConfirmPost(req, res) {
   // registration paths already do via completeBrokerAuth. Without this,
   // the "remember me" cookie only ever counted down from its very first
   // login and was never refreshed by later confirmations.
-  const existingToken = cookie.parse(req.headers.cookie || '')[BROKER_COOKIE_NAME];
+  const existingToken = cookie.parse(req.headers.cookie || '')[
+    BROKER_COOKIE_NAME
+  ];
   if (existingToken) {
     setBrokerCookie(res, existingToken);
   }
@@ -360,7 +411,11 @@ function magicLinkOauthFields(record) {
 // need to make the person start the whole request-a-link flow over.
 function redirectToMagicLinkConfirm(res, token, oauthFields, extra) {
   const qs = oauthQueryString(oauthFields);
-  const extraQs = new URLSearchParams({ token, isNew: 'true', ...extra }).toString();
+  const extraQs = new URLSearchParams({
+    token,
+    isNew: 'true',
+    ...extra,
+  }).toString();
   res.writeHead(302, { Location: `/magic-link-confirm?${qs}&${extraQs}` });
   res.end();
 }
@@ -385,7 +440,9 @@ async function handleMagicLinkGet(req, res, token) {
 
   const identityQs = new URLSearchParams({
     token,
-    username: existingUser ? existingUser.username || '' : await generateUsernameFromEmail(record.email),
+    username: existingUser
+      ? existingUser.username || ''
+      : await generateUsernameFromEmail(record.email),
     isNew: existingUser ? 'false' : 'true',
   }).toString();
 
@@ -409,8 +466,13 @@ async function handleMagicLinkConfirmPost(req, res) {
   }
 
   const oauthFields = magicLinkOauthFields(record);
-  const redirectHost = validateRedirect(oauthFields.host, oauthFields.redirectUri);
-  const hostDoc = redirectHost ? await Hosts.findOneAsync({ host: redirectHost }) : null;
+  const redirectHost = validateRedirect(
+    oauthFields.host,
+    oauthFields.redirectUri
+  );
+  const hostDoc = redirectHost
+    ? await Hosts.findOneAsync({ host: redirectHost })
+    : null;
   if (!hostDoc) {
     res.statusCode = 400;
     res.end('Unknown client');
@@ -487,7 +549,12 @@ async function handleToken(req, res) {
     return;
   }
 
-  const { code, code_verifier: codeVerifier, redirect_uri: redirectUri, client_id: host } = payload;
+  const {
+    code,
+    code_verifier: codeVerifier,
+    redirect_uri: redirectUri,
+    client_id: host,
+  } = payload;
 
   const respondInvalid = () => {
     res.statusCode = 400;
@@ -534,7 +601,12 @@ async function handleToken(req, res) {
   await Accounts._insertLoginToken(authCode.userId, stampedToken);
 
   res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({ token: stampedToken.token, tokenExpires: stampedToken.when }));
+  res.end(
+    JSON.stringify({
+      token: stampedToken.token,
+      tokenExpires: stampedToken.when,
+    })
+  );
 }
 
 Meteor.startup(() => {
@@ -561,11 +633,20 @@ Meteor.startup(() => {
         await handleRegisterPost(req, res);
       } else if (pathname === '/oauth/confirm' && req.method === 'POST') {
         await handleConfirmPost(req, res);
-      } else if (pathname === '/oauth/logout-everywhere' && req.method === 'POST') {
+      } else if (
+        pathname === '/oauth/logout-everywhere' &&
+        req.method === 'POST'
+      ) {
         await handleLogoutEverywherePost(req, res);
-      } else if (pathname === '/oauth/magic-link/confirm' && req.method === 'POST') {
+      } else if (
+        pathname === '/oauth/magic-link/confirm' &&
+        req.method === 'POST'
+      ) {
         await handleMagicLinkConfirmPost(req, res);
-      } else if (pathname.startsWith('/oauth/magic-link/') && req.method === 'GET') {
+      } else if (
+        pathname.startsWith('/oauth/magic-link/') &&
+        req.method === 'GET'
+      ) {
         const token = decodeURIComponent(
           pathname.slice('/oauth/magic-link/'.length)
         );
