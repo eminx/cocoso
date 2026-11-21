@@ -308,6 +308,7 @@ async function handleRegisterPost(req, res) {
   let userId;
   try {
     userId = await Accounts.createUserAsync({ username, email, password });
+    await Accounts.sendVerificationEmail(userId);
     await joinHost(userId, redirectHost);
   } catch (error) {
     console.error('[oauth] registration failed', error);
@@ -530,6 +531,9 @@ async function handleMagicLinkConfirmPost(req, res) {
         username: postedUsername,
         email: record.email,
       });
+      await Meteor.users.updateAsync(userId, {
+        $set: { 'emails.0.verified': true },
+      });
       await joinHost(userId, redirectHost);
     } catch (error) {
       console.error('[oauth] magic-link registration failed', error);
@@ -657,6 +661,21 @@ Meteor.startup(() => {
         await handleMagicLinkGet(req, res, token);
       } else if (pathname === '/oauth/token' && req.method === 'POST') {
         await handleToken(req, res);
+      } else if (
+        pathname.startsWith('/verify-email/') &&
+        req.method === 'GET'
+      ) {
+        const token = decodeURIComponent(
+          pathname.slice('/verify-email/'.length)
+        );
+        try {
+          await Accounts.verifyEmail(token);
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.end('<p>Email verified. You can close this tab.</p>');
+        } catch (error) {
+          res.statusCode = 400;
+          res.end('Invalid or expired verification link.');
+        }
       } else {
         // Not an OAuth protocol endpoint — let it fall through to normal
         // Meteor page/asset serving, so /login, /register, the client
