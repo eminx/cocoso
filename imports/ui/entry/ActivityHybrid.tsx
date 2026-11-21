@@ -161,6 +161,9 @@ export default function ActivityHybrid({
 
   const url = `https://${activity.host}/activities/${activity._id}`;
 
+  const images =
+    activity.images || (activity.imageUrl ? [activity.imageUrl] : null);
+
   return (
     <TablyCentered
       action={
@@ -173,7 +176,7 @@ export default function ActivityHybrid({
       }
       dates={<ActionDates activity={activity} />}
       backLink={backLink}
-      images={activity.images || [activity.imageUrl || '']}
+      images={images}
       subTitle={activity?.subTitle}
       tabs={tabs}
       title={activity?.title || ''}

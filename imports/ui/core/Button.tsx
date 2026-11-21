@@ -212,12 +212,12 @@ export const IconButton = (props: IconButtonProps) => {
       style={{
         padding:
           size === 'xs'
-            ? '0.25rem'
-            : size === 'sm'
             ? '0.35rem'
+            : size === 'sm'
+            ? '0.45rem'
             : size === 'lg'
             ? '0.65rem'
-            : '0.5rem',
+            : '0.55rem',
         width:
           size === 'xs'
             ? '2rem'

@@ -49,7 +49,7 @@ interface Tab {
 interface TablyCenteredProps extends HeaderProps {
   action?: ReactNode;
   content?: ReactNode;
-  images?: string[];
+  images?: string[] | null;
   tabs?: Tab[];
   url?: string;
 }
@@ -198,7 +198,7 @@ const TablyCentered: React.FC<TablyCenteredProps> = ({
   const selectedTab = tabs?.find((tab, index) => index === tabIndex);
 
   const description = subTitle || content?.toString() || author?.username;
-  const imageUrl = getImageUrlBest(images && images[0]);
+  const imageUrl = images && images[0] && getImageUrlBest(images[0]);
 
   return (
     <>
