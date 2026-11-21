@@ -32,7 +32,7 @@ function setupSMTP() {
     smtp.password
   }@${smtp.host}:${smtp.port}`;
   Accounts.emailTemplates.from = smtp.fromEmail;
-  Accounts.emailTemplates.resetPassword.from = smtp.fromEmail;
+  Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
   Accounts.emailTemplates.resetPassword.text = function (user, url) {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
@@ -41,7 +41,7 @@ function setupSMTP() {
   Accounts.urls.verifyEmail = (token) =>
     `https://${Meteor.settings.public.authDomain}/verify-email/${token}`;
 
-  Accounts.emailTemplates.verifyEmail.from = smtp.fromEmail;
+  Accounts.emailTemplates.verifyEmail.from = () => smtp.fromEmail;
   Accounts.emailTemplates.verifyEmail.subject = () =>
     `Verify your email at ${Meteor.settings.public.name}`;
 }
