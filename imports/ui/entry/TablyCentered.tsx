@@ -16,11 +16,11 @@ import {
   Link as CLink,
   Tag,
 } from '/imports/ui/core';
+import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 import Tabs from '../core/Tabs';
 import BackLink, { BackLinkData } from './BackLink';
 import { getImageUrl, getImageUrlBest } from '../utils/imageHelper';
-import EmblaSlider from '/imports/ui/generic/EmblaSlider';
 
 interface Author {
   username: string;
