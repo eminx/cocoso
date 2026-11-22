@@ -48,6 +48,8 @@ export default function SsoCallbackPage({
 
       const pending = JSON.parse(pendingRaw);
       if (pending.state !== state) {
+        console.log('pending:', pending);
+        console.log('state:', state);
         setError(t('sso.callback.errors.stateMismatch'));
         return;
       }
