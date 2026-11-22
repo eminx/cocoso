@@ -44,13 +44,13 @@ labels:
   contact: Kontakt
   content: Innehåll
   create:
-    activities: Nytt evenemang
-    calendar: Nytt bokning
-    groups: Nytt grupp/process
-    info: Nytt infosida
+    activities: Ny evenemang
+    calendar: Ny bokning
+    groups: Ny grupp/process
+    info: Ny infosida
     resources: Ny resurs
     works: Nytt inlägg
-    host: Nytt community
+    host: Ny community
   update:
     activities: Uppdatera aktivitetet
     calendar: Uppdatera aktivitetet
@@ -61,9 +61,9 @@ labels:
     works: Uppdatera inlägget
   event: Arrangemang
   bookings: Bokningar
-  newBooking: Nytt bokning
+  newBooking: Ny bokning
   page: Sida
-  newPage: Nytt sida
+  newPage: Ny sida
   group: Groupen
   remove: Ta bort
   info: Info
