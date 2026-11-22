@@ -95,6 +95,7 @@ const Login = ({ isSubmitted, onSubmit }: LoginProps) => {
 
 interface SignupProps {
   hideTermsCheck?: boolean;
+  isSubmitted?: boolean;
   // When set, the terms link opens this URL in a new tab instead of the
   // in-page Terms modal — used where there's no single host's terms to show
   // inline (e.g. the SSO broker, which isn't scoped to one community).
@@ -104,6 +105,7 @@ interface SignupProps {
 
 const Signup = ({
   hideTermsCheck = false,
+  isSubmitted,
   termsHref,
   onSubmit,
 }: SignupProps) => {
@@ -247,7 +249,7 @@ const Signup = ({
                   !usernameUnique ||
                   !emailUnique
                 }
-                loading={isSubmitting}
+                loading={isSubmitted}
                 type="submit"
               >
                 {tc('actions.submit')}
@@ -275,10 +277,14 @@ const Signup = ({
 };
 
 interface ForgotPasswordProps {
+  isSubmitted?: boolean;
   onForgotPassword: (data: any) => void;
 }
 
-const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
+const ForgotPassword = ({
+  isSubmitted,
+  onForgotPassword,
+}: ForgotPasswordProps) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -308,7 +314,7 @@ const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
         <Flex justify="flex-end" w="100%">
           <Button
             isDisabled={!isDirty || !isValid}
-            isLoading={isSubmitting}
+            isLoading={isSubmitted}
             type="submit"
           >
             {tc('actions.submit')}
@@ -320,10 +326,14 @@ const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
 };
 
 interface ResetPasswordProps {
+  isSubmitted?: boolean;
   onResetPassword: (data: any) => void;
 }
 
-const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
+const ResetPassword = ({
+  isSubmitted,
+  onResetPassword,
+}: ResetPasswordProps) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -356,7 +366,7 @@ const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
         <Flex justify="flex-end" w="100%">
           <Button
             isDisabled={!isDirty || !isValid}
-            isLoading={isSubmitting}
+            isLoading={isSubmitted}
             type="submit"
           >
             {tc('actions.submit')}
@@ -415,7 +425,11 @@ const AuthContainer = ({
             })}
           </Text>
         </Box>
-        <Signup termsHref={termsHref} onSubmit={onSignup} />
+        <Signup
+          isSubmitted={isSubmitted}
+          termsHref={termsHref}
+          onSubmit={onSignup}
+        />
         <Divider my="6" />
         <Center>
           <Text>{t('signup.labels.subtitle')}</Text>
@@ -430,7 +444,10 @@ const AuthContainer = ({
   if (mode === 'recover') {
     return (
       <Box>
-        <ForgotPassword onForgotPassword={onForgotPassword} />
+        <ForgotPassword
+          isSubmitted={isSubmitted}
+          onForgotPassword={onForgotPassword}
+        />
         <Divider my="6" />
         <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>
@@ -447,7 +464,10 @@ const AuthContainer = ({
   if (mode === 'reset') {
     return (
       <Box>
-        <ResetPassword onResetPassword={onResetPassword} />
+        <ResetPassword
+          isSubmitted={isSubmitted}
+          onResetPassword={onResetPassword}
+        />
         <Divider my="6" />
         <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>
