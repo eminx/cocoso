@@ -391,23 +391,6 @@ Meteor.methods({
   },
 
   async resetUserPassword(email) {
-    const host = getHost(this);
-    Accounts.urls.resetPassword = function (token) {
-      return `https://${host}/reset-password/${token}`;
-    };
-
-    // Reached from the broker (imports/ui/pages/auth/BrokerAuthPage.tsx),
-    // not any one tenant — the platform's own name/email is the right
-    // "from" identity here, not a per-host one.
-    const platform = await Platform.findOneAsync();
-    const smtp = Meteor.settings?.mailCredentials?.smtp;
-    if (platform?.name && smtp?.fromEmail) {
-      const fromEmail = extractEmailAddress(smtp.fromEmail);
-      Accounts.emailTemplates.resetPassword.from = () =>
-        `${platform.name} <${fromEmail}>`;
-    }
-    Accounts.emailTemplates.siteName = platform?.name || host;
-
     try {
       await Meteor.callAsync('forgotPassword', email);
     } catch (error) {

@@ -277,14 +277,10 @@ const Signup = ({
 };
 
 interface ForgotPasswordProps {
-  isSubmitted?: boolean;
   onForgotPassword: (data: any) => void;
 }
 
-const ForgotPassword = ({
-  isSubmitted,
-  onForgotPassword,
-}: ForgotPasswordProps) => {
+const ForgotPassword = ({ onForgotPassword }: ForgotPasswordProps) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -314,7 +310,7 @@ const ForgotPassword = ({
         <Flex justify="flex-end" w="100%">
           <Button
             isDisabled={!isDirty || !isValid}
-            isLoading={isSubmitted}
+            isLoading={isSubmitting}
             type="submit"
           >
             {tc('actions.submit')}
@@ -326,14 +322,10 @@ const ForgotPassword = ({
 };
 
 interface ResetPasswordProps {
-  isSubmitted?: boolean;
   onResetPassword: (data: any) => void;
 }
 
-const ResetPassword = ({
-  isSubmitted,
-  onResetPassword,
-}: ResetPasswordProps) => {
+const ResetPassword = ({ onResetPassword }: ResetPasswordProps) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -366,7 +358,7 @@ const ResetPassword = ({
         <Flex justify="flex-end" w="100%">
           <Button
             isDisabled={!isDirty || !isValid}
-            isLoading={isSubmitted}
+            isLoading={isSubmitting}
             type="submit"
           >
             {tc('actions.submit')}
@@ -443,11 +435,8 @@ const AuthContainer = ({
 
   if (mode === 'recover') {
     return (
-      <Box>
-        <ForgotPassword
-          isSubmitted={isSubmitted}
-          onForgotPassword={onForgotPassword}
-        />
+      <Box w="100%">
+        <ForgotPassword onForgotPassword={onForgotPassword} />
         <Divider my="6" />
         <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>
@@ -463,11 +452,8 @@ const AuthContainer = ({
 
   if (mode === 'reset') {
     return (
-      <Box>
-        <ResetPassword
-          isSubmitted={isSubmitted}
-          onResetPassword={onResetPassword}
-        />
+      <Box w="100%">
+        <ResetPassword onResetPassword={onResetPassword} />
         <Divider my="6" />
         <Flex justify="space-around">
           <Button variant="ghost" onClick={() => setMode('login')}>

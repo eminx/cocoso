@@ -11,6 +11,7 @@ import Registrations from '/imports/api/registrations/registration';
 import { buildOccurrenceFields } from '/imports/api/occurrences/occurrence.helpers';
 import { call } from '/imports/api/_utils/shared';
 
+import mailtranslations from './mailtranslations';
 import serverRenderer from './serverRenderer';
 import './api';
 import './migrations';
@@ -20,6 +21,7 @@ const { cdn_server } = Meteor.settings;
 
 function setupSMTP() {
   const smtp = Meteor.settings?.mailCredentials?.smtp;
+  const authDomain = Meteor.settings?.public?.authDomain;
 
   if (!smtp) {
     console.warn(
@@ -27,23 +29,45 @@ function setupSMTP() {
     );
     return;
   }
+  if (!authDomain) {
+    console.warn('Auth Domain not found in Meteor.settings.public.authDomain');
+    return;
+  }
 
   process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${
     smtp.password
   }@${smtp.host}:${smtp.port}`;
-  Accounts.emailTemplates.from = smtp.fromEmail;
-  Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
-  Accounts.emailTemplates.resetPassword.text = function (user, url) {
-    const newUrl = url.replace('#/', '');
-    return `To reset your password, simply click the link below. ${newUrl}`;
-  };
+
+  const platformName = Meteor.settings?.public?.name;
+  const fromEmail = `${platformName} <{smtp.fromEmail}>`;
 
   Accounts.urls.verifyEmail = (token) =>
-    `https://${Meteor.settings.public.authDomain}/verify-email/${token}`;
+    `https://${authDomain}/verify-email/${token}`;
+  Accounts.urls.resetPassword = (token) =>
+    `https://${authDomain}/reset-password/${token}`;
 
-  Accounts.emailTemplates.verifyEmail.from = () => smtp.fromEmail;
-  Accounts.emailTemplates.verifyEmail.subject = () =>
-    `Verify your email at ${Meteor.settings.public.name}`;
+  Accounts.emailTemplates.siteName = platformName;
+  Accounts.emailTemplates.from = fromEmail;
+
+  Accounts.emailTemplates.resetPassword.from = () => fromEmail;
+  Accounts.emailTemplates.resetPassword.subject = (user) => {
+    return mailtranslations[user.lang].resetPassword.subject(platformName);
+  };
+  Accounts.emailTemplates.resetPassword.text = (user, url) => {
+    const newUrl = url.replace('#/', '');
+    return mailtranslations[user.lang].resetPassword.text(
+      newUrl,
+      user.username
+    );
+  };
+
+  Accounts.emailTemplates.verifyEmail.from = () => fromEmail;
+  Accounts.emailTemplates.verifyEmail.subject = (user) => {
+    return mailtranslations[user.lang].verifyEmail.subject(platformName);
+  };
+  Accounts.emailTemplates.verifyEmail.text = (user, url) => {
+    return mailtranslations[user.lang].verifyEmail.text(url, user.username);
+  };
 }
 
 Meteor.startup(async () => {
