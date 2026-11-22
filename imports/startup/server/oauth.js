@@ -691,4 +691,11 @@ Meteor.startup(() => {
       res.end('Internal error');
     }
   });
+
+  Accounts.urls.verifyEmail = (token) =>
+    `https://${Meteor.settings.public.authDomain}/verify-email/${token}`;
+
+  Accounts.emailTemplates.verifyEmail.from = () => smtp.fromEmail;
+  Accounts.emailTemplates.verifyEmail.subject = () =>
+    `Verify your email at ${Meteor.settings.public.name}`;
 });
