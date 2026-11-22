@@ -41,6 +41,9 @@ function setupSMTP() {
   const platformName = Meteor.settings?.public?.name;
   const fromEmail = `${platformName} <{smtp.fromEmail}>`;
 
+  const browserLang = navigator.language.split('-')[0];
+  const translations = mailtranslations[browserLang] ?? mailtranslations['en'];
+
   Accounts.urls.verifyEmail = (token) =>
     `https://${authDomain}/verify-email/${token}`;
   Accounts.urls.resetPassword = (token) =>
@@ -51,29 +54,19 @@ function setupSMTP() {
 
   Accounts.emailTemplates.resetPassword.from = () => fromEmail;
   Accounts.emailTemplates.resetPassword.subject = (user) => {
-    return mailtranslations[user.lang || 'en'].resetPassword.subject(
-      platformName
-    );
+    return translations.resetPassword.subject(platformName);
   };
   Accounts.emailTemplates.resetPassword.text = (user, url) => {
     const newUrl = url.replace('#/', '');
-    return mailtranslations[user.lang || 'en'].resetPassword.text(
-      newUrl,
-      user.username
-    );
+    return translations.resetPassword.text(newUrl, user.username);
   };
 
   Accounts.emailTemplates.verifyEmail.from = () => fromEmail;
   Accounts.emailTemplates.verifyEmail.subject = (user) => {
-    return mailtranslations[user.lang || 'en'].verifyEmail.subject(
-      platformName
-    );
+    return translations.verifyEmail.subject(platformName);
   };
   Accounts.emailTemplates.verifyEmail.text = (user, url) => {
-    return mailtranslations[user.lang || 'en'].verifyEmail.text(
-      url,
-      user.username
-    );
+    return translations.verifyEmail.text(url, user.username);
   };
 }
 
