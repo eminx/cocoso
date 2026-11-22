@@ -6,6 +6,7 @@ export default {
         `<p>Hello ${username},</p><p>To verify your account email, simply click the link below.</p><p><a href="${url}">${url}</a></p><p>Thank you.</p>`,
       text: (url, username) =>
         `Hello ${username},\n\nTo verify your account email, simply click the link below.\n\n${url}\n\nThank you.\n`,
+      verifiedText: 'Email verified. You may close this tab.',
     },
     resetPassword: {
       subject: (platformName) =>
@@ -23,6 +24,7 @@ export default {
         `<p>Hej ${username},</p><p>För att verifiera din kontos e-postadress, klicka på länken nedan.</p><p><a href="${url}">${url}</a></p><p>Tack.</p>`,
       text: (url, username) =>
         `Hej ${username},\n\nFör att verifiera din kontos e-postadress, klicka på länken nedan.\n\n${url}\n\nTack.\n\n`,
+      verifiedText: 'E-post verifierad. Du kan stänga den här fliken.',
     },
     resetPassword: {
       subject: (platformName) =>
@@ -40,6 +42,7 @@ export default {
         `<p>Merhaba ${username},</p><p>Hesabının e-postasını doğrulamak için aşağıdaki bağlantıya tıklaman yeterli:</p><p><a href="${url}">${url}</a></p><p>Teşekkürler.</p>`,
       text: (url, username) =>
         `Merhaba ${username},\n\nHesabının e-postasını doğrulamak için aşağıdaki bağlantıya tıklaman yeterli:\n\n${url}\n\nTeşekkürler.\n\n`,
+      verifiedText: 'E-posta doğrulandı. Bu sekmeyi kapatabilirsin.',
     },
     resetPassword: {
       subject: (platformName) => `${platformName} Şifreni Yenile`,

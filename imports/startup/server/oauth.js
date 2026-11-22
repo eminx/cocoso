@@ -5,6 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import cookie from 'cookie';
 
 import Hosts from '/imports/api/hosts/host';
+import Memberships from '/imports/api/memberships/membership';
 import AuthorizationCodes from '/imports/api/sso/authorizationCode';
 import MagicLinkTokens from '/imports/api/sso/magicLinkToken';
 import {
@@ -14,8 +15,9 @@ import {
 } from '/imports/api/sso/oauthHelpers';
 import { generateUsernameFromEmail } from '/imports/api/users/username.helpers';
 import '/imports/api/sso/magicLink.methods';
+import mailtranslations from './mailtranslations';
 
-import { joinHost } from './oauth.methods';
+import { joinHost, sendWelcomeEmail } from './oauth.methods';
 
 const BROKER_COOKIE_NAME = 'cocoso_broker_session';
 const BROKER_COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days, in seconds
@@ -308,12 +310,20 @@ async function handleRegisterPost(req, res) {
   let userId;
   try {
     userId = await Accounts.createUserAsync({ username, email, password });
-    await Accounts.sendVerificationEmail(userId);
-    await joinHost(userId, redirectHost);
   } catch (error) {
     console.error('[oauth] registration failed', error);
     redirectToBrokerForm(res, '/register', oauthFields, 'registration_failed');
     return;
+  }
+  try {
+    await joinHost(userId, redirectHost);
+  } catch (error) {
+    console.error('[joinHost] failed', error);
+  }
+  try {
+    await Accounts.sendVerificationEmail(userId);
+  } catch (error) {
+    console.error('[sendVerificationEmail] failed', error);
   }
 
   await completeBrokerAuth(res, userId, oauthFields);
@@ -525,6 +535,23 @@ async function handleMagicLinkConfirmPost(req, res) {
   let userId;
   if (existingUser) {
     userId = existingUser._id;
+    const needsVerify = existingUser.emails?.[0]?.verified !== true;
+    const staleTokens =
+      existingUser.services?.email?.verificationTokens?.length ?? 0;
+
+    if (needsVerify || staleTokens > 0) {
+      await Meteor.users.updateAsync(
+        { _id: userId },
+        {
+          ...(needsVerify && { $set: { 'emails.0.verified': true } }),
+          ...(staleTokens > 0 && {
+            $pull: {
+              'services.email.verificationTokens': { address: record.email },
+            },
+          }),
+        }
+      );
+    }
   } else {
     try {
       userId = await Accounts.createUserAsync({
@@ -534,11 +561,15 @@ async function handleMagicLinkConfirmPost(req, res) {
       await Meteor.users.updateAsync(userId, {
         $set: { 'emails.0.verified': true },
       });
-      await joinHost(userId, redirectHost);
     } catch (error) {
       console.error('[oauth] magic-link registration failed', error);
       redirectToBrokerForm(res, '/login', oauthFields, 'registration_failed');
       return;
+    }
+    try {
+      await joinHost(userId, redirectHost);
+    } catch (error) {
+      console.error('[joinHost] failed', error);
     }
   }
 
@@ -692,13 +723,24 @@ Meteor.startup(() => {
             return;
           }
 
-          await Meteor.users.updateAsync(user._id, {
+          const userId = user._id;
+          await Meteor.users.updateAsync(userId, {
             $set: { [`emails.${emailIndex}.verified`]: true },
             $pull: { 'services.email.verificationTokens': { token } },
           });
 
+          const acceptLang = (req.headers['accept-language'] || 'en')
+            .split(',')[0]
+            .split('-')[0];
+          const translations =
+            mailtranslations[acceptLang] ?? mailtranslations.en;
+
           res.writeHead(200, { 'Content-Type': 'text/html' });
-          res.end('<p>Email verified. You can close this tab.</p>');
+          res.end(
+            `<div style="padding-top:20%; font-family: sans-serif; text-align: center;">
+              <p>${translations.verifyEmail.verifiedText}</p>
+            </div>`
+          );
         } catch (error) {
           console.log('token:', token);
           console.log('error:', error);
