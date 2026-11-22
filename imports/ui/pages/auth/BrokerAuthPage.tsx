@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
@@ -113,6 +113,7 @@ interface BrokerAuthPageProps {
 
 export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   const [t] = useTranslation('accounts');
+  const { i18n } = useTranslation();
   const [submitting, setSubmitting] = useState(false);
   const [resetDone, setResetDone] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -129,6 +130,15 @@ export default function BrokerAuthPage({ platform }: BrokerAuthPageProps) {
   const [magicLinkEmail, setMagicLinkEmail] = useState('');
   const [magicLinkRequesting, setMagicLinkRequesting] = useState(false);
   const [errorCode] = useState(readErrorCode);
+
+  useEffect(() => {
+    const browserLang = navigator.language.split('-')[0]; // 'sv-SE' → 'sv'
+    const supported = (i18n.options.supportedLngs ?? []) as string[];
+    if (supported.includes(browserLang) && i18n.language !== browserLang) {
+      i18n.changeLanguage(browserLang);
+    }
+  }, []);
+
   const errorMessage = errorCode
     ? t(`sso.broker.errors.${ERROR_CODE_KEYS[errorCode] || 'generic'}`)
     : null;
