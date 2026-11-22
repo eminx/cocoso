@@ -692,10 +692,12 @@ Meteor.startup(() => {
     }
   });
 
+  const smtp = Meteor.settings?.mailCredentials?.smtp;
+
   Accounts.urls.verifyEmail = (token) =>
     `https://${Meteor.settings.public.authDomain}/verify-email/${token}`;
 
   Accounts.emailTemplates.verifyEmail.from = () => smtp.fromEmail;
-  Accounts.emailTemplates.verifyEmail.subject = () =>
+  Accounts.emailTemplates.verifyEmail.subject = (user) =>
     `Verify your email at ${Meteor.settings.public.name}`;
 });
