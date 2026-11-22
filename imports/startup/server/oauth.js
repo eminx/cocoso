@@ -669,10 +669,39 @@ Meteor.startup(() => {
           pathname.slice('/verify-email/'.length)
         );
         try {
-          await Accounts.verifyEmail(token);
+          const user = await Meteor.users.findOneAsync({
+            'services.email.verificationTokens.token': token,
+          });
+
+          if (!user) {
+            res.statusCode = 400;
+            res.end('Invalid or expired verification link.');
+            return;
+          }
+
+          const tokenRecord = user.services.email.verificationTokens.find(
+            (t) => t.token === token
+          );
+          const emailIndex = user.emails.findIndex(
+            (e) => e.address === tokenRecord.address
+          );
+
+          if (emailIndex === -1) {
+            res.statusCode = 400;
+            res.end('Invalid or expired verification link.');
+            return;
+          }
+
+          await Meteor.users.updateAsync(user._id, {
+            $set: { [`emails.${emailIndex}.verified`]: true },
+            $pull: { 'services.email.verificationTokens': { token } },
+          });
+
           res.writeHead(200, { 'Content-Type': 'text/html' });
           res.end('<p>Email verified. You can close this tab.</p>');
         } catch (error) {
+          console.log('token:', token);
+          console.log('error:', error);
           res.statusCode = 400;
           res.end('Invalid or expired verification link.');
         }
@@ -691,13 +720,4 @@ Meteor.startup(() => {
       res.end('Internal error');
     }
   });
-
-  const smtp = Meteor.settings?.mailCredentials?.smtp;
-
-  Accounts.urls.verifyEmail = (token) =>
-    `https://${Meteor.settings.public.authDomain}/verify-email/${token}`;
-
-  Accounts.emailTemplates.verifyEmail.from = () => smtp.fromEmail;
-  Accounts.emailTemplates.verifyEmail.subject = (user) =>
-    `Verify your email at ${Meteor.settings.public.name}`;
 });
