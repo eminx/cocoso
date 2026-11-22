@@ -39,7 +39,7 @@ function setupSMTP() {
   }@${smtp.host}:${smtp.port}`;
 
   const platformName = Meteor.settings?.public?.name;
-  const fromEmail = `${platformName} <{smtp.fromEmail}>`;
+  const fromEmail = `${platformName} <${smtp.fromEmail}>`;
 
   const browserLang = navigator.language.split('-')[0];
   const translations = mailtranslations[browserLang] ?? mailtranslations['en'];
