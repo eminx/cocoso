@@ -38,13 +38,15 @@ function MemberItem({ member }) {
 
   return (
     <Box p="6">
-      <Heading size="md" fontWeight="bold" mb="1">
+      <Heading size="md" fontWeight="bold" css={{ marginBottom: '6px' }}>
         {member.username}
         <Badge size="sm" css={{ marginTop: '-1rem', marginLeft: '0.5rem' }}>
           {t(`roles.${member.role}`).toLowerCase()}
         </Badge>
       </Heading>
-      <Code size="sm">{member && member.email}</Code>
+      <Code size="sm" css={{ margin: '0 0' }}>
+        {member && member.email}
+      </Code>
       <br />
       <br />
       <Text size="xs" color="gray.500" fontStyle="italic">

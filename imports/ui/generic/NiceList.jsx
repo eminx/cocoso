@@ -24,7 +24,7 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
     <Flex align="flex-start" justify="space-between">
       <Box w="100%">{renderChildren(listItem)}</Box>
       {actions && (
-        <Box>
+        <Box pt="2">
           <Menu
             align="end"
             button={<IconButton icon={<EllipsisVertical size="16px" />} />}
@@ -47,6 +47,7 @@ const ListItem = memo(function ({ bg, children }) {
     <div style={{ width: '100%' }}>
       <Box
         bg={bg}
+        mb="4"
         w="100%"
         css={{
           borderRadius: 'var(--cocoso-border-radius)',

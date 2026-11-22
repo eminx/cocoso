@@ -51,11 +51,13 @@ function setupSMTP() {
 
   Accounts.emailTemplates.resetPassword.from = () => fromEmail;
   Accounts.emailTemplates.resetPassword.subject = (user) => {
-    return mailtranslations[user.lang].resetPassword.subject(platformName);
+    return mailtranslations[user.lang || 'en'].resetPassword.subject(
+      platformName
+    );
   };
   Accounts.emailTemplates.resetPassword.text = (user, url) => {
     const newUrl = url.replace('#/', '');
-    return mailtranslations[user.lang].resetPassword.text(
+    return mailtranslations[user.lang || 'en'].resetPassword.text(
       newUrl,
       user.username
     );
@@ -63,10 +65,15 @@ function setupSMTP() {
 
   Accounts.emailTemplates.verifyEmail.from = () => fromEmail;
   Accounts.emailTemplates.verifyEmail.subject = (user) => {
-    return mailtranslations[user.lang].verifyEmail.subject(platformName);
+    return mailtranslations[user.lang || 'en'].verifyEmail.subject(
+      platformName
+    );
   };
   Accounts.emailTemplates.verifyEmail.text = (user, url) => {
-    return mailtranslations[user.lang].verifyEmail.text(url, user.username);
+    return mailtranslations[user.lang || 'en'].verifyEmail.text(
+      url,
+      user.username
+    );
   };
 }
 
