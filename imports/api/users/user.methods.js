@@ -405,7 +405,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not a member anyways!');
     }
     try {
-      await Memberships.removeAsync({ userId });
+      await Memberships.removeAsync({ userId }, { multi: true });
 
       Meteor.defer(async () => {
         Meteor.setTimeout(async () => {

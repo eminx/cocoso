@@ -60,7 +60,7 @@ export default function EditProfile() {
       setIsDeleted(true);
       setTimeout(() => {
         window.location.href = '/?deleted=' + Date.now();
-      }, 6000);
+      }, 500);
     } catch (error: any) {
       message.error(error?.error || error?.reason);
       setIsDeleting(false);
