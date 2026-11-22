@@ -39,7 +39,7 @@ function setupSMTP() {
   }@${smtp.host}:${smtp.port}`;
 
   const platformName = Meteor.settings?.public?.name;
-  const fromEmail = `${platformName} <${smtp.fromEmail}>`;
+  const fromEmail = `${platformName} ${smtp.fromEmail}`;
 
   const browserLang = navigator.language.split('-')[0];
   const translations = mailtranslations[browserLang] ?? mailtranslations['en'];
@@ -56,17 +56,17 @@ function setupSMTP() {
   Accounts.emailTemplates.resetPassword.subject = (user) => {
     return translations.resetPassword.subject(platformName);
   };
-  Accounts.emailTemplates.resetPassword.text = (user, url) => {
+  Accounts.emailTemplates.resetPassword.html = (user, url) => {
     const newUrl = url.replace('#/', '');
-    return translations.resetPassword.text(newUrl, user.username);
+    return translations.resetPassword.html(newUrl, user.username);
   };
 
   Accounts.emailTemplates.verifyEmail.from = () => fromEmail;
   Accounts.emailTemplates.verifyEmail.subject = (user) => {
     return translations.verifyEmail.subject(platformName);
   };
-  Accounts.emailTemplates.verifyEmail.text = (user, url) => {
-    return translations.verifyEmail.text(url, user.username);
+  Accounts.emailTemplates.verifyEmail.html = (user, url) => {
+    return translations.verifyEmail.html(url, user.username);
   };
 }
 
