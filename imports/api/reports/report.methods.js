@@ -29,6 +29,7 @@ Meteor.methods({
         'Please describe the issue.'
       );
 
+    const reportedUser = await Meteor.users.findOneAsync(reportedUserId);
     const host = getHost(this);
     const reportedLink = `https://${host}${reportedPathname}`;
 
@@ -41,6 +42,7 @@ Meteor.methods({
       reportedLink,
       reportedTitle,
       reportedUserId: reportedUserId ?? undefined,
+      reportedUsername: reportedUser?.username ?? undefined,
       status: 'pending',
       createdAt: new Date(),
     });

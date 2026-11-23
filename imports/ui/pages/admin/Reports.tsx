@@ -71,10 +71,10 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
       }}
     >
       <Flex justify="space-between">
-        <Link href={report.contentLink} target="_blank">
+        <Link href={report.reportedLink} target="_blank">
           <Heading size="sm">
             {report.reportedTitle || report.reportedUserId}{' '}
-            <ExternalLink size={20} />
+            <ExternalLink width={20} height={20} />
           </Heading>
         </Link>
 
@@ -114,7 +114,7 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
             </Text>
           </Flex>
         )}
-        {report.contentId && (
+        {report.contentType && (
           <Flex direction="column" gap="1">
             <Text size="xs" color="gray.500">
               {t('reports.fields.contentType')}:
@@ -124,7 +124,7 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
             </Text>
           </Flex>
         )}
-        {report.contentId && (
+        {report.createdAt && (
           <Flex direction="column" gap="1">
             <Text size="xs" color="gray.500">
               {t('reports.fields.date')}:

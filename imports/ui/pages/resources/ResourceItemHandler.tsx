@@ -51,7 +51,7 @@ export default function ResourceItemHandler({ Host }: { Host: Host }) {
               contentId={resource._id}
               contentType="resources"
               reportedUserId={resource.userId}
-              reportedTitle={resource.title}
+              reportedTitle={resource.label}
             />
           )}
         </>

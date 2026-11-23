@@ -14,6 +14,7 @@ Reports.schema = new SimpleSchema({
   reportedLink: { type: String, optional: true },
   reportedTitle: { type: String, optional: true },
   reportedUserId: { type: String, optional: true },
+  reportedUsername: { type: String, optional: true },
   reporterId: { type: String },
   reviewNote: { type: String, optional: true },
   reviewedBy: { type: String, optional: true },

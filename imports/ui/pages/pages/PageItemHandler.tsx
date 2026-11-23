@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
+// @ts-expect-error: @loadable/component does not provide declarations in this project.
 import loadable from '@loadable/component';
 import { useLoaderData, useSearchParams } from 'react-router';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 
-import { renderedAtom, roleAtom } from '/imports/state';
+import { currentUserAtom, renderedAtom, roleAtom } from '/imports/state';
 import PageHybrid from '/imports/ui/entry/PageHybrid';
 
 import EditEntryHandler from '/imports/ui/forms/EditEntryHandler.loadable';
 import NewEntryHandler from '/imports/ui/forms/NewEntryHandler.loadable';
 import NotFoundPage from '/imports/ui/pages/NotFoundPage';
+import EntryReporter from '/imports/ui/entry/EntryReporter';
+import type { Host } from '/imports/ui/types';
 
 const PageInteractionHandler = loadable(
   () => import('./components/PageInteractionHandler')
@@ -18,10 +21,11 @@ const EditPage = loadable(() => import('./EditPage'));
 
 export const currentPageAtom = atom(null);
 
-export default function PageItemHandler({ Host }) {
+export default function PageItemHandler({ Host }: { Host: Host }) {
   const { page } = useLoaderData();
   const rendered = useAtomValue(renderedAtom);
   const role = useAtomValue(roleAtom);
+  const currentUser = useAtomValue(currentUserAtom);
   const setCurrentPage = useSetAtom(currentPageAtom);
   const [searchParams] = useSearchParams();
 
@@ -54,6 +58,15 @@ export default function PageItemHandler({ Host }) {
             <NewEntryHandler context="info">
               <NewPage />
             </NewEntryHandler>
+          )}
+
+          {currentUser && (
+            <EntryReporter
+              contentId={page._id}
+              contentType="info"
+              reportedUserId={page.authorId}
+              reportedTitle={page.title}
+            />
           )}
         </>
       )}
