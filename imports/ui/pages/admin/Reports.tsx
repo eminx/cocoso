@@ -32,6 +32,19 @@ const STATUS_COLORS: Record<string, BadgeProps['colorScheme']> = {
   dismissed: 'gray',
 };
 
+function InfoCell({ label, value }: { label: string; value: string }) {
+  return (
+    <Flex direction="column" gap="1">
+      <Text size="xs" color="gray.500">
+        {label}:
+      </Text>
+      <Text size="xs" css={{ fontFamily: 'monospace' }}>
+        {value}
+      </Text>
+    </Flex>
+  );
+}
+
 function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
   const [t] = useTranslation('admin');
   const [status, setStatus] = useState(report.status);
@@ -86,53 +99,33 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
       </Flex>
 
       <Flex gap="4" justify="flex-start" mb="6" w="100%" wrap="wrap">
-        <Flex direction="column" gap="1">
-          <Text size="xs" color="gray.500">
-            {t('reports.fields.reporter')}:
-          </Text>
-          <Text size="sm" fontWeight="bold">
-            {report.reporterUsername ?? report.reporterId}
-          </Text>
-        </Flex>
+        <InfoCell
+          label={t('reports.fields.reporter')}
+          value={report.reporterUsername ?? report.reporterId}
+        />
         {report.reportedUsername && (
-          <Flex direction="column" gap="1">
-            <Text size="xs" color="gray.500">
-              {t('reports.fields.reportedUser')}:
-            </Text>
-            <Text size="sm" fontWeight="bold">
-              {report.reportedUsername}
-            </Text>
-          </Flex>
+          <InfoCell
+            label={t('reports.fields.reportedUser')}
+            value={report.reportedUsername}
+          />
         )}
         {report.contentId && (
-          <Flex direction="column" gap="1">
-            <Text size="xs" color="gray.500">
-              {t('reports.fields.contentId')}:
-            </Text>
-            <Text size="xs" css={{ fontFamily: 'monospace' }}>
-              {report.contentId}
-            </Text>
-          </Flex>
+          <InfoCell
+            label={t('reports.fields.contentId')}
+            value={report.contentId}
+          />
         )}
         {report.contentType && (
-          <Flex direction="column" gap="1">
-            <Text size="xs" color="gray.500">
-              {t('reports.fields.contentType')}:
-            </Text>
-            <Text size="xs" css={{ fontFamily: 'monospace' }}>
-              {report.contentType}
-            </Text>
-          </Flex>
+          <InfoCell
+            label={t('reports.fields.contentType')}
+            value={report.contentType}
+          />
         )}
         {report.createdAt && (
-          <Flex direction="column" gap="1">
-            <Text size="xs" color="gray.500">
-              {t('reports.fields.date')}:
-            </Text>
-            <Text size="xs" css={{ fontFamily: 'monospace' }}>
-              {dayjs(report.createdAt).format('DD MMM YYYY')}
-            </Text>
-          </Flex>
+          <InfoCell
+            label={t('reports.fields.date')}
+            value={dayjs(report.createdAt).format('DD MMM YYYY')}
+          />
         )}
       </Flex>
 
