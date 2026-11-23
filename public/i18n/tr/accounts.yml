@@ -134,6 +134,7 @@ messages:
     unblocked: '{{ username }} engeli kaldırıldı.'
 
 report:
+  label: Bu içerik hk şikayet oluştur
   title: '{{ username }} kişisini şikayet et'
   titleGeneric: Şikayet gönder
   e2eeWarning: Mesajlar uçtan uca şifreleniyor — onları okuyamayız. Ne olduğunu açıklayın ve gerekirse konuşmanın ekran görüntüsünü yöneticilerle paylaşın.

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
+import { useLocation } from 'react-router';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Alert, Box, Modal, Text, Textarea } from '/imports/ui/core';
@@ -9,32 +10,37 @@ import { message } from './message';
 
 export type ReportContentType =
   | 'directMessage'
-  | 'activity'
-  | 'group'
-  | 'work'
-  | 'page'
-  | 'user';
+  | 'activities'
+  | 'groups'
+  | 'info'
+  | 'resources'
+  | 'users'
+  | 'works';
 
 interface Props {
+  contentId?: string;
+  contentType: ReportContentType;
+  reportedUserId?: string;
+  reporterUserId?: string;
+  reportedUsername?: string;
+  reportedTitle?: string;
   isOpen: boolean;
   onClose: () => void;
-  reportedUserId?: string;
-  reportedUsername?: string;
-  contentType: ReportContentType;
-  contentId?: string;
 }
 
 export default function ReportModal({
+  contentId,
+  contentType,
   isOpen,
   onClose,
   reportedUserId,
   reportedUsername,
-  contentType,
-  contentId,
+  reportedTitle,
 }: Props) {
   const [t] = useTranslation('accounts');
   const [description, setDescription] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const location = useLocation();
 
   const handleSubmit = async () => {
     if (!description.trim()) {
@@ -42,12 +48,15 @@ export default function ReportModal({
       return;
     }
     setSubmitting(true);
+
     try {
       await Meteor.callAsync('reports_create', {
-        reportedUserId,
-        contentType,
         contentId,
+        contentType,
         description,
+        reportedUserId,
+        reportedTitle,
+        reportedPathname: location?.pathname,
       });
       message.success(t('report.messages.success'));
       setDescription('');
@@ -78,8 +87,8 @@ export default function ReportModal({
       open={isOpen}
       size="xl"
       title={
-        reportedUsername
-          ? t('report.title', { username: reportedUsername })
+        reportedTitle
+          ? t('report.title', { reported: reportedTitle || reportedUsername })
           : t('report.titleGeneric')
       }
       onConfirm={handleSubmit}
@@ -87,14 +96,7 @@ export default function ReportModal({
     >
       <Box>
         {contentType === 'directMessage' && (
-          <Alert
-            mb="8"
-            type="info"
-            css={{
-              backgroundColor: 'var(--cocoso-colors-gray-100)',
-              border: 'none',
-            }}
-          >
+          <Alert type="info">
             <Text fontSize="sm">{t('report.e2eeWarning')}</Text>
           </Alert>
         )}

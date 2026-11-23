@@ -416,6 +416,8 @@ reports:
     reporter: Reporter
     reportedUser: Reported user
     contentId: Content ID
+    contentType: Content Type
+    date: Report Date
     description: Description
     status: Status
     reviewNote: Review note (optional)

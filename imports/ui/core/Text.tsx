@@ -60,7 +60,6 @@ interface TextProps {
   css?: CSSProperties;
   fontSize?: string;
   fontWeight?: string;
-  href?: string;
   lineHeight?: string;
   textAlign?: string;
   size?: string;
@@ -224,7 +223,12 @@ const LinkStyled = styled('a', {
   },
 });
 
-export const Link = (props: TextProps) => {
+interface LinkProps extends TextProps {
+  href?: string;
+  target?: string;
+}
+
+export const Link = (props: LinkProps) => {
   const { children, css, color, fontSize, size, truncated, ...rest } = props;
   const colorValue = color?.split('.') || ['blue', '500'];
   const fontSizeValue = size || fontSize;

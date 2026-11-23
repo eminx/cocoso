@@ -405,6 +405,8 @@ reports:
     reporter: Anmälare
     reportedUser: Anmäld användare
     contentId: Innehålls-ID
+    contentType: Innehålls-typ
+    date: Anmälningsdatum
     description: Beskrivning
     status: Status
     reviewNote: Granskninsanteckning (valfri)

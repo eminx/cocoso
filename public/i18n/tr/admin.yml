@@ -402,7 +402,9 @@ reports:
   fields:
     reporter: Şikayet Eden
     reportedUser: Şikayet Edilen Kullanıcı
-    contentId: İçerik ID
+    contentId: 'İçerik ID'
+    contentType: 'İçerik Tipi'
+    date: Şikayet Tarihi
     description: Açıklama
     status: Durum
     reviewNote: İnceleme notu (isteğe bağlı)

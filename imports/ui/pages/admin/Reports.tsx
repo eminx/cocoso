@@ -3,13 +3,17 @@ import { useLoaderData, useRevalidator } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { useAtomValue } from 'jotai';
+import ExternalLink from 'lucide-react/dist/esm/icons/external-link';
 
+import { currentUserAtom, roleAtom } from '/imports/state';
 import {
   Alert,
   Badge,
   Box,
   Button,
   Flex,
+  Heading,
+  Link,
   Select,
   Text,
   Textarea,
@@ -18,7 +22,8 @@ import { BadgeProps } from '/imports/ui/core/Badge';
 import { message } from '/imports/ui/generic/message';
 import { call } from '/imports/api/_utils/shared';
 import FormField from '/imports/ui/forms/FormField';
-import { currentUserAtom, roleAtom } from '/imports/state';
+
+import Boxling from './Boxling';
 
 const STATUS_COLORS: Record<string, BadgeProps['colorScheme']> = {
   pending: 'red',
@@ -58,29 +63,29 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
   };
 
   return (
-    <Box
+    <Boxling
       bg="white"
-      mb="4"
-      p="4"
+      mb="8"
       css={{
-        boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+        boxShadow: '0 1px 4px rgba(0,0,0,0.12)',
       }}
     >
-      <Flex align="center" justify="space-between" mb="8">
+      <Flex justify="space-between">
+        <Link href={report.contentLink} target="_blank">
+          <Heading size="sm">
+            {report.reportedTitle || report.reportedUserId}{' '}
+            <ExternalLink size={20} />
+          </Heading>
+        </Link>
+
         <Badge colorScheme={STATUS_COLORS[report.status] ?? 'gray'}>
           {t(`reports.status.${report.status}`, {
             defaultValue: report.status,
           })}
         </Badge>
-        <Text size="xs" color="gray.600">
-          {report.contentType}
-        </Text>
-        <Text size="xs" color="gray.500">
-          {dayjs(report.createdAt).format('DD MMM YYYY HH:mm')}
-        </Text>
       </Flex>
 
-      <Flex gap="4" my="4" justify="space-between" w="100%" wrap="wrap">
+      <Flex gap="4" justify="flex-start" mb="6" w="100%" wrap="wrap">
         <Flex direction="column" gap="1">
           <Text size="xs" color="gray.500">
             {t('reports.fields.reporter')}:
@@ -104,20 +109,39 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
             <Text size="xs" color="gray.500">
               {t('reports.fields.contentId')}:
             </Text>
-            <Text size="sm" css={{ fontFamily: 'monospace' }}>
+            <Text size="xs" css={{ fontFamily: 'monospace' }}>
               {report.contentId}
+            </Text>
+          </Flex>
+        )}
+        {report.contentId && (
+          <Flex direction="column" gap="1">
+            <Text size="xs" color="gray.500">
+              {t('reports.fields.contentType')}:
+            </Text>
+            <Text size="xs" css={{ fontFamily: 'monospace' }}>
+              {report.contentType}
+            </Text>
+          </Flex>
+        )}
+        {report.contentId && (
+          <Flex direction="column" gap="1">
+            <Text size="xs" color="gray.500">
+              {t('reports.fields.date')}:
+            </Text>
+            <Text size="xs" css={{ fontFamily: 'monospace' }}>
+              {dayjs(report.createdAt).format('DD MMM YYYY')}
             </Text>
           </Flex>
         )}
       </Flex>
 
-      <Box mb="3">
-        <Text color="gray.500" css={{ marginInlineEnd: '0.3rem' }}>
-          {t('reports.fields.description')}:
-        </Text>
-        <Text>
-          <em>{report.description}</em>
-        </Text>
+      <Box mb="2">
+        <FormField label={t('reports.fields.description')}>
+          <Text>
+            <em>{report.description}</em>
+          </Text>
+        </FormField>
       </Box>
 
       <Flex direction="column" gap="2">
@@ -149,7 +173,7 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
           </Button>
         </Flex>
       </Flex>
-    </Box>
+    </Boxling>
   );
 }
 

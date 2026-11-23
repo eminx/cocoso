@@ -76,21 +76,23 @@ export default function Alert({
   ...props
 }: AlertProps) {
   return (
-    <AlertContainer status={type} {...props}>
-      <Flex>
-        <Box mr="2" css={{ flexShrink: 0, flexGrow: 0 }}>
-          {type === 'info' && <InfoIcon color={alertColors[type]} />}
-          {type === 'warning' && <WarningIcon color={alertColors[type]} />}
-          {type === 'success' && <CheckIcon color={alertColors[type]} />}
-          {type === 'error' && <AlertIcon color={alertColors[type]} />}
-        </Box>
-        <Box>
-          {title && <AlertTitle>{title}</AlertTitle>}
-          {(message || children) && (
-            <AlertDescription>{message || children}</AlertDescription>
-          )}
-        </Box>
-      </Flex>
-    </AlertContainer>
+    <Box {...props}>
+      <AlertContainer status={type}>
+        <Flex>
+          <Box mr="2" css={{ flexShrink: 0, flexGrow: 0 }}>
+            {type === 'info' && <InfoIcon color={alertColors[type]} />}
+            {type === 'warning' && <WarningIcon color={alertColors[type]} />}
+            {type === 'success' && <CheckIcon color={alertColors[type]} />}
+            {type === 'error' && <AlertIcon color={alertColors[type]} />}
+          </Box>
+          <Box>
+            {title && <AlertTitle>{title}</AlertTitle>}
+            {(message || children) && (
+              <AlertDescription>{message || children}</AlertDescription>
+            )}
+          </Box>
+        </Flex>
+      </AlertContainer>
+    </Box>
   );
 }

@@ -135,7 +135,8 @@ messages:
     unblocked: '{{ username }} unblocked.'
 
 report:
-  title: Report {{ username }}
+  label: Report this content
+  title: Report {{ reported }}
   titleGeneric: Submit a report
   e2eeWarning: Messages are end-to-end encrypted — we cannot read them. Please describe what happened and take a screenshot of the conversation to share with admins if needed.
   form:
