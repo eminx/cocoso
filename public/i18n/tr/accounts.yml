@@ -139,10 +139,10 @@ report:
   titleGeneric: Şikayet gönder
   e2eeWarning: Mesajlar uçtan uca şifreleniyor — yani onları okuyamayız. Lütfen durumun ne olduğunu açıkla ve gerekirse konuşmanın ekran görüntüsünü yöneticilerle paylaş.
   form:
-    label: Sorunu açıkla
-    placeholder: Ne oldu? Lütfen mümkün olduğunca ayrıntılı açıklayın…
+    label: Lütfen problemi açıkla
+    placeholder: Durum nedir? Lütfen mümkün olduğunca ayrıntılı açıkla…
   messages:
-    required: Göndermeden önce lütfen sorunu açıklayın.
+    required: Göndermeden önce lütfen problemi detaylıca açıkla.
     success: Şikayet gönderildi. Teşekkürler.
 
 leave:
