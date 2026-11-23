@@ -77,7 +77,6 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
 
   return (
     <Boxling
-      bg="white"
       mb="8"
       css={{
         boxShadow: '0 1px 4px rgba(0,0,0,0.12)',
