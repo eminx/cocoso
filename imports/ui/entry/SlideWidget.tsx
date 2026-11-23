@@ -80,14 +80,11 @@ export default function SlideWidget({
 
   return (
     <>
-      {/* .cocoso-slide already sets position:fixed — no style override needed */}
       <Slide id="slide-widget" direction="bottom" ping={isVisible}>
         <Flex {...flexProps} {...otherProps}>
           {children}
         </Flex>
       </Slide>
-      {/* Permanent spacer — widget is always fixed so this space is always needed */}
-      <div style={{ height: `${WIDGET_HEIGHT}px`, width: '100%' }} />
     </>
   );
 }
