@@ -83,12 +83,18 @@ function ReportItem({ report, onSaved }: { report: any; onSaved: () => void }) {
       }}
     >
       <Flex justify="space-between">
-        <Link href={report.reportedLink} target="_blank">
+        {report.contentType === 'directMessage' ? (
           <Heading size="sm">
-            {report.reportedTitle || report.reportedUserId}{' '}
-            <ExternalLink width={20} height={20} />
+            {report.reportedUsername || report.contentType}{' '}
           </Heading>
-        </Link>
+        ) : (
+          <Link href={report.reportedLink} target="_blank">
+            <Heading size="sm">
+              {report.reportedTitle || report.contentType}{' '}
+              <ExternalLink width={20} height={20} />
+            </Heading>
+          </Link>
+        )}
 
         <Badge colorScheme={STATUS_COLORS[report.status] ?? 'gray'}>
           {t(`reports.status.${report.status}`, {
