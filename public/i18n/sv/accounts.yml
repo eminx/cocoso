@@ -135,7 +135,7 @@ messages:
 
 report:
   label: Rapportera detta innehåll
-  title: Rapportera {{ username }}
+  title: Rapportera {{ reported }}
   titleGeneric: Skicka en rapport
   e2eeWarning: Meddelanden är end-to-end-krypterade — vi kan inte läsa dem. Beskriv vad som hände och ta en skärmdump av konversationen att dela med administratörer om det behövs.
   form:

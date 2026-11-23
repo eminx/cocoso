@@ -124,20 +124,20 @@ messages:
   e2eeNote: Uçtan uca şifreli — yöneticiler mesajlarını okuyamaz
   actions:
     block: '{{ username }} kişisini engelle'
-    unblock: '{{ username }} engelini kaldır'
+    unblock: '{{ username }} için engeli kaldır'
     report: '{{ username }} kişisini şikayet et'
     unblockLink: Engeli kaldır
   blocked:
     notice: Bu kullanıcıyı engellediniz.
   notify:
     blocked: '{{ username }} engellendi.'
-    unblocked: '{{ username }} engeli kaldırıldı.'
+    unblocked: '{{ username }} için engel kaldırıldı.'
 
 report:
-  label: Bu içerik hk şikayet oluştur
-  title: '{{ username }} kişisini şikayet et'
+  label: Bu içerik hakkında şikayet oluştur
+  title: '{{ reported }} hakkında şikayet oluştur'
   titleGeneric: Şikayet gönder
-  e2eeWarning: Mesajlar uçtan uca şifreleniyor — onları okuyamayız. Ne olduğunu açıklayın ve gerekirse konuşmanın ekran görüntüsünü yöneticilerle paylaşın.
+  e2eeWarning: Mesajlar uçtan uca şifreleniyor — yani onları okuyamayız. Lütfen durumun ne olduğunu açıkla ve gerekirse konuşmanın ekran görüntüsünü yöneticilerle paylaş.
   form:
     label: Sorunu açıkla
     placeholder: Ne oldu? Lütfen mümkün olduğunca ayrıntılı açıklayın…
