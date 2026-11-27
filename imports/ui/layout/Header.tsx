@@ -191,7 +191,7 @@ function HeaderMenu({ Host, pageTitles }: HeaderMenuProps) {
               css={{
                 display: 'flex',
                 alignItems: 'center',
-                transform: 'translateY(0.1rem)',
+                transform: 'translateY(0.07rem)',
                 zIndex: 999,
               }}
             >
