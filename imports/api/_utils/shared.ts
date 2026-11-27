@@ -1,7 +1,11 @@
 import { Meteor } from 'meteor/meteor';
+// @ts-expect-error
 import Resizer from 'react-image-file-resizer';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+
+import Hosts from '/imports/api/hosts/host';
+import { MenuItem } from '/imports/ui/types';
 
 dayjs.extend(isBetween);
 
@@ -614,6 +618,27 @@ const getHost = (self: MeteorContext | undefined): string | undefined =>
 
 const siteUrl = Meteor.absoluteUrl();
 
+async function filterListingWithPublicHostMenuItem(
+  entries: any[],
+  listing: string
+) {
+  const hostsSet = new Set(entries.map((e) => e.host));
+  const hostsWithPublicListing = (
+    await Promise.all(
+      [...hostsSet].map(async (host) => {
+        const Host = await Hosts.findOneAsync({ host });
+        const visible =
+          Host?.settings?.menu?.find((item: MenuItem) => item.name === listing)
+            ?.visibility === 'everyone';
+        return visible ? host : null;
+      })
+    )
+  ).filter((h): h is string => h !== null);
+
+  const allowed = new Set(hostsWithPublicListing);
+  return entries.filter((e: any) => allowed.has(e.host));
+}
+
 export {
   localeSort,
   getInitials,
@@ -641,6 +666,7 @@ export {
   debounce,
   getHost,
   siteUrl,
+  filterListingWithPublicHostMenuItem,
 };
 
 export type {
