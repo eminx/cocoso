@@ -59,7 +59,7 @@ export interface UserHybridProps {
 }
 
 export default function UserHybrid({ user, Host }: UserHybridProps) {
-  const { usernameSlug, workId } = useParams<{
+  const { usernameSlug } = useParams<{
     usernameSlug: string;
     workId?: string;
   }>();
@@ -84,9 +84,9 @@ export default function UserHybrid({ user, Host }: UserHybridProps) {
     );
   }
 
-  const { menu } = Host?.settings;
+  const menu = Host?.settings?.menu;
 
-  const tabs = [];
+  const tabs: { path: string; title: string | undefined }[] = [];
   menu
     ?.filter(
       (item) =>
@@ -103,7 +103,10 @@ export default function UserHybrid({ user, Host }: UserHybridProps) {
   let tabIndex = tabs?.findIndex((tab) => pathname.includes(tab.path));
   tabIndex === -1 ? (tabIndex = 0) : null;
 
-  const members = menu?.find((item) => item.name === 'people');
+  const members = menu?.find(
+    (item: { name: string; label: string }) => item?.name === 'people'
+  );
+  // @ts-expect-error
   const title = `${getFullName(user)} | ${user.username} | ${
     Host?.settings?.name
   }`;
@@ -134,9 +137,10 @@ export default function UserHybrid({ user, Host }: UserHybridProps) {
         <BackLink backLink={{ label: members?.label, value: '/people' }} />
       </Box>
 
-      <Center>
+      <Center mb="24">
         <Box css={{ maxWidth: '600px' }}>
           <Center>
+            {/* @ts-expect-error*/}
             <MemberAvatarEtc isThumb={false} user={user} />
           </Center>
           <Center>

@@ -62,12 +62,12 @@ export default function PublicActivityForm({
   const [state, setState] = useState({
     capacity: activity ? activity.capacity : defaultCapacity,
     datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
-    formValues: activity || emptyFormValues,
+    formValues: activity ?? emptyFormValues,
     selectedResource: activity
       ? { label: activity.resource, _id: activity.resourceId }
       : null,
-    isExclusiveActivity: activity ? activity.isExclusiveActivity : true,
-    isRegistrationEnabled: activity ? activity.isRegistrationEnabled : false,
+    isExclusiveActivity: activity?.isExclusiveActivity ?? true,
+    isRegistrationEnabled: activity?.isRegistrationEnabled ?? false,
     resources: [],
   });
   const [loaders, setLoaders] = useAtom(loaderAtom);

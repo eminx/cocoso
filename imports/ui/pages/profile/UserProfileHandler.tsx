@@ -4,7 +4,6 @@ import loadable from '@loadable/component';
 import { useLoaderData } from 'react-router';
 import { useAtomValue } from 'jotai';
 
-import { Box } from '/imports/ui/core';
 import UserHybrid from '/imports/ui/entry/UserHybrid';
 import { currentUserAtom, renderedAtom } from '/imports/state';
 import EntryReporter from '/imports/ui/entry/EntryReporter';
@@ -27,14 +26,12 @@ export default function UserProfileHandler({ Host }: { Host: Host }) {
           <UserInteractionHandler user={user} slideStart={rendered} />
 
           {currentUser && (
-            <Box pt="24">
-              <EntryReporter
-                contentId={user._id}
-                contentType="users"
-                reportedUserId={user._id}
-                reportedTitle={user.username}
-              />
-            </Box>
+            <EntryReporter
+              contentId={user._id}
+              contentType="users"
+              reportedUserId={user._id}
+              reportedTitle={user.username}
+            />
           )}
         </>
       )}

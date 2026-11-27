@@ -53,7 +53,7 @@ export default function CalendarActivityForm({
     resources: SelectedResource[];
   }>({
     datesAndTimes: activity ? activity.datesAndTimes : [emptyDateAndTime],
-    formValues: activity || emptyFormValues,
+    formValues: activity ?? emptyFormValues,
     selectedResource: activity
       ? {
           label: activity.resource || '',
@@ -61,7 +61,7 @@ export default function CalendarActivityForm({
           value: activity.resourceId,
         }
       : null,
-    isExclusiveActivity: activity ? activity.isExclusiveActivity || true : true,
+    isExclusiveActivity: activity?.isExclusiveActivity ?? true,
     resources: [],
   });
   const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);

@@ -7,6 +7,8 @@ export interface User extends Meteor.User {
     date: Date;
   };
   username?: string;
+  firstName?: string;
+  lastName?: string;
   emails?: Array<{ address: string; verified: boolean }>;
   isSuperAdmin?: boolean;
   publicKey?: string;
