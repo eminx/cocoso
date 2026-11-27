@@ -5,6 +5,7 @@ import {
   compareDatesWithStartDateForSort,
   parseGroupsWithMeetings,
   getHost,
+  filterListingWithPublicHostMenuItem,
 } from '/imports/api/_utils/shared';
 
 import { isAdmin, isContributorOrAdmin, isMember } from '../users/user.roles';
@@ -26,7 +27,11 @@ const publicSettings = Meteor.settings.public;
 // "Future" here matches the original semantics exactly: the meeting's
 // startDate string is today or later — not "hasn't ended yet" the way the
 // general activities listing works, since a meeting is a point in time.
-async function findFutureGroupMeetingActivities({ host, isPortalHost, groupId }) {
+async function findFutureGroupMeetingActivities({
+  host,
+  isPortalHost,
+  groupId,
+}) {
   const activityQuery = { isGroupMeeting: true };
   if (groupId) {
     activityQuery.groupId = groupId;
@@ -50,7 +55,9 @@ async function findFutureGroupMeetingActivities({ host, isPortalHost, groupId })
   const futureActivityIds = new Set(
     futureOccurrences.map((occ) => occ.activityId)
   );
-  const futureActivities = activities.filter((a) => futureActivityIds.has(a._id));
+  const futureActivities = activities.filter((a) =>
+    futureActivityIds.has(a._id)
+  );
 
   return await hydrateActivities(futureActivities);
 }
@@ -149,6 +156,7 @@ Meteor.methods({
         isPortalHost,
         host
       );
+
       const allGroupActivities = await Meteor.callAsync(
         'getAllGroupMeetingsFuture',
         isPortalHost,
@@ -171,7 +179,16 @@ Meteor.methods({
     const allGroups = isPortalHost
       ? await Groups.find({}, { sort: { creationDate: -1 } }).fetchAsync()
       : await Groups.find({ host }).fetchAsync();
-    const groupsFiltered = allGroups.filter((group) => {
+
+    let allGroupsFilteredWithHostMenu = [...allGroups];
+    if (isPortalHost) {
+      allGroupsFilteredWithHostMenu = await filterListingWithPublicHostMenuItem(
+        allGroups,
+        'groups'
+      );
+    }
+
+    const groupsFiltered = allGroupsFilteredWithHostMenu.filter((group) => {
       if (!group.isPrivate) {
         return true;
       }

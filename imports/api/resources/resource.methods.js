@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../_utils/shared';
 
+import { getHost, filterListingWithPublicHostMenuItem } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 import Resources from './resource';
 import Activities from '../activities/activity';
@@ -26,7 +26,12 @@ Meteor.methods({
   async getResourcesFromAllHosts() {
     const fields = Resources.publicFields;
     const sort = { createdAt: -1 };
-    return await Resources.find({}, { fields, sort }).fetchAsync();
+
+    const allResources = await Resources.find(
+      {},
+      { fields, sort }
+    ).fetchAsync();
+    return await filterListingWithPublicHostMenuItem(allResources, 'resources');
   },
 
   async getResources(hostPredefined) {

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import dayjs from 'dayjs';
 
-import { getHost } from '../_utils/shared';
+import { getHost, filterListingWithPublicHostMenuItem } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Activities from './activity';
@@ -73,12 +73,18 @@ async function findActivityIdsForResource(host, resourceId, excludeActivityId) {
 // activityId set with at least one occurrence that hasn't fully ended yet
 // (afterNow) or has fully ended (afterNow === false), for the given host
 // filter (or none, for portal-wide "all hosts" listings).
-async function findActivityIdsByOccurrenceWindow({ host, isPortalHost, afterNow }) {
+async function findActivityIdsByOccurrenceWindow({
+  host,
+  isPortalHost,
+  afterNow,
+}) {
   const now = new Date();
   const query = afterNow
     ? {
         startDateTime: {
-          $gte: dayjs(now).subtract(MAX_OCCURRENCE_DURATION_DAYS, 'day').toDate(),
+          $gte: dayjs(now)
+            .subtract(MAX_OCCURRENCE_DURATION_DAYS, 'day')
+            .toDate(),
         },
         endDateTime: { $gte: now },
       }
@@ -111,9 +117,15 @@ Meteor.methods({
         _id: { $in: activityIds },
         $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
       }).fetchAsync();
-      const hydrated = await hydrateActivities(acts);
+      const actsFilteredPublic = await filterListingWithPublicHostMenuItem(
+        acts,
+        'activities'
+      );
+      const hydrated = await hydrateActivities(actsFilteredPublic);
       const sorted = parseGroupActivities(hydrated)?.sort(
-        showPast ? compareDatesForSortActivitiesReverse : compareDatesForSortActivities
+        showPast
+          ? compareDatesForSortActivitiesReverse
+          : compareDatesForSortActivities
       );
       return await filterPrivateGroups(sorted, user);
     } catch (error) {
@@ -137,7 +149,9 @@ Meteor.methods({
       }).fetchAsync();
       const hydrated = await hydrateActivities(acts);
       const sorted = parseGroupActivities(hydrated)?.sort(
-        showPast ? compareDatesForSortActivitiesReverse : compareDatesForSortActivities
+        showPast
+          ? compareDatesForSortActivitiesReverse
+          : compareDatesForSortActivities
       );
       return await filterPrivateGroups(sorted, user);
     } catch (error) {
@@ -150,7 +164,11 @@ Meteor.methods({
     const user = await Meteor.userAsync();
     try {
       const allActs = await Activities.find().fetchAsync();
-      const hydrated = await hydrateActivities(allActs);
+      const allActsFilteredPublic = await filterListingWithPublicHostMenuItem(
+        allActs,
+        'calendar'
+      );
+      const hydrated = await hydrateActivities(allActsFilteredPublic);
       const allActsParsed = parseGroupActivities(hydrated);
       return await filterPrivateGroups(allActsParsed, user);
     } catch (error) {
@@ -351,10 +369,7 @@ Meteor.methods({
       throw new Meteor.Error('Activity not found!');
     }
 
-    if (
-      user._id !== theActivity.authorId &&
-      !(await isAdmin(user._id, host))
-    ) {
+    if (user._id !== theActivity.authorId && !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -386,10 +401,7 @@ Meteor.methods({
 
     const theActivity = await Activities.findOneAsync(activityId);
 
-    if (
-      user._id !== theActivity.authorId &&
-      !(await isAdmin(user._id, host))
-    ) {
+    if (user._id !== theActivity.authorId && !(await isAdmin(user._id, host))) {
       throw new Meteor.Error('Not allowed!');
     }
 

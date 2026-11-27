@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import { getHost } from '../_utils/shared';
+import { getHost, filterListingWithPublicHostMenuItem } from '../_utils/shared';
 import Works from './work';
 import Documents from '../documents/document';
 import Platform from '../platform/platform';
@@ -9,7 +9,11 @@ import { isContributorOrAdmin } from '../users/user.roles';
 Meteor.methods({
   async getAllWorksFromAllHosts() {
     try {
-      return await Works.find({}, { sort: { creationDate: -1 } }).fetchAsync();
+      const allWorks = await Works.find(
+        {},
+        { sort: { creationDate: -1 } }
+      ).fetchAsync();
+      return await filterListingWithPublicHostMenuItem(allWorks, 'works');
     } catch (error) {
       throw new Meteor.Error(error, 'Could not retrieve data');
     }
