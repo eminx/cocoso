@@ -43,7 +43,14 @@ Meteor.methods({
       const activities = await Activities.find({
         _id: { $in: activityIds },
       }).fetchAsync();
-      const activitiesById = new Map(activities.map((a) => [a._id, a]));
+      let activitiesFiltered = [...activities];
+      if (isPortalHost) {
+        activitiesFiltered = await filterListingWithPublicHostMenuItem(
+          activities,
+          'calendar'
+        );
+      }
+      const activitiesById = new Map(activitiesFiltered.map((a) => [a._id, a]));
 
       const rows = occurrences
         .map((occ) => {
