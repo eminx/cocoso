@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import dayjs from 'dayjs';
 
-import { getHost } from '../_utils/shared';
+import { getHost, filterListingWithPublicHostMenuItem } from '../_utils/shared';
 import { filterPrivateGroups } from '../activities/activity.helpers';
 import Activities from '../activities/activity';
 import Occurrences from './occurrence';
@@ -39,18 +39,21 @@ Meteor.methods({
 
     try {
       const occurrences = await Occurrences.find(query).fetchAsync();
-      const activityIds = [...new Set(occurrences.map((o) => o.activityId))];
-      const activities = await Activities.find({
-        _id: { $in: activityIds },
-      }).fetchAsync();
-      let activitiesFiltered = [...activities];
+      let occurrencesFiltered = [...occurrences];
       if (isPortalHost) {
-        activitiesFiltered = await filterListingWithPublicHostMenuItem(
-          activities,
+        occurrencesFiltered = await filterListingWithPublicHostMenuItem(
+          occurrences,
           'calendar'
         );
       }
-      const activitiesById = new Map(activitiesFiltered.map((a) => [a._id, a]));
+      const activityIds = [
+        ...new Set(occurrencesFiltered.map((o) => o.activityId)),
+      ];
+      const activities = await Activities.find({
+        _id: { $in: activityIds },
+      }).fetchAsync();
+
+      const activitiesById = new Map(activities.map((a) => [a._id, a]));
 
       const rows = occurrences
         .map((occ) => {
